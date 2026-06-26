@@ -1,15 +1,42 @@
 import { getFixtureCatalog } from "@/lib/catalog"
-import { defaultTrackState, runScenarioPipeline } from "@/lib/scenario-pipeline"
 
+import { MatchupHeader } from "./matchup-header"
 import { ScenarioResults } from "./scenario-results"
+import { SelectionSummary, TrackControls } from "./track-controls"
+import { useScenarioState } from "./use-scenario-state"
 
 export function ScenarioExplorerPage() {
   const catalog = getFixtureCatalog()
-  const rows = runScenarioPipeline(catalog, defaultTrackState(catalog))
+  const state = useScenarioState(catalog)
 
   return (
-    <main className="mx-auto min-h-svh max-w-5xl p-4 pb-12 sm:p-6">
-      <ScenarioResults catalog={catalog} rows={rows} />
-    </main>
+    <div className="mx-auto min-h-svh max-w-6xl p-4 pb-12 sm:p-6">
+      <div className="flex min-h-[calc(100svh-6rem)] flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
+        <aside className="lg:sticky lg:top-6 lg:w-72 lg:shrink-0">
+          <div className="space-y-4 rounded-xl border bg-card p-4">
+            <div className="border-b pb-3">
+              <MatchupHeader matchup={catalog.matchup} />
+            </div>
+            <TrackControls catalog={catalog} state={state} />
+          </div>
+        </aside>
+
+        <main className="min-w-0 flex-1 space-y-4">
+          <header className="space-y-1">
+            <h1 className="text-xl font-semibold tracking-tight">伤害对比</h1>
+            <p className="text-muted-foreground text-sm">
+              {catalog.matchup.attackerLabel} → {catalog.matchup.defenderLabel}
+            </p>
+            <SelectionSummary state={state} />
+          </header>
+          <ScenarioResults
+            catalog={catalog}
+            rows={state.rows}
+            showMoveOnRow={state.showMoveOnRow}
+            compact
+          />
+        </main>
+      </div>
+    </div>
   )
 }
