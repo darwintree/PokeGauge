@@ -1,68 +1,26 @@
-import type { ScenarioRow } from "@/lib/scenario-pipeline"
-import { rowLabels } from "@/lib/scenario-pipeline"
 import type { MatchupCatalog } from "@/lib/catalog"
+import type { ScenarioRow } from "@/lib/scenario-pipeline"
+
+import { BoxPlotLegend, DamageAxis, DamageBoxPlot } from "./damage-box-plot"
 
 type ScenarioResultsProps = {
   catalog: MatchupCatalog
   rows: ScenarioRow[]
 }
 
-function formatPercent(value: number) {
-  return `${value.toFixed(1)}%`
+function catalogOption<T extends { id: string }>(options: T[], id: string): T {
+  const found = options.find((o) => o.id === id)
+  if (!found) throw new Error(`Unknown catalog option: ${id}`)
+  return found
 }
 
-function ScenarioRowCard({
-  catalog,
-  row,
-}: {
-  catalog: MatchupCatalog
-  row: ScenarioRow
-}) {
-  const labels = rowLabels(catalog, row)
-  const ohkoText =
-    row.ohkoChance !== undefined
-      ? ` · ${row.ohkoChance % 1 === 0 ? row.ohkoChance : row.ohkoChance.toFixed(1)}% OHKO`
-      : ""
-
-  return (
-    <article className="rounded-lg border bg-card p-4 text-card-foreground">
-      <header className="mb-2 text-sm font-medium">
-        {labels.move} · {labels.stat} · {labels.item} · {labels.defender}
-      </header>
-      <dl className="grid gap-1 text-sm text-muted-foreground sm:grid-cols-2">
-        <div>
-          <dt className="inline">伤害区间 </dt>
-          <dd className="inline font-mono text-foreground">
-            {row.minDamage}–{row.maxDamage} ({formatPercent(row.minPercent)}–
-            {formatPercent(row.maxPercent)})
-          </dd>
-        </div>
-        <div>
-          <dt className="inline">平均 </dt>
-          <dd className="inline font-mono text-foreground">
-            {row.avgDamage.toFixed(1)} ({formatPercent(row.avgPercent)})
-          </dd>
-        </div>
-        <div>
-          <dt className="inline">会心 </dt>
-          <dd className="inline font-mono text-foreground">
-            {row.critMinDamage}–{row.critMaxDamage} (
-            {formatPercent(row.critMinPercent)}–{formatPercent(row.critMaxPercent)})
-          </dd>
-        </div>
-        {row.ohkoChance !== undefined && (
-          <div>
-            <dt className="inline">OHKO 概率 </dt>
-            <dd className="inline font-mono text-foreground">{ohkoText.replace(/^ · /, "")}</dd>
-          </div>
-        )}
-      </dl>
-    </article>
-  )
+function rowKey(row: ScenarioRow) {
+  return `${row.moveId}:${row.attackerStatId}:${row.attackerItemId}:${row.defenderId}`
 }
 
 export function ScenarioResults({ catalog, rows }: ScenarioResultsProps) {
   const { attackerLabel, defenderLabel } = catalog.matchup
+  const showMoveOnRow = new Set(rows.map((r) => r.moveId)).size > 1
 
   return (
     <section className="space-y-4">
@@ -73,13 +31,31 @@ export function ScenarioResults({ catalog, rows }: ScenarioResultsProps) {
         </p>
         <p className="text-muted-foreground text-sm">{rows.length} 个 scenario</p>
       </header>
-      <ul className="space-y-3">
-        {rows.map((row) => (
-          <li key={`${row.moveId}:${row.attackerStatId}:${row.attackerItemId}:${row.defenderId}`}>
-            <ScenarioRowCard catalog={catalog} row={row} />
-          </li>
-        ))}
-      </ul>
+
+      {rows.length === 0 ? (
+        <p className="text-muted-foreground rounded-lg border border-dashed p-8 text-center text-sm">
+          请至少各选一维配置以展示伤害对比
+        </p>
+      ) : (
+        <>
+          <DamageAxis />
+          <ul className="space-y-12 pb-2">
+            {rows.map((row) => (
+              <li key={rowKey(row)}>
+                <DamageBoxPlot
+                  move={catalogOption(catalog.moves, row.moveId)}
+                  attackerStat={catalogOption(catalog.attackerStats, row.attackerStatId)}
+                  attackerItem={catalogOption(catalog.attackerItems, row.attackerItemId)}
+                  defender={catalogOption(catalog.defenderBulks, row.defenderId)}
+                  row={row}
+                  showMove={showMoveOnRow}
+                />
+              </li>
+            ))}
+          </ul>
+          <BoxPlotLegend />
+        </>
+      )}
     </section>
   )
 }

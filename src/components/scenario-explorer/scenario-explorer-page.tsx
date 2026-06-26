@@ -8,7 +8,7 @@ export function ScenarioExplorerPage() {
   const rows = runScenarioPipeline(catalog, defaultTrackState(catalog))
 
   return (
-    <main className="mx-auto min-h-svh max-w-3xl p-4 pb-12 sm:p-6">
+    <main className="mx-auto min-h-svh max-w-5xl p-4 pb-12 sm:p-6">
       <ScenarioResults catalog={catalog} rows={rows} />
     </main>
   )
