@@ -33,9 +33,23 @@ If the user didn't specify, default to `--uncommitted` when the working tree has
 
 Add `--title "<summary>"` when reviewing a commit.
 
-Optional `[PROMPT]` tail — custom review instructions (e.g. focus on security, check spec file X).
+Optional `[PROMPT]` tail — custom review instructions (e.g. focus on security, check spec file X). **Not compatible with `--uncommitted`** — use `--base` or `--commit` instead.
 
 **Completion criterion:** one resolved ref or flag, and `git diff` / `git show` for that scope is non-empty.
+
+### Prepare the working tree (before `--uncommitted`)
+
+`codex review --uncommitted` is supposed to cover staged, unstaged, and untracked files, but Codex often leans on `git diff`, which **does not list untracked (`??`) paths**. If new files or directories are still untracked, the review may see an incomplete diff and fall back to slow manual `find`/`sed` exploration — or miss core changes entirely.
+
+**Before running `--uncommitted`**, check `git status`:
+
+- If important new files are **`??` untracked**, **`git add` them** (stage only — do **not** commit unless the user asked).
+- Re-check: `git diff --stat` **and** `git diff --cached --stat` should together reflect the full intended scope.
+- If the user forbids staging, warn that review coverage may be partial; prefer `--base <branch>` after a commit instead.
+
+**Completion criterion:** `git status` shows no critical `??` files left out of the staged/unstaged diff the review should cover.
+
+**Note:** `--uncommitted` cannot be combined with a trailing `[PROMPT]` — use `--base` / `--commit` when custom review instructions are needed.
 
 ## 2. Set model and reasoning effort
 
@@ -191,6 +205,8 @@ codex review --uncommitted \
 |---------|-----|
 | Auth / websocket errors | `codex login`; re-run `codex doctor` |
 | Empty diff | Widen scope or confirm changes exist |
+| Diff missing new files (`??` in `git status`) | `git add` relevant paths, then re-run; or commit and use `--base` / `--commit` |
+| `--uncommitted` + `[PROMPT]` rejected | Drop the prompt or switch to `--base` / `--commit` |
 | Hangs > 5 min | Poll terminal file; if still running, wait — do not kill unless user asks |
 | Invalid reasoning for model | Step down effort or switch model; retry once |
 | `TERM=dumb` warning | Ignore — expected in agent shells; review still works |

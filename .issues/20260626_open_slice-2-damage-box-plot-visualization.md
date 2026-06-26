@@ -42,4 +42,4 @@ Promote visualization from prototype reference; wire to production pipeline outp
 
 ## Blocked by
 
-[[20260626_open_slice-1-core-pipeline-fixed-matchup-text-results|Slice 1: Core pipeline + fixed matchup text results]]
+[[archive/20260626_closed_slice-1-core-pipeline-fixed-matchup-text-results|Slice 1: Core pipeline + fixed matchup text results]]

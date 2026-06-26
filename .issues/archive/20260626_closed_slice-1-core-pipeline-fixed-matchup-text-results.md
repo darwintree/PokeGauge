@@ -2,15 +2,15 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "c2a0834a-f915-419b-925e-c3bb62c9a03e"
 title: "Slice 1: Core pipeline + fixed matchup text results"
-status: "open"
+status: "closed"
 priority: "high"
 labels: ["READY-FOR-AGENT", "FEATURE-REQUEST"]
 created_at: "2026-06-26T00:47:00Z"
-updated_at: "2026-06-26T00:51:00Z"
+updated_at: "2026-06-26T11:55:00Z"
 ---
 ## Parent
 
-[[20260626_open_scenario-explorer-matchup-damage-comparison-ui|Scenario Explorer — matchup damage comparison UI]]
+[[../20260626_open_scenario-explorer-matchup-damage-comparison-ui|Scenario Explorer — matchup damage comparison UI]]
 
 ## What to build
 
@@ -56,16 +56,16 @@ type TrackState = {
 
 ## Acceptance criteria
 
-- [ ] Vitest runs via `pnpm test` (or equivalent script added to package.json)
-- [ ] Calc adapter computes min/max/avg damage, crit bounds, and OHKO probability from 16 normal rolls at **Level 50**
-- [ ] Catalog registry exposes all track options listed above (not only defaults)
-- [ ] Pipeline accepts arbitrary `TrackState` input and filters correctly — not hardcoded to defaults only
-- [ ] Pipeline output row count equals moveCount × statCount × itemCount × defenderCount for default selections (6 rows for fixture defaults)
-- [ ] Pipeline tests include at least one non-default `TrackState` case (e.g. deselecting a move reduces row count)
-- [ ] Golden values for Garchomp / Earthquake / Incineroar computed at Level 50 — verified against `@smogon/calc` directly, not copied from prototype
-- [ ] Calc adapter documents Champions ruleset → calc generation mapping
-- [ ] Production app default route shows fixed Garchomp → Incineroar scenario list with 6 rows and real computed numbers (text, not box plots)
-- [ ] Catalog and calc logic live in production modules under `src/`, not imported from prototype path
+- [x] Vitest runs via `pnpm test` (or equivalent script added to package.json)
+- [x] Calc adapter computes min/max/avg damage, crit bounds, and OHKO probability from 16 normal rolls at **Level 50**
+- [x] Catalog registry exposes all track options listed above (not only defaults)
+- [x] Pipeline accepts arbitrary `TrackState` input and filters correctly — not hardcoded to defaults only
+- [x] Pipeline output row count equals moveCount × statCount × itemCount × defenderCount for default selections (6 rows for fixture defaults)
+- [x] Pipeline tests include at least one non-default `TrackState` case (e.g. deselecting a move reduces row count)
+- [x] Golden values for Garchomp / Earthquake / Incineroar computed at Level 50 — verified against `@smogon/calc` directly, not copied from prototype
+- [x] Calc adapter documents Champions ruleset → calc generation mapping
+- [x] Production app default route shows fixed Garchomp → Incineroar scenario list with 6 rows and real computed numbers (text, not box plots)
+- [x] Catalog and calc logic live in production modules under `src/`, not imported from prototype path
 
 ## Blocked by
 
