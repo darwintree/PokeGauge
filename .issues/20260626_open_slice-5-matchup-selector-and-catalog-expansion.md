@@ -41,4 +41,4 @@ Completing this slice satisfies PRD v1 scope for user-selectable matchups (paren
 
 ## Blocked by
 
-[[20260626_open_slice-3-sidebar-layout-and-multi-select-tracks|Slice 3: Sidebar layout and multi-select tracks]]
+[[archive/20260626_closed_slice-3-sidebar-layout-and-multi-select-tracks|Slice 3: Sidebar layout and multi-select tracks]]

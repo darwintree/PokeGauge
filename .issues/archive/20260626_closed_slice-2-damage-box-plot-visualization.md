@@ -2,15 +2,15 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "c199bf43-a2e5-40e8-9d5a-8b8e7981645b"
 title: "Slice 2: Damage box plot visualization"
-status: "open"
+status: "closed"
 priority: "high"
 labels: ["READY-FOR-AGENT", "FEATURE-REQUEST"]
 created_at: "2026-06-26T00:47:00Z"
-updated_at: "2026-06-26T00:51:00Z"
+updated_at: "2026-06-26T12:57:00Z"
 ---
 ## Parent
 
-[[20260626_open_scenario-explorer-matchup-damage-comparison-ui|Scenario Explorer — matchup damage comparison UI]]
+[[../20260626_open_scenario-explorer-matchup-damage-comparison-ui|Scenario Explorer — matchup damage comparison UI]]
 
 ## What to build
 
@@ -42,4 +42,4 @@ Promote visualization from prototype reference; wire to production pipeline outp
 
 ## Blocked by
 
-[[archive/20260626_closed_slice-1-core-pipeline-fixed-matchup-text-results|Slice 1: Core pipeline + fixed matchup text results]]
+[[20260626_closed_slice-1-core-pipeline-fixed-matchup-text-results|Slice 1: Core pipeline + fixed matchup text results]]

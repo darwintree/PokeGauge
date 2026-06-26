@@ -2,15 +2,15 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "2b5c7fba-56ff-41d4-9b2d-69f64ae38e61"
 title: "Slice 3: Sidebar layout and multi-select tracks"
-status: "open"
+status: "closed"
 priority: "high"
 labels: ["READY-FOR-AGENT", "FEATURE-REQUEST"]
 created_at: "2026-06-26T00:47:00Z"
-updated_at: "2026-06-26T00:51:00Z"
+updated_at: "2026-06-26T12:57:00Z"
 ---
 ## Parent
 
-[[20260626_open_scenario-explorer-matchup-damage-comparison-ui|Scenario Explorer — matchup damage comparison UI]]
+[[../20260626_open_scenario-explorer-matchup-damage-comparison-ui|Scenario Explorer — matchup damage comparison UI]]
 
 ## What to build
 
@@ -45,4 +45,4 @@ User deselecting options **tightens** results (detailed view semantics) without 
 
 ## Blocked by
 
-[[20260626_open_slice-2-damage-box-plot-visualization|Slice 2: Damage box plot visualization]]
+[[20260626_closed_slice-2-damage-box-plot-visualization|Slice 2: Damage box plot visualization]]

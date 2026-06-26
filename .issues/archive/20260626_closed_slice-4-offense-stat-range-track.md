@@ -2,15 +2,15 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "90d9db84-9cb7-4ac0-bb15-5b3001812e1d"
 title: "Slice 4: Offense stat range track"
-status: "open"
+status: "closed"
 priority: "high"
 labels: ["READY-FOR-AGENT", "FEATURE-REQUEST"]
 created_at: "2026-06-26T00:47:00Z"
-updated_at: "2026-06-26T00:47:00Z"
+updated_at: "2026-06-26T12:57:00Z"
 ---
 ## Parent
 
-[[20260626_open_scenario-explorer-matchup-damage-comparison-ui|Scenario Explorer — matchup damage comparison UI]]
+[[../20260626_open_scenario-explorer-matchup-damage-comparison-ui|Scenario Explorer — matchup damage comparison UI]]
 
 ## What to build
 
@@ -43,4 +43,4 @@ Extend pipeline tests for range mode row count and envelope golden values.
 
 ## Blocked by
 
-[[20260626_open_slice-3-sidebar-layout-and-multi-select-tracks|Slice 3: Sidebar layout and multi-select tracks]]
+[[20260626_closed_slice-3-sidebar-layout-and-multi-select-tracks|Slice 3: Sidebar layout and multi-select tracks]]
