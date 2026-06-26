@@ -2,17 +2,17 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "3dc0aa1e-367a-4b33-855d-77db3a4d8667"
 title: "Introduce 18 Pokémon type colors and controls"
-status: "open"
+status: "closed"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-06-26T14:23:00Z"
-updated_at: "2026-06-26T14:46:00Z"
+updated_at: "2026-06-26T14:56:00Z"
 ---
 ## Context
 
 按 [[AGENTS.md]]，Pokémon 领域 token（属性、克制、HP 等）与 Geist/shadcn 语义分离。
 
-与 [[20260626_open_domain-color-tokens-for-damage-visualization|Domain color tokens for damage visualization]] 互补。
+与 [[../20260626_open_domain-color-tokens-for-damage-visualization|Domain color tokens for damage visualization]] 互补。
 
 ## Design verdict (grill + prototype)
 
@@ -44,9 +44,13 @@ Showdown / Bulbapedia 惯例 hex；**light / dark 共用同一套**（不单独 
 
 ## Acceptance criteria
 
-- [ ] 18 属性 `--pokemon-type-*` 集中定义（Showdown hex，light/dark 共用）
-- [ ] `TypeBadge` 组件
-- [ ] catalog 结构化 species types + move type
-- [ ] MatchupSelector trailing species badge
-- [ ] Move track：TypeBadge + label，无 summary
-- [ ] 结果行 move badge（`showMoveOnRow` 时）
+- [x] 18 属性 `--pokemon-type-*` 集中定义（Showdown hex，light/dark 共用）
+- [x] `TypeBadge` 组件
+- [x] catalog 结构化 species types + move type
+- [x] MatchupSelector trailing species badge
+- [x] Move track：TypeBadge + label，无 summary
+- [x] 结果行 move badge（`showMoveOnRow` 时）
+
+## Resolution
+
+Implemented variant D (track + row badge): `--pokemon-type-*` in `src/index.css`, `TypeBadge` / `TypeBadgeRow` in `src/components/pokemon/`, structured `types` / `type` on catalog, trailing species badges in `matchup-selector.tsx`, `MoveMultiSelect` in track controls, inline move badge in `damage-box-plot.tsx` when `showMoveOnRow`.

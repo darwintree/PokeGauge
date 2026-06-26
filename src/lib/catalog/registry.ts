@@ -1,3 +1,4 @@
+import type { PokemonType } from "@/lib/pokemon/types"
 import type {
   CatalogMoveOption,
   MatchupCatalog,
@@ -8,14 +9,15 @@ import type {
 type MovePickEntry = {
   id: string
   label: string
-  summary: string
   moveName: string
+  type: PokemonType
 }
 
 type AttackerEntry = {
   id: string
   label: string
   species: string
+  types: PokemonType[]
   moveCategory: MoveCategory
   moves: MovePickEntry[]
 }
@@ -24,6 +26,7 @@ type DefenderEntry = {
   id: string
   label: string
   species: string
+  types: PokemonType[]
 }
 
 /** Hardcoded VGC doubles usage-ranked move picks — Champions context, v1 */
@@ -32,41 +35,44 @@ const ATTACKERS: AttackerEntry[] = [
     id: "garchomp",
     label: "烈咬陆鲨",
     species: "Garchomp",
+    types: ["dragon", "ground"],
     moveCategory: "physical",
     moves: [
-      { id: "earthquake", label: "地震", summary: "#1 · 地面", moveName: "Earthquake" },
-      { id: "dragon-claw", label: "龙爪", summary: "#2 · 龙", moveName: "Dragon Claw" },
-      { id: "stone-edge", label: "尖石攻击", summary: "#3 · 岩石", moveName: "Stone Edge" },
+      { id: "earthquake", label: "地震", moveName: "Earthquake", type: "ground" },
+      { id: "dragon-claw", label: "龙爪", moveName: "Dragon Claw", type: "dragon" },
+      { id: "stone-edge", label: "尖石攻击", moveName: "Stone Edge", type: "rock" },
     ],
   },
   {
     id: "landorus-therian",
     label: "土地云-灵兽",
     species: "Landorus-Therian",
+    types: ["ground", "flying"],
     moveCategory: "physical",
     moves: [
-      { id: "earthquake", label: "地震", summary: "#1 · 地面", moveName: "Earthquake" },
-      { id: "rock-slide", label: "岩崩", summary: "#2 · 岩石", moveName: "Rock Slide" },
-      { id: "stomping-tantrum", label: "跺脚", summary: "#3 · 地面", moveName: "Stomping Tantrum" },
+      { id: "earthquake", label: "地震", moveName: "Earthquake", type: "ground" },
+      { id: "rock-slide", label: "岩崩", moveName: "Rock Slide", type: "rock" },
+      { id: "stomping-tantrum", label: "跺脚", moveName: "Stomping Tantrum", type: "ground" },
     ],
   },
   {
     id: "flutter-mane",
     label: "振翼发",
     species: "Flutter Mane",
+    types: ["ghost", "fairy"],
     moveCategory: "special",
     moves: [
-      { id: "moonblast", label: "月亮之力", summary: "#1 · 妖精", moveName: "Moonblast" },
-      { id: "shadow-ball", label: "暗影球", summary: "#2 · 幽灵", moveName: "Shadow Ball" },
-      { id: "dazzling-gleam", label: "魔法闪耀", summary: "#3 · 妖精", moveName: "Dazzling Gleam" },
+      { id: "moonblast", label: "月亮之力", moveName: "Moonblast", type: "fairy" },
+      { id: "shadow-ball", label: "暗影球", moveName: "Shadow Ball", type: "ghost" },
+      { id: "dazzling-gleam", label: "魔法闪耀", moveName: "Dazzling Gleam", type: "fairy" },
     ],
   },
 ]
 
 const DEFENDERS: DefenderEntry[] = [
-  { id: "incineroar", label: "咆哮虎", species: "Incineroar" },
-  { id: "amoonguss", label: "败露球菇", species: "Amoonguss" },
-  { id: "rillaboom", label: "轰擂金刚猩", species: "Rillaboom" },
+  { id: "incineroar", label: "咆哮虎", species: "Incineroar", types: ["fire", "dark"] },
+  { id: "amoonguss", label: "败露球菇", species: "Amoonguss", types: ["grass", "poison"] },
+  { id: "rillaboom", label: "轰擂金刚猩", species: "Rillaboom", types: ["grass"] },
 ]
 
 const DEFAULT_MATCHUP = {
@@ -128,11 +134,11 @@ function findDefender(id: string): DefenderEntry | undefined {
 }
 
 export function listAttackers(): SpeciesOption[] {
-  return ATTACKERS.map(({ id, label, species }) => ({ id, label, species }))
+  return ATTACKERS.map(({ id, label, species, types }) => ({ id, label, species, types }))
 }
 
 export function listDefenders(): SpeciesOption[] {
-  return DEFENDERS.map(({ id, label, species }) => ({ id, label, species }))
+  return DEFENDERS.map(({ id, label, species, types }) => ({ id, label, species, types }))
 }
 
 export function getDefaultMatchupIds() {
@@ -146,8 +152,9 @@ export function getCatalog(attackerId: string, defenderId: string): MatchupCatal
   const moves: CatalogMoveOption[] = attacker.moves.map((m) => ({
     id: m.id,
     label: m.label,
-    summary: m.summary,
+    summary: "",
     moveName: m.moveName,
+    type: m.type,
   }))
 
   const labels = statLabels(attacker.moveCategory)

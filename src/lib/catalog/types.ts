@@ -1,3 +1,5 @@
+import type { PokemonType } from "@/lib/pokemon/types"
+
 export type MoveCategory = "physical" | "special"
 
 export type CatalogOption = {
@@ -8,6 +10,7 @@ export type CatalogOption = {
 
 export type CatalogMoveOption = CatalogOption & {
   moveName: string
+  type: PokemonType
 }
 
 export type MatchupIdentity = {
@@ -39,4 +42,5 @@ export type SpeciesOption = {
   id: string
   label: string
   species: string
+  types: PokemonType[]
 }

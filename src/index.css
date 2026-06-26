@@ -97,6 +97,26 @@
     --sidebar-accent-foreground: var(--geist-gray-1000);
     --sidebar-border: var(--geist-gray-alpha-400);
     --sidebar-ring: var(--geist-blue-700);
+
+    /* Pokémon type domain tokens — Showdown canonical, shared light/dark */
+    --pokemon-type-normal: #A8A878;
+    --pokemon-type-fire: #F08030;
+    --pokemon-type-water: #6890F0;
+    --pokemon-type-electric: #F8D030;
+    --pokemon-type-grass: #78C850;
+    --pokemon-type-ice: #98D8D8;
+    --pokemon-type-fighting: #C03028;
+    --pokemon-type-poison: #A040A0;
+    --pokemon-type-ground: #E0C068;
+    --pokemon-type-flying: #A890F0;
+    --pokemon-type-psychic: #F85888;
+    --pokemon-type-bug: #A8B820;
+    --pokemon-type-rock: #B8A038;
+    --pokemon-type-ghost: #705898;
+    --pokemon-type-dragon: #7038F8;
+    --pokemon-type-dark: #705848;
+    --pokemon-type-steel: #B8B8D0;
+    --pokemon-type-fairy: #EE99AC;
 }
 
 .dark {

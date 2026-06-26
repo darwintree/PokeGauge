@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { MatchupCatalog } from "@/lib/catalog"
 import type { StatSelectMode } from "@/lib/scenario-pipeline"
 
-import { ConfigMultiSelect } from "./config-multi-select"
+import { ConfigMultiSelect, MoveMultiSelect } from "./config-multi-select"
 import { StatRangeAxis } from "./stat-range-axis"
 import type { ScenarioState } from "./use-scenario-state"
 
@@ -19,7 +19,7 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
 
   return (
     <div className="space-y-3">
-      <ConfigMultiSelect
+      <MoveMultiSelect
         label="招式"
         options={catalog.moves}
         selectedIds={trackState.moveIds}

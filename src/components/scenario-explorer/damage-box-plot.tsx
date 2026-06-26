@@ -1,6 +1,7 @@
 /** Box = normal 16 rolls; whiskers = crit range (PRD visualization contract) */
 
-import type { CatalogOption } from "@/lib/catalog/types"
+import { TypeBadge } from "@/components/pokemon/type-badge"
+import type { CatalogMoveOption, CatalogOption } from "@/lib/catalog/types"
 import type { ScenarioRow } from "@/lib/scenario-pipeline"
 
 const AXIS_MAX = 150
@@ -37,7 +38,7 @@ const TONE_CLASS = {
 } as const
 
 type DamageBoxPlotProps = {
-  move: CatalogOption
+  move: CatalogMoveOption
   attackerStat: CatalogOption
   attackerItem: CatalogOption
   defender: CatalogOption
@@ -68,7 +69,10 @@ export function DamageBoxPlot({
     <div className="flex min-h-[4.5rem] items-center gap-3">
       <div className="w-52 shrink-0 text-right">
         {showMove && (
-          <div className="text-muted-foreground text-xs">{move.label}</div>
+          <div className="flex items-center justify-end gap-1">
+            <TypeBadge type={move.type} />
+            <span className="text-muted-foreground text-xs">{move.label}</span>
+          </div>
         )}
         <div className="text-sm font-medium">{attackerStat.label}</div>
         {isRangeEnvelope && (

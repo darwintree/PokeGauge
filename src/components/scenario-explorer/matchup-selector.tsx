@@ -9,6 +9,7 @@ import {
   ComboboxList,
 } from "@/components/ui/combobox"
 import { Label } from "@/components/ui/label"
+import { TypeBadgeRow } from "@/components/pokemon/type-badge"
 import type { SpeciesOption } from "@/lib/catalog/types"
 
 type SpeciesSelectProps = {
@@ -47,11 +48,18 @@ export function SpeciesSelect({ label, options, value, onChange }: SpeciesSelect
         itemToStringLabel={(option) => option.label}
         filter={speciesFilter}
       >
-        <ComboboxInput
-          placeholder="选择宝可梦"
-          showClear={false}
-          className="w-full"
-        />
+        <div className="relative">
+          <ComboboxInput
+            placeholder="选择宝可梦"
+            showClear={false}
+            className="w-full pr-[4.5rem]"
+          />
+          {selected && selected.types.length > 0 && (
+            <div className="pointer-events-none absolute inset-y-0 right-8 flex items-center">
+              <TypeBadgeRow types={selected.types} />
+            </div>
+          )}
+        </div>
         <ComboboxContent>
           <ComboboxEmpty>无匹配</ComboboxEmpty>
           <ComboboxList>
