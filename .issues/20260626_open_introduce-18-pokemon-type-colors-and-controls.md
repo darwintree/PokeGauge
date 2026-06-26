@@ -22,11 +22,11 @@ updated_at: "2026-06-26T14:46:00Z"
 
 ### Species typing
 
-[[src/prototype/type-colors/NOTES.md|type-colors prototype]] → Combobox **输入框 trailing TypeBadge**（无下拉 badge）。
+Combobox **输入框 trailing TypeBadge**（无下拉 badge）。
 
 ### Move typing
 
-[[src/prototype/move-types/NOTES.md|move-types prototype]] → **Variant D**
+**Track + row badge**（grill 称 variant D）
 
 - 招式 track：TypeBadge + 招式名（**无 summary**）
 - 结果行：`showMoveOnRow` 时招式名旁 inline TypeBadge
