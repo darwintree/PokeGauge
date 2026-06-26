@@ -1,3 +1,8 @@
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+} from "@/components/ui/empty"
 import type { MatchupCatalog } from "@/lib/catalog"
 import { RANGE_STAT_ID, type ScenarioRow } from "@/lib/scenario-pipeline"
 
@@ -42,9 +47,11 @@ export function ScenarioResults({
 }: ScenarioResultsProps) {
   if (rows.length === 0) {
     return (
-      <p className="text-muted-foreground rounded-lg border border-dashed p-8 text-center text-sm">
-        请至少各选一维配置以展示伤害对比
-      </p>
+      <Empty className="border">
+        <EmptyHeader>
+          <EmptyDescription>请至少各选一维配置以展示伤害对比</EmptyDescription>
+        </EmptyHeader>
+      </Empty>
     )
   }
 

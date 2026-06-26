@@ -1,3 +1,5 @@
+import { Label } from "@/components/ui/label"
+import { Slider } from "@/components/ui/slider"
 import type { AttackStatBounds, StatRange } from "@/lib/calc-adapter"
 
 type StatRangeAxisProps = {
@@ -39,7 +41,7 @@ export function StatRangeAxis({
   return (
     <div className="space-y-3 rounded-lg border bg-muted/20 p-3">
       <div className="flex items-baseline justify-between text-xs">
-        <span className="font-medium">数轴选段</span>
+        <Label className="text-xs">数轴选段</Label>
         <span className="tabular-nums">
           {offenseStatLabel}{" "}
           <span className="text-foreground font-semibold">
@@ -78,35 +80,19 @@ export function StatRangeAxis({
         ))}
       </div>
 
-      <div className="grid gap-2 sm:grid-cols-2">
-        <label className="space-y-1 text-xs">
-          <span className="text-muted-foreground">下限</span>
-          <input
-            type="range"
-            min={bounds.min}
-            max={bounds.max}
-            value={value.min}
-            onChange={(e) => {
-              const min = Number(e.target.value)
-              updateRange({ min, max: value.max })
-            }}
-            className="w-full accent-primary"
-          />
-        </label>
-        <label className="space-y-1 text-xs">
-          <span className="text-muted-foreground">上限</span>
-          <input
-            type="range"
-            min={bounds.min}
-            max={bounds.max}
-            value={value.max}
-            onChange={(e) => {
-              const max = Number(e.target.value)
-              updateRange({ min: value.min, max })
-            }}
-            className="w-full accent-primary"
-          />
-        </label>
+      <div className="space-y-2">
+        <Label className="text-muted-foreground text-xs">拖动选段</Label>
+        <Slider
+          min={bounds.min}
+          max={bounds.max}
+          step={1}
+          minStepsBetweenValues={1}
+          value={[value.min, value.max]}
+          onValueChange={(next) => {
+            const [min, max] = next as number[]
+            updateRange({ min, max })
+          }}
+        />
       </div>
 
       <p className="text-muted-foreground text-[11px] leading-snug">
