@@ -2,6 +2,7 @@
   "labels": [
     "FEATURE-REQUEST",
     "READY-FOR-AGENT",
-    "READY-FOR-HUMAN"
+    "READY-FOR-HUMAN",
+    "TECH-DEBT"
   ]
 }
