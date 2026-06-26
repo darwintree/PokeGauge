@@ -75,3 +75,7 @@ _Avoid_: Defensive spread
 **Offense stat**:
 进攻方用于输出的 stat：物攻或特攻（取决于招式类别）。
 _Avoid_: Offensive spread
+
+**Type**:
+宝可梦或招式的属性（18 种标准属性）。用于识别展示（如 species typing badge），不单独表示克制倍率。
+_Avoid_: Element, 元素
