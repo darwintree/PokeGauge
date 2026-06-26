@@ -10,7 +10,7 @@ updated_at: "2026-06-26T11:55:00Z"
 ---
 ## Parent
 
-[[../20260626_open_scenario-explorer-matchup-damage-comparison-ui|Scenario Explorer — matchup damage comparison UI]]
+[[20260626_closed_scenario-explorer-matchup-damage-comparison-ui|Scenario Explorer — matchup damage comparison UI]]
 
 ## What to build
 

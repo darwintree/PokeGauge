@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
-import { getAttackStatBounds } from "@/lib/calc-adapter"
+import { getOffenseStatBounds } from "@/lib/calc-adapter"
 import type { MatchupCatalog } from "@/lib/catalog"
 import {
   defaultTrackState,
@@ -12,13 +12,21 @@ import {
 
 export function useScenarioState(catalog: MatchupCatalog) {
   const statBounds = useMemo(
-    () => getAttackStatBounds(catalog.matchup.attackerSpecies),
-    [catalog.matchup.attackerSpecies],
+    () =>
+      getOffenseStatBounds(
+        catalog.matchup.attackerSpecies,
+        catalog.moveCategory,
+      ),
+    [catalog.matchup.attackerSpecies, catalog.moveCategory],
   )
 
   const [trackState, setTrackState] = useState<TrackState>(() =>
     defaultTrackState(catalog),
   )
+
+  useEffect(() => {
+    setTrackState(defaultTrackState(catalog))
+  }, [catalog])
 
   const rows = useMemo(
     () => runScenarioPipeline(catalog, trackState),

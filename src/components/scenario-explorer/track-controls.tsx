@@ -60,7 +60,7 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
 
         {trackState.statMode === "preset" ? (
           <ConfigMultiSelect
-            label="实数值（性格 + 努力）"
+            label={`${catalog.offenseStatLabel}（性格 + 努力）`}
             options={catalog.attackerStats}
             selectedIds={trackState.attackerStatIds}
             onChange={state.setAttackerStatIds}
@@ -69,6 +69,7 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
           <StatRangeAxis
             bounds={state.statBounds}
             value={trackState.statRange}
+            offenseStatLabel={catalog.offenseStatLabel}
             onChange={state.setStatRange}
           />
         )}

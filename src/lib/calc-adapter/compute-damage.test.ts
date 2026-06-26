@@ -139,6 +139,7 @@ describe("calc adapter", () => {
       "Incineroar",
       "Earthquake",
       { min: low, max: high },
+      "physical",
       undefined,
       DEFENDER_SETUPS["standard-bulk"],
     )

@@ -6,6 +6,8 @@ export {
   defaultStatRange,
   getAttackStat,
   getAttackStatBounds,
+  getOffenseStat,
+  getOffenseStatBounds,
 } from "./compute-damage"
 export type {
   AttackStatBounds,
@@ -19,5 +21,8 @@ export {
   ATTACKER_ITEM_NAMES,
   ATTACKER_STAT_SETUPS,
   DEFENDER_SETUPS,
-  MOVE_NAMES,
+  getAttackerStatSetups,
+  getDefenderSetups,
+  offenseStatKey,
+  defenseStatKey,
 } from "./presets"

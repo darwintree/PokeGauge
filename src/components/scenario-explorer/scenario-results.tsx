@@ -27,7 +27,7 @@ function attackerStatForRow(catalog: MatchupCatalog, row: ScenarioRow) {
   if (row.attackerStatId === RANGE_STAT_ID && row.statRange) {
     return {
       id: RANGE_STAT_ID,
-      label: `物攻 ${row.statRange.min}–${row.statRange.max}`,
+      label: `${catalog.offenseStatLabel} ${row.statRange.min}–${row.statRange.max}`,
       summary: "区间 × roll 合并",
     }
   }

@@ -12,7 +12,12 @@
 
 import { calculate, Move, Pokemon } from "@smogon/calc"
 
-import { ATTACKER_STAT_SETUPS } from "./presets"
+import type { MoveCategory } from "@/lib/catalog/types"
+
+import {
+  getAttackerStatSetups,
+  offenseStatKey,
+} from "./presets"
 import type {
   AttackStatBounds,
   ComputedDamage,
@@ -111,38 +116,54 @@ export function computeDamage(
   return summarize(normalRolls, critRolls, hp)
 }
 
-const OFFENSE_STAT = "atk" as const
-
 const CANDIDATE_NATURES = [
   "Serious",
   "Adamant",
   "Jolly",
   "Modest",
+  "Timid",
   "Bold",
   "Lonely",
 ] as const
 
-function enumerateSpreads(): StatSetup[] {
+function enumerateSpreads(statKey: "atk" | "spa"): StatSetup[] {
   const out: StatSetup[] = []
   for (const nature of CANDIDATE_NATURES) {
     for (let ev = 0; ev <= 252; ev += 4) {
-      out.push({ nature, evs: { [OFFENSE_STAT]: ev } })
+      out.push({ nature, evs: { [statKey]: ev } })
     }
   }
   return out
 }
 
-export function getAttackStat(species: string, setup: StatSetup): number {
+export function getOffenseStat(
+  species: string,
+  category: MoveCategory,
+  setup: StatSetup,
+): number {
+  const statKey = offenseStatKey(category)
   const p = new Pokemon(CALC_GEN, species, {
     level: VGC_LEVEL,
     nature: setup.nature,
     evs: setup.evs,
   })
-  return p.stats[OFFENSE_STAT]
+  return p.stats[statKey]
 }
 
-export function getAttackStatBounds(species: string): AttackStatBounds {
-  const stats = enumerateSpreads().map((s) => getAttackStat(species, s))
+/** @deprecated use getOffenseStatBounds(species, category) */
+export function getAttackStat(species: string, setup: StatSetup): number {
+  return getOffenseStat(species, "physical", setup)
+}
+
+export function getOffenseStatBounds(
+  species: string,
+  category: MoveCategory,
+): AttackStatBounds {
+  const statKey = offenseStatKey(category)
+  const setups = getAttackerStatSetups(category)
+  const stats = enumerateSpreads(statKey).map((s) =>
+    getOffenseStat(species, category, s),
+  )
   const min = Math.min(...stats)
   const max = Math.max(...stats)
 
@@ -153,40 +174,60 @@ export function getAttackStatBounds(species: string): AttackStatBounds {
   ] as const
 
   const snapPoints = snapIds.map(({ id, label }) => ({
-    value: getAttackStat(species, ATTACKER_STAT_SETUPS[id]),
+    value: getOffenseStat(species, category, setups[id]),
     label,
   }))
 
   return { min, max, snapPoints }
 }
 
-export function defaultStatRange(species: string): StatRange {
-  const bounds = getAttackStatBounds(species)
+/** @deprecated use getOffenseStatBounds(species, category) */
+export function getAttackStatBounds(species: string): AttackStatBounds {
+  return getOffenseStatBounds(species, "physical")
+}
+
+export function defaultStatRange(
+  species: string,
+  category: MoveCategory,
+): StatRange {
+  const bounds = getOffenseStatBounds(species, category)
   const neutralMax =
     bounds.snapPoints.find((s) => s.label === "无修正满努力")?.value ?? bounds.min
   return { min: neutralMax, max: bounds.max }
 }
 
-function closestSetupAtOrBelow(species: string, target: number): StatSetup {
+function closestSetupAtOrBelow(
+  species: string,
+  category: MoveCategory,
+  target: number,
+): StatSetup {
+  const statKey = offenseStatKey(category)
+  const setups = getAttackerStatSetups(category)
   let best: { setup: StatSetup; stat: number } | null = null
-  for (const setup of enumerateSpreads()) {
-    const stat = getAttackStat(species, setup)
+  for (const setup of enumerateSpreads(statKey)) {
+    const stat = getOffenseStat(species, category, setup)
     if (stat <= target && (!best || stat > best.stat)) {
       best = { setup, stat }
     }
   }
-  return best?.setup ?? ATTACKER_STAT_SETUPS["neutral-zero"]
+  return best?.setup ?? setups["neutral-zero"]
 }
 
-function closestSetupAtOrAbove(species: string, target: number): StatSetup {
+function closestSetupAtOrAbove(
+  species: string,
+  category: MoveCategory,
+  target: number,
+): StatSetup {
+  const statKey = offenseStatKey(category)
+  const setups = getAttackerStatSetups(category)
   let best: { setup: StatSetup; stat: number } | null = null
-  for (const setup of enumerateSpreads()) {
-    const stat = getAttackStat(species, setup)
+  for (const setup of enumerateSpreads(statKey)) {
+    const stat = getOffenseStat(species, category, setup)
     if (stat >= target && (!best || stat < best.stat)) {
       best = { setup, stat }
     }
   }
-  return best?.setup ?? ATTACKER_STAT_SETUPS.extreme
+  return best?.setup ?? setups.extreme
 }
 
 /**
@@ -198,14 +239,15 @@ export function computeDamageForStatRange(
   defenderSpecies: string,
   moveName: string,
   statRange: StatRange,
+  category: MoveCategory,
   item: string | undefined,
   defender: DefenderSetup,
 ): ComputedDamage {
   const low = statRange.min
   const high = Math.max(statRange.max, statRange.min)
 
-  const lowSetup = closestSetupAtOrBelow(attackerSpecies, low)
-  const highSetup = closestSetupAtOrAbove(attackerSpecies, high)
+  const lowSetup = closestSetupAtOrBelow(attackerSpecies, category, low)
+  const highSetup = closestSetupAtOrAbove(attackerSpecies, category, high)
 
   const lowResult = runCalc(
     attackerSpecies,

@@ -2,15 +2,15 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "b569eea8-3554-4373-8d55-714172650731"
 title: "Slice 5: Matchup selector and catalog expansion"
-status: "open"
+status: "closed"
 priority: "high"
 labels: ["READY-FOR-AGENT", "FEATURE-REQUEST"]
 created_at: "2026-06-26T00:47:00Z"
-updated_at: "2026-06-26T00:51:00Z"
+updated_at: "2026-06-26T13:05:00Z"
 ---
 ## Parent
 
-[[20260626_open_scenario-explorer-matchup-damage-comparison-ui|Scenario Explorer — matchup damage comparison UI]]
+[[20260626_closed_scenario-explorer-matchup-damage-comparison-ui|Scenario Explorer — matchup damage comparison UI]]
 
 ## What to build
 
@@ -31,14 +31,18 @@ Completing this slice satisfies PRD v1 scope for user-selectable matchups (paren
 
 ## Acceptance criteria
 
-- [ ] User can change attacker and/or defender from the parameter panel
-- [ ] Move pick options update per attacker species (hardcoded usage lists); default selection pre-selects all top-N moves
-- [ ] Offense stat and defender bulk tracks use correct stat for move category (physical/special), or v1 species are explicitly physical-only with comment documenting the restriction
-- [ ] Matchup change resets tracks to documented default selections
-- [ ] At least 3 attacker species with distinct move picks are supported in catalog
-- [ ] Calculations remain Level 50 VGC across all supported matchups
-- [ ] If stat range track exists (slice #4): attacker change recomputes stat bounds and snap points for the new species
+- [x] User can change attacker and/or defender from the parameter panel
+- [x] Move pick options update per attacker species (hardcoded usage lists); default selection pre-selects all top-N moves
+- [x] Offense stat and defender bulk tracks use correct stat for move category (physical/special), or v1 species are explicitly physical-only with comment documenting the restriction
+- [x] Matchup change resets tracks to documented default selections
+- [x] At least 3 attacker species with distinct move picks are supported in catalog
+- [x] Calculations remain Level 50 VGC across all supported matchups
+- [x] If stat range track exists (slice #4): attacker change recomputes stat bounds and snap points for the new species
+
+## Resolution
+
+Implemented in `src/lib/catalog/registry.ts`, `matchup-selector.tsx`, and category-aware calc-adapter. Category routing uses matchup-level `moveCategory` (single-category attackers in v1). Follow-up polish: special-attacker range UI labels and restored range-mode pipeline tests (2026-06-26).
 
 ## Blocked by
 
-[[archive/20260626_closed_slice-3-sidebar-layout-and-multi-select-tracks|Slice 3: Sidebar layout and multi-select tracks]]
+[[20260626_closed_slice-3-sidebar-layout-and-multi-select-tracks|Slice 3: Sidebar layout and multi-select tracks]]

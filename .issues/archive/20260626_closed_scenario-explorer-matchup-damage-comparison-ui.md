@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "42c448ab-2dcf-4a97-84ba-184266855e30"
 title: "Scenario Explorer — matchup damage comparison UI"
-status: "open"
+status: "closed"
 priority: "high"
 labels: ["READY-FOR-HUMAN", "FEATURE-REQUEST"]
 created_at: "2026-06-26T00:45:00Z"
-updated_at: "2026-06-26T00:51:00Z"
+updated_at: "2026-06-26T13:06:00Z"
 ---
 ## Problem Statement
 
@@ -269,5 +269,23 @@ When row product exceeds comfortable density, presentation may group or collapse
 - **Open implementation choices** (agent discretion): exact N per species in catalog, row overflow UX, species picker UX (searchable select vs hardcoded demo list for v1).
 - **Engine note**: prototype uses Gen 9 `@smogon/calc` at Level 100; production uses **Level 50** VGC. Document the Champions → calc-generation mapping in the calc adapter module.
 - **UI language**: production UI copy in **中文** (match prototype); code identifiers in English.
-- **Move category routing**: offense stat and bulk stat tracks depend on move category (physical → atk/def, special → spa/spd). Slice 1–4 fixture is physical-only; Slice 5 must either implement category-aware catalogs or restrict v1 species to physical attackers only — document the chosen approach.
+- **Move category routing**: offense stat and bulk stat tracks depend on move category (physical → atk/def, special → spa/spd). Slice 5 implemented matchup-level category-aware catalogs (single-category attackers in v1).
 - **Parent vs slices**: this PRD is planning-only. Implementation work lives in child slice issues marked `READY-FOR-AGENT`.
+
+## v1 Delivery Status
+
+**Status: v1 complete** (2026-06-26). All implementation slices closed:
+
+| Slice | Issue |
+|-------|-------|
+| 1 — Core pipeline + fixed matchup | [[archive/20260626_closed_slice-1-core-pipeline-fixed-matchup-text-results\|Slice 1]] |
+| 2 — Damage box plot | [[archive/20260626_closed_slice-2-damage-box-plot-visualization\|Slice 2]] |
+| 3 — Sidebar layout + multi-select tracks | [[archive/20260626_closed_slice-3-sidebar-layout-and-multi-select-tracks\|Slice 3]] |
+| 4 — Offense stat range track | [[archive/20260626_closed_slice-4-offense-stat-range-track\|Slice 4]] |
+| 5 — Matchup selector + catalog expansion | [[archive/20260626_closed_slice-5-matchup-selector-and-catalog-expansion\|Slice 5]] |
+
+Production entry: `src/components/scenario-explorer/` + `src/lib/scenario-pipeline/` + `src/lib/catalog/registry.ts`.
+
+**Resolved at implementation time** (agent discretion): N=3 moves per species; searchable species select; category-aware catalogs (physical/special).
+
+**Still deferred** (per Out of Scope / user stories #34–35): row overflow UX, color-blind lethal encoding, type chart, share links, live usage API, URL deep-linking, abilities/weather beyond preset spreads.

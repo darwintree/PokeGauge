@@ -1,12 +1,29 @@
-import { getFixtureCatalog } from "@/lib/catalog"
+import { useMemo, useState } from "react"
 
-import { MatchupHeader } from "./matchup-header"
+import {
+  getCatalog,
+  getDefaultMatchupIds,
+  listAttackers,
+  listDefenders,
+} from "@/lib/catalog"
+
+import { MatchupSelector } from "./matchup-selector"
 import { ScenarioResults } from "./scenario-results"
 import { SelectionSummary, TrackControls } from "./track-controls"
 import { useScenarioState } from "./use-scenario-state"
 
 export function ScenarioExplorerPage() {
-  const catalog = getFixtureCatalog()
+  const attackers = listAttackers()
+  const defenders = listDefenders()
+  const defaults = getDefaultMatchupIds()
+
+  const [attackerId, setAttackerId] = useState<string>(defaults.attackerId)
+  const [defenderId, setDefenderId] = useState<string>(defaults.defenderId)
+
+  const catalog = useMemo(
+    () => getCatalog(attackerId, defenderId),
+    [attackerId, defenderId],
+  )
   const state = useScenarioState(catalog)
 
   return (
@@ -15,7 +32,14 @@ export function ScenarioExplorerPage() {
         <aside className="lg:sticky lg:top-6 lg:w-72 lg:shrink-0">
           <div className="space-y-4 rounded-xl border bg-card p-4">
             <div className="border-b pb-3">
-              <MatchupHeader matchup={catalog.matchup} />
+              <MatchupSelector
+                attackerId={attackerId}
+                defenderId={defenderId}
+                attackers={attackers}
+                defenders={defenders}
+                onAttackerChange={setAttackerId}
+                onDefenderChange={setDefenderId}
+              />
             </div>
             <TrackControls catalog={catalog} state={state} />
           </div>

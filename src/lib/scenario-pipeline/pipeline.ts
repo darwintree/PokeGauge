@@ -1,11 +1,10 @@
 import {
   ATTACKER_ITEM_NAMES,
-  ATTACKER_STAT_SETUPS,
   computeDamage,
   computeDamageForStatRange,
   defaultStatRange,
-  DEFENDER_SETUPS,
-  MOVE_NAMES,
+  getAttackerStatSetups,
+  getDefenderSetups,
 } from "@/lib/calc-adapter"
 import type { MatchupCatalog } from "@/lib/catalog/types"
 
@@ -20,6 +19,10 @@ function statSortKey(attackerStatId: string, statOrder: Record<string, number>) 
   return attackerStatId === RANGE_STAT_ID ? 1000 : (statOrder[attackerStatId] ?? 0)
 }
 
+function resolveMoveName(catalog: MatchupCatalog, moveId: string): string | undefined {
+  return catalog.moves.find((m) => m.id === moveId)?.moveName
+}
+
 function computePresetRow(
   catalog: MatchupCatalog,
   moveId: string,
@@ -27,10 +30,12 @@ function computePresetRow(
   attackerItemId: string,
   defenderId: string,
 ): ScenarioRow | null {
-  const statSetup = ATTACKER_STAT_SETUPS[attackerStatId]
-  const defSetup = DEFENDER_SETUPS[defenderId]
+  const statSetups = getAttackerStatSetups(catalog.moveCategory)
+  const defenderSetups = getDefenderSetups(catalog.moveCategory)
+  const statSetup = statSetups[attackerStatId]
+  const defSetup = defenderSetups[defenderId]
   const itemName = ATTACKER_ITEM_NAMES[attackerItemId]
-  const moveName = MOVE_NAMES[moveId]
+  const moveName = resolveMoveName(catalog, moveId)
   if (!statSetup || !defSetup || !moveName) return null
   if (itemName === undefined && attackerItemId !== "none") return null
 
@@ -70,9 +75,10 @@ function computeRangeRow(
   attackerItemId: string,
   defenderId: string,
 ): ScenarioRow | null {
-  const defSetup = DEFENDER_SETUPS[defenderId]
+  const defenderSetups = getDefenderSetups(catalog.moveCategory)
+  const defSetup = defenderSetups[defenderId]
   const itemName = ATTACKER_ITEM_NAMES[attackerItemId]
-  const moveName = MOVE_NAMES[moveId]
+  const moveName = resolveMoveName(catalog, moveId)
   if (!defSetup || !moveName) return null
   if (itemName === undefined && attackerItemId !== "none") return null
 
@@ -82,6 +88,7 @@ function computeRangeRow(
     defenderSpecies,
     moveName,
     statRange,
+    catalog.moveCategory,
     itemName,
     defSetup,
   )
@@ -177,7 +184,10 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
     moveIds: [...catalog.defaultMoveIds],
     statMode: "preset",
     attackerStatIds: [...catalog.defaultAttackerStatIds],
-    statRange: defaultStatRange(catalog.matchup.attackerSpecies),
+    statRange: defaultStatRange(
+      catalog.matchup.attackerSpecies,
+      catalog.moveCategory,
+    ),
     attackerItemIds: [...catalog.defaultAttackerItemIds],
     defenderIds: [...catalog.defaultDefenderIds],
   }
@@ -199,7 +209,7 @@ export function rowLabels(
     move: find(catalog.moves, row.moveId),
     stat:
       row.attackerStatId === RANGE_STAT_ID && row.statRange
-        ? `物攻 ${row.statRange.min}–${row.statRange.max}`
+        ? `${catalog.offenseStatLabel} ${row.statRange.min}–${row.statRange.max}`
         : find(catalog.attackerStats, row.attackerStatId),
     item: find(catalog.attackerItems, row.attackerItemId),
     defender: find(catalog.defenderBulks, row.defenderId),

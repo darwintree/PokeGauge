@@ -3,6 +3,7 @@ import type { AttackStatBounds, StatRange } from "@/lib/calc-adapter"
 type StatRangeAxisProps = {
   bounds: AttackStatBounds
   value: StatRange
+  offenseStatLabel: "物攻" | "特攻"
   onChange: (value: StatRange) => void
 }
 
@@ -17,7 +18,12 @@ function snapToAnchors(value: number, snapValues: number[]) {
   return value
 }
 
-export function StatRangeAxis({ bounds, value, onChange }: StatRangeAxisProps) {
+export function StatRangeAxis({
+  bounds,
+  value,
+  offenseStatLabel,
+  onChange,
+}: StatRangeAxisProps) {
   const span = bounds.max - bounds.min || 1
   const snapValues = bounds.snapPoints.map((s) => s.value)
   const leftPct = ((value.min - bounds.min) / span) * 100
@@ -35,7 +41,7 @@ export function StatRangeAxis({ bounds, value, onChange }: StatRangeAxisProps) {
       <div className="flex items-baseline justify-between text-xs">
         <span className="font-medium">数轴选段</span>
         <span className="tabular-nums">
-          物攻{" "}
+          {offenseStatLabel}{" "}
           <span className="text-foreground font-semibold">
             {value.min} – {value.max}
           </span>
