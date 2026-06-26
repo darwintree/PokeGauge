@@ -43,6 +43,7 @@ type DamageBoxPlotProps = {
   defender: CatalogOption
   row: ScenarioRow
   showMove?: boolean
+  isRangeEnvelope?: boolean
 }
 
 export function DamageBoxPlot({
@@ -52,6 +53,7 @@ export function DamageBoxPlot({
   defender,
   row,
   showMove = true,
+  isRangeEnvelope = false,
 }: DamageBoxPlotProps) {
   const tone = lethalTone(row)
   const peak = Math.max(row.maxPercent, row.critMaxPercent)
@@ -69,6 +71,9 @@ export function DamageBoxPlot({
           <div className="text-muted-foreground text-xs">{move.label}</div>
         )}
         <div className="text-sm font-medium">{attackerStat.label}</div>
+        {isRangeEnvelope && (
+          <div className="text-muted-foreground text-[10px]">实数值区间 × 16 roll</div>
+        )}
         {attackerItem.id !== "none" && (
           <div className="text-muted-foreground text-xs">{attackerItem.label}</div>
         )}

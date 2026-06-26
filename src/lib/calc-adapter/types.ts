@@ -19,3 +19,14 @@ export type ComputedDamage = {
   critMaxPercent: number
   ohkoChance?: number
 }
+
+export type StatRange = {
+  min: number
+  max: number
+}
+
+export type AttackStatBounds = {
+  min: number
+  max: number
+  snapPoints: Array<{ value: number; label: string }>
+}

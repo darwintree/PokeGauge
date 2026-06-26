@@ -5,7 +5,9 @@ import {
   ATTACKER_STAT_SETUPS,
   CALC_GEN,
   computeDamage,
+  computeDamageForStatRange,
   DEFENDER_SETUPS,
+  getAttackStatBounds,
   VGC_LEVEL,
 } from "@/lib/calc-adapter"
 
@@ -97,5 +99,53 @@ describe("calc adapter", () => {
     )
     expect(result.ohkoChance).toBeGreaterThan(0)
     expect(result.maxDamage).toBeGreaterThanOrEqual(result.defenderHp)
+  })
+
+  it("getAttackStatBounds includes three snap anchor values for Garchomp", () => {
+    const bounds = getAttackStatBounds("Garchomp")
+    expect(bounds.snapPoints).toHaveLength(3)
+    expect(bounds.snapPoints.map((s) => s.label)).toEqual([
+      "无修正无努力",
+      "无修正满努力",
+      "+修正满努力",
+    ])
+    expect(bounds.min).toBeLessThanOrEqual(bounds.snapPoints[0].value)
+    expect(bounds.max).toBeGreaterThanOrEqual(bounds.snapPoints[2].value)
+  })
+
+  it("computeDamageForStatRange merges low-end min and high-end max rolls", () => {
+    const bounds = getAttackStatBounds("Garchomp")
+    const low = bounds.snapPoints[0].value
+    const high = bounds.max
+
+    const presetLow = computeDamage(
+      "Garchomp",
+      "Incineroar",
+      "Earthquake",
+      ATTACKER_STAT_SETUPS["neutral-zero"],
+      undefined,
+      DEFENDER_SETUPS["standard-bulk"],
+    )
+    const presetHigh = computeDamage(
+      "Garchomp",
+      "Incineroar",
+      "Earthquake",
+      ATTACKER_STAT_SETUPS.extreme,
+      undefined,
+      DEFENDER_SETUPS["standard-bulk"],
+    )
+    const range = computeDamageForStatRange(
+      "Garchomp",
+      "Incineroar",
+      "Earthquake",
+      { min: low, max: high },
+      undefined,
+      DEFENDER_SETUPS["standard-bulk"],
+    )
+
+    expect(range.minDamage).toBe(presetLow.minDamage)
+    expect(range.maxDamage).toBe(presetHigh.maxDamage)
+    expect(range.critMinDamage).toBeLessThanOrEqual(range.critMaxDamage)
+    expect(range.maxPercent).toBeGreaterThan(range.minPercent)
   })
 })

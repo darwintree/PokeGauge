@@ -4,4 +4,5 @@ export {
   rowLabels,
   runScenarioPipeline,
 } from "./pipeline"
-export type { ScenarioRow, ScenarioRowLabels, StatSelectMode, TrackState } from "./types"
+export type { ScenarioRow, ScenarioRowLabels, StatSelectMode, StatRange, TrackState } from "./types"
+export { RANGE_STAT_ID } from "./types"
