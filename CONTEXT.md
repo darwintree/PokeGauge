@@ -65,7 +65,7 @@ _Avoid_: Critical spread, 会心范围
 _Avoid_: Kill chance, KO rate
 
 **Snap point**:
-详细参数滑块的吸附预设：无修正无努力、无修正满努力、（非 HP 项）+修正满努力。
+详细参数滑块的吸附预设：0、max、ex（对应无修正无努力 / 无修正满努力 / +修正满努力语义）。
 _Avoid_: Preset, anchor
 
 **Bulk stat**:

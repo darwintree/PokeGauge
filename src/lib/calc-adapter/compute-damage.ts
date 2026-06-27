@@ -13,6 +13,10 @@
 import { calculate, Move, Pokemon } from "@smogon/calc"
 
 import type { MoveCategory } from "@/lib/catalog/types"
+import {
+  OFFENSE_SNAP_PRESET_IDS,
+  OFFENSE_PRESET_LABELS,
+} from "@/lib/catalog/preset-labels"
 
 import {
   getAttackerStatSetups,
@@ -167,15 +171,10 @@ export function getOffenseStatBounds(
   const min = Math.min(...stats)
   const max = Math.max(...stats)
 
-  const snapIds = [
-    { id: "neutral-zero", label: "无修正无努力" },
-    { id: "neutral-max", label: "无修正满努力" },
-    { id: "extreme", label: "+修正满努力" },
-  ] as const
-
-  const snapPoints = snapIds.map(({ id, label }) => ({
+  const snapPoints = OFFENSE_SNAP_PRESET_IDS.map((id) => ({
+    id,
     value: getOffenseStat(species, category, setups[id]),
-    label,
+    label: OFFENSE_PRESET_LABELS[id],
   }))
 
   return { min, max, snapPoints }
@@ -192,7 +191,7 @@ export function defaultStatRange(
 ): StatRange {
   const bounds = getOffenseStatBounds(species, category)
   const neutralMax =
-    bounds.snapPoints.find((s) => s.label === "无修正满努力")?.value ?? bounds.min
+    bounds.snapPoints.find((s) => s.id === "neutral-max")?.value ?? bounds.min
   return { min: neutralMax, max: bounds.max }
 }
 

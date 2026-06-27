@@ -7,6 +7,11 @@
 
 import { calculate, Move, Pokemon } from "@smogon/calc"
 
+import {
+  OFFENSE_SNAP_PRESET_IDS,
+  OFFENSE_PRESET_LABELS,
+} from "@/lib/catalog/preset-labels"
+
 const GEN = 9
 
 export type StatSetup = {
@@ -39,7 +44,7 @@ export type StatRange = {
 export type AttackStatBounds = {
   min: number
   max: number
-  snapPoints: Array<{ value: number; label: string }>
+  snapPoints: Array<{ id: (typeof OFFENSE_SNAP_PRESET_IDS)[number]; value: number; label: string }>
 }
 
 const OFFENSE_STAT = "atk" as const
@@ -110,15 +115,10 @@ export function getAttackStatBounds(species: string): AttackStatBounds {
   const min = Math.min(...stats)
   const max = Math.max(...stats)
 
-  const snapIds = [
-    { id: "neutral-zero", label: "无修正无努力" },
-    { id: "neutral-max", label: "无修正满努力" },
-    { id: "extreme", label: "+修正满努力" },
-  ] as const
-
-  const snapPoints = snapIds.map(({ id, label }) => ({
+  const snapPoints = OFFENSE_SNAP_PRESET_IDS.map((id) => ({
+    id,
     value: getAttackStat(species, ATTACKER_STAT_SETUPS[id]),
-    label,
+    label: OFFENSE_PRESET_LABELS[id],
   }))
 
   return { min, max, snapPoints }
@@ -265,7 +265,6 @@ export function computeDamageForStatRange(
 export const ATTACKER_STAT_SETUPS: Record<string, StatSetup> = {
   "neutral-zero": { nature: "Serious", evs: {} },
   "neutral-max": { nature: "Serious", evs: { atk: 252 } },
-  standard: { nature: "Jolly", evs: { atk: 252 } },
   extreme: { nature: "Adamant", evs: { atk: 252 } },
 }
 
@@ -276,8 +275,9 @@ export const ATTACKER_ITEM_NAMES: Record<string, string | undefined> = {
 }
 
 export const DEFENDER_SETUPS: Record<string, DefenderSetup> = {
-  "standard-bulk": { nature: "Impish", evs: { hp: 252, def: 252 } },
   "min-bulk": { nature: "Serious", evs: {} },
+  "hp-32": { nature: "Serious", evs: { hp: 252 } },
+  "standard-bulk": { nature: "Impish", evs: { hp: 252, def: 252 } },
 }
 
 export const MOVE_NAMES: Record<string, string> = {

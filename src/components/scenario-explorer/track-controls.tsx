@@ -5,6 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { MatchupCatalog } from "@/lib/catalog"
 import type { StatSelectMode } from "@/lib/scenario-pipeline"
 
+import { defenderBulkTier, offenseStatTier } from "@/lib/stat-tier-colors"
+
 import { ConfigMultiSelect, MoveMultiSelect } from "./config-multi-select"
 import { StatRangeAxis } from "./stat-range-axis"
 import type { ScenarioState } from "./use-scenario-state"
@@ -51,6 +53,7 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
             options={catalog.attackerStats}
             selectedIds={trackState.attackerStatIds}
             onChange={state.setAttackerStatIds}
+            tierForOption={(option) => offenseStatTier(option.id)}
           />
         </TabsContent>
 
@@ -76,6 +79,7 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
         options={catalog.defenderBulks}
         selectedIds={trackState.defenderIds}
         onChange={state.setDefenderIds}
+        tierForOption={(option) => defenderBulkTier(option.id)}
       />
     </div>
   )

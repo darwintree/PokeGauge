@@ -39,7 +39,7 @@ describe("catalog registry", () => {
     expect(catalog.moveCategory).toBe("special")
     expect(catalog.offenseStatLabel).toBe("特攻")
 
-    const atkSetup = getAttackerStatSetups("special").standard
+    const atkSetup = getAttackerStatSetups("special").extreme
     const defSetup = getDefenderSetups("special")["standard-bulk"]
     expect(atkSetup.evs.spa).toBe(252)
     expect(defSetup.evs.spd).toBe(252)
@@ -105,9 +105,9 @@ describe("matchup scenario pipeline", () => {
 
   it("exposes full catalog options beyond defaults", () => {
     expect(catalog.moves).toHaveLength(3)
-    expect(catalog.attackerStats).toHaveLength(4)
+    expect(catalog.attackerStats).toHaveLength(3)
     expect(catalog.attackerItems).toHaveLength(3)
-    expect(catalog.defenderBulks).toHaveLength(2)
+    expect(catalog.defenderBulks).toHaveLength(3)
   })
 
   it("filters preset rows when stat preset is deselected", () => {
@@ -172,7 +172,7 @@ describe("matchup scenario pipeline — range mode", () => {
     state.statMode = "preset"
     const rows = runScenarioPipeline(catalog, state)
     expect(rows).toHaveLength(6)
-    expect(rows.every((r) => r.attackerStatId === "standard")).toBe(true)
+    expect(rows.every((r) => r.attackerStatId === "neutral-max")).toBe(true)
     expect(rows.every((r) => r.statRange == null)).toBe(true)
   })
 

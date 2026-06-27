@@ -54,7 +54,7 @@ describe("calc adapter", () => {
       "Garchomp",
       "Incineroar",
       "Earthquake",
-      ATTACKER_STAT_SETUPS.standard,
+      ATTACKER_STAT_SETUPS["neutral-max"],
       undefined,
       DEFENDER_SETUPS["standard-bulk"],
     )
@@ -62,12 +62,12 @@ describe("calc adapter", () => {
     expect(result.defenderHp).toBeLessThan(220)
   })
 
-  it("matches @smogon/calc for Garchomp Earthquake → Incineroar standard spread", () => {
+  it("matches @smogon/calc for Garchomp Earthquake → Incineroar neutral-max spread", () => {
     const adapter = computeDamage(
       "Garchomp",
       "Incineroar",
       "Earthquake",
-      ATTACKER_STAT_SETUPS.standard,
+      ATTACKER_STAT_SETUPS["neutral-max"],
       undefined,
       DEFENDER_SETUPS["standard-bulk"],
     )
@@ -75,7 +75,7 @@ describe("calc adapter", () => {
       "Garchomp",
       "Incineroar",
       "Earthquake",
-      ATTACKER_STAT_SETUPS.standard,
+      ATTACKER_STAT_SETUPS["neutral-max"],
       undefined,
       DEFENDER_SETUPS["standard-bulk"],
     )
@@ -104,11 +104,7 @@ describe("calc adapter", () => {
   it("getAttackStatBounds includes three snap anchor values for Garchomp", () => {
     const bounds = getAttackStatBounds("Garchomp")
     expect(bounds.snapPoints).toHaveLength(3)
-    expect(bounds.snapPoints.map((s) => s.label)).toEqual([
-      "无修正无努力",
-      "无修正满努力",
-      "+修正满努力",
-    ])
+    expect(bounds.snapPoints.map((s) => s.label)).toEqual(["0", "max", "ex"])
     expect(bounds.min).toBeLessThanOrEqual(bounds.snapPoints[0].value)
     expect(bounds.max).toBeGreaterThanOrEqual(bounds.snapPoints[2].value)
   })

@@ -5,25 +5,25 @@ import type { DefenderSetup, StatSetup } from "./types"
 const PHYSICAL_ATTACKER: Record<string, StatSetup> = {
   "neutral-zero": { nature: "Serious", evs: {} },
   "neutral-max": { nature: "Serious", evs: { atk: 252 } },
-  standard: { nature: "Jolly", evs: { atk: 252 } },
   extreme: { nature: "Adamant", evs: { atk: 252 } },
 }
 
 const SPECIAL_ATTACKER: Record<string, StatSetup> = {
   "neutral-zero": { nature: "Serious", evs: {} },
   "neutral-max": { nature: "Serious", evs: { spa: 252 } },
-  standard: { nature: "Timid", evs: { spa: 252 } },
   extreme: { nature: "Modest", evs: { spa: 252 } },
 }
 
 const PHYSICAL_DEFENDER: Record<string, DefenderSetup> = {
-  "standard-bulk": { nature: "Impish", evs: { hp: 252, def: 252 } },
   "min-bulk": { nature: "Serious", evs: {} },
+  "hp-32": { nature: "Serious", evs: { hp: 252 } },
+  "standard-bulk": { nature: "Impish", evs: { hp: 252, def: 252 } },
 }
 
 const SPECIAL_DEFENDER: Record<string, DefenderSetup> = {
-  "standard-bulk": { nature: "Calm", evs: { hp: 252, spd: 252 } },
   "min-bulk": { nature: "Serious", evs: {} },
+  "hp-32": { nature: "Serious", evs: { hp: 252 } },
+  "standard-bulk": { nature: "Calm", evs: { hp: 252, spd: 252 } },
 }
 
 /** @deprecated use getAttackerStatSetups(category) */

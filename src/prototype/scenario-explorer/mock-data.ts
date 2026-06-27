@@ -10,6 +10,10 @@ import {
   MOVE_NAMES,
   type StatRange,
 } from "./damage-calc"
+import {
+  DEFENSE_PRESET_LABELS,
+  OFFENSE_PRESET_LABELS,
+} from "@/lib/catalog/preset-labels"
 import { RANGE_STAT_ID } from "./stat-range-axis"
 
 export type ConfigOption = {
@@ -52,7 +56,7 @@ export const ATTACKER_STAT_BOUNDS = getAttackStatBounds(MOCK_MATCHUP.attackerSpe
 
 export function defaultStatRange(): StatRange {
   const neutralMax =
-    ATTACKER_STAT_BOUNDS.snapPoints.find((s) => s.label === "无修正满努力")?.value ??
+    ATTACKER_STAT_BOUNDS.snapPoints.find((s) => s.id === "neutral-max")?.value ??
     ATTACKER_STAT_BOUNDS.min
   return { min: neutralMax, max: ATTACKER_STAT_BOUNDS.max }
 }
@@ -64,10 +68,9 @@ export const MOVES: ConfigOption[] = [
 ]
 
 export const ATTACKER_STAT_CONFIGS: ConfigOption[] = [
-  { id: "neutral-zero", label: "无修正无努力", summary: "无修正 · 0 物攻" },
-  { id: "neutral-max", label: "无修正满努力", summary: "无修正 · 252 物攻" },
-  { id: "standard", label: "标准输出", summary: "爽朗 · 252 物攻" },
-  { id: "extreme", label: "极限进攻", summary: "固执 · 252 物攻" },
+  { id: "neutral-zero", label: OFFENSE_PRESET_LABELS["neutral-zero"], summary: "无修正 · 0 物攻" },
+  { id: "neutral-max", label: OFFENSE_PRESET_LABELS["neutral-max"], summary: "无修正 · 252 物攻" },
+  { id: "extreme", label: OFFENSE_PRESET_LABELS.extreme, summary: "固执 · 252 物攻" },
 ]
 
 export const RANGE_STAT_CONFIG: ConfigOption = {
@@ -83,8 +86,13 @@ export const ATTACKER_ITEM_CONFIGS: ConfigOption[] = [
 ]
 
 export const DEFENDER_CONFIGS: ConfigOption[] = [
-  { id: "standard-bulk", label: "标准坦度", summary: "慎重 · 252 HP / 252 物防" },
-  { id: "min-bulk", label: "极限坦度", summary: "无修正 · 0 HP / 0 物防" },
+  { id: "min-bulk", label: DEFENSE_PRESET_LABELS["min-bulk"], summary: "无修正 · 0 HP / 0 物防" },
+  { id: "hp-32", label: DEFENSE_PRESET_LABELS["hp-32"], summary: "无修正 · 252 HP / 0 物防" },
+  {
+    id: "standard-bulk",
+    label: DEFENSE_PRESET_LABELS["standard-bulk"],
+    summary: "慎重 · 252 HP / 252 物防",
+  },
 ]
 
 function buildPresetResults(): AggregatedResult[] {
@@ -181,7 +189,7 @@ export function buildRangeResults(statRange: StatRange): AggregatedResult[] {
 export const PRESET_RESULTS = buildPresetResults()
 
 export const DEFAULT_MOVE_IDS = ["earthquake"]
-export const DEFAULT_ATTACKER_STAT_IDS = ["standard"]
+export const DEFAULT_ATTACKER_STAT_IDS = ["neutral-max"]
 export const DEFAULT_ATTACKER_ITEM_IDS = ["none", "life-orb"]
 export const DEFAULT_DEFENDER_IDS = ["standard-bulk"]
 export const DEFAULT_STAT_SELECT_MODE: StatSelectMode = "preset"

@@ -1,3 +1,5 @@
+import type { OffenseSnapPresetId } from "@/lib/catalog/preset-labels"
+
 export type StatSetup = {
   nature: string
   evs: Partial<Record<"hp" | "atk" | "def" | "spa" | "spd" | "spe", number>>
@@ -28,5 +30,5 @@ export type StatRange = {
 export type AttackStatBounds = {
   min: number
   max: number
-  snapPoints: Array<{ value: number; label: string }>
+  snapPoints: Array<{ id: OffenseSnapPresetId; value: number; label: string }>
 }

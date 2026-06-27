@@ -1,4 +1,10 @@
 import type { PokemonType } from "@/lib/pokemon/types"
+import {
+  DEFENSE_PRESET_LABELS,
+  OFFENSE_PRESET_LABELS,
+  type DefensePresetId,
+  type OffensePresetId,
+} from "./preset-labels"
 import type {
   CatalogMoveOption,
   MatchupCatalog,
@@ -88,28 +94,39 @@ function statLabels(category: MoveCategory) {
 
 function buildAttackerStats(category: MoveCategory) {
   const stat = category === "physical" ? "物攻" : "特攻"
-  return [
-    { id: "neutral-zero", label: "无修正无努力", summary: `无修正 · 0 ${stat}` },
-    { id: "neutral-max", label: "无修正满努力", summary: `无修正 · 252 ${stat}` },
-    { id: "standard", label: "标准输出", summary: category === "physical" ? "爽朗 · 252 物攻" : "胆小 · 252 特攻" },
-    { id: "extreme", label: "极限进攻", summary: category === "physical" ? "固执 · 252 物攻" : "内敛 · 252 特攻" },
+  const entries: Array<{ id: OffensePresetId; summary: string }> = [
+    { id: "neutral-zero", summary: `无修正 · 0 ${stat}` },
+    { id: "neutral-max", summary: `无修正 · 252 ${stat}` },
+    {
+      id: "extreme",
+      summary: category === "physical" ? "固执 · 252 物攻" : "内敛 · 252 特攻",
+    },
   ]
+
+  return entries.map(({ id, summary }) => ({
+    id,
+    label: OFFENSE_PRESET_LABELS[id],
+    summary,
+  }))
 }
 
 function buildDefenderBulks(category: MoveCategory) {
   const stat = category === "physical" ? "物防" : "特防"
-  return [
+  const entries: Array<{ id: DefensePresetId; summary: string }> = [
+    { id: "min-bulk", summary: `无修正 · 0 HP / 0 ${stat}` },
+    { id: "hp-32", summary: `无修正 · 252 HP / 0 ${stat}` },
     {
       id: "standard-bulk",
-      label: "标准坦度",
-      summary: category === "physical" ? "慎重 · 252 HP / 252 物防" : "慎重 · 252 HP / 252 特防",
-    },
-    {
-      id: "min-bulk",
-      label: "极限坦度",
-      summary: `无修正 · 0 HP / 0 ${stat}`,
+      summary:
+        category === "physical" ? "慎重 · 252 HP / 252 物防" : "慎重 · 252 HP / 252 特防",
     },
   ]
+
+  return entries.map(({ id, summary }) => ({
+    id,
+    label: DEFENSE_PRESET_LABELS[id],
+    summary,
+  }))
 }
 
 function buildAttackerItems(category: MoveCategory) {
@@ -176,7 +193,7 @@ export function getCatalog(attackerId: string, defenderId: string): MatchupCatal
     defenderBulks: buildDefenderBulks(attacker.moveCategory),
     /** Default selected set — all top-N moves pre-selected */
     defaultMoveIds: moves.map((m) => m.id),
-    defaultAttackerStatIds: ["standard"],
+    defaultAttackerStatIds: ["neutral-max"],
     defaultAttackerItemIds: ["none", "life-orb"],
     defaultDefenderIds: ["standard-bulk"],
   }

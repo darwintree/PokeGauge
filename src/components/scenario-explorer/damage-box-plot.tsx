@@ -3,6 +3,13 @@
 import { TypeBadge } from "@/components/pokemon/type-badge"
 import type { CatalogMoveOption, CatalogOption } from "@/lib/catalog/types"
 import type { ScenarioRow } from "@/lib/scenario-pipeline"
+import {
+  defenderBulkTier,
+  offenseStatTier,
+  statTierChipClasses,
+  type StatTierTokenSet,
+} from "@/lib/stat-tier-colors"
+import { cn } from "@/lib/utils"
 
 const AXIS_MAX = 150
 const TICKS = [0, 25, 50, 75, 100, 125, 150]
@@ -37,6 +44,26 @@ const TONE_CLASS = {
   lethal: "bg-red-500/75 border-red-600/70",
 } as const
 
+type ResultTierChipProps = {
+  tier: StatTierTokenSet
+  className: string
+  children: React.ReactNode
+}
+
+function ResultTierChip({ tier, className, children }: ResultTierChipProps) {
+  return (
+    <span
+      className={cn(
+        "inline-block rounded-md border px-1.5 py-0.5",
+        className,
+        statTierChipClasses(tier),
+      )}
+    >
+      {children}
+    </span>
+  )
+}
+
 type DamageBoxPlotProps = {
   move: CatalogMoveOption
   attackerStat: CatalogOption
@@ -57,6 +84,8 @@ export function DamageBoxPlot({
   isRangeEnvelope = false,
 }: DamageBoxPlotProps) {
   const tone = lethalTone(row)
+  const offenseTier = isRangeEnvelope ? null : offenseStatTier(attackerStat.id)
+  const defenseTier = defenderBulkTier(defender.id)
   const peak = Math.max(row.maxPercent, row.critMaxPercent)
   const box = pctSpan(row.minPercent, row.maxPercent)
   const crit = pctSpan(row.critMinPercent, row.critMaxPercent)
@@ -74,16 +103,28 @@ export function DamageBoxPlot({
             <span className="text-muted-foreground text-xs">{move.label}</span>
           </div>
         )}
-        <div className="text-sm font-medium">{attackerStat.label}</div>
+        {offenseTier ? (
+          <ResultTierChip tier={offenseTier} className="text-sm font-medium">
+            {attackerStat.label}
+          </ResultTierChip>
+        ) : (
+          <div className="text-sm font-medium">{attackerStat.label}</div>
+        )}
         {isRangeEnvelope && (
           <div className="text-muted-foreground text-[10px]">实数值区间 × 16 roll</div>
         )}
         {attackerItem.id !== "none" && (
           <div className="text-muted-foreground text-xs">{attackerItem.label}</div>
         )}
-        <div className="text-muted-foreground text-xs leading-snug">
-          vs {defender.label}
-        </div>
+        {defenseTier ? (
+          <ResultTierChip tier={defenseTier} className="text-xs leading-snug">
+            vs {defender.label}
+          </ResultTierChip>
+        ) : (
+          <div className="text-muted-foreground text-xs leading-snug">
+            vs {defender.label}
+          </div>
+        )}
         <div className="text-muted-foreground/80 mt-0.5 text-[10px] leading-snug">
           {attackerStat.summary}
           {attackerItem.id !== "none" ? ` · ${attackerItem.label}` : ""} · {defender.summary}

@@ -32,7 +32,7 @@ export function StatRangeAxis({ bounds, value, onChange }: StatRangeAxisProps) {
           const pct = ((snap.value - bounds.min) / span) * 100
           return (
             <div
-              key={snap.label}
+              key={snap.id}
               className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
               style={{ left: `${pct}%` }}
             >
@@ -48,7 +48,7 @@ export function StatRangeAxis({ bounds, value, onChange }: StatRangeAxisProps) {
 
       <div className="text-muted-foreground flex justify-between px-1 text-[10px]">
         {bounds.snapPoints.map((snap) => (
-          <span key={snap.label} className="max-w-[4.5rem] text-center leading-tight">
+          <span key={snap.id} className="max-w-[4.5rem] text-center leading-tight">
             {snap.label}
             <br />
             <span className="tabular-nums">{snap.value}</span>

@@ -117,6 +117,24 @@
     --pokemon-type-dark: #705848;
     --pokemon-type-steel: #B8B8D0;
     --pokemon-type-fairy: #EE99AC;
+
+    /* Stat tier domain tokens — Geist gray / blue / purple (design.md) */
+    --stat-tier-0-fg: #4d4d4d;
+    --stat-tier-0-bg: #f2f2f2;
+    --stat-tier-0-border: #ebebeb;
+    --stat-tier-0-muted: #8f8f8f;
+    --stat-offense-max-fg: #006bff;
+    --stat-offense-max-bg: #f0f7ff;
+    --stat-offense-max-border: #cae7ff;
+    --stat-offense-max-muted: #48aeff;
+    --stat-bulk-mid-fg: #006bff;
+    --stat-bulk-mid-bg: #e9f4ff;
+    --stat-bulk-mid-border: #dfefff;
+    --stat-bulk-mid-muted: #48aeff;
+    --stat-tier-ex-fg: #a000f8;
+    --stat-tier-ex-bg: #faf0ff;
+    --stat-tier-ex-border: #f2d9ff;
+    --stat-tier-ex-muted: #c979ff;
 }
 
 .dark {
@@ -166,6 +184,23 @@
     --sidebar-accent-foreground: var(--geist-gray-1000);
     --sidebar-border: var(--geist-gray-alpha-400);
     --sidebar-ring: var(--geist-blue-700);
+
+    --stat-tier-0-fg: #a0a0a0;
+    --stat-tier-0-bg: #1a1a1a;
+    --stat-tier-0-border: #ffffff24;
+    --stat-tier-0-muted: #8f8f8f;
+    --stat-offense-max-fg: #0090ff;
+    --stat-offense-max-bg: #06193a;
+    --stat-offense-max-border: #003674;
+    --stat-offense-max-muted: #006efe;
+    --stat-bulk-mid-fg: #47a8ff;
+    --stat-bulk-mid-bg: #022248;
+    --stat-bulk-mid-border: #002f62;
+    --stat-bulk-mid-muted: #0090ff;
+    --stat-tier-ex-fg: #c472fb;
+    --stat-tier-ex-bg: #290c33;
+    --stat-tier-ex-border: #541a76;
+    --stat-tier-ex-muted: #9440d5;
 }
 
 @layer base {
@@ -178,4 +213,96 @@
   html {
     @apply font-sans;
     }
+}
+
+@layer components {
+  .stat-tier-chip--0 {
+    border-color: var(--stat-tier-0-border);
+    background-color: var(--stat-tier-0-bg);
+    color: var(--stat-tier-0-fg);
+  }
+
+  .stat-tier-chip--0 .stat-tier-chip-muted {
+    color: var(--stat-tier-0-muted);
+  }
+
+  .stat-tier-chip--offense-max {
+    border-color: var(--stat-offense-max-border);
+    background-color: var(--stat-offense-max-bg);
+    color: var(--stat-offense-max-fg);
+  }
+
+  .stat-tier-chip--offense-max .stat-tier-chip-muted {
+    color: var(--stat-offense-max-muted);
+  }
+
+  .stat-tier-chip--bulk-mid {
+    border-color: var(--stat-bulk-mid-border);
+    background-color: var(--stat-bulk-mid-bg);
+    color: var(--stat-bulk-mid-fg);
+  }
+
+  .stat-tier-chip--bulk-mid .stat-tier-chip-muted {
+    color: var(--stat-bulk-mid-muted);
+  }
+
+  .stat-tier-chip--ex {
+    border-color: var(--stat-tier-ex-border);
+    background-color: var(--stat-tier-ex-bg);
+    color: var(--stat-tier-ex-fg);
+  }
+
+  .stat-tier-chip--ex .stat-tier-chip-muted {
+    color: var(--stat-tier-ex-muted);
+  }
+
+  button.stat-tier-chip--0[aria-pressed="true"],
+  button.stat-tier-chip--0[data-state="on"],
+  button.stat-tier-chip--offense-max[aria-pressed="true"],
+  button.stat-tier-chip--offense-max[data-state="on"],
+  button.stat-tier-chip--bulk-mid[aria-pressed="true"],
+  button.stat-tier-chip--bulk-mid[data-state="on"],
+  button.stat-tier-chip--ex[aria-pressed="true"],
+  button.stat-tier-chip--ex[data-state="on"] {
+    box-shadow: none;
+  }
+
+  button.stat-tier-chip--0[aria-pressed="true"],
+  button.stat-tier-chip--0[data-state="on"] {
+    background-color: var(--stat-tier-0-bg) !important;
+    border-color: var(--stat-tier-0-border) !important;
+    color: var(--stat-tier-0-fg) !important;
+  }
+
+  button.stat-tier-chip--offense-max[aria-pressed="true"],
+  button.stat-tier-chip--offense-max[data-state="on"] {
+    background-color: var(--stat-offense-max-bg) !important;
+    border-color: var(--stat-offense-max-border) !important;
+    color: var(--stat-offense-max-fg) !important;
+  }
+
+  button.stat-tier-chip--bulk-mid[aria-pressed="true"],
+  button.stat-tier-chip--bulk-mid[data-state="on"] {
+    background-color: var(--stat-bulk-mid-bg) !important;
+    border-color: var(--stat-bulk-mid-border) !important;
+    color: var(--stat-bulk-mid-fg) !important;
+  }
+
+  button.stat-tier-chip--ex[aria-pressed="true"],
+  button.stat-tier-chip--ex[data-state="on"] {
+    background-color: var(--stat-tier-ex-bg) !important;
+    border-color: var(--stat-tier-ex-border) !important;
+    color: var(--stat-tier-ex-fg) !important;
+  }
+
+  button.stat-tier-chip--0[aria-pressed="true"]:hover,
+  button.stat-tier-chip--0[data-state="on"]:hover,
+  button.stat-tier-chip--offense-max[aria-pressed="true"]:hover,
+  button.stat-tier-chip--offense-max[data-state="on"]:hover,
+  button.stat-tier-chip--bulk-mid[aria-pressed="true"]:hover,
+  button.stat-tier-chip--bulk-mid[data-state="on"]:hover,
+  button.stat-tier-chip--ex[aria-pressed="true"]:hover,
+  button.stat-tier-chip--ex[data-state="on"]:hover {
+    color: inherit;
+  }
 }
