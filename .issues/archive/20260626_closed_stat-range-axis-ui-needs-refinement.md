@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "323d3f26-fac7-4f02-a268-b256a1c51a07"
 title: "Stat range axis UI needs refinement"
-status: "open"
+status: "closed"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-06-26T14:23:00Z"
-updated_at: "2026-06-28T02:39:00Z"
+updated_at: "2026-06-28T08:34:00Z"
 ---
 ## Context
 
@@ -18,7 +18,7 @@ updated_at: "2026-06-28T02:39:00Z"
 
 ## Related
 
-- Tier 色板：[[archive/20260626_closed_define-colors-for-no-modifier-full-and-max-stat-presets|Define colors for stat presets]]；grill 见 [`docs/traces/2026-06-28-stat-tier-color-tokens-grill.md`](../../docs/traces/2026-06-28-stat-tier-color-tokens-grill.md)
+- Tier 色板：[[20260626_closed_define-colors-for-no-modifier-full-and-max-stat-presets|Define colors for stat presets]]；grill 见 [`docs/traces/2026-06-28-stat-tier-color-tokens-grill.md`](../../docs/traces/2026-06-28-stat-tier-color-tokens-grill.md)
 - 数轴 snap 档色与 `--primary` 区间高亮分开处理；区间高亮保持 `--primary`
 
 ## Decisions（grill 2026-06-28）
@@ -94,16 +94,24 @@ updated_at: "2026-06-28T02:39:00Z"
 
 ## Acceptance criteria
 
-- [ ] 数轴选段 UI 在 desktop sidebar 内布局合理、不溢出
-- [ ] 单轴轨内拖选；snap tier 行 + 轨/端点值；点击端点展开微调行；无独立 Slider、无常驻 stepper
-- [ ] 防守 range：HP + 物防/特防双轴；与 preset Tabs 互斥
-- [ ] 用户能清楚看到当前选中区间（含单点 collapsed）
-- [ ] Preset 单选 → range 单点；多选 → 外包围 band
-- [ ] 切换 preset/range 后状态反馈清晰（range 值保留）
-- [ ] 移动端 stacked 布局下仍可用
-- [ ] Snap 锚点 tier 色与 `--primary` 区间高亮区分清晰
+- [x] 数轴选段 UI 在 desktop sidebar 内布局合理、不溢出
+- [x] 单轴轨内拖选；snap tier 行 + 轨/端点值；点击端点展开微调行；无独立 Slider、无常驻 stepper
+- [x] 防守 range：HP + 物防/特防双轴；与 preset Tabs 互斥
+- [x] 用户能清楚看到当前选中区间（含单点 collapsed）
+- [x] Preset 单选 → range 单点；多选 → 外包围 band
+- [x] 切换 preset/range 后状态反馈清晰（range 值保留）
+- [x] 移动端 stacked 布局下仍可用
+- [x] Snap 锚点 tier 色与 `--primary` 区间高亮区分清晰
 
 ## Open
 
 - [x] UI variant 定稿 → **展开微调行**
-- [ ] Snap tier 上色编码细节（若与上表推荐有偏差）
+- [x] Snap tier 上色编码细节 → tick + 标签 tier 色（按推荐表）
+
+## Resolution
+
+Implemented in `11a9bbb`:
+- Rewrote `StatRangeAxis` (dual-handle rail, snap tier row, tap-to-fine-tune)
+- Defender HP + def dual-axis with preset/range tabs
+- Value-first bounds/snap, preset→range envelope, defender range pipeline
+- Offense cold-start default `[0, ex]`; defender spread cache + click/drag perf fix

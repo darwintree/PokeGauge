@@ -13,7 +13,7 @@ updated_at: "2026-06-27T23:18:00Z"
 攻击方 preset 与防守 bulk preset 在 UI 中缺乏一致的颜色编码。Grill 已确定 tier 语义、色板与落点（数轴 snap 档色 defer）。
 
 **Discussion trace:** [`docs/traces/2026-06-28-stat-tier-color-tokens-grill.md`](../../docs/traces/2026-06-28-stat-tier-color-tokens-grill.md)  
-**数轴 snap 档色（defer）：** [[../20260626_open_stat-range-axis-ui-needs-refinement|Stat range axis UI needs refinement]]
+**数轴 snap 档色（defer）：** [[20260626_closed_stat-range-axis-ui-needs-refinement|Stat range axis UI needs refinement]]
 
 相关实现：
 - `src/components/scenario-explorer/config-multi-select.tsx`
@@ -84,4 +84,4 @@ updated_at: "2026-06-27T23:18:00Z"
 
 Implemented stat tier CSS tokens in `src/index.css` (light/dark), mapping in `src/lib/stat-tier-colors.ts`, tinted chips on attack/defense `ConfigMultiSelect` pills and `DamageBoxPlot` result labels. Unified pill labels via `src/lib/catalog/preset-labels.ts` (`0` / `max` / `ex`, `0` / `32HP` / `ex`); offense catalog trimmed to three presets (removed `standard`); added `hp-32` defender bulk. CSS component classes (not dynamic Tailwind arbitrary values) so tier colors render on toggle pressed state. Implementation trace: [`docs/traces/implementations/2026-06-28-stat-tier-color-tokens.md`](../../docs/traces/implementations/2026-06-28-stat-tier-color-tokens.md).
 
-**Deferred:** Stat range axis snap tier colors → [[../20260626_open_stat-range-axis-ui-needs-refinement|Stat range axis UI needs refinement]].
+**Deferred:** Stat range axis snap tier colors → [[20260626_closed_stat-range-axis-ui-needs-refinement|Stat range axis UI needs refinement]].
