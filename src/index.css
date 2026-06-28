@@ -305,4 +305,36 @@
   button.stat-tier-chip--ex[data-state="on"]:hover {
     color: inherit;
   }
+
+  .stat-axis-snap--0 {
+    color: var(--stat-tier-0-fg);
+  }
+
+  .stat-axis-snap--offense-max {
+    color: var(--stat-offense-max-fg);
+  }
+
+  .stat-axis-snap--bulk-mid {
+    color: var(--stat-bulk-mid-fg);
+  }
+
+  .stat-axis-snap--ex {
+    color: var(--stat-tier-ex-fg);
+  }
+
+  .stat-axis-tick.stat-axis-snap--0 {
+    background-color: var(--stat-tier-0-muted);
+  }
+
+  .stat-axis-tick.stat-axis-snap--offense-max {
+    background-color: var(--stat-offense-max-muted);
+  }
+
+  .stat-axis-tick.stat-axis-snap--bulk-mid {
+    background-color: var(--stat-bulk-mid-muted);
+  }
+
+  .stat-axis-tick.stat-axis-snap--ex {
+    background-color: var(--stat-tier-ex-muted);
+  }
 }

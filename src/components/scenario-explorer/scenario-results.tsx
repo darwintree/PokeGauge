@@ -4,7 +4,7 @@ import {
   EmptyHeader,
 } from "@/components/ui/empty"
 import type { MatchupCatalog } from "@/lib/catalog"
-import { RANGE_STAT_ID, type ScenarioRow } from "@/lib/scenario-pipeline"
+import { RANGE_DEFENDER_ID, RANGE_STAT_ID, type ScenarioRow } from "@/lib/scenario-pipeline"
 
 import { BoxPlotLegend, DamageAxis, DamageBoxPlot } from "./damage-box-plot"
 
@@ -22,10 +22,13 @@ function catalogOption<T extends { id: string }>(options: T[], id: string): T {
 }
 
 function rowKey(row: ScenarioRow) {
-  const rangeKey = row.statRange
+  const offenseKey = row.statRange
     ? `${row.statRange.min}-${row.statRange.max}`
     : row.attackerStatId
-  return `${row.moveId}:${rangeKey}:${row.attackerItemId}:${row.defenderId}`
+  const defenseKey = row.defenderRanges
+    ? `hp${row.defenderRanges.hp.min}-${row.defenderRanges.hp.max}-def${row.defenderRanges.def.min}-${row.defenderRanges.def.max}`
+    : row.defenderId
+  return `${row.moveId}:${offenseKey}:${row.attackerItemId}:${defenseKey}`
 }
 
 function attackerStatForRow(catalog: MatchupCatalog, row: ScenarioRow) {
@@ -37,6 +40,18 @@ function attackerStatForRow(catalog: MatchupCatalog, row: ScenarioRow) {
     }
   }
   return catalogOption(catalog.attackerStats, row.attackerStatId)
+}
+
+function defenderForRow(catalog: MatchupCatalog, row: ScenarioRow) {
+  if (row.defenderId === RANGE_DEFENDER_ID && row.defenderRanges) {
+    const defLabel = catalog.moveCategory === "physical" ? "物防" : "特防"
+    return {
+      id: RANGE_DEFENDER_ID,
+      label: `HP ${row.defenderRanges.hp.min}–${row.defenderRanges.hp.max} · ${defLabel} ${row.defenderRanges.def.min}–${row.defenderRanges.def.max}`,
+      summary: "区间 × roll 合并",
+    }
+  }
+  return catalogOption(catalog.defenderBulks, row.defenderId)
 }
 
 export function ScenarioResults({
@@ -65,10 +80,12 @@ export function ScenarioResults({
               move={catalogOption(catalog.moves, row.moveId)}
               attackerStat={attackerStatForRow(catalog, row)}
               attackerItem={catalogOption(catalog.attackerItems, row.attackerItemId)}
-              defender={catalogOption(catalog.defenderBulks, row.defenderId)}
+              defender={defenderForRow(catalog, row)}
               row={row}
               showMove={showMoveOnRow}
-              isRangeEnvelope={row.attackerStatId === RANGE_STAT_ID}
+              isRangeEnvelope={
+                row.attackerStatId === RANGE_STAT_ID || row.defenderId === RANGE_DEFENDER_ID
+              }
             />
           </li>
         ))}

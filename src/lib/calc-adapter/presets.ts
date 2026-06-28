@@ -17,12 +17,14 @@ const SPECIAL_ATTACKER: Record<string, StatSetup> = {
 const PHYSICAL_DEFENDER: Record<string, DefenderSetup> = {
   "min-bulk": { nature: "Serious", evs: {} },
   "hp-32": { nature: "Serious", evs: { hp: 252 } },
+  "def-max": { nature: "Serious", evs: { def: 252 } },
   "standard-bulk": { nature: "Impish", evs: { hp: 252, def: 252 } },
 }
 
 const SPECIAL_DEFENDER: Record<string, DefenderSetup> = {
   "min-bulk": { nature: "Serious", evs: {} },
   "hp-32": { nature: "Serious", evs: { hp: 252 } },
+  "def-max": { nature: "Serious", evs: { spd: 252 } },
   "standard-bulk": { nature: "Calm", evs: { hp: 252, spd: 252 } },
 }
 

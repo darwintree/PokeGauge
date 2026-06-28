@@ -104,7 +104,7 @@ describe("calc adapter", () => {
   it("getAttackStatBounds includes three snap anchor values for Garchomp", () => {
     const bounds = getAttackStatBounds("Garchomp")
     expect(bounds.snapPoints).toHaveLength(3)
-    expect(bounds.snapPoints.map((s) => s.label)).toEqual(["0", "max", "ex"])
+    expect(bounds.snapPoints.map((s) => s.label)).toEqual(["0", "32", "ex"])
     expect(bounds.min).toBeLessThanOrEqual(bounds.snapPoints[0].value)
     expect(bounds.max).toBeGreaterThanOrEqual(bounds.snapPoints[2].value)
   })

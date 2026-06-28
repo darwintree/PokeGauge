@@ -9,6 +9,7 @@ import {
 import {
   defaultTrackState,
   expectedRowCount,
+  RANGE_DEFENDER_ID,
   RANGE_STAT_ID,
   runScenarioPipeline,
 } from "@/lib/scenario-pipeline"
@@ -182,5 +183,27 @@ describe("matchup scenario pipeline — range mode", () => {
     const gState = defaultTrackState(garchomp)
     const fState = defaultTrackState(flutter)
     expect(gState.statRange).not.toEqual(fState.statRange)
+  })
+
+  it("defender range mode: row count = moves × stats × items (defender track = 1)", () => {
+    const state = defaultTrackState(catalog)
+    state.defenderMode = "range"
+    const rows = runScenarioPipeline(catalog, state)
+    expect(rows).toHaveLength(6)
+    expect(expectedRowCount(state)).toBe(6)
+    expect(rows.every((r) => r.defenderId === RANGE_DEFENDER_ID)).toBe(true)
+    expect(rows.every((r) => r.defenderRanges != null)).toBe(true)
+  })
+
+  it("both tracks in range mode produce one row per move × item", () => {
+    const state = defaultTrackState(catalog)
+    state.statMode = "range"
+    state.defenderMode = "range"
+    state.moveIds = ["earthquake"]
+    state.attackerItemIds = ["none"]
+    const rows = runScenarioPipeline(catalog, state)
+    expect(rows).toHaveLength(1)
+    expect(rows[0].attackerStatId).toBe(RANGE_STAT_ID)
+    expect(rows[0].defenderId).toBe(RANGE_DEFENDER_ID)
   })
 })

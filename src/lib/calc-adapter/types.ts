@@ -1,4 +1,4 @@
-import type { OffenseSnapPresetId } from "@/lib/catalog/preset-labels"
+import type { StatTierTokenSet } from "@/lib/stat-tier-colors"
 
 export type StatSetup = {
   nature: string
@@ -27,8 +27,18 @@ export type StatRange = {
   max: number
 }
 
-export type AttackStatBounds = {
+export type StatAxisSnapPoint = {
+  id: string
+  value: number
+  label: string
+  tier: StatTierTokenSet
+}
+
+export type StatAxisBounds = {
   min: number
   max: number
-  snapPoints: Array<{ id: OffenseSnapPresetId; value: number; label: string }>
+  snapPoints: StatAxisSnapPoint[]
 }
+
+/** @deprecated use StatAxisBounds */
+export type AttackStatBounds = StatAxisBounds

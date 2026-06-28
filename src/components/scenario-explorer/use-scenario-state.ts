@@ -1,23 +1,41 @@
 import { useEffect, useMemo, useState } from "react"
 
-import { getOffenseStatBounds } from "@/lib/calc-adapter"
+import type { StatRange } from "@/lib/calc-adapter"
 import type { MatchupCatalog } from "@/lib/catalog"
+import {
+  defenderDefRangeFromPresets,
+  defenderHpRangeFromPresets,
+  getDefenderDefBounds,
+  getDefenderHpBounds,
+  getOffenseStatBounds,
+  offenseRangeFromPresets,
+  warmDefenderSpreadCache,
+} from "@/lib/calc-adapter"
 import {
   defaultTrackState,
   expectedRowCount,
   runScenarioPipeline,
+  type DefenderStatRanges,
   type StatSelectMode,
   type TrackState,
 } from "@/lib/scenario-pipeline"
 
 export function useScenarioState(catalog: MatchupCatalog) {
-  const statBounds = useMemo(
-    () =>
-      getOffenseStatBounds(
-        catalog.matchup.attackerSpecies,
-        catalog.moveCategory,
-      ),
-    [catalog.matchup.attackerSpecies, catalog.moveCategory],
+  const { attackerSpecies, defenderSpecies } = catalog.matchup
+
+  const offenseBounds = useMemo(
+    () => getOffenseStatBounds(attackerSpecies, catalog.moveCategory),
+    [attackerSpecies, catalog.moveCategory],
+  )
+
+  const defenderHpBounds = useMemo(
+    () => getDefenderHpBounds(defenderSpecies),
+    [defenderSpecies],
+  )
+
+  const defenderDefBounds = useMemo(
+    () => getDefenderDefBounds(defenderSpecies, catalog.moveCategory),
+    [defenderSpecies, catalog.moveCategory],
   )
 
   const [trackState, setTrackState] = useState<TrackState>(() =>
@@ -27,6 +45,13 @@ export function useScenarioState(catalog: MatchupCatalog) {
   useEffect(() => {
     setTrackState(defaultTrackState(catalog))
   }, [catalog])
+
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      warmDefenderSpreadCache(defenderSpecies, catalog.moveCategory)
+    }, 0)
+    return () => window.clearTimeout(id)
+  }, [defenderSpecies, catalog.moveCategory])
 
   const rows = useMemo(
     () => runScenarioPipeline(catalog, trackState),
@@ -40,8 +65,52 @@ export function useScenarioState(catalog: MatchupCatalog) {
         ? `${trackState.attackerStatIds.length} 预设`
         : `数轴 ${trackState.statRange.min}–${trackState.statRange.max}`,
     items: trackState.attackerItemIds.length,
-    defenders: trackState.defenderIds.length,
+    defenders:
+      trackState.defenderMode === "preset"
+        ? `${trackState.defenderIds.length} 预设`
+        : `数轴 HP ${trackState.defenderRanges.hp.min}–${trackState.defenderRanges.hp.max}`,
     rows: expectedRowCount(trackState),
+  }
+
+  function setStatMode(mode: StatSelectMode) {
+    setTrackState((s) => {
+      if (mode !== "range" || s.statRangeTouched) {
+        return { ...s, statMode: mode }
+      }
+      return {
+        ...s,
+        statMode: mode,
+        statRange: offenseRangeFromPresets(
+          attackerSpecies,
+          catalog.moveCategory,
+          s.attackerStatIds,
+        ),
+      }
+    })
+  }
+
+  function setDefenderMode(mode: StatSelectMode) {
+    setTrackState((s) => {
+      if (mode !== "range" || s.defenderRangeTouched) {
+        return { ...s, defenderMode: mode }
+      }
+      return {
+        ...s,
+        defenderMode: mode,
+        defenderRanges: {
+          hp: defenderHpRangeFromPresets(
+            defenderSpecies,
+            catalog.moveCategory,
+            s.defenderIds,
+          ),
+          def: defenderDefRangeFromPresets(
+            defenderSpecies,
+            catalog.moveCategory,
+            s.defenderIds,
+          ),
+        },
+      }
+    })
   }
 
   return {
@@ -49,17 +118,26 @@ export function useScenarioState(catalog: MatchupCatalog) {
     rows,
     showMoveOnRow: trackState.moveIds.length > 1,
     selectionSummary,
-    statBounds,
+    offenseBounds,
+    defenderHpBounds,
+    defenderDefBounds,
     setMoveIds: (ids: string[]) => setTrackState((s) => ({ ...s, moveIds: ids })),
-    setStatMode: (mode: StatSelectMode) => setTrackState((s) => ({ ...s, statMode: mode })),
+    setStatMode,
     setAttackerStatIds: (ids: string[]) =>
       setTrackState((s) => ({ ...s, attackerStatIds: ids })),
-    setStatRange: (statRange: TrackState["statRange"]) =>
-      setTrackState((s) => ({ ...s, statRange })),
+    setStatRange: (statRange: StatRange) =>
+      setTrackState((s) => ({ ...s, statRange, statRangeTouched: true })),
     setAttackerItemIds: (ids: string[]) =>
       setTrackState((s) => ({ ...s, attackerItemIds: ids })),
+    setDefenderMode,
     setDefenderIds: (ids: string[]) =>
       setTrackState((s) => ({ ...s, defenderIds: ids })),
+    setDefenderRanges: (defenderRanges: DefenderStatRanges) =>
+      setTrackState((s) => ({
+        ...s,
+        defenderRanges,
+        defenderRangeTouched: true,
+      })),
   }
 }
 

@@ -18,6 +18,7 @@ type TrackControlsProps = {
 
 export function TrackControls({ catalog, state }: TrackControlsProps) {
   const { trackState } = state
+  const defStatLabel = catalog.moveCategory === "physical" ? "物防" : "特防"
 
   return (
     <div className="space-y-3">
@@ -59,9 +60,9 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
 
         <TabsContent value="range" className="mt-0">
           <StatRangeAxis
-            bounds={state.statBounds}
+            statLabel={catalog.offenseStatLabel}
+            bounds={state.offenseBounds}
             value={trackState.statRange}
-            offenseStatLabel={catalog.offenseStatLabel}
             onChange={state.setStatRange}
           />
         </TabsContent>
@@ -74,13 +75,54 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
         onChange={state.setAttackerItemIds}
       />
 
-      <ConfigMultiSelect
-        label="防守方配置（性格 + 努力）"
-        options={catalog.defenderBulks}
-        selectedIds={trackState.defenderIds}
-        onChange={state.setDefenderIds}
-        tierForOption={(option) => defenderBulkTier(option.id)}
-      />
+      <Separator />
+
+      <Tabs
+        value={trackState.defenderMode}
+        onValueChange={(value) => state.setDefenderMode(value as StatSelectMode)}
+        className="gap-3"
+      >
+        <div className="flex items-center justify-between gap-2">
+          <Label className="text-muted-foreground text-xs">防守方</Label>
+          <TabsList className="h-7">
+            <TabsTrigger value="preset" className="px-2.5 text-xs">
+              预设
+            </TabsTrigger>
+            <TabsTrigger value="range" className="px-2.5 text-xs">
+              数轴选段
+            </TabsTrigger>
+          </TabsList>
+        </div>
+
+        <TabsContent value="preset" className="mt-0">
+          <ConfigMultiSelect
+            label="防守方配置（性格 + 努力）"
+            options={catalog.defenderBulks}
+            selectedIds={trackState.defenderIds}
+            onChange={state.setDefenderIds}
+            tierForOption={(option) => defenderBulkTier(option.id)}
+          />
+        </TabsContent>
+
+        <TabsContent value="range" className="mt-0 space-y-2">
+          <StatRangeAxis
+            statLabel="HP"
+            bounds={state.defenderHpBounds}
+            value={trackState.defenderRanges.hp}
+            onChange={(hp) =>
+              state.setDefenderRanges({ hp, def: trackState.defenderRanges.def })
+            }
+          />
+          <StatRangeAxis
+            statLabel={defStatLabel}
+            bounds={state.defenderDefBounds}
+            value={trackState.defenderRanges.def}
+            onChange={(def) =>
+              state.setDefenderRanges({ hp: trackState.defenderRanges.hp, def })
+            }
+          />
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }

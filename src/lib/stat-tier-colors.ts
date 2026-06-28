@@ -37,3 +37,40 @@ export function defenderBulkTier(optionId: string): StatTierTokenSet | null {
 export function statTierChipClasses(tokenSet: StatTierTokenSet): string {
   return STAT_TIER_CHIP_CLASS[tokenSet]
 }
+
+const OFFENSE_SNAP_TIER: Record<string, StatTierTokenSet> = {
+  "neutral-zero": "stat-tier-0",
+  "neutral-max": "stat-offense-max",
+  extreme: "stat-tier-ex",
+}
+
+const DEFENSE_HP_SNAP_TIER: Record<string, StatTierTokenSet> = {
+  "min-bulk": "stat-tier-0",
+  "hp-32": "stat-bulk-mid",
+}
+
+const DEFENSE_DEF_SNAP_TIER: Record<string, StatTierTokenSet> = {
+  "min-bulk": "stat-tier-0",
+  "def-max": "stat-offense-max",
+  "standard-bulk": "stat-tier-ex",
+}
+
+export function offenseSnapTier(snapId: string): StatTierTokenSet | null {
+  return OFFENSE_SNAP_TIER[snapId] ?? null
+}
+
+export function defenseHpSnapTier(snapId: string): StatTierTokenSet | null {
+  return DEFENSE_HP_SNAP_TIER[snapId] ?? null
+}
+
+export function defenseDefSnapTier(snapId: string): StatTierTokenSet | null {
+  return DEFENSE_DEF_SNAP_TIER[snapId] ?? null
+}
+
+/** Static axis snap label/tick classes — Tailwind cannot scan dynamic tier names. */
+export const STAT_AXIS_SNAP_CLASS: Record<StatTierTokenSet, string> = {
+  "stat-tier-0": "stat-axis-snap--0",
+  "stat-offense-max": "stat-axis-snap--offense-max",
+  "stat-bulk-mid": "stat-axis-snap--bulk-mid",
+  "stat-tier-ex": "stat-axis-snap--ex",
+}

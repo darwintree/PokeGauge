@@ -13,28 +13,45 @@
 import { calculate, Move, Pokemon } from "@smogon/calc"
 
 import type { MoveCategory } from "@/lib/catalog/types"
-import {
-  OFFENSE_SNAP_PRESET_IDS,
-  OFFENSE_PRESET_LABELS,
-} from "@/lib/catalog/preset-labels"
 
+import { CALC_GEN, VGC_LEVEL } from "./calc-constants"
 import {
-  getAttackerStatSetups,
-  offenseStatKey,
-} from "./presets"
+  closestDefenderSetupHigh,
+  closestDefenderSetupLow,
+  closestOffenseSetupAtOrAbove,
+  closestOffenseSetupAtOrBelow,
+  getOffenseStat,
+  getOffenseStatBounds,
+} from "./stat-bounds"
 import type {
-  AttackStatBounds,
   ComputedDamage,
   DefenderSetup,
   StatRange,
   StatSetup,
 } from "./types"
 
-/** Gen 9 engine until Champions-native data exists */
-export const CALC_GEN = 9
-
-/** VGC Level 50 — tournament standard for doubles */
-export const VGC_LEVEL = 50
+export { CALC_GEN, VGC_LEVEL } from "./calc-constants"
+export {
+  getDefenderDefBounds,
+  getDefenderDefStat,
+  getDefenderHp,
+  getDefenderHpBounds,
+  getOffenseStat,
+  getOffenseStatBounds,
+  warmDefenderSpreadCache,
+} from "./stat-bounds"
+export {
+  defaultDefenderDefRange,
+  defaultDefenderHpRange,
+  defaultOffenseStatRange,
+  defaultStatRange,
+  defenderDefRangeFromPresets,
+  defenderHpRangeFromPresets,
+  offenseRangeFromPresets,
+  clampStat,
+  sameStatRange,
+  snapToAnchors,
+} from "./stat-range"
 
 function pct(damage: number, hp: number) {
   return (damage / hp) * 100
@@ -120,118 +137,39 @@ export function computeDamage(
   return summarize(normalRolls, critRolls, hp)
 }
 
-const CANDIDATE_NATURES = [
-  "Serious",
-  "Adamant",
-  "Jolly",
-  "Modest",
-  "Timid",
-  "Bold",
-  "Lonely",
-] as const
+function mergeRangeResults(
+  lowResult: ReturnType<typeof runCalc>,
+  highResult: ReturnType<typeof runCalc>,
+): ComputedDamage {
+  const minDamage = Math.min(...lowResult.normalRolls)
+  const maxDamage = Math.max(...highResult.normalRolls)
+  const avgDamage =
+    (lowResult.normalRolls.reduce((a, b) => a + b, 0) / 16 +
+      highResult.normalRolls.reduce((a, b) => a + b, 0) / 16) /
+    2
+  const critMinDamage = Math.min(...lowResult.critRolls)
+  const critMaxDamage = Math.max(...highResult.critRolls)
+  const hp = lowResult.hp
+  const ohkoHigh = highResult.normalRolls.filter((d) => d >= hp).length
 
-function enumerateSpreads(statKey: "atk" | "spa"): StatSetup[] {
-  const out: StatSetup[] = []
-  for (const nature of CANDIDATE_NATURES) {
-    for (let ev = 0; ev <= 252; ev += 4) {
-      out.push({ nature, evs: { [statKey]: ev } })
-    }
+  return {
+    defenderHp: hp,
+    minDamage,
+    maxDamage,
+    avgDamage,
+    minPercent: pct(minDamage, hp),
+    maxPercent: pct(maxDamage, hp),
+    avgPercent: pct(avgDamage, hp),
+    critMinDamage,
+    critMaxDamage,
+    critMinPercent: pct(critMinDamage, hp),
+    critMaxPercent: pct(critMaxDamage, hp),
+    ohkoChance: ohkoHigh > 0 ? (ohkoHigh / 16) * 100 : undefined,
   }
-  return out
-}
-
-export function getOffenseStat(
-  species: string,
-  category: MoveCategory,
-  setup: StatSetup,
-): number {
-  const statKey = offenseStatKey(category)
-  const p = new Pokemon(CALC_GEN, species, {
-    level: VGC_LEVEL,
-    nature: setup.nature,
-    evs: setup.evs,
-  })
-  return p.stats[statKey]
-}
-
-/** @deprecated use getOffenseStatBounds(species, category) */
-export function getAttackStat(species: string, setup: StatSetup): number {
-  return getOffenseStat(species, "physical", setup)
-}
-
-export function getOffenseStatBounds(
-  species: string,
-  category: MoveCategory,
-): AttackStatBounds {
-  const statKey = offenseStatKey(category)
-  const setups = getAttackerStatSetups(category)
-  const stats = enumerateSpreads(statKey).map((s) =>
-    getOffenseStat(species, category, s),
-  )
-  const min = Math.min(...stats)
-  const max = Math.max(...stats)
-
-  const snapPoints = OFFENSE_SNAP_PRESET_IDS.map((id) => ({
-    id,
-    value: getOffenseStat(species, category, setups[id]),
-    label: OFFENSE_PRESET_LABELS[id],
-  }))
-
-  return { min, max, snapPoints }
-}
-
-/** @deprecated use getOffenseStatBounds(species, category) */
-export function getAttackStatBounds(species: string): AttackStatBounds {
-  return getOffenseStatBounds(species, "physical")
-}
-
-export function defaultStatRange(
-  species: string,
-  category: MoveCategory,
-): StatRange {
-  const bounds = getOffenseStatBounds(species, category)
-  const neutralMax =
-    bounds.snapPoints.find((s) => s.id === "neutral-max")?.value ?? bounds.min
-  return { min: neutralMax, max: bounds.max }
-}
-
-function closestSetupAtOrBelow(
-  species: string,
-  category: MoveCategory,
-  target: number,
-): StatSetup {
-  const statKey = offenseStatKey(category)
-  const setups = getAttackerStatSetups(category)
-  let best: { setup: StatSetup; stat: number } | null = null
-  for (const setup of enumerateSpreads(statKey)) {
-    const stat = getOffenseStat(species, category, setup)
-    if (stat <= target && (!best || stat > best.stat)) {
-      best = { setup, stat }
-    }
-  }
-  return best?.setup ?? setups["neutral-zero"]
-}
-
-function closestSetupAtOrAbove(
-  species: string,
-  category: MoveCategory,
-  target: number,
-): StatSetup {
-  const statKey = offenseStatKey(category)
-  const setups = getAttackerStatSetups(category)
-  let best: { setup: StatSetup; stat: number } | null = null
-  for (const setup of enumerateSpreads(statKey)) {
-    const stat = getOffenseStat(species, category, setup)
-    if (stat >= target && (!best || stat < best.stat)) {
-      best = { setup, stat }
-    }
-  }
-  return best?.setup ?? setups.extreme
 }
 
 /**
- * Stat-range row: envelope of (statMin × rollMin) … (statMax × rollMax),
- * crit whiskers use the same stat endpoints.
+ * Offense stat-range row: envelope of (statMin × rollMin) … (statMax × rollMax).
  */
 export function computeDamageForStatRange(
   attackerSpecies: string,
@@ -245,8 +183,8 @@ export function computeDamageForStatRange(
   const low = statRange.min
   const high = Math.max(statRange.max, statRange.min)
 
-  const lowSetup = closestSetupAtOrBelow(attackerSpecies, category, low)
-  const highSetup = closestSetupAtOrAbove(attackerSpecies, category, high)
+  const lowSetup = closestOffenseSetupAtOrBelow(attackerSpecies, category, low)
+  const highSetup = closestOffenseSetupAtOrAbove(attackerSpecies, category, high)
 
   const lowResult = runCalc(
     attackerSpecies,
@@ -265,30 +203,122 @@ export function computeDamageForStatRange(
     defender,
   )
 
-  const minDamage = Math.min(...lowResult.normalRolls)
-  const maxDamage = Math.max(...highResult.normalRolls)
-  const avgDamage =
-    (lowResult.normalRolls.reduce((a, b) => a + b, 0) / 16 +
-      highResult.normalRolls.reduce((a, b) => a + b, 0) / 16) /
-    2
-  const critMinDamage = Math.min(...lowResult.critRolls)
-  const critMaxDamage = Math.max(...highResult.critRolls)
-  const hp = lowResult.hp
+  return mergeRangeResults(lowResult, highResult)
+}
 
-  const ohkoHigh = highResult.normalRolls.filter((d) => d >= hp).length
+/**
+ * Defender range row: diagonal envelope (HP_min, Def_min) → (HP_max, Def_max).
+ */
+export function computeDamageForDefenderRange(
+  attackerSpecies: string,
+  defenderSpecies: string,
+  moveName: string,
+  attackerStat: StatSetup,
+  category: MoveCategory,
+  item: string | undefined,
+  hpRange: StatRange,
+  defRange: StatRange,
+): ComputedDamage {
+  const hpLow = hpRange.min
+  const hpHigh = Math.max(hpRange.max, hpRange.min)
+  const defLow = defRange.min
+  const defHigh = Math.max(defRange.max, defRange.min)
 
-  return {
-    defenderHp: hp,
-    minDamage,
-    maxDamage,
-    avgDamage,
-    minPercent: pct(minDamage, hp),
-    maxPercent: pct(maxDamage, hp),
-    avgPercent: pct(avgDamage, hp),
-    critMinDamage,
-    critMaxDamage,
-    critMinPercent: pct(critMinDamage, hp),
-    critMaxPercent: pct(critMaxDamage, hp),
-    ohkoChance: ohkoHigh > 0 ? (ohkoHigh / 16) * 100 : undefined,
-  }
+  const lowSetup = closestDefenderSetupLow(
+    defenderSpecies,
+    category,
+    hpLow,
+    defLow,
+  )
+  const highSetup = closestDefenderSetupHigh(
+    defenderSpecies,
+    category,
+    hpHigh,
+    defHigh,
+  )
+
+  const lowResult = runCalc(
+    attackerSpecies,
+    defenderSpecies,
+    moveName,
+    attackerStat,
+    item,
+    lowSetup,
+  )
+  const highResult = runCalc(
+    attackerSpecies,
+    defenderSpecies,
+    moveName,
+    attackerStat,
+    item,
+    highSetup,
+  )
+
+  return mergeRangeResults(lowResult, highResult)
+}
+
+/**
+ * Both tracks in range: offense endpoints × defender diagonal endpoints.
+ */
+export function computeDamageForCombinedRange(
+  attackerSpecies: string,
+  defenderSpecies: string,
+  moveName: string,
+  statRange: StatRange,
+  category: MoveCategory,
+  item: string | undefined,
+  hpRange: StatRange,
+  defRange: StatRange,
+): ComputedDamage {
+  const offLow = closestOffenseSetupAtOrBelow(
+    attackerSpecies,
+    category,
+    statRange.min,
+  )
+  const offHigh = closestOffenseSetupAtOrAbove(
+    attackerSpecies,
+    category,
+    Math.max(statRange.max, statRange.min),
+  )
+  const defLow = closestDefenderSetupLow(
+    defenderSpecies,
+    category,
+    hpRange.min,
+    defRange.min,
+  )
+  const defHigh = closestDefenderSetupHigh(
+    defenderSpecies,
+    category,
+    Math.max(hpRange.max, hpRange.min),
+    Math.max(defRange.max, defRange.min),
+  )
+
+  const lowResult = runCalc(
+    attackerSpecies,
+    defenderSpecies,
+    moveName,
+    offLow,
+    item,
+    defLow,
+  )
+  const highResult = runCalc(
+    attackerSpecies,
+    defenderSpecies,
+    moveName,
+    offHigh,
+    item,
+    defHigh,
+  )
+
+  return mergeRangeResults(lowResult, highResult)
+}
+
+/** @deprecated use getOffenseStat */
+export function getAttackStat(species: string, setup: StatSetup): number {
+  return getOffenseStat(species, "physical", setup)
+}
+
+/** @deprecated use getOffenseStatBounds */
+export function getAttackStatBounds(species: string) {
+  return getOffenseStatBounds(species, "physical")
 }

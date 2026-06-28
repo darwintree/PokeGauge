@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import {
   DEFENSE_PRESET_LABELS,
+  OFFENSE_AXIS_SNAP_LABELS,
   OFFENSE_PRESET_LABELS,
   OFFENSE_SNAP_PRESET_IDS,
 } from "./preset-labels"
@@ -26,5 +27,9 @@ describe("preset labels", () => {
       "max",
       "ex",
     ])
+  })
+
+  it("uses axis-specific snap labels", () => {
+    expect(OFFENSE_AXIS_SNAP_LABELS["neutral-max"]).toBe("32")
   })
 })
