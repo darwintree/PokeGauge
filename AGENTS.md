@@ -66,6 +66,16 @@ pnpm dlx shadcn@latest add <component>
 
 Issues live in `.issues/` and are managed with the **dot-issues** skill. See `docs/agents/issue-tracker.md`.
 
+**Resolve → archive before commit.** When work fully resolves an issue, update the issue body, then run `archive --id <uuid>` via dot-issues so it leaves the active queue. Do this **before** creating the git commit that lands the fix — the commit should include both the code change and the archived issue file move.
+
+### Implementation traces
+
+When completing an issue or executing an **AFK** task (issues labeled `ready-for-agent`), use the **implementation-with-traces** skill.
+
+- Trace only **unresolved implementation decisions** — choices the source did not state or left ambiguous. Do not trace explicit requirements or routine repo conventions.
+- Write traces under `docs/traces/implementations/YYYY-MM-DD-slug.md`; append entries as decisions are made.
+- No unresolved decision → no trace file.
+
 ### Triage labels
 
 Five canonical triage roles, stored as uppercase labels in dot-issues (e.g. `NEEDS-TRIAGE`). See `docs/agents/triage-labels.md`.
