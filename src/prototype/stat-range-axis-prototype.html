@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<!--
+  PROTOTYPE — throwaway stat range axis UI (HTML only). DELETE when done.
+  Question: 单轴轨内拖选 + 防守 HP/防 双轴 + snap 锚点样式，哪种结构最合适？
+
+  Open: open this file in a browser, or:
+    pnpm dev  →  http://localhost:5173/src/prototype/stat-range-axis-prototype.html
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PROTOTYPE — Stat range axis</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font: 13px/1.45 ui-sans-serif, system-ui, sans-serif;
+      background: #fafafa;
+      color: #171717;
+      padding: 1.25rem 1rem 5rem;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #0a0a0a; color: #ededed; }
+      .card { background: #141414; border-color: #ffffff24; }
+      .muted { color: #a0a0a0; }
+      .rail-bg { background: #262626; }
+      .handle { background: #141414; border-color: #0090ff; }
+      .switcher { background: #422006; border-color: #f59e0b66; color: #fef3c7; }
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #ebebeb;
+      border-radius: 12px;
+      padding: 1rem;
+      max-width: 28rem;
+    }
+    .muted { color: #666; font-size: 11px; }
+    h1 { font-size: 1rem; margin: 0 0 .25rem; }
+    .section { margin-top: 1rem; padding-top: .75rem; border-top: 1px solid #ebebeb; }
+    @media (prefers-color-scheme: dark) {
+      .section { border-color: #ffffff18; }
+    }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+    .tabs { display: flex; gap: 2px; padding: 2px; border: 1px solid #ebebeb; border-radius: 6px; background: #f5f5f5; }
+    @media (prefers-color-scheme: dark) { .tabs { background: #1a1a1a; border-color: #ffffff24; } }
+    .tabs button {
+      border: 0; background: transparent; padding: .25rem .6rem; border-radius: 4px;
+      font: inherit; font-size: 11px; cursor: pointer; color: #666;
+    }
+    .tabs button.on { background: #fff; box-shadow: 0 1px 2px #00000014; color: #171717; }
+    @media (prefers-color-scheme: dark) {
+      .tabs button.on { background: #262626; color: #ededed; }
+    }
+    .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: .5rem; }
+    .pill {
+      border: 1px solid; border-radius: 6px; padding: .25rem .5rem;
+      font-size: 11px; font-weight: 600; cursor: pointer; background: transparent;
+    }
+    .pill.on { outline: 1px solid #00000030; }
+    /* tier tokens */
+    .t0 { color: #4d4d4d; border-color: #ebebeb; background: #f2f2f2; }
+    .t-max { color: #006bff; border-color: #cce0ff; background: #f0f7ff; }
+    .t-mid { color: #0077e6; border-color: #b3d9ff; background: #e8f4ff; }
+    .t-ex { color: #a000f8; border-color: #f2d9ff; background: #faf0ff; }
+    @media (prefers-color-scheme: dark) {
+      .t0 { color: #a0a0a0; border-color: #ffffff24; background: #1a1a1a; }
+      .t-max { color: #0090ff; border-color: #0d3868; background: #06193a; }
+      .t-mid { color: #52a8ff; border-color: #1a5080; background: #0a2847; }
+      .t-ex { color: #c472fb; border-color: #541a76; background: #290c33; }
+    }
+    /* axis shared */
+    .axis { margin-top: .75rem; }
+    .axis-head { display: flex; justify-content: space-between; align-items: baseline; font-size: 11px; margin-bottom: 4px; }
+    .axis-head strong { font-size: 13px; font-variant-numeric: tabular-nums; }
+    .rail-wrap { position: relative; touch-action: none; user-select: none; margin: 0 8px; }
+    .rail-bg { position: absolute; left: 0; right: 0; top: 50%; height: 6px; transform: translateY(-50%); border-radius: 999px; }
+    .rail-sel { position: absolute; top: 50%; height: 6px; transform: translateY(-50%); border-radius: 999px; background: #006bff40; border: 1px solid #006bff99; }
+    .tick { position: absolute; top: 50%; width: 2px; height: 10px; transform: translate(-50%, -50%); border-radius: 1px; }
+    .handle {
+      position: absolute; top: 50%; width: 14px; height: 14px; transform: translate(-50%, -50%);
+      border-radius: 999px; border: 2px solid #006bff; background: #fff; cursor: grab; padding: 0;
+    }
+    .handle:active { cursor: grabbing; }
+    .handle.active { box-shadow: 0 0 0 3px #006bff40; }
+    .handle.hidden { display: none; }
+    /* variant A */
+    .va-labels { position: relative; height: 16px; font-size: 10px; font-weight: 600; }
+    .va-labels span { position: absolute; transform: translateX(-50%); font-variant-numeric: tabular-nums; }
+    .va-rail { height: 40px; }
+    .va-values { position: relative; height: 16px; font-size: 10px; color: #666; font-variant-numeric: tabular-nums; }
+    .va-values span { position: absolute; transform: translateX(-50%); }
+    /* variant B */
+    .vb-rail { height: 56px; }
+    .vb-rail .rail-bg, .vb-rail .rail-sel { top: 62%; }
+    .vb-rail .handle { top: 62%; }
+    .vb-chip-col { position: absolute; top: 0; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .vb-chip { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; border: 1px solid; line-height: 1; }
+    .vb-stem { width: 1px; height: 12px; }
+    .vb-num { font-size: 10px; color: #666; font-variant-numeric: tabular-nums; }
+    /* variant C */
+    .vc-block { border: 1px solid #ebebeb; border-radius: 8px; padding: 10px; background: #fafafa; margin-top: 8px; }
+    @media (prefers-color-scheme: dark) { .vc-block { background: #111; border-color: #ffffff18; } }
+    .vc-summary { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .vc-tag { font-size: 10px; font-weight: 400; color: #666; margin-left: 6px; }
+    .vc-rail { height: 28px; margin-top: 6px; }
+    .vc-rail .rail-bg { height: 1px; background: #ccc; }
+    .vc-rail .rail-sel { height: 4px; }
+    .vc-rail .handle { width: 10px; height: 10px; background: #006bff; border: 0; }
+    .vc-snaps { position: relative; height: 14px; }
+    .vc-snaps span { position: absolute; transform: translateX(-50%); font-size: 9px; font-weight: 600; }
+    .vc-ends { display: flex; justify-content: space-between; font-size: 9px; color: #666; font-variant-numeric: tabular-nums; margin-top: 2px; }
+    .def-grid { display: grid; gap: 8px; }
+    @media (min-width: 480px) { .def-grid.vc { grid-template-columns: 1fr 1fr; } }
+    pre.debug {
+      margin-top: 1rem; padding: .5rem; border-radius: 6px; background: #f5f5f5;
+      font-size: 10px; overflow: auto; border: 1px solid #ebebeb;
+    }
+    @media (prefers-color-scheme: dark) { pre.debug { background: #111; border-color: #ffffff18; } }
+    .switcher {
+      position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+      border-radius: 999px; border: 1px solid #f59e0b66; background: #422006; color: #fef3c7;
+      font-size: 11px; box-shadow: 0 4px 20px #00000040; z-index: 99;
+    }
+    .switcher button { background: transparent; border: 0; color: inherit; cursor: pointer; padding: 2px 6px; font-size: 14px; }
+    .switcher kbd { opacity: .7; font-size: 10px; }
+  </style>
+</head>
+<body>
+  <div class="card" id="root"></div>
+  <div class="switcher" id="switcher"></div>
+
+  <script>
+    // --- bounds (value-first; labels derived) — Incineroar L100 physical ---
+    const BOUNDS = {
+      atk: {
+        min: 296, max: 394,
+        snaps: [
+          { id: '0', label: '0', value: 296, tier: 't0' },
+          { id: 'max', label: 'max', value: 359, tier: 't-max' },
+          { id: 'ex', label: 'ex', value: 394, tier: 't-ex' },
+        ],
+      },
+      hp: {
+        min: 331, max: 394,
+        snaps: [
+          { id: '0', label: '0', value: 331, tier: 't0' },
+          { id: 'max', label: 'max', value: 394, tier: 't-mid' },
+        ],
+      },
+      def: {
+        min: 216, max: 306,
+        snaps: [
+          { id: '0', label: '0', value: 216, tier: 't0' },
+          { id: 'max', label: 'max', value: 279, tier: 't-max' },
+          { id: 'ex', label: 'ex', value: 306, tier: 't-ex' },
+        ],
+      },
+    };
+
+    const PRESETS = {
+      'min-bulk': { hp: 331, def: 216 },
+      'hp-32': { hp: 394, def: 216 },
+      'standard-bulk': { hp: 394, def: 306 },
+    };
+
+    const VARIANTS = [
+      { key: 'A', name: '上标签 · 轨内拖选 · 下数值' },
+      { key: 'B', name: 'Snap 色块锚点' },
+      { key: 'C', name: '摘要先行 · 细轨' },
+    ];
+
+    const tierColor = { t0: '#4d4d4d', 't-max': '#006bff', 't-mid': '#0077e6', 't-ex': '#a000f8' };
+
+    let variant = new URLSearchParams(location.search).get('variant') || 'A';
+    const state = {
+      offenseRange: { min: 359, max: 394 },
+      defenderMode: 'preset',
+      defenderPresets: ['standard-bulk'],
+      defenderRange: { hp: { min: 331, max: 394 }, def: { min: 216, max: 306 } },
+    };
+
+    let drag = null;
+
+    function clamp(n, lo, hi) { return Math.min(hi, Math.max(lo, n)); }
+    function pct(v, b) { return ((v - b.min) / (b.max - b.min || 1)) * 100; }
+    function snap(v, b) {
+      for (const s of b.snaps) if (Math.abs(v - s.value) <= 2) return s.value;
+      return v;
+    }
+    function snapRange(r, b) {
+      let min = snap(clamp(r.min, b.min, r.max), b);
+      let max = snap(clamp(r.max, min, b.max), b);
+      return { min, max };
+    }
+    function fmt(r) { return r.min === r.max ? String(r.min) : r.min + '–' + r.max; }
+    function valFromX(x, rect, b) {
+      const t = clamp((x - rect.left) / rect.width, 0, 1);
+      return Math.round(b.min + t * (b.max - b.min));
+    }
+    function envelopeFromPresets(ids) {
+      const hp = ids.map(id => PRESETS[id].hp);
+      const def = ids.map(id => PRESETS[id].def);
+      return {
+        hp: { min: Math.min(...hp), max: Math.max(...hp) },
+        def: { min: Math.min(...def), max: Math.max(...def) },
+      };
+    }
+
+    function setVariant(k) {
+      variant = k;
+      const u = new URL(location.href);
+      u.searchParams.set('variant', k);
+      history.replaceState({}, '', u);
+      render();
+    }
+
+    function cycleVariant(d) {
+      const i = VARIANTS.findIndex(v => v.key === variant);
+      setVariant(VARIANTS[(i + d + VARIANTS.length) % VARIANTS.length].key);
+    }
+
+    function onDefMode(mode) {
+      if (mode === 'range' && state.defenderMode === 'preset') {
+        state.defenderRange = envelopeFromPresets(state.defenderPresets);
+      }
+      state.defenderMode = mode;
+      render();
+    }
+
+    function togglePreset(id) {
+      let next = state.defenderPresets.includes(id)
+        ? state.defenderPresets.filter(x => x !== id)
+        : [...state.defenderPresets, id];
+      if (!next.length) next = [id];
+      state.defenderPresets = next;
+      render();
+    }
+
+    function bindRail(el, b, get, set) {
+      el.querySelectorAll('[data-handle]').forEach(btn => {
+        btn.addEventListener('pointerdown', e => {
+          e.preventDefault();
+          drag = { el, b, get, set, handle: btn.dataset.handle, id: e.pointerId };
+          btn.classList.add('active');
+          el.setPointerCapture(e.pointerId);
+        });
+      });
+      el.addEventListener('pointermove', e => {
+        if (!drag || drag.el !== el) return;
+        const rect = el.getBoundingClientRect();
+        const raw = valFromX(e.clientX, rect, b);
+        const cur = get();
+        const next = drag.handle === 'min'
+          ? snapRange({ min: raw, max: cur.max }, b)
+          : snapRange({ min: cur.min, max: raw }, b);
+        set(next);
+        renderRailsOnly();
+        renderDebug();
+      });
+      el.addEventListener('pointerup', e => {
+        if (drag?.el === el) {
+          el.querySelectorAll('.handle.active').forEach(h => h.classList.remove('active'));
+          drag = null;
+        }
+      });
+    }
+
+    function railHtml(b, range, variantKey, label) {
+      const l = pct(range.min, b);
+      const r = pct(range.max, b);
+      const w = Math.max(r - l, range.min === range.max ? 0.5 : 0);
+      const point = range.min === range.max;
+      const handles = `
+        <button type="button" class="handle${drag?.handle==='min'?' active':''}" data-handle="min" style="left:${l}%"></button>
+        <button type="button" class="handle${point?' hidden':''}${drag?.handle==='max'?' active':''}" data-handle="max" style="left:${r}%"></button>`;
+      const ticks = b.snaps.map(s =>
+        `<div class="tick" style="left:${pct(s.value,b)}%;background:${tierColor[s.tier]}"></div>`).join('');
+
+      if (variantKey === 'A') {
+        const labels = b.snaps.map(s =>
+          `<span style="left:${pct(s.value,b)}%;color:${tierColor[s.tier]}">${s.label}</span>`).join('');
+        const values = b.snaps.map(s =>
+          `<span style="left:${pct(s.value,b)}%">${s.value}</span>`).join('');
+        return `
+          <div class="axis" data-axis="${label}">
+            <div class="axis-head"><span class="muted">${label}</span><strong>${fmt(range)}</strong></div>
+            <div class="va-labels">${labels}</div>
+            <div class="rail-wrap va-rail" data-bounds="${label}">
+              <div class="rail-bg"></div>${ticks}<div class="rail-sel" style="left:${l}%;width:${w}%"></div>${handles}
+            </div>
+            <div class="va-values">${values}</div>
+          </div>`;
+      }
+      if (variantKey === 'B') {
+        const chips = b.snaps.map(s => `
+          <div class="vb-chip-col" style="left:${pct(s.value,b)}%">
+            <span class="vb-chip ${s.tier}">${s.label}</span>
+            <div class="vb-stem" style="background:${tierColor[s.tier]}"></div>
+            <span class="vb-num">${s.value}</span>
+          </div>`).join('');
+        return `
+          <div class="axis" data-axis="${label}">
+            <div class="axis-head"><span>${label}</span><span class="muted">${fmt(range)}</span></div>
+            <div class="rail-wrap vb-rail" data-bounds="${label}">
+              <div class="rail-bg"></div>${chips}<div class="rail-sel" style="left:${l}%;width:${w}%"></div>${handles}
+            </div>
+          </div>`;
+      }
+      // C
+      const snaps = b.snaps.map(s =>
+        `<span style="left:${pct(s.value,b)}%;color:${tierColor[s.tier]}">${s.label}</span>`).join('');
+      const midVals = b.snaps.map(s => `<span>${s.value}</span>`).join('');
+      return `
+        <div class="vc-block" data-axis="${label}">
+          <div class="row">
+            <span class="muted" style="text-transform:uppercase;font-size:10px;letter-spacing:.04em">${label}</span>
+            <div class="vc-summary">${fmt(range)}${point ? '<span class="vc-tag">单点</span>' : ''}</div>
+          </div>
+          <div class="vc-snaps">${snaps}</div>
+          <div class="rail-wrap vc-rail" data-bounds="${label}">
+            <div class="rail-bg"></div>${ticks}<div class="rail-sel" style="left:${l}%;width:${w}%"></div>${handles}
+          </div>
+          <div class="vc-ends"><span>${b.min}</span>${midVals}<span>${b.max}</span></div>
+        </div>`;
+    }
+
+    const axisBindings = [];
+
+    function mountRails() {
+      axisBindings.length = 0;
+      document.querySelectorAll('[data-bounds]').forEach(el => {
+        const label = el.dataset.bounds;
+        const spec = { 物攻: ['atk', () => state.offenseRange, v => { state.offenseRange = v; }],
+                       HP: ['hp', () => state.defenderRange.hp, v => { state.defenderRange.hp = v; }],
+                       物防: ['def', () => state.defenderRange.def, v => { state.defenderRange.def = v; }] }[label];
+        if (!spec) return;
+        const [key, get, set] = spec;
+        bindRail(el, BOUNDS[key], get, set);
+        axisBindings.push({ el, key, get, set });
+      });
+    }
+
+    function renderRailsOnly() {
+      axisBindings.forEach(({ el, key, get }) => {
+        const b = BOUNDS[key];
+        const range = get();
+        const l = pct(range.min, b), r = pct(range.max, b);
+        const w = Math.max(r - l, range.min === range.max ? 0.5 : 0);
+        const sel = el.querySelector('.rail-sel');
+        if (sel) { sel.style.left = l + '%'; sel.style.width = w + '%'; }
+        const hs = el.querySelectorAll('.handle');
+        if (hs[0]) hs[0].style.left = l + '%';
+        if (hs[1]) { hs[1].style.left = r + '%'; hs[1].classList.toggle('hidden', range.min === range.max); }
+        const head = el.closest('[data-axis]')?.querySelector('.axis-head strong, .vc-summary');
+        if (head) head.innerHTML = fmt(range) + (range.min === range.max && variant === 'C' ? '<span class="vc-tag">单点</span>' : '');
+        const sub = el.closest('.axis')?.querySelector('.axis-head .muted:last-child');
+        if (sub && variant === 'B') sub.textContent = fmt(range);
+      });
+    }
+
+    function renderDebug() {
+      const pre = document.getElementById('debug');
+      if (pre) pre.textContent = JSON.stringify(state, null, 2);
+    }
+
+    function render() {
+      const v = variant;
+      const defRange = state.defenderMode === 'range'
+        ? `<div class="${v === 'C' ? 'def-grid vc' : ''}">${railHtml(BOUNDS.hp, state.defenderRange.hp, v, 'HP')}${railHtml(BOUNDS.def, state.defenderRange.def, v, '物防')}</div>`
+        : `<div class="pills">
+            ${[['min-bulk','0','t0'],['hp-32','32HP','t-mid'],['standard-bulk','ex','t-ex']].map(([id,lbl,t]) =>
+              `<button type="button" class="pill ${t}${state.defenderPresets.includes(id)?' on':''}" data-preset="${id}">${lbl}</button>`).join('')}
+          </div>`;
+
+      document.getElementById('root').innerHTML = `
+        <h1>数轴选段 · Variant ${v}</h1>
+        <p class="muted">${VARIANTS.find(x => x.key === v).name}</p>
+
+        <div class="section">
+          <div class="row"><span class="muted">攻击方 · 物攻</span></div>
+          ${railHtml(BOUNDS.atk, state.offenseRange, v, '物攻')}
+        </div>
+
+        <div class="section">
+          <div class="row">
+            <span class="muted">防守方</span>
+            <div class="tabs">
+              <button type="button" class="${state.defenderMode === 'preset' ? 'on' : ''}" data-mode="preset">预设</button>
+              <button type="button" class="${state.defenderMode === 'range' ? 'on' : ''}" data-mode="range">数轴选段</button>
+            </div>
+          </div>
+          ${defRange}
+        </div>
+
+        <pre class="debug" id="debug"></pre>
+      `;
+
+      document.querySelectorAll('[data-mode]').forEach(b =>
+        b.addEventListener('click', () => onDefMode(b.dataset.mode)));
+      document.querySelectorAll('[data-preset]').forEach(b =>
+        b.addEventListener('click', () => togglePreset(b.dataset.preset)));
+
+      mountRails();
+      renderDebug();
+
+      const cur = VARIANTS.find(x => x.key === variant);
+      document.getElementById('switcher').innerHTML = `
+        <span class="muted">PROTOTYPE</span>
+        <button type="button" id="prev">←</button>
+        <span><strong>${cur.key}</strong> — ${cur.name}</span>
+        <button type="button" id="next">→</button>
+        <kbd>← →</kbd>`;
+      document.getElementById('prev').onclick = () => cycleVariant(-1);
+      document.getElementById('next').onclick = () => cycleVariant(1);
+    }
+
+    document.addEventListener('keydown', e => {
+      if (['INPUT','TEXTAREA'].includes(e.target.tagName)) return;
+      if (e.key === 'ArrowLeft') cycleVariant(-1);
+      if (e.key === 'ArrowRight') cycleVariant(1);
+    });
+
+    render();
+  </script>
+</body>
+</html>

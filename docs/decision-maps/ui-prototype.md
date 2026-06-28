@@ -93,7 +93,7 @@ Type: Prototype
 - 各 track 的 default 选中集（default view 宽结果）
 - 行数过多时的折叠/分组（presentation，不改变累乘契约）
 
-**Prototype asset**: [`src/prototype/scenario-explorer/`](../../src/prototype/scenario-explorer/) — `pnpm dev` → `/?prototype=scenarios`
+**Prototype asset**: React scenario explorer removed (verdicts captured in issues / production). Active throwaway: [`stat-range-axis-prototype.html`](../../src/prototype/stat-range-axis-prototype.html).
 
 ---
 
@@ -142,7 +142,7 @@ Type: Prototype
 - **粗竖线** = 通常 roll 算术平均
 - 暴击区间在通常区间上方时，用虚线桥接两段
 
-当前 mock 以 Gen 6+ 1.5× 暴击倍率 hardcode；见 [`damage-box-plot.tsx`](../../src/prototype/scenario-explorer/damage-box-plot.tsx)。
+当前 mock 以 Gen 6+ 1.5× 暴击倍率 hardcode；见 [`damage-box-plot.tsx`](../../src/components/scenario-explorer/damage-box-plot.tsx)。
 
 ---
 
@@ -167,7 +167,7 @@ Default / Detailed 是同一页渐进展开，还是分区/步骤？
 - **结果区**：右栏主区；标题 + 选中摘要 + 箱形图列表；结果优先于参数的视觉权重
 - **移动端**：非分栏；参数块 → 结果区纵向堆叠；箱形图标签与 plot 保持现有单列宽度
 
-**Prototype asset**: [`variant-b-sidebar.tsx`](../../src/prototype/scenario-explorer/variant-b-sidebar.tsx) — `pnpm dev` → `/?prototype=scenarios`
+**Prototype asset**: Sidebar layout verdict in production `ScenarioExplorerPage`. Stat range UI: [`stat-range-axis-prototype.html`](../../src/prototype/stat-range-axis-prototype.html).
 
 ---
 
