@@ -93,7 +93,7 @@ Type: Prototype
 - 各 track 的 default 选中集（default view 宽结果）
 - 行数过多时的折叠/分组（presentation，不改变累乘契约）
 
-**Prototype asset**: React scenario explorer removed (verdicts captured in issues / production). Active throwaway: [`stat-range-axis-prototype.html`](../../src/prototype/stat-range-axis-prototype.html).
+**Prototype asset**: Stat range axis UI verdict captured in [[../.issues/20260626_open_stat-range-axis-ui-needs-refinement|Stat range axis issue]]（展开微调行；throwaway 代码已删）。
 
 ---
 
@@ -167,7 +167,7 @@ Default / Detailed 是同一页渐进展开，还是分区/步骤？
 - **结果区**：右栏主区；标题 + 选中摘要 + 箱形图列表；结果优先于参数的视觉权重
 - **移动端**：非分栏；参数块 → 结果区纵向堆叠；箱形图标签与 plot 保持现有单列宽度
 
-**Prototype asset**: Sidebar layout verdict in production `ScenarioExplorerPage`. Stat range UI: [`stat-range-axis-prototype.html`](../../src/prototype/stat-range-axis-prototype.html).
+**Prototype asset**: Sidebar layout verdict in production `ScenarioExplorerPage`. Stat range UI verdict in [[../.issues/20260626_open_stat-range-axis-ui-needs-refinement|Stat range axis issue]].
 
 ---
 
