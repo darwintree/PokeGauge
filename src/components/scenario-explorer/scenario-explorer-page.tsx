@@ -63,6 +63,7 @@ export function ScenarioExplorerPage() {
           <ScenarioResults
             catalog={catalog}
             rows={state.rows}
+            trackState={state.trackState}
             showMoveOnRow={state.showMoveOnRow}
             compact
           />

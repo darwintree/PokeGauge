@@ -22,6 +22,7 @@ type DualHandleDragOptions = {
   snapValues: number[]
   onChange: (value: StatRange) => void
   onHandleTap: (handle: "min" | "max") => void
+  singlePoint?: boolean
 }
 
 export function useDualHandleDrag({
@@ -31,6 +32,7 @@ export function useDualHandleDrag({
   snapValues,
   onChange,
   onHandleTap,
+  singlePoint = false,
 }: DualHandleDragOptions) {
   const railRef = useRef<HTMLDivElement>(null)
   const [activeHandle, setActiveHandle] = useState<"min" | "max" | null>(null)
@@ -39,6 +41,12 @@ export function useDualHandleDrag({
 
   function applyDrag(handle: "min" | "max", raw: number) {
     const snapped = snapToAnchors(raw, snapValues)
+    if (singlePoint) {
+      const point = clampStat(snapped, boundsMin, boundsMax)
+      const next = { min: point, max: point }
+      if (!sameStatRange(next, value)) onChange(next)
+      return
+    }
     const next =
       handle === "min"
         ? {

@@ -2,7 +2,7 @@
 
 export const OFFENSE_PRESET_LABELS = {
   "neutral-zero": "0",
-  "neutral-max": "max",
+  "neutral-max": "32",
   extreme: "ex",
 } as const
 

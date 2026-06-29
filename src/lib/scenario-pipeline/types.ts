@@ -1,3 +1,5 @@
+import type { StatValueTemplate } from "@/lib/stat-value-template"
+
 export type StatSelectMode = "preset" | "range"
 
 /** Placeholder stat id for offense range-mode rows (not in catalog) */
@@ -19,14 +21,20 @@ export type DefenderStatRanges = {
 export type TrackState = {
   moveIds: string[]
   statMode: StatSelectMode
-  attackerStatIds: string[]
+  offenseTemplateIds: string[]
+  offenseTemporaryTemplates: StatValueTemplate[]
   statRange: StatRange
   statRangeTouched: boolean
+  showOffenseActual: boolean
+  offenseAllocationIndices: Record<string, number>
   attackerItemIds: string[]
   defenderMode: StatSelectMode
-  defenderIds: string[]
+  defenseTemplateIds: string[]
+  defenseTemporaryTemplates: StatValueTemplate[]
   defenderRanges: DefenderStatRanges
   defenderRangeTouched: boolean
+  showDefenseActual: boolean
+  defenseAllocationIndices: Record<string, number>
 }
 
 export type ScenarioRow = {
