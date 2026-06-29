@@ -44,6 +44,14 @@ _Avoid_: Cartesian product（领域层用 track 累乘表述）
 一方宝可梦在某一 track 上的取值；性格+努力、道具等分属不同 track，不含能力阶数。
 _Avoid_: Scenario variant, 强化配置
 
+**Stat value template**（实数值模版）:
+按宝可梦保存的一组**最终实数值**（进攻：单 stat；防守：HP + 防）；不含性格。分系统、用户、临时三类；预设区多选参与 row product，与数轴选段 XOR。卡片标签由 **标签引擎** 从实数值导出，见 **Ability points**。
+_Avoid_: Preset spread, 性格模版
+
+**Ability points**（能力点数）:
+实数值模版卡片上的 shorthand 标签；Champions 点数 `(EV+4)/8`，受修正 stat 可选 `+/-` 后缀（HP 无后缀）。同一实数值可对应多种 spread；**分配切换**（⟳）在全枚举 spread 间循环，**仅改标签**，不影响伤害。默认展示无修正 spread；`ex` / `32HP` 为固定 shorthand（等价 `32+`、`32HP32Def+` 等模式）。不用 `max`，满 EV 无修正写作 `32`。
+_Avoid_: EV display, effort label, max label
+
 **Default view**:
 用户仅提供 matchup 最小输入时展示的宽结果视图，自动包含常见 scenario 与极限情况。
 _Avoid_: One-shot view, 初始页
