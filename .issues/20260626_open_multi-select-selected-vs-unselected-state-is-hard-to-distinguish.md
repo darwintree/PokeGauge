@@ -14,6 +14,8 @@ Scenario Explorer 侧边栏各 track（招式、实数值、道具、防守方�
 
 相关实现：`src/components/scenario-explorer/config-multi-select.tsx`
 
+**UI 定稿 trace**：[`docs/traces/2026-06-28-stat-value-template-grill.md`](../../docs/traces/2026-06-28-stat-value-template-grill.md) §7–§11（Wrap grid、能力点数标签、可选实数值、外置分配切换）。
+
 ## What to build
 
 - 强化选中 / 未选中状态的视觉区分（背景、边框、字重、类型色等），保持 Geist / shadcn 语义
