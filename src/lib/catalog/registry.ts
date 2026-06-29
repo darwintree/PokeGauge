@@ -1,3 +1,4 @@
+import { buildCoreCatalogOptions, buildTypeBoostCatalogOptions } from "@/lib/held-item"
 import type { PokemonType } from "@/lib/pokemon/types"
 import {
   DEFENSE_PRESET_LABELS,
@@ -130,16 +131,7 @@ function buildDefenderBulks(category: MoveCategory) {
 }
 
 function buildAttackerItems(category: MoveCategory) {
-  const choice =
-    category === "physical"
-      ? { id: "choice-band", label: "讲究头带", summary: "1.5× 物攻" }
-      : { id: "choice-specs", label: "讲究眼镜", summary: "1.5× 特攻" }
-
-  return [
-    { id: "none", label: "无道具", summary: "—" },
-    { id: "life-orb", label: "生命宝珠", summary: "1.3× 伤害" },
-    choice,
-  ]
+  return [...buildCoreCatalogOptions(category), ...buildTypeBoostCatalogOptions()]
 }
 
 function findAttacker(id: string): AttackerEntry | undefined {
@@ -185,6 +177,7 @@ export function getCatalog(attackerId: string, defenderId: string): MatchupCatal
       attackerSpecies: attacker.species,
       defenderSpecies: defender.species,
     },
+    attackerTypes: attacker.types,
     moveCategory: attacker.moveCategory,
     ...labels,
     moves,
@@ -194,7 +187,7 @@ export function getCatalog(attackerId: string, defenderId: string): MatchupCatal
     /** Default selected set — all top-N moves pre-selected */
     defaultMoveIds: moves.map((m) => m.id),
     defaultAttackerStatIds: ["neutral-max", "extreme"],
-    defaultAttackerItemIds: ["none", "life-orb"],
+    defaultAttackerItemIds: ["none"],
     defaultDefenderIds: ["hp-32"],
   }
 }

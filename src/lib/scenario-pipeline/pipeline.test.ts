@@ -39,16 +39,25 @@ describe("catalog registry", () => {
     expect(rows.length).toBe(expectedRowCount(state))
     expect(rows.every((r) => r.minDamage > 0)).toBe(true)
   })
+
+  it("includes all type-boost items in attackerItems after core options", () => {
+    const catalog = getCatalog("garchomp", "incineroar")
+    const ids = catalog.attackerItems.map((item) => item.id)
+    expect(ids.slice(0, 3)).toEqual(["none", "life-orb", "choice-band"])
+    expect(ids).toContain("type-boost-ground")
+    expect(ids).toContain("type-boost-fairy")
+    expect(catalog.attackerTypes).toEqual(["dragon", "ground"])
+  })
 })
 
 describe("matchup scenario pipeline", () => {
   const catalog = getCatalog("garchomp", "incineroar")
 
-  it("returns 12 rows for default template selections (32 + ex × 32HP)", () => {
+  it("returns 6 rows for default template selections (32 + ex × 32HP × none)", () => {
     const state = defaultTrackState(catalog)
     const rows = runScenarioPipeline(catalog, state)
-    expect(rows).toHaveLength(12)
-    expect(expectedRowCount(state)).toBe(12)
+    expect(rows).toHaveLength(6)
+    expect(expectedRowCount(state)).toBe(6)
     expect(state.offenseTemplateIds).toEqual(
       expect.arrayContaining(["neutral-max", "extreme"]),
     )
@@ -59,7 +68,7 @@ describe("matchup scenario pipeline", () => {
     const state = defaultTrackState(catalog)
     state.moveIds = ["earthquake"]
     const rows = runScenarioPipeline(catalog, state)
-    expect(rows).toHaveLength(4)
+    expect(rows).toHaveLength(2)
     expect(rows.every((r) => r.moveId === "earthquake")).toBe(true)
   })
 
@@ -67,7 +76,7 @@ describe("matchup scenario pipeline", () => {
     const state = defaultTrackState(catalog)
     state.offenseTemplateIds = ["extreme"]
     const rows = runScenarioPipeline(catalog, state)
-    expect(rows).toHaveLength(6)
+    expect(rows).toHaveLength(3)
     expect(rows.every((r) => r.attackerStatId === "extreme")).toBe(true)
   })
 
@@ -78,6 +87,26 @@ describe("matchup scenario pipeline", () => {
     expect(rows.length).toBe(expectedRowCount(state))
     expect(rows.every((r) => r.minDamage > 0)).toBe(true)
   })
+
+  it("applies type-boost item modifier for matching move type", () => {
+    const state = defaultTrackState(catalog)
+    state.moveIds = ["earthquake"]
+    state.offenseTemplateIds = ["extreme"]
+    state.defenseTemplateIds = ["hp-32"]
+
+    const noneRows = runScenarioPipeline(catalog, {
+      ...state,
+      attackerItemIds: ["none"],
+    })
+    const sandRows = runScenarioPipeline(catalog, {
+      ...state,
+      attackerItemIds: ["type-boost-ground"],
+    })
+
+    expect(noneRows).toHaveLength(1)
+    expect(sandRows).toHaveLength(1)
+    expect(sandRows[0].maxDamage).toBeGreaterThan(noneRows[0].maxDamage)
+  })
 })
 
 describe("matchup scenario pipeline — range mode", () => {
@@ -87,8 +116,8 @@ describe("matchup scenario pipeline — range mode", () => {
     const state = defaultTrackState(catalog)
     state.statMode = "range"
     const rows = runScenarioPipeline(catalog, state)
-    expect(rows).toHaveLength(6)
-    expect(expectedRowCount(state)).toBe(6)
+    expect(rows).toHaveLength(3)
+    expect(expectedRowCount(state)).toBe(3)
     expect(rows.every((r) => r.attackerStatId === RANGE_STAT_ID)).toBe(true)
     expect(rows.every((r) => r.statRange != null)).toBe(true)
   })
@@ -98,7 +127,7 @@ describe("matchup scenario pipeline — range mode", () => {
     state.statMode = "range"
     state.offenseTemplateIds = ["neutral-zero", "extreme"]
     const rows = runScenarioPipeline(catalog, state)
-    expect(rows).toHaveLength(6)
+    expect(rows).toHaveLength(3)
     expect(rows.every((r) => r.attackerStatId === RANGE_STAT_ID)).toBe(true)
   })
 
@@ -120,8 +149,8 @@ describe("matchup scenario pipeline — range mode", () => {
     const state = defaultTrackState(catalog)
     state.defenderMode = "range"
     const rows = runScenarioPipeline(catalog, state)
-    expect(rows).toHaveLength(12)
-    expect(expectedRowCount(state)).toBe(12)
+    expect(rows).toHaveLength(6)
+    expect(expectedRowCount(state)).toBe(6)
     expect(rows.every((r) => r.defenderId === RANGE_DEFENDER_ID)).toBe(true)
   })
 

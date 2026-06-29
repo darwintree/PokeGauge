@@ -87,3 +87,23 @@ _Avoid_: Offensive spread
 **Type**:
 宝可梦或招式的属性（18 种标准属性）。用于识别展示（如 species typing badge），不单独表示克制倍率。
 _Avoid_: Element, 元素
+
+**Held item**（携带道具）:
+攻击方 build configuration 在道具 track 上的一项取值；映射到伤害计算中的 `item` 修饰。道具 track 为 **multi-select track**（多选以对比多个配装方案）；**每一 scenario 行仅生效一件**（效果互斥，不可叠加）。含 explicit no-item。
+_Avoid_: Item, 装备
+
+**Item effect exclusivity**（道具效果互斥）:
+单场对战/单次伤害计算仅应用一个携带道具 modifier；track 多选表示并列对比多个互斥方案，非组合叠加。
+_Avoid_: Item stacking, 道具叠加
+
+**Explicit no-item**（显式无道具）:
+道具 track 中 id 为 `none` 的选项；表示刻意不带道具的配置，与「未选任何道具导致零行」区分。
+_Avoid_: Empty item, 空道具
+
+**Type boost item**（属性强化道具）:
+提升特定属性招式威力的携带道具（如木炭、柔软沙子）；与攻击方属性对应。UI 默认展示本系至多 2 项，可多选参与对比。
+_Avoid_: Plate, 石板, type gem
+
+**Added type boost**（添加属性强化）:
+通过「+」从全属性强化道具池中追加到可见列表、但非本系默认展示的选项。
+_Avoid_: Custom boost, 扩展强化
