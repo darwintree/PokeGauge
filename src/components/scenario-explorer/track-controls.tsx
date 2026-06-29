@@ -1,14 +1,21 @@
+import { Plus } from "lucide-react"
+
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { MatchupCatalog } from "@/lib/catalog"
 import type { StatSelectMode } from "@/lib/scenario-pipeline"
 
-import { defenderBulkTier, offenseStatTier } from "@/lib/stat-tier-colors"
-
 import { ConfigMultiSelect, MoveMultiSelect } from "./config-multi-select"
 import { StatRangeAxis } from "./stat-range-axis"
+import {
+  AddDefenseTemplatePanel,
+  AddOffenseTemplatePanel,
+  ShowActualValuesSwitch,
+  StatValueTemplatePreset,
+} from "./stat-value-template-preset"
 import type { ScenarioState } from "./use-scenario-state"
 
 type TrackControlsProps = {
@@ -48,14 +55,45 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
           </TabsList>
         </div>
 
-        <TabsContent value="preset" className="mt-0">
-          <ConfigMultiSelect
-            label={`${catalog.offenseStatLabel}（性格 + 努力）`}
-            options={catalog.attackerStats}
-            selectedIds={trackState.attackerStatIds}
-            onChange={state.setAttackerStatIds}
-            tierForOption={(option) => offenseStatTier(option.id)}
+        <TabsContent value="preset" className="mt-0 space-y-2">
+          <StatValueTemplatePreset
+            templates={state.offenseTemplates}
+            selectedIds={trackState.offenseTemplateIds}
+            species={catalog.matchup.attackerSpecies}
+            category={catalog.moveCategory}
+            showActual={trackState.showOffenseActual}
+            allocationIndices={trackState.offenseAllocationIndices}
+            onToggle={state.toggleOffenseTemplate}
+            onCycleAllocation={state.cycleOffenseAllocation}
+            onDelete={state.deleteOffenseTemplate}
+            onPersist={state.persistOffenseTemplate}
           />
+          <div className="flex items-center justify-between gap-2">
+            <ShowActualValuesSwitch
+              checked={trackState.showOffenseActual}
+              onCheckedChange={state.setShowOffenseActual}
+            />
+            {!state.addingOffense && (
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="h-7 gap-1 text-xs"
+                onClick={() => state.setAddingOffense(true)}
+              >
+                <Plus className="size-3" />
+                添加模版
+              </Button>
+            )}
+          </div>
+          {state.addingOffense && (
+            <AddOffenseTemplatePanel
+              statLabel={catalog.offenseStatLabel}
+              bounds={state.offenseBounds}
+              onConfirm={state.confirmAddOffense}
+              onCancel={() => state.setAddingOffense(false)}
+            />
+          )}
         </TabsContent>
 
         <TabsContent value="range" className="mt-0">
@@ -94,14 +132,46 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
           </TabsList>
         </div>
 
-        <TabsContent value="preset" className="mt-0">
-          <ConfigMultiSelect
-            label="防守方配置（性格 + 努力）"
-            options={catalog.defenderBulks}
-            selectedIds={trackState.defenderIds}
-            onChange={state.setDefenderIds}
-            tierForOption={(option) => defenderBulkTier(option.id)}
+        <TabsContent value="preset" className="mt-0 space-y-2">
+          <StatValueTemplatePreset
+            templates={state.defenseTemplates}
+            selectedIds={trackState.defenseTemplateIds}
+            species={catalog.matchup.defenderSpecies}
+            category={catalog.moveCategory}
+            showActual={trackState.showDefenseActual}
+            allocationIndices={trackState.defenseAllocationIndices}
+            onToggle={state.toggleDefenseTemplate}
+            onCycleAllocation={state.cycleDefenseAllocation}
+            onDelete={state.deleteDefenseTemplate}
+            onPersist={state.persistDefenseTemplate}
           />
+          <div className="flex items-center justify-between gap-2">
+            <ShowActualValuesSwitch
+              checked={trackState.showDefenseActual}
+              onCheckedChange={state.setShowDefenseActual}
+            />
+            {!state.addingDefense && (
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="h-7 gap-1 text-xs"
+                onClick={() => state.setAddingDefense(true)}
+              >
+                <Plus className="size-3" />
+                添加模版
+              </Button>
+            )}
+          </div>
+          {state.addingDefense && (
+            <AddDefenseTemplatePanel
+              hpBounds={state.defenderHpBounds}
+              defBounds={state.defenderDefBounds}
+              defStatLabel={defStatLabel}
+              onConfirm={state.confirmAddDefense}
+              onCancel={() => state.setAddingDefense(false)}
+            />
+          )}
         </TabsContent>
 
         <TabsContent value="range" className="mt-0 space-y-2">

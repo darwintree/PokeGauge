@@ -193,9 +193,9 @@ export function getCatalog(attackerId: string, defenderId: string): MatchupCatal
     defenderBulks: buildDefenderBulks(attacker.moveCategory),
     /** Default selected set — all top-N moves pre-selected */
     defaultMoveIds: moves.map((m) => m.id),
-    defaultAttackerStatIds: ["neutral-max"],
+    defaultAttackerStatIds: ["neutral-max", "extreme"],
     defaultAttackerItemIds: ["none", "life-orb"],
-    defaultDefenderIds: ["standard-bulk"],
+    defaultDefenderIds: ["hp-32"],
   }
 }
 

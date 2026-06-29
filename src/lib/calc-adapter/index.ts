@@ -17,6 +17,10 @@ export {
   getDefenderHpBounds,
   getOffenseStat,
   getOffenseStatBounds,
+  nearestDefenderSetupForValues,
+  nearestOffenseSetupForStat,
+  snapToAchievableDefenseValues,
+  snapToAchievableOffenseStat,
   warmDefenderSpreadCache,
   defenderDefRangeFromPresets,
   defenderHpRangeFromPresets,
@@ -25,6 +29,16 @@ export {
   sameStatRange,
   snapToAnchors,
 } from "./compute-damage"
+export {
+  defenseSetupForTemplate,
+  defenderDefRangeFromTemplates,
+  defenderHpRangeFromTemplates,
+  defenderStatsForTemplate,
+  envelopeRange,
+  offenseRangeFromTemplates,
+  offenseSetupForTemplate,
+  offenseStatForTemplate,
+} from "./template-range"
 export type {
   AttackStatBounds,
   ComputedDamage,

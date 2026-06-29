@@ -4,13 +4,20 @@ import {
   EmptyHeader,
 } from "@/components/ui/empty"
 import type { MatchupCatalog } from "@/lib/catalog"
-import { RANGE_DEFENDER_ID, RANGE_STAT_ID, type ScenarioRow } from "@/lib/scenario-pipeline"
+import {
+  RANGE_DEFENDER_ID,
+  RANGE_STAT_ID,
+  rowLabels,
+  type ScenarioRow,
+  type TrackState,
+} from "@/lib/scenario-pipeline"
 
 import { BoxPlotLegend, DamageAxis, DamageBoxPlot } from "./damage-box-plot"
 
 type ScenarioResultsProps = {
   catalog: MatchupCatalog
   rows: ScenarioRow[]
+  trackState: TrackState
   showMoveOnRow: boolean
   compact?: boolean
 }
@@ -31,32 +38,10 @@ function rowKey(row: ScenarioRow) {
   return `${row.moveId}:${offenseKey}:${row.attackerItemId}:${defenseKey}`
 }
 
-function attackerStatForRow(catalog: MatchupCatalog, row: ScenarioRow) {
-  if (row.attackerStatId === RANGE_STAT_ID && row.statRange) {
-    return {
-      id: RANGE_STAT_ID,
-      label: `${catalog.offenseStatLabel} ${row.statRange.min}–${row.statRange.max}`,
-      summary: "区间 × roll 合并",
-    }
-  }
-  return catalogOption(catalog.attackerStats, row.attackerStatId)
-}
-
-function defenderForRow(catalog: MatchupCatalog, row: ScenarioRow) {
-  if (row.defenderId === RANGE_DEFENDER_ID && row.defenderRanges) {
-    const defLabel = catalog.moveCategory === "physical" ? "物防" : "特防"
-    return {
-      id: RANGE_DEFENDER_ID,
-      label: `HP ${row.defenderRanges.hp.min}–${row.defenderRanges.hp.max} · ${defLabel} ${row.defenderRanges.def.min}–${row.defenderRanges.def.max}`,
-      summary: "区间 × roll 合并",
-    }
-  }
-  return catalogOption(catalog.defenderBulks, row.defenderId)
-}
-
 export function ScenarioResults({
   catalog,
   rows,
+  trackState,
   showMoveOnRow,
   compact = false,
 }: ScenarioResultsProps) {
@@ -74,21 +59,33 @@ export function ScenarioResults({
     <>
       <DamageAxis />
       <ul className={compact ? "space-y-8 pb-2" : "space-y-12 pb-2"}>
-        {rows.map((row) => (
-          <li key={rowKey(row)}>
-            <DamageBoxPlot
-              move={catalogOption(catalog.moves, row.moveId)}
-              attackerStat={attackerStatForRow(catalog, row)}
-              attackerItem={catalogOption(catalog.attackerItems, row.attackerItemId)}
-              defender={defenderForRow(catalog, row)}
-              row={row}
-              showMove={showMoveOnRow}
-              isRangeEnvelope={
-                row.attackerStatId === RANGE_STAT_ID || row.defenderId === RANGE_DEFENDER_ID
-              }
-            />
-          </li>
-        ))}
+        {rows.map((row) => {
+          const labels = rowLabels(catalog, row, trackState)
+          const isRangeEnvelope =
+            row.attackerStatId === RANGE_STAT_ID || row.defenderId === RANGE_DEFENDER_ID
+
+          return (
+            <li key={rowKey(row)}>
+              <DamageBoxPlot
+                move={catalogOption(catalog.moves, row.moveId)}
+                attackerStat={{
+                  id: row.attackerStatId,
+                  label: labels.stat,
+                  summary: isRangeEnvelope && row.statRange ? "区间 × roll 合并" : "",
+                }}
+                attackerItem={catalogOption(catalog.attackerItems, row.attackerItemId)}
+                defender={{
+                  id: row.defenderId,
+                  label: labels.defender,
+                  summary: isRangeEnvelope && row.defenderRanges ? "区间 × roll 合并" : "",
+                }}
+                row={row}
+                showMove={showMoveOnRow}
+                isRangeEnvelope={isRangeEnvelope}
+              />
+            </li>
+          )
+        })}
       </ul>
       <BoxPlotLegend />
     </>

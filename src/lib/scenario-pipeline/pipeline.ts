@@ -7,10 +7,23 @@ import {
   defaultDefenderDefRange,
   defaultDefenderHpRange,
   defaultOffenseStatRange,
-  getAttackerStatSetups,
-  getDefenderSetups,
 } from "@/lib/calc-adapter"
+import {
+  defenseSetupForTemplate,
+  offenseSetupForTemplate,
+} from "@/lib/calc-adapter/template-range"
 import type { MatchupCatalog } from "@/lib/catalog/types"
+import {
+  buildSystemDefenseTemplates,
+  buildSystemOffenseTemplates,
+  defaultDefenseSelection,
+  defaultOffenseSelection,
+  loadUserDefenseTemplates,
+  loadUserOffenseTemplates,
+  mergeTemplates,
+  templateCardLabel,
+} from "@/lib/stat-value-template"
+import type { StatValueTemplate } from "@/lib/stat-value-template"
 
 import type { DefenderStatRanges, ScenarioRow, TrackState } from "./types"
 import { RANGE_DEFENDER_ID, RANGE_STAT_ID } from "./types"
@@ -19,35 +32,68 @@ function configOrder(options: { id: string }[]) {
   return Object.fromEntries(options.map((o, i) => [o.id, i]))
 }
 
-function statSortKey(attackerStatId: string, statOrder: Record<string, number>) {
-  return attackerStatId === RANGE_STAT_ID ? 1000 : (statOrder[attackerStatId] ?? 0)
-}
-
-function defenderSortKey(defenderId: string, defenderOrder: Record<string, number>) {
-  return defenderId === RANGE_DEFENDER_ID ? 1000 : (defenderOrder[defenderId] ?? 0)
+function templateSortKey(templateId: string, order: Record<string, number>) {
+  return templateId === RANGE_STAT_ID || templateId === RANGE_DEFENDER_ID
+    ? 1000
+    : (order[templateId] ?? 999)
 }
 
 function resolveMoveName(catalog: MatchupCatalog, moveId: string): string | undefined {
   return catalog.moves.find((m) => m.id === moveId)?.moveName
 }
 
+export function offenseTemplatesForState(
+  catalog: MatchupCatalog,
+  trackState: TrackState,
+): StatValueTemplate[] {
+  const { attackerSpecies } = catalog.matchup
+  const system = buildSystemOffenseTemplates(attackerSpecies, catalog.moveCategory)
+  const user = loadUserOffenseTemplates(catalog.matchup.attackerId)
+  return mergeTemplates(system, user, trackState.offenseTemporaryTemplates)
+}
+
+export function defenseTemplatesForState(
+  catalog: MatchupCatalog,
+  trackState: TrackState,
+): StatValueTemplate[] {
+  const { defenderSpecies } = catalog.matchup
+  const system = buildSystemDefenseTemplates(defenderSpecies, catalog.moveCategory)
+  const user = loadUserDefenseTemplates(catalog.matchup.defenderId)
+  return mergeTemplates(system, user, trackState.defenseTemporaryTemplates)
+}
+
+function findTemplate(templates: StatValueTemplate[], id: string): StatValueTemplate | undefined {
+  return templates.find((t) => t.id === id)
+}
+
 function computePresetRow(
   catalog: MatchupCatalog,
   moveId: string,
-  attackerStatId: string,
+  offenseTemplateId: string,
   attackerItemId: string,
-  defenderId: string,
+  defenseTemplateId: string,
+  offenseTemplates: StatValueTemplate[],
+  defenseTemplates: StatValueTemplate[],
 ): ScenarioRow | null {
-  const statSetups = getAttackerStatSetups(catalog.moveCategory)
-  const defenderSetups = getDefenderSetups(catalog.moveCategory)
-  const statSetup = statSetups[attackerStatId]
-  const defSetup = defenderSetups[defenderId]
+  const offenseTemplate = findTemplate(offenseTemplates, offenseTemplateId)
+  const defenseTemplate = findTemplate(defenseTemplates, defenseTemplateId)
   const itemName = ATTACKER_ITEM_NAMES[attackerItemId]
   const moveName = resolveMoveName(catalog, moveId)
-  if (!statSetup || !defSetup || !moveName) return null
+  if (!offenseTemplate || !defenseTemplate || !moveName) return null
   if (itemName === undefined && attackerItemId !== "none") return null
 
   const { attackerSpecies, defenderSpecies } = catalog.matchup
+  const statSetup = offenseSetupForTemplate(
+    attackerSpecies,
+    catalog.moveCategory,
+    offenseTemplate,
+  )
+  const defSetup = defenseSetupForTemplate(
+    defenderSpecies,
+    catalog.moveCategory,
+    defenseTemplate,
+  )
+
   const computed = computeDamage(
     attackerSpecies,
     defenderSpecies,
@@ -59,9 +105,9 @@ function computePresetRow(
 
   return {
     moveId,
-    attackerStatId,
+    attackerStatId: offenseTemplateId,
     attackerItemId,
-    defenderId,
+    defenderId: defenseTemplateId,
     minDamage: computed.minDamage,
     maxDamage: computed.maxDamage,
     avgDamage: computed.avgDamage,
@@ -81,16 +127,21 @@ function computeOffenseRangeRow(
   moveId: string,
   statRange: TrackState["statRange"],
   attackerItemId: string,
-  defenderId: string,
+  defenseTemplateId: string,
+  defenseTemplates: StatValueTemplate[],
 ): ScenarioRow | null {
-  const defenderSetups = getDefenderSetups(catalog.moveCategory)
-  const defSetup = defenderSetups[defenderId]
+  const defenseTemplate = findTemplate(defenseTemplates, defenseTemplateId)
   const itemName = ATTACKER_ITEM_NAMES[attackerItemId]
   const moveName = resolveMoveName(catalog, moveId)
-  if (!defSetup || !moveName) return null
+  if (!defenseTemplate || !moveName) return null
   if (itemName === undefined && attackerItemId !== "none") return null
 
   const { attackerSpecies, defenderSpecies } = catalog.matchup
+  const defSetup = defenseSetupForTemplate(
+    defenderSpecies,
+    catalog.moveCategory,
+    defenseTemplate,
+  )
   const computed = computeDamageForStatRange(
     attackerSpecies,
     defenderSpecies,
@@ -105,7 +156,7 @@ function computeOffenseRangeRow(
     moveId,
     attackerStatId: RANGE_STAT_ID,
     attackerItemId,
-    defenderId,
+    defenderId: defenseTemplateId,
     statRange: { ...statRange },
     minDamage: computed.minDamage,
     maxDamage: computed.maxDamage,
@@ -124,18 +175,23 @@ function computeOffenseRangeRow(
 function computeDefenderRangeRow(
   catalog: MatchupCatalog,
   moveId: string,
-  attackerStatId: string,
+  offenseTemplateId: string,
   attackerItemId: string,
   defenderRanges: DefenderStatRanges,
+  offenseTemplates: StatValueTemplate[],
 ): ScenarioRow | null {
-  const statSetups = getAttackerStatSetups(catalog.moveCategory)
-  const statSetup = statSetups[attackerStatId]
+  const offenseTemplate = findTemplate(offenseTemplates, offenseTemplateId)
   const itemName = ATTACKER_ITEM_NAMES[attackerItemId]
   const moveName = resolveMoveName(catalog, moveId)
-  if (!statSetup || !moveName) return null
+  if (!offenseTemplate || !moveName) return null
   if (itemName === undefined && attackerItemId !== "none") return null
 
   const { attackerSpecies, defenderSpecies } = catalog.matchup
+  const statSetup = offenseSetupForTemplate(
+    attackerSpecies,
+    catalog.moveCategory,
+    offenseTemplate,
+  )
   const computed = computeDamageForDefenderRange(
     attackerSpecies,
     defenderSpecies,
@@ -149,7 +205,7 @@ function computeDefenderRangeRow(
 
   return {
     moveId,
-    attackerStatId,
+    attackerStatId: offenseTemplateId,
     attackerItemId,
     defenderId: RANGE_DEFENDER_ID,
     defenderRanges: {
@@ -220,25 +276,27 @@ function computeCombinedRangeRow(
 
 function sortRows(
   rows: ScenarioRow[],
+  offenseTemplates: StatValueTemplate[],
+  defenseTemplates: StatValueTemplate[],
   catalog: MatchupCatalog,
 ): ScenarioRow[] {
   const moveOrder = configOrder(catalog.moves)
-  const statOrder = configOrder(catalog.attackerStats)
+  const offenseOrder = configOrder(offenseTemplates)
   const itemOrder = configOrder(catalog.attackerItems)
-  const defenderOrder = configOrder(catalog.defenderBulks)
+  const defenseOrder = configOrder(defenseTemplates)
 
   return rows.sort((a, b) => {
     const byMove = moveOrder[a.moveId] - moveOrder[b.moveId]
     if (byMove !== 0) return byMove
     const byStat =
-      statSortKey(a.attackerStatId, statOrder) -
-      statSortKey(b.attackerStatId, statOrder)
+      templateSortKey(a.attackerStatId, offenseOrder) -
+      templateSortKey(b.attackerStatId, offenseOrder)
     if (byStat !== 0) return byStat
     const byItem = itemOrder[a.attackerItemId] - itemOrder[b.attackerItemId]
     if (byItem !== 0) return byItem
     return (
-      defenderSortKey(a.defenderId, defenderOrder) -
-      defenderSortKey(b.defenderId, defenderOrder)
+      templateSortKey(a.defenderId, defenseOrder) -
+      templateSortKey(b.defenderId, defenseOrder)
     )
   })
 }
@@ -250,6 +308,8 @@ export function runScenarioPipeline(
   const rows: ScenarioRow[] = []
   const offenseIsRange = trackState.statMode === "range"
   const defenseIsRange = trackState.defenderMode === "range"
+  const offenseTemplates = offenseTemplatesForState(catalog, trackState)
+  const defenseTemplates = defenseTemplatesForState(catalog, trackState)
 
   for (const moveId of trackState.moveIds) {
     for (const attackerItemId of trackState.attackerItemIds) {
@@ -266,13 +326,14 @@ export function runScenarioPipeline(
       }
 
       if (offenseIsRange) {
-        for (const defenderId of trackState.defenderIds) {
+        for (const defenseTemplateId of trackState.defenseTemplateIds) {
           const row = computeOffenseRangeRow(
             catalog,
             moveId,
             trackState.statRange,
             attackerItemId,
-            defenderId,
+            defenseTemplateId,
+            defenseTemplates,
           )
           if (row) rows.push(row)
         }
@@ -280,27 +341,30 @@ export function runScenarioPipeline(
       }
 
       if (defenseIsRange) {
-        for (const attackerStatId of trackState.attackerStatIds) {
+        for (const offenseTemplateId of trackState.offenseTemplateIds) {
           const row = computeDefenderRangeRow(
             catalog,
             moveId,
-            attackerStatId,
+            offenseTemplateId,
             attackerItemId,
             trackState.defenderRanges,
+            offenseTemplates,
           )
           if (row) rows.push(row)
         }
         continue
       }
 
-      for (const attackerStatId of trackState.attackerStatIds) {
-        for (const defenderId of trackState.defenderIds) {
+      for (const offenseTemplateId of trackState.offenseTemplateIds) {
+        for (const defenseTemplateId of trackState.defenseTemplateIds) {
           const row = computePresetRow(
             catalog,
             moveId,
-            attackerStatId,
+            offenseTemplateId,
             attackerItemId,
-            defenderId,
+            defenseTemplateId,
+            offenseTemplates,
+            defenseTemplates,
           )
           if (row) rows.push(row)
         }
@@ -308,61 +372,99 @@ export function runScenarioPipeline(
     }
   }
 
-  return sortRows(rows, catalog)
+  return sortRows(rows, offenseTemplates, defenseTemplates, catalog)
 }
 
 export function defaultTrackState(catalog: MatchupCatalog): TrackState {
   const { attackerSpecies, defenderSpecies } = catalog.matchup
+  const offenseSystem = buildSystemOffenseTemplates(attackerSpecies, catalog.moveCategory)
+  const defenseSystem = buildSystemDefenseTemplates(defenderSpecies, catalog.moveCategory)
+  const offenseUser = loadUserOffenseTemplates(catalog.matchup.attackerId)
+  const defenseUser = loadUserDefenseTemplates(catalog.matchup.defenderId)
+
   return {
     moveIds: [...catalog.defaultMoveIds],
     statMode: "preset",
-    attackerStatIds: [...catalog.defaultAttackerStatIds],
+    offenseTemplateIds: defaultOffenseSelection(offenseSystem, offenseUser),
+    offenseTemporaryTemplates: [],
     statRange: defaultOffenseStatRange(attackerSpecies, catalog.moveCategory),
     statRangeTouched: false,
+    showOffenseActual: false,
+    offenseAllocationIndices: {},
     attackerItemIds: [...catalog.defaultAttackerItemIds],
     defenderMode: "preset",
-    defenderIds: [...catalog.defaultDefenderIds],
+    defenseTemplateIds: defaultDefenseSelection(defenseSystem, defenseUser),
+    defenseTemporaryTemplates: [],
     defenderRanges: {
       hp: defaultDefenderHpRange(defenderSpecies),
       def: defaultDefenderDefRange(defenderSpecies, catalog.moveCategory),
     },
     defenderRangeTouched: false,
+    showDefenseActual: false,
+    defenseAllocationIndices: {},
   }
 }
 
 export function rowLabels(
   catalog: MatchupCatalog,
   row: ScenarioRow,
+  trackState: TrackState,
 ): {
   move: string
   stat: string
   item: string
   defender: string
 } {
-  const find = (options: { id: string; label: string }[], id: string) =>
+  const findItem = (options: { id: string; label: string }[], id: string) =>
     options.find((o) => o.id === id)?.label ?? id
 
-  const defLabel = catalog.moveCategory === "physical" ? "物防" : "特防"
+  const defStatLabel = catalog.moveCategory === "physical" ? "物防" : "特防"
+  const offenseTemplates = offenseTemplatesForState(catalog, trackState)
+  const defenseTemplates = defenseTemplatesForState(catalog, trackState)
+
+  let statLabel: string
+  if (row.attackerStatId === RANGE_STAT_ID && row.statRange) {
+    statLabel = `${catalog.offenseStatLabel} ${row.statRange.min}–${row.statRange.max}`
+  } else {
+    const template = offenseTemplates.find((t) => t.id === row.attackerStatId)
+    statLabel = template
+      ? templateCardLabel(
+          template,
+          catalog.matchup.attackerSpecies,
+          catalog.moveCategory,
+          trackState.offenseAllocationIndices[template.id] ?? 0,
+        )
+      : row.attackerStatId
+  }
+
+  let defenderLabel: string
+  if (row.defenderId === RANGE_DEFENDER_ID && row.defenderRanges) {
+    defenderLabel = `HP ${row.defenderRanges.hp.min}–${row.defenderRanges.hp.max} · ${defStatLabel} ${row.defenderRanges.def.min}–${row.defenderRanges.def.max}`
+  } else {
+    const template = defenseTemplates.find((t) => t.id === row.defenderId)
+    defenderLabel = template
+      ? templateCardLabel(
+          template,
+          catalog.matchup.defenderSpecies,
+          catalog.moveCategory,
+          trackState.defenseAllocationIndices[template.id] ?? 0,
+        )
+      : row.defenderId
+  }
 
   return {
-    move: find(catalog.moves, row.moveId),
-    stat:
-      row.attackerStatId === RANGE_STAT_ID && row.statRange
-        ? `${catalog.offenseStatLabel} ${row.statRange.min}–${row.statRange.max}`
-        : find(catalog.attackerStats, row.attackerStatId),
-    item: find(catalog.attackerItems, row.attackerItemId),
-    defender:
-      row.defenderId === RANGE_DEFENDER_ID && row.defenderRanges
-        ? `HP ${row.defenderRanges.hp.min}–${row.defenderRanges.hp.max} · ${defLabel} ${row.defenderRanges.def.min}–${row.defenderRanges.def.max}`
-        : find(catalog.defenderBulks, row.defenderId),
+    move: findItem(catalog.moves, row.moveId),
+    stat: statLabel,
+    item: findItem(catalog.attackerItems, row.attackerItemId),
+    defender: defenderLabel,
   }
 }
 
 export function expectedRowCount(trackState: TrackState): number {
   const offenseCount =
-    trackState.statMode === "range" ? 1 : trackState.attackerStatIds.length
+    trackState.statMode === "range" ? 1 : trackState.offenseTemplateIds.length
   const defenderCount =
-    trackState.defenderMode === "range" ? 1 : trackState.defenderIds.length
+    trackState.defenderMode === "range" ? 1 : trackState.defenseTemplateIds.length
   return (
     trackState.moveIds.length *
     offenseCount *

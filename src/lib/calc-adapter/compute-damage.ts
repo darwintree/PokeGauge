@@ -38,6 +38,10 @@ export {
   getDefenderHpBounds,
   getOffenseStat,
   getOffenseStatBounds,
+  nearestDefenderSetupForValues,
+  nearestOffenseSetupForStat,
+  snapToAchievableDefenseValues,
+  snapToAchievableOffenseStat,
   warmDefenderSpreadCache,
 } from "./stat-bounds"
 export {

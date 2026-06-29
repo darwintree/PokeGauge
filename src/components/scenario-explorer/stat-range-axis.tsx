@@ -14,6 +14,8 @@ type StatRangeAxisProps = {
   bounds: StatAxisBounds
   value: StatRange
   onChange: (value: StatRange) => void
+  /** single = one point (min === max); range = band with one or two endpoints */
+  mode?: "single" | "range"
 }
 
 type FineTuneHandle = "min" | "max" | null
@@ -28,12 +30,14 @@ export function StatRangeAxis({
   bounds,
   value,
   onChange,
+  mode = "range",
 }: StatRangeAxisProps) {
   const rootRef = useRef<HTMLDivElement>(null)
   const fineTuneId = useId()
   const [fineTune, setFineTune] = useState<FineTuneHandle>(null)
   const snapValues = bounds.snapPoints.map((snap) => snap.value)
-  const collapsed = value.min === value.max
+  const singlePoint = mode === "single"
+  const collapsed = singlePoint || value.min === value.max
   const leftPct = pctForValue(value.min, bounds.min, bounds.max)
   const widthPct = collapsed ? 0.8 : pctForValue(value.max, bounds.min, bounds.max) - leftPct
 
@@ -41,13 +45,22 @@ export function StatRangeAxis({
     setFineTune((current) => (current === handle ? null : handle))
   }
 
+  function emitRange(next: StatRange) {
+    if (singlePoint) {
+      onChange({ min: next.min, max: next.min })
+      return
+    }
+    onChange(next)
+  }
+
   const drag = useDualHandleDrag({
     boundsMin: bounds.min,
     boundsMax: bounds.max,
     value,
     snapValues,
-    onChange,
+    onChange: emitRange,
     onHandleTap: toggleFineTune,
+    singlePoint,
   })
 
   useEffect(() => {
@@ -61,14 +74,19 @@ export function StatRangeAxis({
   }, [])
 
   function nudge(handle: "min" | "max", delta: number) {
+    if (singlePoint) {
+      const point = clampStat(value.min + delta, bounds.min, bounds.max)
+      onChange({ min: point, max: point })
+      return
+    }
     if (handle === "min") {
-      onChange({
+      emitRange({
         min: clampStat(value.min + delta, bounds.min, value.max),
         max: value.max,
       })
       return
     }
-    onChange({
+    emitRange({
       min: value.min,
       max: clampStat(value.max + delta, value.min, bounds.max),
     })
@@ -130,7 +148,10 @@ export function StatRangeAxis({
               />
             )}
 
-            {(["min", "max"] as const).map((handle) => (
+            {(["min", "max"] as const).map((handle) => {
+              if (collapsed && handle === "max") return null
+              if (singlePoint && handle === "max") return null
+              return (
               <button
                 key={handle}
                 type="button"
@@ -150,12 +171,14 @@ export function StatRangeAxis({
                 onPointerUp={drag.onPointerUp(handle)}
                 onPointerCancel={drag.onPointerUp(handle)}
               />
-            ))}
+              )
+            })}
           </div>
 
           <div className="relative mx-1 h-4">
             {(["min", "max"] as const).map((handle) => {
               if (collapsed && handle === "max") return null
+              if (singlePoint && handle === "max") return null
               const endpoint = handle === "min" ? value.min : value.max
               const pct = pctForValue(endpoint, bounds.min, bounds.max)
               return (

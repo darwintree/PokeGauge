@@ -1,6 +1,8 @@
 export {
   defaultTrackState,
   expectedRowCount,
+  offenseTemplatesForState,
+  defenseTemplatesForState,
   rowLabels,
   runScenarioPipeline,
 } from "./pipeline"
