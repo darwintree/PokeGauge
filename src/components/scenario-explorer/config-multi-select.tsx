@@ -16,8 +16,18 @@ function orderedSelection<T extends { id: string }>(
   options: T[],
   ids: string[],
 ): string[] {
-  const selected = new Set(ids)
-  return options.filter((option) => selected.has(option.id)).map((option) => option.id)
+  return orderedPoolSelection(
+    options.map((option) => option.id),
+    ids,
+  )
+}
+
+export function orderedPoolSelection(
+  pool: readonly string[],
+  selected: readonly string[],
+): string[] {
+  const selectedSet = new Set(selected)
+  return pool.filter((id) => selectedSet.has(id))
 }
 
 type ConfigMultiSelectProps = {

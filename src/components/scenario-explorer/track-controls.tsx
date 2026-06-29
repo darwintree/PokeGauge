@@ -9,6 +9,7 @@ import type { MatchupCatalog } from "@/lib/catalog"
 import type { StatSelectMode } from "@/lib/scenario-pipeline"
 
 import { ConfigMultiSelect, MoveMultiSelect } from "./config-multi-select"
+import { HeldItemTrack } from "./held-item-track/held-item-track"
 import { StatRangeAxis } from "./stat-range-axis"
 import {
   AddDefenseTemplatePanel,
@@ -106,9 +107,8 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
         </TabsContent>
       </Tabs>
 
-      <ConfigMultiSelect
-        label="道具"
-        options={catalog.attackerItems}
+      <HeldItemTrack
+        catalog={catalog}
         selectedIds={trackState.attackerItemIds}
         onChange={state.setAttackerItemIds}
       />
