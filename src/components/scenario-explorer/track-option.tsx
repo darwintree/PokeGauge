@@ -25,7 +25,6 @@ export type TrackOptionAction = {
   label: string
   position: "top-right" | "bottom-right"
   onClick: () => void
-  badge?: string
 }
 
 type TrackOptionProps = {
@@ -75,10 +74,7 @@ function modifierClass(modifier: TrackOptionModifier | undefined): string | unde
   }
 }
 
-function ActionIcon({ kind, badge }: { kind: TrackOptionActionKind; badge?: string }) {
-  if (kind === "cycleAllocation" && badge) {
-    return <span className="text-[9px] font-semibold tabular-nums">{badge}</span>
-  }
+function ActionIcon({ kind }: { kind: TrackOptionActionKind }) {
   if (kind === "remove") return <Trash2 className="size-2.5" />
   if (kind === "persist") return <Save className="size-2.5" />
   return <RefreshCw className="size-2.5" />
@@ -101,7 +97,7 @@ function TrackOptionActionButton({ action }: { action: TrackOptionAction }) {
         action.onClick()
       }}
     >
-      <ActionIcon kind={action.kind} badge={action.badge} />
+      <ActionIcon kind={action.kind} />
     </Button>
   )
 }
