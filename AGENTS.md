@@ -83,3 +83,12 @@ Five canonical triage roles, stored as uppercase labels in dot-issues (e.g. `NEE
 ### Domain docs
 
 Single-context — one `CONTEXT.md` at the repo root plus `docs/adr/`. See `docs/agents/domain.md`.
+
+## Cursor Cloud specific instructions
+
+Single frontend service (Vite + React + TS, pnpm). Standard commands are in [`package.json`](package.json) / the **Commands** section above.
+
+- **Dev server**: `pnpm dev` serves on `http://localhost:5173/`. No backend or external services — the damage engine (`@smogon/calc`) runs fully in-browser.
+- **Lint / test**: `pnpm lint` (oxlint) and `pnpm test` (vitest). Lint currently emits only `react/only-export-components` + unused-import warnings and exits 0.
+- **Build caveat**: `pnpm build` runs `tsc -b` before `vite build`, so any TypeScript error (including unused imports, `noUnusedLocals`) blocks the build even though `pnpm dev` ignores it. Dev/test do not type-check.
+- The `pnpm install` warning `Ignored build scripts: esbuild` is harmless — dev, test, and the `vite build` step all work without approving it.
