@@ -3,28 +3,40 @@
 id: "b4752613-a2dd-42bd-a83c-ae76a50dee73"
 title: "Multi-select selected vs unselected state is hard to distinguish"
 status: "open"
-priority: "medium"
+priority: "high"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-06-26T14:23:00Z"
-updated_at: "2026-06-26T14:23:00Z"
+updated_at: "2026-06-30T09:51:00Z"
 ---
 ## Context
 
-Scenario Explorer 侧边栏各 track（招式、实数值、道具、防守方配置）使用 `ConfigMultiSelect` + shadcn `ToggleGroup`。当前选中（`data-[state=on]`）与未选中项的视觉对比偏弱，用户容易混淆哪些选项已纳入对比。
+Scenario Explorer 侧边栏 multi-select track（招式、攻击/防守实数值模版、道具）缺少统一的选中 / 未选中视觉语言。当前实现分裂：
 
-相关实现：`src/components/scenario-explorer/config-multi-select.tsx`
+- 招式：`MoveMultiSelect`（`ToggleGroup` + 弱 `data-[state=on]` 对比）
+- 实数值：`StatValueTemplatePreset`（按 kind 各自 toggle 样式）
+- 道具：`HeldItemTrack`（独立 icon tile 样式）
 
-**UI 定稿 trace**：[`docs/traces/2026-06-28-stat-value-template-grill.md`](../../docs/traces/2026-06-28-stat-value-template-grill.md) §7–§11（Wrap grid、能力点数标签、可选实数值、外置分配切换）。
+用户容易混淆哪些选项已纳入对比。
+
+**设计已定稿**（实现待做）：
+
+- 讨论 trace：[`docs/traces/2026-06-30-track-option-visual-grill.md`](../../docs/traces/2026-06-30-track-option-visual-grill.md)
+- UI preview：[`docs/prototypes/track-option-matrix.html`](../../docs/prototypes/track-option-matrix.html)
+
+相关布局 / 领域语义（仍有效）：[`docs/traces/2026-06-28-stat-value-template-grill.md`](../../docs/traces/2026-06-28-stat-value-template-grill.md) §7–§11
 
 ## What to build
 
-- 强化选中 / 未选中状态的视觉区分（背景、边框、字重、类型色等），保持 Geist / shadcn 语义
-- 确保 `aria-pressed` / ToggleGroup 可访问性语义不变
-- 各 track 控件风格一致
+- 新增 **`TrackOption`** + **`TrackOptionGroup`**（`text` / `icon` layout；`button` + `aria-pressed`；`actions` slot）
+- 迁移 **`MoveMultiSelect`**、**`StatValueTemplatePreset`**、**`HeldItemTrack`** 至统一 primitive
+- 移除 track 级 **`ToggleGroup`**；清理未使用的 **`ConfigMultiSelect`**
+- CSS 按 trace §8–§12 与 prototype 映射（inclusion A、flat 容器、1B / 2B / 3B modifier 层）
+- 保持 Geist / shadcn token 语义；modifier 按 track 分类型
 
 ## Acceptance criteria
 
 - [ ] 未选中项与选中项在浅色主题下一眼可辨
 - [ ] 选中态不依赖 hover 才能识别
-- [ ] 多 track 控件视觉语言一致
-- [ ] 键盘与屏幕阅读器行为无回归
+- [ ] 多 track 控件视觉语言一致（同一 inclusion 层 + 正交 modifier 层）
+- [ ] 键盘与屏幕阅读器行为无回归（`aria-pressed`；action 与 toggle 分离）
+- [ ] 逐条对照 [`docs/traces/2026-06-30-track-option-visual-grill.md`](../../docs/traces/2026-06-30-track-option-visual-grill.md) §1–§12，确认每项决定已在代码中落地
