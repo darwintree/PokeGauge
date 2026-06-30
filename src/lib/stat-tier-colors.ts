@@ -38,6 +38,18 @@ export function statTierChipClasses(tokenSet: StatTierTokenSet): string {
   return STAT_TIER_CHIP_CLASS[tokenSet]
 }
 
+/** TrackOption tier modifier — maps domain tokens to static CSS classes. */
+const STAT_TIER_MODIFIER_CLASS: Record<StatTierTokenSet, string> = {
+  "stat-tier-0": "track-option-mod-tier-0",
+  "stat-offense-max": "track-option-mod-tier-offense-max",
+  "stat-bulk-mid": "track-option-mod-tier-bulk-mid",
+  "stat-tier-ex": "track-option-mod-tier-ex",
+}
+
+export function statTierModifierClass(tokenSet: StatTierTokenSet): string {
+  return STAT_TIER_MODIFIER_CLASS[tokenSet]
+}
+
 const OFFENSE_SNAP_TIER: Record<string, StatTierTokenSet> = {
   "neutral-zero": "stat-tier-0",
   "neutral-max": "stat-offense-max",
