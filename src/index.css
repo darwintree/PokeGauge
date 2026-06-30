@@ -350,8 +350,6 @@
     position: relative;
     display: inline-flex;
     overflow: visible;
-    padding-top: 0.25rem;
-    padding-right: 0.25rem;
   }
 
   .track-option-wrap:focus-within,
