@@ -6,7 +6,7 @@ status: "open"
 priority: "high"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-06-26T14:23:00Z"
-updated_at: "2026-06-30T09:51:00Z"
+updated_at: "2026-06-30T09:54:00Z"
 ---
 ## Context
 
@@ -32,6 +32,7 @@ Scenario Explorer 侧边栏 multi-select track（招式、攻击/防守实数值
 - 移除 track 级 **`ToggleGroup`**；清理未使用的 **`ConfigMultiSelect`**
 - CSS 按 trace §8–§12 与 prototype 映射（inclusion A、flat 容器、1B / 2B / 3B modifier 层）
 - 保持 Geist / shadcn token 语义；modifier 按 track 分类型
+- 实现验收后 **清理原型代码**：删除 [`docs/prototypes/track-option-matrix.html`](../../docs/prototypes/track-option-matrix.html)；若 `docs/prototypes/` 无其它文件则移除该目录
 
 ## Acceptance criteria
 
@@ -40,3 +41,4 @@ Scenario Explorer 侧边栏 multi-select track（招式、攻击/防守实数值
 - [ ] 多 track 控件视觉语言一致（同一 inclusion 层 + 正交 modifier 层）
 - [ ] 键盘与屏幕阅读器行为无回归（`aria-pressed`；action 与 toggle 分离）
 - [ ] 逐条对照 [`docs/traces/2026-06-30-track-option-visual-grill.md`](../../docs/traces/2026-06-30-track-option-visual-grill.md) §1–§12，确认每项决定已在代码中落地
+- [ ] 原型代码已清理（`docs/prototypes/track-option-matrix.html` 已删除；无残留引用）
