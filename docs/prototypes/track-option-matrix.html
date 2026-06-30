@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TrackOption 定稿</title>
+  <style>
+    :root {
+      --geist-background-100: #ffffff;
+      --geist-background-200: #fafafa;
+      --geist-gray-alpha-400: #00000014;
+      --geist-gray-900: #4d4d4d;
+      --geist-gray-1000: #171717;
+
+      --background: var(--geist-background-100);
+      --foreground: var(--geist-gray-1000);
+      --muted-foreground: var(--geist-gray-900);
+      --primary: var(--geist-gray-1000);
+      --border: var(--geist-gray-alpha-400);
+      --input: var(--geist-gray-alpha-400);
+      --radius: 0.375rem;
+
+      --stat-tier-0-fg: #4d4d4d;
+      --stat-tier-0-bg: #f2f2f2;
+      --stat-tier-0-border: #ebebeb;
+      --stat-tier-0-muted: #8f8f8f;
+      --stat-offense-max-fg: #006bff;
+      --stat-offense-max-bg: #f0f7ff;
+      --stat-offense-max-border: #cae7ff;
+      --stat-offense-max-muted: #48aeff;
+      --stat-bulk-mid-fg: #006bff;
+      --stat-bulk-mid-bg: #e9f4ff;
+      --stat-bulk-mid-border: #dfefff;
+      --stat-bulk-mid-muted: #48aeff;
+      --stat-tier-ex-fg: #a000f8;
+      --stat-tier-ex-bg: #faf0ff;
+      --stat-tier-ex-border: #f2d9ff;
+      --stat-tier-ex-muted: #c979ff;
+
+      --pokemon-type-fire: #f08030;
+      --pokemon-type-water: #6890f0;
+      --pokemon-type-grass: #78c850;
+
+      --sidebar-width: 18rem;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 14px;
+      color: var(--foreground);
+      background: var(--geist-background-200);
+    }
+
+    .shell {
+      max-width: 24rem;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .toolbar {
+      padding: 0.75rem 1rem;
+      background: var(--background);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .toolbar h1 { margin: 0; font-size: 0.875rem; font-weight: 600; }
+
+    .toolbar p {
+      margin: 0.25rem 0 0;
+      font-size: 0.6875rem;
+      color: var(--muted-foreground);
+      line-height: 1.45;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background: var(--background);
+      padding: 0 0.5rem;
+    }
+
+    .tab {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0.625rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--muted-foreground);
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+    }
+
+    .tab[aria-selected="true"] {
+      color: var(--foreground);
+      border-bottom-color: var(--foreground);
+      font-weight: 600;
+    }
+
+    .stage { padding: 1rem; }
+
+    .demo {
+      width: var(--sidebar-width);
+      padding: 0.75rem;
+      background: var(--background);
+      border: 1px solid var(--border);
+      border-radius: calc(var(--radius) * 1.4);
+    }
+
+    .track-option-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 0.375rem;
+    }
+
+    .track-option-wrap {
+      position: relative;
+      display: inline-flex;
+      overflow: visible;
+      padding-top: 0.25rem;
+      padding-right: 0.25rem;
+    }
+
+    .track-option-wrap:focus-within,
+    .track-option-wrap:hover { z-index: 2; }
+
+    .track-option {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.375rem;
+      border: 1px solid var(--input);
+      border-radius: var(--radius);
+      background: var(--background);
+      color: var(--foreground);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+      transition: background 0.12s, border-color 0.12s, box-shadow 0.12s, color 0.12s;
+    }
+
+    .track-option--text { min-height: 1.75rem; padding: 0.25rem 0.625rem; }
+    .track-option--icon { width: 2.25rem; height: 2.25rem; padding: 0.25rem; }
+    .track-option--icon img { width: 1.5rem; height: 1.5rem; object-fit: contain; }
+    .track-option--add { border-style: dashed; color: var(--muted-foreground); }
+    .track-option-summary { font-size: 0.6875rem; font-weight: 400; opacity: 0.75; }
+
+    .type-badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 0.2rem;
+      padding: 0.05rem 0.25rem;
+      font-size: 0.625rem;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    .mod-tier-0 { --mod-fg: var(--stat-tier-0-fg); --mod-bg: var(--stat-tier-0-bg); --mod-border: var(--stat-tier-0-border); --mod-muted: var(--stat-tier-0-muted); }
+    .mod-tier-offense-max { --mod-fg: var(--stat-offense-max-fg); --mod-bg: var(--stat-offense-max-bg); --mod-border: var(--stat-offense-max-border); --mod-muted: var(--stat-offense-max-muted); }
+    .mod-tier-bulk-mid { --mod-fg: var(--stat-bulk-mid-fg); --mod-bg: var(--stat-bulk-mid-bg); --mod-border: var(--stat-bulk-mid-border); --mod-muted: var(--stat-bulk-mid-muted); }
+    .mod-tier-ex { --mod-fg: var(--stat-tier-ex-fg); --mod-bg: var(--stat-tier-ex-bg); --mod-border: var(--stat-tier-ex-border); --mod-muted: var(--stat-tier-ex-muted); }
+
+    .mod-temporary { border-style: dashed; }
+    .mod-stab-boost { border-style: dashed; }
+    .mod-added-boost { border-style: dashed; }
+
+    .corner-action {
+      position: absolute;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 1rem;
+      height: 1rem;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--background);
+      box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+      color: var(--muted-foreground);
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .track-option-wrap:hover .corner-action,
+    .track-option-wrap:focus-within .corner-action {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .corner-action--top-right { top: -0.375rem; right: -0.375rem; }
+    .corner-action--bottom-right { bottom: -0.375rem; right: -0.375rem; }
+    .corner-action svg { width: 0.625rem; height: 0.625rem; }
+    .allocation-badge { font-size: 0.5625rem; font-weight: 600; }
+
+    /* A inclusion */
+    .track-option[aria-pressed="true"] {
+      border-color: var(--primary);
+      background: color-mix(in srgb, var(--primary) 12%, var(--background));
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary) 25%, transparent);
+      font-weight: 600;
+    }
+
+    .track-option--icon[aria-pressed="true"] {
+      background: color-mix(in srgb, var(--primary) 15%, var(--background));
+    }
+
+    /* 1B · tier 未选中 */
+    .track-option[class*="mod-tier-"]:not([aria-pressed="true"]) {
+      border-color: var(--input);
+      background: var(--background);
+      color: var(--mod-fg);
+    }
+
+    .track-option[class*="mod-tier-"]:not([aria-pressed="true"]) .track-option-summary {
+      color: var(--mod-muted);
+    }
+
+    /* 2B · tier 选中 */
+    .track-option[class*="mod-tier-"][aria-pressed="true"] {
+      background: color-mix(
+        in srgb,
+        var(--mod-bg) 50%,
+        color-mix(in srgb, var(--primary) 12%, var(--background))
+      );
+      color: var(--mod-fg);
+    }
+
+    .track-option[class*="mod-tier-"][aria-pressed="true"] .track-option-summary {
+      color: var(--mod-muted);
+    }
+
+    .mod-temporary:not([aria-pressed="true"]) {
+      border-color: color-mix(in srgb, var(--muted-foreground) 50%, transparent);
+    }
+
+    .mod-stab-boost:not([aria-pressed="true"]),
+    .mod-added-boost:not([aria-pressed="true"]) {
+      border-color: var(--input);
+    }
+
+    /* 3B · 虚线 modifier 选中仍虚线 */
+    .mod-temporary[aria-pressed="true"],
+    .mod-stab-boost[aria-pressed="true"],
+    .mod-added-boost[aria-pressed="true"] {
+      border-style: dashed;
+    }
+
+    [role="tabpanel"][hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="toolbar">
+      <h1>TrackOption 定稿</h1>
+      <p>A + flat · 1B tier 未选中 · 2B tier 选中 · 3B 虚线选中</p>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Track">
+      <button type="button" class="tab" role="tab" id="tab-stat" data-panel="stat" aria-selected="true" aria-controls="panel-stat">数值</button>
+      <button type="button" class="tab" role="tab" id="tab-moves" data-panel="moves" aria-selected="false" aria-controls="panel-moves">招式</button>
+      <button type="button" class="tab" role="tab" id="tab-items" data-panel="items" aria-selected="false" aria-controls="panel-items">道具</button>
+    </div>
+
+    <div class="stage">
+      <div class="demo" id="panel-stat" role="tabpanel" aria-labelledby="tab-stat"></div>
+      <div class="demo" id="panel-moves" role="tabpanel" aria-labelledby="tab-moves" hidden></div>
+      <div class="demo" id="panel-items" role="tabpanel" aria-labelledby="tab-items" hidden></div>
+    </div>
+  </div>
+
+  <script>
+    const TYPE_BADGE = {
+      fire: { label: "火", bg: "var(--pokemon-type-fire)", fg: "#fff" },
+      water: { label: "水", bg: "var(--pokemon-type-water)", fg: "#fff" },
+      grass: { label: "草", bg: "var(--pokemon-type-grass)", fg: "#171717" },
+    };
+
+    const ITEM_SPRITE = {
+      "life-orb": "../../public/items/lifeorb.png",
+      choice: "../../public/items/choiceband.png",
+      "stab-fire": "../../public/items/charcoal.png",
+      "added-dragon": "../../public/items/dragonfang.png",
+    };
+
+    const ICONS = {
+      save: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>',
+      cycle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>',
+      trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>',
+      plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>',
+      slash: '<svg viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M4 4l16 16"/></svg>',
+    };
+
+    function el(tag, attrs = {}, children = []) {
+      const node = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) {
+        if (k === "class") node.className = v;
+        else if (k === "html") node.innerHTML = v;
+        else if (k.startsWith("on")) node.addEventListener(k.slice(2).toLowerCase(), v);
+        else node.setAttribute(k, v);
+      }
+      for (const child of children) {
+        if (typeof child === "string") node.appendChild(document.createTextNode(child));
+        else if (child) node.appendChild(child);
+      }
+      return node;
+    }
+
+    function cornerAction(kind, position, label) {
+      const icon = kind === "remove" ? ICONS.trash : kind === "persist" ? ICONS.save : ICONS.cycle;
+      return el("button", {
+        type: "button",
+        class: `corner-action corner-action--${position}`,
+        "aria-label": label,
+        html: kind === "cycle" ? `<span class="allocation-badge">1/2</span>` : icon,
+        onclick: (e) => e.stopPropagation(),
+      });
+    }
+
+    function trackOption({ layout, label, summary, pressed, modClasses = [], actions = [], typeBadge, iconSrc, iconAlt, addTile }) {
+      if (addTile) {
+        return el("button", {
+          type: "button",
+          class: "track-option track-option--icon track-option--add",
+          "aria-label": "添加",
+          html: ICONS.plus,
+        });
+      }
+
+      const btn = el("button", {
+        type: "button",
+        class: `track-option track-option--${layout} ${modClasses.join(" ")}`.trim(),
+        "aria-pressed": String(pressed),
+        onclick: (e) => {
+          if (e.target.closest(".corner-action")) return;
+          btn.setAttribute("aria-pressed", String(btn.getAttribute("aria-pressed") !== "true"));
+        },
+      });
+
+      if (typeBadge) {
+        const t = TYPE_BADGE[typeBadge];
+        btn.appendChild(el("span", { class: "type-badge", style: `background:${t.bg};color:${t.fg}` }, [t.label]));
+      }
+
+      if (layout === "icon") {
+        if (iconSrc) btn.appendChild(el("img", { src: iconSrc, alt: iconAlt || "" }));
+        else btn.innerHTML += ICONS.slash;
+      } else {
+        btn.appendChild(document.createTextNode(label));
+        if (summary) btn.appendChild(el("span", { class: "track-option-summary" }, [` ${summary}`]));
+      }
+
+      if (!actions.length) return btn;
+      return el("div", { class: "track-option-wrap" }, [btn, ...actions]);
+    }
+
+    function mount(id, options) {
+      document.getElementById(id).appendChild(
+        el("div", { class: "track-option-group", role: "group" }, options.map((o) => trackOption(o))),
+      );
+    }
+
+    mount("panel-stat", [
+      { layout: "text", label: "0", summary: "252/0", pressed: true, modClasses: ["mod-tier-0"] },
+      { layout: "text", label: "252+", summary: "252/4", pressed: true, modClasses: ["mod-tier-offense-max"] },
+      { layout: "text", label: "32", summary: "0/252", pressed: false, modClasses: ["mod-tier-bulk-mid"] },
+      { layout: "text", label: "标准", summary: "244/12", pressed: false, modClasses: ["mod-tier-ex"] },
+      {
+        layout: "text", label: "自定义 A", summary: "200/56", pressed: true, modClasses: ["mod-user"],
+        actions: [cornerAction("remove", "top-right", "删除")],
+      },
+      {
+        layout: "text", label: "临时", summary: "180/76", pressed: false, modClasses: ["mod-temporary"],
+        actions: [cornerAction("persist", "top-right", "保存")],
+      },
+      {
+        layout: "text", label: "临时 B", summary: "168/88", pressed: true, modClasses: ["mod-temporary"],
+        actions: [
+          cornerAction("persist", "top-right", "保存"),
+          cornerAction("cycle", "bottom-right", "切换"),
+        ],
+      },
+    ]);
+
+    mount("panel-moves", [
+      { layout: "text", label: "喷射火焰", pressed: true, typeBadge: "fire" },
+      { layout: "text", label: "冲浪", pressed: true, typeBadge: "water" },
+      { layout: "text", label: "终极吸取", pressed: false, typeBadge: "grass" },
+    ]);
+
+    mount("panel-items", [
+      { layout: "icon", label: "无", pressed: false, modClasses: ["mod-core"], iconSrc: null, iconAlt: "无道具" },
+      { layout: "icon", label: "生命宝珠", pressed: true, modClasses: ["mod-core"], iconSrc: ITEM_SPRITE["life-orb"], iconAlt: "生命宝珠" },
+      { layout: "icon", label: "讲究头带", pressed: false, modClasses: ["mod-core"], iconSrc: ITEM_SPRITE.choice, iconAlt: "讲究头带" },
+      { layout: "icon", label: "木炭", pressed: true, modClasses: ["mod-stab-boost"], iconSrc: ITEM_SPRITE["stab-fire"], iconAlt: "木炭" },
+      {
+        layout: "icon", label: "龙之牙", pressed: true, modClasses: ["mod-added-boost"],
+        iconSrc: ITEM_SPRITE["added-dragon"], iconAlt: "龙之牙",
+        actions: [cornerAction("remove", "top-right", "移除")],
+      },
+      { layout: "icon", addTile: true },
+    ]);
+
+    document.querySelector(".tabs").addEventListener("click", (e) => {
+      const tab = e.target.closest(".tab[data-panel]");
+      if (!tab) return;
+      const panelId = `panel-${tab.dataset.panel}`;
+      document.querySelectorAll(".tab[data-panel]").forEach((t) => {
+        t.setAttribute("aria-selected", String(t === tab));
+      });
+      document.querySelectorAll('[role="tabpanel"]').forEach((p) => {
+        p.hidden = p.id !== panelId;
+      });
+    });
+  </script>
+</body>
+</html>
