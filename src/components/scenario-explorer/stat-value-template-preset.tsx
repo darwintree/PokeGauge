@@ -44,7 +44,6 @@ type TemplateCardProps = {
   showActual: boolean
   actualText: string
   allocationCount: number
-  allocationIndex: number
   onToggle: () => void
   onCycleAllocation: () => void
   onDelete?: () => void
@@ -65,13 +64,12 @@ function templateModifier(
 function templateActions({
   template,
   allocationCount,
-  allocationIndex,
   onDelete,
   onPersist,
   onCycleAllocation,
 }: Pick<
   TemplateCardProps,
-  "template" | "allocationCount" | "allocationIndex" | "onDelete" | "onPersist" | "onCycleAllocation"
+  "template" | "allocationCount" | "onDelete" | "onPersist" | "onCycleAllocation"
 >): TrackOptionAction[] {
   const actions: TrackOptionAction[] = []
 
@@ -98,7 +96,6 @@ function templateActions({
       kind: "cycleAllocation",
       label: "切换能力点数分配",
       position: "bottom-right",
-      badge: `${allocationIndex + 1}/${allocationCount}`,
       onClick: onCycleAllocation,
     })
   }
@@ -113,7 +110,6 @@ function TemplateCard({
   showActual,
   actualText,
   allocationCount,
-  allocationIndex,
   onToggle,
   onCycleAllocation,
   onDelete,
@@ -129,7 +125,6 @@ function TemplateCard({
       actions={templateActions({
         template,
         allocationCount,
-        allocationIndex,
         onDelete,
         onPersist,
         onCycleAllocation,
@@ -179,7 +174,6 @@ export function StatValueTemplatePreset({
             showActual={showActual}
             actualText={actualText}
             allocationCount={allocations.length}
-            allocationIndex={allocIndex}
             onToggle={() => onToggle(template.id)}
             onCycleAllocation={() => onCycleAllocation(template.id)}
             onDelete={onDelete ? () => onDelete(template.id) : undefined}
