@@ -400,6 +400,13 @@
     color: var(--muted-foreground);
   }
 
+  .track-option--add-text {
+    width: 1.75rem;
+    height: 1.75rem;
+    min-width: 1.75rem;
+    padding: 0;
+  }
+
   .track-option--add-open {
     border-color: var(--primary);
     background: color-mix(in srgb, var(--primary) 15%, var(--background));
@@ -414,9 +421,34 @@
   .track-option-action {
     position: absolute;
     z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    min-width: 1rem;
+    padding: 0;
+    border: 1px solid var(--input);
+    border-radius: calc(var(--radius) - 2px);
+    background: var(--background);
+    color: var(--foreground);
+    cursor: pointer;
     opacity: 0;
     pointer-events: none;
     box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+    transition:
+      opacity 0.12s,
+      border-color 0.12s,
+      color 0.12s;
+  }
+
+  .track-option-action:hover {
+    background: var(--muted);
+  }
+
+  .track-option-action--visible {
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .track-option-wrap:hover .track-option-action,
@@ -426,13 +458,13 @@
   }
 
   .track-option-action--top-right {
-    top: -0.375rem;
-    right: -0.375rem;
+    top: -0.25rem;
+    right: -0.25rem;
   }
 
   .track-option-action--bottom-right {
-    bottom: -0.375rem;
-    right: -0.375rem;
+    bottom: -0.25rem;
+    right: -0.25rem;
   }
 
   .track-option-action.track-option-action--remove:hover {

@@ -1,7 +1,4 @@
-import { Plus } from "lucide-react"
-
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -68,25 +65,14 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
             onCycleAllocation={state.cycleOffenseAllocation}
             onDelete={state.deleteOffenseTemplate}
             onPersist={state.persistOffenseTemplate}
+            adding={state.addingOffense}
+            onAddClick={() => state.setAddingOffense((v) => !v)}
+            addAriaLabel="添加攻击方模版"
           />
-          <div className="flex items-center justify-between gap-2">
-            <ShowActualValuesSwitch
-              checked={trackState.showOffenseActual}
-              onCheckedChange={state.setShowOffenseActual}
-            />
-            {!state.addingOffense && (
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className="h-7 gap-1 text-xs"
-                onClick={() => state.setAddingOffense(true)}
-              >
-                <Plus className="size-3" />
-                添加模版
-              </Button>
-            )}
-          </div>
+          <ShowActualValuesSwitch
+            checked={trackState.showOffenseActual}
+            onCheckedChange={state.setShowOffenseActual}
+          />
           {state.addingOffense && (
             <AddOffenseTemplatePanel
               statLabel={catalog.offenseStatLabel}
@@ -144,25 +130,14 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
             onCycleAllocation={state.cycleDefenseAllocation}
             onDelete={state.deleteDefenseTemplate}
             onPersist={state.persistDefenseTemplate}
+            adding={state.addingDefense}
+            onAddClick={() => state.setAddingDefense((v) => !v)}
+            addAriaLabel="添加防守方模版"
           />
-          <div className="flex items-center justify-between gap-2">
-            <ShowActualValuesSwitch
-              checked={trackState.showDefenseActual}
-              onCheckedChange={state.setShowDefenseActual}
-            />
-            {!state.addingDefense && (
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className="h-7 gap-1 text-xs"
-                onClick={() => state.setAddingDefense(true)}
-              >
-                <Plus className="size-3" />
-                添加模版
-              </Button>
-            )}
-          </div>
+          <ShowActualValuesSwitch
+            checked={trackState.showDefenseActual}
+            onCheckedChange={state.setShowDefenseActual}
+          />
           {state.addingDefense && (
             <AddDefenseTemplatePanel
               hpBounds={state.defenderHpBounds}

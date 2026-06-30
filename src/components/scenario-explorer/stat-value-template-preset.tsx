@@ -18,6 +18,7 @@ import type { StatTierTokenSet } from "@/lib/stat-tier-colors"
 
 import {
   TrackOption,
+  TrackOptionAdd,
   TrackOptionGroup,
   TrackOptionSummary,
   type TrackOptionAction,
@@ -35,6 +36,9 @@ type TemplatePresetProps = {
   onCycleAllocation: (id: string) => void
   onDelete?: (id: string) => void
   onPersist?: (id: string) => void
+  adding?: boolean
+  onAddClick?: () => void
+  addAriaLabel?: string
 }
 
 type TemplateCardProps = {
@@ -87,6 +91,7 @@ function templateActions({
       kind: "persist",
       label: "持久化模版",
       position: "top-right",
+      alwaysVisible: true,
       onClick: onPersist,
     })
   }
@@ -96,6 +101,7 @@ function templateActions({
       kind: "cycleAllocation",
       label: "切换能力点数分配",
       position: "bottom-right",
+      alwaysVisible: true,
       onClick: onCycleAllocation,
     })
   }
@@ -148,6 +154,9 @@ export function StatValueTemplatePreset({
   onCycleAllocation,
   onDelete,
   onPersist,
+  adding = false,
+  onAddClick,
+  addAriaLabel = "添加模版",
 }: TemplatePresetProps) {
   return (
     <TrackOptionGroup className="w-72 overflow-visible">
@@ -182,6 +191,14 @@ export function StatValueTemplatePreset({
           />
         )
       })}
+      {onAddClick && (
+        <TrackOptionAdd
+          layout="text"
+          ariaLabel={addAriaLabel}
+          pressed={adding}
+          onClick={onAddClick}
+        />
+      )}
     </TrackOptionGroup>
   )
 }
