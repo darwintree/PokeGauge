@@ -1,7 +1,6 @@
 import { RefreshCw, Save, Trash2 } from "lucide-react"
 import type { ReactNode } from "react"
 
-import { Button } from "@/components/ui/button"
 import {
   statTierModifierClass,
   type StatTierTokenSet,
@@ -25,6 +24,8 @@ export type TrackOptionAction = {
   label: string
   position: "top-right" | "bottom-right"
   onClick: () => void
+  /** persist / cycleAllocation stay visible; remove stays hover-only */
+  alwaysVisible?: boolean
 }
 
 type TrackOptionProps = {
@@ -45,6 +46,7 @@ type TrackOptionGroupProps = {
 }
 
 type TrackOptionAddProps = {
+  layout?: TrackOptionLayout
   ariaLabel: string
   onClick: () => void
   pressed?: boolean
@@ -75,22 +77,21 @@ function modifierClass(modifier: TrackOptionModifier | undefined): string | unde
 }
 
 function ActionIcon({ kind }: { kind: TrackOptionActionKind }) {
-  if (kind === "remove") return <Trash2 className="size-2.5" />
-  if (kind === "persist") return <Save className="size-2.5" />
-  return <RefreshCw className="size-2.5" />
+  if (kind === "remove") return <Trash2 className="size-2" />
+  if (kind === "persist") return <Save className="size-2" />
+  return <RefreshCw className="size-2" />
 }
 
 function TrackOptionActionButton({ action }: { action: TrackOptionAction }) {
   return (
-    <Button
+    <button
       type="button"
-      variant="outline"
-      size="icon-xs"
       aria-label={action.label}
       className={cn(
         "track-option-action",
         CORNER_POSITION[action.position],
         action.kind === "remove" && "track-option-action--remove",
+        action.alwaysVisible && "track-option-action--visible",
       )}
       onClick={(event) => {
         event.stopPropagation()
@@ -98,7 +99,7 @@ function TrackOptionActionButton({ action }: { action: TrackOptionAction }) {
       }}
     >
       <ActionIcon kind={action.kind} />
-    </Button>
+    </button>
   )
 }
 
@@ -162,6 +163,7 @@ export function TrackOptionSummary({ children }: { children: ReactNode }) {
 }
 
 export function TrackOptionAdd({
+  layout = "icon",
   ariaLabel,
   onClick,
   pressed = false,
@@ -174,12 +176,20 @@ export function TrackOptionAdd({
       aria-pressed={pressed}
       onClick={onClick}
       className={cn(
-        "track-option track-option--icon track-option--add",
+        "track-option track-option--add",
+        layout === "text" ? "track-option--add-text" : "track-option--icon",
         pressed && "track-option--add-open",
         className,
       )}
     >
-      <span className="text-muted-foreground text-lg leading-none">+</span>
+      <span
+        className={cn(
+          "track-option-add-mark text-muted-foreground leading-none",
+          layout === "text" ? "text-sm" : "text-base",
+        )}
+      >
+        +
+      </span>
     </button>
   )
 }

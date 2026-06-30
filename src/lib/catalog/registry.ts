@@ -26,7 +26,10 @@ type AttackerEntry = {
   species: string
   types: PokemonType[]
   moveCategory: MoveCategory
+  /** Usage-ranked top-N — default selected on load */
   moves: MovePickEntry[]
+  /** Optional pool — addable via +, not pre-selected */
+  extraMoves?: MovePickEntry[]
 }
 
 type DefenderEntry = {
@@ -49,6 +52,10 @@ const ATTACKERS: AttackerEntry[] = [
       { id: "dragon-claw", label: "龙爪", moveName: "Dragon Claw", type: "dragon" },
       { id: "stone-edge", label: "尖石攻击", moveName: "Stone Edge", type: "rock" },
     ],
+    extraMoves: [
+      { id: "protect", label: "守住", moveName: "Protect", type: "normal" },
+      { id: "fire-fang", label: "火焰牙", moveName: "Fire Fang", type: "fire" },
+    ],
   },
   {
     id: "landorus-therian",
@@ -61,6 +68,10 @@ const ATTACKERS: AttackerEntry[] = [
       { id: "rock-slide", label: "岩崩", moveName: "Rock Slide", type: "rock" },
       { id: "stomping-tantrum", label: "跺脚", moveName: "Stomping Tantrum", type: "ground" },
     ],
+    extraMoves: [
+      { id: "protect", label: "守住", moveName: "Protect", type: "normal" },
+      { id: "knock-off", label: "拍落", moveName: "Knock Off", type: "dark" },
+    ],
   },
   {
     id: "flutter-mane",
@@ -72,6 +83,10 @@ const ATTACKERS: AttackerEntry[] = [
       { id: "moonblast", label: "月亮之力", moveName: "Moonblast", type: "fairy" },
       { id: "shadow-ball", label: "暗影球", moveName: "Shadow Ball", type: "ghost" },
       { id: "dazzling-gleam", label: "魔法闪耀", moveName: "Dazzling Gleam", type: "fairy" },
+    ],
+    extraMoves: [
+      { id: "protect", label: "守住", moveName: "Protect", type: "normal" },
+      { id: "thunderbolt", label: "十万伏特", moveName: "Thunderbolt", type: "electric" },
     ],
   },
 ]
@@ -158,7 +173,8 @@ export function getCatalog(attackerId: string, defenderId: string): MatchupCatal
   const attacker = findAttacker(attackerId) ?? findAttacker(DEFAULT_MATCHUP.attackerId)!
   const defender = findDefender(defenderId) ?? findDefender(DEFAULT_MATCHUP.defenderId)!
 
-  const moves: CatalogMoveOption[] = attacker.moves.map((m) => ({
+  const moveEntries = [...attacker.moves, ...(attacker.extraMoves ?? [])]
+  const moves: CatalogMoveOption[] = moveEntries.map((m) => ({
     id: m.id,
     label: m.label,
     summary: "",
@@ -184,8 +200,8 @@ export function getCatalog(attackerId: string, defenderId: string): MatchupCatal
     attackerStats: buildAttackerStats(attacker.moveCategory),
     attackerItems: buildAttackerItems(attacker.moveCategory),
     defenderBulks: buildDefenderBulks(attacker.moveCategory),
-    /** Default selected set — all top-N moves pre-selected */
-    defaultMoveIds: moves.map((m) => m.id),
+    /** Default selected set — top-N move pick only; extraMoves addable via + */
+    defaultMoveIds: attacker.moves.map((m) => m.id),
     defaultAttackerStatIds: ["neutral-max", "extreme"],
     defaultAttackerItemIds: ["none"],
     defaultDefenderIds: ["hp-32"],
