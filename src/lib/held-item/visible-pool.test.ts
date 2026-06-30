@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { buildVisibleItemIds, defaultStabBoostIds } from "@/lib/held-item"
 import { normalizeAddedBoostIds } from "@/lib/held-item/storage"
-import { orderedPoolSelection } from "@/components/scenario-explorer/config-multi-select"
+import { orderedPoolSelection } from "@/lib/ordered-pool-selection"
 
 describe("held-item visible pool", () => {
   const core = ["none", "life-orb", "choice-band"]

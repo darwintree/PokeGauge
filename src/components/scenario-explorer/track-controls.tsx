@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { MatchupCatalog } from "@/lib/catalog"
 import type { StatSelectMode } from "@/lib/scenario-pipeline"
 
-import { ConfigMultiSelect, MoveMultiSelect } from "./config-multi-select"
+import { MoveMultiSelect } from "./move-multi-select"
 import { HeldItemTrack } from "./held-item-track/held-item-track"
 import { StatRangeAxis } from "./stat-range-axis"
 import {
