@@ -1,7 +1,7 @@
 ---
 # This section is managed by the CLI. Do not edit manually.
 id: "54dd9e9b-4bbe-4dfe-9d8b-2bee2e22edb1"
-title: "Introduce specific held-item controls (Life Orb, Plates, Choice series)"
+title: "Introduce specific held-item controls (Life Orb, type boosts, Choice series)"
 status: "closed"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
@@ -10,47 +10,42 @@ updated_at: "2026-06-30T08:26:00Z"
 ---
 ## Context
 
-攻击方「道具」track：通用多选（`ConfigMultiSelect`），catalog + pipeline 乘算。
+攻击方「道具」track：由通用文字多选改为 **纯图标池**（grill 方案 B）。
 
-原始 backlog 曾列生命宝珠、石板、讲究全系列；后续 trace 收窄 scope（见下）。
+**Grill:** [`docs/traces/2026-06-29-held-item-controls-grill.md`](../../docs/traces/2026-06-29-held-item-controls-grill.md)  
+**Implementation:** [`docs/traces/implementations/2026-06-29-held-item-controls.md`](../../docs/traces/implementations/2026-06-29-held-item-controls.md)
 
-## Design verdict (trace-aligned)
+## Design verdict
 
-### In scope (v1 — delivered)
+### Delivered (v1)
 
-| 道具 | Catalog id | 说明 |
-| --- | --- | --- |
-| 无道具 | `none` | explicit no-item |
-| 生命宝珠 | `life-orb` | 默认选中集含 `none` + `life-orb` |
-| 讲究头带 / 眼镜 | `choice-band` / `choice-specs` | 随 `moveCategory` 切换（slice 5） |
+| 类别 | 内容 |
+| --- | --- |
+| Core | `none` / `life-orb` / `choice-band\|specs`（category-aware） |
+| 属性强化 | `type-boost-{type}` × 18；默认可见本系 ≤2；`+` 添加其余（localStorage 按 attacker） |
+| UI | `HeldItemTrack` 图标池（sidebar） |
+| Pipeline | 扁平 `attackerItems`；多选 row product；每行单道具、modifier 互斥 |
+| Default | 仅 `none` |
+| Tests | type-boost modifier golden path（`pipeline.test.ts`） |
 
-- **UI**：保留 flat 多选 pill（`track-controls.tsx` → `ConfigMultiSelect`）；不重组专用控件。
-- **Pipeline**：`attackerItemIds` 参与 row product；`ATTACKER_ITEM_NAMES` → `@smogon/calc`。
-- **结果行**：有道具时 muted 文本标签（stat-tier grill D 面；非 tier chip）。
-
-### Out of scope (trace / 产品决定)
+### Out of scope (v1)
 
 | 项 | 依据 |
 | --- | --- |
 | 石板 Plates | 产品决定：不再需要 |
-| 讲究围巾 Choice Scarf | [[../docs/traces/implementations/2026-06-26-slice-5-matchup-selector-and-catalog-expansion\|slice 5]]：v1 仅头带/眼镜 |
-| 道具 track tier 上色 | [[../docs/traces/2026-06-28-stat-tier-color-tokens-grill\|stat-tier grill]] §1 |
-| 专用分组 UI / Wrap grid | [[../docs/traces/2026-06-28-stat-value-template-grill\|stat-value grill]] §10 仅覆盖实数值 preset |
-| 多选选中态强化 | [[../20260626_open_multi-select-selected-vs-unselected-state-is-hard-to-distinguish]] |
-
-### Trace references
-
-- Slice 1/3：道具多选 track + pipeline
-- [[../docs/traces/implementations/2026-06-26-slice-5-matchup-selector-and-catalog-expansion\|Slice 5]]：category-aware Choice（头带/眼镜）
-- [[../docs/traces/2026-06-28-stat-tier-color-tokens-grill\|Stat tier grill]]：结果行 muted 道具、道具 track 不上色
+| 讲究围巾 Choice Scarf | Grill §2 |
+| 结果行图标 / 「无加成」标注 | Grill §6 → [[20260626_open_damage-comparison-results-info-display-needs-refinement]] |
+| 合并无加成重复行 | [[20260629_open_merge-scenario-rows-when-item-has-no-damage-effect]] |
 
 ## Acceptance criteria
 
-- [x] 生命宝珠、讲究头带/眼镜可在 UI 中选择并参与对比
-- [x] 各道具选项标签与伤害 pipeline / `@smogon/calc` 行为一致（Life Orb golden test 覆盖代表路径）
-- [x] 与「无道具」多选共存，符合 track 累乘收紧语义
-- [x] catalog 经 `buildAttackerItems(category)` 扩展；后续道具可复用同一 `CatalogOption` + `ATTACKER_ITEM_NAMES` 模式
+- [x] 无道具 / 生命玉 / 讲究 / 属性强化可多选并参与对比（每行仅一件、效果互斥）
+- [x] 各选项与伤害 pipeline / `@smogon/calc` item modifier 一致
+- [x] Default view 默认选中无道具
+- [x] `+` 添加的强化道具按攻击方持久化（localStorage）
+- [x] catalog 扁平 list 扩展（core + type-boost）
+- [ ] 无加成时结果行注明「无加成」— defer [[20260626_open_damage-comparison-results-info-display-needs-refinement]]
 
 ## Resolution
 
-v1 基线已在 slice 1/3/5 交付；石板与专用 UI 重组按上表 defer/取消。Issue 关闭，无额外实现待办。
+Sidebar 道具 track 与 catalog/pipeline 已在 `8d71485` 按 grill 交付。石板取消；结果行展示与无加成合并留给 follow-up issues。Issue 关闭。
