@@ -98,6 +98,24 @@ function ResultTierChip({ tier, className, children }: ResultTierChipProps) {
   )
 }
 
+type ResultStatLabelProps = {
+  label: string
+  actual?: string | null
+}
+
+function ResultStatLabel({ label, actual }: ResultStatLabelProps) {
+  return (
+    <span className="inline-flex items-center gap-1">
+      <span>{label}</span>
+      {actual && (
+        <span className="text-muted-foreground text-[10px] font-normal opacity-75 tabular-nums">
+          {actual}
+        </span>
+      )}
+    </span>
+  )
+}
+
 type RowLabelProps = {
   children: React.ReactNode
 }
@@ -110,9 +128,9 @@ function RowLabel({ children }: RowLabelProps) {
 
 type DamageBoxPlotProps = {
   move: CatalogMoveOption
-  attackerStat: Pick<CatalogOption, "id" | "label">
+  attackerStat: Pick<CatalogOption, "id" | "label"> & { actual?: string | null }
   attackerItem: Pick<CatalogOption, "id">
-  defender: Pick<CatalogOption, "id" | "label">
+  defender: Pick<CatalogOption, "id" | "label"> & { actual?: string | null }
   row: ScenarioRow
   showMove?: boolean
   isRangeEnvelope?: boolean
@@ -154,11 +172,13 @@ export function DamageBoxPlot({
           <div className="flex items-center gap-1.5">
             <RowLabel>攻击</RowLabel>
             {offenseTier ? (
-              <ResultTierChip tier={offenseTier} className="text-sm font-medium">
-                {attackerStat.label}
+              <ResultTierChip tier={offenseTier} className="text-xs font-medium leading-snug">
+                <ResultStatLabel label={attackerStat.label} actual={attackerStat.actual} />
               </ResultTierChip>
             ) : (
-              <span className="text-sm font-medium">{attackerStat.label}</span>
+              <span className="text-sm font-medium">
+                <ResultStatLabel label={attackerStat.label} actual={attackerStat.actual} />
+              </span>
             )}
             {attackerItem.id !== "none" && (
               <>
@@ -184,11 +204,11 @@ export function DamageBoxPlot({
           <RowLabel>防御</RowLabel>
           {defenseTier ? (
             <ResultTierChip tier={defenseTier} className="text-xs leading-snug">
-              {defender.label}
+              <ResultStatLabel label={defender.label} actual={defender.actual} />
             </ResultTierChip>
           ) : (
             <span className="text-muted-foreground text-xs leading-snug">
-              {defender.label}
+              <ResultStatLabel label={defender.label} actual={defender.actual} />
             </span>
           )}
         </div>

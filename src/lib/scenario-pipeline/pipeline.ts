@@ -18,12 +18,14 @@ import {
   buildSystemOffenseTemplates,
   defaultDefenseSelection,
   defaultOffenseSelection,
+  formatTemplateActual,
   loadUserDefenseTemplates,
   loadUserOffenseTemplates,
   mergeTemplates,
   templateCardLabel,
+  type StatNameStrategy,
+  type StatValueTemplate,
 } from "@/lib/stat-value-template"
-import type { StatValueTemplate } from "@/lib/stat-value-template"
 
 import type { DefenderStatRanges, ScenarioRow, TrackState } from "./types"
 import { RANGE_DEFENDER_ID, RANGE_STAT_ID } from "./types"
@@ -402,62 +404,88 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
     },
     defenderRangeTouched: false,
     showDefenseActual: false,
+    showResultActual: false,
     defenseAllocationIndices: {},
   }
+}
+
+export type RowLabelTemplates = {
+  offense: StatValueTemplate[]
+  defense: StatValueTemplate[]
 }
 
 export function rowLabels(
   catalog: MatchupCatalog,
   row: ScenarioRow,
   trackState: TrackState,
+  statNameStrategy: StatNameStrategy,
+  templates?: RowLabelTemplates,
 ): {
   move: string
   stat: string
+  statActual: string | null
   item: string
   defender: string
+  defenderActual: string | null
 } {
   const findItem = (options: { id: string; label: string }[], id: string) =>
     options.find((o) => o.id === id)?.label ?? id
 
   const defStatLabel = catalog.moveCategory === "physical" ? "物防" : "特防"
-  const offenseTemplates = offenseTemplatesForState(catalog, trackState)
-  const defenseTemplates = defenseTemplatesForState(catalog, trackState)
+  const offenseTemplates = templates?.offense ?? offenseTemplatesForState(catalog, trackState)
+  const defenseTemplates = templates?.defense ?? defenseTemplatesForState(catalog, trackState)
 
   let statLabel: string
+  let statActual: string | null = null
   if (row.attackerStatId === RANGE_STAT_ID && row.statRange) {
     statLabel = `${catalog.offenseStatLabel} ${row.statRange.min}–${row.statRange.max}`
   } else {
     const template = offenseTemplates.find((t) => t.id === row.attackerStatId)
-    statLabel = template
-      ? templateCardLabel(
-          template,
-          catalog.matchup.attackerSpecies,
-          catalog.moveCategory,
-          trackState.offenseAllocationIndices[template.id] ?? 0,
-        )
-      : row.attackerStatId
+    if (template) {
+      statLabel = templateCardLabel(
+        template,
+        catalog.matchup.attackerSpecies,
+        catalog.moveCategory,
+        trackState.offenseAllocationIndices[template.id] ?? 0,
+        statNameStrategy,
+      )
+      if (trackState.showResultActual) {
+        statActual = formatTemplateActual(template)
+      }
+    } else {
+      statLabel = row.attackerStatId
+    }
   }
 
   let defenderLabel: string
+  let defenderActual: string | null = null
   if (row.defenderId === RANGE_DEFENDER_ID && row.defenderRanges) {
     defenderLabel = `HP ${row.defenderRanges.hp.min}–${row.defenderRanges.hp.max} · ${defStatLabel} ${row.defenderRanges.def.min}–${row.defenderRanges.def.max}`
   } else {
     const template = defenseTemplates.find((t) => t.id === row.defenderId)
-    defenderLabel = template
-      ? templateCardLabel(
-          template,
-          catalog.matchup.defenderSpecies,
-          catalog.moveCategory,
-          trackState.defenseAllocationIndices[template.id] ?? 0,
-        )
-      : row.defenderId
+    if (template) {
+      defenderLabel = templateCardLabel(
+        template,
+        catalog.matchup.defenderSpecies,
+        catalog.moveCategory,
+        trackState.defenseAllocationIndices[template.id] ?? 0,
+        statNameStrategy,
+      )
+      if (trackState.showResultActual) {
+        defenderActual = formatTemplateActual(template)
+      }
+    } else {
+      defenderLabel = row.defenderId
+    }
   }
 
   return {
     move: findItem(catalog.moves, row.moveId),
     stat: statLabel,
+    statActual,
     item: findItem(catalog.attackerItems, row.attackerItemId),
     defender: defenderLabel,
+    defenderActual,
   }
 }
 

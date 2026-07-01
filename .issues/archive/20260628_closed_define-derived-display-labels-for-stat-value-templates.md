@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "80d30274-ae3a-44b2-ab76-e694eadc8af6"
 title: "Define derived display labels for stat-value templates"
-status: "open"
+status: "closed"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-06-28T09:18:00Z"
-updated_at: "2026-07-01T13:12:00Z"
+updated_at: "2026-07-01T13:28:00Z"
 ---
 ## Context
 
@@ -49,16 +49,20 @@ Scenario Explorer 正在正式化 **实数值模版**（按宝可梦保存的性
 
 ## Acceptance criteria
 
-- [ ] 文档定稿派生显示标签规则（含 offense / defense 两形态）
-- [ ] 规则可机械执行，且实现层不需要主观命名判断
-- [ ] Stat value template 持久化模型不包含名称字段
-- [ ] 标签引擎支持三套 stat 名展示策略
-- [ ] 标签引擎支持默认 SP 标签模式与实数值显示模式
-- [ ] `EX`、HP 无修正、防守组合后缀规则有测试覆盖
-- [ ] 多分配默认、分配切换、实数值模式隐藏分配切换有测试覆盖
-- [ ] SP 标签 tooltip 展示最终实数值与所有可达分配策略
-- [ ] 与实数值模版主 feature 的 persist / create 流程对接点明确
-- [ ] 实现前逐条审计 [`docs/traces/2026-07-01-stat-value-template-derived-display-labels-grill.md`](../../docs/traces/2026-07-01-stat-value-template-derived-display-labels-grill.md) 中的每项决定，并确认已覆盖
+- [x] 文档定稿派生显示标签规则（含 offense / defense 两形态）
+- [x] 规则可机械执行，且实现层不需要主观命名判断
+- [x] Stat value template 持久化模型不包含名称字段
+- [x] 标签引擎支持三套 stat 名展示策略
+- [x] 标签引擎支持默认 SP 标签模式与实数值显示模式
+- [x] `EX`、HP 无修正、防守组合后缀规则有测试覆盖
+- [x] 多分配默认、分配切换、实数值模式隐藏分配切换有测试覆盖
+- [x] SP 标签 tooltip 展示最终实数值与所有可达分配策略
+- [x] 与实数值模版主 feature 的 persist / create 流程对接点明确
+- [x] 实现前逐条审计 [`docs/traces/2026-07-01-stat-value-template-derived-display-labels-grill.md`](../../docs/traces/2026-07-01-stat-value-template-derived-display-labels-grill.md) 中的每项决定，并确认已覆盖
+
+## Resolution
+
+Implemented SP label engine in `src/lib/stat-value-template/ability-points.ts` with `resolveTemplateDisplay()`, stat name strategies in `stat-name-strategy.ts`, rules doc at `docs/domain/stat-value-template-display-labels.md`. UI: preset cards + results use derived labels; three independent actual-value switches; allocation cycle hidden in actual mode; SP tooltips on preset cards. Removed template `name` from types and persist/create flows. Trace: `docs/traces/implementations/2026-07-01-stat-value-template-derived-display-labels.md`.
 
 ## Related
 

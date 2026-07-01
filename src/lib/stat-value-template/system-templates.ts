@@ -8,7 +8,6 @@ import type { MoveCategory } from "@/lib/catalog/types"
 import {
   defenderBulkTier,
   offenseStatTier,
-  type StatTierTokenSet,
 } from "@/lib/stat-tier-colors"
 
 import type { DefensePresetId, OffensePresetId } from "@/lib/catalog/preset-labels"
@@ -64,10 +63,6 @@ export function buildSystemDefenseTemplates(
   category: MoveCategory,
 ): StatValueTemplate[] {
   return DEFENSE_SYSTEM_IDS.map((id) => defenseSystemTemplate(id, species, category))
-}
-
-export function systemTierForTemplate(template: StatValueTemplate): StatTierTokenSet | null {
-  return template.systemTier ?? null
 }
 
 export function isSystemTemplateId(id: string): boolean {
@@ -131,25 +126,19 @@ export function findTemplateByDefenseValues(
   )
 }
 
-export function newUserOffenseTemplate(stat: number, name?: string): StatValueTemplate {
+export function newUserOffenseTemplate(stat: number): StatValueTemplate {
   return {
     id: `user-${crypto.randomUUID()}`,
     kind: "user",
     values: { kind: "offense", stat },
-    name,
   }
 }
 
-export function newUserDefenseTemplate(
-  hp: number,
-  def: number,
-  name?: string,
-): StatValueTemplate {
+export function newUserDefenseTemplate(hp: number, def: number): StatValueTemplate {
   return {
     id: `user-${crypto.randomUUID()}`,
     kind: "user",
     values: { kind: "defense", hp, def },
-    name,
   }
 }
 

@@ -12,6 +12,7 @@ import {
   AddDefenseTemplatePanel,
   AddOffenseTemplatePanel,
   ShowActualValuesSwitch,
+  StatNameStrategySelect,
   StatValueTemplatePreset,
 } from "./stat-value-template-preset"
 import type { ScenarioState } from "./use-scenario-state"
@@ -62,6 +63,7 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
             selectedIds={trackState.offenseTemplateIds}
             species={catalog.matchup.attackerSpecies}
             category={catalog.moveCategory}
+            statNameStrategy={state.statNameStrategy}
             showActual={trackState.showOffenseActual}
             allocationIndices={trackState.offenseAllocationIndices}
             onToggle={state.toggleOffenseTemplate}
@@ -127,6 +129,7 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
             selectedIds={trackState.defenseTemplateIds}
             species={catalog.matchup.defenderSpecies}
             category={catalog.moveCategory}
+            statNameStrategy={state.statNameStrategy}
             showActual={trackState.showDefenseActual}
             allocationIndices={trackState.defenseAllocationIndices}
             onToggle={state.toggleDefenseTemplate}
@@ -171,6 +174,11 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
           />
         </TabsContent>
       </Tabs>
+
+      <StatNameStrategySelect
+        value={state.statNameStrategy}
+        onChange={state.setStatNameStrategy}
+      />
     </div>
   )
 }
