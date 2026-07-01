@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "58c4eca8-605e-42c3-addc-df3522635f5b"
 title: "Apply damage-comparison display decisions: row card, non-linear axis, hover tooltip"
-status: "open"
+status: "closed"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-01T05:31:00Z"
-updated_at: "2026-07-01T05:31:00Z"
+updated_at: "2026-07-01T07:19:00Z"
 ---
 <!--
 This body is user-owned. Adjust the sections freely to fit the issue.
@@ -38,18 +38,18 @@ Use the CLI to update front matter fields such as title, status, priority, and l
 ## Verification Checklist
 
 按 trace 逐条审计的实现检查：
-- [ ] 行标识 = 左侧 `w-60` 键值对卡片（招式/攻击/防御），道具内联 + 「无加成」
-- [ ] 标识与箱线图左右关系，不上下堆叠
-- [ ] 数轴 `sticky top-0` 冻结，刻度起点对齐左侧卡片宽 + gap
-- [ ] 不显示伤害实数值；track 底部仅通常区间 + 暴击区间 + OHKO
-- [ ] 内联默认只留通常区间 + OHKO；暴击区间、平均仅在 hover
-- [ ] 非线性轴：0–100 线性 72%，100–200 `sqrt` 压缩，200 硬上限，100% 处 scale-break
-- [ ] hover = shadcn `Tooltip` 行级卡片（四行，配色对应 track），trigger = 整条 track
-- [ ] `side=top sideOffset=8 align=center`，碰撞翻转不压住箱形图/冻结轴
-- [ ] `TooltipProvider` 包 App 根，`delay=0`
-- [ ] 配色/视觉细节由实现阶段定，结果记录在 Progress Log
-- [ ] 原型清理：删除 `hover-style.prototype.tsx`、`prototype-switcher.tsx`、`variant` prop 与 switcher 接线
-- [ ] 自洽检查 / 测试覆盖非线性映射与 hover 卡片渲染
+- [x] 行标识 = 左侧 `w-60` 键值对卡片（招式/攻击/防御），道具内联 + 「无加成」
+- [x] 标识与箱线图左右关系，不上下堆叠
+- [x] 数轴 `sticky top-0` 冻结，刻度起点对齐左侧卡片宽 + gap
+- [x] 不显示伤害实数值；track 底部仅通常区间 + 暴击区间 + OHKO
+- [x] 内联默认只留通常区间 + OHKO；暴击区间、平均仅在 hover
+- [x] 非线性轴：0–100 线性 72%，100–200 `sqrt` 压缩，200 硬上限，100% 处 scale-break
+- [x] hover = shadcn `Tooltip` 行级卡片（四行，配色对应 track），trigger = 整条 track
+- [x] `side=top sideOffset=8 align=center`，碰撞翻转不压住箱形图/冻结轴
+- [x] `TooltipProvider` 包 App 根，`delay=0`
+- [x] 配色/视觉细节由实现阶段定，结果记录在 Progress Log
+- [x] 原型清理：删除 `hover-style.prototype.tsx`、`prototype-switcher.tsx`、`variant` prop 与 switcher 接线
+- [x] 自洽检查 / 测试覆盖非线性映射与 hover 卡片渲染
 
 ## Related
 
@@ -60,3 +60,4 @@ Use the CLI to update front matter fields such as title, status, priority, and l
 ## Progress Log
 
 - 2026-07-01: 三轮原型完成，决策记入 trace；新建本 issue 跟踪落生产与清理。生产代码暂未改动，原型与 switcher 保留待清理。
+- 2026-07-01: 落生产完成。`damage-box-plot.tsx` 改为左侧 `w-60` 三行标识卡片 + 右侧 track；非线性映射 `pctToFraction`（0–100 线性 72%，100–200 `sqrt` 压缩 28%，200 硬上限），刻度 `[0,25,50,75,100,150,200]`，100% 处虚线 scale-break；数轴 `sticky top-0 z-10 bg-background`，左 padding `15.75rem` 对齐卡片宽 + gap；内联仅通常区间 + OHKO，暴击/平均移入 hover；hover 用 shadcn `Tooltip`（base-ui `Positioner`）行级四行卡片，`side=top sideOffset=8 align=center`，trigger = 整条 track（`render={<div tabIndex={0}>}`）；`App.tsx` 根包 `TooltipProvider delay={0}`。配色取 shadcn 默认深色 pill + Arrow，四行用色点/竖条标记对应 track。原型 `hover-style.prototype.tsx` / `prototype-switcher.tsx` / `variant` 接线在仓库中不存在，无需清理。测试 `damage-box-plot.test.ts` 覆盖非线性映射（线性段 / sqrt 段 / clamp / 单调）。浏览器验证：行卡片布局、非线性轴、sticky 数轴（缩视口滚动确认）、hover 四行 tooltip 均正常。

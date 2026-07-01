@@ -1,6 +1,12 @@
 /** Box = normal 16 rolls; whiskers = crit range (PRD visualization contract) */
 
 import { TypeBadge } from "@/components/pokemon/type-badge"
+import { Separator } from "@/components/ui/separator"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import type { CatalogMoveOption, CatalogOption } from "@/lib/catalog/types"
 import { itemAriaLabel, itemHasNoBoostForMove, itemSprite } from "@/lib/held-item"
 import type { ScenarioRow } from "@/lib/scenario-pipeline"
@@ -12,27 +18,39 @@ import {
 } from "@/lib/stat-tier-colors"
 import { cn } from "@/lib/utils"
 
-const AXIS_MAX = 150
-const TICKS = [0, 25, 50, 75, 100, 125, 150]
+// Non-linear axis: 0–100% linear over 72% of width, 100–200% sqrt-compressed
+// into the remaining 28%. Hard cap 200%.
+const LINEAR_MAX = 100
+const AXIS_MAX = 200
+const LINEAR_FRACTION = 0.72
+const TICKS = [0, 25, 50, 75, 100, 150, 200]
 
-function clampPct(pct: number) {
+function clampPct(pct: number): number {
   return Math.min(Math.max(pct, 0), AXIS_MAX)
 }
 
-function pctToLeft(pct: number) {
-  return `${(clampPct(pct) / AXIS_MAX) * 100}%`
+export function pctToFraction(pct: number): number {
+  const c = clampPct(pct)
+  if (c <= LINEAR_MAX) return (c / LINEAR_MAX) * LINEAR_FRACTION
+  return LINEAR_FRACTION + Math.sqrt((c - LINEAR_MAX) / LINEAR_MAX) * (1 - LINEAR_FRACTION)
 }
 
-function pctSpan(minPct: number, maxPct: number) {
-  const left = clampPct(minPct)
-  const right = clampPct(maxPct)
+function pctToLeft(pct: number): string {
+  return `${pctToFraction(pct) * 100}%`
+}
+
+function pctSpan(minPct: number, maxPct: number): { left: string; width: string } {
+  const left = pctToFraction(minPct)
+  const right = pctToFraction(maxPct)
   return {
-    left: `${(left / AXIS_MAX) * 100}%`,
-    width: `${((right - left) / AXIS_MAX) * 100}%`,
+    left: `${left * 100}%`,
+    width: `${(right - left) * 100}%`,
   }
 }
 
-function lethalTone(row: ScenarioRow) {
+type Tone = "lethal" | "warm" | "cool"
+
+function lethalTone(row: ScenarioRow): Tone {
   const peak = Math.max(row.maxPercent, row.critMaxPercent)
   if (peak >= 100) return "lethal"
   if (peak >= 75) return "warm"
@@ -54,6 +72,12 @@ const TONE_CLASS = {
   lethal: "bg-red-500/75 border-red-600/70",
 } as const
 
+const TONE_DOT_CLASS = {
+  cool: "bg-amber-400",
+  warm: "bg-orange-500",
+  lethal: "bg-red-600",
+} as const
+
 type ResultTierChipProps = {
   tier: StatTierTokenSet
   className: string
@@ -71,6 +95,16 @@ function ResultTierChip({ tier, className, children }: ResultTierChipProps) {
     >
       {children}
     </span>
+  )
+}
+
+type RowLabelProps = {
+  children: React.ReactNode
+}
+
+function RowLabel({ children }: RowLabelProps) {
+  return (
+    <span className="w-8 shrink-0 text-muted-foreground text-[10px]">{children}</span>
   )
 }
 
@@ -107,112 +141,171 @@ export function DamageBoxPlot({
 
   return (
     <div className="flex min-h-[4.5rem] items-center gap-3">
-      <div className="w-52 shrink-0 text-right">
+      <div className="w-60 shrink-0 overflow-hidden rounded-md border">
         {showMove && (
-          <div className="flex items-center justify-end gap-1">
+          <div className="flex items-center gap-1.5 px-3 py-1.5">
+            <RowLabel>招式</RowLabel>
             <TypeBadge type={move.type} />
-            <span className="text-muted-foreground text-xs">{move.label}</span>
+            <span className="text-xs">{move.label}</span>
           </div>
         )}
-        {offenseTier ? (
-          <ResultTierChip tier={offenseTier} className="text-sm font-medium">
-            {attackerStat.label}
-          </ResultTierChip>
-        ) : (
-          <div className="text-sm font-medium">{attackerStat.label}</div>
-        )}
-        {isRangeEnvelope && (
-          <div className="text-muted-foreground text-[10px]">实数值区间 × 16 roll</div>
-        )}
-        {attackerItem.id !== "none" && (
-          <div className="flex items-center justify-end gap-1">
-            <img
-              src={`/items/${itemSprite(attackerItem.id)}`}
-              alt=""
-              title={itemAriaLabel(attackerItem.id)}
-              className="size-4 object-contain"
-            />
-            {itemHasNoBoostForMove(attackerItem.id, move.type) && (
-              <span className="text-muted-foreground text-[10px]">无加成</span>
+        {showMove && <Separator />}
+        <div className="px-3 py-1.5">
+          <div className="flex items-center gap-1.5">
+            <RowLabel>攻击</RowLabel>
+            {offenseTier ? (
+              <ResultTierChip tier={offenseTier} className="text-sm font-medium">
+                {attackerStat.label}
+              </ResultTierChip>
+            ) : (
+              <span className="text-sm font-medium">{attackerStat.label}</span>
+            )}
+            {attackerItem.id !== "none" && (
+              <>
+                <img
+                  src={`/items/${itemSprite(attackerItem.id) ?? ""}`}
+                  alt={itemAriaLabel(attackerItem.id)}
+                  className="size-4 object-contain"
+                />
+                {itemHasNoBoostForMove(attackerItem.id, move.type) && (
+                  <span className="text-muted-foreground text-[10px]">无加成</span>
+                )}
+              </>
             )}
           </div>
-        )}
-        {defenseTier ? (
-          <ResultTierChip tier={defenseTier} className="text-xs leading-snug">
-            vs {defender.label}
-          </ResultTierChip>
-        ) : (
-          <div className="text-muted-foreground text-xs leading-snug">
-            vs {defender.label}
-          </div>
-        )}
-      </div>
-
-      <div className="relative h-10 min-w-0 flex-1">
-        <div
-          className="absolute top-1/2 h-px w-full -translate-y-1/2 bg-border"
-          aria-hidden
-        />
-
-        <div
-          className={`absolute top-1/2 h-7 -translate-y-1/2 rounded-sm border ${TONE_CLASS[tone]}`}
-          style={{ left: box.left, width: box.width }}
-        />
-
-        <div
-          className="absolute top-1/2 z-10 w-0.5 -translate-y-1/2 rounded-full bg-foreground"
-          style={{ left: pctToLeft(row.avgPercent), height: "1.75rem" }}
-        />
-
-        {bridge && (
-          <div
-            className="absolute top-1/2 h-px -translate-y-1/2 border-t border-dashed border-foreground/25"
-            style={{ left: bridge.left, width: bridge.width }}
-            aria-hidden
-          />
-        )}
-
-        <div
-          className="absolute top-1/2 h-px -translate-y-1/2 bg-violet-600/70"
-          style={{ left: crit.left, width: crit.width }}
-        />
-
-        <div
-          className="absolute top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-violet-600 bg-background"
-          style={{ left: crit.left }}
-          title="暴击最低"
-        />
-        <div
-          className="absolute top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-violet-600 bg-background"
-          style={{ left: pctToLeft(row.critMaxPercent) }}
-          title="暴击最高"
-        />
-
-        <div
-          className="absolute -bottom-6 flex flex-wrap items-baseline gap-x-3 text-xs"
-          style={{ left: box.left, minWidth: "12rem" }}
-        >
-          <span className="font-medium tabular-nums">
-            {row.minPercent.toFixed(1)}% ~ {row.maxPercent.toFixed(1)}%
-          </span>
-          <span className="text-muted-foreground tabular-nums">
-            {row.minDamage} ~ {row.maxDamage}
-          </span>
-          <span className="text-violet-700 tabular-nums dark:text-violet-400">
-            暴击 {row.critMinPercent.toFixed(1)}% ~ {row.critMaxPercent.toFixed(1)}%
-          </span>
-          {ohko && (
-            <span className="font-semibold text-red-600 tabular-nums">{ohko}</span>
+          {isRangeEnvelope && (
+            <div className="text-muted-foreground mt-1 pl-10 text-[10px]">
+              实数值区间 × 16 roll
+            </div>
+          )}
+        </div>
+        <Separator />
+        <div className="flex items-center gap-1.5 px-3 py-1.5">
+          <RowLabel>防御</RowLabel>
+          {defenseTier ? (
+            <ResultTierChip tier={defenseTier} className="text-xs leading-snug">
+              {defender.label}
+            </ResultTierChip>
+          ) : (
+            <span className="text-muted-foreground text-xs leading-snug">
+              {defender.label}
+            </span>
           )}
         </div>
       </div>
+
+      <Tooltip>
+        <TooltipTrigger
+          render={<div tabIndex={0} className="relative h-10 min-w-0 flex-1 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/40" />}
+        >
+          <div
+            className="absolute top-1/2 h-px w-full -translate-y-1/2 bg-border"
+            aria-hidden
+          />
+
+          <div
+            className={cn(
+              "absolute top-1/2 h-7 -translate-y-1/2 rounded-sm border",
+              TONE_CLASS[tone],
+            )}
+            style={{ left: box.left, width: box.width }}
+          />
+
+          <div
+            className="absolute top-1/2 z-10 w-0.5 -translate-y-1/2 rounded-full bg-foreground"
+            style={{ left: pctToLeft(row.avgPercent), height: "1.75rem" }}
+          />
+
+          {bridge && (
+            <div
+              className="absolute top-1/2 h-px -translate-y-1/2 border-t border-dashed border-foreground/25"
+              style={{ left: bridge.left, width: bridge.width }}
+              aria-hidden
+            />
+          )}
+
+          <div
+            className="absolute top-1/2 h-px -translate-y-1/2 bg-violet-600/70"
+            style={{ left: crit.left, width: crit.width }}
+          />
+
+          {[row.critMinPercent, row.critMaxPercent].map((p, i) => (
+            <div
+              key={i}
+              className="absolute top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-violet-600 bg-background"
+              style={{ left: pctToLeft(p) }}
+            />
+          ))}
+
+          <div
+            className="pointer-events-none absolute -bottom-6 flex flex-wrap items-baseline gap-x-3 text-xs"
+            style={{ left: box.left, minWidth: "12rem" }}
+          >
+            <span className="font-medium tabular-nums">
+              {row.minPercent.toFixed(1)}% ~ {row.maxPercent.toFixed(1)}%
+            </span>
+            {ohko && (
+              <span className="font-semibold text-red-600 tabular-nums">{ohko}</span>
+            )}
+          </div>
+        </TooltipTrigger>
+        <TooltipContent
+          side="top"
+          sideOffset={8}
+          align="center"
+          className="flex-col items-stretch gap-1.5 max-w-[18rem] px-3 py-2"
+        >
+          <HoverRow marker={<span className={cn("inline-block size-2 rounded-sm", TONE_DOT_CLASS[tone])} />}>
+            <HoverLabel>通常</HoverLabel>
+            <span className="tabular-nums">
+              {row.minPercent.toFixed(1)}% ~ {row.maxPercent.toFixed(1)}%
+            </span>
+          </HoverRow>
+          <HoverRow marker={<span className="inline-block h-3 w-0.5 bg-foreground" />}>
+            <HoverLabel>平均</HoverLabel>
+            <span className="tabular-nums">{row.avgPercent.toFixed(1)}%</span>
+          </HoverRow>
+          <HoverRow marker={<span className="inline-block size-2 rounded-full border-2 border-violet-600 bg-transparent" />}>
+            <HoverLabel>暴击</HoverLabel>
+            <span className="tabular-nums">
+              {row.critMinPercent.toFixed(1)}% ~ {row.critMaxPercent.toFixed(1)}%
+            </span>
+          </HoverRow>
+          {ohko && (
+            <HoverRow marker={<span className="inline-block size-2 rounded-full bg-red-500" />}>
+              <HoverLabel>OHKO</HoverLabel>
+              <span className="font-semibold tabular-nums">{ohko}</span>
+            </HoverRow>
+          )}
+        </TooltipContent>
+      </Tooltip>
     </div>
   )
 }
 
+type HoverRowProps = {
+  marker: React.ReactNode
+  children: React.ReactNode
+}
+
+function HoverRow({ marker, children }: HoverRowProps) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="inline-flex size-4 shrink-0 items-center justify-center">
+        {marker}
+      </span>
+      {children}
+    </div>
+  )
+}
+
+function HoverLabel({ children }: { children: React.ReactNode }) {
+  return <span className="text-muted-foreground text-[10px]">{children}</span>
+}
+
 export function DamageAxis() {
   return (
-    <div className="mb-2 flex pl-[13.75rem]">
+    <div className="bg-background sticky top-0 z-10 mb-2 flex pl-[15.75rem]">
       <div className="relative h-6 min-w-0 flex-1">
         {TICKS.map((tick) => (
           <div
@@ -227,7 +320,7 @@ export function DamageAxis() {
           </div>
         ))}
         <div
-          className="border-destructive/40 absolute top-0 h-full border-l border-dashed"
+          className="absolute top-0 h-full border-l border-dashed border-foreground/30"
           style={{ left: pctToLeft(100) }}
           aria-hidden
         />
