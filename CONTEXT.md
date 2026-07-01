@@ -107,3 +107,7 @@ _Avoid_: Plate, 石板, type gem
 **Added type boost**（添加属性强化）:
 通过「+」从全属性强化道具池中追加到可见列表、但非本系默认展示的选项。
 _Avoid_: Custom boost, 扩展强化
+
+**No-boost row**（无加成行）:
+结果行所选 type boost item 与该行招式属性不一致、因而未生效加成的状态；结果行以「无加成」标注。v1 不合并此类行与其他伤害相同的行，仅在结果行标注。
+_Avoid_: Mismatched item, 错配道具

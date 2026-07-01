@@ -2,6 +2,7 @@
 
 import { TypeBadge } from "@/components/pokemon/type-badge"
 import type { CatalogMoveOption, CatalogOption } from "@/lib/catalog/types"
+import { itemAriaLabel, itemHasNoBoostForMove, itemSprite } from "@/lib/held-item"
 import type { ScenarioRow } from "@/lib/scenario-pipeline"
 import {
   defenderBulkTier,
@@ -38,6 +39,15 @@ function lethalTone(row: ScenarioRow) {
   return "cool"
 }
 
+/** OHKO label: percent form when normal-roll chance is known, else a crit-only fallback. */
+function ohkoLabel(row: ScenarioRow, peak: number): string | null {
+  if (row.ohkoChance != null) {
+    const pct = row.ohkoChance % 1 === 0 ? row.ohkoChance : row.ohkoChance.toFixed(1)
+    return `${pct}% OHKO`
+  }
+  return peak >= 100 ? "仅暴击 OHKO" : null
+}
+
 const TONE_CLASS = {
   cool: "bg-amber-300/80 border-amber-400/60",
   warm: "bg-orange-400/80 border-orange-500/60",
@@ -66,9 +76,9 @@ function ResultTierChip({ tier, className, children }: ResultTierChipProps) {
 
 type DamageBoxPlotProps = {
   move: CatalogMoveOption
-  attackerStat: CatalogOption
-  attackerItem: CatalogOption
-  defender: CatalogOption
+  attackerStat: Pick<CatalogOption, "id" | "label">
+  attackerItem: Pick<CatalogOption, "id">
+  defender: Pick<CatalogOption, "id" | "label">
   row: ScenarioRow
   showMove?: boolean
   isRangeEnvelope?: boolean
@@ -87,6 +97,7 @@ export function DamageBoxPlot({
   const offenseTier = isRangeEnvelope ? null : offenseStatTier(attackerStat.id)
   const defenseTier = defenderBulkTier(defender.id)
   const peak = Math.max(row.maxPercent, row.critMaxPercent)
+  const ohko = ohkoLabel(row, peak)
   const box = pctSpan(row.minPercent, row.maxPercent)
   const crit = pctSpan(row.critMinPercent, row.critMaxPercent)
   const bridge =
@@ -114,7 +125,17 @@ export function DamageBoxPlot({
           <div className="text-muted-foreground text-[10px]">实数值区间 × 16 roll</div>
         )}
         {attackerItem.id !== "none" && (
-          <div className="text-muted-foreground text-xs">{attackerItem.label}</div>
+          <div className="flex items-center justify-end gap-1">
+            <img
+              src={`/items/${itemSprite(attackerItem.id)}`}
+              alt=""
+              title={itemAriaLabel(attackerItem.id)}
+              className="size-4 object-contain"
+            />
+            {itemHasNoBoostForMove(attackerItem.id, move.type) && (
+              <span className="text-muted-foreground text-[10px]">无加成</span>
+            )}
+          </div>
         )}
         {defenseTier ? (
           <ResultTierChip tier={defenseTier} className="text-xs leading-snug">
@@ -125,10 +146,6 @@ export function DamageBoxPlot({
             vs {defender.label}
           </div>
         )}
-        <div className="text-muted-foreground/80 mt-0.5 text-[10px] leading-snug">
-          {attackerStat.summary}
-          {attackerItem.id !== "none" ? ` · ${attackerItem.label}` : ""} · {defender.summary}
-        </div>
       </div>
 
       <div className="relative h-10 min-w-0 flex-1">
@@ -184,16 +201,8 @@ export function DamageBoxPlot({
           <span className="text-violet-700 tabular-nums dark:text-violet-400">
             暴击 {row.critMinPercent.toFixed(1)}% ~ {row.critMaxPercent.toFixed(1)}%
           </span>
-          {peak >= 100 && (
-            <span className="font-semibold text-red-600 tabular-nums">OHKO</span>
-          )}
-          {row.ohkoChance != null && (
-            <span className="font-medium text-red-600 tabular-nums">
-              {row.ohkoChance % 1 === 0
-                ? row.ohkoChance
-                : row.ohkoChance.toFixed(1)}
-              % OHKO
-            </span>
+          {ohko && (
+            <span className="font-semibold text-red-600 tabular-nums">{ohko}</span>
           )}
         </div>
       </div>

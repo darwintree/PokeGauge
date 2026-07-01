@@ -118,3 +118,9 @@ export function itemAriaLabel(id: string): string {
   if (boostType) return TYPE_BOOST[boostType].label
   return CORE_ITEM_LABEL_ZH[id] ?? id
 }
+
+/** Type boost items only affect same-type moves; core items (Life Orb, Choice*) always apply. */
+export function itemHasNoBoostForMove(itemId: string, moveType: PokemonType): boolean {
+  const boostType = typeFromBoostId(itemId)
+  return boostType != null && boostType !== moveType
+}

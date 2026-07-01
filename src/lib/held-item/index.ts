@@ -6,6 +6,7 @@ export {
   coreItemIds,
   defaultStabBoostIds,
   itemAriaLabel,
+  itemHasNoBoostForMove,
   itemSprite,
   TYPE_BOOST_CALC_NAME,
   typeBoostCatalogId,

@@ -14,7 +14,7 @@ updated_at: "2026-06-29T14:48:00Z"
 
 相关：
 - [[20260626_open_introduce-specific-held-item-controls-life-orb-plates-choice-series|Held-item controls]]
-- [[20260626_open_damage-comparison-results-info-display-needs-refinement|Results info display]]（「无加成」标注）
+- [[archive/20260626_closed_damage-comparison-results-info-display-needs-refinement|Results info display]]（「无加成」标注）
 
 ## What to explore
 

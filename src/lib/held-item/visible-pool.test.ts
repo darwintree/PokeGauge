@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { buildVisibleItemIds, defaultStabBoostIds } from "@/lib/held-item"
+import { buildVisibleItemIds, defaultStabBoostIds, itemHasNoBoostForMove } from "@/lib/held-item"
 import { normalizeAddedBoostIds } from "@/lib/held-item/storage"
 import { orderedPoolSelection } from "@/lib/ordered-pool-selection"
 
@@ -42,5 +42,12 @@ describe("held-item visible pool", () => {
   it("normalizeAddedBoostIds ignores non-array stored values", () => {
     expect(normalizeAddedBoostIds("type-boost-fire")).toEqual([])
     expect(normalizeAddedBoostIds(["type-boost-fire", 1, null])).toEqual(["type-boost-fire"])
+  })
+
+  it("itemHasNoBoostForMove flags type-boost items that mismatch the move's type", () => {
+    expect(itemHasNoBoostForMove("type-boost-fire", "water")).toBe(true)
+    expect(itemHasNoBoostForMove("type-boost-fire", "fire")).toBe(false)
+    expect(itemHasNoBoostForMove("life-orb", "water")).toBe(false)
+    expect(itemHasNoBoostForMove("none", "water")).toBe(false)
   })
 })
