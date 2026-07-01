@@ -50,5 +50,5 @@ EV/性格组合只能产生 **离散的合法实数值**；`bounds.min`–`bound
 ## Related
 
 - 实数值模版 formalization → [`docs/traces/2026-06-28-stat-value-template-grill.md`](../../docs/traces/2026-06-28-stat-value-template-grill.md)
-- 默认模版命名 → [[20260628_open_define-default-names-for-stat-value-templates]]
+- 默认模版命名 → [[20260628_open_define-derived-display-labels-for-stat-value-templates]]
 - 组件：`StatRangeAxis`、`use-dual-handle-drag`；数据：`stat-bounds.ts`（`enumerateStatSpreads`、`getDefenderSpreadGrid`）
