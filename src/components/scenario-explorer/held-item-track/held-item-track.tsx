@@ -1,4 +1,4 @@
-import { CircleSlash, Plus, X } from "lucide-react"
+import { CircleSlash } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
 
 import {
@@ -14,9 +14,14 @@ import {
   typeFromBoostId,
 } from "@/lib/held-item"
 import type { MatchupCatalog } from "@/lib/catalog"
-import { cn } from "@/lib/utils"
+import { orderedPoolSelection } from "@/lib/ordered-pool-selection"
 
-import { orderedPoolSelection } from "../config-multi-select"
+import {
+  TrackOption,
+  TrackOptionAdd,
+  TrackOptionGroup,
+  type TrackOptionModifier,
+} from "../track-option"
 
 type HeldItemTrackProps = {
   catalog: MatchupCatalog
@@ -24,57 +29,23 @@ type HeldItemTrackProps = {
   onChange: (ids: string[]) => void
 }
 
-function ItemTile({
-  id,
-  selected,
-  dashed,
-  onRemove,
-  onClick,
-}: {
-  id: string
-  selected: boolean
-  dashed?: boolean
-  onRemove?: () => void
-  onClick: () => void
-}) {
-  const sprite = itemSprite(id)
+function itemModifier(
+  id: string,
+  stabBoostIds: string[],
+  addedBoostIds: string[],
+): TrackOptionModifier {
+  if (typeFromBoostId(id) == null) return { kind: "core" }
+  if (addedBoostIds.includes(id)) return { kind: "added-boost" }
+  if (stabBoostIds.includes(id)) return { kind: "stab-boost" }
+  return { kind: "added-boost" }
+}
 
-  return (
-    <div className="relative">
-      <button
-        type="button"
-        aria-label={itemAriaLabel(id)}
-        aria-pressed={selected}
-        onClick={onClick}
-        className={cn(
-          "size-9 rounded-md border p-1 transition-colors",
-          selected
-            ? "border-primary bg-primary/15"
-            : "border-border hover:bg-muted/40",
-          dashed && !selected && "border-dashed",
-        )}
-      >
-        {sprite ? (
-          <img src={`/items/${sprite}`} alt="" className="size-6 object-contain" />
-        ) : (
-          <CircleSlash className="size-6 text-[#94a3b8]" aria-hidden />
-        )}
-      </button>
-      {onRemove && (
-        <button
-          type="button"
-          aria-label={`移除 ${itemAriaLabel(id)}`}
-          onClick={(event) => {
-            event.stopPropagation()
-            onRemove()
-          }}
-          className="absolute -top-1 -right-1 flex size-3.5 items-center justify-center rounded-full border border-border bg-background text-muted-foreground hover:border-destructive hover:text-destructive"
-        >
-          <X className="size-2" />
-        </button>
-      )}
-    </div>
-  )
+function ItemIcon({ id }: { id: string }) {
+  const sprite = itemSprite(id)
+  if (sprite) {
+    return <img src={`/items/${sprite}`} alt="" className="size-6 object-contain" />
+  }
+  return <CircleSlash className="size-6 text-[#94a3b8]" aria-hidden />
 }
 
 export function HeldItemTrack({ catalog, selectedIds, onChange }: HeldItemTrackProps) {
@@ -136,40 +107,56 @@ export function HeldItemTrack({ catalog, selectedIds, onChange }: HeldItemTrackP
   }
 
   return (
-    <div className="space-y-2" role="group" aria-label="道具">
-      <div className="flex flex-wrap gap-1.5">
+    <div className="space-y-2">
+      <TrackOptionGroup aria-label="道具">
         {visibleIds.map((id) => {
           const removable = addedBoostIds.includes(id)
           return (
-            <ItemTile
+            <TrackOption
               key={id}
-              id={id}
-              selected={selectedIds.includes(id)}
-              dashed={typeFromBoostId(id) != null && !stabBoostIds.includes(id)}
-              onClick={() => toggle(id)}
-              onRemove={removable ? () => removeBoost(id) : undefined}
-            />
+              layout="icon"
+              pressed={selectedIds.includes(id)}
+              ariaLabel={itemAriaLabel(id)}
+              modifier={itemModifier(id, stabBoostIds, addedBoostIds)}
+              onToggle={() => toggle(id)}
+              actions={
+                removable
+                  ? [
+                      {
+                        kind: "remove",
+                        label: `移除 ${itemAriaLabel(id)}`,
+                        position: "top-right",
+                        onClick: () => removeBoost(id),
+                      },
+                    ]
+                  : undefined
+              }
+            >
+              <ItemIcon id={id} />
+            </TrackOption>
           )
         })}
         {addableIds.length > 0 && (
-          <button
-            type="button"
-            aria-label="添加属性强化道具"
-            aria-expanded={pickerOpen}
+          <TrackOptionAdd
+            ariaLabel="添加属性强化道具"
+            pressed={pickerOpen}
             onClick={() => setPickerOpen((open) => !open)}
-            className={cn(
-              "flex size-9 items-center justify-center rounded-md border border-dashed border-border transition-colors hover:bg-muted/40",
-              pickerOpen && "border-primary bg-primary/15",
-            )}
-          >
-            <Plus className="size-4 text-muted-foreground" />
-          </button>
+          />
         )}
-      </div>
+      </TrackOptionGroup>
       {pickerOpen && addableIds.length > 0 && (
         <div className="grid grid-cols-4 gap-1.5 rounded-md border bg-muted/20 p-2">
           {addableIds.map((id) => (
-            <ItemTile key={id} id={id} selected={false} dashed onClick={() => addBoost(id)} />
+            <TrackOption
+              key={id}
+              layout="icon"
+              pressed={false}
+              ariaLabel={itemAriaLabel(id)}
+              modifier={{ kind: "added-boost" }}
+              onToggle={() => addBoost(id)}
+            >
+              <ItemIcon id={id} />
+            </TrackOption>
           ))}
         </div>
       )}

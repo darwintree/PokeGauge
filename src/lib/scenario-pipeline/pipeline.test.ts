@@ -21,12 +21,12 @@ describe("catalog registry", () => {
     expect(new Set(moveSets).size).toBe(attackers.length)
   })
 
-  it("pre-selects all top-N moves on default track state", () => {
+  it("pre-selects default move pick only; extra moves stay in + pool", () => {
     for (const attacker of listAttackers()) {
       const catalog = getCatalog(attacker.id, "incineroar")
       const state = defaultTrackState(catalog)
       expect(state.moveIds).toEqual(catalog.defaultMoveIds)
-      expect(state.moveIds).toHaveLength(catalog.moves.length)
+      expect(catalog.moves.length).toBeGreaterThan(catalog.defaultMoveIds.length)
     }
   })
 
