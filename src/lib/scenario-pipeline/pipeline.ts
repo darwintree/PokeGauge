@@ -383,6 +383,7 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
   const defenseUser = loadUserDefenseTemplates(catalog.matchup.defenderId)
 
   return {
+    visibleMoveIds: [...catalog.defaultMoveIds],
     moveIds: [...catalog.defaultMoveIds],
     statMode: "preset",
     offenseTemplateIds: defaultOffenseSelection(offenseSystem, offenseUser),

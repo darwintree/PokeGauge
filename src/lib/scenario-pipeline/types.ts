@@ -19,6 +19,7 @@ export type DefenderStatRanges = {
 }
 
 export type TrackState = {
+  visibleMoveIds: string[]
   moveIds: string[]
   statMode: StatSelectMode
   offenseTemplateIds: string[]

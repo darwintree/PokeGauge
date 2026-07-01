@@ -30,8 +30,11 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
       <MoveMultiSelect
         label="招式"
         options={catalog.moves}
+        visibleIds={trackState.visibleMoveIds}
         selectedIds={trackState.moveIds}
-        onChange={state.setMoveIds}
+        onAdd={state.addMoveToTrack}
+        onToggle={state.toggleMove}
+        onRemove={state.removeMoveFromTrack}
       />
 
       <Separator />
