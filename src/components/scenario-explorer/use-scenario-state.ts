@@ -15,6 +15,7 @@ import {
   warmDefenderSpreadCache,
 } from "@/lib/calc-adapter"
 import type { MatchupCatalog } from "@/lib/catalog"
+import { orderedPoolSelection } from "@/lib/ordered-pool-selection"
 import {
   buildSystemDefenseTemplates,
   buildSystemOffenseTemplates,
@@ -69,6 +70,10 @@ function mergedDefenseTemplates(
 
 function rangeEndpoints(min: number, max: number): number[] {
   return max === min ? [min] : [min, max]
+}
+
+function orderedMoveSelection(catalog: MatchupCatalog, ids: readonly string[]): string[] {
+  return orderedPoolSelection(catalog.moves.map((move) => move.id), ids)
 }
 
 function cycleAllocationIndex(
@@ -381,6 +386,49 @@ export function useScenarioState(catalog: MatchupCatalog) {
     setAddingDefense(false)
   }
 
+  function addMoveToTrack(id: string) {
+    setTrackState((s) => ({
+      ...s,
+      visibleMoveIds: orderedMoveSelection(catalog, [...s.visibleMoveIds, id]),
+    }))
+  }
+
+  function toggleMove(id: string) {
+    setTrackState((s) => {
+      const visibleMoveIds = s.visibleMoveIds.includes(id)
+        ? s.visibleMoveIds
+        : orderedMoveSelection(catalog, [...s.visibleMoveIds, id])
+      const moveIds = s.moveIds.includes(id)
+        ? s.moveIds.filter((moveId) => moveId !== id)
+        : [...s.moveIds, id]
+
+      return {
+        ...s,
+        visibleMoveIds,
+        moveIds: orderedMoveSelection(catalog, moveIds).filter((moveId) =>
+          visibleMoveIds.includes(moveId),
+        ),
+      }
+    })
+  }
+
+  function removeMoveFromTrack(id: string) {
+    setTrackState((s) => {
+      const visibleMoveIds = orderedMoveSelection(
+        catalog,
+        s.visibleMoveIds.filter((moveId) => moveId !== id),
+      )
+      return {
+        ...s,
+        visibleMoveIds,
+        moveIds: orderedMoveSelection(
+          catalog,
+          s.moveIds.filter((moveId) => visibleMoveIds.includes(moveId)),
+        ),
+      }
+    })
+  }
+
   return {
     trackState,
     rows,
@@ -393,7 +441,9 @@ export function useScenarioState(catalog: MatchupCatalog) {
     defenderDefBounds,
     addingOffense,
     addingDefense,
-    setMoveIds: (ids: string[]) => setTrackState((s) => ({ ...s, moveIds: ids })),
+    addMoveToTrack,
+    toggleMove,
+    removeMoveFromTrack,
     setStatMode,
     toggleOffenseTemplate,
     setStatRange: (statRange: TrackState["statRange"]) =>

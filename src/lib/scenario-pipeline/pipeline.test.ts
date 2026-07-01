@@ -25,6 +25,7 @@ describe("catalog registry", () => {
     for (const attacker of listAttackers()) {
       const catalog = getCatalog(attacker.id, "incineroar")
       const state = defaultTrackState(catalog)
+      expect(state.visibleMoveIds).toEqual(catalog.defaultMoveIds)
       expect(state.moveIds).toEqual(catalog.defaultMoveIds)
       expect(catalog.moves.length).toBeGreaterThan(catalog.defaultMoveIds.length)
     }
@@ -69,6 +70,16 @@ describe("matchup scenario pipeline", () => {
     state.moveIds = ["earthquake"]
     const rows = runScenarioPipeline(catalog, state)
     expect(rows).toHaveLength(2)
+    expect(rows.every((r) => r.moveId === "earthquake")).toBe(true)
+  })
+
+  it("does not compute rows for visible moves that are not selected", () => {
+    const state = defaultTrackState(catalog)
+    state.visibleMoveIds = ["earthquake", "stomping-tantrum"]
+    state.moveIds = ["earthquake"]
+    const rows = runScenarioPipeline(catalog, state)
+    expect(rows).toHaveLength(2)
+    expect(expectedRowCount(state)).toBe(2)
     expect(rows.every((r) => r.moveId === "earthquake")).toBe(true)
   })
 

@@ -3,7 +3,6 @@ import { useState } from "react"
 import { TypeBadge } from "@/components/pokemon/type-badge"
 import { Label } from "@/components/ui/label"
 import type { CatalogMoveOption } from "@/lib/catalog/types"
-import { orderedPoolSelection } from "@/lib/ordered-pool-selection"
 
 import {
   TrackOption,
@@ -14,27 +13,33 @@ import {
 type MoveMultiSelectProps = {
   label: string
   options: CatalogMoveOption[]
+  visibleIds: string[]
   selectedIds: string[]
-  onChange: (ids: string[]) => void
+  onAdd: (id: string) => void
+  onToggle: (id: string) => void
+  onRemove: (id: string) => void
 }
 
 export function MoveMultiSelect({
   label,
   options,
+  visibleIds,
   selectedIds,
-  onChange,
+  onAdd,
+  onToggle,
+  onRemove,
 }: MoveMultiSelectProps) {
   const [pickerOpen, setPickerOpen] = useState(false)
-  const selectedOptions = options.filter((o) => selectedIds.includes(o.id))
-  const addableOptions = options.filter((o) => !selectedIds.includes(o.id))
+  const visibleOptions = options.filter((o) => visibleIds.includes(o.id))
+  const addableOptions = options.filter((o) => !visibleIds.includes(o.id))
 
-  function remove(id: string) {
-    onChange(orderedPoolSelection(options.map((o) => o.id), selectedIds.filter((x) => x !== id)))
+  function add(id: string) {
+    onAdd(id)
     setPickerOpen(false)
   }
 
-  function add(id: string) {
-    onChange(orderedPoolSelection(options.map((o) => o.id), [...selectedIds, id]))
+  function remove(id: string) {
+    onRemove(id)
     setPickerOpen(false)
   }
 
@@ -42,13 +47,21 @@ export function MoveMultiSelect({
     <div className="space-y-2">
       <Label className="text-muted-foreground text-xs">{label}</Label>
       <TrackOptionGroup aria-label={label}>
-        {selectedOptions.map((option) => (
+        {visibleOptions.map((option) => (
           <TrackOption
             key={option.id}
             layout="text"
-            pressed
+            pressed={selectedIds.includes(option.id)}
             ariaLabel={option.label}
-            onToggle={() => remove(option.id)}
+            onToggle={() => onToggle(option.id)}
+            actions={[
+              {
+                kind: "remove",
+                label: `移除${option.label}`,
+                position: "top-right",
+                onClick: () => remove(option.id),
+              },
+            ]}
           >
             <TypeBadge type={option.type} />
             <span>{option.label}</span>
