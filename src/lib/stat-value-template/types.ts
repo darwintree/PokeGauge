@@ -17,8 +17,6 @@ export type StatValueTemplate = {
   id: string
   kind: TemplateKind
   values: OffenseTemplateValues | DefenseTemplateValues
-  /** User templates only; default naming deferred to separate issue */
-  name?: string
   /** System templates — tier chip color */
   systemTier?: StatTierTokenSet | null
 }

@@ -11,15 +11,20 @@ export {
   enumerateDefenseAllocations,
   enumerateOffenseAllocations,
   evToAbilityPoints,
+  EX_LABEL,
   formatDefenseActual,
   formatOffenseActual,
+  formatTemplateActual,
   offenseSpreadLabel,
   defenseSpreadLabel,
+  offenseSpLabel,
+  defenseSpLabel,
   offenseValueOf,
   defenseValuesOf,
-  placeholderTemplateName,
+  resolveTemplateDisplay,
   templateCardLabel,
   type EffortAllocation,
+  type TemplateDisplay,
 } from "./ability-points"
 export {
   buildSystemDefenseTemplates,
@@ -34,7 +39,6 @@ export {
   newTemporaryOffenseTemplate,
   newUserDefenseTemplate,
   newUserOffenseTemplate,
-  systemTierForTemplate,
   DEFENSE_DEFAULT_SELECTED,
   OFFENSE_DEFAULT_SELECTED,
 } from "./system-templates"
@@ -46,4 +50,12 @@ export {
   saveUserDefenseTemplate,
   saveUserOffenseTemplate,
 } from "./storage"
+export {
+  loadStatNameStrategy,
+  saveStatNameStrategy,
+  statDisplayName,
+  STAT_NAME_STRATEGY_OPTIONS,
+  type StatKey,
+  type StatNameStrategy,
+} from "./stat-name-strategy"
 export { defenseStatMod, natureModForStat, offenseStatMod, type NatureMod } from "./nature-mod"

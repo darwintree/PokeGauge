@@ -64,7 +64,9 @@ export function ScenarioExplorerPage() {
             catalog={catalog}
             rows={state.rows}
             trackState={state.trackState}
+            statNameStrategy={state.statNameStrategy}
             showMoveOnRow={state.showMoveOnRow}
+            onShowResultActualChange={state.setShowResultActual}
             compact
           />
         </main>

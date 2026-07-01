@@ -7,11 +7,10 @@ import { Switch } from "@/components/ui/switch"
 import type { StatAxisBounds, StatRange } from "@/lib/calc-adapter"
 import type { MoveCategory } from "@/lib/catalog/types"
 import {
-  enumerateDefenseAllocations,
-  enumerateOffenseAllocations,
-  formatDefenseActual,
-  formatOffenseActual,
-  templateCardLabel,
+  formatTemplateActual,
+  resolveTemplateDisplay,
+  STAT_NAME_STRATEGY_OPTIONS,
+  type StatNameStrategy,
   type StatValueTemplate,
 } from "@/lib/stat-value-template"
 import type { StatTierTokenSet } from "@/lib/stat-tier-colors"
@@ -30,6 +29,7 @@ type TemplatePresetProps = {
   selectedIds: string[]
   species: string
   category: MoveCategory
+  statNameStrategy: StatNameStrategy
   showActual: boolean
   allocationIndices: Record<string, number>
   onToggle: (id: string) => void
@@ -45,8 +45,9 @@ type TemplateCardProps = {
   template: StatValueTemplate
   selected: boolean
   label: string
-  showActual: boolean
   actualText: string
+  tooltip: string | null
+  showActual: boolean
   allocationCount: number
   onToggle: () => void
   onCycleAllocation: () => void
@@ -61,7 +62,6 @@ function templateModifier(
 ): TrackOptionModifier | undefined {
   if (tier) return { kind: "tier", tier }
   if (template.kind === "temporary") return { kind: "temporary" }
-  if (template.kind === "user") return { kind: "user" }
   return undefined
 }
 
@@ -113,8 +113,9 @@ function TemplateCard({
   template,
   selected,
   label,
-  showActual,
   actualText,
+  tooltip,
+  showActual,
   allocationCount,
   onToggle,
   onCycleAllocation,
@@ -126,8 +127,9 @@ function TemplateCard({
     <TrackOption
       layout="text"
       pressed={selected}
-      ariaLabel={`${label} 模版`}
+      ariaLabel={showActual ? `${label} ${actualText} 模版` : `${label} 模版`}
       modifier={templateModifier(template, tier)}
+      tooltip={tooltip}
       actions={templateActions({
         template,
         allocationCount,
@@ -148,6 +150,7 @@ export function StatValueTemplatePreset({
   selectedIds,
   species,
   category,
+  statNameStrategy,
   showActual,
   allocationIndices,
   onToggle,
@@ -163,26 +166,25 @@ export function StatValueTemplatePreset({
       {templates.map((template) => {
         const selected = selectedIds.includes(template.id)
         const allocIndex = allocationIndices[template.id] ?? 0
-        const values = template.values
-        const allocations =
-          values.kind === "offense"
-            ? enumerateOffenseAllocations(species, category, values.stat)
-            : enumerateDefenseAllocations(species, category, values)
-        const label = templateCardLabel(template, species, category, allocIndex)
-        const actualText =
-          values.kind === "offense"
-            ? formatOffenseActual(values.stat)
-            : formatDefenseActual(values.hp, values.def)
+        const display = resolveTemplateDisplay(
+          template,
+          species,
+          category,
+          allocIndex,
+          statNameStrategy,
+        )
+        const actualText = formatTemplateActual(template)
 
         return (
           <TemplateCard
             key={template.id}
             template={template}
             selected={selected}
-            label={label}
-            showActual={showActual}
+            label={display.primary}
             actualText={actualText}
-            allocationCount={allocations.length}
+            tooltip={display.tooltip}
+            showActual={showActual}
+            allocationCount={display.allocations.length}
             onToggle={() => onToggle(template.id)}
             onCycleAllocation={() => onCycleAllocation(template.id)}
             onDelete={onDelete ? () => onDelete(template.id) : undefined}
@@ -206,17 +208,48 @@ export function StatValueTemplatePreset({
 export function ShowActualValuesSwitch({
   checked,
   onCheckedChange,
+  label = "显示实数值",
 }: {
   checked: boolean
   onCheckedChange: (checked: boolean) => void
+  label?: string
 }) {
   const id = useId()
   return (
     <div className="flex items-center gap-2">
       <Switch id={id} size="sm" checked={checked} onCheckedChange={onCheckedChange} />
       <Label htmlFor={id} className="cursor-pointer text-[11px] font-normal">
-        显示实数值
+        {label}
       </Label>
+    </div>
+  )
+}
+
+export function StatNameStrategySelect({
+  value,
+  onChange,
+}: {
+  value: StatNameStrategy
+  onChange: (value: StatNameStrategy) => void
+}) {
+  const id = useId()
+  return (
+    <div className="flex items-center gap-2">
+      <Label htmlFor={id} className="text-muted-foreground text-[11px] font-normal">
+        Stat 名展示
+      </Label>
+      <select
+        id={id}
+        value={value}
+        onChange={(event) => onChange(event.target.value as StatNameStrategy)}
+        className="border-input bg-background h-7 max-w-[9.5rem] flex-1 rounded-md border px-2 text-[11px]"
+      >
+        {STAT_NAME_STRATEGY_OPTIONS.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
     </div>
   )
 }

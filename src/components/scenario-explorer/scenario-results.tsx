@@ -1,3 +1,5 @@
+import { useMemo } from "react"
+
 import {
   Empty,
   EmptyDescription,
@@ -7,18 +9,24 @@ import type { MatchupCatalog } from "@/lib/catalog"
 import {
   RANGE_DEFENDER_ID,
   RANGE_STAT_ID,
+  defenseTemplatesForState,
+  offenseTemplatesForState,
   rowLabels,
   type ScenarioRow,
   type TrackState,
 } from "@/lib/scenario-pipeline"
+import type { StatNameStrategy } from "@/lib/stat-value-template"
 
 import { BoxPlotLegend, DamageAxis, DamageBoxPlot } from "./damage-box-plot"
+import { ShowActualValuesSwitch } from "./stat-value-template-preset"
 
 type ScenarioResultsProps = {
   catalog: MatchupCatalog
   rows: ScenarioRow[]
   trackState: TrackState
+  statNameStrategy: StatNameStrategy
   showMoveOnRow: boolean
+  onShowResultActualChange: (checked: boolean) => void
   compact?: boolean
 }
 
@@ -42,9 +50,19 @@ export function ScenarioResults({
   catalog,
   rows,
   trackState,
+  statNameStrategy,
   showMoveOnRow,
+  onShowResultActualChange,
   compact = false,
 }: ScenarioResultsProps) {
+  const rowLabelTemplates = useMemo(
+    () => ({
+      offense: offenseTemplatesForState(catalog, trackState),
+      defense: defenseTemplatesForState(catalog, trackState),
+    }),
+    [catalog, trackState],
+  )
+
   if (rows.length === 0) {
     return (
       <Empty className="border">
@@ -57,10 +75,16 @@ export function ScenarioResults({
 
   return (
     <>
+      <div className="mb-2 flex justify-end">
+        <ShowActualValuesSwitch
+          checked={trackState.showResultActual}
+          onCheckedChange={onShowResultActualChange}
+        />
+      </div>
       <DamageAxis />
       <ul className={compact ? "space-y-8 pb-2" : "space-y-12 pb-2"}>
         {rows.map((row) => {
-          const labels = rowLabels(catalog, row, trackState)
+          const labels = rowLabels(catalog, row, trackState, statNameStrategy, rowLabelTemplates)
           const isRangeEnvelope =
             row.attackerStatId === RANGE_STAT_ID || row.defenderId === RANGE_DEFENDER_ID
 
@@ -68,9 +92,17 @@ export function ScenarioResults({
             <li key={rowKey(row)}>
               <DamageBoxPlot
                 move={catalogOption(catalog.moves, row.moveId)}
-                attackerStat={{ id: row.attackerStatId, label: labels.stat }}
+                attackerStat={{
+                  id: row.attackerStatId,
+                  label: labels.stat,
+                  actual: labels.statActual,
+                }}
                 attackerItem={{ id: row.attackerItemId }}
-                defender={{ id: row.defenderId, label: labels.defender }}
+                defender={{
+                  id: row.defenderId,
+                  label: labels.defender,
+                  actual: labels.defenderActual,
+                }}
                 row={row}
                 showMove={showMoveOnRow}
                 isRangeEnvelope={isRangeEnvelope}

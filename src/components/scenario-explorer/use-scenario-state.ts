@@ -17,22 +17,19 @@ import {
 import type { MatchupCatalog } from "@/lib/catalog"
 import { orderedPoolSelection } from "@/lib/ordered-pool-selection"
 import {
-  buildSystemDefenseTemplates,
-  buildSystemOffenseTemplates,
   deleteUserDefenseTemplate,
   deleteUserOffenseTemplate,
   findTemplateByDefenseValues,
   findTemplateByOffenseValue,
-  loadUserDefenseTemplates,
-  loadUserOffenseTemplates,
-  mergeTemplates,
   newTemporaryDefenseTemplate,
   newTemporaryOffenseTemplate,
   newUserDefenseTemplate,
   newUserOffenseTemplate,
-  placeholderTemplateName,
   saveUserDefenseTemplate,
   saveUserOffenseTemplate,
+  loadStatNameStrategy,
+  saveStatNameStrategy,
+  type StatNameStrategy,
   type StatValueTemplate,
 } from "@/lib/stat-value-template"
 import {
@@ -45,28 +42,6 @@ import {
   type StatSelectMode,
   type TrackState,
 } from "@/lib/scenario-pipeline"
-
-function mergedOffenseTemplates(
-  catalog: MatchupCatalog,
-  temporary: StatValueTemplate[],
-): StatValueTemplate[] {
-  return mergeTemplates(
-    buildSystemOffenseTemplates(catalog.matchup.attackerSpecies, catalog.moveCategory),
-    loadUserOffenseTemplates(catalog.matchup.attackerId),
-    temporary,
-  )
-}
-
-function mergedDefenseTemplates(
-  catalog: MatchupCatalog,
-  temporary: StatValueTemplate[],
-): StatValueTemplate[] {
-  return mergeTemplates(
-    buildSystemDefenseTemplates(catalog.matchup.defenderSpecies, catalog.moveCategory),
-    loadUserDefenseTemplates(catalog.matchup.defenderId),
-    temporary,
-  )
-}
 
 function rangeEndpoints(min: number, max: number): number[] {
   return max === min ? [min] : [min, max]
@@ -152,6 +127,12 @@ export function useScenarioState(catalog: MatchupCatalog) {
   const [userDefenseVersion, setUserDefenseVersion] = useState(0)
   const [addingOffense, setAddingOffense] = useState(false)
   const [addingDefense, setAddingDefense] = useState(false)
+  const [statNameStrategy, setStatNameStrategyState] = useState<StatNameStrategy>(loadStatNameStrategy)
+
+  const setStatNameStrategy = useCallback((strategy: StatNameStrategy) => {
+    saveStatNameStrategy(strategy)
+    setStatNameStrategyState(strategy)
+  }, [])
 
   useEffect(() => {
     setTrackState(defaultTrackState(catalog))
@@ -199,7 +180,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
     setTrackState((s) => {
       if (mode === "range") {
         if (s.statRangeTouched) return { ...s, statMode: mode }
-        const templates = mergedOffenseTemplates(catalog, s.offenseTemporaryTemplates)
+        const templates = offenseTemplatesForState(catalog, s)
         return {
           ...s,
           statMode: mode,
@@ -210,7 +191,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
       }
 
       const { selectedIds, temporary } = reconcileOffenseFromRange(
-        mergedOffenseTemplates(catalog, s.offenseTemporaryTemplates),
+        offenseTemplatesForState(catalog, s),
         s.statRange,
         s.offenseTemporaryTemplates,
       )
@@ -227,7 +208,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
     setTrackState((s) => {
       if (mode === "range") {
         if (s.defenderRangeTouched) return { ...s, defenderMode: mode }
-        const templates = mergedDefenseTemplates(catalog, s.defenseTemporaryTemplates)
+        const templates = defenseTemplatesForState(catalog, s)
         return {
           ...s,
           defenderMode: mode,
@@ -243,7 +224,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
       }
 
       const { selectedIds, temporary } = reconcileDefenseFromRange(
-        mergedDefenseTemplates(catalog, s.defenseTemporaryTemplates),
+        defenseTemplatesForState(catalog, s),
         s.defenderRanges,
         s.defenseTemporaryTemplates,
       )
@@ -299,7 +280,6 @@ export function useScenarioState(catalog: MatchupCatalog) {
     if (!template || template.kind !== "temporary") return
     const user = newUserOffenseTemplate(
       template.values.kind === "offense" ? template.values.stat : 0,
-      placeholderTemplateName(template),
     )
     saveUserOffenseTemplate(catalog.matchup.attackerId, user)
     setTrackState((s) => ({
@@ -314,7 +294,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
     const template = defenseTemplates.find((t) => t.id === id)
     if (!template || template.kind !== "temporary") return
     const v = template.values.kind === "defense" ? template.values : { hp: 0, def: 0 }
-    const user = newUserDefenseTemplate(v.hp, v.def, placeholderTemplateName(template))
+    const user = newUserDefenseTemplate(v.hp, v.def)
     saveUserDefenseTemplate(catalog.matchup.defenderId, user)
     setTrackState((s) => ({
       ...s,
@@ -348,10 +328,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
       catalog.moveCategory,
       stat,
     )
-    const user = newUserOffenseTemplate(
-      snapped,
-      placeholderTemplateName({ id: "", kind: "user", values: { kind: "offense", stat: snapped } }),
-    )
+    const user = newUserOffenseTemplate(snapped)
     saveUserOffenseTemplate(catalog.matchup.attackerId, user)
     setTrackState((s) => ({
       ...s,
@@ -368,15 +345,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
       hp,
       def,
     )
-    const user = newUserDefenseTemplate(
-      snapped.hp,
-      snapped.def,
-      placeholderTemplateName({
-        id: "",
-        kind: "user",
-        values: { kind: "defense", hp: snapped.hp, def: snapped.def },
-      }),
-    )
+    const user = newUserDefenseTemplate(snapped.hp, snapped.def)
     saveUserDefenseTemplate(catalog.matchup.defenderId, user)
     setTrackState((s) => ({
       ...s,
@@ -467,11 +436,15 @@ export function useScenarioState(catalog: MatchupCatalog) {
       })),
     setShowDefenseActual: (showDefenseActual: boolean) =>
       setTrackState((s) => ({ ...s, showDefenseActual })),
+    setShowResultActual: (showResultActual: boolean) =>
+      setTrackState((s) => ({ ...s, showResultActual })),
     cycleDefenseAllocation,
     persistDefenseTemplate,
     deleteDefenseTemplate,
     confirmAddDefense,
     setAddingDefense,
+    statNameStrategy,
+    setStatNameStrategy,
   }
 }
 

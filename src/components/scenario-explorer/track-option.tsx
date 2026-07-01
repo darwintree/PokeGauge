@@ -2,6 +2,11 @@ import { RefreshCw, Save, Trash2 } from "lucide-react"
 import type { ReactNode } from "react"
 
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {
   statTierModifierClass,
   type StatTierTokenSet,
 } from "@/lib/stat-tier-colors"
@@ -37,6 +42,7 @@ type TrackOptionProps = {
   modifier?: TrackOptionModifier
   actions?: TrackOptionAction[]
   className?: string
+  tooltip?: string | null
 }
 
 type TrackOptionGroupProps = {
@@ -128,19 +134,41 @@ export function TrackOption({
   modifier,
   actions = [],
   className,
+  tooltip,
 }: TrackOptionProps) {
-  const button = (
+  const buttonClassName = cn(
+    "track-option",
+    layout === "text" ? "track-option--text" : "track-option--icon",
+    modifierClass(modifier),
+    className,
+  )
+
+  const button = tooltip ? (
+    <Tooltip>
+      <TooltipTrigger
+        render={
+          <button
+            type="button"
+            aria-label={ariaLabel}
+            aria-pressed={pressed}
+            onClick={onToggle}
+            className={buttonClassName}
+          />
+        }
+      >
+        {children}
+      </TooltipTrigger>
+      <TooltipContent side="top" className="max-w-xs text-xs whitespace-pre-line">
+        {tooltip}
+      </TooltipContent>
+    </Tooltip>
+  ) : (
     <button
       type="button"
       aria-label={ariaLabel}
       aria-pressed={pressed}
       onClick={onToggle}
-      className={cn(
-        "track-option",
-        layout === "text" ? "track-option--text" : "track-option--icon",
-        modifierClass(modifier),
-        className,
-      )}
+      className={buttonClassName}
     >
       {children}
     </button>

@@ -35,6 +35,7 @@ export type TrackState = {
   defenderRanges: DefenderStatRanges
   defenderRangeTouched: boolean
   showDefenseActual: boolean
+  showResultActual: boolean
   defenseAllocationIndices: Record<string, number>
 }
 
@@ -56,11 +57,4 @@ export type ScenarioRow = {
   critMinPercent: number
   critMaxPercent: number
   ohkoChance?: number
-}
-
-export type ScenarioRowLabels = {
-  moveLabel: string
-  statLabel: string
-  itemLabel: string
-  defenderLabel: string
 }
