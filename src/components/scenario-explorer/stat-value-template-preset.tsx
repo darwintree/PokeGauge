@@ -1,11 +1,9 @@
-import { useId, useState, type ReactNode } from "react"
-import { RefreshCw, Save, Trash2 } from "lucide-react"
+import { useId, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { StatRangeAxis } from "@/components/scenario-explorer/stat-range-axis"
 import { Switch } from "@/components/ui/switch"
-import { Toggle } from "@/components/ui/toggle"
 import type { StatAxisBounds, StatRange } from "@/lib/calc-adapter"
 import type { MoveCategory } from "@/lib/catalog/types"
 import {
@@ -16,12 +14,16 @@ import {
   templateCardLabel,
   type StatValueTemplate,
 } from "@/lib/stat-value-template"
+import type { StatTierTokenSet } from "@/lib/stat-tier-colors"
+
 import {
-  statTierChipClasses,
-  STAT_TIER_CHIP_MUTED_CLASS,
-  type StatTierTokenSet,
-} from "@/lib/stat-tier-colors"
-import { cn } from "@/lib/utils"
+  TrackOption,
+  TrackOptionAdd,
+  TrackOptionGroup,
+  TrackOptionSummary,
+  type TrackOptionAction,
+  type TrackOptionModifier,
+} from "./track-option"
 
 type TemplatePresetProps = {
   templates: StatValueTemplate[]
@@ -34,6 +36,9 @@ type TemplatePresetProps = {
   onCycleAllocation: (id: string) => void
   onDelete?: (id: string) => void
   onPersist?: (id: string) => void
+  adding?: boolean
+  onAddClick?: () => void
+  addAriaLabel?: string
 }
 
 type TemplateCardProps = {
@@ -50,84 +55,58 @@ type TemplateCardProps = {
   tier: StatTierTokenSet | null
 }
 
-type Corner = "top-right" | "bottom-right"
-
-const TOGGLE_CHIP =
-  "h-auto min-h-7 cursor-pointer px-2.5 py-1 text-xs font-medium tabular-nums"
-
-const TEMPLATE_CHIP_GROUP =
-  "group/template relative z-0 inline-flex overflow-visible pt-1 pr-1 hover:z-20 focus-within:z-20"
-
-const CORNER_BADGE =
-  "pointer-events-none absolute z-10 flex size-4 items-center justify-center rounded-full border bg-background opacity-0 shadow-sm transition-opacity group-hover/template:pointer-events-auto group-hover/template:opacity-100 group-focus-within/template:pointer-events-auto group-focus-within/template:opacity-100"
-
-const CORNER_POSITION: Record<Corner, string> = {
-  "top-right": "-top-1.5 -right-1.5",
-  "bottom-right": "-bottom-1.5 -right-1.5",
-}
-
-function templateToggleClass(
+function templateModifier(
   template: StatValueTemplate,
-  selected: boolean,
   tier: StatTierTokenSet | null,
-): string {
-  if (selected && tier) {
-    return cn(TOGGLE_CHIP, "shadow-none", statTierChipClasses(tier))
-  }
-
-  if (template.kind === "temporary") {
-    return cn(
-      TOGGLE_CHIP,
-      "border-dashed",
-      selected
-        ? "border-primary bg-primary/10 text-foreground"
-        : "border-muted-foreground/50 bg-background text-foreground hover:bg-muted/50",
-    )
-  }
-
-  if (template.kind === "user") {
-    return cn(
-      TOGGLE_CHIP,
-      selected
-        ? "border-foreground/40 bg-muted text-foreground shadow-sm"
-        : "border-input bg-background text-foreground hover:bg-muted/50",
-    )
-  }
-
-  return cn(
-    TOGGLE_CHIP,
-    selected
-      ? "bg-background text-foreground shadow-sm"
-      : "border-input bg-background text-foreground hover:bg-muted/50",
-    tier && !selected && "text-muted-foreground",
-  )
+): TrackOptionModifier | undefined {
+  if (tier) return { kind: "tier", tier }
+  if (template.kind === "temporary") return { kind: "temporary" }
+  if (template.kind === "user") return { kind: "user" }
+  return undefined
 }
 
-function CornerBadge({
-  corner,
-  ariaLabel,
-  className,
-  onClick,
-  children,
-}: {
-  corner: Corner
-  ariaLabel: string
-  className?: string
-  onClick: () => void
-  children: ReactNode
-}) {
-  return (
-    <Button
-      type="button"
-      variant="outline"
-      size="icon-xs"
-      aria-label={ariaLabel}
-      className={cn(CORNER_BADGE, CORNER_POSITION[corner], className)}
-      onClick={onClick}
-    >
-      {children}
-    </Button>
-  )
+function templateActions({
+  template,
+  allocationCount,
+  onDelete,
+  onPersist,
+  onCycleAllocation,
+}: Pick<
+  TemplateCardProps,
+  "template" | "allocationCount" | "onDelete" | "onPersist" | "onCycleAllocation"
+>): TrackOptionAction[] {
+  const actions: TrackOptionAction[] = []
+
+  if (template.kind === "user" && onDelete) {
+    actions.push({
+      kind: "remove",
+      label: "删除模版",
+      position: "top-right",
+      onClick: onDelete,
+    })
+  }
+
+  if (template.kind === "temporary" && onPersist) {
+    actions.push({
+      kind: "persist",
+      label: "持久化模版",
+      position: "top-right",
+      alwaysVisible: true,
+      onClick: onPersist,
+    })
+  }
+
+  if (allocationCount > 1) {
+    actions.push({
+      kind: "cycleAllocation",
+      label: "切换能力点数分配",
+      position: "bottom-right",
+      alwaysVisible: true,
+      onClick: onCycleAllocation,
+    })
+  }
+
+  return actions
 }
 
 function TemplateCard({
@@ -144,49 +123,23 @@ function TemplateCard({
   tier,
 }: TemplateCardProps) {
   return (
-    <div className="flex flex-col gap-0.5">
-      <div className={TEMPLATE_CHIP_GROUP}>
-        <Toggle
-          pressed={selected}
-          onPressedChange={onToggle}
-          variant="outline"
-          size="sm"
-          aria-label={`${label} 模版`}
-          className={templateToggleClass(template, selected, tier)}
-        >
-          {label}
-        </Toggle>
-
-        {template.kind === "user" && onDelete && (
-          <CornerBadge
-            corner="top-right"
-            ariaLabel="删除模版"
-            className="hover:border-destructive hover:text-destructive"
-            onClick={onDelete}
-          >
-            <Trash2 className="size-2.5" />
-          </CornerBadge>
-        )}
-
-        {template.kind === "temporary" && onPersist && (
-          <CornerBadge corner="top-right" ariaLabel="持久化模版" onClick={onPersist}>
-            <Save className="size-2.5" />
-          </CornerBadge>
-        )}
-
-        {allocationCount > 1 && (
-          <CornerBadge corner="bottom-right" ariaLabel="切换能力点数分配" onClick={onCycleAllocation}>
-            <RefreshCw className="size-2.5" />
-          </CornerBadge>
-        )}
-      </div>
-
-      {showActual && (
-        <span className={cn("pl-0.5 text-[10px] tabular-nums", STAT_TIER_CHIP_MUTED_CLASS)}>
-          {actualText}
-        </span>
-      )}
-    </div>
+    <TrackOption
+      layout="text"
+      pressed={selected}
+      ariaLabel={`${label} 模版`}
+      modifier={templateModifier(template, tier)}
+      actions={templateActions({
+        template,
+        allocationCount,
+        onDelete,
+        onPersist,
+        onCycleAllocation,
+      })}
+      onToggle={onToggle}
+    >
+      {label}
+      {showActual && <TrackOptionSummary>{actualText}</TrackOptionSummary>}
+    </TrackOption>
   )
 }
 
@@ -201,9 +154,12 @@ export function StatValueTemplatePreset({
   onCycleAllocation,
   onDelete,
   onPersist,
+  adding = false,
+  onAddClick,
+  addAriaLabel = "添加模版",
 }: TemplatePresetProps) {
   return (
-    <div className="flex w-72 flex-wrap gap-2 overflow-visible">
+    <TrackOptionGroup className="w-72 overflow-visible">
       {templates.map((template) => {
         const selected = selectedIds.includes(template.id)
         const allocIndex = allocationIndices[template.id] ?? 0
@@ -235,7 +191,15 @@ export function StatValueTemplatePreset({
           />
         )
       })}
-    </div>
+      {onAddClick && (
+        <TrackOptionAdd
+          layout="text"
+          ariaLabel={addAriaLabel}
+          pressed={adding}
+          onClick={onAddClick}
+        />
+      )}
+    </TrackOptionGroup>
   )
 }
 

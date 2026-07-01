@@ -337,4 +337,229 @@
   .stat-axis-tick.stat-axis-snap--ex {
     background-color: var(--stat-tier-ex-muted);
   }
+
+  /* TrackOption — inclusion layer A + flat container */
+  .track-option-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0.375rem;
+  }
+
+  .track-option-wrap {
+    position: relative;
+    display: inline-flex;
+    overflow: visible;
+  }
+
+  .track-option-wrap:focus-within,
+  .track-option-wrap:hover {
+    z-index: 2;
+  }
+
+  .track-option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    border: 1px solid var(--input);
+    border-radius: var(--radius);
+    background: var(--background);
+    color: var(--foreground);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    transition:
+      background 0.12s,
+      border-color 0.12s,
+      box-shadow 0.12s,
+      color 0.12s;
+  }
+
+  .track-option--text {
+    min-height: 1.75rem;
+    padding: 0.25rem 0.625rem;
+  }
+
+  .track-option--icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0.25rem;
+  }
+
+  .track-option--icon img {
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: contain;
+  }
+
+  .track-option--add {
+    border-style: dashed;
+    color: var(--muted-foreground);
+  }
+
+  .track-option--add-text {
+    width: 1.75rem;
+    height: 1.75rem;
+    min-width: 1.75rem;
+    padding: 0;
+  }
+
+  .track-option--add-open {
+    border-color: var(--primary);
+    background: color-mix(in srgb, var(--primary) 15%, var(--background));
+  }
+
+  .track-option-summary {
+    font-size: 0.6875rem;
+    font-weight: 400;
+    opacity: 0.75;
+  }
+
+  .track-option-action {
+    position: absolute;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    min-width: 1rem;
+    padding: 0;
+    border: 1px solid var(--input);
+    border-radius: calc(var(--radius) - 2px);
+    background: var(--background);
+    color: var(--foreground);
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+    transition:
+      opacity 0.12s,
+      border-color 0.12s,
+      color 0.12s;
+  }
+
+  .track-option-action:hover {
+    background: var(--muted);
+  }
+
+  .track-option-action--visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .track-option-wrap:hover .track-option-action,
+  .track-option-wrap:focus-within .track-option-action {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .track-option-action--top-right {
+    top: -0.25rem;
+    right: -0.25rem;
+  }
+
+  .track-option-action--bottom-right {
+    bottom: -0.25rem;
+    right: -0.25rem;
+  }
+
+  .track-option-action.track-option-action--remove:hover {
+    border-color: var(--destructive);
+    color: var(--destructive);
+  }
+
+  /* A — inclusion selected */
+  .track-option[aria-pressed="true"] {
+    border-color: var(--primary);
+    background: color-mix(in srgb, var(--primary) 12%, var(--background));
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary) 25%, transparent);
+    font-weight: 600;
+  }
+
+  .track-option--icon[aria-pressed="true"] {
+    background: color-mix(in srgb, var(--primary) 15%, var(--background));
+  }
+
+  /* Tier modifier tokens */
+  .track-option-mod-tier-0 {
+    --mod-fg: var(--stat-tier-0-fg);
+    --mod-bg: var(--stat-tier-0-bg);
+    --mod-border: var(--stat-tier-0-border);
+    --mod-muted: var(--stat-tier-0-muted);
+  }
+
+  .track-option-mod-tier-offense-max {
+    --mod-fg: var(--stat-offense-max-fg);
+    --mod-bg: var(--stat-offense-max-bg);
+    --mod-border: var(--stat-offense-max-border);
+    --mod-muted: var(--stat-offense-max-muted);
+  }
+
+  .track-option-mod-tier-bulk-mid {
+    --mod-fg: var(--stat-bulk-mid-fg);
+    --mod-bg: var(--stat-bulk-mid-bg);
+    --mod-border: var(--stat-bulk-mid-border);
+    --mod-muted: var(--stat-bulk-mid-muted);
+  }
+
+  .track-option-mod-tier-ex {
+    --mod-fg: var(--stat-tier-ex-fg);
+    --mod-bg: var(--stat-tier-ex-bg);
+    --mod-border: var(--stat-tier-ex-border);
+    --mod-muted: var(--stat-tier-ex-muted);
+  }
+
+  /* 1B — tier unselected */
+  .track-option[class*="track-option-mod-tier-"]:not([aria-pressed="true"]) {
+    border-color: var(--input);
+    background: var(--background);
+    color: var(--mod-fg);
+  }
+
+  .track-option[class*="track-option-mod-tier-"]:not([aria-pressed="true"])
+    .track-option-summary {
+    color: var(--mod-muted);
+  }
+
+  /* 2B — tier selected */
+  .track-option[class*="track-option-mod-tier-"][aria-pressed="true"] {
+    background: color-mix(
+      in srgb,
+      var(--mod-bg) 50%,
+      color-mix(in srgb, var(--primary) 12%, var(--background))
+    );
+    color: var(--mod-fg);
+  }
+
+  .track-option[class*="track-option-mod-tier-"][aria-pressed="true"]
+    .track-option-summary {
+    color: var(--mod-muted);
+  }
+
+  /* Dashed modifiers */
+  .track-option-mod-temporary,
+  .track-option-mod-stab-boost,
+  .track-option-mod-added-boost {
+    border-style: dashed;
+  }
+
+  .track-option-mod-temporary:not([aria-pressed="true"]) {
+    border-color: color-mix(in srgb, var(--muted-foreground) 50%, transparent);
+  }
+
+  .track-option-mod-stab-boost:not([aria-pressed="true"]),
+  .track-option-mod-added-boost:not([aria-pressed="true"]) {
+    border-color: var(--input);
+  }
+
+  /* 3B — dashed modifiers stay dashed when selected */
+  .track-option-mod-temporary[aria-pressed="true"],
+  .track-option-mod-stab-boost[aria-pressed="true"],
+  .track-option-mod-added-boost[aria-pressed="true"] {
+    border-style: dashed;
+  }
 }
