@@ -34,7 +34,7 @@ updated_at: "2026-06-30T08:26:00Z"
 | --- | --- |
 | 石板 Plates | 产品决定：不再需要 |
 | 讲究围巾 Choice Scarf | Grill §2 |
-| 结果行图标 / 「无加成」标注 | Grill §6 → [[20260626_open_damage-comparison-results-info-display-needs-refinement]] |
+| 结果行图标 / 「无加成」标注 | Grill §6 → [[20260626_closed_damage-comparison-results-info-display-needs-refinement]] |
 | 合并无加成重复行 | [[20260629_open_merge-scenario-rows-when-item-has-no-damage-effect]] |
 
 ## Acceptance criteria
@@ -44,7 +44,7 @@ updated_at: "2026-06-30T08:26:00Z"
 - [x] Default view 默认选中无道具
 - [x] `+` 添加的强化道具按攻击方持久化（localStorage）
 - [x] catalog 扁平 list 扩展（core + type-boost）
-- [ ] 无加成时结果行注明「无加成」— defer [[20260626_open_damage-comparison-results-info-display-needs-refinement]]
+- [ ] 无加成时结果行注明「无加成」— defer [[20260626_closed_damage-comparison-results-info-display-needs-refinement]]
 
 ## Resolution
 

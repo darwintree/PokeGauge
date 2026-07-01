@@ -68,17 +68,9 @@ export function ScenarioResults({
             <li key={rowKey(row)}>
               <DamageBoxPlot
                 move={catalogOption(catalog.moves, row.moveId)}
-                attackerStat={{
-                  id: row.attackerStatId,
-                  label: labels.stat,
-                  summary: isRangeEnvelope && row.statRange ? "区间 × roll 合并" : "",
-                }}
-                attackerItem={catalogOption(catalog.attackerItems, row.attackerItemId)}
-                defender={{
-                  id: row.defenderId,
-                  label: labels.defender,
-                  summary: isRangeEnvelope && row.defenderRanges ? "区间 × roll 合并" : "",
-                }}
+                attackerStat={{ id: row.attackerStatId, label: labels.stat }}
+                attackerItem={{ id: row.attackerItemId }}
+                defender={{ id: row.defenderId, label: labels.defender }}
                 row={row}
                 showMove={showMoveOnRow}
                 isRangeEnvelope={isRangeEnvelope}
