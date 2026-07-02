@@ -128,9 +128,9 @@ function RowLabel({ children }: RowLabelProps) {
 
 type DamageBoxPlotProps = {
   move: CatalogMoveOption
-  attackerStat: Pick<CatalogOption, "id" | "label"> & { actual?: string | null }
-  attackerItem: Pick<CatalogOption, "id">
-  defender: Pick<CatalogOption, "id" | "label"> & { actual?: string | null }
+  attackerStat: Pick<CatalogOption<string>, "id" | "label"> & { actual?: string | null }
+  attackerItem: Pick<CatalogOption<string>, "id">
+  defender: Pick<CatalogOption<string>, "id" | "label"> & { actual?: string | null }
   row: ScenarioRow
   showMove?: boolean
   isRangeEnvelope?: boolean

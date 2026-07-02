@@ -1,4 +1,5 @@
 import { useMemo } from "react"
+import { FormattedMessage } from "react-intl"
 
 import {
   Empty,
@@ -30,7 +31,7 @@ type ScenarioResultsProps = {
   compact?: boolean
 }
 
-function catalogOption<T extends { id: string }>(options: T[], id: string): T {
+function catalogOption<T extends { id: string | number }>(options: T[], id: string | number): T {
   const found = options.find((o) => o.id === id)
   if (!found) throw new Error(`Unknown catalog option: ${id}`)
   return found
@@ -67,7 +68,9 @@ export function ScenarioResults({
     return (
       <Empty className="border">
         <EmptyHeader>
-          <EmptyDescription>请至少各选一维配置以展示伤害对比</EmptyDescription>
+          <EmptyDescription>
+            <FormattedMessage id="app.empty" />
+          </EmptyDescription>
         </EmptyHeader>
       </Empty>
     )

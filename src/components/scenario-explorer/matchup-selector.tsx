@@ -1,4 +1,5 @@
 import { useMemo } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 
 import {
   Combobox,
@@ -11,12 +12,13 @@ import {
 import { Label } from "@/components/ui/label"
 import { TypeBadgeRow } from "@/components/pokemon/type-badge"
 import type { SpeciesOption } from "@/lib/catalog/types"
+import type { BattlePokemonId } from "@/lib/resources"
 
 type SpeciesSelectProps = {
   label: string
   options: SpeciesOption[]
-  value: string
-  onChange: (id: string) => void
+  value: BattlePokemonId
+  onChange: (id: BattlePokemonId) => void
 }
 
 function speciesFilter(option: SpeciesOption, query: string) {
@@ -25,11 +27,12 @@ function speciesFilter(option: SpeciesOption, query: string) {
   return (
     option.label.toLowerCase().includes(q) ||
     option.species.toLowerCase().includes(q) ||
-    option.id.toLowerCase().includes(q)
+    String(option.id).includes(q)
   )
 }
 
 export function SpeciesSelect({ label, options, value, onChange }: SpeciesSelectProps) {
+  const intl = useIntl()
   const selected = useMemo(
     () => options.find((option) => option.id === value) ?? null,
     [options, value],
@@ -50,7 +53,7 @@ export function SpeciesSelect({ label, options, value, onChange }: SpeciesSelect
       >
         <div className="relative">
           <ComboboxInput
-            placeholder="选择宝可梦"
+            placeholder={intl.formatMessage({ id: "matchup.placeholder" })}
             showClear={false}
             className="w-full pr-[4.5rem]"
           />
@@ -61,7 +64,9 @@ export function SpeciesSelect({ label, options, value, onChange }: SpeciesSelect
           )}
         </div>
         <ComboboxContent>
-          <ComboboxEmpty>无匹配</ComboboxEmpty>
+          <ComboboxEmpty>
+            <FormattedMessage id="matchup.noMatches" />
+          </ComboboxEmpty>
           <ComboboxList>
             {(option: SpeciesOption) => (
               <ComboboxItem key={option.id} value={option}>
@@ -76,12 +81,12 @@ export function SpeciesSelect({ label, options, value, onChange }: SpeciesSelect
 }
 
 type MatchupSelectorProps = {
-  attackerId: string
-  defenderId: string
+  attackerId: BattlePokemonId
+  defenderId: BattlePokemonId
   attackers: SpeciesOption[]
   defenders: SpeciesOption[]
-  onAttackerChange: (id: string) => void
-  onDefenderChange: (id: string) => void
+  onAttackerChange: (id: BattlePokemonId) => void
+  onDefenderChange: (id: BattlePokemonId) => void
 }
 
 export function MatchupSelector({
@@ -92,26 +97,29 @@ export function MatchupSelector({
   onAttackerChange,
   onDefenderChange,
 }: MatchupSelectorProps) {
+  const intl = useIntl()
   return (
     <div className="space-y-3">
-      <Label className="text-muted-foreground text-xs">对战</Label>
+      <Label className="text-muted-foreground text-xs">
+        <FormattedMessage id="matchup.section" />
+      </Label>
       <div className="grid gap-2">
         <SpeciesSelect
-          label="进攻方"
+          label={intl.formatMessage({ id: "matchup.attacker" })}
           options={attackers}
           value={attackerId}
           onChange={onAttackerChange}
         />
         <div className="text-muted-foreground flex justify-center text-xs">↓</div>
         <SpeciesSelect
-          label="防守方"
+          label={intl.formatMessage({ id: "matchup.defender" })}
           options={defenders}
           value={defenderId}
           onChange={onDefenderChange}
         />
       </div>
       <p className="text-muted-foreground text-[10px]">
-        Champions · VGC 双打 · Level 50
+        <FormattedMessage id="matchup.context" />
       </p>
     </div>
   )

@@ -30,7 +30,7 @@ import {
 import type { DefenderStatRanges, ScenarioRow, TrackState } from "./types"
 import { RANGE_DEFENDER_ID, RANGE_STAT_ID } from "./types"
 
-function configOrder(options: { id: string }[]) {
+function configOrder(options: { id: string | number }[]) {
   return Object.fromEntries(options.map((o, i) => [o.id, i]))
 }
 
@@ -40,7 +40,7 @@ function templateSortKey(templateId: string, order: Record<string, number>) {
     : (order[templateId] ?? 999)
 }
 
-function resolveMoveName(catalog: MatchupCatalog, moveId: string): string | undefined {
+function resolveMoveName(catalog: MatchupCatalog, moveId: number): string | undefined {
   return catalog.moves.find((m) => m.id === moveId)?.moveName
 }
 
@@ -50,7 +50,7 @@ export function offenseTemplatesForState(
 ): StatValueTemplate[] {
   const { attackerSpecies } = catalog.matchup
   const system = buildSystemOffenseTemplates(attackerSpecies, catalog.moveCategory)
-  const user = loadUserOffenseTemplates(catalog.matchup.attackerId)
+  const user = loadUserOffenseTemplates(String(catalog.matchup.attackerId))
   return mergeTemplates(system, user, trackState.offenseTemporaryTemplates)
 }
 
@@ -60,7 +60,7 @@ export function defenseTemplatesForState(
 ): StatValueTemplate[] {
   const { defenderSpecies } = catalog.matchup
   const system = buildSystemDefenseTemplates(defenderSpecies, catalog.moveCategory)
-  const user = loadUserDefenseTemplates(catalog.matchup.defenderId)
+  const user = loadUserDefenseTemplates(String(catalog.matchup.defenderId))
   return mergeTemplates(system, user, trackState.defenseTemporaryTemplates)
 }
 
@@ -70,7 +70,7 @@ function findTemplate(templates: StatValueTemplate[], id: string): StatValueTemp
 
 function computePresetRow(
   catalog: MatchupCatalog,
-  moveId: string,
+  moveId: number,
   offenseTemplateId: string,
   attackerItemId: string,
   defenseTemplateId: string,
@@ -126,7 +126,7 @@ function computePresetRow(
 
 function computeOffenseRangeRow(
   catalog: MatchupCatalog,
-  moveId: string,
+  moveId: number,
   statRange: TrackState["statRange"],
   attackerItemId: string,
   defenseTemplateId: string,
@@ -176,7 +176,7 @@ function computeOffenseRangeRow(
 
 function computeDefenderRangeRow(
   catalog: MatchupCatalog,
-  moveId: string,
+  moveId: number,
   offenseTemplateId: string,
   attackerItemId: string,
   defenderRanges: DefenderStatRanges,
@@ -230,7 +230,7 @@ function computeDefenderRangeRow(
 
 function computeCombinedRangeRow(
   catalog: MatchupCatalog,
-  moveId: string,
+  moveId: number,
   statRange: TrackState["statRange"],
   attackerItemId: string,
   defenderRanges: DefenderStatRanges,
@@ -381,8 +381,8 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
   const { attackerSpecies, defenderSpecies } = catalog.matchup
   const offenseSystem = buildSystemOffenseTemplates(attackerSpecies, catalog.moveCategory)
   const defenseSystem = buildSystemDefenseTemplates(defenderSpecies, catalog.moveCategory)
-  const offenseUser = loadUserOffenseTemplates(catalog.matchup.attackerId)
-  const defenseUser = loadUserDefenseTemplates(catalog.matchup.defenderId)
+  const offenseUser = loadUserOffenseTemplates(String(catalog.matchup.attackerId))
+  const defenseUser = loadUserDefenseTemplates(String(catalog.matchup.defenderId))
 
   return {
     visibleMoveIds: [...catalog.defaultMoveIds],
@@ -428,10 +428,10 @@ export function rowLabels(
   defender: string
   defenderActual: string | null
 } {
-  const findItem = (options: { id: string; label: string }[], id: string) =>
+  const findItem = (options: { id: string | number; label: string }[], id: string | number) =>
     options.find((o) => o.id === id)?.label ?? id
 
-  const defStatLabel = catalog.moveCategory === "physical" ? "物防" : "特防"
+  const defStatLabel = catalog.defenseStatLabel
   const offenseTemplates = templates?.offense ?? offenseTemplatesForState(catalog, trackState)
   const defenseTemplates = templates?.defense ?? defenseTemplatesForState(catalog, trackState)
 
@@ -480,10 +480,10 @@ export function rowLabels(
   }
 
   return {
-    move: findItem(catalog.moves, row.moveId),
+    move: String(findItem(catalog.moves, row.moveId)),
     stat: statLabel,
     statActual,
-    item: findItem(catalog.attackerItems, row.attackerItemId),
+    item: String(findItem(catalog.attackerItems, row.attackerItemId)),
     defender: defenderLabel,
     defenderActual,
   }

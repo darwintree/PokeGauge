@@ -1,21 +1,22 @@
 import type { PokemonType } from "@/lib/pokemon/types"
+import type { BattlePokemonId, UpstreamResourceId } from "@/lib/resources"
 
 export type MoveCategory = "physical" | "special"
 
-export type CatalogOption = {
-  id: string
+export type CatalogOption<TId extends string | number = string> = {
+  id: TId
   label: string
   summary: string
 }
 
-export type CatalogMoveOption = CatalogOption & {
+export type CatalogMoveOption = CatalogOption<UpstreamResourceId> & {
   moveName: string
   type: PokemonType
 }
 
 export type MatchupIdentity = {
-  attackerId: string
-  defenderId: string
+  attackerId: BattlePokemonId
+  defenderId: BattlePokemonId
   attackerLabel: string
   defenderLabel: string
   attackerSpecies: string
@@ -28,20 +29,20 @@ export type MatchupCatalog = {
   attackerTypes: PokemonType[]
   /** All moves in pick share this category — v1 single-category attackers only */
   moveCategory: MoveCategory
-  offenseStatLabel: "物攻" | "特攻"
-  defenseStatLabel: "物防" | "特防"
+  offenseStatLabel: string
+  defenseStatLabel: string
   moves: CatalogMoveOption[]
   attackerStats: CatalogOption[]
   attackerItems: CatalogOption[]
   defenderBulks: CatalogOption[]
-  defaultMoveIds: string[]
+  defaultMoveIds: UpstreamResourceId[]
   defaultAttackerStatIds: string[]
   defaultAttackerItemIds: string[]
   defaultDefenderIds: string[]
 }
 
 export type SpeciesOption = {
-  id: string
+  id: BattlePokemonId
   label: string
   species: string
   types: PokemonType[]

@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useIntl } from "react-intl"
 
 import { TypeBadge } from "@/components/pokemon/type-badge"
 import { Label } from "@/components/ui/label"
@@ -13,11 +14,11 @@ import {
 type MoveMultiSelectProps = {
   label: string
   options: CatalogMoveOption[]
-  visibleIds: string[]
-  selectedIds: string[]
-  onAdd: (id: string) => void
-  onToggle: (id: string) => void
-  onRemove: (id: string) => void
+  visibleIds: number[]
+  selectedIds: number[]
+  onAdd: (id: number) => void
+  onToggle: (id: number) => void
+  onRemove: (id: number) => void
 }
 
 export function MoveMultiSelect({
@@ -29,16 +30,17 @@ export function MoveMultiSelect({
   onToggle,
   onRemove,
 }: MoveMultiSelectProps) {
+  const intl = useIntl()
   const [pickerOpen, setPickerOpen] = useState(false)
   const visibleOptions = options.filter((o) => visibleIds.includes(o.id))
   const addableOptions = options.filter((o) => !visibleIds.includes(o.id))
 
-  function add(id: string) {
+  function add(id: number) {
     onAdd(id)
     setPickerOpen(false)
   }
 
-  function remove(id: string) {
+  function remove(id: number) {
     onRemove(id)
     setPickerOpen(false)
   }
@@ -69,7 +71,7 @@ export function MoveMultiSelect({
         ))}
         <TrackOptionAdd
           layout="text"
-          ariaLabel="添加招式"
+          ariaLabel={intl.formatMessage({ id: "track.addMove" })}
           pressed={pickerOpen}
           onClick={() => {
             if (addableOptions.length === 0) return

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest"
+import { beforeAll, describe, expect, it } from "vitest"
 
 import { getAttackerStatSetups, getDefenderSetups } from "@/lib/calc-adapter"
 import { getCatalog } from "@/lib/catalog"
@@ -17,10 +17,17 @@ import {
 } from "@/lib/stat-value-template"
 
 describe("SP label engine", () => {
-  const catalog = getCatalog("garchomp", "incineroar")
-  const { attackerSpecies, defenderSpecies } = catalog.matchup
-  const category = catalog.moveCategory
+  let attackerSpecies: string
+  let defenderSpecies: string
+  let category: "physical" | "special"
   const strategy = "habcds" as const
+
+  beforeAll(async () => {
+    const catalog = await getCatalog(445, 727, "zh-hans")
+    attackerSpecies = catalog.matchup.attackerSpecies
+    defenderSpecies = catalog.matchup.defenderSpecies
+    category = catalog.moveCategory
+  })
 
   it("maps system offense presets to 0A / 32A / EX", () => {
     const templates = buildSystemOffenseTemplates(attackerSpecies, category)

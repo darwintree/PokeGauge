@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 import {
   defaultDefenderDefRange,
@@ -47,7 +47,7 @@ function rangeEndpoints(min: number, max: number): number[] {
   return max === min ? [min] : [min, max]
 }
 
-function orderedMoveSelection(catalog: MatchupCatalog, ids: readonly string[]): string[] {
+function orderedMoveSelection(catalog: MatchupCatalog, ids: readonly number[]): number[] {
   return orderedPoolSelection(catalog.moves.map((move) => move.id), ids)
 }
 
@@ -128,6 +128,9 @@ export function useScenarioState(catalog: MatchupCatalog) {
   const [addingOffense, setAddingOffense] = useState(false)
   const [addingDefense, setAddingDefense] = useState(false)
   const [statNameStrategy, setStatNameStrategyState] = useState<StatNameStrategy>(loadStatNameStrategy)
+  const resetKeyRef = useRef<string>(
+    `${catalog.matchup.attackerId}:${catalog.matchup.defenderId}:${catalog.moveCategory}`,
+  )
 
   const setStatNameStrategy = useCallback((strategy: StatNameStrategy) => {
     saveStatNameStrategy(strategy)
@@ -135,6 +138,9 @@ export function useScenarioState(catalog: MatchupCatalog) {
   }, [])
 
   useEffect(() => {
+    const resetKey = `${catalog.matchup.attackerId}:${catalog.matchup.defenderId}:${catalog.moveCategory}`
+    if (resetKeyRef.current === resetKey) return
+    resetKeyRef.current = resetKey
     setTrackState(defaultTrackState(catalog))
     setAddingOffense(false)
     setAddingDefense(false)
@@ -281,7 +287,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
     const user = newUserOffenseTemplate(
       template.values.kind === "offense" ? template.values.stat : 0,
     )
-    saveUserOffenseTemplate(catalog.matchup.attackerId, user)
+    saveUserOffenseTemplate(String(catalog.matchup.attackerId), user)
     setTrackState((s) => ({
       ...s,
       offenseTemporaryTemplates: s.offenseTemporaryTemplates.filter((t) => t.id !== id),
@@ -295,7 +301,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
     if (!template || template.kind !== "temporary") return
     const v = template.values.kind === "defense" ? template.values : { hp: 0, def: 0 }
     const user = newUserDefenseTemplate(v.hp, v.def)
-    saveUserDefenseTemplate(catalog.matchup.defenderId, user)
+    saveUserDefenseTemplate(String(catalog.matchup.defenderId), user)
     setTrackState((s) => ({
       ...s,
       defenseTemporaryTemplates: s.defenseTemporaryTemplates.filter((t) => t.id !== id),
@@ -305,7 +311,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
   }
 
   function deleteOffenseTemplate(id: string) {
-    deleteUserOffenseTemplate(catalog.matchup.attackerId, id)
+    deleteUserOffenseTemplate(String(catalog.matchup.attackerId), id)
     setTrackState((s) => ({
       ...s,
       offenseTemplateIds: s.offenseTemplateIds.filter((tid) => tid !== id),
@@ -314,7 +320,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
   }
 
   function deleteDefenseTemplate(id: string) {
-    deleteUserDefenseTemplate(catalog.matchup.defenderId, id)
+    deleteUserDefenseTemplate(String(catalog.matchup.defenderId), id)
     setTrackState((s) => ({
       ...s,
       defenseTemplateIds: s.defenseTemplateIds.filter((tid) => tid !== id),
@@ -329,7 +335,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
       stat,
     )
     const user = newUserOffenseTemplate(snapped)
-    saveUserOffenseTemplate(catalog.matchup.attackerId, user)
+    saveUserOffenseTemplate(String(catalog.matchup.attackerId), user)
     setTrackState((s) => ({
       ...s,
       offenseTemplateIds: [...s.offenseTemplateIds, user.id],
@@ -346,7 +352,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
       def,
     )
     const user = newUserDefenseTemplate(snapped.hp, snapped.def)
-    saveUserDefenseTemplate(catalog.matchup.defenderId, user)
+    saveUserDefenseTemplate(String(catalog.matchup.defenderId), user)
     setTrackState((s) => ({
       ...s,
       defenseTemplateIds: [...s.defenseTemplateIds, user.id],
@@ -355,14 +361,14 @@ export function useScenarioState(catalog: MatchupCatalog) {
     setAddingDefense(false)
   }
 
-  function addMoveToTrack(id: string) {
+  function addMoveToTrack(id: number) {
     setTrackState((s) => ({
       ...s,
       visibleMoveIds: orderedMoveSelection(catalog, [...s.visibleMoveIds, id]),
     }))
   }
 
-  function toggleMove(id: string) {
+  function toggleMove(id: number) {
     setTrackState((s) => {
       const visibleMoveIds = s.visibleMoveIds.includes(id)
         ? s.visibleMoveIds
@@ -381,7 +387,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
     })
   }
 
-  function removeMoveFromTrack(id: string) {
+  function removeMoveFromTrack(id: number) {
     setTrackState((s) => {
       const visibleMoveIds = orderedMoveSelection(
         catalog,

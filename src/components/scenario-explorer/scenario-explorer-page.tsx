@@ -1,34 +1,54 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import {
   getCatalog,
   getDefaultMatchupIds,
   listAttackers,
   listDefenders,
+  type MatchupCatalog,
+  type SpeciesOption,
 } from "@/lib/catalog"
+import { SUPPORTED_LOCALES, type SupportedLocale } from "@/lib/i18n"
+import type { BattlePokemonId } from "@/lib/resources"
 
 import { MatchupSelector } from "./matchup-selector"
 import { ScenarioResults } from "./scenario-results"
 import { SelectionSummary, TrackControls } from "./track-controls"
 import { useScenarioState } from "./use-scenario-state"
 
-export function ScenarioExplorerPage() {
-  const attackers = listAttackers()
-  const defenders = listDefenders()
-  const defaults = getDefaultMatchupIds()
+type ScenarioExplorerPageProps = {
+  locale: SupportedLocale
+  onLocaleChange: (locale: SupportedLocale) => void
+}
 
-  const [attackerId, setAttackerId] = useState<string>(defaults.attackerId)
-  const [defenderId, setDefenderId] = useState<string>(defaults.defenderId)
+type LocalizedCatalogState = {
+  attackers: SpeciesOption[]
+  defenders: SpeciesOption[]
+  catalog: MatchupCatalog
+}
 
-  const catalog = useMemo(
-    () => getCatalog(attackerId, defenderId),
-    [attackerId, defenderId],
-  )
+function ScenarioExplorerContent({
+  catalog,
+  attackers,
+  defenders,
+  attackerId,
+  defenderId,
+  locale,
+  localeOptions,
+  onAttackerChange,
+  onDefenderChange,
+  onLocaleChange,
+}: LocalizedCatalogState & {
+  attackerId: BattlePokemonId
+  defenderId: BattlePokemonId
+  locale: SupportedLocale
+  localeOptions: Array<{ value: SupportedLocale; label: string }>
+  onAttackerChange: (id: BattlePokemonId) => void
+  onDefenderChange: (id: BattlePokemonId) => void
+  onLocaleChange: (locale: SupportedLocale) => void
+}) {
   const state = useScenarioState(catalog)
 
   return (
@@ -42,9 +62,26 @@ export function ScenarioExplorerPage() {
                 defenderId={defenderId}
                 attackers={attackers}
                 defenders={defenders}
-                onAttackerChange={setAttackerId}
-                onDefenderChange={setDefenderId}
+                onAttackerChange={onAttackerChange}
+                onDefenderChange={onDefenderChange}
               />
+              <div className="space-y-2 pt-3">
+                <label className="text-muted-foreground text-xs" htmlFor="locale-select">
+                  <FormattedMessage id="locale.label" />
+                </label>
+                <select
+                  id="locale-select"
+                  value={locale}
+                  onChange={(event) => onLocaleChange(event.target.value as SupportedLocale)}
+                  className="border-input bg-background h-8 w-full rounded-md border px-2 text-xs"
+                >
+                  {localeOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </CardHeader>
             <CardContent>
               <TrackControls catalog={catalog} state={state} />
@@ -54,7 +91,9 @@ export function ScenarioExplorerPage() {
 
         <main className="min-w-0 flex-1 space-y-4">
           <header className="space-y-2">
-            <h1 className="text-xl font-semibold tracking-tight">伤害对比</h1>
+            <h1 className="text-xl font-semibold tracking-tight">
+              <FormattedMessage id="app.title" />
+            </h1>
             <p className="text-muted-foreground text-sm">
               {catalog.matchup.attackerLabel} → {catalog.matchup.defenderLabel}
             </p>
@@ -72,5 +111,52 @@ export function ScenarioExplorerPage() {
         </main>
       </div>
     </div>
+  )
+}
+
+export function ScenarioExplorerPage({ locale, onLocaleChange }: ScenarioExplorerPageProps) {
+  const intl = useIntl()
+  const defaults = getDefaultMatchupIds()
+  const [attackerId, setAttackerId] = useState<BattlePokemonId>(defaults.attackerId)
+  const [defenderId, setDefenderId] = useState<BattlePokemonId>(defaults.defenderId)
+  const [localized, setLocalized] = useState<LocalizedCatalogState | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+    Promise.all([
+      listAttackers(locale),
+      listDefenders(locale),
+      getCatalog(attackerId, defenderId, locale),
+    ]).then(([attackers, defenders, catalog]) => {
+      if (cancelled) return
+      setLocalized({ attackers, defenders, catalog })
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [attackerId, defenderId, locale])
+
+  const localeOptions = useMemo(
+    () =>
+      SUPPORTED_LOCALES.map((value) => ({
+        value,
+        label: intl.formatMessage({ id: `locale.${value}` }),
+      })),
+    [intl],
+  )
+
+  if (!localized) return null
+
+  return (
+    <ScenarioExplorerContent
+      {...localized}
+      attackerId={attackerId}
+      defenderId={defenderId}
+      locale={locale}
+      localeOptions={localeOptions}
+      onAttackerChange={setAttackerId}
+      onDefenderChange={setDefenderId}
+      onLocaleChange={onLocaleChange}
+    />
   )
 }

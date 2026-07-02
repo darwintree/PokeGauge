@@ -1,5 +1,4 @@
 export {
-  GARCHOMP_INCINEROAR_CATALOG,
   getCatalog,
   getDefaultMatchupIds,
   listAttackers,

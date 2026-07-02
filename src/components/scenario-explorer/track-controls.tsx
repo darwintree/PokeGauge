@@ -1,3 +1,5 @@
+import { FormattedMessage, useIntl } from "react-intl"
+
 import { Badge } from "@/components/ui/badge"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
@@ -23,13 +25,14 @@ type TrackControlsProps = {
 }
 
 export function TrackControls({ catalog, state }: TrackControlsProps) {
+  const intl = useIntl()
   const { trackState } = state
-  const defStatLabel = catalog.moveCategory === "physical" ? "物防" : "特防"
+  const defStatLabel = catalog.defenseStatLabel
 
   return (
     <div className="space-y-3">
       <MoveMultiSelect
-        label="招式"
+        label={intl.formatMessage({ id: "track.moves" })}
         options={catalog.moves}
         visibleIds={trackState.visibleMoveIds}
         selectedIds={trackState.moveIds}
@@ -46,13 +49,15 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
         className="gap-3"
       >
         <div className="flex items-center justify-between gap-2">
-          <Label className="text-muted-foreground text-xs">攻击方</Label>
+          <Label className="text-muted-foreground text-xs">
+            <FormattedMessage id="track.attacker" />
+          </Label>
           <TabsList className="h-7">
             <TabsTrigger value="preset" className="px-2.5 text-xs">
-              预设
+              <FormattedMessage id="track.preset" />
             </TabsTrigger>
             <TabsTrigger value="range" className="px-2.5 text-xs">
-              数轴选段
+              <FormattedMessage id="track.range" />
             </TabsTrigger>
           </TabsList>
         </div>
@@ -72,7 +77,7 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
             onPersist={state.persistOffenseTemplate}
             adding={state.addingOffense}
             onAddClick={() => state.setAddingOffense((v) => !v)}
-            addAriaLabel="添加攻击方模版"
+            addAriaLabel={intl.formatMessage({ id: "template.addAttacker" })}
           />
           <ShowActualValuesSwitch
             checked={trackState.showOffenseActual}
@@ -112,13 +117,15 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
         className="gap-3"
       >
         <div className="flex items-center justify-between gap-2">
-          <Label className="text-muted-foreground text-xs">防守方</Label>
+          <Label className="text-muted-foreground text-xs">
+            <FormattedMessage id="track.defender" />
+          </Label>
           <TabsList className="h-7">
             <TabsTrigger value="preset" className="px-2.5 text-xs">
-              预设
+              <FormattedMessage id="track.preset" />
             </TabsTrigger>
             <TabsTrigger value="range" className="px-2.5 text-xs">
-              数轴选段
+              <FormattedMessage id="track.range" />
             </TabsTrigger>
           </TabsList>
         </div>
@@ -138,7 +145,7 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
             onPersist={state.persistDefenseTemplate}
             adding={state.addingDefense}
             onAddClick={() => state.setAddingDefense((v) => !v)}
-            addAriaLabel="添加防守方模版"
+            addAriaLabel={intl.formatMessage({ id: "template.addDefender" })}
           />
           <ShowActualValuesSwitch
             checked={trackState.showDefenseActual}
@@ -184,17 +191,47 @@ export function TrackControls({ catalog, state }: TrackControlsProps) {
 }
 
 export function SelectionSummary({ state }: { state: ScenarioState }) {
+  const intl = useIntl()
   const s = state.selectionSummary
+  const stats =
+    state.trackState.statMode === "preset"
+      ? intl.formatMessage(
+          { id: "summary.statsPreset" },
+          { count: state.trackState.offenseTemplateIds.length },
+        )
+      : intl.formatMessage(
+          { id: "summary.statsRange" },
+          { min: state.trackState.statRange.min, max: state.trackState.statRange.max },
+        )
+  const defenders =
+    state.trackState.defenderMode === "preset"
+      ? intl.formatMessage(
+          { id: "summary.defendersPreset" },
+          { count: state.trackState.defenseTemplateIds.length },
+        )
+      : intl.formatMessage(
+          { id: "summary.defendersRange" },
+          {
+            min: state.trackState.defenderRanges.hp.min,
+            max: state.trackState.defenderRanges.hp.max,
+          },
+        )
   return (
     <div className="flex flex-wrap items-center justify-between gap-2">
       <div className="flex flex-wrap gap-1.5">
-        <Badge variant="secondary">{s.moves} 招式</Badge>
-        <Badge variant="secondary">{s.stats}</Badge>
-        <Badge variant="secondary">{s.items} 道具</Badge>
-        <Badge variant="secondary">{s.defenders} 防守</Badge>
+        <Badge variant="secondary">
+          {intl.formatMessage({ id: "summary.moves" }, { count: s.moves })}
+        </Badge>
+        <Badge variant="secondary">{stats}</Badge>
+        <Badge variant="secondary">
+          {intl.formatMessage({ id: "summary.items" }, { count: s.items })}
+        </Badge>
+        <Badge variant="secondary">
+          {intl.formatMessage({ id: "summary.defenders" }, { value: defenders })}
+        </Badge>
       </div>
       <Badge variant="outline" className="tabular-nums">
-        {s.rows} 条结果
+        {intl.formatMessage({ id: "summary.rows" }, { count: s.rows })}
       </Badge>
     </div>
   )

@@ -1,5 +1,7 @@
 import { buildCoreCatalogOptions, buildTypeBoostCatalogOptions } from "@/lib/held-item"
+import { localeMessages, type SupportedLocale } from "@/lib/i18n"
 import type { PokemonType } from "@/lib/pokemon/types"
+import { getResource, type BattlePokemonId, type UpstreamResourceId } from "@/lib/resources"
 import {
   DEFENSE_PRESET_LABELS,
   OFFENSE_PRESET_LABELS,
@@ -14,15 +16,13 @@ import type {
 } from "./types"
 
 type MovePickEntry = {
-  id: string
-  label: string
+  id: UpstreamResourceId
   moveName: string
   type: PokemonType
 }
 
 type AttackerEntry = {
-  id: string
-  label: string
+  id: BattlePokemonId
   species: string
   types: PokemonType[]
   moveCategory: MoveCategory
@@ -33,8 +33,7 @@ type AttackerEntry = {
 }
 
 type DefenderEntry = {
-  id: string
-  label: string
+  id: BattlePokemonId
   species: string
   types: PokemonType[]
 }
@@ -42,70 +41,74 @@ type DefenderEntry = {
 /** Hardcoded VGC doubles usage-ranked move picks — Champions context, v1 */
 const ATTACKERS: AttackerEntry[] = [
   {
-    id: "garchomp",
-    label: "烈咬陆鲨",
+    id: 445,
     species: "Garchomp",
     types: ["dragon", "ground"],
     moveCategory: "physical",
     moves: [
-      { id: "earthquake", label: "地震", moveName: "Earthquake", type: "ground" },
-      { id: "dragon-claw", label: "龙爪", moveName: "Dragon Claw", type: "dragon" },
-      { id: "stone-edge", label: "尖石攻击", moveName: "Stone Edge", type: "rock" },
+      { id: 89, moveName: "Earthquake", type: "ground" },
+      { id: 337, moveName: "Dragon Claw", type: "dragon" },
+      { id: 444, moveName: "Stone Edge", type: "rock" },
     ],
     extraMoves: [
-      { id: "protect", label: "守住", moveName: "Protect", type: "normal" },
-      { id: "fire-fang", label: "火焰牙", moveName: "Fire Fang", type: "fire" },
+      { id: 182, moveName: "Protect", type: "normal" },
+      { id: 424, moveName: "Fire Fang", type: "fire" },
     ],
   },
   {
-    id: "landorus-therian",
-    label: "土地云-灵兽",
+    id: 10021,
     species: "Landorus-Therian",
     types: ["ground", "flying"],
     moveCategory: "physical",
     moves: [
-      { id: "earthquake", label: "地震", moveName: "Earthquake", type: "ground" },
-      { id: "rock-slide", label: "岩崩", moveName: "Rock Slide", type: "rock" },
-      { id: "stomping-tantrum", label: "跺脚", moveName: "Stomping Tantrum", type: "ground" },
+      { id: 89, moveName: "Earthquake", type: "ground" },
+      { id: 157, moveName: "Rock Slide", type: "rock" },
+      { id: 707, moveName: "Stomping Tantrum", type: "ground" },
     ],
     extraMoves: [
-      { id: "protect", label: "守住", moveName: "Protect", type: "normal" },
-      { id: "knock-off", label: "拍落", moveName: "Knock Off", type: "dark" },
+      { id: 182, moveName: "Protect", type: "normal" },
+      { id: 282, moveName: "Knock Off", type: "dark" },
     ],
   },
   {
-    id: "flutter-mane",
-    label: "振翼发",
+    id: 987,
     species: "Flutter Mane",
     types: ["ghost", "fairy"],
     moveCategory: "special",
     moves: [
-      { id: "moonblast", label: "月亮之力", moveName: "Moonblast", type: "fairy" },
-      { id: "shadow-ball", label: "暗影球", moveName: "Shadow Ball", type: "ghost" },
-      { id: "dazzling-gleam", label: "魔法闪耀", moveName: "Dazzling Gleam", type: "fairy" },
+      { id: 585, moveName: "Moonblast", type: "fairy" },
+      { id: 247, moveName: "Shadow Ball", type: "ghost" },
+      { id: 605, moveName: "Dazzling Gleam", type: "fairy" },
     ],
     extraMoves: [
-      { id: "protect", label: "守住", moveName: "Protect", type: "normal" },
-      { id: "thunderbolt", label: "十万伏特", moveName: "Thunderbolt", type: "electric" },
+      { id: 182, moveName: "Protect", type: "normal" },
+      { id: 85, moveName: "Thunderbolt", type: "electric" },
     ],
   },
 ]
 
 const DEFENDERS: DefenderEntry[] = [
-  { id: "incineroar", label: "咆哮虎", species: "Incineroar", types: ["fire", "dark"] },
-  { id: "amoonguss", label: "败露球菇", species: "Amoonguss", types: ["grass", "poison"] },
-  { id: "rillaboom", label: "轰擂金刚猩", species: "Rillaboom", types: ["grass"] },
+  { id: 727, species: "Incineroar", types: ["fire", "dark"] },
+  { id: 591, species: "Amoonguss", types: ["grass", "poison"] },
+  { id: 812, species: "Rillaboom", types: ["grass"] },
 ]
 
 const DEFAULT_MATCHUP = {
-  attackerId: "garchomp",
-  defenderId: "incineroar",
+  attackerId: 445,
+  defenderId: 727,
 } as const
 
-function statLabels(category: MoveCategory) {
+function statLabels(category: MoveCategory, locale: SupportedLocale) {
+  const messages = localeMessages[locale]
   return category === "physical"
-    ? { offenseStatLabel: "物攻" as const, defenseStatLabel: "物防" as const }
-    : { offenseStatLabel: "特攻" as const, defenseStatLabel: "特防" as const }
+    ? {
+        offenseStatLabel: messages["stat.attack"],
+        defenseStatLabel: messages["stat.defense"],
+      }
+    : {
+        offenseStatLabel: messages["stat.specialAttack"],
+        defenseStatLabel: messages["stat.specialDefense"],
+      }
 }
 
 function buildAttackerStats(category: MoveCategory) {
@@ -149,47 +152,68 @@ function buildAttackerItems(category: MoveCategory) {
   return [...buildCoreCatalogOptions(category), ...buildTypeBoostCatalogOptions()]
 }
 
-function findAttacker(id: string): AttackerEntry | undefined {
+function findAttacker(id: BattlePokemonId): AttackerEntry | undefined {
   return ATTACKERS.find((a) => a.id === id)
 }
 
-function findDefender(id: string): DefenderEntry | undefined {
+function findDefender(id: BattlePokemonId): DefenderEntry | undefined {
   return DEFENDERS.find((d) => d.id === id)
 }
 
-export function listAttackers(): SpeciesOption[] {
-  return ATTACKERS.map(({ id, label, species, types }) => ({ id, label, species, types }))
+async function localizedSpeciesOption(
+  entry: AttackerEntry | DefenderEntry,
+  locale: SupportedLocale,
+): Promise<SpeciesOption> {
+  const resource = await getResource("pokemon", entry.id, locale)
+  return { id: resource.battlePokemonId, label: resource.name, species: entry.species, types: entry.types }
 }
 
-export function listDefenders(): SpeciesOption[] {
-  return DEFENDERS.map(({ id, label, species, types }) => ({ id, label, species, types }))
+export async function listAttackers(locale: SupportedLocale): Promise<SpeciesOption[]> {
+  return Promise.all(ATTACKERS.map((entry) => localizedSpeciesOption(entry, locale)))
+}
+
+export async function listDefenders(locale: SupportedLocale): Promise<SpeciesOption[]> {
+  return Promise.all(DEFENDERS.map((entry) => localizedSpeciesOption(entry, locale)))
 }
 
 export function getDefaultMatchupIds() {
   return { ...DEFAULT_MATCHUP }
 }
 
-export function getCatalog(attackerId: string, defenderId: string): MatchupCatalog {
+export async function getCatalog(
+  attackerId: BattlePokemonId,
+  defenderId: BattlePokemonId,
+  locale: SupportedLocale,
+): Promise<MatchupCatalog> {
   const attacker = findAttacker(attackerId) ?? findAttacker(DEFAULT_MATCHUP.attackerId)!
   const defender = findDefender(defenderId) ?? findDefender(DEFAULT_MATCHUP.defenderId)!
+  const [attackerResource, defenderResource] = await Promise.all([
+    getResource("pokemon", attacker.id, locale),
+    getResource("pokemon", defender.id, locale),
+  ])
 
   const moveEntries = [...attacker.moves, ...(attacker.extraMoves ?? [])]
-  const moves: CatalogMoveOption[] = moveEntries.map((m) => ({
-    id: m.id,
-    label: m.label,
-    summary: "",
-    moveName: m.moveName,
-    type: m.type,
-  }))
+  const moves: CatalogMoveOption[] = await Promise.all(
+    moveEntries.map(async (m) => {
+      const moveResource = await getResource("move", m.id, locale)
+      return {
+        id: moveResource.id,
+        label: moveResource.name,
+        summary: "",
+        moveName: m.moveName,
+        type: m.type,
+      }
+    }),
+  )
 
-  const labels = statLabels(attacker.moveCategory)
+  const labels = statLabels(attacker.moveCategory, locale)
 
   return {
     matchup: {
       attackerId: attacker.id,
       defenderId: defender.id,
-      attackerLabel: attacker.label,
-      defenderLabel: defender.label,
+      attackerLabel: attackerResource.name,
+      defenderLabel: defenderResource.name,
       attackerSpecies: attacker.species,
       defenderSpecies: defender.species,
     },
@@ -207,6 +231,3 @@ export function getCatalog(attackerId: string, defenderId: string): MatchupCatal
     defaultDefenderIds: ["hp-32"],
   }
 }
-
-/** Backward-compatible fixture export for tests */
-export const GARCHOMP_INCINEROAR_CATALOG = getCatalog("garchomp", "incineroar")

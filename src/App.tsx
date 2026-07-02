@@ -1,11 +1,24 @@
+import { useState } from "react"
+import { IntlProvider } from "react-intl"
+
 import { ScenarioExplorerPage } from "@/components/scenario-explorer/scenario-explorer-page"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { loadInitialLocale, localeMessages, saveLocale, type SupportedLocale } from "@/lib/i18n"
 
 function App() {
+  const [locale, setLocaleState] = useState<SupportedLocale>(loadInitialLocale)
+
+  function setLocale(locale: SupportedLocale) {
+    saveLocale(locale)
+    setLocaleState(locale)
+  }
+
   return (
-    <TooltipProvider delay={0}>
-      <ScenarioExplorerPage />
-    </TooltipProvider>
+    <IntlProvider locale={locale} messages={localeMessages[locale]}>
+      <TooltipProvider delay={0}>
+        <ScenarioExplorerPage locale={locale} onLocaleChange={setLocale} />
+      </TooltipProvider>
+    </IntlProvider>
   )
 }
 

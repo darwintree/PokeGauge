@@ -1,5 +1,6 @@
+import { useIntl } from "react-intl"
+
 import {
-  TYPE_LABEL_ZH,
   type PokemonType,
   typeCssVar,
   typeTextColor,
@@ -14,6 +15,7 @@ type TypeBadgeRowProps = {
 }
 
 export function TypeBadge({ type }: TypeBadgeProps) {
+  const intl = useIntl()
   return (
     <span
       className="inline-flex items-center rounded px-1 py-px text-[10px] font-medium leading-none"
@@ -22,7 +24,7 @@ export function TypeBadge({ type }: TypeBadgeProps) {
         color: typeTextColor(type),
       }}
     >
-      {TYPE_LABEL_ZH[type]}
+      {intl.formatMessage({ id: `type.${type}` })}
     </span>
   )
 }
