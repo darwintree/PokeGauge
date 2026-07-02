@@ -24,13 +24,10 @@ const STAT_NAMES: Record<StatNameStrategy, Record<StatKey, string>> = {
   },
 }
 
-export const STAT_NAME_STRATEGY_OPTIONS: {
-  value: StatNameStrategy
-  label: string
-}[] = [
-  { value: "habcds", label: "HABCDS" },
-  { value: "english", label: "HP, Atk, Def…" },
-  { value: "chinese", label: "HP，攻击，防御…" },
+export const STAT_NAME_STRATEGY_OPTIONS: StatNameStrategy[] = [
+  "habcds",
+  "english",
+  "chinese",
 ]
 
 export function statDisplayName(strategy: StatNameStrategy, statKey: StatKey): string {
