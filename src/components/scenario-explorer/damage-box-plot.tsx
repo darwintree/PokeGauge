@@ -1,5 +1,7 @@
 /** Box = normal 16 rolls; whiskers = crit range (PRD visualization contract) */
 
+import { useIntl } from "react-intl"
+
 import { TypeBadge } from "@/components/pokemon/type-badge"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -58,12 +60,12 @@ function lethalTone(row: ScenarioRow): Tone {
 }
 
 /** OHKO label: percent form when normal-roll chance is known, else a crit-only fallback. */
-function ohkoLabel(row: ScenarioRow, peak: number): string | null {
+function ohkoLabel(row: ScenarioRow, peak: number, critOnlyLabel: string): string | null {
   if (row.ohkoChance != null) {
     const pct = row.ohkoChance % 1 === 0 ? row.ohkoChance : row.ohkoChance.toFixed(1)
     return `${pct}% OHKO`
   }
-  return peak >= 100 ? "仅暴击 OHKO" : null
+  return peak >= 100 ? critOnlyLabel : null
 }
 
 const TONE_CLASS = {
@@ -145,11 +147,16 @@ export function DamageBoxPlot({
   showMove = true,
   isRangeEnvelope = false,
 }: DamageBoxPlotProps) {
+  const intl = useIntl()
   const tone = lethalTone(row)
   const offenseTier = isRangeEnvelope ? null : offenseStatTier(attackerStat.id)
   const defenseTier = defenderBulkTier(defender.id)
   const peak = Math.max(row.maxPercent, row.critMaxPercent)
-  const ohko = ohkoLabel(row, peak)
+  const ohko = ohkoLabel(
+    row,
+    peak,
+    intl.formatMessage({ id: "damage.critOnlyOhko" }),
+  )
   const box = pctSpan(row.minPercent, row.maxPercent)
   const crit = pctSpan(row.critMinPercent, row.critMaxPercent)
   const bridge =
@@ -162,7 +169,7 @@ export function DamageBoxPlot({
       <div className="w-60 shrink-0 overflow-hidden rounded-md border">
         {showMove && (
           <div className="flex items-center gap-1.5 px-3 py-1.5">
-            <RowLabel>招式</RowLabel>
+            <RowLabel>{intl.formatMessage({ id: "damage.row.move" })}</RowLabel>
             <TypeBadge type={move.type} />
             <span className="text-xs">{move.label}</span>
           </div>
@@ -170,7 +177,7 @@ export function DamageBoxPlot({
         {showMove && <Separator />}
         <div className="px-3 py-1.5">
           <div className="flex items-center gap-1.5">
-            <RowLabel>攻击</RowLabel>
+            <RowLabel>{intl.formatMessage({ id: "damage.row.attack" })}</RowLabel>
             {offenseTier ? (
               <ResultTierChip tier={offenseTier} className="text-xs font-medium leading-snug">
                 <ResultStatLabel label={attackerStat.label} actual={attackerStat.actual} />
@@ -188,20 +195,22 @@ export function DamageBoxPlot({
                   className="size-4 object-contain"
                 />
                 {itemHasNoBoostForMove(attackerItem.id, move.type) && (
-                  <span className="text-muted-foreground text-[10px]">无加成</span>
+                  <span className="text-muted-foreground text-[10px]">
+                    {intl.formatMessage({ id: "damage.noBoost" })}
+                  </span>
                 )}
               </>
             )}
           </div>
           {isRangeEnvelope && (
             <div className="text-muted-foreground mt-1 pl-10 text-[10px]">
-              实数值区间 × 16 roll
+              {intl.formatMessage({ id: "damage.rangeEnvelope" })}
             </div>
           )}
         </div>
         <Separator />
         <div className="flex items-center gap-1.5 px-3 py-1.5">
-          <RowLabel>防御</RowLabel>
+          <RowLabel>{intl.formatMessage({ id: "damage.row.defense" })}</RowLabel>
           {defenseTier ? (
             <ResultTierChip tier={defenseTier} className="text-xs leading-snug">
               <ResultStatLabel label={defender.label} actual={defender.actual} />
@@ -276,17 +285,17 @@ export function DamageBoxPlot({
           className="flex-col items-stretch gap-1.5 max-w-[18rem] px-3 py-2"
         >
           <HoverRow marker={<span className={cn("inline-block size-2 rounded-sm", TONE_DOT_CLASS[tone])} />}>
-            <HoverLabel>通常</HoverLabel>
+            <HoverLabel>{intl.formatMessage({ id: "damage.normal" })}</HoverLabel>
             <span className="tabular-nums">
               {row.minPercent.toFixed(1)}% ~ {row.maxPercent.toFixed(1)}%
             </span>
           </HoverRow>
           <HoverRow marker={<span className="inline-block h-3 w-0.5 bg-foreground" />}>
-            <HoverLabel>平均</HoverLabel>
+            <HoverLabel>{intl.formatMessage({ id: "damage.average" })}</HoverLabel>
             <span className="tabular-nums">{row.avgPercent.toFixed(1)}%</span>
           </HoverRow>
           <HoverRow marker={<span className="inline-block size-2 rounded-full border-2 border-violet-600 bg-transparent" />}>
-            <HoverLabel>暴击</HoverLabel>
+            <HoverLabel>{intl.formatMessage({ id: "damage.critical" })}</HoverLabel>
             <span className="tabular-nums">
               {row.critMinPercent.toFixed(1)}% ~ {row.critMaxPercent.toFixed(1)}%
             </span>
@@ -350,22 +359,23 @@ export function DamageAxis() {
 }
 
 export function BoxPlotLegend() {
+  const intl = useIntl()
   return (
     <div className="text-muted-foreground mt-10 flex flex-wrap gap-4 text-xs">
       <span className="inline-flex items-center gap-1.5">
         <span className="inline-block h-3 w-6 rounded-sm border border-orange-400/60 bg-orange-400/50" />
-        通常伤害（16 roll 最低 ~ 最高）
+        {intl.formatMessage({ id: "damage.legend.normal" })}
       </span>
       <span className="inline-flex items-center gap-1.5">
         <span className="inline-flex items-center gap-0.5">
           <span className="inline-block h-px w-4 bg-violet-600/70" />
           <span className="inline-block size-2 rounded-full border-2 border-violet-600 bg-background" />
         </span>
-        暴击伤害（须须端点）
+        {intl.formatMessage({ id: "damage.legend.critical" })}
       </span>
       <span className="inline-flex items-center gap-1.5">
         <span className="inline-block h-3 w-0.5 bg-foreground" />
-        平均伤害
+        {intl.formatMessage({ id: "damage.legend.average" })}
       </span>
     </div>
   )

@@ -258,8 +258,8 @@ export function StatNameStrategySelect({
         className="border-input bg-background h-7 max-w-[9.5rem] flex-1 rounded-md border px-2 text-[11px]"
       >
         {STAT_NAME_STRATEGY_OPTIONS.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
+          <option key={option} value={option}>
+            {intl.formatMessage({ id: `stat.strategy.${option}` })}
           </option>
         ))}
       </select>
