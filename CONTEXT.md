@@ -88,6 +88,18 @@ _Avoid_: Offensive spread
 宝可梦或招式的属性（18 种标准属性）。用于识别展示（如 species typing badge），不单独表示克制倍率。
 _Avoid_: Element, 元素
 
+**Battle Pokémon identity**:
+用于唯一确定一只可参战宝可梦之**种族值与属性**的标识；当不同形态会改变这些战斗数据时，必须区分到该形态，而不能只停留在 species。
+_Avoid_: Species label, localized name, display label
+
+**Upstream resource identity**:
+项目内部用于引用 PokeAPI 上游实体的稳定标识；采用对应资源的 **numeric id**，显示文案再通过该资源的本地化字段派生，且不把 slug 作为持久化主键。
+_Avoid_: Localized label as id, slug as primary key, dual primary key
+
+**Supported locale**:
+首版产品明确支持的显示语言集合；当前为 **zh-hans、zh-hant、en、ja**，运行时直接从对应上游资源的本地化名称中取值。
+_Avoid_: Arbitrary locale support, fallback locale chain
+
 **Held item**（携带道具）:
 攻击方 build configuration 在道具 track 上的一项取值；映射到伤害计算中的 `item` 修饰。道具 track 为 **multi-select track**（多选以对比多个配装方案）；**每一 scenario 行仅生效一件**（效果互斥，不可叠加）。含 explicit no-item。
 _Avoid_: Item, 装备
