@@ -2,17 +2,22 @@
 
 Pokémon battle damage calculator.
 
-## Map
+## Project map
 
 | Topic | Where |
 | --- | --- |
 | App entry | [`src/main.tsx`](src/main.tsx) · [`src/App.tsx`](src/App.tsx) |
+| Scenario Explorer | [`src/components/scenario-explorer/`](src/components/scenario-explorer/) |
 | Theme / Tailwind | [`src/index.css`](src/index.css) |
 | shadcn config | [`components.json`](components.json) |
-| UI components | [`src/components/ui/`](src/components/ui/) |
+| UI primitives | [`src/components/ui/`](src/components/ui/) |
 | Utilities | [`src/lib/`](src/lib/) |
+| i18n | UI messages and locale selection live in [`src/lib/i18n/`](src/lib/i18n/); Pokémon and move names resolve through [`src/lib/resources/`](src/lib/resources/) with the current `SupportedLocale`. |
 | Design spec (light) | [`design.md`](design.md) |
 | Design spec (dark) | [`design.dark.md`](design.dark.md) |
+| Agent issue tracker | [`docs/agents/issue-tracker.md`](docs/agents/issue-tracker.md) |
+| Agent triage labels | [`docs/agents/triage-labels.md`](docs/agents/triage-labels.md) |
+| Domain docs | [`CONTEXT.md`](CONTEXT.md) · [`docs/adr/`](docs/adr/) · [`docs/agents/domain.md`](docs/agents/domain.md) |
 | shadcn docs | https://ui.shadcn.com/docs |
 | Geist upstream | https://vercel.com/design.md · https://vercel.com/design.dark.md |
 
@@ -26,60 +31,35 @@ pnpm dlx shadcn@latest add <component>
 
 Package manager: **pnpm** (`packageManager` in [`package.json`](package.json)).
 
-## Conventions
+## Implementation rules
 
-- UI follows **Geist** via `design.md` / `design.dark.md`; shadcn tokens in `src/index.css` are the runtime layer — align them with the spec when theming.
-- Pokémon domain tokens (types, effectiveness, HP) live separately from Geist/shadcn semantics.
+- UI follows **Geist** via `design.md` / `design.dark.md`; shadcn tokens in `src/index.css` are the runtime layer, so align theme changes with the specs.
+- Product UI is **shadcn-first**: use or extend primitives in `src/components/ui/`; install missing primitives with the command above.
+- shadcn's `ui` alias is `@/components/ui`, and `@` resolves to `src`; generated primitives should land in `src/components/ui/`.
+- Keep Pokémon domain tokens separate from Geist/shadcn semantics: types, effectiveness, stat tiers, HP, and damage visuals are domain UI.
+- Keep custom domain visualization custom when no shadcn primitive matches, especially damage plots, axes, legends, type colors, effectiveness colors, and HP/status displays.
+- When editing existing controls, extend the shadcn primitive through variants, `className`, or composition before introducing parallel handcrafted markup.
 
-## shadcn UI
-
-### 现状
-
-- **Token 层**：`src/index.css` 已接入 shadcn CSS variables + Geist；`components.json` 配置为 `base-nova`。
-- **组件层**：[`src/components/ui/`](src/components/ui/) 已安装 Card、Combobox、ToggleGroup、Tabs、Slider、Label、Badge、Empty 等；[`Scenario Explorer`](src/components/scenario-explorer/) 已基于这些 primitive 构建。
-- **仍保持自定义**：领域可视化（如 `DamageBoxPlot`）和 Pokémon 专用色 token，不纳入 shadcn。
-
-### 今后
-
-- **产品 UI 默认用 shadcn**：新页面或改控件时，先查 [`src/components/ui/`](src/components/ui/) 是否已有对应 primitive；没有则安装，而不是手写 `<button>` + popover / segmented markup。
-- **安装方式**：
-
-```bash
-pnpm dlx shadcn@latest add <component>
-```
-
-生成文件应在 **`src/components/ui/`**。若 CLI 写到仓库根目录的 `@/components/ui/`，移入 `src/components/ui/` 后再用。
-
-- **边界**：
-
-| 用 shadcn | 保持自定义 |
-| --- | --- |
-| 布局（Card、Separator） | 伤害箱线图、坐标轴、图例 |
-| 表单与选择（Combobox、ToggleGroup、Tabs、Slider、Label） | 属性 / 克制 / HP 等领域色 |
-| 反馈（Empty、Badge） | 无对应 primitive 的一次性布局 |
-
-- **已有控件需要改交互或样式时**：优先在 shadcn 组件上扩展（variant、className、composition），不要平行维护一套手写版本。
-
-## Agent skills
+## Agent workflow
 
 ### Issue tracker
 
 Issues live in `.issues/` and are managed with the **dot-issues** skill. See `docs/agents/issue-tracker.md`.
 
-**Resolve → archive before commit.** When work fully resolves an issue, update the issue body, then run `archive --id <uuid>` via dot-issues so it leaves the active queue. Do this **before** creating the git commit that lands the fix — the commit should include both the code change and the archived issue file move.
+**Resolve -> archive before commit.** When work fully resolves an issue, update the issue body, then run `archive --id <uuid>` via dot-issues so it leaves the active queue. Do this before creating the git commit that lands the fix; the commit should include both the code change and the archived issue file move.
 
 ### Implementation traces
 
 When completing an issue or executing an **AFK** task (issues labeled `ready-for-agent`), use the **implementation-with-traces** skill.
 
-- Trace only **unresolved implementation decisions** — choices the source did not state or left ambiguous. Do not trace explicit requirements or routine repo conventions.
+- Trace only unresolved implementation decisions: choices the source did not state or left ambiguous. Do not trace explicit requirements or routine repo conventions.
 - Write traces under `docs/traces/implementations/YYYY-MM-DD-slug.md`; append entries as decisions are made.
-- No unresolved decision → no trace file.
+- No unresolved decision -> no trace file.
 
 ### Triage labels
 
-Five canonical triage roles, stored as uppercase labels in dot-issues (e.g. `NEEDS-TRIAGE`). See `docs/agents/triage-labels.md`.
+Five canonical triage roles are mapped in `docs/agents/triage-labels.md`; dot-issues stores labels uppercase, such as `NEEDS-TRIAGE`.
 
 ### Domain docs
 
-Single-context — one `CONTEXT.md` at the repo root plus `docs/adr/`. See `docs/agents/domain.md`.
+Single-context repo: read `CONTEXT.md` and relevant ADRs under `docs/adr/` before domain-sensitive work. See `docs/agents/domain.md`.
