@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "1e0c7cb0-b78d-448b-817b-cc59ce4d2233"
 title: "Introduce PokeAPI-backed i18n resource identity and locale data access"
-status: "open"
+status: "closed"
 priority: "medium"
 labels: ["READY-FOR-AGENT", "FEATURE-REQUEST"]
 created_at: "2026-07-02T07:52:00Z"
-updated_at: "2026-07-02T07:52:00Z"
+updated_at: "2026-07-02T08:34:00Z"
 ---
 ## Problem Statement
 
@@ -99,3 +99,30 @@ Introduce a PokeAPI-aligned i18n foundation where Pokemon and move resources are
 - This PRD is based on the grill trace at `docs/traces/2026-07-02-pokeapi-i18n-resource-identity-grill.md`.
 - The implementation should preserve the project glossary terms **Battle Pokemon identity**, **Upstream resource identity**, and **Supported locale**.
 - The user explicitly accepted a mock-first path for the data source while deferring all caching and source-of-truth decisions.
+
+## Resolution
+
+Implemented a mock-backed PokeAPI-aligned i18n foundation:
+
+- Added `react-intl` locale state with supported locales `zh-hans`, `zh-hant`, `en`, and `ja`, browser-language initialization, and persisted manual selection.
+- Added one async resource seam in `src/lib/resources/` for single-resource lookup by numeric id and resource type (`pokemon` / `move`), returning only the current locale display string and strong resource-specific shapes.
+- Refactored Pokemon and move catalog identity to numeric upstream ids while keeping Smogon species/move names as battle data for the calc adapter.
+- Localized Pokemon and move labels through the resource seam and moved type names / major UI copy to `react-intl` messages.
+- Preserved scenario identity across locale changes by keeping selected numeric ids stable and avoiding track-state reset on locale-only catalog reloads.
+- Added behavior tests for resource lookup, locale initialization, localized catalog labels, numeric identity stability, and existing scenario pipeline behavior.
+- Recorded implementation-only decisions in `docs/traces/implementations/2026-07-02-pokeapi-i18n-resource-identity.md`.
+
+## Grill Trace Audit
+
+- [x] §1 Battle Pokemon identity is numeric and form-level capable; Landorus-Therian uses form-level id `10021`.
+- [x] §2 Upstream resource identity uses numeric ids for Pokemon and move resources.
+- [x] §3 Slugs are no longer Pokemon/move identity keys in catalog or scenario state.
+- [x] §4 Pokemon and move display names come from resource data, not local alias tables.
+- [x] §5 Runtime resource lookup returns the target locale name with no fallback chain.
+- [x] §6 Supported locales are `zh-hans`, `zh-hant`, `en`, and `ja`.
+- [x] §7 UI copy uses `react-intl`; Pokemon/move names stay in the data/resource layer.
+- [x] §8 Locale truth is singular, initialized from persisted choice or browser language.
+- [x] §9 Type names remain product UI strings in `react-intl`, not PokeAPI resources.
+- [x] §10 Resource data is mock-backed; cache/source-of-truth decisions remain deferred.
+- [x] §11 Resource access uses one async interface routed by resource type.
+- [x] §12 The first resource interface supports single lookup by numeric id and returns only the current locale display string.

@@ -19,8 +19,8 @@ export type DefenderStatRanges = {
 }
 
 export type TrackState = {
-  visibleMoveIds: string[]
-  moveIds: string[]
+  visibleMoveIds: number[]
+  moveIds: number[]
   statMode: StatSelectMode
   offenseTemplateIds: string[]
   offenseTemporaryTemplates: StatValueTemplate[]
@@ -40,7 +40,7 @@ export type TrackState = {
 }
 
 export type ScenarioRow = {
-  moveId: string
+  moveId: number
   attackerStatId: string
   attackerItemId: string
   defenderId: string

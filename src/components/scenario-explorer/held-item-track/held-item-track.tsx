@@ -49,7 +49,7 @@ function ItemIcon({ id }: { id: string }) {
 }
 
 export function HeldItemTrack({ catalog, selectedIds, onChange }: HeldItemTrackProps) {
-  const attackerId = catalog.matchup.attackerId
+  const attackerId = String(catalog.matchup.attackerId)
   const [addedBoostIds, setAddedBoostIds] = useState<string[]>(() =>
     loadAddedBoostIds(attackerId),
   )

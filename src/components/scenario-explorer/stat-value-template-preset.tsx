@@ -1,4 +1,5 @@
 import { useId, useState } from "react"
+import { useIntl } from "react-intl"
 
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
@@ -71,16 +72,19 @@ function templateActions({
   onDelete,
   onPersist,
   onCycleAllocation,
+  labels,
 }: Pick<
   TemplateCardProps,
   "template" | "allocationCount" | "onDelete" | "onPersist" | "onCycleAllocation"
->): TrackOptionAction[] {
+> & {
+  labels: { delete: string; persist: string; cycleAllocation: string }
+}): TrackOptionAction[] {
   const actions: TrackOptionAction[] = []
 
   if (template.kind === "user" && onDelete) {
     actions.push({
       kind: "remove",
-      label: "删除模版",
+      label: labels.delete,
       position: "top-right",
       onClick: onDelete,
     })
@@ -89,7 +93,7 @@ function templateActions({
   if (template.kind === "temporary" && onPersist) {
     actions.push({
       kind: "persist",
-      label: "持久化模版",
+      label: labels.persist,
       position: "top-right",
       alwaysVisible: true,
       onClick: onPersist,
@@ -99,7 +103,7 @@ function templateActions({
   if (allocationCount > 1) {
     actions.push({
       kind: "cycleAllocation",
-      label: "切换能力点数分配",
+      label: labels.cycleAllocation,
       position: "bottom-right",
       alwaysVisible: true,
       onClick: onCycleAllocation,
@@ -123,6 +127,7 @@ function TemplateCard({
   onPersist,
   tier,
 }: TemplateCardProps) {
+  const intl = useIntl()
   return (
     <TrackOption
       layout="text"
@@ -136,6 +141,11 @@ function TemplateCard({
         onDelete,
         onPersist,
         onCycleAllocation,
+        labels: {
+          delete: intl.formatMessage({ id: "template.delete" }),
+          persist: intl.formatMessage({ id: "template.persist" }),
+          cycleAllocation: intl.formatMessage({ id: "template.cycleAllocation" }),
+        },
       })}
       onToggle={onToggle}
     >
@@ -159,8 +169,9 @@ export function StatValueTemplatePreset({
   onPersist,
   adding = false,
   onAddClick,
-  addAriaLabel = "添加模版",
+  addAriaLabel,
 }: TemplatePresetProps) {
+  const intl = useIntl()
   return (
     <TrackOptionGroup className="w-72 overflow-visible">
       {templates.map((template) => {
@@ -196,7 +207,7 @@ export function StatValueTemplatePreset({
       {onAddClick && (
         <TrackOptionAdd
           layout="text"
-          ariaLabel={addAriaLabel}
+          ariaLabel={addAriaLabel ?? intl.formatMessage({ id: "template.add" })}
           pressed={adding}
           onClick={onAddClick}
         />
@@ -208,18 +219,19 @@ export function StatValueTemplatePreset({
 export function ShowActualValuesSwitch({
   checked,
   onCheckedChange,
-  label = "显示实数值",
+  label,
 }: {
   checked: boolean
   onCheckedChange: (checked: boolean) => void
   label?: string
 }) {
   const id = useId()
+  const intl = useIntl()
   return (
     <div className="flex items-center gap-2">
       <Switch id={id} size="sm" checked={checked} onCheckedChange={onCheckedChange} />
       <Label htmlFor={id} className="cursor-pointer text-[11px] font-normal">
-        {label}
+        {label ?? intl.formatMessage({ id: "stat.showActual" })}
       </Label>
     </div>
   )
@@ -233,10 +245,11 @@ export function StatNameStrategySelect({
   onChange: (value: StatNameStrategy) => void
 }) {
   const id = useId()
+  const intl = useIntl()
   return (
     <div className="flex items-center gap-2">
       <Label htmlFor={id} className="text-muted-foreground text-[11px] font-normal">
-        Stat 名展示
+        {intl.formatMessage({ id: "stat.display" })}
       </Label>
       <select
         id={id}
@@ -268,13 +281,14 @@ function ConfirmCancelActions({
   onCancel: () => void
   onConfirm: () => void
 }) {
+  const intl = useIntl()
   return (
     <div className="flex justify-end gap-1.5">
       <Button type="button" variant="ghost" size="sm" className="h-7 text-xs" onClick={onCancel}>
-        取消
+        {intl.formatMessage({ id: "template.cancel" })}
       </Button>
       <Button type="button" size="sm" className="h-7 text-xs" onClick={onConfirm}>
-        确认
+        {intl.formatMessage({ id: "template.confirm" })}
       </Button>
     </div>
   )
@@ -291,10 +305,13 @@ export function AddOffenseTemplatePanel({
   onCancel,
 }: AddOffenseTemplateProps) {
   const [range, setRange] = useStateRange(defaultAxisPoint(bounds))
+  const intl = useIntl()
 
   return (
     <div className="space-y-2 rounded-lg border bg-muted/20 p-2">
-      <Label className="text-muted-foreground text-[11px]">添加 {statLabel} 模版</Label>
+      <Label className="text-muted-foreground text-[11px]">
+        {intl.formatMessage({ id: "template.add" })} {statLabel}
+      </Label>
       <StatRangeAxis
         statLabel={statLabel}
         bounds={bounds}
@@ -324,10 +341,13 @@ export function AddDefenseTemplatePanel({
 }: AddDefenseTemplateProps) {
   const [hpRange, setHpRange] = useStateRange(defaultAxisPoint(hpBounds))
   const [defRange, setDefRange] = useStateRange(defaultAxisPoint(defBounds))
+  const intl = useIntl()
 
   return (
     <div className="space-y-2 rounded-lg border bg-muted/20 p-2">
-      <Label className="text-muted-foreground text-[11px]">添加防守模版</Label>
+      <Label className="text-muted-foreground text-[11px]">
+        {intl.formatMessage({ id: "template.addDefender" })}
+      </Label>
       <StatRangeAxis
         statLabel="HP"
         bounds={hpBounds}
