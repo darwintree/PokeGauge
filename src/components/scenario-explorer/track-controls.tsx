@@ -1,11 +1,13 @@
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import type { MatchupCatalog } from "@/lib/catalog"
+import type { MatchupCatalog, MoveCategory } from "@/lib/catalog"
 import type { StatSelectMode } from "@/lib/scenario-pipeline"
+import { cn } from "@/lib/utils"
 
 import { MoveMultiSelect } from "./move-multi-select"
 import { HeldItemTrack } from "./held-item-track/held-item-track"
@@ -22,15 +24,40 @@ import type { ScenarioState } from "./use-scenario-state"
 type TrackControlsProps = {
   catalog: MatchupCatalog
   state: ScenarioState
+  onMoveCategoryChange: (category: MoveCategory) => void
 }
 
-export function TrackControls({ catalog, state }: TrackControlsProps) {
+export function TrackControls({ catalog, state, onMoveCategoryChange }: TrackControlsProps) {
   const intl = useIntl()
   const { trackState } = state
   const defStatLabel = catalog.defenseStatLabel
 
   return (
     <div className="space-y-3">
+      <div className="flex items-center justify-between gap-2">
+        <Label className="text-muted-foreground text-xs">
+          <FormattedMessage id="track.moveSide" />
+        </Label>
+        <div className="grid grid-cols-2 rounded-lg border bg-background p-0.5">
+          {(["physical", "special"] as const).map((category) => {
+            const active = catalog.moveCategory === category
+            return (
+              <Button
+                key={category}
+                type="button"
+                variant="ghost"
+                size="sm"
+                aria-pressed={active}
+                className={cn("h-6 rounded-md px-2 text-xs", active && "bg-muted")}
+                onClick={() => onMoveCategoryChange(category)}
+              >
+                <FormattedMessage id={`track.moveSide.${category}`} />
+              </Button>
+            )
+          })}
+        </div>
+      </div>
+
       <MoveMultiSelect
         label={intl.formatMessage({ id: "track.moves" })}
         options={catalog.moves}

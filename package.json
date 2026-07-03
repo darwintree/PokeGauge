@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "generate:pokeapi": "tsx scripts/generate-pokeapi-resources.ts",
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",

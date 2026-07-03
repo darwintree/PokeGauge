@@ -1,6 +1,7 @@
 export {
   getCatalog,
   getDefaultMatchupIds,
+  getDefaultMoveCategory,
   listAttackers,
   listDefenders,
 } from "./registry"

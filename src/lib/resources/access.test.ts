@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { getResource, ResourceLookupError } from "@/lib/resources"
+import { getResource, getResourceDiagnostics, ResourceLookupError } from "@/lib/resources"
 
 describe("localized resource access", () => {
   it("looks up Pokemon and move resources by numeric upstream id", async () => {
@@ -12,11 +12,23 @@ describe("localized resource access", () => {
       id: 445,
       battlePokemonId: 445,
       name: "Garchomp",
+      calcSpeciesName: "Garchomp",
+      types: ["dragon", "ground"],
+      baseStats: {
+        hp: 108,
+        atk: 130,
+      },
     })
     expect(move).toMatchObject({
       resourceType: "move",
       id: 89,
       name: "Earthquake",
+      calcMoveName: "Earthquake",
+      type: "ground",
+      category: "physical",
+      power: 100,
+      accuracy: 100,
+      damageKind: "damage",
     })
   })
 
@@ -36,5 +48,15 @@ describe("localized resource access", () => {
     await expect(getResource("move", 999_999, "en")).rejects.toBeInstanceOf(
       ResourceLookupError,
     )
+  })
+
+  it("exposes generation diagnostics for supported-locale and battle-identity checks", () => {
+    const diagnostics = getResourceDiagnostics()
+
+    expect(diagnostics.source).toBe("pokeapi")
+    expect(diagnostics.pokemonIds).toContain(445)
+    expect(diagnostics.moveIds).toContain(89)
+    expect(diagnostics.missingLocaleNames).toEqual([])
+    expect(diagnostics.unsupportedBattleIdentities).toEqual([])
   })
 })

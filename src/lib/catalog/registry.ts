@@ -1,7 +1,13 @@
 import { buildCoreCatalogOptions, buildTypeBoostCatalogOptions } from "@/lib/held-item"
 import { localeMessages, type SupportedLocale } from "@/lib/i18n"
-import type { PokemonType } from "@/lib/pokemon/types"
-import { getResource, type BattlePokemonId, type UpstreamResourceId } from "@/lib/resources"
+import {
+  getResource,
+  listResources,
+  type BattlePokemonId,
+  type LocalizedMoveResource,
+  type LocalizedPokemonResource,
+  type UpstreamResourceId,
+} from "@/lib/resources"
 import {
   DEFENSE_PRESET_LABELS,
   OFFENSE_PRESET_LABELS,
@@ -15,16 +21,17 @@ import type {
   SpeciesOption,
 } from "./types"
 
+type FixedPowerMoveResource = LocalizedMoveResource & {
+  category: MoveCategory
+  power: number
+}
+
 type MovePickEntry = {
   id: UpstreamResourceId
-  moveName: string
-  type: PokemonType
 }
 
 type AttackerEntry = {
   id: BattlePokemonId
-  species: string
-  types: PokemonType[]
   moveCategory: MoveCategory
   /** Usage-ranked top-N — default selected on load */
   moves: MovePickEntry[]
@@ -32,65 +39,44 @@ type AttackerEntry = {
   extraMoves?: MovePickEntry[]
 }
 
-type DefenderEntry = {
-  id: BattlePokemonId
-  species: string
-  types: PokemonType[]
-}
-
 /** Hardcoded VGC doubles usage-ranked move picks — Champions context, v1 */
 const ATTACKERS: AttackerEntry[] = [
   {
     id: 445,
-    species: "Garchomp",
-    types: ["dragon", "ground"],
     moveCategory: "physical",
     moves: [
-      { id: 89, moveName: "Earthquake", type: "ground" },
-      { id: 337, moveName: "Dragon Claw", type: "dragon" },
-      { id: 444, moveName: "Stone Edge", type: "rock" },
+      { id: 89 },
+      { id: 337 },
+      { id: 444 },
     ],
     extraMoves: [
-      { id: 182, moveName: "Protect", type: "normal" },
-      { id: 424, moveName: "Fire Fang", type: "fire" },
+      { id: 424 },
     ],
   },
   {
     id: 10021,
-    species: "Landorus-Therian",
-    types: ["ground", "flying"],
     moveCategory: "physical",
     moves: [
-      { id: 89, moveName: "Earthquake", type: "ground" },
-      { id: 157, moveName: "Rock Slide", type: "rock" },
-      { id: 707, moveName: "Stomping Tantrum", type: "ground" },
+      { id: 89 },
+      { id: 157 },
+      { id: 707 },
     ],
     extraMoves: [
-      { id: 182, moveName: "Protect", type: "normal" },
-      { id: 282, moveName: "Knock Off", type: "dark" },
+      { id: 282 },
     ],
   },
   {
     id: 987,
-    species: "Flutter Mane",
-    types: ["ghost", "fairy"],
     moveCategory: "special",
     moves: [
-      { id: 585, moveName: "Moonblast", type: "fairy" },
-      { id: 247, moveName: "Shadow Ball", type: "ghost" },
-      { id: 605, moveName: "Dazzling Gleam", type: "fairy" },
+      { id: 585 },
+      { id: 247 },
+      { id: 605 },
     ],
     extraMoves: [
-      { id: 182, moveName: "Protect", type: "normal" },
-      { id: 85, moveName: "Thunderbolt", type: "electric" },
+      { id: 85 },
     ],
   },
-]
-
-const DEFENDERS: DefenderEntry[] = [
-  { id: 727, species: "Incineroar", types: ["fire", "dark"] },
-  { id: 591, species: "Amoonguss", types: ["grass", "poison"] },
-  { id: 812, species: "Rillaboom", types: ["grass"] },
 ]
 
 const DEFAULT_MATCHUP = {
@@ -156,76 +142,110 @@ function findAttacker(id: BattlePokemonId): AttackerEntry | undefined {
   return ATTACKERS.find((a) => a.id === id)
 }
 
-function findDefender(id: BattlePokemonId): DefenderEntry | undefined {
-  return DEFENDERS.find((d) => d.id === id)
-}
-
-async function localizedSpeciesOption(
-  entry: AttackerEntry | DefenderEntry,
-  locale: SupportedLocale,
-): Promise<SpeciesOption> {
-  const resource = await getResource("pokemon", entry.id, locale)
-  return { id: resource.battlePokemonId, label: resource.name, species: entry.species, types: entry.types }
+function localizedSpeciesOption(resource: LocalizedPokemonResource): SpeciesOption {
+  return {
+    id: resource.battlePokemonId,
+    label: resource.name,
+    species: resource.calcSpeciesName,
+    types: resource.types,
+  }
 }
 
 export async function listAttackers(locale: SupportedLocale): Promise<SpeciesOption[]> {
-  return Promise.all(ATTACKERS.map((entry) => localizedSpeciesOption(entry, locale)))
+  const pokemon = await listResources("pokemon", locale)
+  return pokemon.map(localizedSpeciesOption).sort((a, b) => a.label.localeCompare(b.label))
 }
 
 export async function listDefenders(locale: SupportedLocale): Promise<SpeciesOption[]> {
-  return Promise.all(DEFENDERS.map((entry) => localizedSpeciesOption(entry, locale)))
+  const pokemon = await listResources("pokemon", locale)
+  return pokemon.map(localizedSpeciesOption).sort((a, b) => a.label.localeCompare(b.label))
 }
 
 export function getDefaultMatchupIds() {
   return { ...DEFAULT_MATCHUP }
 }
 
+export function getDefaultMoveCategory(attackerId: BattlePokemonId): MoveCategory {
+  return findAttacker(attackerId)?.moveCategory ?? "physical"
+}
+
+function isFixedPowerMoveResource(
+  moveResource: LocalizedMoveResource,
+  category: MoveCategory,
+): moveResource is FixedPowerMoveResource {
+  return moveResource.category === category && moveResource.power !== null && moveResource.power > 0
+}
+
+function fixedPowerMoveOption(moveResource: FixedPowerMoveResource): CatalogMoveOption {
+  return {
+    id: moveResource.id,
+    label: moveResource.name,
+    summary: [moveResource.power, moveResource.accuracy ?? "-"].join(" / "),
+    moveName: moveResource.calcMoveName,
+    type: moveResource.type,
+    category: moveResource.category,
+    power: moveResource.power,
+    accuracy: moveResource.accuracy,
+  }
+}
+
+function compareMoveSearchOrder(a: CatalogMoveOption, b: CatalogMoveOption): number {
+  const byPower = b.power - a.power
+  if (byPower !== 0) return byPower
+  const byMoveName = a.moveName.localeCompare(b.moveName)
+  if (byMoveName !== 0) return byMoveName
+  return a.id - b.id
+}
+
+function fallbackDefaultMoveIds(moves: CatalogMoveOption[]): UpstreamResourceId[] {
+  return moves.slice(0, 6).map((move) => move.id)
+}
+
 export async function getCatalog(
   attackerId: BattlePokemonId,
   defenderId: BattlePokemonId,
   locale: SupportedLocale,
+  moveCategory?: MoveCategory,
 ): Promise<MatchupCatalog> {
-  const attacker = findAttacker(attackerId) ?? findAttacker(DEFAULT_MATCHUP.attackerId)!
-  const defender = findDefender(defenderId) ?? findDefender(DEFAULT_MATCHUP.defenderId)!
+  const attackerDefaults = findAttacker(attackerId)
+  const activeMoveCategory = moveCategory ?? attackerDefaults?.moveCategory ?? "physical"
   const [attackerResource, defenderResource] = await Promise.all([
-    getResource("pokemon", attacker.id, locale),
-    getResource("pokemon", defender.id, locale),
+    getResource("pokemon", attackerId, locale),
+    getResource("pokemon", defenderId, locale),
   ])
 
-  const moveEntries = [...attacker.moves, ...(attacker.extraMoves ?? [])]
-  const moves: CatalogMoveOption[] = await Promise.all(
-    moveEntries.map(async (m) => {
-      const moveResource = await getResource("move", m.id, locale)
-      return {
-        id: moveResource.id,
-        label: moveResource.name,
-        summary: "",
-        moveName: m.moveName,
-        type: m.type,
-      }
-    }),
-  )
+  const moveResources = await listResources("move", locale)
+  const moves = moveResources
+    .filter((moveResource) => isFixedPowerMoveResource(moveResource, activeMoveCategory))
+    .map(fixedPowerMoveOption)
+    .sort(compareMoveSearchOrder)
 
-  const labels = statLabels(attacker.moveCategory, locale)
+  const labels = statLabels(activeMoveCategory, locale)
+  const defaultIdsFromAttacker =
+    attackerDefaults?.moveCategory === activeMoveCategory
+      ? attackerDefaults.moves.map((m) => m.id).filter((id) => moves.some((move) => move.id === id))
+      : []
+  const defaultMoveIds =
+    defaultIdsFromAttacker.length > 0 ? defaultIdsFromAttacker : fallbackDefaultMoveIds(moves)
 
   return {
     matchup: {
-      attackerId: attacker.id,
-      defenderId: defender.id,
+      attackerId,
+      defenderId,
       attackerLabel: attackerResource.name,
       defenderLabel: defenderResource.name,
-      attackerSpecies: attacker.species,
-      defenderSpecies: defender.species,
+      attackerSpecies: attackerResource.calcSpeciesName,
+      defenderSpecies: defenderResource.calcSpeciesName,
     },
-    attackerTypes: attacker.types,
-    moveCategory: attacker.moveCategory,
+    attackerTypes: attackerResource.types,
+    moveCategory: activeMoveCategory,
     ...labels,
     moves,
-    attackerStats: buildAttackerStats(attacker.moveCategory),
-    attackerItems: buildAttackerItems(attacker.moveCategory),
-    defenderBulks: buildDefenderBulks(attacker.moveCategory),
-    /** Default selected set — top-N move pick only; extraMoves addable via + */
-    defaultMoveIds: attacker.moves.map((m) => m.id),
+    attackerStats: buildAttackerStats(activeMoveCategory),
+    attackerItems: buildAttackerItems(activeMoveCategory),
+    defenderBulks: buildDefenderBulks(activeMoveCategory),
+    /** Default selected set — Move pick only; remaining fixed-power moves addable via search. */
+    defaultMoveIds,
     defaultAttackerStatIds: ["neutral-max", "extreme"],
     defaultAttackerItemIds: ["none"],
     defaultDefenderIds: ["hp-32"],

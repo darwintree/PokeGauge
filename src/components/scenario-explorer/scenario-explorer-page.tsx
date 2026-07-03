@@ -5,9 +5,11 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import {
   getCatalog,
   getDefaultMatchupIds,
+  getDefaultMoveCategory,
   listAttackers,
   listDefenders,
   type MatchupCatalog,
+  type MoveCategory,
   type SpeciesOption,
 } from "@/lib/catalog"
 import { SUPPORTED_LOCALES, type SupportedLocale } from "@/lib/i18n"
@@ -40,6 +42,7 @@ function ScenarioExplorerContent({
   onAttackerChange,
   onDefenderChange,
   onLocaleChange,
+  onMoveCategoryChange,
 }: LocalizedCatalogState & {
   attackerId: BattlePokemonId
   defenderId: BattlePokemonId
@@ -48,6 +51,7 @@ function ScenarioExplorerContent({
   onAttackerChange: (id: BattlePokemonId) => void
   onDefenderChange: (id: BattlePokemonId) => void
   onLocaleChange: (locale: SupportedLocale) => void
+  onMoveCategoryChange: (category: MoveCategory) => void
 }) {
   const state = useScenarioState(catalog)
 
@@ -84,7 +88,11 @@ function ScenarioExplorerContent({
               </div>
             </CardHeader>
             <CardContent>
-              <TrackControls catalog={catalog} state={state} />
+              <TrackControls
+                catalog={catalog}
+                state={state}
+                onMoveCategoryChange={onMoveCategoryChange}
+              />
             </CardContent>
           </Card>
         </aside>
@@ -119,6 +127,9 @@ export function ScenarioExplorerPage({ locale, onLocaleChange }: ScenarioExplore
   const defaults = getDefaultMatchupIds()
   const [attackerId, setAttackerId] = useState<BattlePokemonId>(defaults.attackerId)
   const [defenderId, setDefenderId] = useState<BattlePokemonId>(defaults.defenderId)
+  const [moveCategory, setMoveCategory] = useState<MoveCategory>(() =>
+    getDefaultMoveCategory(defaults.attackerId),
+  )
   const [localized, setLocalized] = useState<LocalizedCatalogState | null>(null)
 
   useEffect(() => {
@@ -126,7 +137,7 @@ export function ScenarioExplorerPage({ locale, onLocaleChange }: ScenarioExplore
     Promise.all([
       listAttackers(locale),
       listDefenders(locale),
-      getCatalog(attackerId, defenderId, locale),
+      getCatalog(attackerId, defenderId, locale, moveCategory),
     ]).then(([attackers, defenders, catalog]) => {
       if (cancelled) return
       setLocalized({ attackers, defenders, catalog })
@@ -134,7 +145,12 @@ export function ScenarioExplorerPage({ locale, onLocaleChange }: ScenarioExplore
     return () => {
       cancelled = true
     }
-  }, [attackerId, defenderId, locale])
+  }, [attackerId, defenderId, locale, moveCategory])
+
+  function changeAttacker(id: BattlePokemonId) {
+    setAttackerId(id)
+    setMoveCategory(getDefaultMoveCategory(id))
+  }
 
   const localeOptions = useMemo(
     () =>
@@ -154,9 +170,10 @@ export function ScenarioExplorerPage({ locale, onLocaleChange }: ScenarioExplore
       defenderId={defenderId}
       locale={locale}
       localeOptions={localeOptions}
-      onAttackerChange={setAttackerId}
+      onAttackerChange={changeAttacker}
       onDefenderChange={setDefenderId}
       onLocaleChange={onLocaleChange}
+      onMoveCategoryChange={setMoveCategory}
     />
   )
 }
