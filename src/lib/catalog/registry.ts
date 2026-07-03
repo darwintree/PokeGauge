@@ -2,6 +2,7 @@ import { buildCoreCatalogOptions, buildTypeBoostCatalogOptions } from "@/lib/hel
 import { localeMessages, type SupportedLocale } from "@/lib/i18n"
 import {
   getResource,
+  listChampionsMoveUsageRecords,
   listResources,
   type BattlePokemonId,
   type LocalizedMoveResource,
@@ -26,58 +27,14 @@ type FixedPowerMoveResource = LocalizedMoveResource & {
   power: number
 }
 
-type MovePickEntry = {
-  id: UpstreamResourceId
+const DEFAULT_MOVE_CATEGORY_BY_ATTACKER: Partial<Record<BattlePokemonId, MoveCategory>> = {
+  445: "physical",
+  591: "special",
+  727: "physical",
+  812: "physical",
+  987: "special",
+  10021: "physical",
 }
-
-type AttackerEntry = {
-  id: BattlePokemonId
-  moveCategory: MoveCategory
-  /** Usage-ranked top-N — default selected on load */
-  moves: MovePickEntry[]
-  /** Optional pool — addable via +, not pre-selected */
-  extraMoves?: MovePickEntry[]
-}
-
-/** Hardcoded VGC doubles usage-ranked move picks — Champions context, v1 */
-const ATTACKERS: AttackerEntry[] = [
-  {
-    id: 445,
-    moveCategory: "physical",
-    moves: [
-      { id: 89 },
-      { id: 337 },
-      { id: 444 },
-    ],
-    extraMoves: [
-      { id: 424 },
-    ],
-  },
-  {
-    id: 10021,
-    moveCategory: "physical",
-    moves: [
-      { id: 89 },
-      { id: 157 },
-      { id: 707 },
-    ],
-    extraMoves: [
-      { id: 282 },
-    ],
-  },
-  {
-    id: 987,
-    moveCategory: "special",
-    moves: [
-      { id: 585 },
-      { id: 247 },
-      { id: 605 },
-    ],
-    extraMoves: [
-      { id: 85 },
-    ],
-  },
-]
 
 const DEFAULT_MATCHUP = {
   attackerId: 445,
@@ -138,10 +95,6 @@ function buildAttackerItems(category: MoveCategory) {
   return [...buildCoreCatalogOptions(category), ...buildTypeBoostCatalogOptions()]
 }
 
-function findAttacker(id: BattlePokemonId): AttackerEntry | undefined {
-  return ATTACKERS.find((a) => a.id === id)
-}
-
 function localizedSpeciesOption(resource: LocalizedPokemonResource): SpeciesOption {
   return {
     id: resource.battlePokemonId,
@@ -166,7 +119,7 @@ export function getDefaultMatchupIds() {
 }
 
 export function getDefaultMoveCategory(attackerId: BattlePokemonId): MoveCategory {
-  return findAttacker(attackerId)?.moveCategory ?? "physical"
+  return DEFAULT_MOVE_CATEGORY_BY_ATTACKER[attackerId] ?? "physical"
 }
 
 function isFixedPowerMoveResource(
@@ -192,13 +145,37 @@ function fixedPowerMoveOption(moveResource: FixedPowerMoveResource): CatalogMove
 function compareMoveSearchOrder(a: CatalogMoveOption, b: CatalogMoveOption): number {
   const byPower = b.power - a.power
   if (byPower !== 0) return byPower
+  const byAccuracy = (b.accuracy ?? Number.POSITIVE_INFINITY) - (a.accuracy ?? Number.POSITIVE_INFINITY)
+  if (byAccuracy !== 0) return byAccuracy
   const byMoveName = a.moveName.localeCompare(b.moveName)
   if (byMoveName !== 0) return byMoveName
   return a.id - b.id
 }
 
-function fallbackDefaultMoveIds(moves: CatalogMoveOption[]): UpstreamResourceId[] {
-  return moves.slice(0, 6).map((move) => move.id)
+function resolveDefaultMoveIds(
+  attackerId: BattlePokemonId,
+  activeMoveCategory: MoveCategory,
+  moves: CatalogMoveOption[],
+): UpstreamResourceId[] {
+  const moveById = new Map(moves.map((move) => [move.id, move]))
+  const selected = listChampionsMoveUsageRecords(attackerId, "Doubles")
+    .toSorted((a, b) => {
+      const byRank = a.rank - b.rank
+      if (byRank !== 0) return byRank
+      const byUsage = (b.percentage ?? Number.NEGATIVE_INFINITY) - (a.percentage ?? Number.NEGATIVE_INFINITY)
+      if (byUsage !== 0) return byUsage
+      const byMoveName = a.championsMoveName.localeCompare(b.championsMoveName)
+      if (byMoveName !== 0) return byMoveName
+      return a.moveId - b.moveId
+    })
+    .filter((record) => moveById.get(record.moveId)?.category === activeMoveCategory)
+    .map((record) => record.moveId)
+
+  const fallback = moves
+    .map((move) => move.id)
+    .filter((moveId) => !selected.includes(moveId))
+
+  return [...selected, ...fallback].slice(0, 6)
 }
 
 export async function getCatalog(
@@ -207,8 +184,7 @@ export async function getCatalog(
   locale: SupportedLocale,
   moveCategory?: MoveCategory,
 ): Promise<MatchupCatalog> {
-  const attackerDefaults = findAttacker(attackerId)
-  const activeMoveCategory = moveCategory ?? attackerDefaults?.moveCategory ?? "physical"
+  const activeMoveCategory = moveCategory ?? getDefaultMoveCategory(attackerId)
   const [attackerResource, defenderResource] = await Promise.all([
     getResource("pokemon", attackerId, locale),
     getResource("pokemon", defenderId, locale),
@@ -221,12 +197,7 @@ export async function getCatalog(
     .sort(compareMoveSearchOrder)
 
   const labels = statLabels(activeMoveCategory, locale)
-  const defaultIdsFromAttacker =
-    attackerDefaults?.moveCategory === activeMoveCategory
-      ? attackerDefaults.moves.map((m) => m.id).filter((id) => moves.some((move) => move.id === id))
-      : []
-  const defaultMoveIds =
-    defaultIdsFromAttacker.length > 0 ? defaultIdsFromAttacker : fallbackDefaultMoveIds(moves)
+  const defaultMoveIds = resolveDefaultMoveIds(attackerId, activeMoveCategory, moves)
 
   return {
     matchup: {

@@ -1,10 +1,13 @@
 import type { SupportedLocale } from "@/lib/i18n"
 import {
+  CHAMPIONS_MOVE_USAGE,
   GENERATED_MOVES,
   GENERATED_POKEMON,
   RESOURCE_DIAGNOSTICS,
 } from "./generated/pokeapi"
 import type {
+  ChampionsBattleFormat,
+  ChampionsMoveUsageRecord,
   GeneratedResourceDiagnostics,
   LocalizedMoveResource,
   LocalizedPokemonResource,
@@ -17,6 +20,7 @@ import type {
 
 const POKEMON_RESOURCES: Record<UpstreamResourceId, NormalizedBattlePokemon> = GENERATED_POKEMON
 const MOVE_RESOURCES: Record<UpstreamResourceId, NormalizedMove> = GENERATED_MOVES
+const CHAMPIONS_USAGE_RECORDS: readonly ChampionsMoveUsageRecord[] = CHAMPIONS_MOVE_USAGE
 
 export class ResourceLookupError extends Error {
   constructor(resourceType: ResourceType, id: UpstreamResourceId) {
@@ -104,4 +108,13 @@ export async function listResources<TType extends ResourceType>(
 
 export function getResourceDiagnostics(): GeneratedResourceDiagnostics {
   return RESOURCE_DIAGNOSTICS
+}
+
+export function listChampionsMoveUsageRecords(
+  battlePokemonId: UpstreamResourceId,
+  format: ChampionsBattleFormat,
+): ChampionsMoveUsageRecord[] {
+  return CHAMPIONS_USAGE_RECORDS.filter(
+    (record) => record.battlePokemonId === battlePokemonId && record.format === format,
+  )
 }
