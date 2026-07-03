@@ -12,7 +12,7 @@ updated_at: "2026-07-03T06:53:00Z"
 [[20260702_closed_wayfinder-pokeapi-and-champions-data-integration-route|Wayfinder: PokeAPI and Champions data integration route]] (`90b002f9-94ca-410b-b115-d0bc2aff4eb3`)
 
 ## Related Issue
-[[../20260701_open_integrate-champions-battle-move-usage-rate-data|Integrate Champions Battle move usage-rate data]] (`2e6ef737-e571-4cd3-8b98-2edd2b38a686`)
+[[20260701_closed_integrate-champions-battle-move-usage-rate-data|Integrate Champions Battle move usage-rate data]] (`2e6ef737-e571-4cd3-8b98-2edd2b38a686`)
 
 ## Blocked By
 - [[20260703_closed_implement-generated-pokeapi-resource-boundary|Implement generated PokeAPI resource boundary]] (`d36f73d9-c5dc-42f3-9fb3-4c356bffa83d`)

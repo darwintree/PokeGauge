@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "2e6ef737-e571-4cd3-8b98-2edd2b38a686"
 title: "Integrate Champions Battle move usage-rate data"
-status: "open"
+status: "closed"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-01T12:22:00Z"
-updated_at: "2026-07-01T12:22:00Z"
+updated_at: "2026-07-03T08:34:00Z"
 ---
 ## Problem
 
@@ -14,7 +14,7 @@ Move usage-rate data should be available after the calculator has canonical Poke
 
 ## Dependency
 
-Depends on [[20260701_open_integrate-pokeapi-pokemon-move-and-base-stat-data|Integrate PokeAPI Pokemon, move, and base stat data]] (`b667bbec-bebf-4959-b0cd-66542a018c7a`).
+Depends on [[20260701_closed_integrate-pokeapi-pokemon-move-and-base-stat-data|Integrate PokeAPI Pokemon, move, and base stat data]] (`b667bbec-bebf-4959-b0cd-66542a018c7a`).
 
 ## Scope
 
@@ -25,10 +25,14 @@ Depends on [[20260701_open_integrate-pokeapi-pokemon-move-and-base-stat-data|Int
 
 ## Acceptance Criteria
 
-- Move usage-rate data can be loaded and joined to known Pokemon/move identifiers.
-- The integration handles missing or unmatched usage records explicitly.
-- The update/fetch process is documented.
-- Build passes after the integration.
+- [x] Move usage-rate data can be loaded and joined to known Pokemon/move identifiers.
+- [x] The integration handles missing or unmatched usage records explicitly.
+- [x] The update/fetch process is documented.
+- [x] Build passes after the integration.
+
+## Resolution
+
+Resolved by [[20260703_closed_integrate-full-pokeapi-and-champions-move-usage-with-local-damage-kernel|Integrate full PokeAPI and Champions move usage with local damage kernel]]. `pnpm generate:pokeapi` now imports Champions Doubles move usage from the online Champions API at generation time, joins rows to normalized local Pokemon and move ids, writes generated usage constants, and records unmatched Pokemon/move diagnostics. `pnpm build` passes.
 
 ## Notes
 

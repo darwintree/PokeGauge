@@ -101,7 +101,7 @@ function computePresetRow(
     defenderSpecies,
     moveName,
     statSetup,
-    itemName,
+    attackerItemId,
     defSetup,
   )
 
@@ -150,7 +150,7 @@ function computeOffenseRangeRow(
     moveName,
     statRange,
     catalog.moveCategory,
-    itemName,
+    attackerItemId,
     defSetup,
   )
 
@@ -200,7 +200,7 @@ function computeDefenderRangeRow(
     moveName,
     statSetup,
     catalog.moveCategory,
-    itemName,
+    attackerItemId,
     defenderRanges.hp,
     defenderRanges.def,
   )
@@ -247,7 +247,7 @@ function computeCombinedRangeRow(
     moveName,
     statRange,
     catalog.moveCategory,
-    itemName,
+    attackerItemId,
     defenderRanges.hp,
     defenderRanges.def,
   )

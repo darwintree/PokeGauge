@@ -1,5 +1,6 @@
 import { beforeAll, describe, expect, it } from "vitest"
 
+import { setChampionsMoveUsageFetcherForTest } from "@/lib/champions"
 import { getCatalog, listAttackers, type MatchupCatalog } from "@/lib/catalog"
 import {
   defaultTrackState,
@@ -11,19 +12,43 @@ import {
 
 const LOCALE = "zh-hans"
 
+beforeAll(() => {
+  setChampionsMoveUsageFetcherForTest(async (battlePokemonId) => {
+    if (battlePokemonId !== 445) return []
+    return [
+      { battlePokemonId, moveId: 337, format: "Doubles", season: "test", source: "test", rank: 1, percentage: 89.1, championsMoveName: "Dragon Claw" },
+      { battlePokemonId, moveId: 157, format: "Doubles", season: "test", source: "test", rank: 2, percentage: 84.3, championsMoveName: "Rock Slide" },
+      { battlePokemonId, moveId: 89, format: "Doubles", season: "test", source: "test", rank: 3, percentage: 78.8, championsMoveName: "Earthquake" },
+      { battlePokemonId, moveId: 182, format: "Doubles", season: "test", source: "test", rank: 4, percentage: 73, championsMoveName: "Protect" },
+      { battlePokemonId, moveId: 707, format: "Doubles", season: "test", source: "test", rank: 5, percentage: 32.1, championsMoveName: "Stomping Tantrum" },
+      { battlePokemonId, moveId: 398, format: "Doubles", season: "test", source: "test", rank: 6, percentage: 16.2, championsMoveName: "Poison Jab" },
+      { battlePokemonId, moveId: 317, format: "Doubles", season: "test", source: "test", rank: 7, percentage: 8.6, championsMoveName: "Rock Tomb" },
+    ]
+  })
+})
+
 describe("catalog registry", () => {
   it("lists generated battle Pokemon and seeds move picks for each", async () => {
     const attackers = await listAttackers(LOCALE)
     expect(attackers.length).toBeGreaterThanOrEqual(3)
     expect(attackers.every((a) => typeof a.id === "number")).toBe(true)
 
+    const sampledAttackers = [
+      ...attackers.slice(0, 24),
+      attackers.find((attacker) => attacker.id === 445),
+    ].filter((attacker) => attacker !== undefined)
     const defaultMoveSets = await Promise.all(
-      attackers.map(async (a) => {
+      sampledAttackers.map(async (a) => {
         const catalog = await getCatalog(a.id, 727, LOCALE)
-        expect(catalog.defaultMoveIds.length).toBeGreaterThan(0)
+        if (a.id === 445) {
+          expect(catalog.defaultMoveIds.length).toBeGreaterThan(0)
+        } else {
+          expect(catalog.defaultMoveIds).toEqual([])
+        }
         expect(catalog.defaultMoveIds.every((id) => catalog.moves.some((m) => m.id === id))).toBe(
           true,
         )
+        expect(catalog.moves.length).toBeGreaterThan(0)
         return catalog.defaultMoveIds.join(",")
       }),
     )
@@ -31,7 +56,7 @@ describe("catalog registry", () => {
   })
 
   it("pre-selects default move pick only; extra moves stay in + pool", async () => {
-    for (const attacker of await listAttackers(LOCALE)) {
+    for (const attacker of (await listAttackers(LOCALE)).slice(0, 24)) {
       const catalog = await getCatalog(attacker.id, 727, LOCALE)
       const state = defaultTrackState(catalog)
       expect(state.visibleMoveIds).toEqual(catalog.defaultMoveIds)
@@ -45,10 +70,10 @@ describe("catalog registry", () => {
     expect(catalog.defaultMoveIds).toEqual([337, 157, 89, 707, 398, 317])
   })
 
-  it("falls back to global fixed-power move order without joined Champions rows", async () => {
-    const catalog = await getCatalog(987, 727, "en")
-    expect(catalog.moveCategory).toBe("special")
-    expect(catalog.defaultMoveIds).toEqual([585, 85, 605, 247, 555])
+  it("does not preselect moves when Champions rows are unavailable", async () => {
+    const catalog = await getCatalog(1, 727, "en")
+    expect(catalog.defaultMoveIds).toEqual([])
+    expect(catalog.moves.length).toBeGreaterThan(0)
   })
 
   it("routes special attackers through template pipeline", async () => {

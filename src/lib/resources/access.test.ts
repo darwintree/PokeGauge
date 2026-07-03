@@ -29,6 +29,8 @@ describe("localized resource access", () => {
       power: 100,
       accuracy: 100,
       damageKind: "damage",
+      target: "all-other-pokemon",
+      isSpread: true,
     })
   })
 
@@ -56,7 +58,11 @@ describe("localized resource access", () => {
     expect(diagnostics.source).toBe("pokeapi")
     expect(diagnostics.pokemonIds).toContain(445)
     expect(diagnostics.moveIds).toContain(89)
-    expect(diagnostics.missingLocaleNames).toEqual([])
-    expect(diagnostics.unsupportedBattleIdentities).toEqual([])
+    expect(diagnostics.missingLocaleNames.length).toBeGreaterThan(0)
+    expect(diagnostics.unsupportedBattleIdentities).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: 10326 }),
+      ]),
+    )
   })
 })

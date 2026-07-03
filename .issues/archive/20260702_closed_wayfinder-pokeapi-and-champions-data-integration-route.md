@@ -12,8 +12,8 @@ updated_at: "2026-07-03T06:53:00Z"
 This map charts the route for integrating PokeAPI data and Champions Battle move usage data into Scenario Explorer. Every session should consult `CONTEXT.md` first, especially **Matchup**, **Ruleset**, **Battle format**, **Move pick**, **Battle Pokemon identity**, **Upstream resource identity**, **Supported locale**, and **Type**. Use `/grilling` and `/domain-modeling` for product/domain decisions; use research tickets for third-party API shape and update-path questions.
 
 Related existing issues:
-- [[../20260701_open_integrate-pokeapi-pokemon-move-and-base-stat-data|Integrate PokeAPI Pokemon, move, and base stat data]] (`b667bbec-bebf-4959-b0cd-66542a018c7a`)
-- [[../20260701_open_integrate-champions-battle-move-usage-rate-data|Integrate Champions Battle move usage-rate data]] (`2e6ef737-e571-4cd3-8b98-2edd2b38a686`)
+- [[20260701_closed_integrate-pokeapi-pokemon-move-and-base-stat-data|Integrate PokeAPI Pokemon, move, and base stat data]] (`b667bbec-bebf-4959-b0cd-66542a018c7a`)
+- [[20260701_closed_integrate-champions-battle-move-usage-rate-data|Integrate Champions Battle move usage-rate data]] (`2e6ef737-e571-4cd3-8b98-2edd2b38a686`)
 
 Standing product inputs from the kickoff:
 - Pokemon can be added/searched, including type filtering and name keyword search.

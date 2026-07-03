@@ -40,6 +40,7 @@ function moveMatches(option: CatalogMoveOption, query: string, typeFilter: Pokem
 function MoveMeta({ option }: { option: CatalogMoveOption }) {
   return (
     <span className="text-muted-foreground flex shrink-0 items-center gap-2 text-xs tabular-nums">
+      {option.isSpread && <span className="rounded-sm border px-1 text-[10px]">AoE</span>}
       <span>{option.power}</span>
       <span>{option.accuracy ?? "-"}</span>
     </span>
@@ -107,7 +108,10 @@ export function MoveMultiSelect({
                 onClick={() => onToggle(option.id)}
               >
                 <TypeBadge type={option.type} />
-                <span className="truncate">{option.label}</span>
+                <span className="truncate">
+                  {option.label}
+                  {option.isSpread && <span className="text-muted-foreground ml-1 text-xs">AoE</span>}
+                </span>
               </button>
               <MoveMeta option={option} />
               <Button
@@ -167,7 +171,10 @@ export function MoveMultiSelect({
                   >
                     <TypeBadge type={option.type} />
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate text-sm font-medium">{option.label}</span>
+                      <span className="block truncate text-sm font-medium">
+                        {option.label}
+                        {option.isSpread && <span className="text-muted-foreground ml-1 text-xs">AoE</span>}
+                      </span>
                       <span className="text-muted-foreground block truncate text-xs">
                         {option.moveName}
                       </span>

@@ -15,7 +15,7 @@ updated_at: "2026-07-03T05:17:00Z"
 What data does Champions Battle expose for move usage, how should usage records be joined to the app's normalized Pokemon and move identities, and what facts are required to support top-6 damaging **Move pick** defaults?
 
 ## Context
-Existing issue: [[../20260701_open_integrate-champions-battle-move-usage-rate-data|Integrate Champions Battle move usage-rate data]] (`2e6ef737-e571-4cd3-8b98-2edd2b38a686`).
+Existing issue: [[20260701_closed_integrate-champions-battle-move-usage-rate-data|Integrate Champions Battle move usage-rate data]] (`2e6ef737-e571-4cd3-8b98-2edd2b38a686`).
 
 This ticket may inspect https://championsbattledata.com/api-rules/ and related responses. It should record source URLs, response shape, update cadence if discoverable, and likely mismatch cases. Produce a linked markdown research summary rather than implementing the integration.
 

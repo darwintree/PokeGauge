@@ -1,20 +1,10 @@
-/**
- * Damage via @smogon/calc (Showdown formula).
- *
- * Product ruleset: Pokémon Champions · VGC doubles.
- * Engine mapping: Champions ruleset → Gen 9 (@smogon/calc GEN 9) until
- * Champions-native species/move data lands in the calc library.
- *
- * Battle format: VGC doubles uses Level 50 spreads (LEVEL constant below).
- *
- * @see https://github.com/smogon/damage-calc
- */
-
-import { calculate, Move, Pokemon } from "@smogon/calc"
-
 import type { MoveCategory } from "@/lib/catalog/types"
+import { typeFromBoostId } from "@/lib/held-item"
+import { POKEMON_TYPES, type PokemonType } from "@/lib/pokemon/types"
+import { getBattlePokemonByCalcName, getMoveByCalcName } from "@/lib/resources"
 
-import { CALC_GEN, VGC_LEVEL } from "./calc-constants"
+import { calculateDamageRolls, type DamageModifierInput } from "./damage-kernel"
+import { defenderStatValues, offenseStatValue } from "./local-stats"
 import {
   closestDefenderSetupHigh,
   closestDefenderSetupLow,
@@ -89,37 +79,57 @@ function summarize(
   }
 }
 
-function runCalc(
+function compiledItemModifiers(
+  itemId: string | undefined,
+  category: MoveCategory,
+  moveType: PokemonType,
+): DamageModifierInput {
+  if (itemId === "life-orb") return { finalMultiplier: 5324 / 4096 }
+  if (itemId === "choice-band" && category === "physical") return { attackMultiplier: 1.5 }
+  if (itemId === "choice-specs" && category === "special") return { attackMultiplier: 1.5 }
+  const boostType = itemId ? typeFromBoostId(itemId) : undefined
+  if (boostType && boostType === moveType) return { powerMultiplier: 1.2 }
+  return {}
+}
+
+function isPokemonType(type: string): type is PokemonType {
+  return POKEMON_TYPES.includes(type as PokemonType)
+}
+
+function runLocalDamage(
   attackerSpecies: string,
   defenderSpecies: string,
   moveName: string,
   attackerStat: StatSetup,
-  item: string | undefined,
+  itemId: string | undefined,
   defender: DefenderSetup,
 ) {
-  const attackerPokemon = new Pokemon(CALC_GEN, attackerSpecies, {
-    level: VGC_LEVEL,
-    nature: attackerStat.nature,
-    evs: attackerStat.evs,
-    item,
-  })
-  const defenderPokemon = new Pokemon(CALC_GEN, defenderSpecies, {
-    level: VGC_LEVEL,
-    nature: defender.nature,
-    evs: defender.evs,
-  })
-  const move = new Move(CALC_GEN, moveName)
-  const critMove = new Move(CALC_GEN, moveName, { isCrit: true })
-
-  const hp = defenderPokemon.maxHP()
-  const normal = calculate(CALC_GEN, attackerPokemon, defenderPokemon, move)
-  const crit = calculate(CALC_GEN, attackerPokemon, defenderPokemon, critMove)
-
-  return {
-    hp,
-    normalRolls: normal.damage as number[],
-    critRolls: crit.damage as number[],
+  const attacker = getBattlePokemonByCalcName(attackerSpecies)
+  const defenderPokemon = getBattlePokemonByCalcName(defenderSpecies)
+  const move = getMoveByCalcName(moveName)
+  if (!attacker) throw new Error(`Unknown generated attacker: ${attackerSpecies}`)
+  if (!defenderPokemon) throw new Error(`Unknown generated defender: ${defenderSpecies}`)
+  if (!move || move.power == null || (move.category !== "physical" && move.category !== "special")) {
+    throw new Error(`Unsupported generated move for damage calculation: ${moveName}`)
   }
+  if (!isPokemonType(move.type)) throw new Error(`Unsupported move type for damage calculation: ${move.type}`)
+
+  const defenderStats = defenderStatValues(defenderSpecies, move.category, defender)
+  const itemModifiers = compiledItemModifiers(itemId, move.category, move.type)
+  return calculateDamageRolls({
+    attack: offenseStatValue(attackerSpecies, move.category, attackerStat),
+    defense: defenderStats.def,
+    defenderHp: defenderStats.hp,
+    attackerTypes: attacker.types,
+    defenderTypes: defenderPokemon.types,
+    moveType: move.type,
+    movePower: move.power,
+    category: move.category,
+    modifiers: {
+      ...itemModifiers,
+      spread: move.isSpread,
+    },
+  })
 }
 
 export function computeDamage(
@@ -127,23 +137,23 @@ export function computeDamage(
   defenderSpecies: string,
   moveName: string,
   attackerStat: StatSetup,
-  item: string | undefined,
+  itemId: string | undefined,
   defender: DefenderSetup,
 ): ComputedDamage {
-  const { hp, normalRolls, critRolls } = runCalc(
+  const { defenderHp, normalRolls, critRolls } = runLocalDamage(
     attackerSpecies,
     defenderSpecies,
     moveName,
     attackerStat,
-    item,
+    itemId,
     defender,
   )
-  return summarize(normalRolls, critRolls, hp)
+  return summarize(normalRolls, critRolls, defenderHp)
 }
 
 function mergeRangeResults(
-  lowResult: ReturnType<typeof runCalc>,
-  highResult: ReturnType<typeof runCalc>,
+  lowResult: ReturnType<typeof runLocalDamage>,
+  highResult: ReturnType<typeof runLocalDamage>,
 ): ComputedDamage {
   const minDamage = Math.min(...lowResult.normalRolls)
   const maxDamage = Math.max(...highResult.normalRolls)
@@ -153,7 +163,7 @@ function mergeRangeResults(
     2
   const critMinDamage = Math.min(...lowResult.critRolls)
   const critMaxDamage = Math.max(...highResult.critRolls)
-  const hp = lowResult.hp
+  const hp = lowResult.defenderHp
   const ohkoHigh = highResult.normalRolls.filter((d) => d >= hp).length
 
   return {
@@ -172,148 +182,67 @@ function mergeRangeResults(
   }
 }
 
-/**
- * Offense stat-range row: envelope of (statMin × rollMin) … (statMax × rollMax).
- */
 export function computeDamageForStatRange(
   attackerSpecies: string,
   defenderSpecies: string,
   moveName: string,
   statRange: StatRange,
   category: MoveCategory,
-  item: string | undefined,
+  itemId: string | undefined,
   defender: DefenderSetup,
 ): ComputedDamage {
   const low = statRange.min
   const high = Math.max(statRange.max, statRange.min)
-
   const lowSetup = closestOffenseSetupAtOrBelow(attackerSpecies, category, low)
   const highSetup = closestOffenseSetupAtOrAbove(attackerSpecies, category, high)
-
-  const lowResult = runCalc(
-    attackerSpecies,
-    defenderSpecies,
-    moveName,
-    lowSetup,
-    item,
-    defender,
-  )
-  const highResult = runCalc(
-    attackerSpecies,
-    defenderSpecies,
-    moveName,
-    highSetup,
-    item,
-    defender,
-  )
-
+  const lowResult = runLocalDamage(attackerSpecies, defenderSpecies, moveName, lowSetup, itemId, defender)
+  const highResult = runLocalDamage(attackerSpecies, defenderSpecies, moveName, highSetup, itemId, defender)
   return mergeRangeResults(lowResult, highResult)
 }
 
-/**
- * Defender range row: diagonal envelope (HP_min, Def_min) → (HP_max, Def_max).
- */
 export function computeDamageForDefenderRange(
   attackerSpecies: string,
   defenderSpecies: string,
   moveName: string,
   attackerStat: StatSetup,
   category: MoveCategory,
-  item: string | undefined,
+  itemId: string | undefined,
   hpRange: StatRange,
   defRange: StatRange,
 ): ComputedDamage {
-  const hpLow = hpRange.min
-  const hpHigh = Math.max(hpRange.max, hpRange.min)
-  const defLow = defRange.min
-  const defHigh = Math.max(defRange.max, defRange.min)
-
-  const lowSetup = closestDefenderSetupLow(
-    defenderSpecies,
-    category,
-    hpLow,
-    defLow,
-  )
+  const lowSetup = closestDefenderSetupLow(defenderSpecies, category, hpRange.min, defRange.min)
   const highSetup = closestDefenderSetupHigh(
     defenderSpecies,
     category,
-    hpHigh,
-    defHigh,
+    Math.max(hpRange.max, hpRange.min),
+    Math.max(defRange.max, defRange.min),
   )
-
-  const lowResult = runCalc(
-    attackerSpecies,
-    defenderSpecies,
-    moveName,
-    attackerStat,
-    item,
-    lowSetup,
-  )
-  const highResult = runCalc(
-    attackerSpecies,
-    defenderSpecies,
-    moveName,
-    attackerStat,
-    item,
-    highSetup,
-  )
-
+  const lowResult = runLocalDamage(attackerSpecies, defenderSpecies, moveName, attackerStat, itemId, lowSetup)
+  const highResult = runLocalDamage(attackerSpecies, defenderSpecies, moveName, attackerStat, itemId, highSetup)
   return mergeRangeResults(lowResult, highResult)
 }
 
-/**
- * Both tracks in range: offense endpoints × defender diagonal endpoints.
- */
 export function computeDamageForCombinedRange(
   attackerSpecies: string,
   defenderSpecies: string,
   moveName: string,
   statRange: StatRange,
   category: MoveCategory,
-  item: string | undefined,
+  itemId: string | undefined,
   hpRange: StatRange,
   defRange: StatRange,
 ): ComputedDamage {
-  const offLow = closestOffenseSetupAtOrBelow(
-    attackerSpecies,
-    category,
-    statRange.min,
-  )
-  const offHigh = closestOffenseSetupAtOrAbove(
-    attackerSpecies,
-    category,
-    Math.max(statRange.max, statRange.min),
-  )
-  const defLow = closestDefenderSetupLow(
-    defenderSpecies,
-    category,
-    hpRange.min,
-    defRange.min,
-  )
+  const offLow = closestOffenseSetupAtOrBelow(attackerSpecies, category, statRange.min)
+  const offHigh = closestOffenseSetupAtOrAbove(attackerSpecies, category, Math.max(statRange.max, statRange.min))
+  const defLow = closestDefenderSetupLow(defenderSpecies, category, hpRange.min, defRange.min)
   const defHigh = closestDefenderSetupHigh(
     defenderSpecies,
     category,
     Math.max(hpRange.max, hpRange.min),
     Math.max(defRange.max, defRange.min),
   )
-
-  const lowResult = runCalc(
-    attackerSpecies,
-    defenderSpecies,
-    moveName,
-    offLow,
-    item,
-    defLow,
-  )
-  const highResult = runCalc(
-    attackerSpecies,
-    defenderSpecies,
-    moveName,
-    offHigh,
-    item,
-    defHigh,
-  )
-
+  const lowResult = runLocalDamage(attackerSpecies, defenderSpecies, moveName, offLow, itemId, defLow)
+  const highResult = runLocalDamage(attackerSpecies, defenderSpecies, moveName, offHigh, itemId, defHigh)
   return mergeRangeResults(lowResult, highResult)
 }
 
