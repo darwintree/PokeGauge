@@ -1,5 +1,3 @@
-import { Pokemon } from "@smogon/calc"
-
 import type { MoveCategory } from "@/lib/catalog/types"
 import {
   DEFENSE_DEF_AXIS_LABELS,
@@ -15,7 +13,7 @@ import {
   offenseSnapTier,
 } from "@/lib/stat-tier-colors"
 
-import { CALC_GEN, VGC_LEVEL } from "./calc-constants"
+import { defenderStatValues, offenseStatValue } from "./local-stats"
 import {
   defenseStatKey,
   getAttackerStatSetups,
@@ -66,13 +64,7 @@ export function getOffenseStat(
   category: MoveCategory,
   setup: StatSetup,
 ): number {
-  const statKey = offenseStatKey(category)
-  const p = new Pokemon(CALC_GEN, species, {
-    level: VGC_LEVEL,
-    nature: setup.nature,
-    evs: setup.evs,
-  })
-  return p.stats[statKey]
+  return offenseStatValue(species, category, setup)
 }
 
 function getDefenderStats(
@@ -80,13 +72,7 @@ function getDefenderStats(
   category: MoveCategory,
   setup: DefenderSetup,
 ): { hp: number; def: number } {
-  const statKey = defenseStatKey(category)
-  const p = new Pokemon(CALC_GEN, species, {
-    level: VGC_LEVEL,
-    nature: setup.nature,
-    evs: setup.evs,
-  })
-  return { hp: p.maxHP(), def: p.stats[statKey] }
+  return defenderStatValues(species, category, setup)
 }
 
 export function getDefenderHp(species: string, setup: DefenderSetup): number {

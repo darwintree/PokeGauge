@@ -1,0 +1,45914 @@
+import type { NormalizedBattlePokemon, UpstreamResourceId } from "../types"
+
+export const GENERATED_POKEMON = {
+  "1": {
+    "resourceType": "pokemon",
+    "id": 1,
+    "speciesId": 1,
+    "pokemonSlug": "bulbasaur",
+    "speciesSlug": "bulbasaur",
+    "calcSpeciesName": "Bulbasaur",
+    "names": {
+      "zh-hans": "妙蛙种子",
+      "zh-hant": "妙蛙種子",
+      "en": "Bulbasaur",
+      "ja": "フシギダネ"
+    },
+    "speciesNames": {
+      "zh-hans": "妙蛙种子",
+      "zh-hant": "妙蛙種子",
+      "en": "Bulbasaur",
+      "ja": "フシギダネ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 49,
+      "def": 49,
+      "spa": 65,
+      "spd": 65,
+      "spe": 45
+    }
+  },
+  "2": {
+    "resourceType": "pokemon",
+    "id": 2,
+    "speciesId": 2,
+    "pokemonSlug": "ivysaur",
+    "speciesSlug": "ivysaur",
+    "calcSpeciesName": "Ivysaur",
+    "names": {
+      "zh-hans": "妙蛙草",
+      "zh-hant": "妙蛙草",
+      "en": "Ivysaur",
+      "ja": "フシギソウ"
+    },
+    "speciesNames": {
+      "zh-hans": "妙蛙草",
+      "zh-hant": "妙蛙草",
+      "en": "Ivysaur",
+      "ja": "フシギソウ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 62,
+      "def": 63,
+      "spa": 80,
+      "spd": 80,
+      "spe": 60
+    }
+  },
+  "3": {
+    "resourceType": "pokemon",
+    "id": 3,
+    "speciesId": 3,
+    "pokemonSlug": "venusaur",
+    "speciesSlug": "venusaur",
+    "calcSpeciesName": "Venusaur",
+    "names": {
+      "zh-hans": "妙蛙花",
+      "zh-hant": "妙蛙花",
+      "en": "Venusaur",
+      "ja": "フシギバナ"
+    },
+    "speciesNames": {
+      "zh-hans": "妙蛙花",
+      "zh-hant": "妙蛙花",
+      "en": "Venusaur",
+      "ja": "フシギバナ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 82,
+      "def": 83,
+      "spa": 100,
+      "spd": 100,
+      "spe": 80
+    }
+  },
+  "4": {
+    "resourceType": "pokemon",
+    "id": 4,
+    "speciesId": 4,
+    "pokemonSlug": "charmander",
+    "speciesSlug": "charmander",
+    "calcSpeciesName": "Charmander",
+    "names": {
+      "zh-hans": "小火龙",
+      "zh-hant": "小火龍",
+      "en": "Charmander",
+      "ja": "ヒトカゲ"
+    },
+    "speciesNames": {
+      "zh-hans": "小火龙",
+      "zh-hant": "小火龍",
+      "en": "Charmander",
+      "ja": "ヒトカゲ"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 39,
+      "atk": 52,
+      "def": 43,
+      "spa": 60,
+      "spd": 50,
+      "spe": 65
+    }
+  },
+  "5": {
+    "resourceType": "pokemon",
+    "id": 5,
+    "speciesId": 5,
+    "pokemonSlug": "charmeleon",
+    "speciesSlug": "charmeleon",
+    "calcSpeciesName": "Charmeleon",
+    "names": {
+      "zh-hans": "火恐龙",
+      "zh-hant": "火恐龍",
+      "en": "Charmeleon",
+      "ja": "リザード"
+    },
+    "speciesNames": {
+      "zh-hans": "火恐龙",
+      "zh-hant": "火恐龍",
+      "en": "Charmeleon",
+      "ja": "リザード"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 58,
+      "atk": 64,
+      "def": 58,
+      "spa": 80,
+      "spd": 65,
+      "spe": 80
+    }
+  },
+  "6": {
+    "resourceType": "pokemon",
+    "id": 6,
+    "speciesId": 6,
+    "pokemonSlug": "charizard",
+    "speciesSlug": "charizard",
+    "calcSpeciesName": "Charizard",
+    "names": {
+      "zh-hans": "喷火龙",
+      "zh-hant": "噴火龍",
+      "en": "Charizard",
+      "ja": "リザードン"
+    },
+    "speciesNames": {
+      "zh-hans": "喷火龙",
+      "zh-hant": "噴火龍",
+      "en": "Charizard",
+      "ja": "リザードン"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 78,
+      "atk": 84,
+      "def": 78,
+      "spa": 109,
+      "spd": 85,
+      "spe": 100
+    }
+  },
+  "7": {
+    "resourceType": "pokemon",
+    "id": 7,
+    "speciesId": 7,
+    "pokemonSlug": "squirtle",
+    "speciesSlug": "squirtle",
+    "calcSpeciesName": "Squirtle",
+    "names": {
+      "zh-hans": "杰尼龟",
+      "zh-hant": "傑尼龜",
+      "en": "Squirtle",
+      "ja": "ゼニガメ"
+    },
+    "speciesNames": {
+      "zh-hans": "杰尼龟",
+      "zh-hant": "傑尼龜",
+      "en": "Squirtle",
+      "ja": "ゼニガメ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 44,
+      "atk": 48,
+      "def": 65,
+      "spa": 50,
+      "spd": 64,
+      "spe": 43
+    }
+  },
+  "8": {
+    "resourceType": "pokemon",
+    "id": 8,
+    "speciesId": 8,
+    "pokemonSlug": "wartortle",
+    "speciesSlug": "wartortle",
+    "calcSpeciesName": "Wartortle",
+    "names": {
+      "zh-hans": "卡咪龟",
+      "zh-hant": "卡咪龜",
+      "en": "Wartortle",
+      "ja": "カメール"
+    },
+    "speciesNames": {
+      "zh-hans": "卡咪龟",
+      "zh-hant": "卡咪龜",
+      "en": "Wartortle",
+      "ja": "カメール"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 59,
+      "atk": 63,
+      "def": 80,
+      "spa": 65,
+      "spd": 80,
+      "spe": 58
+    }
+  },
+  "9": {
+    "resourceType": "pokemon",
+    "id": 9,
+    "speciesId": 9,
+    "pokemonSlug": "blastoise",
+    "speciesSlug": "blastoise",
+    "calcSpeciesName": "Blastoise",
+    "names": {
+      "zh-hans": "水箭龟",
+      "zh-hant": "水箭龜",
+      "en": "Blastoise",
+      "ja": "カメックス"
+    },
+    "speciesNames": {
+      "zh-hans": "水箭龟",
+      "zh-hant": "水箭龜",
+      "en": "Blastoise",
+      "ja": "カメックス"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 79,
+      "atk": 83,
+      "def": 100,
+      "spa": 85,
+      "spd": 105,
+      "spe": 78
+    }
+  },
+  "10": {
+    "resourceType": "pokemon",
+    "id": 10,
+    "speciesId": 10,
+    "pokemonSlug": "caterpie",
+    "speciesSlug": "caterpie",
+    "calcSpeciesName": "Caterpie",
+    "names": {
+      "zh-hans": "绿毛虫",
+      "zh-hant": "綠毛蟲",
+      "en": "Caterpie",
+      "ja": "キャタピー"
+    },
+    "speciesNames": {
+      "zh-hans": "绿毛虫",
+      "zh-hant": "綠毛蟲",
+      "en": "Caterpie",
+      "ja": "キャタピー"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 30,
+      "def": 35,
+      "spa": 20,
+      "spd": 20,
+      "spe": 45
+    }
+  },
+  "11": {
+    "resourceType": "pokemon",
+    "id": 11,
+    "speciesId": 11,
+    "pokemonSlug": "metapod",
+    "speciesSlug": "metapod",
+    "calcSpeciesName": "Metapod",
+    "names": {
+      "zh-hans": "铁甲蛹",
+      "zh-hant": "鐵甲蛹",
+      "en": "Metapod",
+      "ja": "トランセル"
+    },
+    "speciesNames": {
+      "zh-hans": "铁甲蛹",
+      "zh-hant": "鐵甲蛹",
+      "en": "Metapod",
+      "ja": "トランセル"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 20,
+      "def": 55,
+      "spa": 25,
+      "spd": 25,
+      "spe": 30
+    }
+  },
+  "12": {
+    "resourceType": "pokemon",
+    "id": 12,
+    "speciesId": 12,
+    "pokemonSlug": "butterfree",
+    "speciesSlug": "butterfree",
+    "calcSpeciesName": "Butterfree",
+    "names": {
+      "zh-hans": "巴大蝶",
+      "zh-hant": "巴大蝶",
+      "en": "Butterfree",
+      "ja": "バタフリー"
+    },
+    "speciesNames": {
+      "zh-hans": "巴大蝶",
+      "zh-hant": "巴大蝶",
+      "en": "Butterfree",
+      "ja": "バタフリー"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 45,
+      "def": 50,
+      "spa": 90,
+      "spd": 80,
+      "spe": 70
+    }
+  },
+  "13": {
+    "resourceType": "pokemon",
+    "id": 13,
+    "speciesId": 13,
+    "pokemonSlug": "weedle",
+    "speciesSlug": "weedle",
+    "calcSpeciesName": "Weedle",
+    "names": {
+      "zh-hans": "独角虫",
+      "zh-hant": "獨角蟲",
+      "en": "Weedle",
+      "ja": "ビードル"
+    },
+    "speciesNames": {
+      "zh-hans": "独角虫",
+      "zh-hant": "獨角蟲",
+      "en": "Weedle",
+      "ja": "ビードル"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 35,
+      "def": 30,
+      "spa": 20,
+      "spd": 20,
+      "spe": 50
+    }
+  },
+  "14": {
+    "resourceType": "pokemon",
+    "id": 14,
+    "speciesId": 14,
+    "pokemonSlug": "kakuna",
+    "speciesSlug": "kakuna",
+    "calcSpeciesName": "Kakuna",
+    "names": {
+      "zh-hans": "铁壳蛹",
+      "zh-hant": "鐵殼蛹",
+      "en": "Kakuna",
+      "ja": "コクーン"
+    },
+    "speciesNames": {
+      "zh-hans": "铁壳蛹",
+      "zh-hant": "鐵殼蛹",
+      "en": "Kakuna",
+      "ja": "コクーン"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 25,
+      "def": 50,
+      "spa": 25,
+      "spd": 25,
+      "spe": 35
+    }
+  },
+  "15": {
+    "resourceType": "pokemon",
+    "id": 15,
+    "speciesId": 15,
+    "pokemonSlug": "beedrill",
+    "speciesSlug": "beedrill",
+    "calcSpeciesName": "Beedrill",
+    "names": {
+      "zh-hans": "大针蜂",
+      "zh-hant": "大針蜂",
+      "en": "Beedrill",
+      "ja": "スピアー"
+    },
+    "speciesNames": {
+      "zh-hans": "大针蜂",
+      "zh-hant": "大針蜂",
+      "en": "Beedrill",
+      "ja": "スピアー"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 90,
+      "def": 40,
+      "spa": 45,
+      "spd": 80,
+      "spe": 75
+    }
+  },
+  "16": {
+    "resourceType": "pokemon",
+    "id": 16,
+    "speciesId": 16,
+    "pokemonSlug": "pidgey",
+    "speciesSlug": "pidgey",
+    "calcSpeciesName": "Pidgey",
+    "names": {
+      "zh-hans": "波波",
+      "zh-hant": "波波",
+      "en": "Pidgey",
+      "ja": "ポッポ"
+    },
+    "speciesNames": {
+      "zh-hans": "波波",
+      "zh-hant": "波波",
+      "en": "Pidgey",
+      "ja": "ポッポ"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 45,
+      "def": 40,
+      "spa": 35,
+      "spd": 35,
+      "spe": 56
+    }
+  },
+  "17": {
+    "resourceType": "pokemon",
+    "id": 17,
+    "speciesId": 17,
+    "pokemonSlug": "pidgeotto",
+    "speciesSlug": "pidgeotto",
+    "calcSpeciesName": "Pidgeotto",
+    "names": {
+      "zh-hans": "比比鸟",
+      "zh-hant": "比比鳥",
+      "en": "Pidgeotto",
+      "ja": "ピジョン"
+    },
+    "speciesNames": {
+      "zh-hans": "比比鸟",
+      "zh-hant": "比比鳥",
+      "en": "Pidgeotto",
+      "ja": "ピジョン"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 63,
+      "atk": 60,
+      "def": 55,
+      "spa": 50,
+      "spd": 50,
+      "spe": 71
+    }
+  },
+  "18": {
+    "resourceType": "pokemon",
+    "id": 18,
+    "speciesId": 18,
+    "pokemonSlug": "pidgeot",
+    "speciesSlug": "pidgeot",
+    "calcSpeciesName": "Pidgeot",
+    "names": {
+      "zh-hans": "大比鸟",
+      "zh-hant": "大比鳥",
+      "en": "Pidgeot",
+      "ja": "ピジョット"
+    },
+    "speciesNames": {
+      "zh-hans": "大比鸟",
+      "zh-hant": "大比鳥",
+      "en": "Pidgeot",
+      "ja": "ピジョット"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 83,
+      "atk": 80,
+      "def": 75,
+      "spa": 70,
+      "spd": 70,
+      "spe": 101
+    }
+  },
+  "19": {
+    "resourceType": "pokemon",
+    "id": 19,
+    "speciesId": 19,
+    "pokemonSlug": "rattata",
+    "speciesSlug": "rattata",
+    "calcSpeciesName": "Rattata",
+    "names": {
+      "zh-hans": "小拉达",
+      "zh-hant": "小拉達",
+      "en": "Rattata",
+      "ja": "コラッタ"
+    },
+    "speciesNames": {
+      "zh-hans": "小拉达",
+      "zh-hant": "小拉達",
+      "en": "Rattata",
+      "ja": "コラッタ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 30,
+      "atk": 56,
+      "def": 35,
+      "spa": 25,
+      "spd": 35,
+      "spe": 72
+    }
+  },
+  "20": {
+    "resourceType": "pokemon",
+    "id": 20,
+    "speciesId": 20,
+    "pokemonSlug": "raticate",
+    "speciesSlug": "raticate",
+    "calcSpeciesName": "Raticate",
+    "names": {
+      "zh-hans": "拉达",
+      "zh-hant": "拉達",
+      "en": "Raticate",
+      "ja": "ラッタ"
+    },
+    "speciesNames": {
+      "zh-hans": "拉达",
+      "zh-hant": "拉達",
+      "en": "Raticate",
+      "ja": "ラッタ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 81,
+      "def": 60,
+      "spa": 50,
+      "spd": 70,
+      "spe": 97
+    }
+  },
+  "21": {
+    "resourceType": "pokemon",
+    "id": 21,
+    "speciesId": 21,
+    "pokemonSlug": "spearow",
+    "speciesSlug": "spearow",
+    "calcSpeciesName": "Spearow",
+    "names": {
+      "zh-hans": "烈雀",
+      "zh-hant": "烈雀",
+      "en": "Spearow",
+      "ja": "オニスズメ"
+    },
+    "speciesNames": {
+      "zh-hans": "烈雀",
+      "zh-hant": "烈雀",
+      "en": "Spearow",
+      "ja": "オニスズメ"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 60,
+      "def": 30,
+      "spa": 31,
+      "spd": 31,
+      "spe": 70
+    }
+  },
+  "22": {
+    "resourceType": "pokemon",
+    "id": 22,
+    "speciesId": 22,
+    "pokemonSlug": "fearow",
+    "speciesSlug": "fearow",
+    "calcSpeciesName": "Fearow",
+    "names": {
+      "zh-hans": "大嘴雀",
+      "zh-hant": "大嘴雀",
+      "en": "Fearow",
+      "ja": "オニドリル"
+    },
+    "speciesNames": {
+      "zh-hans": "大嘴雀",
+      "zh-hant": "大嘴雀",
+      "en": "Fearow",
+      "ja": "オニドリル"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 90,
+      "def": 65,
+      "spa": 61,
+      "spd": 61,
+      "spe": 100
+    }
+  },
+  "23": {
+    "resourceType": "pokemon",
+    "id": 23,
+    "speciesId": 23,
+    "pokemonSlug": "ekans",
+    "speciesSlug": "ekans",
+    "calcSpeciesName": "Ekans",
+    "names": {
+      "zh-hans": "阿柏蛇",
+      "zh-hant": "阿柏蛇",
+      "en": "Ekans",
+      "ja": "アーボ"
+    },
+    "speciesNames": {
+      "zh-hans": "阿柏蛇",
+      "zh-hant": "阿柏蛇",
+      "en": "Ekans",
+      "ja": "アーボ"
+    },
+    "formNames": {},
+    "types": [
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 60,
+      "def": 44,
+      "spa": 40,
+      "spd": 54,
+      "spe": 55
+    }
+  },
+  "24": {
+    "resourceType": "pokemon",
+    "id": 24,
+    "speciesId": 24,
+    "pokemonSlug": "arbok",
+    "speciesSlug": "arbok",
+    "calcSpeciesName": "Arbok",
+    "names": {
+      "zh-hans": "阿柏怪",
+      "zh-hant": "阿柏怪",
+      "en": "Arbok",
+      "ja": "アーボック"
+    },
+    "speciesNames": {
+      "zh-hans": "阿柏怪",
+      "zh-hant": "阿柏怪",
+      "en": "Arbok",
+      "ja": "アーボック"
+    },
+    "formNames": {},
+    "types": [
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 95,
+      "def": 69,
+      "spa": 65,
+      "spd": 79,
+      "spe": 80
+    }
+  },
+  "25": {
+    "resourceType": "pokemon",
+    "id": 25,
+    "speciesId": 25,
+    "pokemonSlug": "pikachu",
+    "speciesSlug": "pikachu",
+    "calcSpeciesName": "Pikachu",
+    "names": {
+      "zh-hans": "皮卡丘",
+      "zh-hant": "皮卡丘",
+      "en": "Pikachu",
+      "ja": "ピカチュウ"
+    },
+    "speciesNames": {
+      "zh-hans": "皮卡丘",
+      "zh-hant": "皮卡丘",
+      "en": "Pikachu",
+      "ja": "ピカチュウ"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 55,
+      "def": 40,
+      "spa": 50,
+      "spd": 50,
+      "spe": 90
+    }
+  },
+  "26": {
+    "resourceType": "pokemon",
+    "id": 26,
+    "speciesId": 26,
+    "pokemonSlug": "raichu",
+    "speciesSlug": "raichu",
+    "calcSpeciesName": "Raichu",
+    "names": {
+      "zh-hans": "雷丘",
+      "zh-hant": "雷丘",
+      "en": "Raichu",
+      "ja": "ライチュウ"
+    },
+    "speciesNames": {
+      "zh-hans": "雷丘",
+      "zh-hant": "雷丘",
+      "en": "Raichu",
+      "ja": "ライチュウ"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 90,
+      "def": 55,
+      "spa": 90,
+      "spd": 80,
+      "spe": 110
+    }
+  },
+  "27": {
+    "resourceType": "pokemon",
+    "id": 27,
+    "speciesId": 27,
+    "pokemonSlug": "sandshrew",
+    "speciesSlug": "sandshrew",
+    "calcSpeciesName": "Sandshrew",
+    "names": {
+      "zh-hans": "穿山鼠",
+      "zh-hant": "穿山鼠",
+      "en": "Sandshrew",
+      "ja": "サンド"
+    },
+    "speciesNames": {
+      "zh-hans": "穿山鼠",
+      "zh-hant": "穿山鼠",
+      "en": "Sandshrew",
+      "ja": "サンド"
+    },
+    "formNames": {},
+    "types": [
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 75,
+      "def": 85,
+      "spa": 20,
+      "spd": 30,
+      "spe": 40
+    }
+  },
+  "28": {
+    "resourceType": "pokemon",
+    "id": 28,
+    "speciesId": 28,
+    "pokemonSlug": "sandslash",
+    "speciesSlug": "sandslash",
+    "calcSpeciesName": "Sandslash",
+    "names": {
+      "zh-hans": "穿山王",
+      "zh-hant": "穿山王",
+      "en": "Sandslash",
+      "ja": "サンドパン"
+    },
+    "speciesNames": {
+      "zh-hans": "穿山王",
+      "zh-hant": "穿山王",
+      "en": "Sandslash",
+      "ja": "サンドパン"
+    },
+    "formNames": {},
+    "types": [
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 100,
+      "def": 110,
+      "spa": 45,
+      "spd": 55,
+      "spe": 65
+    }
+  },
+  "29": {
+    "resourceType": "pokemon",
+    "id": 29,
+    "speciesId": 29,
+    "pokemonSlug": "nidoran-f",
+    "speciesSlug": "nidoran-f",
+    "calcSpeciesName": "Nidoran♀",
+    "names": {
+      "zh-hans": "尼多兰",
+      "zh-hant": "尼多蘭",
+      "en": "Nidoran♀",
+      "ja": "ニドラン♀"
+    },
+    "speciesNames": {
+      "zh-hans": "尼多兰",
+      "zh-hant": "尼多蘭",
+      "en": "Nidoran♀",
+      "ja": "ニドラン♀"
+    },
+    "formNames": {},
+    "types": [
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 47,
+      "def": 52,
+      "spa": 40,
+      "spd": 40,
+      "spe": 41
+    }
+  },
+  "30": {
+    "resourceType": "pokemon",
+    "id": 30,
+    "speciesId": 30,
+    "pokemonSlug": "nidorina",
+    "speciesSlug": "nidorina",
+    "calcSpeciesName": "Nidorina",
+    "names": {
+      "zh-hans": "尼多娜",
+      "zh-hant": "尼多娜",
+      "en": "Nidorina",
+      "ja": "ニドリーナ"
+    },
+    "speciesNames": {
+      "zh-hans": "尼多娜",
+      "zh-hant": "尼多娜",
+      "en": "Nidorina",
+      "ja": "ニドリーナ"
+    },
+    "formNames": {},
+    "types": [
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 62,
+      "def": 67,
+      "spa": 55,
+      "spd": 55,
+      "spe": 56
+    }
+  },
+  "31": {
+    "resourceType": "pokemon",
+    "id": 31,
+    "speciesId": 31,
+    "pokemonSlug": "nidoqueen",
+    "speciesSlug": "nidoqueen",
+    "calcSpeciesName": "Nidoqueen",
+    "names": {
+      "zh-hans": "尼多后",
+      "zh-hant": "尼多后",
+      "en": "Nidoqueen",
+      "ja": "ニドクイン"
+    },
+    "speciesNames": {
+      "zh-hans": "尼多后",
+      "zh-hant": "尼多后",
+      "en": "Nidoqueen",
+      "ja": "ニドクイン"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 92,
+      "def": 87,
+      "spa": 75,
+      "spd": 85,
+      "spe": 76
+    }
+  },
+  "32": {
+    "resourceType": "pokemon",
+    "id": 32,
+    "speciesId": 32,
+    "pokemonSlug": "nidoran-m",
+    "speciesSlug": "nidoran-m",
+    "calcSpeciesName": "Nidoran♂",
+    "names": {
+      "zh-hans": "尼多朗",
+      "zh-hant": "尼多朗",
+      "en": "Nidoran♂",
+      "ja": "ニドラン♂"
+    },
+    "speciesNames": {
+      "zh-hans": "尼多朗",
+      "zh-hant": "尼多朗",
+      "en": "Nidoran♂",
+      "ja": "ニドラン♂"
+    },
+    "formNames": {},
+    "types": [
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 46,
+      "atk": 57,
+      "def": 40,
+      "spa": 40,
+      "spd": 40,
+      "spe": 50
+    }
+  },
+  "33": {
+    "resourceType": "pokemon",
+    "id": 33,
+    "speciesId": 33,
+    "pokemonSlug": "nidorino",
+    "speciesSlug": "nidorino",
+    "calcSpeciesName": "Nidorino",
+    "names": {
+      "zh-hans": "尼多力诺",
+      "zh-hant": "尼多力諾",
+      "en": "Nidorino",
+      "ja": "ニドリーノ"
+    },
+    "speciesNames": {
+      "zh-hans": "尼多力诺",
+      "zh-hant": "尼多力諾",
+      "en": "Nidorino",
+      "ja": "ニドリーノ"
+    },
+    "formNames": {},
+    "types": [
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 61,
+      "atk": 72,
+      "def": 57,
+      "spa": 55,
+      "spd": 55,
+      "spe": 65
+    }
+  },
+  "34": {
+    "resourceType": "pokemon",
+    "id": 34,
+    "speciesId": 34,
+    "pokemonSlug": "nidoking",
+    "speciesSlug": "nidoking",
+    "calcSpeciesName": "Nidoking",
+    "names": {
+      "zh-hans": "尼多王",
+      "zh-hant": "尼多王",
+      "en": "Nidoking",
+      "ja": "ニドキング"
+    },
+    "speciesNames": {
+      "zh-hans": "尼多王",
+      "zh-hant": "尼多王",
+      "en": "Nidoking",
+      "ja": "ニドキング"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 81,
+      "atk": 102,
+      "def": 77,
+      "spa": 85,
+      "spd": 75,
+      "spe": 85
+    }
+  },
+  "35": {
+    "resourceType": "pokemon",
+    "id": 35,
+    "speciesId": 35,
+    "pokemonSlug": "clefairy",
+    "speciesSlug": "clefairy",
+    "calcSpeciesName": "Clefairy",
+    "names": {
+      "zh-hans": "皮皮",
+      "zh-hant": "皮皮",
+      "en": "Clefairy",
+      "ja": "ピッピ"
+    },
+    "speciesNames": {
+      "zh-hans": "皮皮",
+      "zh-hant": "皮皮",
+      "en": "Clefairy",
+      "ja": "ピッピ"
+    },
+    "formNames": {},
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 45,
+      "def": 48,
+      "spa": 60,
+      "spd": 65,
+      "spe": 35
+    }
+  },
+  "36": {
+    "resourceType": "pokemon",
+    "id": 36,
+    "speciesId": 36,
+    "pokemonSlug": "clefable",
+    "speciesSlug": "clefable",
+    "calcSpeciesName": "Clefable",
+    "names": {
+      "zh-hans": "皮可西",
+      "zh-hant": "皮可西",
+      "en": "Clefable",
+      "ja": "ピクシー"
+    },
+    "speciesNames": {
+      "zh-hans": "皮可西",
+      "zh-hant": "皮可西",
+      "en": "Clefable",
+      "ja": "ピクシー"
+    },
+    "formNames": {},
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 70,
+      "def": 73,
+      "spa": 95,
+      "spd": 90,
+      "spe": 60
+    }
+  },
+  "37": {
+    "resourceType": "pokemon",
+    "id": 37,
+    "speciesId": 37,
+    "pokemonSlug": "vulpix",
+    "speciesSlug": "vulpix",
+    "calcSpeciesName": "Vulpix",
+    "names": {
+      "zh-hans": "六尾",
+      "zh-hant": "六尾",
+      "en": "Vulpix",
+      "ja": "ロコン"
+    },
+    "speciesNames": {
+      "zh-hans": "六尾",
+      "zh-hant": "六尾",
+      "en": "Vulpix",
+      "ja": "ロコン"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 38,
+      "atk": 41,
+      "def": 40,
+      "spa": 50,
+      "spd": 65,
+      "spe": 65
+    }
+  },
+  "38": {
+    "resourceType": "pokemon",
+    "id": 38,
+    "speciesId": 38,
+    "pokemonSlug": "ninetales",
+    "speciesSlug": "ninetales",
+    "calcSpeciesName": "Ninetales",
+    "names": {
+      "zh-hans": "九尾",
+      "zh-hant": "九尾",
+      "en": "Ninetales",
+      "ja": "キュウコン"
+    },
+    "speciesNames": {
+      "zh-hans": "九尾",
+      "zh-hant": "九尾",
+      "en": "Ninetales",
+      "ja": "キュウコン"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 73,
+      "atk": 76,
+      "def": 75,
+      "spa": 81,
+      "spd": 100,
+      "spe": 100
+    }
+  },
+  "39": {
+    "resourceType": "pokemon",
+    "id": 39,
+    "speciesId": 39,
+    "pokemonSlug": "jigglypuff",
+    "speciesSlug": "jigglypuff",
+    "calcSpeciesName": "Jigglypuff",
+    "names": {
+      "zh-hans": "胖丁",
+      "zh-hant": "胖丁",
+      "en": "Jigglypuff",
+      "ja": "プリン"
+    },
+    "speciesNames": {
+      "zh-hans": "胖丁",
+      "zh-hant": "胖丁",
+      "en": "Jigglypuff",
+      "ja": "プリン"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 115,
+      "atk": 45,
+      "def": 20,
+      "spa": 45,
+      "spd": 25,
+      "spe": 20
+    }
+  },
+  "40": {
+    "resourceType": "pokemon",
+    "id": 40,
+    "speciesId": 40,
+    "pokemonSlug": "wigglytuff",
+    "speciesSlug": "wigglytuff",
+    "calcSpeciesName": "Wigglytuff",
+    "names": {
+      "zh-hans": "胖可丁",
+      "zh-hant": "胖可丁",
+      "en": "Wigglytuff",
+      "ja": "プクリン"
+    },
+    "speciesNames": {
+      "zh-hans": "胖可丁",
+      "zh-hant": "胖可丁",
+      "en": "Wigglytuff",
+      "ja": "プクリン"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 140,
+      "atk": 70,
+      "def": 45,
+      "spa": 85,
+      "spd": 50,
+      "spe": 45
+    }
+  },
+  "41": {
+    "resourceType": "pokemon",
+    "id": 41,
+    "speciesId": 41,
+    "pokemonSlug": "zubat",
+    "speciesSlug": "zubat",
+    "calcSpeciesName": "Zubat",
+    "names": {
+      "zh-hans": "超音蝠",
+      "zh-hant": "超音蝠",
+      "en": "Zubat",
+      "ja": "ズバット"
+    },
+    "speciesNames": {
+      "zh-hans": "超音蝠",
+      "zh-hant": "超音蝠",
+      "en": "Zubat",
+      "ja": "ズバット"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 45,
+      "def": 35,
+      "spa": 30,
+      "spd": 40,
+      "spe": 55
+    }
+  },
+  "42": {
+    "resourceType": "pokemon",
+    "id": 42,
+    "speciesId": 42,
+    "pokemonSlug": "golbat",
+    "speciesSlug": "golbat",
+    "calcSpeciesName": "Golbat",
+    "names": {
+      "zh-hans": "大嘴蝠",
+      "zh-hant": "大嘴蝠",
+      "en": "Golbat",
+      "ja": "ゴルバット"
+    },
+    "speciesNames": {
+      "zh-hans": "大嘴蝠",
+      "zh-hant": "大嘴蝠",
+      "en": "Golbat",
+      "ja": "ゴルバット"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 80,
+      "def": 70,
+      "spa": 65,
+      "spd": 75,
+      "spe": 90
+    }
+  },
+  "43": {
+    "resourceType": "pokemon",
+    "id": 43,
+    "speciesId": 43,
+    "pokemonSlug": "oddish",
+    "speciesSlug": "oddish",
+    "calcSpeciesName": "Oddish",
+    "names": {
+      "zh-hans": "走路草",
+      "zh-hant": "走路草",
+      "en": "Oddish",
+      "ja": "ナゾノクサ"
+    },
+    "speciesNames": {
+      "zh-hans": "走路草",
+      "zh-hant": "走路草",
+      "en": "Oddish",
+      "ja": "ナゾノクサ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 50,
+      "def": 55,
+      "spa": 75,
+      "spd": 65,
+      "spe": 30
+    }
+  },
+  "44": {
+    "resourceType": "pokemon",
+    "id": 44,
+    "speciesId": 44,
+    "pokemonSlug": "gloom",
+    "speciesSlug": "gloom",
+    "calcSpeciesName": "Gloom",
+    "names": {
+      "zh-hans": "臭臭花",
+      "zh-hant": "臭臭花",
+      "en": "Gloom",
+      "ja": "クサイハナ"
+    },
+    "speciesNames": {
+      "zh-hans": "臭臭花",
+      "zh-hant": "臭臭花",
+      "en": "Gloom",
+      "ja": "クサイハナ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 65,
+      "def": 70,
+      "spa": 85,
+      "spd": 75,
+      "spe": 40
+    }
+  },
+  "45": {
+    "resourceType": "pokemon",
+    "id": 45,
+    "speciesId": 45,
+    "pokemonSlug": "vileplume",
+    "speciesSlug": "vileplume",
+    "calcSpeciesName": "Vileplume",
+    "names": {
+      "zh-hans": "霸王花",
+      "zh-hant": "霸王花",
+      "en": "Vileplume",
+      "ja": "ラフレシア"
+    },
+    "speciesNames": {
+      "zh-hans": "霸王花",
+      "zh-hant": "霸王花",
+      "en": "Vileplume",
+      "ja": "ラフレシア"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 80,
+      "def": 85,
+      "spa": 110,
+      "spd": 90,
+      "spe": 50
+    }
+  },
+  "46": {
+    "resourceType": "pokemon",
+    "id": 46,
+    "speciesId": 46,
+    "pokemonSlug": "paras",
+    "speciesSlug": "paras",
+    "calcSpeciesName": "Paras",
+    "names": {
+      "zh-hans": "派拉斯",
+      "zh-hant": "派拉斯",
+      "en": "Paras",
+      "ja": "パラス"
+    },
+    "speciesNames": {
+      "zh-hans": "派拉斯",
+      "zh-hant": "派拉斯",
+      "en": "Paras",
+      "ja": "パラス"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 70,
+      "def": 55,
+      "spa": 45,
+      "spd": 55,
+      "spe": 25
+    }
+  },
+  "47": {
+    "resourceType": "pokemon",
+    "id": 47,
+    "speciesId": 47,
+    "pokemonSlug": "parasect",
+    "speciesSlug": "parasect",
+    "calcSpeciesName": "Parasect",
+    "names": {
+      "zh-hans": "派拉斯特",
+      "zh-hant": "派拉斯特",
+      "en": "Parasect",
+      "ja": "パラセクト"
+    },
+    "speciesNames": {
+      "zh-hans": "派拉斯特",
+      "zh-hant": "派拉斯特",
+      "en": "Parasect",
+      "ja": "パラセクト"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 95,
+      "def": 80,
+      "spa": 60,
+      "spd": 80,
+      "spe": 30
+    }
+  },
+  "48": {
+    "resourceType": "pokemon",
+    "id": 48,
+    "speciesId": 48,
+    "pokemonSlug": "venonat",
+    "speciesSlug": "venonat",
+    "calcSpeciesName": "Venonat",
+    "names": {
+      "zh-hans": "毛球",
+      "zh-hant": "毛球",
+      "en": "Venonat",
+      "ja": "コンパン"
+    },
+    "speciesNames": {
+      "zh-hans": "毛球",
+      "zh-hant": "毛球",
+      "en": "Venonat",
+      "ja": "コンパン"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 55,
+      "def": 50,
+      "spa": 40,
+      "spd": 55,
+      "spe": 45
+    }
+  },
+  "49": {
+    "resourceType": "pokemon",
+    "id": 49,
+    "speciesId": 49,
+    "pokemonSlug": "venomoth",
+    "speciesSlug": "venomoth",
+    "calcSpeciesName": "Venomoth",
+    "names": {
+      "zh-hans": "摩鲁蛾",
+      "zh-hant": "摩魯蛾",
+      "en": "Venomoth",
+      "ja": "モルフォン"
+    },
+    "speciesNames": {
+      "zh-hans": "摩鲁蛾",
+      "zh-hant": "摩魯蛾",
+      "en": "Venomoth",
+      "ja": "モルフォン"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 65,
+      "def": 60,
+      "spa": 90,
+      "spd": 75,
+      "spe": 90
+    }
+  },
+  "50": {
+    "resourceType": "pokemon",
+    "id": 50,
+    "speciesId": 50,
+    "pokemonSlug": "diglett",
+    "speciesSlug": "diglett",
+    "calcSpeciesName": "Diglett",
+    "names": {
+      "zh-hans": "地鼠",
+      "zh-hant": "地鼠",
+      "en": "Diglett",
+      "ja": "ディグダ"
+    },
+    "speciesNames": {
+      "zh-hans": "地鼠",
+      "zh-hant": "地鼠",
+      "en": "Diglett",
+      "ja": "ディグダ"
+    },
+    "formNames": {},
+    "types": [
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 10,
+      "atk": 55,
+      "def": 25,
+      "spa": 35,
+      "spd": 45,
+      "spe": 95
+    }
+  },
+  "51": {
+    "resourceType": "pokemon",
+    "id": 51,
+    "speciesId": 51,
+    "pokemonSlug": "dugtrio",
+    "speciesSlug": "dugtrio",
+    "calcSpeciesName": "Dugtrio",
+    "names": {
+      "zh-hans": "三地鼠",
+      "zh-hant": "三地鼠",
+      "en": "Dugtrio",
+      "ja": "ダグトリオ"
+    },
+    "speciesNames": {
+      "zh-hans": "三地鼠",
+      "zh-hant": "三地鼠",
+      "en": "Dugtrio",
+      "ja": "ダグトリオ"
+    },
+    "formNames": {},
+    "types": [
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 100,
+      "def": 50,
+      "spa": 50,
+      "spd": 70,
+      "spe": 120
+    }
+  },
+  "52": {
+    "resourceType": "pokemon",
+    "id": 52,
+    "speciesId": 52,
+    "pokemonSlug": "meowth",
+    "speciesSlug": "meowth",
+    "calcSpeciesName": "Meowth",
+    "names": {
+      "zh-hans": "喵喵",
+      "zh-hant": "喵喵",
+      "en": "Meowth",
+      "ja": "ニャース"
+    },
+    "speciesNames": {
+      "zh-hans": "喵喵",
+      "zh-hant": "喵喵",
+      "en": "Meowth",
+      "ja": "ニャース"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 45,
+      "def": 35,
+      "spa": 40,
+      "spd": 40,
+      "spe": 90
+    }
+  },
+  "53": {
+    "resourceType": "pokemon",
+    "id": 53,
+    "speciesId": 53,
+    "pokemonSlug": "persian",
+    "speciesSlug": "persian",
+    "calcSpeciesName": "Persian",
+    "names": {
+      "zh-hans": "猫老大",
+      "zh-hant": "貓老大",
+      "en": "Persian",
+      "ja": "ペルシアン"
+    },
+    "speciesNames": {
+      "zh-hans": "猫老大",
+      "zh-hant": "貓老大",
+      "en": "Persian",
+      "ja": "ペルシアン"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 70,
+      "def": 60,
+      "spa": 65,
+      "spd": 65,
+      "spe": 115
+    }
+  },
+  "54": {
+    "resourceType": "pokemon",
+    "id": 54,
+    "speciesId": 54,
+    "pokemonSlug": "psyduck",
+    "speciesSlug": "psyduck",
+    "calcSpeciesName": "Psyduck",
+    "names": {
+      "zh-hans": "可达鸭",
+      "zh-hant": "可達鴨",
+      "en": "Psyduck",
+      "ja": "コダック"
+    },
+    "speciesNames": {
+      "zh-hans": "可达鸭",
+      "zh-hant": "可達鴨",
+      "en": "Psyduck",
+      "ja": "コダック"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 52,
+      "def": 48,
+      "spa": 65,
+      "spd": 50,
+      "spe": 55
+    }
+  },
+  "55": {
+    "resourceType": "pokemon",
+    "id": 55,
+    "speciesId": 55,
+    "pokemonSlug": "golduck",
+    "speciesSlug": "golduck",
+    "calcSpeciesName": "Golduck",
+    "names": {
+      "zh-hans": "哥达鸭",
+      "zh-hant": "哥達鴨",
+      "en": "Golduck",
+      "ja": "ゴルダック"
+    },
+    "speciesNames": {
+      "zh-hans": "哥达鸭",
+      "zh-hant": "哥達鴨",
+      "en": "Golduck",
+      "ja": "ゴルダック"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 82,
+      "def": 78,
+      "spa": 95,
+      "spd": 80,
+      "spe": 85
+    }
+  },
+  "56": {
+    "resourceType": "pokemon",
+    "id": 56,
+    "speciesId": 56,
+    "pokemonSlug": "mankey",
+    "speciesSlug": "mankey",
+    "calcSpeciesName": "Mankey",
+    "names": {
+      "zh-hans": "猴怪",
+      "zh-hant": "猴怪",
+      "en": "Mankey",
+      "ja": "マンキー"
+    },
+    "speciesNames": {
+      "zh-hans": "猴怪",
+      "zh-hant": "猴怪",
+      "en": "Mankey",
+      "ja": "マンキー"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 80,
+      "def": 35,
+      "spa": 35,
+      "spd": 45,
+      "spe": 70
+    }
+  },
+  "57": {
+    "resourceType": "pokemon",
+    "id": 57,
+    "speciesId": 57,
+    "pokemonSlug": "primeape",
+    "speciesSlug": "primeape",
+    "calcSpeciesName": "Primeape",
+    "names": {
+      "zh-hans": "火暴猴",
+      "zh-hant": "火爆猴",
+      "en": "Primeape",
+      "ja": "オコリザル"
+    },
+    "speciesNames": {
+      "zh-hans": "火暴猴",
+      "zh-hant": "火爆猴",
+      "en": "Primeape",
+      "ja": "オコリザル"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 105,
+      "def": 60,
+      "spa": 60,
+      "spd": 70,
+      "spe": 95
+    }
+  },
+  "58": {
+    "resourceType": "pokemon",
+    "id": 58,
+    "speciesId": 58,
+    "pokemonSlug": "growlithe",
+    "speciesSlug": "growlithe",
+    "calcSpeciesName": "Growlithe",
+    "names": {
+      "zh-hans": "卡蒂狗",
+      "zh-hant": "卡蒂狗",
+      "en": "Growlithe",
+      "ja": "ガーディ"
+    },
+    "speciesNames": {
+      "zh-hans": "卡蒂狗",
+      "zh-hant": "卡蒂狗",
+      "en": "Growlithe",
+      "ja": "ガーディ"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 70,
+      "def": 45,
+      "spa": 70,
+      "spd": 50,
+      "spe": 60
+    }
+  },
+  "59": {
+    "resourceType": "pokemon",
+    "id": 59,
+    "speciesId": 59,
+    "pokemonSlug": "arcanine",
+    "speciesSlug": "arcanine",
+    "calcSpeciesName": "Arcanine",
+    "names": {
+      "zh-hans": "风速狗",
+      "zh-hant": "風速狗",
+      "en": "Arcanine",
+      "ja": "ウインディ"
+    },
+    "speciesNames": {
+      "zh-hans": "风速狗",
+      "zh-hant": "風速狗",
+      "en": "Arcanine",
+      "ja": "ウインディ"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 110,
+      "def": 80,
+      "spa": 100,
+      "spd": 80,
+      "spe": 95
+    }
+  },
+  "60": {
+    "resourceType": "pokemon",
+    "id": 60,
+    "speciesId": 60,
+    "pokemonSlug": "poliwag",
+    "speciesSlug": "poliwag",
+    "calcSpeciesName": "Poliwag",
+    "names": {
+      "zh-hans": "蚊香蝌蚪",
+      "zh-hant": "蚊香蝌蚪",
+      "en": "Poliwag",
+      "ja": "ニョロモ"
+    },
+    "speciesNames": {
+      "zh-hans": "蚊香蝌蚪",
+      "zh-hant": "蚊香蝌蚪",
+      "en": "Poliwag",
+      "ja": "ニョロモ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 50,
+      "def": 40,
+      "spa": 40,
+      "spd": 40,
+      "spe": 90
+    }
+  },
+  "61": {
+    "resourceType": "pokemon",
+    "id": 61,
+    "speciesId": 61,
+    "pokemonSlug": "poliwhirl",
+    "speciesSlug": "poliwhirl",
+    "calcSpeciesName": "Poliwhirl",
+    "names": {
+      "zh-hans": "蚊香君",
+      "zh-hant": "蚊香君",
+      "en": "Poliwhirl",
+      "ja": "ニョロゾ"
+    },
+    "speciesNames": {
+      "zh-hans": "蚊香君",
+      "zh-hant": "蚊香君",
+      "en": "Poliwhirl",
+      "ja": "ニョロゾ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 65,
+      "def": 65,
+      "spa": 50,
+      "spd": 50,
+      "spe": 90
+    }
+  },
+  "62": {
+    "resourceType": "pokemon",
+    "id": 62,
+    "speciesId": 62,
+    "pokemonSlug": "poliwrath",
+    "speciesSlug": "poliwrath",
+    "calcSpeciesName": "Poliwrath",
+    "names": {
+      "zh-hans": "蚊香泳士",
+      "zh-hant": "蚊香泳士",
+      "en": "Poliwrath",
+      "ja": "ニョロボン"
+    },
+    "speciesNames": {
+      "zh-hans": "蚊香泳士",
+      "zh-hant": "蚊香泳士",
+      "en": "Poliwrath",
+      "ja": "ニョロボン"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 95,
+      "def": 95,
+      "spa": 70,
+      "spd": 90,
+      "spe": 70
+    }
+  },
+  "63": {
+    "resourceType": "pokemon",
+    "id": 63,
+    "speciesId": 63,
+    "pokemonSlug": "abra",
+    "speciesSlug": "abra",
+    "calcSpeciesName": "Abra",
+    "names": {
+      "zh-hans": "凯西",
+      "zh-hant": "凱西",
+      "en": "Abra",
+      "ja": "ケーシィ"
+    },
+    "speciesNames": {
+      "zh-hans": "凯西",
+      "zh-hant": "凱西",
+      "en": "Abra",
+      "ja": "ケーシィ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 25,
+      "atk": 20,
+      "def": 15,
+      "spa": 105,
+      "spd": 55,
+      "spe": 90
+    }
+  },
+  "64": {
+    "resourceType": "pokemon",
+    "id": 64,
+    "speciesId": 64,
+    "pokemonSlug": "kadabra",
+    "speciesSlug": "kadabra",
+    "calcSpeciesName": "Kadabra",
+    "names": {
+      "zh-hans": "勇基拉",
+      "zh-hant": "勇基拉",
+      "en": "Kadabra",
+      "ja": "ユンゲラー"
+    },
+    "speciesNames": {
+      "zh-hans": "勇基拉",
+      "zh-hant": "勇基拉",
+      "en": "Kadabra",
+      "ja": "ユンゲラー"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 35,
+      "def": 30,
+      "spa": 120,
+      "spd": 70,
+      "spe": 105
+    }
+  },
+  "65": {
+    "resourceType": "pokemon",
+    "id": 65,
+    "speciesId": 65,
+    "pokemonSlug": "alakazam",
+    "speciesSlug": "alakazam",
+    "calcSpeciesName": "Alakazam",
+    "names": {
+      "zh-hans": "胡地",
+      "zh-hant": "胡地",
+      "en": "Alakazam",
+      "ja": "フーディン"
+    },
+    "speciesNames": {
+      "zh-hans": "胡地",
+      "zh-hant": "胡地",
+      "en": "Alakazam",
+      "ja": "フーディン"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 50,
+      "def": 45,
+      "spa": 135,
+      "spd": 95,
+      "spe": 120
+    }
+  },
+  "66": {
+    "resourceType": "pokemon",
+    "id": 66,
+    "speciesId": 66,
+    "pokemonSlug": "machop",
+    "speciesSlug": "machop",
+    "calcSpeciesName": "Machop",
+    "names": {
+      "zh-hans": "腕力",
+      "zh-hant": "腕力",
+      "en": "Machop",
+      "ja": "ワンリキー"
+    },
+    "speciesNames": {
+      "zh-hans": "腕力",
+      "zh-hant": "腕力",
+      "en": "Machop",
+      "ja": "ワンリキー"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 80,
+      "def": 50,
+      "spa": 35,
+      "spd": 35,
+      "spe": 35
+    }
+  },
+  "67": {
+    "resourceType": "pokemon",
+    "id": 67,
+    "speciesId": 67,
+    "pokemonSlug": "machoke",
+    "speciesSlug": "machoke",
+    "calcSpeciesName": "Machoke",
+    "names": {
+      "zh-hans": "豪力",
+      "zh-hant": "豪力",
+      "en": "Machoke",
+      "ja": "ゴーリキー"
+    },
+    "speciesNames": {
+      "zh-hans": "豪力",
+      "zh-hant": "豪力",
+      "en": "Machoke",
+      "ja": "ゴーリキー"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 100,
+      "def": 70,
+      "spa": 50,
+      "spd": 60,
+      "spe": 45
+    }
+  },
+  "68": {
+    "resourceType": "pokemon",
+    "id": 68,
+    "speciesId": 68,
+    "pokemonSlug": "machamp",
+    "speciesSlug": "machamp",
+    "calcSpeciesName": "Machamp",
+    "names": {
+      "zh-hans": "怪力",
+      "zh-hant": "怪力",
+      "en": "Machamp",
+      "ja": "カイリキー"
+    },
+    "speciesNames": {
+      "zh-hans": "怪力",
+      "zh-hant": "怪力",
+      "en": "Machamp",
+      "ja": "カイリキー"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 130,
+      "def": 80,
+      "spa": 65,
+      "spd": 85,
+      "spe": 55
+    }
+  },
+  "69": {
+    "resourceType": "pokemon",
+    "id": 69,
+    "speciesId": 69,
+    "pokemonSlug": "bellsprout",
+    "speciesSlug": "bellsprout",
+    "calcSpeciesName": "Bellsprout",
+    "names": {
+      "zh-hans": "喇叭芽",
+      "zh-hant": "喇叭芽",
+      "en": "Bellsprout",
+      "ja": "マダツボミ"
+    },
+    "speciesNames": {
+      "zh-hans": "喇叭芽",
+      "zh-hant": "喇叭芽",
+      "en": "Bellsprout",
+      "ja": "マダツボミ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 75,
+      "def": 35,
+      "spa": 70,
+      "spd": 30,
+      "spe": 40
+    }
+  },
+  "70": {
+    "resourceType": "pokemon",
+    "id": 70,
+    "speciesId": 70,
+    "pokemonSlug": "weepinbell",
+    "speciesSlug": "weepinbell",
+    "calcSpeciesName": "Weepinbell",
+    "names": {
+      "zh-hans": "口呆花",
+      "zh-hant": "口呆花",
+      "en": "Weepinbell",
+      "ja": "ウツドン"
+    },
+    "speciesNames": {
+      "zh-hans": "口呆花",
+      "zh-hant": "口呆花",
+      "en": "Weepinbell",
+      "ja": "ウツドン"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 90,
+      "def": 50,
+      "spa": 85,
+      "spd": 45,
+      "spe": 55
+    }
+  },
+  "71": {
+    "resourceType": "pokemon",
+    "id": 71,
+    "speciesId": 71,
+    "pokemonSlug": "victreebel",
+    "speciesSlug": "victreebel",
+    "calcSpeciesName": "Victreebel",
+    "names": {
+      "zh-hans": "大食花",
+      "zh-hant": "大食花",
+      "en": "Victreebel",
+      "ja": "ウツボット"
+    },
+    "speciesNames": {
+      "zh-hans": "大食花",
+      "zh-hant": "大食花",
+      "en": "Victreebel",
+      "ja": "ウツボット"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 105,
+      "def": 65,
+      "spa": 100,
+      "spd": 70,
+      "spe": 70
+    }
+  },
+  "72": {
+    "resourceType": "pokemon",
+    "id": 72,
+    "speciesId": 72,
+    "pokemonSlug": "tentacool",
+    "speciesSlug": "tentacool",
+    "calcSpeciesName": "Tentacool",
+    "names": {
+      "zh-hans": "玛瑙水母",
+      "zh-hant": "瑪瑙水母",
+      "en": "Tentacool",
+      "ja": "メノクラゲ"
+    },
+    "speciesNames": {
+      "zh-hans": "玛瑙水母",
+      "zh-hant": "瑪瑙水母",
+      "en": "Tentacool",
+      "ja": "メノクラゲ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 40,
+      "def": 35,
+      "spa": 50,
+      "spd": 100,
+      "spe": 70
+    }
+  },
+  "73": {
+    "resourceType": "pokemon",
+    "id": 73,
+    "speciesId": 73,
+    "pokemonSlug": "tentacruel",
+    "speciesSlug": "tentacruel",
+    "calcSpeciesName": "Tentacruel",
+    "names": {
+      "zh-hans": "毒刺水母",
+      "zh-hant": "毒刺水母",
+      "en": "Tentacruel",
+      "ja": "ドククラゲ"
+    },
+    "speciesNames": {
+      "zh-hans": "毒刺水母",
+      "zh-hant": "毒刺水母",
+      "en": "Tentacruel",
+      "ja": "ドククラゲ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 70,
+      "def": 65,
+      "spa": 80,
+      "spd": 120,
+      "spe": 100
+    }
+  },
+  "74": {
+    "resourceType": "pokemon",
+    "id": 74,
+    "speciesId": 74,
+    "pokemonSlug": "geodude",
+    "speciesSlug": "geodude",
+    "calcSpeciesName": "Geodude",
+    "names": {
+      "zh-hans": "小拳石",
+      "zh-hant": "小拳石",
+      "en": "Geodude",
+      "ja": "イシツブテ"
+    },
+    "speciesNames": {
+      "zh-hans": "小拳石",
+      "zh-hant": "小拳石",
+      "en": "Geodude",
+      "ja": "イシツブテ"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 80,
+      "def": 100,
+      "spa": 30,
+      "spd": 30,
+      "spe": 20
+    }
+  },
+  "75": {
+    "resourceType": "pokemon",
+    "id": 75,
+    "speciesId": 75,
+    "pokemonSlug": "graveler",
+    "speciesSlug": "graveler",
+    "calcSpeciesName": "Graveler",
+    "names": {
+      "zh-hans": "隆隆石",
+      "zh-hant": "隆隆石",
+      "en": "Graveler",
+      "ja": "ゴローン"
+    },
+    "speciesNames": {
+      "zh-hans": "隆隆石",
+      "zh-hant": "隆隆石",
+      "en": "Graveler",
+      "ja": "ゴローン"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 95,
+      "def": 115,
+      "spa": 45,
+      "spd": 45,
+      "spe": 35
+    }
+  },
+  "76": {
+    "resourceType": "pokemon",
+    "id": 76,
+    "speciesId": 76,
+    "pokemonSlug": "golem",
+    "speciesSlug": "golem",
+    "calcSpeciesName": "Golem",
+    "names": {
+      "zh-hans": "隆隆岩",
+      "zh-hant": "隆隆岩",
+      "en": "Golem",
+      "ja": "ゴローニャ"
+    },
+    "speciesNames": {
+      "zh-hans": "隆隆岩",
+      "zh-hant": "隆隆岩",
+      "en": "Golem",
+      "ja": "ゴローニャ"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 120,
+      "def": 130,
+      "spa": 55,
+      "spd": 65,
+      "spe": 45
+    }
+  },
+  "77": {
+    "resourceType": "pokemon",
+    "id": 77,
+    "speciesId": 77,
+    "pokemonSlug": "ponyta",
+    "speciesSlug": "ponyta",
+    "calcSpeciesName": "Ponyta",
+    "names": {
+      "zh-hans": "小火马",
+      "zh-hant": "小火馬",
+      "en": "Ponyta",
+      "ja": "ポニータ"
+    },
+    "speciesNames": {
+      "zh-hans": "小火马",
+      "zh-hant": "小火馬",
+      "en": "Ponyta",
+      "ja": "ポニータ"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 85,
+      "def": 55,
+      "spa": 65,
+      "spd": 65,
+      "spe": 90
+    }
+  },
+  "78": {
+    "resourceType": "pokemon",
+    "id": 78,
+    "speciesId": 78,
+    "pokemonSlug": "rapidash",
+    "speciesSlug": "rapidash",
+    "calcSpeciesName": "Rapidash",
+    "names": {
+      "zh-hans": "烈焰马",
+      "zh-hant": "烈焰馬",
+      "en": "Rapidash",
+      "ja": "ギャロップ"
+    },
+    "speciesNames": {
+      "zh-hans": "烈焰马",
+      "zh-hant": "烈焰馬",
+      "en": "Rapidash",
+      "ja": "ギャロップ"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 100,
+      "def": 70,
+      "spa": 80,
+      "spd": 80,
+      "spe": 105
+    }
+  },
+  "79": {
+    "resourceType": "pokemon",
+    "id": 79,
+    "speciesId": 79,
+    "pokemonSlug": "slowpoke",
+    "speciesSlug": "slowpoke",
+    "calcSpeciesName": "Slowpoke",
+    "names": {
+      "zh-hans": "呆呆兽",
+      "zh-hant": "呆呆獸",
+      "en": "Slowpoke",
+      "ja": "ヤドン"
+    },
+    "speciesNames": {
+      "zh-hans": "呆呆兽",
+      "zh-hant": "呆呆獸",
+      "en": "Slowpoke",
+      "ja": "ヤドン"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 65,
+      "def": 65,
+      "spa": 40,
+      "spd": 40,
+      "spe": 15
+    }
+  },
+  "80": {
+    "resourceType": "pokemon",
+    "id": 80,
+    "speciesId": 80,
+    "pokemonSlug": "slowbro",
+    "speciesSlug": "slowbro",
+    "calcSpeciesName": "Slowbro",
+    "names": {
+      "zh-hans": "呆壳兽",
+      "zh-hant": "呆殼獸",
+      "en": "Slowbro",
+      "ja": "ヤドラン"
+    },
+    "speciesNames": {
+      "zh-hans": "呆壳兽",
+      "zh-hant": "呆殼獸",
+      "en": "Slowbro",
+      "ja": "ヤドラン"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 75,
+      "def": 110,
+      "spa": 100,
+      "spd": 80,
+      "spe": 30
+    }
+  },
+  "81": {
+    "resourceType": "pokemon",
+    "id": 81,
+    "speciesId": 81,
+    "pokemonSlug": "magnemite",
+    "speciesSlug": "magnemite",
+    "calcSpeciesName": "Magnemite",
+    "names": {
+      "zh-hans": "小磁怪",
+      "zh-hant": "小磁怪",
+      "en": "Magnemite",
+      "ja": "コイル"
+    },
+    "speciesNames": {
+      "zh-hans": "小磁怪",
+      "zh-hant": "小磁怪",
+      "en": "Magnemite",
+      "ja": "コイル"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 25,
+      "atk": 35,
+      "def": 70,
+      "spa": 95,
+      "spd": 55,
+      "spe": 45
+    }
+  },
+  "82": {
+    "resourceType": "pokemon",
+    "id": 82,
+    "speciesId": 82,
+    "pokemonSlug": "magneton",
+    "speciesSlug": "magneton",
+    "calcSpeciesName": "Magneton",
+    "names": {
+      "zh-hans": "三合一磁怪",
+      "zh-hant": "三合一磁怪",
+      "en": "Magneton",
+      "ja": "レアコイル"
+    },
+    "speciesNames": {
+      "zh-hans": "三合一磁怪",
+      "zh-hant": "三合一磁怪",
+      "en": "Magneton",
+      "ja": "レアコイル"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 60,
+      "def": 95,
+      "spa": 120,
+      "spd": 70,
+      "spe": 70
+    }
+  },
+  "83": {
+    "resourceType": "pokemon",
+    "id": 83,
+    "speciesId": 83,
+    "pokemonSlug": "farfetchd",
+    "speciesSlug": "farfetchd",
+    "calcSpeciesName": "Farfetch’d",
+    "names": {
+      "zh-hans": "大葱鸭",
+      "zh-hant": "大蔥鴨",
+      "en": "Farfetch’d",
+      "ja": "カモネギ"
+    },
+    "speciesNames": {
+      "zh-hans": "大葱鸭",
+      "zh-hant": "大蔥鴨",
+      "en": "Farfetch’d",
+      "ja": "カモネギ"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 52,
+      "atk": 90,
+      "def": 55,
+      "spa": 58,
+      "spd": 62,
+      "spe": 60
+    }
+  },
+  "84": {
+    "resourceType": "pokemon",
+    "id": 84,
+    "speciesId": 84,
+    "pokemonSlug": "doduo",
+    "speciesSlug": "doduo",
+    "calcSpeciesName": "Doduo",
+    "names": {
+      "zh-hans": "嘟嘟",
+      "zh-hant": "嘟嘟",
+      "en": "Doduo",
+      "ja": "ドードー"
+    },
+    "speciesNames": {
+      "zh-hans": "嘟嘟",
+      "zh-hant": "嘟嘟",
+      "en": "Doduo",
+      "ja": "ドードー"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 85,
+      "def": 45,
+      "spa": 35,
+      "spd": 35,
+      "spe": 75
+    }
+  },
+  "85": {
+    "resourceType": "pokemon",
+    "id": 85,
+    "speciesId": 85,
+    "pokemonSlug": "dodrio",
+    "speciesSlug": "dodrio",
+    "calcSpeciesName": "Dodrio",
+    "names": {
+      "zh-hans": "嘟嘟利",
+      "zh-hant": "嘟嘟利",
+      "en": "Dodrio",
+      "ja": "ドードリオ"
+    },
+    "speciesNames": {
+      "zh-hans": "嘟嘟利",
+      "zh-hant": "嘟嘟利",
+      "en": "Dodrio",
+      "ja": "ドードリオ"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 110,
+      "def": 70,
+      "spa": 60,
+      "spd": 60,
+      "spe": 110
+    }
+  },
+  "86": {
+    "resourceType": "pokemon",
+    "id": 86,
+    "speciesId": 86,
+    "pokemonSlug": "seel",
+    "speciesSlug": "seel",
+    "calcSpeciesName": "Seel",
+    "names": {
+      "zh-hans": "小海狮",
+      "zh-hant": "小海獅",
+      "en": "Seel",
+      "ja": "パウワウ"
+    },
+    "speciesNames": {
+      "zh-hans": "小海狮",
+      "zh-hant": "小海獅",
+      "en": "Seel",
+      "ja": "パウワウ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 45,
+      "def": 55,
+      "spa": 45,
+      "spd": 70,
+      "spe": 45
+    }
+  },
+  "87": {
+    "resourceType": "pokemon",
+    "id": 87,
+    "speciesId": 87,
+    "pokemonSlug": "dewgong",
+    "speciesSlug": "dewgong",
+    "calcSpeciesName": "Dewgong",
+    "names": {
+      "zh-hans": "白海狮",
+      "zh-hant": "白海獅",
+      "en": "Dewgong",
+      "ja": "ジュゴン"
+    },
+    "speciesNames": {
+      "zh-hans": "白海狮",
+      "zh-hant": "白海獅",
+      "en": "Dewgong",
+      "ja": "ジュゴン"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 70,
+      "def": 80,
+      "spa": 70,
+      "spd": 95,
+      "spe": 70
+    }
+  },
+  "88": {
+    "resourceType": "pokemon",
+    "id": 88,
+    "speciesId": 88,
+    "pokemonSlug": "grimer",
+    "speciesSlug": "grimer",
+    "calcSpeciesName": "Grimer",
+    "names": {
+      "zh-hans": "臭泥",
+      "zh-hant": "臭泥",
+      "en": "Grimer",
+      "ja": "ベトベター"
+    },
+    "speciesNames": {
+      "zh-hans": "臭泥",
+      "zh-hant": "臭泥",
+      "en": "Grimer",
+      "ja": "ベトベター"
+    },
+    "formNames": {},
+    "types": [
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 80,
+      "def": 50,
+      "spa": 40,
+      "spd": 50,
+      "spe": 25
+    }
+  },
+  "89": {
+    "resourceType": "pokemon",
+    "id": 89,
+    "speciesId": 89,
+    "pokemonSlug": "muk",
+    "speciesSlug": "muk",
+    "calcSpeciesName": "Muk",
+    "names": {
+      "zh-hans": "臭臭泥",
+      "zh-hant": "臭臭泥",
+      "en": "Muk",
+      "ja": "ベトベトン"
+    },
+    "speciesNames": {
+      "zh-hans": "臭臭泥",
+      "zh-hant": "臭臭泥",
+      "en": "Muk",
+      "ja": "ベトベトン"
+    },
+    "formNames": {},
+    "types": [
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 105,
+      "atk": 105,
+      "def": 75,
+      "spa": 65,
+      "spd": 100,
+      "spe": 50
+    }
+  },
+  "90": {
+    "resourceType": "pokemon",
+    "id": 90,
+    "speciesId": 90,
+    "pokemonSlug": "shellder",
+    "speciesSlug": "shellder",
+    "calcSpeciesName": "Shellder",
+    "names": {
+      "zh-hans": "大舌贝",
+      "zh-hant": "大舌貝",
+      "en": "Shellder",
+      "ja": "シェルダー"
+    },
+    "speciesNames": {
+      "zh-hans": "大舌贝",
+      "zh-hant": "大舌貝",
+      "en": "Shellder",
+      "ja": "シェルダー"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 30,
+      "atk": 65,
+      "def": 100,
+      "spa": 45,
+      "spd": 25,
+      "spe": 40
+    }
+  },
+  "91": {
+    "resourceType": "pokemon",
+    "id": 91,
+    "speciesId": 91,
+    "pokemonSlug": "cloyster",
+    "speciesSlug": "cloyster",
+    "calcSpeciesName": "Cloyster",
+    "names": {
+      "zh-hans": "刺甲贝",
+      "zh-hant": "刺甲貝",
+      "en": "Cloyster",
+      "ja": "パルシェン"
+    },
+    "speciesNames": {
+      "zh-hans": "刺甲贝",
+      "zh-hant": "刺甲貝",
+      "en": "Cloyster",
+      "ja": "パルシェン"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 95,
+      "def": 180,
+      "spa": 85,
+      "spd": 45,
+      "spe": 70
+    }
+  },
+  "92": {
+    "resourceType": "pokemon",
+    "id": 92,
+    "speciesId": 92,
+    "pokemonSlug": "gastly",
+    "speciesSlug": "gastly",
+    "calcSpeciesName": "Gastly",
+    "names": {
+      "zh-hans": "鬼斯",
+      "zh-hant": "鬼斯",
+      "en": "Gastly",
+      "ja": "ゴース"
+    },
+    "speciesNames": {
+      "zh-hans": "鬼斯",
+      "zh-hant": "鬼斯",
+      "en": "Gastly",
+      "ja": "ゴース"
+    },
+    "formNames": {},
+    "types": [
+      "ghost",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 30,
+      "atk": 35,
+      "def": 30,
+      "spa": 100,
+      "spd": 35,
+      "spe": 80
+    }
+  },
+  "93": {
+    "resourceType": "pokemon",
+    "id": 93,
+    "speciesId": 93,
+    "pokemonSlug": "haunter",
+    "speciesSlug": "haunter",
+    "calcSpeciesName": "Haunter",
+    "names": {
+      "zh-hans": "鬼斯通",
+      "zh-hant": "鬼斯通",
+      "en": "Haunter",
+      "ja": "ゴースト"
+    },
+    "speciesNames": {
+      "zh-hans": "鬼斯通",
+      "zh-hant": "鬼斯通",
+      "en": "Haunter",
+      "ja": "ゴースト"
+    },
+    "formNames": {},
+    "types": [
+      "ghost",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 50,
+      "def": 45,
+      "spa": 115,
+      "spd": 55,
+      "spe": 95
+    }
+  },
+  "94": {
+    "resourceType": "pokemon",
+    "id": 94,
+    "speciesId": 94,
+    "pokemonSlug": "gengar",
+    "speciesSlug": "gengar",
+    "calcSpeciesName": "Gengar",
+    "names": {
+      "zh-hans": "耿鬼",
+      "zh-hant": "耿鬼",
+      "en": "Gengar",
+      "ja": "ゲンガー"
+    },
+    "speciesNames": {
+      "zh-hans": "耿鬼",
+      "zh-hant": "耿鬼",
+      "en": "Gengar",
+      "ja": "ゲンガー"
+    },
+    "formNames": {},
+    "types": [
+      "ghost",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 65,
+      "def": 60,
+      "spa": 130,
+      "spd": 75,
+      "spe": 110
+    }
+  },
+  "95": {
+    "resourceType": "pokemon",
+    "id": 95,
+    "speciesId": 95,
+    "pokemonSlug": "onix",
+    "speciesSlug": "onix",
+    "calcSpeciesName": "Onix",
+    "names": {
+      "zh-hans": "大岩蛇",
+      "zh-hant": "大岩蛇",
+      "en": "Onix",
+      "ja": "イワーク"
+    },
+    "speciesNames": {
+      "zh-hans": "大岩蛇",
+      "zh-hant": "大岩蛇",
+      "en": "Onix",
+      "ja": "イワーク"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 45,
+      "def": 160,
+      "spa": 30,
+      "spd": 45,
+      "spe": 70
+    }
+  },
+  "96": {
+    "resourceType": "pokemon",
+    "id": 96,
+    "speciesId": 96,
+    "pokemonSlug": "drowzee",
+    "speciesSlug": "drowzee",
+    "calcSpeciesName": "Drowzee",
+    "names": {
+      "zh-hans": "催眠貘",
+      "zh-hant": "催眠貘",
+      "en": "Drowzee",
+      "ja": "スリープ"
+    },
+    "speciesNames": {
+      "zh-hans": "催眠貘",
+      "zh-hant": "催眠貘",
+      "en": "Drowzee",
+      "ja": "スリープ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 48,
+      "def": 45,
+      "spa": 43,
+      "spd": 90,
+      "spe": 42
+    }
+  },
+  "97": {
+    "resourceType": "pokemon",
+    "id": 97,
+    "speciesId": 97,
+    "pokemonSlug": "hypno",
+    "speciesSlug": "hypno",
+    "calcSpeciesName": "Hypno",
+    "names": {
+      "zh-hans": "引梦貘人",
+      "zh-hant": "引夢貘人",
+      "en": "Hypno",
+      "ja": "スリーパー"
+    },
+    "speciesNames": {
+      "zh-hans": "引梦貘人",
+      "zh-hant": "引夢貘人",
+      "en": "Hypno",
+      "ja": "スリーパー"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 73,
+      "def": 70,
+      "spa": 73,
+      "spd": 115,
+      "spe": 67
+    }
+  },
+  "98": {
+    "resourceType": "pokemon",
+    "id": 98,
+    "speciesId": 98,
+    "pokemonSlug": "krabby",
+    "speciesSlug": "krabby",
+    "calcSpeciesName": "Krabby",
+    "names": {
+      "zh-hans": "大钳蟹",
+      "zh-hant": "大鉗蟹",
+      "en": "Krabby",
+      "ja": "クラブ"
+    },
+    "speciesNames": {
+      "zh-hans": "大钳蟹",
+      "zh-hant": "大鉗蟹",
+      "en": "Krabby",
+      "ja": "クラブ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 30,
+      "atk": 105,
+      "def": 90,
+      "spa": 25,
+      "spd": 25,
+      "spe": 50
+    }
+  },
+  "99": {
+    "resourceType": "pokemon",
+    "id": 99,
+    "speciesId": 99,
+    "pokemonSlug": "kingler",
+    "speciesSlug": "kingler",
+    "calcSpeciesName": "Kingler",
+    "names": {
+      "zh-hans": "巨钳蟹",
+      "zh-hant": "巨鉗蟹",
+      "en": "Kingler",
+      "ja": "キングラー"
+    },
+    "speciesNames": {
+      "zh-hans": "巨钳蟹",
+      "zh-hant": "巨鉗蟹",
+      "en": "Kingler",
+      "ja": "キングラー"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 130,
+      "def": 115,
+      "spa": 50,
+      "spd": 50,
+      "spe": 75
+    }
+  },
+  "100": {
+    "resourceType": "pokemon",
+    "id": 100,
+    "speciesId": 100,
+    "pokemonSlug": "voltorb",
+    "speciesSlug": "voltorb",
+    "calcSpeciesName": "Voltorb",
+    "names": {
+      "zh-hans": "霹雳电球",
+      "zh-hant": "霹靂電球",
+      "en": "Voltorb",
+      "ja": "ビリリダマ"
+    },
+    "speciesNames": {
+      "zh-hans": "霹雳电球",
+      "zh-hant": "霹靂電球",
+      "en": "Voltorb",
+      "ja": "ビリリダマ"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 30,
+      "def": 50,
+      "spa": 55,
+      "spd": 55,
+      "spe": 100
+    }
+  },
+  "101": {
+    "resourceType": "pokemon",
+    "id": 101,
+    "speciesId": 101,
+    "pokemonSlug": "electrode",
+    "speciesSlug": "electrode",
+    "calcSpeciesName": "Electrode",
+    "names": {
+      "zh-hans": "顽皮雷弹",
+      "zh-hant": "頑皮雷彈",
+      "en": "Electrode",
+      "ja": "マルマイン"
+    },
+    "speciesNames": {
+      "zh-hans": "顽皮雷弹",
+      "zh-hant": "頑皮雷彈",
+      "en": "Electrode",
+      "ja": "マルマイン"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 50,
+      "def": 70,
+      "spa": 80,
+      "spd": 80,
+      "spe": 150
+    }
+  },
+  "102": {
+    "resourceType": "pokemon",
+    "id": 102,
+    "speciesId": 102,
+    "pokemonSlug": "exeggcute",
+    "speciesSlug": "exeggcute",
+    "calcSpeciesName": "Exeggcute",
+    "names": {
+      "zh-hans": "蛋蛋",
+      "zh-hant": "蛋蛋",
+      "en": "Exeggcute",
+      "ja": "タマタマ"
+    },
+    "speciesNames": {
+      "zh-hans": "蛋蛋",
+      "zh-hant": "蛋蛋",
+      "en": "Exeggcute",
+      "ja": "タマタマ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 40,
+      "def": 80,
+      "spa": 60,
+      "spd": 45,
+      "spe": 40
+    }
+  },
+  "103": {
+    "resourceType": "pokemon",
+    "id": 103,
+    "speciesId": 103,
+    "pokemonSlug": "exeggutor",
+    "speciesSlug": "exeggutor",
+    "calcSpeciesName": "Exeggutor",
+    "names": {
+      "zh-hans": "椰蛋树",
+      "zh-hant": "椰蛋樹",
+      "en": "Exeggutor",
+      "ja": "ナッシー"
+    },
+    "speciesNames": {
+      "zh-hans": "椰蛋树",
+      "zh-hant": "椰蛋樹",
+      "en": "Exeggutor",
+      "ja": "ナッシー"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 95,
+      "def": 85,
+      "spa": 125,
+      "spd": 75,
+      "spe": 55
+    }
+  },
+  "104": {
+    "resourceType": "pokemon",
+    "id": 104,
+    "speciesId": 104,
+    "pokemonSlug": "cubone",
+    "speciesSlug": "cubone",
+    "calcSpeciesName": "Cubone",
+    "names": {
+      "zh-hans": "卡拉卡拉",
+      "zh-hant": "卡拉卡拉",
+      "en": "Cubone",
+      "ja": "カラカラ"
+    },
+    "speciesNames": {
+      "zh-hans": "卡拉卡拉",
+      "zh-hant": "卡拉卡拉",
+      "en": "Cubone",
+      "ja": "カラカラ"
+    },
+    "formNames": {},
+    "types": [
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 50,
+      "def": 95,
+      "spa": 40,
+      "spd": 50,
+      "spe": 35
+    }
+  },
+  "105": {
+    "resourceType": "pokemon",
+    "id": 105,
+    "speciesId": 105,
+    "pokemonSlug": "marowak",
+    "speciesSlug": "marowak",
+    "calcSpeciesName": "Marowak",
+    "names": {
+      "zh-hans": "嘎啦嘎啦",
+      "zh-hant": "嘎啦嘎啦",
+      "en": "Marowak",
+      "ja": "ガラガラ"
+    },
+    "speciesNames": {
+      "zh-hans": "嘎啦嘎啦",
+      "zh-hant": "嘎啦嘎啦",
+      "en": "Marowak",
+      "ja": "ガラガラ"
+    },
+    "formNames": {},
+    "types": [
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 80,
+      "def": 110,
+      "spa": 50,
+      "spd": 80,
+      "spe": 45
+    }
+  },
+  "106": {
+    "resourceType": "pokemon",
+    "id": 106,
+    "speciesId": 106,
+    "pokemonSlug": "hitmonlee",
+    "speciesSlug": "hitmonlee",
+    "calcSpeciesName": "Hitmonlee",
+    "names": {
+      "zh-hans": "飞腿郎",
+      "zh-hant": "飛腿郎",
+      "en": "Hitmonlee",
+      "ja": "サワムラー"
+    },
+    "speciesNames": {
+      "zh-hans": "飞腿郎",
+      "zh-hant": "飛腿郎",
+      "en": "Hitmonlee",
+      "ja": "サワムラー"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 120,
+      "def": 53,
+      "spa": 35,
+      "spd": 110,
+      "spe": 87
+    }
+  },
+  "107": {
+    "resourceType": "pokemon",
+    "id": 107,
+    "speciesId": 107,
+    "pokemonSlug": "hitmonchan",
+    "speciesSlug": "hitmonchan",
+    "calcSpeciesName": "Hitmonchan",
+    "names": {
+      "zh-hans": "快拳郎",
+      "zh-hant": "快拳郎",
+      "en": "Hitmonchan",
+      "ja": "エビワラー"
+    },
+    "speciesNames": {
+      "zh-hans": "快拳郎",
+      "zh-hant": "快拳郎",
+      "en": "Hitmonchan",
+      "ja": "エビワラー"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 105,
+      "def": 79,
+      "spa": 35,
+      "spd": 110,
+      "spe": 76
+    }
+  },
+  "108": {
+    "resourceType": "pokemon",
+    "id": 108,
+    "speciesId": 108,
+    "pokemonSlug": "lickitung",
+    "speciesSlug": "lickitung",
+    "calcSpeciesName": "Lickitung",
+    "names": {
+      "zh-hans": "大舌头",
+      "zh-hant": "大舌頭",
+      "en": "Lickitung",
+      "ja": "ベロリンガ"
+    },
+    "speciesNames": {
+      "zh-hans": "大舌头",
+      "zh-hant": "大舌頭",
+      "en": "Lickitung",
+      "ja": "ベロリンガ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 55,
+      "def": 75,
+      "spa": 60,
+      "spd": 75,
+      "spe": 30
+    }
+  },
+  "109": {
+    "resourceType": "pokemon",
+    "id": 109,
+    "speciesId": 109,
+    "pokemonSlug": "koffing",
+    "speciesSlug": "koffing",
+    "calcSpeciesName": "Koffing",
+    "names": {
+      "zh-hans": "瓦斯弹",
+      "zh-hant": "瓦斯彈",
+      "en": "Koffing",
+      "ja": "ドガース"
+    },
+    "speciesNames": {
+      "zh-hans": "瓦斯弹",
+      "zh-hant": "瓦斯彈",
+      "en": "Koffing",
+      "ja": "ドガース"
+    },
+    "formNames": {},
+    "types": [
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 65,
+      "def": 95,
+      "spa": 60,
+      "spd": 45,
+      "spe": 35
+    }
+  },
+  "110": {
+    "resourceType": "pokemon",
+    "id": 110,
+    "speciesId": 110,
+    "pokemonSlug": "weezing",
+    "speciesSlug": "weezing",
+    "calcSpeciesName": "Weezing",
+    "names": {
+      "zh-hans": "双弹瓦斯",
+      "zh-hant": "雙彈瓦斯",
+      "en": "Weezing",
+      "ja": "マタドガス"
+    },
+    "speciesNames": {
+      "zh-hans": "双弹瓦斯",
+      "zh-hant": "雙彈瓦斯",
+      "en": "Weezing",
+      "ja": "マタドガス"
+    },
+    "formNames": {},
+    "types": [
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 90,
+      "def": 120,
+      "spa": 85,
+      "spd": 70,
+      "spe": 60
+    }
+  },
+  "111": {
+    "resourceType": "pokemon",
+    "id": 111,
+    "speciesId": 111,
+    "pokemonSlug": "rhyhorn",
+    "speciesSlug": "rhyhorn",
+    "calcSpeciesName": "Rhyhorn",
+    "names": {
+      "zh-hans": "独角犀牛",
+      "zh-hant": "獨角犀牛",
+      "en": "Rhyhorn",
+      "ja": "サイホーン"
+    },
+    "speciesNames": {
+      "zh-hans": "独角犀牛",
+      "zh-hant": "獨角犀牛",
+      "en": "Rhyhorn",
+      "ja": "サイホーン"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 85,
+      "def": 95,
+      "spa": 30,
+      "spd": 30,
+      "spe": 25
+    }
+  },
+  "112": {
+    "resourceType": "pokemon",
+    "id": 112,
+    "speciesId": 112,
+    "pokemonSlug": "rhydon",
+    "speciesSlug": "rhydon",
+    "calcSpeciesName": "Rhydon",
+    "names": {
+      "zh-hans": "钻角犀兽",
+      "zh-hant": "鑽角犀獸",
+      "en": "Rhydon",
+      "ja": "サイドン"
+    },
+    "speciesNames": {
+      "zh-hans": "钻角犀兽",
+      "zh-hant": "鑽角犀獸",
+      "en": "Rhydon",
+      "ja": "サイドン"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 105,
+      "atk": 130,
+      "def": 120,
+      "spa": 45,
+      "spd": 45,
+      "spe": 40
+    }
+  },
+  "113": {
+    "resourceType": "pokemon",
+    "id": 113,
+    "speciesId": 113,
+    "pokemonSlug": "chansey",
+    "speciesSlug": "chansey",
+    "calcSpeciesName": "Chansey",
+    "names": {
+      "zh-hans": "吉利蛋",
+      "zh-hant": "吉利蛋",
+      "en": "Chansey",
+      "ja": "ラッキー"
+    },
+    "speciesNames": {
+      "zh-hans": "吉利蛋",
+      "zh-hant": "吉利蛋",
+      "en": "Chansey",
+      "ja": "ラッキー"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 250,
+      "atk": 5,
+      "def": 5,
+      "spa": 35,
+      "spd": 105,
+      "spe": 50
+    }
+  },
+  "114": {
+    "resourceType": "pokemon",
+    "id": 114,
+    "speciesId": 114,
+    "pokemonSlug": "tangela",
+    "speciesSlug": "tangela",
+    "calcSpeciesName": "Tangela",
+    "names": {
+      "zh-hans": "蔓藤怪",
+      "zh-hant": "蔓藤怪",
+      "en": "Tangela",
+      "ja": "モンジャラ"
+    },
+    "speciesNames": {
+      "zh-hans": "蔓藤怪",
+      "zh-hant": "蔓藤怪",
+      "en": "Tangela",
+      "ja": "モンジャラ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 55,
+      "def": 115,
+      "spa": 100,
+      "spd": 40,
+      "spe": 60
+    }
+  },
+  "115": {
+    "resourceType": "pokemon",
+    "id": 115,
+    "speciesId": 115,
+    "pokemonSlug": "kangaskhan",
+    "speciesSlug": "kangaskhan",
+    "calcSpeciesName": "Kangaskhan",
+    "names": {
+      "zh-hans": "袋兽",
+      "zh-hant": "袋獸",
+      "en": "Kangaskhan",
+      "ja": "ガルーラ"
+    },
+    "speciesNames": {
+      "zh-hans": "袋兽",
+      "zh-hant": "袋獸",
+      "en": "Kangaskhan",
+      "ja": "ガルーラ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 105,
+      "atk": 95,
+      "def": 80,
+      "spa": 40,
+      "spd": 80,
+      "spe": 90
+    }
+  },
+  "116": {
+    "resourceType": "pokemon",
+    "id": 116,
+    "speciesId": 116,
+    "pokemonSlug": "horsea",
+    "speciesSlug": "horsea",
+    "calcSpeciesName": "Horsea",
+    "names": {
+      "zh-hans": "墨海马",
+      "zh-hant": "墨海馬",
+      "en": "Horsea",
+      "ja": "タッツー"
+    },
+    "speciesNames": {
+      "zh-hans": "墨海马",
+      "zh-hant": "墨海馬",
+      "en": "Horsea",
+      "ja": "タッツー"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 30,
+      "atk": 40,
+      "def": 70,
+      "spa": 70,
+      "spd": 25,
+      "spe": 60
+    }
+  },
+  "117": {
+    "resourceType": "pokemon",
+    "id": 117,
+    "speciesId": 117,
+    "pokemonSlug": "seadra",
+    "speciesSlug": "seadra",
+    "calcSpeciesName": "Seadra",
+    "names": {
+      "zh-hans": "海刺龙",
+      "zh-hant": "海刺龍",
+      "en": "Seadra",
+      "ja": "シードラ"
+    },
+    "speciesNames": {
+      "zh-hans": "海刺龙",
+      "zh-hant": "海刺龍",
+      "en": "Seadra",
+      "ja": "シードラ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 65,
+      "def": 95,
+      "spa": 95,
+      "spd": 45,
+      "spe": 85
+    }
+  },
+  "118": {
+    "resourceType": "pokemon",
+    "id": 118,
+    "speciesId": 118,
+    "pokemonSlug": "goldeen",
+    "speciesSlug": "goldeen",
+    "calcSpeciesName": "Goldeen",
+    "names": {
+      "zh-hans": "角金鱼",
+      "zh-hant": "角金魚",
+      "en": "Goldeen",
+      "ja": "トサキント"
+    },
+    "speciesNames": {
+      "zh-hans": "角金鱼",
+      "zh-hant": "角金魚",
+      "en": "Goldeen",
+      "ja": "トサキント"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 67,
+      "def": 60,
+      "spa": 35,
+      "spd": 50,
+      "spe": 63
+    }
+  },
+  "119": {
+    "resourceType": "pokemon",
+    "id": 119,
+    "speciesId": 119,
+    "pokemonSlug": "seaking",
+    "speciesSlug": "seaking",
+    "calcSpeciesName": "Seaking",
+    "names": {
+      "zh-hans": "金鱼王",
+      "zh-hant": "金魚王",
+      "en": "Seaking",
+      "ja": "アズマオウ"
+    },
+    "speciesNames": {
+      "zh-hans": "金鱼王",
+      "zh-hant": "金魚王",
+      "en": "Seaking",
+      "ja": "アズマオウ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 92,
+      "def": 65,
+      "spa": 65,
+      "spd": 80,
+      "spe": 68
+    }
+  },
+  "120": {
+    "resourceType": "pokemon",
+    "id": 120,
+    "speciesId": 120,
+    "pokemonSlug": "staryu",
+    "speciesSlug": "staryu",
+    "calcSpeciesName": "Staryu",
+    "names": {
+      "zh-hans": "海星星",
+      "zh-hant": "海星星",
+      "en": "Staryu",
+      "ja": "ヒトデマン"
+    },
+    "speciesNames": {
+      "zh-hans": "海星星",
+      "zh-hant": "海星星",
+      "en": "Staryu",
+      "ja": "ヒトデマン"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 30,
+      "atk": 45,
+      "def": 55,
+      "spa": 70,
+      "spd": 55,
+      "spe": 85
+    }
+  },
+  "121": {
+    "resourceType": "pokemon",
+    "id": 121,
+    "speciesId": 121,
+    "pokemonSlug": "starmie",
+    "speciesSlug": "starmie",
+    "calcSpeciesName": "Starmie",
+    "names": {
+      "zh-hans": "宝石海星",
+      "zh-hant": "寶石海星",
+      "en": "Starmie",
+      "ja": "スターミー"
+    },
+    "speciesNames": {
+      "zh-hans": "宝石海星",
+      "zh-hant": "寶石海星",
+      "en": "Starmie",
+      "ja": "スターミー"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 75,
+      "def": 85,
+      "spa": 100,
+      "spd": 85,
+      "spe": 115
+    }
+  },
+  "122": {
+    "resourceType": "pokemon",
+    "id": 122,
+    "speciesId": 122,
+    "pokemonSlug": "mr-mime",
+    "speciesSlug": "mr-mime",
+    "calcSpeciesName": "Mr. Mime",
+    "names": {
+      "zh-hans": "魔墙人偶",
+      "zh-hant": "魔牆人偶",
+      "en": "Mr. Mime",
+      "ja": "バリヤード"
+    },
+    "speciesNames": {
+      "zh-hans": "魔墙人偶",
+      "zh-hant": "魔牆人偶",
+      "en": "Mr. Mime",
+      "ja": "バリヤード"
+    },
+    "formNames": {},
+    "types": [
+      "psychic",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 45,
+      "def": 65,
+      "spa": 100,
+      "spd": 120,
+      "spe": 90
+    }
+  },
+  "123": {
+    "resourceType": "pokemon",
+    "id": 123,
+    "speciesId": 123,
+    "pokemonSlug": "scyther",
+    "speciesSlug": "scyther",
+    "calcSpeciesName": "Scyther",
+    "names": {
+      "zh-hans": "飞天螳螂",
+      "zh-hant": "飛天螳螂",
+      "en": "Scyther",
+      "ja": "ストライク"
+    },
+    "speciesNames": {
+      "zh-hans": "飞天螳螂",
+      "zh-hant": "飛天螳螂",
+      "en": "Scyther",
+      "ja": "ストライク"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 110,
+      "def": 80,
+      "spa": 55,
+      "spd": 80,
+      "spe": 105
+    }
+  },
+  "124": {
+    "resourceType": "pokemon",
+    "id": 124,
+    "speciesId": 124,
+    "pokemonSlug": "jynx",
+    "speciesSlug": "jynx",
+    "calcSpeciesName": "Jynx",
+    "names": {
+      "zh-hans": "迷唇姐",
+      "zh-hant": "迷唇姐",
+      "en": "Jynx",
+      "ja": "ルージュラ"
+    },
+    "speciesNames": {
+      "zh-hans": "迷唇姐",
+      "zh-hant": "迷唇姐",
+      "en": "Jynx",
+      "ja": "ルージュラ"
+    },
+    "formNames": {},
+    "types": [
+      "ice",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 50,
+      "def": 35,
+      "spa": 115,
+      "spd": 95,
+      "spe": 95
+    }
+  },
+  "125": {
+    "resourceType": "pokemon",
+    "id": 125,
+    "speciesId": 125,
+    "pokemonSlug": "electabuzz",
+    "speciesSlug": "electabuzz",
+    "calcSpeciesName": "Electabuzz",
+    "names": {
+      "zh-hans": "电击兽",
+      "zh-hant": "電擊獸",
+      "en": "Electabuzz",
+      "ja": "エレブー"
+    },
+    "speciesNames": {
+      "zh-hans": "电击兽",
+      "zh-hant": "電擊獸",
+      "en": "Electabuzz",
+      "ja": "エレブー"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 83,
+      "def": 57,
+      "spa": 95,
+      "spd": 85,
+      "spe": 105
+    }
+  },
+  "126": {
+    "resourceType": "pokemon",
+    "id": 126,
+    "speciesId": 126,
+    "pokemonSlug": "magmar",
+    "speciesSlug": "magmar",
+    "calcSpeciesName": "Magmar",
+    "names": {
+      "zh-hans": "鸭嘴火兽",
+      "zh-hant": "鴨嘴火獸",
+      "en": "Magmar",
+      "ja": "ブーバー"
+    },
+    "speciesNames": {
+      "zh-hans": "鸭嘴火兽",
+      "zh-hant": "鴨嘴火獸",
+      "en": "Magmar",
+      "ja": "ブーバー"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 95,
+      "def": 57,
+      "spa": 100,
+      "spd": 85,
+      "spe": 93
+    }
+  },
+  "127": {
+    "resourceType": "pokemon",
+    "id": 127,
+    "speciesId": 127,
+    "pokemonSlug": "pinsir",
+    "speciesSlug": "pinsir",
+    "calcSpeciesName": "Pinsir",
+    "names": {
+      "zh-hans": "凯罗斯",
+      "zh-hant": "凱羅斯",
+      "en": "Pinsir",
+      "ja": "カイロス"
+    },
+    "speciesNames": {
+      "zh-hans": "凯罗斯",
+      "zh-hant": "凱羅斯",
+      "en": "Pinsir",
+      "ja": "カイロス"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 125,
+      "def": 100,
+      "spa": 55,
+      "spd": 70,
+      "spe": 85
+    }
+  },
+  "128": {
+    "resourceType": "pokemon",
+    "id": 128,
+    "speciesId": 128,
+    "pokemonSlug": "tauros",
+    "speciesSlug": "tauros",
+    "calcSpeciesName": "Tauros",
+    "names": {
+      "zh-hans": "肯泰罗",
+      "zh-hant": "肯泰羅",
+      "en": "Tauros",
+      "ja": "ケンタロス"
+    },
+    "speciesNames": {
+      "zh-hans": "肯泰罗",
+      "zh-hant": "肯泰羅",
+      "en": "Tauros",
+      "ja": "ケンタロス"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 100,
+      "def": 95,
+      "spa": 40,
+      "spd": 70,
+      "spe": 110
+    }
+  },
+  "129": {
+    "resourceType": "pokemon",
+    "id": 129,
+    "speciesId": 129,
+    "pokemonSlug": "magikarp",
+    "speciesSlug": "magikarp",
+    "calcSpeciesName": "Magikarp",
+    "names": {
+      "zh-hans": "鲤鱼王",
+      "zh-hant": "鯉魚王",
+      "en": "Magikarp",
+      "ja": "コイキング"
+    },
+    "speciesNames": {
+      "zh-hans": "鲤鱼王",
+      "zh-hant": "鯉魚王",
+      "en": "Magikarp",
+      "ja": "コイキング"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 20,
+      "atk": 10,
+      "def": 55,
+      "spa": 15,
+      "spd": 20,
+      "spe": 80
+    }
+  },
+  "130": {
+    "resourceType": "pokemon",
+    "id": 130,
+    "speciesId": 130,
+    "pokemonSlug": "gyarados",
+    "speciesSlug": "gyarados",
+    "calcSpeciesName": "Gyarados",
+    "names": {
+      "zh-hans": "暴鲤龙",
+      "zh-hant": "暴鯉龍",
+      "en": "Gyarados",
+      "ja": "ギャラドス"
+    },
+    "speciesNames": {
+      "zh-hans": "暴鲤龙",
+      "zh-hant": "暴鯉龍",
+      "en": "Gyarados",
+      "ja": "ギャラドス"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 125,
+      "def": 79,
+      "spa": 60,
+      "spd": 100,
+      "spe": 81
+    }
+  },
+  "131": {
+    "resourceType": "pokemon",
+    "id": 131,
+    "speciesId": 131,
+    "pokemonSlug": "lapras",
+    "speciesSlug": "lapras",
+    "calcSpeciesName": "Lapras",
+    "names": {
+      "zh-hans": "拉普拉斯",
+      "zh-hant": "拉普拉斯",
+      "en": "Lapras",
+      "ja": "ラプラス"
+    },
+    "speciesNames": {
+      "zh-hans": "拉普拉斯",
+      "zh-hant": "拉普拉斯",
+      "en": "Lapras",
+      "ja": "ラプラス"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 130,
+      "atk": 85,
+      "def": 80,
+      "spa": 85,
+      "spd": 95,
+      "spe": 60
+    }
+  },
+  "132": {
+    "resourceType": "pokemon",
+    "id": 132,
+    "speciesId": 132,
+    "pokemonSlug": "ditto",
+    "speciesSlug": "ditto",
+    "calcSpeciesName": "Ditto",
+    "names": {
+      "zh-hans": "百变怪",
+      "zh-hant": "百變怪",
+      "en": "Ditto",
+      "ja": "メタモン"
+    },
+    "speciesNames": {
+      "zh-hans": "百变怪",
+      "zh-hant": "百變怪",
+      "en": "Ditto",
+      "ja": "メタモン"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 48,
+      "atk": 48,
+      "def": 48,
+      "spa": 48,
+      "spd": 48,
+      "spe": 48
+    }
+  },
+  "133": {
+    "resourceType": "pokemon",
+    "id": 133,
+    "speciesId": 133,
+    "pokemonSlug": "eevee",
+    "speciesSlug": "eevee",
+    "calcSpeciesName": "Eevee",
+    "names": {
+      "zh-hans": "伊布",
+      "zh-hant": "伊布",
+      "en": "Eevee",
+      "ja": "イーブイ"
+    },
+    "speciesNames": {
+      "zh-hans": "伊布",
+      "zh-hant": "伊布",
+      "en": "Eevee",
+      "ja": "イーブイ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 55,
+      "def": 50,
+      "spa": 45,
+      "spd": 65,
+      "spe": 55
+    }
+  },
+  "134": {
+    "resourceType": "pokemon",
+    "id": 134,
+    "speciesId": 134,
+    "pokemonSlug": "vaporeon",
+    "speciesSlug": "vaporeon",
+    "calcSpeciesName": "Vaporeon",
+    "names": {
+      "zh-hans": "水伊布",
+      "zh-hant": "水伊布",
+      "en": "Vaporeon",
+      "ja": "シャワーズ"
+    },
+    "speciesNames": {
+      "zh-hans": "水伊布",
+      "zh-hant": "水伊布",
+      "en": "Vaporeon",
+      "ja": "シャワーズ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 130,
+      "atk": 65,
+      "def": 60,
+      "spa": 110,
+      "spd": 95,
+      "spe": 65
+    }
+  },
+  "135": {
+    "resourceType": "pokemon",
+    "id": 135,
+    "speciesId": 135,
+    "pokemonSlug": "jolteon",
+    "speciesSlug": "jolteon",
+    "calcSpeciesName": "Jolteon",
+    "names": {
+      "zh-hans": "雷伊布",
+      "zh-hant": "雷伊布",
+      "en": "Jolteon",
+      "ja": "サンダース"
+    },
+    "speciesNames": {
+      "zh-hans": "雷伊布",
+      "zh-hant": "雷伊布",
+      "en": "Jolteon",
+      "ja": "サンダース"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 65,
+      "def": 60,
+      "spa": 110,
+      "spd": 95,
+      "spe": 130
+    }
+  },
+  "136": {
+    "resourceType": "pokemon",
+    "id": 136,
+    "speciesId": 136,
+    "pokemonSlug": "flareon",
+    "speciesSlug": "flareon",
+    "calcSpeciesName": "Flareon",
+    "names": {
+      "zh-hans": "火伊布",
+      "zh-hant": "火伊布",
+      "en": "Flareon",
+      "ja": "ブースター"
+    },
+    "speciesNames": {
+      "zh-hans": "火伊布",
+      "zh-hant": "火伊布",
+      "en": "Flareon",
+      "ja": "ブースター"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 130,
+      "def": 60,
+      "spa": 95,
+      "spd": 110,
+      "spe": 65
+    }
+  },
+  "137": {
+    "resourceType": "pokemon",
+    "id": 137,
+    "speciesId": 137,
+    "pokemonSlug": "porygon",
+    "speciesSlug": "porygon",
+    "calcSpeciesName": "Porygon",
+    "names": {
+      "zh-hans": "多边兽",
+      "zh-hant": "多邊獸",
+      "en": "Porygon",
+      "ja": "ポリゴン"
+    },
+    "speciesNames": {
+      "zh-hans": "多边兽",
+      "zh-hant": "多邊獸",
+      "en": "Porygon",
+      "ja": "ポリゴン"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 60,
+      "def": 70,
+      "spa": 85,
+      "spd": 75,
+      "spe": 40
+    }
+  },
+  "138": {
+    "resourceType": "pokemon",
+    "id": 138,
+    "speciesId": 138,
+    "pokemonSlug": "omanyte",
+    "speciesSlug": "omanyte",
+    "calcSpeciesName": "Omanyte",
+    "names": {
+      "zh-hans": "菊石兽",
+      "zh-hant": "菊石獸",
+      "en": "Omanyte",
+      "ja": "オムナイト"
+    },
+    "speciesNames": {
+      "zh-hans": "菊石兽",
+      "zh-hant": "菊石獸",
+      "en": "Omanyte",
+      "ja": "オムナイト"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 40,
+      "def": 100,
+      "spa": 90,
+      "spd": 55,
+      "spe": 35
+    }
+  },
+  "139": {
+    "resourceType": "pokemon",
+    "id": 139,
+    "speciesId": 139,
+    "pokemonSlug": "omastar",
+    "speciesSlug": "omastar",
+    "calcSpeciesName": "Omastar",
+    "names": {
+      "zh-hans": "多刺菊石兽",
+      "zh-hant": "多刺菊石獸",
+      "en": "Omastar",
+      "ja": "オムスター"
+    },
+    "speciesNames": {
+      "zh-hans": "多刺菊石兽",
+      "zh-hant": "多刺菊石獸",
+      "en": "Omastar",
+      "ja": "オムスター"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 60,
+      "def": 125,
+      "spa": 115,
+      "spd": 70,
+      "spe": 55
+    }
+  },
+  "140": {
+    "resourceType": "pokemon",
+    "id": 140,
+    "speciesId": 140,
+    "pokemonSlug": "kabuto",
+    "speciesSlug": "kabuto",
+    "calcSpeciesName": "Kabuto",
+    "names": {
+      "zh-hans": "化石盔",
+      "zh-hant": "化石盔",
+      "en": "Kabuto",
+      "ja": "カブト"
+    },
+    "speciesNames": {
+      "zh-hans": "化石盔",
+      "zh-hant": "化石盔",
+      "en": "Kabuto",
+      "ja": "カブト"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 30,
+      "atk": 80,
+      "def": 90,
+      "spa": 55,
+      "spd": 45,
+      "spe": 55
+    }
+  },
+  "141": {
+    "resourceType": "pokemon",
+    "id": 141,
+    "speciesId": 141,
+    "pokemonSlug": "kabutops",
+    "speciesSlug": "kabutops",
+    "calcSpeciesName": "Kabutops",
+    "names": {
+      "zh-hans": "镰刀盔",
+      "zh-hant": "鐮刀盔",
+      "en": "Kabutops",
+      "ja": "カブトプス"
+    },
+    "speciesNames": {
+      "zh-hans": "镰刀盔",
+      "zh-hant": "鐮刀盔",
+      "en": "Kabutops",
+      "ja": "カブトプス"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 115,
+      "def": 105,
+      "spa": 65,
+      "spd": 70,
+      "spe": 80
+    }
+  },
+  "142": {
+    "resourceType": "pokemon",
+    "id": 142,
+    "speciesId": 142,
+    "pokemonSlug": "aerodactyl",
+    "speciesSlug": "aerodactyl",
+    "calcSpeciesName": "Aerodactyl",
+    "names": {
+      "zh-hans": "化石翼龙",
+      "zh-hant": "化石翼龍",
+      "en": "Aerodactyl",
+      "ja": "プテラ"
+    },
+    "speciesNames": {
+      "zh-hans": "化石翼龙",
+      "zh-hant": "化石翼龍",
+      "en": "Aerodactyl",
+      "ja": "プテラ"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 105,
+      "def": 65,
+      "spa": 60,
+      "spd": 75,
+      "spe": 130
+    }
+  },
+  "143": {
+    "resourceType": "pokemon",
+    "id": 143,
+    "speciesId": 143,
+    "pokemonSlug": "snorlax",
+    "speciesSlug": "snorlax",
+    "calcSpeciesName": "Snorlax",
+    "names": {
+      "zh-hans": "卡比兽",
+      "zh-hant": "卡比獸",
+      "en": "Snorlax",
+      "ja": "カビゴン"
+    },
+    "speciesNames": {
+      "zh-hans": "卡比兽",
+      "zh-hant": "卡比獸",
+      "en": "Snorlax",
+      "ja": "カビゴン"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 160,
+      "atk": 110,
+      "def": 65,
+      "spa": 65,
+      "spd": 110,
+      "spe": 30
+    }
+  },
+  "144": {
+    "resourceType": "pokemon",
+    "id": 144,
+    "speciesId": 144,
+    "pokemonSlug": "articuno",
+    "speciesSlug": "articuno",
+    "calcSpeciesName": "Articuno",
+    "names": {
+      "zh-hans": "急冻鸟",
+      "zh-hant": "急凍鳥",
+      "en": "Articuno",
+      "ja": "フリーザー"
+    },
+    "speciesNames": {
+      "zh-hans": "急冻鸟",
+      "zh-hant": "急凍鳥",
+      "en": "Articuno",
+      "ja": "フリーザー"
+    },
+    "formNames": {},
+    "types": [
+      "ice",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 85,
+      "def": 100,
+      "spa": 95,
+      "spd": 125,
+      "spe": 85
+    }
+  },
+  "145": {
+    "resourceType": "pokemon",
+    "id": 145,
+    "speciesId": 145,
+    "pokemonSlug": "zapdos",
+    "speciesSlug": "zapdos",
+    "calcSpeciesName": "Zapdos",
+    "names": {
+      "zh-hans": "闪电鸟",
+      "zh-hant": "閃電鳥",
+      "en": "Zapdos",
+      "ja": "サンダー"
+    },
+    "speciesNames": {
+      "zh-hans": "闪电鸟",
+      "zh-hant": "閃電鳥",
+      "en": "Zapdos",
+      "ja": "サンダー"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 90,
+      "def": 85,
+      "spa": 125,
+      "spd": 90,
+      "spe": 100
+    }
+  },
+  "146": {
+    "resourceType": "pokemon",
+    "id": 146,
+    "speciesId": 146,
+    "pokemonSlug": "moltres",
+    "speciesSlug": "moltres",
+    "calcSpeciesName": "Moltres",
+    "names": {
+      "zh-hans": "火焰鸟",
+      "zh-hant": "火焰鳥",
+      "en": "Moltres",
+      "ja": "ファイヤー"
+    },
+    "speciesNames": {
+      "zh-hans": "火焰鸟",
+      "zh-hant": "火焰鳥",
+      "en": "Moltres",
+      "ja": "ファイヤー"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 100,
+      "def": 90,
+      "spa": 125,
+      "spd": 85,
+      "spe": 90
+    }
+  },
+  "147": {
+    "resourceType": "pokemon",
+    "id": 147,
+    "speciesId": 147,
+    "pokemonSlug": "dratini",
+    "speciesSlug": "dratini",
+    "calcSpeciesName": "Dratini",
+    "names": {
+      "zh-hans": "迷你龙",
+      "zh-hant": "迷你龍",
+      "en": "Dratini",
+      "ja": "ミニリュウ"
+    },
+    "speciesNames": {
+      "zh-hans": "迷你龙",
+      "zh-hant": "迷你龍",
+      "en": "Dratini",
+      "ja": "ミニリュウ"
+    },
+    "formNames": {},
+    "types": [
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 41,
+      "atk": 64,
+      "def": 45,
+      "spa": 50,
+      "spd": 50,
+      "spe": 50
+    }
+  },
+  "148": {
+    "resourceType": "pokemon",
+    "id": 148,
+    "speciesId": 148,
+    "pokemonSlug": "dragonair",
+    "speciesSlug": "dragonair",
+    "calcSpeciesName": "Dragonair",
+    "names": {
+      "zh-hans": "哈克龙",
+      "zh-hant": "哈克龍",
+      "en": "Dragonair",
+      "ja": "ハクリュー"
+    },
+    "speciesNames": {
+      "zh-hans": "哈克龙",
+      "zh-hant": "哈克龍",
+      "en": "Dragonair",
+      "ja": "ハクリュー"
+    },
+    "formNames": {},
+    "types": [
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 61,
+      "atk": 84,
+      "def": 65,
+      "spa": 70,
+      "spd": 70,
+      "spe": 70
+    }
+  },
+  "149": {
+    "resourceType": "pokemon",
+    "id": 149,
+    "speciesId": 149,
+    "pokemonSlug": "dragonite",
+    "speciesSlug": "dragonite",
+    "calcSpeciesName": "Dragonite",
+    "names": {
+      "zh-hans": "快龙",
+      "zh-hant": "快龍",
+      "en": "Dragonite",
+      "ja": "カイリュー"
+    },
+    "speciesNames": {
+      "zh-hans": "快龙",
+      "zh-hant": "快龍",
+      "en": "Dragonite",
+      "ja": "カイリュー"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 91,
+      "atk": 134,
+      "def": 95,
+      "spa": 100,
+      "spd": 100,
+      "spe": 80
+    }
+  },
+  "150": {
+    "resourceType": "pokemon",
+    "id": 150,
+    "speciesId": 150,
+    "pokemonSlug": "mewtwo",
+    "speciesSlug": "mewtwo",
+    "calcSpeciesName": "Mewtwo",
+    "names": {
+      "zh-hans": "超梦",
+      "zh-hant": "超夢",
+      "en": "Mewtwo",
+      "ja": "ミュウツー"
+    },
+    "speciesNames": {
+      "zh-hans": "超梦",
+      "zh-hant": "超夢",
+      "en": "Mewtwo",
+      "ja": "ミュウツー"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 106,
+      "atk": 110,
+      "def": 90,
+      "spa": 154,
+      "spd": 90,
+      "spe": 130
+    }
+  },
+  "151": {
+    "resourceType": "pokemon",
+    "id": 151,
+    "speciesId": 151,
+    "pokemonSlug": "mew",
+    "speciesSlug": "mew",
+    "calcSpeciesName": "Mew",
+    "names": {
+      "zh-hans": "梦幻",
+      "zh-hant": "夢幻",
+      "en": "Mew",
+      "ja": "ミュウ"
+    },
+    "speciesNames": {
+      "zh-hans": "梦幻",
+      "zh-hant": "夢幻",
+      "en": "Mew",
+      "ja": "ミュウ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 100,
+      "def": 100,
+      "spa": 100,
+      "spd": 100,
+      "spe": 100
+    }
+  },
+  "152": {
+    "resourceType": "pokemon",
+    "id": 152,
+    "speciesId": 152,
+    "pokemonSlug": "chikorita",
+    "speciesSlug": "chikorita",
+    "calcSpeciesName": "Chikorita",
+    "names": {
+      "zh-hans": "菊草叶",
+      "zh-hant": "菊草葉",
+      "en": "Chikorita",
+      "ja": "チコリータ"
+    },
+    "speciesNames": {
+      "zh-hans": "菊草叶",
+      "zh-hant": "菊草葉",
+      "en": "Chikorita",
+      "ja": "チコリータ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 49,
+      "def": 65,
+      "spa": 49,
+      "spd": 65,
+      "spe": 45
+    }
+  },
+  "153": {
+    "resourceType": "pokemon",
+    "id": 153,
+    "speciesId": 153,
+    "pokemonSlug": "bayleef",
+    "speciesSlug": "bayleef",
+    "calcSpeciesName": "Bayleef",
+    "names": {
+      "zh-hans": "月桂叶",
+      "zh-hant": "月桂葉",
+      "en": "Bayleef",
+      "ja": "ベイリーフ"
+    },
+    "speciesNames": {
+      "zh-hans": "月桂叶",
+      "zh-hant": "月桂葉",
+      "en": "Bayleef",
+      "ja": "ベイリーフ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 62,
+      "def": 80,
+      "spa": 63,
+      "spd": 80,
+      "spe": 60
+    }
+  },
+  "154": {
+    "resourceType": "pokemon",
+    "id": 154,
+    "speciesId": 154,
+    "pokemonSlug": "meganium",
+    "speciesSlug": "meganium",
+    "calcSpeciesName": "Meganium",
+    "names": {
+      "zh-hans": "大竺葵",
+      "zh-hant": "大竺葵",
+      "en": "Meganium",
+      "ja": "メガニウム"
+    },
+    "speciesNames": {
+      "zh-hans": "大竺葵",
+      "zh-hant": "大竺葵",
+      "en": "Meganium",
+      "ja": "メガニウム"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 82,
+      "def": 100,
+      "spa": 83,
+      "spd": 100,
+      "spe": 80
+    }
+  },
+  "155": {
+    "resourceType": "pokemon",
+    "id": 155,
+    "speciesId": 155,
+    "pokemonSlug": "cyndaquil",
+    "speciesSlug": "cyndaquil",
+    "calcSpeciesName": "Cyndaquil",
+    "names": {
+      "zh-hans": "火球鼠",
+      "zh-hant": "火球鼠",
+      "en": "Cyndaquil",
+      "ja": "ヒノアラシ"
+    },
+    "speciesNames": {
+      "zh-hans": "火球鼠",
+      "zh-hant": "火球鼠",
+      "en": "Cyndaquil",
+      "ja": "ヒノアラシ"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 39,
+      "atk": 52,
+      "def": 43,
+      "spa": 60,
+      "spd": 50,
+      "spe": 65
+    }
+  },
+  "156": {
+    "resourceType": "pokemon",
+    "id": 156,
+    "speciesId": 156,
+    "pokemonSlug": "quilava",
+    "speciesSlug": "quilava",
+    "calcSpeciesName": "Quilava",
+    "names": {
+      "zh-hans": "火岩鼠",
+      "zh-hant": "火岩鼠",
+      "en": "Quilava",
+      "ja": "マグマラシ"
+    },
+    "speciesNames": {
+      "zh-hans": "火岩鼠",
+      "zh-hant": "火岩鼠",
+      "en": "Quilava",
+      "ja": "マグマラシ"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 58,
+      "atk": 64,
+      "def": 58,
+      "spa": 80,
+      "spd": 65,
+      "spe": 80
+    }
+  },
+  "157": {
+    "resourceType": "pokemon",
+    "id": 157,
+    "speciesId": 157,
+    "pokemonSlug": "typhlosion",
+    "speciesSlug": "typhlosion",
+    "calcSpeciesName": "Typhlosion",
+    "names": {
+      "zh-hans": "火暴兽",
+      "zh-hant": "火爆獸",
+      "en": "Typhlosion",
+      "ja": "バクフーン"
+    },
+    "speciesNames": {
+      "zh-hans": "火暴兽",
+      "zh-hant": "火爆獸",
+      "en": "Typhlosion",
+      "ja": "バクフーン"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 78,
+      "atk": 84,
+      "def": 78,
+      "spa": 109,
+      "spd": 85,
+      "spe": 100
+    }
+  },
+  "158": {
+    "resourceType": "pokemon",
+    "id": 158,
+    "speciesId": 158,
+    "pokemonSlug": "totodile",
+    "speciesSlug": "totodile",
+    "calcSpeciesName": "Totodile",
+    "names": {
+      "zh-hans": "小锯鳄",
+      "zh-hant": "小鋸鱷",
+      "en": "Totodile",
+      "ja": "ワニノコ"
+    },
+    "speciesNames": {
+      "zh-hans": "小锯鳄",
+      "zh-hant": "小鋸鱷",
+      "en": "Totodile",
+      "ja": "ワニノコ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 65,
+      "def": 64,
+      "spa": 44,
+      "spd": 48,
+      "spe": 43
+    }
+  },
+  "159": {
+    "resourceType": "pokemon",
+    "id": 159,
+    "speciesId": 159,
+    "pokemonSlug": "croconaw",
+    "speciesSlug": "croconaw",
+    "calcSpeciesName": "Croconaw",
+    "names": {
+      "zh-hans": "蓝鳄",
+      "zh-hant": "藍鱷",
+      "en": "Croconaw",
+      "ja": "アリゲイツ"
+    },
+    "speciesNames": {
+      "zh-hans": "蓝鳄",
+      "zh-hant": "藍鱷",
+      "en": "Croconaw",
+      "ja": "アリゲイツ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 80,
+      "def": 80,
+      "spa": 59,
+      "spd": 63,
+      "spe": 58
+    }
+  },
+  "160": {
+    "resourceType": "pokemon",
+    "id": 160,
+    "speciesId": 160,
+    "pokemonSlug": "feraligatr",
+    "speciesSlug": "feraligatr",
+    "calcSpeciesName": "Feraligatr",
+    "names": {
+      "zh-hans": "大力鳄",
+      "zh-hant": "大力鱷",
+      "en": "Feraligatr",
+      "ja": "オーダイル"
+    },
+    "speciesNames": {
+      "zh-hans": "大力鳄",
+      "zh-hant": "大力鱷",
+      "en": "Feraligatr",
+      "ja": "オーダイル"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 105,
+      "def": 100,
+      "spa": 79,
+      "spd": 83,
+      "spe": 78
+    }
+  },
+  "161": {
+    "resourceType": "pokemon",
+    "id": 161,
+    "speciesId": 161,
+    "pokemonSlug": "sentret",
+    "speciesSlug": "sentret",
+    "calcSpeciesName": "Sentret",
+    "names": {
+      "zh-hans": "尾立",
+      "zh-hant": "尾立",
+      "en": "Sentret",
+      "ja": "オタチ"
+    },
+    "speciesNames": {
+      "zh-hans": "尾立",
+      "zh-hant": "尾立",
+      "en": "Sentret",
+      "ja": "オタチ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 46,
+      "def": 34,
+      "spa": 35,
+      "spd": 45,
+      "spe": 20
+    }
+  },
+  "162": {
+    "resourceType": "pokemon",
+    "id": 162,
+    "speciesId": 162,
+    "pokemonSlug": "furret",
+    "speciesSlug": "furret",
+    "calcSpeciesName": "Furret",
+    "names": {
+      "zh-hans": "大尾立",
+      "zh-hant": "大尾立",
+      "en": "Furret",
+      "ja": "オオタチ"
+    },
+    "speciesNames": {
+      "zh-hans": "大尾立",
+      "zh-hant": "大尾立",
+      "en": "Furret",
+      "ja": "オオタチ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 76,
+      "def": 64,
+      "spa": 45,
+      "spd": 55,
+      "spe": 90
+    }
+  },
+  "163": {
+    "resourceType": "pokemon",
+    "id": 163,
+    "speciesId": 163,
+    "pokemonSlug": "hoothoot",
+    "speciesSlug": "hoothoot",
+    "calcSpeciesName": "Hoothoot",
+    "names": {
+      "zh-hans": "咕咕",
+      "zh-hant": "咕咕",
+      "en": "Hoothoot",
+      "ja": "ホーホー"
+    },
+    "speciesNames": {
+      "zh-hans": "咕咕",
+      "zh-hant": "咕咕",
+      "en": "Hoothoot",
+      "ja": "ホーホー"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 30,
+      "def": 30,
+      "spa": 36,
+      "spd": 56,
+      "spe": 50
+    }
+  },
+  "164": {
+    "resourceType": "pokemon",
+    "id": 164,
+    "speciesId": 164,
+    "pokemonSlug": "noctowl",
+    "speciesSlug": "noctowl",
+    "calcSpeciesName": "Noctowl",
+    "names": {
+      "zh-hans": "猫头夜鹰",
+      "zh-hant": "貓頭夜鷹",
+      "en": "Noctowl",
+      "ja": "ヨルノズク"
+    },
+    "speciesNames": {
+      "zh-hans": "猫头夜鹰",
+      "zh-hant": "貓頭夜鷹",
+      "en": "Noctowl",
+      "ja": "ヨルノズク"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 50,
+      "def": 50,
+      "spa": 86,
+      "spd": 96,
+      "spe": 70
+    }
+  },
+  "165": {
+    "resourceType": "pokemon",
+    "id": 165,
+    "speciesId": 165,
+    "pokemonSlug": "ledyba",
+    "speciesSlug": "ledyba",
+    "calcSpeciesName": "Ledyba",
+    "names": {
+      "zh-hans": "芭瓢虫",
+      "zh-hant": "芭瓢蟲",
+      "en": "Ledyba",
+      "ja": "レディバ"
+    },
+    "speciesNames": {
+      "zh-hans": "芭瓢虫",
+      "zh-hant": "芭瓢蟲",
+      "en": "Ledyba",
+      "ja": "レディバ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 20,
+      "def": 30,
+      "spa": 40,
+      "spd": 80,
+      "spe": 55
+    }
+  },
+  "166": {
+    "resourceType": "pokemon",
+    "id": 166,
+    "speciesId": 166,
+    "pokemonSlug": "ledian",
+    "speciesSlug": "ledian",
+    "calcSpeciesName": "Ledian",
+    "names": {
+      "zh-hans": "安瓢虫",
+      "zh-hant": "安瓢蟲",
+      "en": "Ledian",
+      "ja": "レディアン"
+    },
+    "speciesNames": {
+      "zh-hans": "安瓢虫",
+      "zh-hant": "安瓢蟲",
+      "en": "Ledian",
+      "ja": "レディアン"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 35,
+      "def": 50,
+      "spa": 55,
+      "spd": 110,
+      "spe": 85
+    }
+  },
+  "167": {
+    "resourceType": "pokemon",
+    "id": 167,
+    "speciesId": 167,
+    "pokemonSlug": "spinarak",
+    "speciesSlug": "spinarak",
+    "calcSpeciesName": "Spinarak",
+    "names": {
+      "zh-hans": "圆丝蛛",
+      "zh-hant": "圓絲蛛",
+      "en": "Spinarak",
+      "ja": "イトマル"
+    },
+    "speciesNames": {
+      "zh-hans": "圆丝蛛",
+      "zh-hant": "圓絲蛛",
+      "en": "Spinarak",
+      "ja": "イトマル"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 60,
+      "def": 40,
+      "spa": 40,
+      "spd": 40,
+      "spe": 30
+    }
+  },
+  "168": {
+    "resourceType": "pokemon",
+    "id": 168,
+    "speciesId": 168,
+    "pokemonSlug": "ariados",
+    "speciesSlug": "ariados",
+    "calcSpeciesName": "Ariados",
+    "names": {
+      "zh-hans": "阿利多斯",
+      "zh-hant": "阿利多斯",
+      "en": "Ariados",
+      "ja": "アリアドス"
+    },
+    "speciesNames": {
+      "zh-hans": "阿利多斯",
+      "zh-hant": "阿利多斯",
+      "en": "Ariados",
+      "ja": "アリアドス"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 90,
+      "def": 70,
+      "spa": 60,
+      "spd": 70,
+      "spe": 40
+    }
+  },
+  "169": {
+    "resourceType": "pokemon",
+    "id": 169,
+    "speciesId": 169,
+    "pokemonSlug": "crobat",
+    "speciesSlug": "crobat",
+    "calcSpeciesName": "Crobat",
+    "names": {
+      "zh-hans": "叉字蝠",
+      "zh-hant": "叉字蝠",
+      "en": "Crobat",
+      "ja": "クロバット"
+    },
+    "speciesNames": {
+      "zh-hans": "叉字蝠",
+      "zh-hant": "叉字蝠",
+      "en": "Crobat",
+      "ja": "クロバット"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 90,
+      "def": 80,
+      "spa": 70,
+      "spd": 80,
+      "spe": 130
+    }
+  },
+  "170": {
+    "resourceType": "pokemon",
+    "id": 170,
+    "speciesId": 170,
+    "pokemonSlug": "chinchou",
+    "speciesSlug": "chinchou",
+    "calcSpeciesName": "Chinchou",
+    "names": {
+      "zh-hans": "灯笼鱼",
+      "zh-hant": "燈籠魚",
+      "en": "Chinchou",
+      "ja": "チョンチー"
+    },
+    "speciesNames": {
+      "zh-hans": "灯笼鱼",
+      "zh-hant": "燈籠魚",
+      "en": "Chinchou",
+      "ja": "チョンチー"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 38,
+      "def": 38,
+      "spa": 56,
+      "spd": 56,
+      "spe": 67
+    }
+  },
+  "171": {
+    "resourceType": "pokemon",
+    "id": 171,
+    "speciesId": 171,
+    "pokemonSlug": "lanturn",
+    "speciesSlug": "lanturn",
+    "calcSpeciesName": "Lanturn",
+    "names": {
+      "zh-hans": "电灯怪",
+      "zh-hant": "電燈怪",
+      "en": "Lanturn",
+      "ja": "ランターン"
+    },
+    "speciesNames": {
+      "zh-hans": "电灯怪",
+      "zh-hant": "電燈怪",
+      "en": "Lanturn",
+      "ja": "ランターン"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 125,
+      "atk": 58,
+      "def": 58,
+      "spa": 76,
+      "spd": 76,
+      "spe": 67
+    }
+  },
+  "172": {
+    "resourceType": "pokemon",
+    "id": 172,
+    "speciesId": 172,
+    "pokemonSlug": "pichu",
+    "speciesSlug": "pichu",
+    "calcSpeciesName": "Pichu",
+    "names": {
+      "zh-hans": "皮丘",
+      "zh-hant": "皮丘",
+      "en": "Pichu",
+      "ja": "ピチュー"
+    },
+    "speciesNames": {
+      "zh-hans": "皮丘",
+      "zh-hant": "皮丘",
+      "en": "Pichu",
+      "ja": "ピチュー"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 20,
+      "atk": 40,
+      "def": 15,
+      "spa": 35,
+      "spd": 35,
+      "spe": 60
+    }
+  },
+  "173": {
+    "resourceType": "pokemon",
+    "id": 173,
+    "speciesId": 173,
+    "pokemonSlug": "cleffa",
+    "speciesSlug": "cleffa",
+    "calcSpeciesName": "Cleffa",
+    "names": {
+      "zh-hans": "皮宝宝",
+      "zh-hant": "皮寶寶",
+      "en": "Cleffa",
+      "ja": "ピィ"
+    },
+    "speciesNames": {
+      "zh-hans": "皮宝宝",
+      "zh-hant": "皮寶寶",
+      "en": "Cleffa",
+      "ja": "ピィ"
+    },
+    "formNames": {},
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 25,
+      "def": 28,
+      "spa": 45,
+      "spd": 55,
+      "spe": 15
+    }
+  },
+  "174": {
+    "resourceType": "pokemon",
+    "id": 174,
+    "speciesId": 174,
+    "pokemonSlug": "igglybuff",
+    "speciesSlug": "igglybuff",
+    "calcSpeciesName": "Igglybuff",
+    "names": {
+      "zh-hans": "宝宝丁",
+      "zh-hant": "寶寶丁",
+      "en": "Igglybuff",
+      "ja": "ププリン"
+    },
+    "speciesNames": {
+      "zh-hans": "宝宝丁",
+      "zh-hant": "寶寶丁",
+      "en": "Igglybuff",
+      "ja": "ププリン"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 30,
+      "def": 15,
+      "spa": 40,
+      "spd": 20,
+      "spe": 15
+    }
+  },
+  "175": {
+    "resourceType": "pokemon",
+    "id": 175,
+    "speciesId": 175,
+    "pokemonSlug": "togepi",
+    "speciesSlug": "togepi",
+    "calcSpeciesName": "Togepi",
+    "names": {
+      "zh-hans": "波克比",
+      "zh-hant": "波克比",
+      "en": "Togepi",
+      "ja": "トゲピー"
+    },
+    "speciesNames": {
+      "zh-hans": "波克比",
+      "zh-hant": "波克比",
+      "en": "Togepi",
+      "ja": "トゲピー"
+    },
+    "formNames": {},
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 20,
+      "def": 65,
+      "spa": 40,
+      "spd": 65,
+      "spe": 20
+    }
+  },
+  "176": {
+    "resourceType": "pokemon",
+    "id": 176,
+    "speciesId": 176,
+    "pokemonSlug": "togetic",
+    "speciesSlug": "togetic",
+    "calcSpeciesName": "Togetic",
+    "names": {
+      "zh-hans": "波克基古",
+      "zh-hant": "波克基古",
+      "en": "Togetic",
+      "ja": "トゲチック"
+    },
+    "speciesNames": {
+      "zh-hans": "波克基古",
+      "zh-hant": "波克基古",
+      "en": "Togetic",
+      "ja": "トゲチック"
+    },
+    "formNames": {},
+    "types": [
+      "fairy",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 40,
+      "def": 85,
+      "spa": 80,
+      "spd": 105,
+      "spe": 40
+    }
+  },
+  "177": {
+    "resourceType": "pokemon",
+    "id": 177,
+    "speciesId": 177,
+    "pokemonSlug": "natu",
+    "speciesSlug": "natu",
+    "calcSpeciesName": "Natu",
+    "names": {
+      "zh-hans": "天然雀",
+      "zh-hant": "天然雀",
+      "en": "Natu",
+      "ja": "ネイティ"
+    },
+    "speciesNames": {
+      "zh-hans": "天然雀",
+      "zh-hant": "天然雀",
+      "en": "Natu",
+      "ja": "ネイティ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 50,
+      "def": 45,
+      "spa": 70,
+      "spd": 45,
+      "spe": 70
+    }
+  },
+  "178": {
+    "resourceType": "pokemon",
+    "id": 178,
+    "speciesId": 178,
+    "pokemonSlug": "xatu",
+    "speciesSlug": "xatu",
+    "calcSpeciesName": "Xatu",
+    "names": {
+      "zh-hans": "天然鸟",
+      "zh-hant": "天然鳥",
+      "en": "Xatu",
+      "ja": "ネイティオ"
+    },
+    "speciesNames": {
+      "zh-hans": "天然鸟",
+      "zh-hant": "天然鳥",
+      "en": "Xatu",
+      "ja": "ネイティオ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 75,
+      "def": 70,
+      "spa": 95,
+      "spd": 70,
+      "spe": 95
+    }
+  },
+  "179": {
+    "resourceType": "pokemon",
+    "id": 179,
+    "speciesId": 179,
+    "pokemonSlug": "mareep",
+    "speciesSlug": "mareep",
+    "calcSpeciesName": "Mareep",
+    "names": {
+      "zh-hans": "咩利羊",
+      "zh-hant": "咩利羊",
+      "en": "Mareep",
+      "ja": "メリープ"
+    },
+    "speciesNames": {
+      "zh-hans": "咩利羊",
+      "zh-hant": "咩利羊",
+      "en": "Mareep",
+      "ja": "メリープ"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 40,
+      "def": 40,
+      "spa": 65,
+      "spd": 45,
+      "spe": 35
+    }
+  },
+  "180": {
+    "resourceType": "pokemon",
+    "id": 180,
+    "speciesId": 180,
+    "pokemonSlug": "flaaffy",
+    "speciesSlug": "flaaffy",
+    "calcSpeciesName": "Flaaffy",
+    "names": {
+      "zh-hans": "茸茸羊",
+      "zh-hant": "茸茸羊",
+      "en": "Flaaffy",
+      "ja": "モココ"
+    },
+    "speciesNames": {
+      "zh-hans": "茸茸羊",
+      "zh-hant": "茸茸羊",
+      "en": "Flaaffy",
+      "ja": "モココ"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 55,
+      "def": 55,
+      "spa": 80,
+      "spd": 60,
+      "spe": 45
+    }
+  },
+  "181": {
+    "resourceType": "pokemon",
+    "id": 181,
+    "speciesId": 181,
+    "pokemonSlug": "ampharos",
+    "speciesSlug": "ampharos",
+    "calcSpeciesName": "Ampharos",
+    "names": {
+      "zh-hans": "电龙",
+      "zh-hant": "電龍",
+      "en": "Ampharos",
+      "ja": "デンリュウ"
+    },
+    "speciesNames": {
+      "zh-hans": "电龙",
+      "zh-hant": "電龍",
+      "en": "Ampharos",
+      "ja": "デンリュウ"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 75,
+      "def": 85,
+      "spa": 115,
+      "spd": 90,
+      "spe": 55
+    }
+  },
+  "182": {
+    "resourceType": "pokemon",
+    "id": 182,
+    "speciesId": 182,
+    "pokemonSlug": "bellossom",
+    "speciesSlug": "bellossom",
+    "calcSpeciesName": "Bellossom",
+    "names": {
+      "zh-hans": "美丽花",
+      "zh-hant": "美麗花",
+      "en": "Bellossom",
+      "ja": "キレイハナ"
+    },
+    "speciesNames": {
+      "zh-hans": "美丽花",
+      "zh-hant": "美麗花",
+      "en": "Bellossom",
+      "ja": "キレイハナ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 80,
+      "def": 95,
+      "spa": 90,
+      "spd": 100,
+      "spe": 50
+    }
+  },
+  "183": {
+    "resourceType": "pokemon",
+    "id": 183,
+    "speciesId": 183,
+    "pokemonSlug": "marill",
+    "speciesSlug": "marill",
+    "calcSpeciesName": "Marill",
+    "names": {
+      "zh-hans": "玛力露",
+      "zh-hant": "瑪力露",
+      "en": "Marill",
+      "ja": "マリル"
+    },
+    "speciesNames": {
+      "zh-hans": "玛力露",
+      "zh-hant": "瑪力露",
+      "en": "Marill",
+      "ja": "マリル"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 20,
+      "def": 50,
+      "spa": 20,
+      "spd": 50,
+      "spe": 40
+    }
+  },
+  "184": {
+    "resourceType": "pokemon",
+    "id": 184,
+    "speciesId": 184,
+    "pokemonSlug": "azumarill",
+    "speciesSlug": "azumarill",
+    "calcSpeciesName": "Azumarill",
+    "names": {
+      "zh-hans": "玛力露丽",
+      "zh-hant": "瑪力露麗",
+      "en": "Azumarill",
+      "ja": "マリルリ"
+    },
+    "speciesNames": {
+      "zh-hans": "玛力露丽",
+      "zh-hant": "瑪力露麗",
+      "en": "Azumarill",
+      "ja": "マリルリ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 50,
+      "def": 80,
+      "spa": 60,
+      "spd": 80,
+      "spe": 50
+    }
+  },
+  "185": {
+    "resourceType": "pokemon",
+    "id": 185,
+    "speciesId": 185,
+    "pokemonSlug": "sudowoodo",
+    "speciesSlug": "sudowoodo",
+    "calcSpeciesName": "Sudowoodo",
+    "names": {
+      "zh-hans": "树才怪",
+      "zh-hant": "樹才怪",
+      "en": "Sudowoodo",
+      "ja": "ウソッキー"
+    },
+    "speciesNames": {
+      "zh-hans": "树才怪",
+      "zh-hant": "樹才怪",
+      "en": "Sudowoodo",
+      "ja": "ウソッキー"
+    },
+    "formNames": {},
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 100,
+      "def": 115,
+      "spa": 30,
+      "spd": 65,
+      "spe": 30
+    }
+  },
+  "186": {
+    "resourceType": "pokemon",
+    "id": 186,
+    "speciesId": 186,
+    "pokemonSlug": "politoed",
+    "speciesSlug": "politoed",
+    "calcSpeciesName": "Politoed",
+    "names": {
+      "zh-hans": "蚊香蛙皇",
+      "zh-hant": "蚊香蛙皇",
+      "en": "Politoed",
+      "ja": "ニョロトノ"
+    },
+    "speciesNames": {
+      "zh-hans": "蚊香蛙皇",
+      "zh-hant": "蚊香蛙皇",
+      "en": "Politoed",
+      "ja": "ニョロトノ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 75,
+      "def": 75,
+      "spa": 90,
+      "spd": 100,
+      "spe": 70
+    }
+  },
+  "187": {
+    "resourceType": "pokemon",
+    "id": 187,
+    "speciesId": 187,
+    "pokemonSlug": "hoppip",
+    "speciesSlug": "hoppip",
+    "calcSpeciesName": "Hoppip",
+    "names": {
+      "zh-hans": "毽子草",
+      "zh-hant": "毽子草",
+      "en": "Hoppip",
+      "ja": "ハネッコ"
+    },
+    "speciesNames": {
+      "zh-hans": "毽子草",
+      "zh-hant": "毽子草",
+      "en": "Hoppip",
+      "ja": "ハネッコ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 35,
+      "def": 40,
+      "spa": 35,
+      "spd": 55,
+      "spe": 50
+    }
+  },
+  "188": {
+    "resourceType": "pokemon",
+    "id": 188,
+    "speciesId": 188,
+    "pokemonSlug": "skiploom",
+    "speciesSlug": "skiploom",
+    "calcSpeciesName": "Skiploom",
+    "names": {
+      "zh-hans": "毽子花",
+      "zh-hant": "毽子花",
+      "en": "Skiploom",
+      "ja": "ポポッコ"
+    },
+    "speciesNames": {
+      "zh-hans": "毽子花",
+      "zh-hant": "毽子花",
+      "en": "Skiploom",
+      "ja": "ポポッコ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 45,
+      "def": 50,
+      "spa": 45,
+      "spd": 65,
+      "spe": 80
+    }
+  },
+  "189": {
+    "resourceType": "pokemon",
+    "id": 189,
+    "speciesId": 189,
+    "pokemonSlug": "jumpluff",
+    "speciesSlug": "jumpluff",
+    "calcSpeciesName": "Jumpluff",
+    "names": {
+      "zh-hans": "毽子棉",
+      "zh-hant": "毽子棉",
+      "en": "Jumpluff",
+      "ja": "ワタッコ"
+    },
+    "speciesNames": {
+      "zh-hans": "毽子棉",
+      "zh-hant": "毽子棉",
+      "en": "Jumpluff",
+      "ja": "ワタッコ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 55,
+      "def": 70,
+      "spa": 55,
+      "spd": 95,
+      "spe": 110
+    }
+  },
+  "190": {
+    "resourceType": "pokemon",
+    "id": 190,
+    "speciesId": 190,
+    "pokemonSlug": "aipom",
+    "speciesSlug": "aipom",
+    "calcSpeciesName": "Aipom",
+    "names": {
+      "zh-hans": "长尾怪手",
+      "zh-hant": "長尾怪手",
+      "en": "Aipom",
+      "ja": "エイパム"
+    },
+    "speciesNames": {
+      "zh-hans": "长尾怪手",
+      "zh-hant": "長尾怪手",
+      "en": "Aipom",
+      "ja": "エイパム"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 70,
+      "def": 55,
+      "spa": 40,
+      "spd": 55,
+      "spe": 85
+    }
+  },
+  "191": {
+    "resourceType": "pokemon",
+    "id": 191,
+    "speciesId": 191,
+    "pokemonSlug": "sunkern",
+    "speciesSlug": "sunkern",
+    "calcSpeciesName": "Sunkern",
+    "names": {
+      "zh-hans": "向日种子",
+      "zh-hant": "向日種子",
+      "en": "Sunkern",
+      "ja": "ヒマナッツ"
+    },
+    "speciesNames": {
+      "zh-hans": "向日种子",
+      "zh-hant": "向日種子",
+      "en": "Sunkern",
+      "ja": "ヒマナッツ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 30,
+      "atk": 30,
+      "def": 30,
+      "spa": 30,
+      "spd": 30,
+      "spe": 30
+    }
+  },
+  "192": {
+    "resourceType": "pokemon",
+    "id": 192,
+    "speciesId": 192,
+    "pokemonSlug": "sunflora",
+    "speciesSlug": "sunflora",
+    "calcSpeciesName": "Sunflora",
+    "names": {
+      "zh-hans": "向日花怪",
+      "zh-hant": "向日花怪",
+      "en": "Sunflora",
+      "ja": "キマワリ"
+    },
+    "speciesNames": {
+      "zh-hans": "向日花怪",
+      "zh-hant": "向日花怪",
+      "en": "Sunflora",
+      "ja": "キマワリ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 75,
+      "def": 55,
+      "spa": 105,
+      "spd": 85,
+      "spe": 30
+    }
+  },
+  "193": {
+    "resourceType": "pokemon",
+    "id": 193,
+    "speciesId": 193,
+    "pokemonSlug": "yanma",
+    "speciesSlug": "yanma",
+    "calcSpeciesName": "Yanma",
+    "names": {
+      "zh-hans": "蜻蜻蜓",
+      "zh-hant": "蜻蜻蜓",
+      "en": "Yanma",
+      "ja": "ヤンヤンマ"
+    },
+    "speciesNames": {
+      "zh-hans": "蜻蜻蜓",
+      "zh-hant": "蜻蜻蜓",
+      "en": "Yanma",
+      "ja": "ヤンヤンマ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 65,
+      "def": 45,
+      "spa": 75,
+      "spd": 45,
+      "spe": 95
+    }
+  },
+  "194": {
+    "resourceType": "pokemon",
+    "id": 194,
+    "speciesId": 194,
+    "pokemonSlug": "wooper",
+    "speciesSlug": "wooper",
+    "calcSpeciesName": "Wooper",
+    "names": {
+      "zh-hans": "乌波",
+      "zh-hant": "烏波",
+      "en": "Wooper",
+      "ja": "ウパー"
+    },
+    "speciesNames": {
+      "zh-hans": "乌波",
+      "zh-hant": "烏波",
+      "en": "Wooper",
+      "ja": "ウパー"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 45,
+      "def": 45,
+      "spa": 25,
+      "spd": 25,
+      "spe": 15
+    }
+  },
+  "195": {
+    "resourceType": "pokemon",
+    "id": 195,
+    "speciesId": 195,
+    "pokemonSlug": "quagsire",
+    "speciesSlug": "quagsire",
+    "calcSpeciesName": "Quagsire",
+    "names": {
+      "zh-hans": "沼王",
+      "zh-hant": "沼王",
+      "en": "Quagsire",
+      "ja": "ヌオー"
+    },
+    "speciesNames": {
+      "zh-hans": "沼王",
+      "zh-hant": "沼王",
+      "en": "Quagsire",
+      "ja": "ヌオー"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 85,
+      "def": 85,
+      "spa": 65,
+      "spd": 65,
+      "spe": 35
+    }
+  },
+  "196": {
+    "resourceType": "pokemon",
+    "id": 196,
+    "speciesId": 196,
+    "pokemonSlug": "espeon",
+    "speciesSlug": "espeon",
+    "calcSpeciesName": "Espeon",
+    "names": {
+      "zh-hans": "太阳伊布",
+      "zh-hant": "太陽伊布",
+      "en": "Espeon",
+      "ja": "エーフィ"
+    },
+    "speciesNames": {
+      "zh-hans": "太阳伊布",
+      "zh-hant": "太陽伊布",
+      "en": "Espeon",
+      "ja": "エーフィ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 65,
+      "def": 60,
+      "spa": 130,
+      "spd": 95,
+      "spe": 110
+    }
+  },
+  "197": {
+    "resourceType": "pokemon",
+    "id": 197,
+    "speciesId": 197,
+    "pokemonSlug": "umbreon",
+    "speciesSlug": "umbreon",
+    "calcSpeciesName": "Umbreon",
+    "names": {
+      "zh-hans": "月亮伊布",
+      "zh-hant": "月亮伊布",
+      "en": "Umbreon",
+      "ja": "ブラッキー"
+    },
+    "speciesNames": {
+      "zh-hans": "月亮伊布",
+      "zh-hant": "月亮伊布",
+      "en": "Umbreon",
+      "ja": "ブラッキー"
+    },
+    "formNames": {},
+    "types": [
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 65,
+      "def": 110,
+      "spa": 60,
+      "spd": 130,
+      "spe": 65
+    }
+  },
+  "198": {
+    "resourceType": "pokemon",
+    "id": 198,
+    "speciesId": 198,
+    "pokemonSlug": "murkrow",
+    "speciesSlug": "murkrow",
+    "calcSpeciesName": "Murkrow",
+    "names": {
+      "zh-hans": "黑暗鸦",
+      "zh-hant": "黑暗鴉",
+      "en": "Murkrow",
+      "ja": "ヤミカラス"
+    },
+    "speciesNames": {
+      "zh-hans": "黑暗鸦",
+      "zh-hant": "黑暗鴉",
+      "en": "Murkrow",
+      "ja": "ヤミカラス"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 85,
+      "def": 42,
+      "spa": 85,
+      "spd": 42,
+      "spe": 91
+    }
+  },
+  "199": {
+    "resourceType": "pokemon",
+    "id": 199,
+    "speciesId": 199,
+    "pokemonSlug": "slowking",
+    "speciesSlug": "slowking",
+    "calcSpeciesName": "Slowking",
+    "names": {
+      "zh-hans": "呆呆王",
+      "zh-hant": "呆呆王",
+      "en": "Slowking",
+      "ja": "ヤドキング"
+    },
+    "speciesNames": {
+      "zh-hans": "呆呆王",
+      "zh-hant": "呆呆王",
+      "en": "Slowking",
+      "ja": "ヤドキング"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 75,
+      "def": 80,
+      "spa": 100,
+      "spd": 110,
+      "spe": 30
+    }
+  },
+  "200": {
+    "resourceType": "pokemon",
+    "id": 200,
+    "speciesId": 200,
+    "pokemonSlug": "misdreavus",
+    "speciesSlug": "misdreavus",
+    "calcSpeciesName": "Misdreavus",
+    "names": {
+      "zh-hans": "梦妖",
+      "zh-hant": "夢妖",
+      "en": "Misdreavus",
+      "ja": "ムウマ"
+    },
+    "speciesNames": {
+      "zh-hans": "梦妖",
+      "zh-hant": "夢妖",
+      "en": "Misdreavus",
+      "ja": "ムウマ"
+    },
+    "formNames": {},
+    "types": [
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 60,
+      "def": 60,
+      "spa": 85,
+      "spd": 85,
+      "spe": 85
+    }
+  },
+  "201": {
+    "resourceType": "pokemon",
+    "id": 201,
+    "speciesId": 201,
+    "pokemonSlug": "unown",
+    "speciesSlug": "unown",
+    "calcSpeciesName": "Unown",
+    "names": {
+      "zh-hans": "未知图腾",
+      "zh-hant": "未知圖騰",
+      "en": "Unown",
+      "ja": "アンノーン"
+    },
+    "speciesNames": {
+      "zh-hans": "未知图腾",
+      "zh-hant": "未知圖騰",
+      "en": "Unown",
+      "ja": "アンノーン"
+    },
+    "formNames": {
+      "zh-hans": "A",
+      "zh-hant": "A",
+      "en": "A",
+      "ja": "Ａ"
+    },
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 48,
+      "atk": 72,
+      "def": 48,
+      "spa": 72,
+      "spd": 48,
+      "spe": 48
+    }
+  },
+  "202": {
+    "resourceType": "pokemon",
+    "id": 202,
+    "speciesId": 202,
+    "pokemonSlug": "wobbuffet",
+    "speciesSlug": "wobbuffet",
+    "calcSpeciesName": "Wobbuffet",
+    "names": {
+      "zh-hans": "果然翁",
+      "zh-hant": "果然翁",
+      "en": "Wobbuffet",
+      "ja": "ソーナンス"
+    },
+    "speciesNames": {
+      "zh-hans": "果然翁",
+      "zh-hant": "果然翁",
+      "en": "Wobbuffet",
+      "ja": "ソーナンス"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 190,
+      "atk": 33,
+      "def": 58,
+      "spa": 33,
+      "spd": 58,
+      "spe": 33
+    }
+  },
+  "203": {
+    "resourceType": "pokemon",
+    "id": 203,
+    "speciesId": 203,
+    "pokemonSlug": "girafarig",
+    "speciesSlug": "girafarig",
+    "calcSpeciesName": "Girafarig",
+    "names": {
+      "zh-hans": "麒麟奇",
+      "zh-hant": "麒麟奇",
+      "en": "Girafarig",
+      "ja": "キリンリキ"
+    },
+    "speciesNames": {
+      "zh-hans": "麒麟奇",
+      "zh-hant": "麒麟奇",
+      "en": "Girafarig",
+      "ja": "キリンリキ"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 80,
+      "def": 65,
+      "spa": 90,
+      "spd": 65,
+      "spe": 85
+    }
+  },
+  "204": {
+    "resourceType": "pokemon",
+    "id": 204,
+    "speciesId": 204,
+    "pokemonSlug": "pineco",
+    "speciesSlug": "pineco",
+    "calcSpeciesName": "Pineco",
+    "names": {
+      "zh-hans": "榛果球",
+      "zh-hant": "榛果球",
+      "en": "Pineco",
+      "ja": "クヌギダマ"
+    },
+    "speciesNames": {
+      "zh-hans": "榛果球",
+      "zh-hant": "榛果球",
+      "en": "Pineco",
+      "ja": "クヌギダマ"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 65,
+      "def": 90,
+      "spa": 35,
+      "spd": 35,
+      "spe": 15
+    }
+  },
+  "205": {
+    "resourceType": "pokemon",
+    "id": 205,
+    "speciesId": 205,
+    "pokemonSlug": "forretress",
+    "speciesSlug": "forretress",
+    "calcSpeciesName": "Forretress",
+    "names": {
+      "zh-hans": "佛烈托斯",
+      "zh-hant": "佛烈托斯",
+      "en": "Forretress",
+      "ja": "フォレトス"
+    },
+    "speciesNames": {
+      "zh-hans": "佛烈托斯",
+      "zh-hant": "佛烈托斯",
+      "en": "Forretress",
+      "ja": "フォレトス"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 90,
+      "def": 140,
+      "spa": 60,
+      "spd": 60,
+      "spe": 40
+    }
+  },
+  "206": {
+    "resourceType": "pokemon",
+    "id": 206,
+    "speciesId": 206,
+    "pokemonSlug": "dunsparce",
+    "speciesSlug": "dunsparce",
+    "calcSpeciesName": "Dunsparce",
+    "names": {
+      "zh-hans": "土龙弟弟",
+      "zh-hant": "土龍弟弟",
+      "en": "Dunsparce",
+      "ja": "ノコッチ"
+    },
+    "speciesNames": {
+      "zh-hans": "土龙弟弟",
+      "zh-hant": "土龍弟弟",
+      "en": "Dunsparce",
+      "ja": "ノコッチ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 70,
+      "def": 70,
+      "spa": 65,
+      "spd": 65,
+      "spe": 45
+    }
+  },
+  "207": {
+    "resourceType": "pokemon",
+    "id": 207,
+    "speciesId": 207,
+    "pokemonSlug": "gligar",
+    "speciesSlug": "gligar",
+    "calcSpeciesName": "Gligar",
+    "names": {
+      "zh-hans": "天蝎",
+      "zh-hant": "天蠍",
+      "en": "Gligar",
+      "ja": "グライガー"
+    },
+    "speciesNames": {
+      "zh-hans": "天蝎",
+      "zh-hant": "天蠍",
+      "en": "Gligar",
+      "ja": "グライガー"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 75,
+      "def": 105,
+      "spa": 35,
+      "spd": 65,
+      "spe": 85
+    }
+  },
+  "208": {
+    "resourceType": "pokemon",
+    "id": 208,
+    "speciesId": 208,
+    "pokemonSlug": "steelix",
+    "speciesSlug": "steelix",
+    "calcSpeciesName": "Steelix",
+    "names": {
+      "zh-hans": "大钢蛇",
+      "zh-hant": "大鋼蛇",
+      "en": "Steelix",
+      "ja": "ハガネール"
+    },
+    "speciesNames": {
+      "zh-hans": "大钢蛇",
+      "zh-hant": "大鋼蛇",
+      "en": "Steelix",
+      "ja": "ハガネール"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 85,
+      "def": 200,
+      "spa": 55,
+      "spd": 65,
+      "spe": 30
+    }
+  },
+  "209": {
+    "resourceType": "pokemon",
+    "id": 209,
+    "speciesId": 209,
+    "pokemonSlug": "snubbull",
+    "speciesSlug": "snubbull",
+    "calcSpeciesName": "Snubbull",
+    "names": {
+      "zh-hans": "布鲁",
+      "zh-hant": "布魯",
+      "en": "Snubbull",
+      "ja": "ブルー"
+    },
+    "speciesNames": {
+      "zh-hans": "布鲁",
+      "zh-hant": "布魯",
+      "en": "Snubbull",
+      "ja": "ブルー"
+    },
+    "formNames": {},
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 80,
+      "def": 50,
+      "spa": 40,
+      "spd": 40,
+      "spe": 30
+    }
+  },
+  "210": {
+    "resourceType": "pokemon",
+    "id": 210,
+    "speciesId": 210,
+    "pokemonSlug": "granbull",
+    "speciesSlug": "granbull",
+    "calcSpeciesName": "Granbull",
+    "names": {
+      "zh-hans": "布鲁皇",
+      "zh-hant": "布魯皇",
+      "en": "Granbull",
+      "ja": "グランブル"
+    },
+    "speciesNames": {
+      "zh-hans": "布鲁皇",
+      "zh-hant": "布魯皇",
+      "en": "Granbull",
+      "ja": "グランブル"
+    },
+    "formNames": {},
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 120,
+      "def": 75,
+      "spa": 60,
+      "spd": 60,
+      "spe": 45
+    }
+  },
+  "211": {
+    "resourceType": "pokemon",
+    "id": 211,
+    "speciesId": 211,
+    "pokemonSlug": "qwilfish",
+    "speciesSlug": "qwilfish",
+    "calcSpeciesName": "Qwilfish",
+    "names": {
+      "zh-hans": "千针鱼",
+      "zh-hant": "千針魚",
+      "en": "Qwilfish",
+      "ja": "ハリーセン"
+    },
+    "speciesNames": {
+      "zh-hans": "千针鱼",
+      "zh-hant": "千針魚",
+      "en": "Qwilfish",
+      "ja": "ハリーセン"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 95,
+      "def": 85,
+      "spa": 55,
+      "spd": 55,
+      "spe": 85
+    }
+  },
+  "212": {
+    "resourceType": "pokemon",
+    "id": 212,
+    "speciesId": 212,
+    "pokemonSlug": "scizor",
+    "speciesSlug": "scizor",
+    "calcSpeciesName": "Scizor",
+    "names": {
+      "zh-hans": "巨钳螳螂",
+      "zh-hant": "巨鉗螳螂",
+      "en": "Scizor",
+      "ja": "ハッサム"
+    },
+    "speciesNames": {
+      "zh-hans": "巨钳螳螂",
+      "zh-hant": "巨鉗螳螂",
+      "en": "Scizor",
+      "ja": "ハッサム"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 130,
+      "def": 100,
+      "spa": 55,
+      "spd": 80,
+      "spe": 65
+    }
+  },
+  "213": {
+    "resourceType": "pokemon",
+    "id": 213,
+    "speciesId": 213,
+    "pokemonSlug": "shuckle",
+    "speciesSlug": "shuckle",
+    "calcSpeciesName": "Shuckle",
+    "names": {
+      "zh-hans": "壶壶",
+      "zh-hant": "壺壺",
+      "en": "Shuckle",
+      "ja": "ツボツボ"
+    },
+    "speciesNames": {
+      "zh-hans": "壶壶",
+      "zh-hant": "壺壺",
+      "en": "Shuckle",
+      "ja": "ツボツボ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 20,
+      "atk": 10,
+      "def": 230,
+      "spa": 10,
+      "spd": 230,
+      "spe": 5
+    }
+  },
+  "214": {
+    "resourceType": "pokemon",
+    "id": 214,
+    "speciesId": 214,
+    "pokemonSlug": "heracross",
+    "speciesSlug": "heracross",
+    "calcSpeciesName": "Heracross",
+    "names": {
+      "zh-hans": "赫拉克罗斯",
+      "zh-hant": "赫拉克羅斯",
+      "en": "Heracross",
+      "ja": "ヘラクロス"
+    },
+    "speciesNames": {
+      "zh-hans": "赫拉克罗斯",
+      "zh-hant": "赫拉克羅斯",
+      "en": "Heracross",
+      "ja": "ヘラクロス"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 125,
+      "def": 75,
+      "spa": 40,
+      "spd": 95,
+      "spe": 85
+    }
+  },
+  "215": {
+    "resourceType": "pokemon",
+    "id": 215,
+    "speciesId": 215,
+    "pokemonSlug": "sneasel",
+    "speciesSlug": "sneasel",
+    "calcSpeciesName": "Sneasel",
+    "names": {
+      "zh-hans": "狃拉",
+      "zh-hant": "狃拉",
+      "en": "Sneasel",
+      "ja": "ニューラ"
+    },
+    "speciesNames": {
+      "zh-hans": "狃拉",
+      "zh-hant": "狃拉",
+      "en": "Sneasel",
+      "ja": "ニューラ"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 95,
+      "def": 55,
+      "spa": 35,
+      "spd": 75,
+      "spe": 115
+    }
+  },
+  "216": {
+    "resourceType": "pokemon",
+    "id": 216,
+    "speciesId": 216,
+    "pokemonSlug": "teddiursa",
+    "speciesSlug": "teddiursa",
+    "calcSpeciesName": "Teddiursa",
+    "names": {
+      "zh-hans": "熊宝宝",
+      "zh-hant": "熊寶寶",
+      "en": "Teddiursa",
+      "ja": "ヒメグマ"
+    },
+    "speciesNames": {
+      "zh-hans": "熊宝宝",
+      "zh-hant": "熊寶寶",
+      "en": "Teddiursa",
+      "ja": "ヒメグマ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 80,
+      "def": 50,
+      "spa": 50,
+      "spd": 50,
+      "spe": 40
+    }
+  },
+  "217": {
+    "resourceType": "pokemon",
+    "id": 217,
+    "speciesId": 217,
+    "pokemonSlug": "ursaring",
+    "speciesSlug": "ursaring",
+    "calcSpeciesName": "Ursaring",
+    "names": {
+      "zh-hans": "圈圈熊",
+      "zh-hant": "圈圈熊",
+      "en": "Ursaring",
+      "ja": "リングマ"
+    },
+    "speciesNames": {
+      "zh-hans": "圈圈熊",
+      "zh-hant": "圈圈熊",
+      "en": "Ursaring",
+      "ja": "リングマ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 130,
+      "def": 75,
+      "spa": 75,
+      "spd": 75,
+      "spe": 55
+    }
+  },
+  "218": {
+    "resourceType": "pokemon",
+    "id": 218,
+    "speciesId": 218,
+    "pokemonSlug": "slugma",
+    "speciesSlug": "slugma",
+    "calcSpeciesName": "Slugma",
+    "names": {
+      "zh-hans": "熔岩虫",
+      "zh-hant": "熔岩蟲",
+      "en": "Slugma",
+      "ja": "マグマッグ"
+    },
+    "speciesNames": {
+      "zh-hans": "熔岩虫",
+      "zh-hant": "熔岩蟲",
+      "en": "Slugma",
+      "ja": "マグマッグ"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 40,
+      "def": 40,
+      "spa": 70,
+      "spd": 40,
+      "spe": 20
+    }
+  },
+  "219": {
+    "resourceType": "pokemon",
+    "id": 219,
+    "speciesId": 219,
+    "pokemonSlug": "magcargo",
+    "speciesSlug": "magcargo",
+    "calcSpeciesName": "Magcargo",
+    "names": {
+      "zh-hans": "熔岩蜗牛",
+      "zh-hant": "熔岩蝸牛",
+      "en": "Magcargo",
+      "ja": "マグカルゴ"
+    },
+    "speciesNames": {
+      "zh-hans": "熔岩蜗牛",
+      "zh-hant": "熔岩蝸牛",
+      "en": "Magcargo",
+      "ja": "マグカルゴ"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 50,
+      "def": 120,
+      "spa": 90,
+      "spd": 80,
+      "spe": 30
+    }
+  },
+  "220": {
+    "resourceType": "pokemon",
+    "id": 220,
+    "speciesId": 220,
+    "pokemonSlug": "swinub",
+    "speciesSlug": "swinub",
+    "calcSpeciesName": "Swinub",
+    "names": {
+      "zh-hans": "小山猪",
+      "zh-hant": "小山豬",
+      "en": "Swinub",
+      "ja": "ウリムー"
+    },
+    "speciesNames": {
+      "zh-hans": "小山猪",
+      "zh-hant": "小山豬",
+      "en": "Swinub",
+      "ja": "ウリムー"
+    },
+    "formNames": {},
+    "types": [
+      "ice",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 50,
+      "def": 40,
+      "spa": 30,
+      "spd": 30,
+      "spe": 50
+    }
+  },
+  "221": {
+    "resourceType": "pokemon",
+    "id": 221,
+    "speciesId": 221,
+    "pokemonSlug": "piloswine",
+    "speciesSlug": "piloswine",
+    "calcSpeciesName": "Piloswine",
+    "names": {
+      "zh-hans": "长毛猪",
+      "zh-hant": "長毛豬",
+      "en": "Piloswine",
+      "ja": "イノムー"
+    },
+    "speciesNames": {
+      "zh-hans": "长毛猪",
+      "zh-hant": "長毛豬",
+      "en": "Piloswine",
+      "ja": "イノムー"
+    },
+    "formNames": {},
+    "types": [
+      "ice",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 100,
+      "def": 80,
+      "spa": 60,
+      "spd": 60,
+      "spe": 50
+    }
+  },
+  "222": {
+    "resourceType": "pokemon",
+    "id": 222,
+    "speciesId": 222,
+    "pokemonSlug": "corsola",
+    "speciesSlug": "corsola",
+    "calcSpeciesName": "Corsola",
+    "names": {
+      "zh-hans": "太阳珊瑚",
+      "zh-hant": "太陽珊瑚",
+      "en": "Corsola",
+      "ja": "サニーゴ"
+    },
+    "speciesNames": {
+      "zh-hans": "太阳珊瑚",
+      "zh-hant": "太陽珊瑚",
+      "en": "Corsola",
+      "ja": "サニーゴ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 55,
+      "def": 95,
+      "spa": 65,
+      "spd": 95,
+      "spe": 35
+    }
+  },
+  "223": {
+    "resourceType": "pokemon",
+    "id": 223,
+    "speciesId": 223,
+    "pokemonSlug": "remoraid",
+    "speciesSlug": "remoraid",
+    "calcSpeciesName": "Remoraid",
+    "names": {
+      "zh-hans": "铁炮鱼",
+      "zh-hant": "鐵炮魚",
+      "en": "Remoraid",
+      "ja": "テッポウオ"
+    },
+    "speciesNames": {
+      "zh-hans": "铁炮鱼",
+      "zh-hant": "鐵炮魚",
+      "en": "Remoraid",
+      "ja": "テッポウオ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 65,
+      "def": 35,
+      "spa": 65,
+      "spd": 35,
+      "spe": 65
+    }
+  },
+  "224": {
+    "resourceType": "pokemon",
+    "id": 224,
+    "speciesId": 224,
+    "pokemonSlug": "octillery",
+    "speciesSlug": "octillery",
+    "calcSpeciesName": "Octillery",
+    "names": {
+      "zh-hans": "章鱼桶",
+      "zh-hant": "章魚桶",
+      "en": "Octillery",
+      "ja": "オクタン"
+    },
+    "speciesNames": {
+      "zh-hans": "章鱼桶",
+      "zh-hant": "章魚桶",
+      "en": "Octillery",
+      "ja": "オクタン"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 105,
+      "def": 75,
+      "spa": 105,
+      "spd": 75,
+      "spe": 45
+    }
+  },
+  "225": {
+    "resourceType": "pokemon",
+    "id": 225,
+    "speciesId": 225,
+    "pokemonSlug": "delibird",
+    "speciesSlug": "delibird",
+    "calcSpeciesName": "Delibird",
+    "names": {
+      "zh-hans": "信使鸟",
+      "zh-hant": "信使鳥",
+      "en": "Delibird",
+      "ja": "デリバード"
+    },
+    "speciesNames": {
+      "zh-hans": "信使鸟",
+      "zh-hant": "信使鳥",
+      "en": "Delibird",
+      "ja": "デリバード"
+    },
+    "formNames": {},
+    "types": [
+      "ice",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 55,
+      "def": 45,
+      "spa": 65,
+      "spd": 45,
+      "spe": 75
+    }
+  },
+  "226": {
+    "resourceType": "pokemon",
+    "id": 226,
+    "speciesId": 226,
+    "pokemonSlug": "mantine",
+    "speciesSlug": "mantine",
+    "calcSpeciesName": "Mantine",
+    "names": {
+      "zh-hans": "巨翅飞鱼",
+      "zh-hant": "巨翅飛魚",
+      "en": "Mantine",
+      "ja": "マンタイン"
+    },
+    "speciesNames": {
+      "zh-hans": "巨翅飞鱼",
+      "zh-hant": "巨翅飛魚",
+      "en": "Mantine",
+      "ja": "マンタイン"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 40,
+      "def": 70,
+      "spa": 80,
+      "spd": 140,
+      "spe": 70
+    }
+  },
+  "227": {
+    "resourceType": "pokemon",
+    "id": 227,
+    "speciesId": 227,
+    "pokemonSlug": "skarmory",
+    "speciesSlug": "skarmory",
+    "calcSpeciesName": "Skarmory",
+    "names": {
+      "zh-hans": "盔甲鸟",
+      "zh-hant": "盔甲鳥",
+      "en": "Skarmory",
+      "ja": "エアームド"
+    },
+    "speciesNames": {
+      "zh-hans": "盔甲鸟",
+      "zh-hant": "盔甲鳥",
+      "en": "Skarmory",
+      "ja": "エアームド"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 80,
+      "def": 140,
+      "spa": 40,
+      "spd": 70,
+      "spe": 70
+    }
+  },
+  "228": {
+    "resourceType": "pokemon",
+    "id": 228,
+    "speciesId": 228,
+    "pokemonSlug": "houndour",
+    "speciesSlug": "houndour",
+    "calcSpeciesName": "Houndour",
+    "names": {
+      "zh-hans": "戴鲁比",
+      "zh-hant": "戴魯比",
+      "en": "Houndour",
+      "ja": "デルビル"
+    },
+    "speciesNames": {
+      "zh-hans": "戴鲁比",
+      "zh-hant": "戴魯比",
+      "en": "Houndour",
+      "ja": "デルビル"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 60,
+      "def": 30,
+      "spa": 80,
+      "spd": 50,
+      "spe": 65
+    }
+  },
+  "229": {
+    "resourceType": "pokemon",
+    "id": 229,
+    "speciesId": 229,
+    "pokemonSlug": "houndoom",
+    "speciesSlug": "houndoom",
+    "calcSpeciesName": "Houndoom",
+    "names": {
+      "zh-hans": "黑鲁加",
+      "zh-hant": "黑魯加",
+      "en": "Houndoom",
+      "ja": "ヘルガー"
+    },
+    "speciesNames": {
+      "zh-hans": "黑鲁加",
+      "zh-hant": "黑魯加",
+      "en": "Houndoom",
+      "ja": "ヘルガー"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 90,
+      "def": 50,
+      "spa": 110,
+      "spd": 80,
+      "spe": 95
+    }
+  },
+  "230": {
+    "resourceType": "pokemon",
+    "id": 230,
+    "speciesId": 230,
+    "pokemonSlug": "kingdra",
+    "speciesSlug": "kingdra",
+    "calcSpeciesName": "Kingdra",
+    "names": {
+      "zh-hans": "刺龙王",
+      "zh-hant": "刺龍王",
+      "en": "Kingdra",
+      "ja": "キングドラ"
+    },
+    "speciesNames": {
+      "zh-hans": "刺龙王",
+      "zh-hant": "刺龍王",
+      "en": "Kingdra",
+      "ja": "キングドラ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 95,
+      "def": 95,
+      "spa": 95,
+      "spd": 95,
+      "spe": 85
+    }
+  },
+  "231": {
+    "resourceType": "pokemon",
+    "id": 231,
+    "speciesId": 231,
+    "pokemonSlug": "phanpy",
+    "speciesSlug": "phanpy",
+    "calcSpeciesName": "Phanpy",
+    "names": {
+      "zh-hans": "小小象",
+      "zh-hant": "小小象",
+      "en": "Phanpy",
+      "ja": "ゴマゾウ"
+    },
+    "speciesNames": {
+      "zh-hans": "小小象",
+      "zh-hant": "小小象",
+      "en": "Phanpy",
+      "ja": "ゴマゾウ"
+    },
+    "formNames": {},
+    "types": [
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 60,
+      "def": 60,
+      "spa": 40,
+      "spd": 40,
+      "spe": 40
+    }
+  },
+  "232": {
+    "resourceType": "pokemon",
+    "id": 232,
+    "speciesId": 232,
+    "pokemonSlug": "donphan",
+    "speciesSlug": "donphan",
+    "calcSpeciesName": "Donphan",
+    "names": {
+      "zh-hans": "顿甲",
+      "zh-hant": "頓甲",
+      "en": "Donphan",
+      "ja": "ドンファン"
+    },
+    "speciesNames": {
+      "zh-hans": "顿甲",
+      "zh-hant": "頓甲",
+      "en": "Donphan",
+      "ja": "ドンファン"
+    },
+    "formNames": {},
+    "types": [
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 120,
+      "def": 120,
+      "spa": 60,
+      "spd": 60,
+      "spe": 50
+    }
+  },
+  "233": {
+    "resourceType": "pokemon",
+    "id": 233,
+    "speciesId": 233,
+    "pokemonSlug": "porygon2",
+    "speciesSlug": "porygon2",
+    "calcSpeciesName": "Porygon2",
+    "names": {
+      "zh-hans": "多边兽２型",
+      "zh-hant": "多邊獸Ⅱ",
+      "en": "Porygon2",
+      "ja": "ポリゴン２"
+    },
+    "speciesNames": {
+      "zh-hans": "多边兽２型",
+      "zh-hant": "多邊獸Ⅱ",
+      "en": "Porygon2",
+      "ja": "ポリゴン２"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 80,
+      "def": 90,
+      "spa": 105,
+      "spd": 95,
+      "spe": 60
+    }
+  },
+  "234": {
+    "resourceType": "pokemon",
+    "id": 234,
+    "speciesId": 234,
+    "pokemonSlug": "stantler",
+    "speciesSlug": "stantler",
+    "calcSpeciesName": "Stantler",
+    "names": {
+      "zh-hans": "惊角鹿",
+      "zh-hant": "驚角鹿",
+      "en": "Stantler",
+      "ja": "オドシシ"
+    },
+    "speciesNames": {
+      "zh-hans": "惊角鹿",
+      "zh-hant": "驚角鹿",
+      "en": "Stantler",
+      "ja": "オドシシ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 73,
+      "atk": 95,
+      "def": 62,
+      "spa": 85,
+      "spd": 65,
+      "spe": 85
+    }
+  },
+  "235": {
+    "resourceType": "pokemon",
+    "id": 235,
+    "speciesId": 235,
+    "pokemonSlug": "smeargle",
+    "speciesSlug": "smeargle",
+    "calcSpeciesName": "Smeargle",
+    "names": {
+      "zh-hans": "图图犬",
+      "zh-hant": "圖圖犬",
+      "en": "Smeargle",
+      "ja": "ドーブル"
+    },
+    "speciesNames": {
+      "zh-hans": "图图犬",
+      "zh-hant": "圖圖犬",
+      "en": "Smeargle",
+      "ja": "ドーブル"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 20,
+      "def": 35,
+      "spa": 20,
+      "spd": 45,
+      "spe": 75
+    }
+  },
+  "236": {
+    "resourceType": "pokemon",
+    "id": 236,
+    "speciesId": 236,
+    "pokemonSlug": "tyrogue",
+    "speciesSlug": "tyrogue",
+    "calcSpeciesName": "Tyrogue",
+    "names": {
+      "zh-hans": "无畏小子",
+      "zh-hant": "無畏小子",
+      "en": "Tyrogue",
+      "ja": "バルキー"
+    },
+    "speciesNames": {
+      "zh-hans": "无畏小子",
+      "zh-hant": "無畏小子",
+      "en": "Tyrogue",
+      "ja": "バルキー"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 35,
+      "def": 35,
+      "spa": 35,
+      "spd": 35,
+      "spe": 35
+    }
+  },
+  "237": {
+    "resourceType": "pokemon",
+    "id": 237,
+    "speciesId": 237,
+    "pokemonSlug": "hitmontop",
+    "speciesSlug": "hitmontop",
+    "calcSpeciesName": "Hitmontop",
+    "names": {
+      "zh-hans": "战舞郎",
+      "zh-hant": "戰舞郎",
+      "en": "Hitmontop",
+      "ja": "カポエラー"
+    },
+    "speciesNames": {
+      "zh-hans": "战舞郎",
+      "zh-hant": "戰舞郎",
+      "en": "Hitmontop",
+      "ja": "カポエラー"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 95,
+      "def": 95,
+      "spa": 35,
+      "spd": 110,
+      "spe": 70
+    }
+  },
+  "238": {
+    "resourceType": "pokemon",
+    "id": 238,
+    "speciesId": 238,
+    "pokemonSlug": "smoochum",
+    "speciesSlug": "smoochum",
+    "calcSpeciesName": "Smoochum",
+    "names": {
+      "zh-hans": "迷唇娃",
+      "zh-hant": "迷唇娃",
+      "en": "Smoochum",
+      "ja": "ムチュール"
+    },
+    "speciesNames": {
+      "zh-hans": "迷唇娃",
+      "zh-hant": "迷唇娃",
+      "en": "Smoochum",
+      "ja": "ムチュール"
+    },
+    "formNames": {},
+    "types": [
+      "ice",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 30,
+      "def": 15,
+      "spa": 85,
+      "spd": 65,
+      "spe": 65
+    }
+  },
+  "239": {
+    "resourceType": "pokemon",
+    "id": 239,
+    "speciesId": 239,
+    "pokemonSlug": "elekid",
+    "speciesSlug": "elekid",
+    "calcSpeciesName": "Elekid",
+    "names": {
+      "zh-hans": "电击怪",
+      "zh-hant": "電擊怪",
+      "en": "Elekid",
+      "ja": "エレキッド"
+    },
+    "speciesNames": {
+      "zh-hans": "电击怪",
+      "zh-hant": "電擊怪",
+      "en": "Elekid",
+      "ja": "エレキッド"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 63,
+      "def": 37,
+      "spa": 65,
+      "spd": 55,
+      "spe": 95
+    }
+  },
+  "240": {
+    "resourceType": "pokemon",
+    "id": 240,
+    "speciesId": 240,
+    "pokemonSlug": "magby",
+    "speciesSlug": "magby",
+    "calcSpeciesName": "Magby",
+    "names": {
+      "zh-hans": "鸭嘴宝宝",
+      "zh-hant": "鴨嘴寶寶",
+      "en": "Magby",
+      "ja": "ブビィ"
+    },
+    "speciesNames": {
+      "zh-hans": "鸭嘴宝宝",
+      "zh-hant": "鴨嘴寶寶",
+      "en": "Magby",
+      "ja": "ブビィ"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 75,
+      "def": 37,
+      "spa": 70,
+      "spd": 55,
+      "spe": 83
+    }
+  },
+  "241": {
+    "resourceType": "pokemon",
+    "id": 241,
+    "speciesId": 241,
+    "pokemonSlug": "miltank",
+    "speciesSlug": "miltank",
+    "calcSpeciesName": "Miltank",
+    "names": {
+      "zh-hans": "大奶罐",
+      "zh-hant": "大奶罐",
+      "en": "Miltank",
+      "ja": "ミルタンク"
+    },
+    "speciesNames": {
+      "zh-hans": "大奶罐",
+      "zh-hant": "大奶罐",
+      "en": "Miltank",
+      "ja": "ミルタンク"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 80,
+      "def": 105,
+      "spa": 40,
+      "spd": 70,
+      "spe": 100
+    }
+  },
+  "242": {
+    "resourceType": "pokemon",
+    "id": 242,
+    "speciesId": 242,
+    "pokemonSlug": "blissey",
+    "speciesSlug": "blissey",
+    "calcSpeciesName": "Blissey",
+    "names": {
+      "zh-hans": "幸福蛋",
+      "zh-hant": "幸福蛋",
+      "en": "Blissey",
+      "ja": "ハピナス"
+    },
+    "speciesNames": {
+      "zh-hans": "幸福蛋",
+      "zh-hant": "幸福蛋",
+      "en": "Blissey",
+      "ja": "ハピナス"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 255,
+      "atk": 10,
+      "def": 10,
+      "spa": 75,
+      "spd": 135,
+      "spe": 55
+    }
+  },
+  "243": {
+    "resourceType": "pokemon",
+    "id": 243,
+    "speciesId": 243,
+    "pokemonSlug": "raikou",
+    "speciesSlug": "raikou",
+    "calcSpeciesName": "Raikou",
+    "names": {
+      "zh-hans": "雷公",
+      "zh-hant": "雷公",
+      "en": "Raikou",
+      "ja": "ライコウ"
+    },
+    "speciesNames": {
+      "zh-hans": "雷公",
+      "zh-hant": "雷公",
+      "en": "Raikou",
+      "ja": "ライコウ"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 85,
+      "def": 75,
+      "spa": 115,
+      "spd": 100,
+      "spe": 115
+    }
+  },
+  "244": {
+    "resourceType": "pokemon",
+    "id": 244,
+    "speciesId": 244,
+    "pokemonSlug": "entei",
+    "speciesSlug": "entei",
+    "calcSpeciesName": "Entei",
+    "names": {
+      "zh-hans": "炎帝",
+      "zh-hant": "炎帝",
+      "en": "Entei",
+      "ja": "エンテイ"
+    },
+    "speciesNames": {
+      "zh-hans": "炎帝",
+      "zh-hant": "炎帝",
+      "en": "Entei",
+      "ja": "エンテイ"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 115,
+      "atk": 115,
+      "def": 85,
+      "spa": 90,
+      "spd": 75,
+      "spe": 100
+    }
+  },
+  "245": {
+    "resourceType": "pokemon",
+    "id": 245,
+    "speciesId": 245,
+    "pokemonSlug": "suicune",
+    "speciesSlug": "suicune",
+    "calcSpeciesName": "Suicune",
+    "names": {
+      "zh-hans": "水君",
+      "zh-hant": "水君",
+      "en": "Suicune",
+      "ja": "スイクン"
+    },
+    "speciesNames": {
+      "zh-hans": "水君",
+      "zh-hant": "水君",
+      "en": "Suicune",
+      "ja": "スイクン"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 75,
+      "def": 115,
+      "spa": 90,
+      "spd": 115,
+      "spe": 85
+    }
+  },
+  "246": {
+    "resourceType": "pokemon",
+    "id": 246,
+    "speciesId": 246,
+    "pokemonSlug": "larvitar",
+    "speciesSlug": "larvitar",
+    "calcSpeciesName": "Larvitar",
+    "names": {
+      "zh-hans": "幼基拉斯",
+      "zh-hant": "幼基拉斯",
+      "en": "Larvitar",
+      "ja": "ヨーギラス"
+    },
+    "speciesNames": {
+      "zh-hans": "幼基拉斯",
+      "zh-hant": "幼基拉斯",
+      "en": "Larvitar",
+      "ja": "ヨーギラス"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 64,
+      "def": 50,
+      "spa": 45,
+      "spd": 50,
+      "spe": 41
+    }
+  },
+  "247": {
+    "resourceType": "pokemon",
+    "id": 247,
+    "speciesId": 247,
+    "pokemonSlug": "pupitar",
+    "speciesSlug": "pupitar",
+    "calcSpeciesName": "Pupitar",
+    "names": {
+      "zh-hans": "沙基拉斯",
+      "zh-hant": "沙基拉斯",
+      "en": "Pupitar",
+      "ja": "サナギラス"
+    },
+    "speciesNames": {
+      "zh-hans": "沙基拉斯",
+      "zh-hant": "沙基拉斯",
+      "en": "Pupitar",
+      "ja": "サナギラス"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 84,
+      "def": 70,
+      "spa": 65,
+      "spd": 70,
+      "spe": 51
+    }
+  },
+  "248": {
+    "resourceType": "pokemon",
+    "id": 248,
+    "speciesId": 248,
+    "pokemonSlug": "tyranitar",
+    "speciesSlug": "tyranitar",
+    "calcSpeciesName": "Tyranitar",
+    "names": {
+      "zh-hans": "班基拉斯",
+      "zh-hant": "班基拉斯",
+      "en": "Tyranitar",
+      "ja": "バンギラス"
+    },
+    "speciesNames": {
+      "zh-hans": "班基拉斯",
+      "zh-hant": "班基拉斯",
+      "en": "Tyranitar",
+      "ja": "バンギラス"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 134,
+      "def": 110,
+      "spa": 95,
+      "spd": 100,
+      "spe": 61
+    }
+  },
+  "249": {
+    "resourceType": "pokemon",
+    "id": 249,
+    "speciesId": 249,
+    "pokemonSlug": "lugia",
+    "speciesSlug": "lugia",
+    "calcSpeciesName": "Lugia",
+    "names": {
+      "zh-hans": "洛奇亚",
+      "zh-hant": "洛奇亞",
+      "en": "Lugia",
+      "ja": "ルギア"
+    },
+    "speciesNames": {
+      "zh-hans": "洛奇亚",
+      "zh-hant": "洛奇亞",
+      "en": "Lugia",
+      "ja": "ルギア"
+    },
+    "formNames": {},
+    "types": [
+      "psychic",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 106,
+      "atk": 90,
+      "def": 130,
+      "spa": 90,
+      "spd": 154,
+      "spe": 110
+    }
+  },
+  "250": {
+    "resourceType": "pokemon",
+    "id": 250,
+    "speciesId": 250,
+    "pokemonSlug": "ho-oh",
+    "speciesSlug": "ho-oh",
+    "calcSpeciesName": "Ho-Oh",
+    "names": {
+      "zh-hans": "凤王",
+      "zh-hant": "鳳王",
+      "en": "Ho-Oh",
+      "ja": "ホウオウ"
+    },
+    "speciesNames": {
+      "zh-hans": "凤王",
+      "zh-hant": "鳳王",
+      "en": "Ho-Oh",
+      "ja": "ホウオウ"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 106,
+      "atk": 130,
+      "def": 90,
+      "spa": 110,
+      "spd": 154,
+      "spe": 90
+    }
+  },
+  "251": {
+    "resourceType": "pokemon",
+    "id": 251,
+    "speciesId": 251,
+    "pokemonSlug": "celebi",
+    "speciesSlug": "celebi",
+    "calcSpeciesName": "Celebi",
+    "names": {
+      "zh-hans": "时拉比",
+      "zh-hant": "時拉比",
+      "en": "Celebi",
+      "ja": "セレビィ"
+    },
+    "speciesNames": {
+      "zh-hans": "时拉比",
+      "zh-hant": "時拉比",
+      "en": "Celebi",
+      "ja": "セレビィ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 100,
+      "def": 100,
+      "spa": 100,
+      "spd": 100,
+      "spe": 100
+    }
+  },
+  "252": {
+    "resourceType": "pokemon",
+    "id": 252,
+    "speciesId": 252,
+    "pokemonSlug": "treecko",
+    "speciesSlug": "treecko",
+    "calcSpeciesName": "Treecko",
+    "names": {
+      "zh-hans": "木守宫",
+      "zh-hant": "木守宮",
+      "en": "Treecko",
+      "ja": "キモリ"
+    },
+    "speciesNames": {
+      "zh-hans": "木守宫",
+      "zh-hant": "木守宮",
+      "en": "Treecko",
+      "ja": "キモリ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 45,
+      "def": 35,
+      "spa": 65,
+      "spd": 55,
+      "spe": 70
+    }
+  },
+  "253": {
+    "resourceType": "pokemon",
+    "id": 253,
+    "speciesId": 253,
+    "pokemonSlug": "grovyle",
+    "speciesSlug": "grovyle",
+    "calcSpeciesName": "Grovyle",
+    "names": {
+      "zh-hans": "森林蜥蜴",
+      "zh-hant": "森林蜥蜴",
+      "en": "Grovyle",
+      "ja": "ジュプトル"
+    },
+    "speciesNames": {
+      "zh-hans": "森林蜥蜴",
+      "zh-hant": "森林蜥蜴",
+      "en": "Grovyle",
+      "ja": "ジュプトル"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 65,
+      "def": 45,
+      "spa": 85,
+      "spd": 65,
+      "spe": 95
+    }
+  },
+  "254": {
+    "resourceType": "pokemon",
+    "id": 254,
+    "speciesId": 254,
+    "pokemonSlug": "sceptile",
+    "speciesSlug": "sceptile",
+    "calcSpeciesName": "Sceptile",
+    "names": {
+      "zh-hans": "蜥蜴王",
+      "zh-hant": "蜥蜴王",
+      "en": "Sceptile",
+      "ja": "ジュカイン"
+    },
+    "speciesNames": {
+      "zh-hans": "蜥蜴王",
+      "zh-hant": "蜥蜴王",
+      "en": "Sceptile",
+      "ja": "ジュカイン"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 85,
+      "def": 65,
+      "spa": 105,
+      "spd": 85,
+      "spe": 120
+    }
+  },
+  "255": {
+    "resourceType": "pokemon",
+    "id": 255,
+    "speciesId": 255,
+    "pokemonSlug": "torchic",
+    "speciesSlug": "torchic",
+    "calcSpeciesName": "Torchic",
+    "names": {
+      "zh-hans": "火稚鸡",
+      "zh-hant": "火稚雞",
+      "en": "Torchic",
+      "ja": "アチャモ"
+    },
+    "speciesNames": {
+      "zh-hans": "火稚鸡",
+      "zh-hant": "火稚雞",
+      "en": "Torchic",
+      "ja": "アチャモ"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 60,
+      "def": 40,
+      "spa": 70,
+      "spd": 50,
+      "spe": 45
+    }
+  },
+  "256": {
+    "resourceType": "pokemon",
+    "id": 256,
+    "speciesId": 256,
+    "pokemonSlug": "combusken",
+    "speciesSlug": "combusken",
+    "calcSpeciesName": "Combusken",
+    "names": {
+      "zh-hans": "力壮鸡",
+      "zh-hant": "力壯雞",
+      "en": "Combusken",
+      "ja": "ワカシャモ"
+    },
+    "speciesNames": {
+      "zh-hans": "力壮鸡",
+      "zh-hant": "力壯雞",
+      "en": "Combusken",
+      "ja": "ワカシャモ"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 85,
+      "def": 60,
+      "spa": 85,
+      "spd": 60,
+      "spe": 55
+    }
+  },
+  "257": {
+    "resourceType": "pokemon",
+    "id": 257,
+    "speciesId": 257,
+    "pokemonSlug": "blaziken",
+    "speciesSlug": "blaziken",
+    "calcSpeciesName": "Blaziken",
+    "names": {
+      "zh-hans": "火焰鸡",
+      "zh-hant": "火焰雞",
+      "en": "Blaziken",
+      "ja": "バシャーモ"
+    },
+    "speciesNames": {
+      "zh-hans": "火焰鸡",
+      "zh-hant": "火焰雞",
+      "en": "Blaziken",
+      "ja": "バシャーモ"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 120,
+      "def": 70,
+      "spa": 110,
+      "spd": 70,
+      "spe": 80
+    }
+  },
+  "258": {
+    "resourceType": "pokemon",
+    "id": 258,
+    "speciesId": 258,
+    "pokemonSlug": "mudkip",
+    "speciesSlug": "mudkip",
+    "calcSpeciesName": "Mudkip",
+    "names": {
+      "zh-hans": "水跃鱼",
+      "zh-hant": "水躍魚",
+      "en": "Mudkip",
+      "ja": "ミズゴロウ"
+    },
+    "speciesNames": {
+      "zh-hans": "水跃鱼",
+      "zh-hant": "水躍魚",
+      "en": "Mudkip",
+      "ja": "ミズゴロウ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 70,
+      "def": 50,
+      "spa": 50,
+      "spd": 50,
+      "spe": 40
+    }
+  },
+  "259": {
+    "resourceType": "pokemon",
+    "id": 259,
+    "speciesId": 259,
+    "pokemonSlug": "marshtomp",
+    "speciesSlug": "marshtomp",
+    "calcSpeciesName": "Marshtomp",
+    "names": {
+      "zh-hans": "沼跃鱼",
+      "zh-hant": "沼躍魚",
+      "en": "Marshtomp",
+      "ja": "ヌマクロー"
+    },
+    "speciesNames": {
+      "zh-hans": "沼跃鱼",
+      "zh-hant": "沼躍魚",
+      "en": "Marshtomp",
+      "ja": "ヌマクロー"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 85,
+      "def": 70,
+      "spa": 60,
+      "spd": 70,
+      "spe": 50
+    }
+  },
+  "260": {
+    "resourceType": "pokemon",
+    "id": 260,
+    "speciesId": 260,
+    "pokemonSlug": "swampert",
+    "speciesSlug": "swampert",
+    "calcSpeciesName": "Swampert",
+    "names": {
+      "zh-hans": "巨沼怪",
+      "zh-hant": "巨沼怪",
+      "en": "Swampert",
+      "ja": "ラグラージ"
+    },
+    "speciesNames": {
+      "zh-hans": "巨沼怪",
+      "zh-hant": "巨沼怪",
+      "en": "Swampert",
+      "ja": "ラグラージ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 110,
+      "def": 90,
+      "spa": 85,
+      "spd": 90,
+      "spe": 60
+    }
+  },
+  "261": {
+    "resourceType": "pokemon",
+    "id": 261,
+    "speciesId": 261,
+    "pokemonSlug": "poochyena",
+    "speciesSlug": "poochyena",
+    "calcSpeciesName": "Poochyena",
+    "names": {
+      "zh-hans": "土狼犬",
+      "zh-hant": "土狼犬",
+      "en": "Poochyena",
+      "ja": "ポチエナ"
+    },
+    "speciesNames": {
+      "zh-hans": "土狼犬",
+      "zh-hant": "土狼犬",
+      "en": "Poochyena",
+      "ja": "ポチエナ"
+    },
+    "formNames": {},
+    "types": [
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 55,
+      "def": 35,
+      "spa": 30,
+      "spd": 30,
+      "spe": 35
+    }
+  },
+  "262": {
+    "resourceType": "pokemon",
+    "id": 262,
+    "speciesId": 262,
+    "pokemonSlug": "mightyena",
+    "speciesSlug": "mightyena",
+    "calcSpeciesName": "Mightyena",
+    "names": {
+      "zh-hans": "大狼犬",
+      "zh-hant": "大狼犬",
+      "en": "Mightyena",
+      "ja": "グラエナ"
+    },
+    "speciesNames": {
+      "zh-hans": "大狼犬",
+      "zh-hant": "大狼犬",
+      "en": "Mightyena",
+      "ja": "グラエナ"
+    },
+    "formNames": {},
+    "types": [
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 90,
+      "def": 70,
+      "spa": 60,
+      "spd": 60,
+      "spe": 70
+    }
+  },
+  "263": {
+    "resourceType": "pokemon",
+    "id": 263,
+    "speciesId": 263,
+    "pokemonSlug": "zigzagoon",
+    "speciesSlug": "zigzagoon",
+    "calcSpeciesName": "Zigzagoon",
+    "names": {
+      "zh-hans": "蛇纹熊",
+      "zh-hant": "蛇紋熊",
+      "en": "Zigzagoon",
+      "ja": "ジグザグマ"
+    },
+    "speciesNames": {
+      "zh-hans": "蛇纹熊",
+      "zh-hant": "蛇紋熊",
+      "en": "Zigzagoon",
+      "ja": "ジグザグマ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 38,
+      "atk": 30,
+      "def": 41,
+      "spa": 30,
+      "spd": 41,
+      "spe": 60
+    }
+  },
+  "264": {
+    "resourceType": "pokemon",
+    "id": 264,
+    "speciesId": 264,
+    "pokemonSlug": "linoone",
+    "speciesSlug": "linoone",
+    "calcSpeciesName": "Linoone",
+    "names": {
+      "zh-hans": "直冲熊",
+      "zh-hant": "直衝熊",
+      "en": "Linoone",
+      "ja": "マッスグマ"
+    },
+    "speciesNames": {
+      "zh-hans": "直冲熊",
+      "zh-hant": "直衝熊",
+      "en": "Linoone",
+      "ja": "マッスグマ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 78,
+      "atk": 70,
+      "def": 61,
+      "spa": 50,
+      "spd": 61,
+      "spe": 100
+    }
+  },
+  "265": {
+    "resourceType": "pokemon",
+    "id": 265,
+    "speciesId": 265,
+    "pokemonSlug": "wurmple",
+    "speciesSlug": "wurmple",
+    "calcSpeciesName": "Wurmple",
+    "names": {
+      "zh-hans": "刺尾虫",
+      "zh-hant": "刺尾蟲",
+      "en": "Wurmple",
+      "ja": "ケムッソ"
+    },
+    "speciesNames": {
+      "zh-hans": "刺尾虫",
+      "zh-hant": "刺尾蟲",
+      "en": "Wurmple",
+      "ja": "ケムッソ"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 45,
+      "def": 35,
+      "spa": 20,
+      "spd": 30,
+      "spe": 20
+    }
+  },
+  "266": {
+    "resourceType": "pokemon",
+    "id": 266,
+    "speciesId": 266,
+    "pokemonSlug": "silcoon",
+    "speciesSlug": "silcoon",
+    "calcSpeciesName": "Silcoon",
+    "names": {
+      "zh-hans": "甲壳茧",
+      "zh-hant": "甲殼繭",
+      "en": "Silcoon",
+      "ja": "カラサリス"
+    },
+    "speciesNames": {
+      "zh-hans": "甲壳茧",
+      "zh-hant": "甲殼繭",
+      "en": "Silcoon",
+      "ja": "カラサリス"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 35,
+      "def": 55,
+      "spa": 25,
+      "spd": 25,
+      "spe": 15
+    }
+  },
+  "267": {
+    "resourceType": "pokemon",
+    "id": 267,
+    "speciesId": 267,
+    "pokemonSlug": "beautifly",
+    "speciesSlug": "beautifly",
+    "calcSpeciesName": "Beautifly",
+    "names": {
+      "zh-hans": "狩猎凤蝶",
+      "zh-hant": "狩獵鳳蝶",
+      "en": "Beautifly",
+      "ja": "アゲハント"
+    },
+    "speciesNames": {
+      "zh-hans": "狩猎凤蝶",
+      "zh-hant": "狩獵鳳蝶",
+      "en": "Beautifly",
+      "ja": "アゲハント"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 70,
+      "def": 50,
+      "spa": 100,
+      "spd": 50,
+      "spe": 65
+    }
+  },
+  "268": {
+    "resourceType": "pokemon",
+    "id": 268,
+    "speciesId": 268,
+    "pokemonSlug": "cascoon",
+    "speciesSlug": "cascoon",
+    "calcSpeciesName": "Cascoon",
+    "names": {
+      "zh-hans": "盾甲茧",
+      "zh-hant": "盾甲繭",
+      "en": "Cascoon",
+      "ja": "マユルド"
+    },
+    "speciesNames": {
+      "zh-hans": "盾甲茧",
+      "zh-hant": "盾甲繭",
+      "en": "Cascoon",
+      "ja": "マユルド"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 35,
+      "def": 55,
+      "spa": 25,
+      "spd": 25,
+      "spe": 15
+    }
+  },
+  "269": {
+    "resourceType": "pokemon",
+    "id": 269,
+    "speciesId": 269,
+    "pokemonSlug": "dustox",
+    "speciesSlug": "dustox",
+    "calcSpeciesName": "Dustox",
+    "names": {
+      "zh-hans": "毒粉蛾",
+      "zh-hant": "毒粉蛾",
+      "en": "Dustox",
+      "ja": "ドクケイル"
+    },
+    "speciesNames": {
+      "zh-hans": "毒粉蛾",
+      "zh-hant": "毒粉蛾",
+      "en": "Dustox",
+      "ja": "ドクケイル"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 50,
+      "def": 70,
+      "spa": 50,
+      "spd": 90,
+      "spe": 65
+    }
+  },
+  "270": {
+    "resourceType": "pokemon",
+    "id": 270,
+    "speciesId": 270,
+    "pokemonSlug": "lotad",
+    "speciesSlug": "lotad",
+    "calcSpeciesName": "Lotad",
+    "names": {
+      "zh-hans": "莲叶童子",
+      "zh-hant": "蓮葉童子",
+      "en": "Lotad",
+      "ja": "ハスボー"
+    },
+    "speciesNames": {
+      "zh-hans": "莲叶童子",
+      "zh-hant": "蓮葉童子",
+      "en": "Lotad",
+      "ja": "ハスボー"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 30,
+      "def": 30,
+      "spa": 40,
+      "spd": 50,
+      "spe": 30
+    }
+  },
+  "271": {
+    "resourceType": "pokemon",
+    "id": 271,
+    "speciesId": 271,
+    "pokemonSlug": "lombre",
+    "speciesSlug": "lombre",
+    "calcSpeciesName": "Lombre",
+    "names": {
+      "zh-hans": "莲帽小童",
+      "zh-hant": "蓮帽小童",
+      "en": "Lombre",
+      "ja": "ハスブレロ"
+    },
+    "speciesNames": {
+      "zh-hans": "莲帽小童",
+      "zh-hant": "蓮帽小童",
+      "en": "Lombre",
+      "ja": "ハスブレロ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 50,
+      "def": 50,
+      "spa": 60,
+      "spd": 70,
+      "spe": 50
+    }
+  },
+  "272": {
+    "resourceType": "pokemon",
+    "id": 272,
+    "speciesId": 272,
+    "pokemonSlug": "ludicolo",
+    "speciesSlug": "ludicolo",
+    "calcSpeciesName": "Ludicolo",
+    "names": {
+      "zh-hans": "乐天河童",
+      "zh-hant": "樂天河童",
+      "en": "Ludicolo",
+      "ja": "ルンパッパ"
+    },
+    "speciesNames": {
+      "zh-hans": "乐天河童",
+      "zh-hant": "樂天河童",
+      "en": "Ludicolo",
+      "ja": "ルンパッパ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 70,
+      "def": 70,
+      "spa": 90,
+      "spd": 100,
+      "spe": 70
+    }
+  },
+  "273": {
+    "resourceType": "pokemon",
+    "id": 273,
+    "speciesId": 273,
+    "pokemonSlug": "seedot",
+    "speciesSlug": "seedot",
+    "calcSpeciesName": "Seedot",
+    "names": {
+      "zh-hans": "橡实果",
+      "zh-hant": "橡實果",
+      "en": "Seedot",
+      "ja": "タネボー"
+    },
+    "speciesNames": {
+      "zh-hans": "橡实果",
+      "zh-hant": "橡實果",
+      "en": "Seedot",
+      "ja": "タネボー"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 40,
+      "def": 50,
+      "spa": 30,
+      "spd": 30,
+      "spe": 30
+    }
+  },
+  "274": {
+    "resourceType": "pokemon",
+    "id": 274,
+    "speciesId": 274,
+    "pokemonSlug": "nuzleaf",
+    "speciesSlug": "nuzleaf",
+    "calcSpeciesName": "Nuzleaf",
+    "names": {
+      "zh-hans": "长鼻叶",
+      "zh-hant": "長鼻葉",
+      "en": "Nuzleaf",
+      "ja": "コノハナ"
+    },
+    "speciesNames": {
+      "zh-hans": "长鼻叶",
+      "zh-hant": "長鼻葉",
+      "en": "Nuzleaf",
+      "ja": "コノハナ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 70,
+      "def": 40,
+      "spa": 60,
+      "spd": 40,
+      "spe": 60
+    }
+  },
+  "275": {
+    "resourceType": "pokemon",
+    "id": 275,
+    "speciesId": 275,
+    "pokemonSlug": "shiftry",
+    "speciesSlug": "shiftry",
+    "calcSpeciesName": "Shiftry",
+    "names": {
+      "zh-hans": "狡猾天狗",
+      "zh-hant": "狡猾天狗",
+      "en": "Shiftry",
+      "ja": "ダーテング"
+    },
+    "speciesNames": {
+      "zh-hans": "狡猾天狗",
+      "zh-hant": "狡猾天狗",
+      "en": "Shiftry",
+      "ja": "ダーテング"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 100,
+      "def": 60,
+      "spa": 90,
+      "spd": 60,
+      "spe": 80
+    }
+  },
+  "276": {
+    "resourceType": "pokemon",
+    "id": 276,
+    "speciesId": 276,
+    "pokemonSlug": "taillow",
+    "speciesSlug": "taillow",
+    "calcSpeciesName": "Taillow",
+    "names": {
+      "zh-hans": "傲骨燕",
+      "zh-hant": "傲骨燕",
+      "en": "Taillow",
+      "ja": "スバメ"
+    },
+    "speciesNames": {
+      "zh-hans": "傲骨燕",
+      "zh-hant": "傲骨燕",
+      "en": "Taillow",
+      "ja": "スバメ"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 55,
+      "def": 30,
+      "spa": 30,
+      "spd": 30,
+      "spe": 85
+    }
+  },
+  "277": {
+    "resourceType": "pokemon",
+    "id": 277,
+    "speciesId": 277,
+    "pokemonSlug": "swellow",
+    "speciesSlug": "swellow",
+    "calcSpeciesName": "Swellow",
+    "names": {
+      "zh-hans": "大王燕",
+      "zh-hant": "大王燕",
+      "en": "Swellow",
+      "ja": "オオスバメ"
+    },
+    "speciesNames": {
+      "zh-hans": "大王燕",
+      "zh-hant": "大王燕",
+      "en": "Swellow",
+      "ja": "オオスバメ"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 85,
+      "def": 60,
+      "spa": 75,
+      "spd": 50,
+      "spe": 125
+    }
+  },
+  "278": {
+    "resourceType": "pokemon",
+    "id": 278,
+    "speciesId": 278,
+    "pokemonSlug": "wingull",
+    "speciesSlug": "wingull",
+    "calcSpeciesName": "Wingull",
+    "names": {
+      "zh-hans": "长翅鸥",
+      "zh-hant": "長翅鷗",
+      "en": "Wingull",
+      "ja": "キャモメ"
+    },
+    "speciesNames": {
+      "zh-hans": "长翅鸥",
+      "zh-hant": "長翅鷗",
+      "en": "Wingull",
+      "ja": "キャモメ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 30,
+      "def": 30,
+      "spa": 55,
+      "spd": 30,
+      "spe": 85
+    }
+  },
+  "279": {
+    "resourceType": "pokemon",
+    "id": 279,
+    "speciesId": 279,
+    "pokemonSlug": "pelipper",
+    "speciesSlug": "pelipper",
+    "calcSpeciesName": "Pelipper",
+    "names": {
+      "zh-hans": "大嘴鸥",
+      "zh-hant": "大嘴鷗",
+      "en": "Pelipper",
+      "ja": "ペリッパー"
+    },
+    "speciesNames": {
+      "zh-hans": "大嘴鸥",
+      "zh-hant": "大嘴鷗",
+      "en": "Pelipper",
+      "ja": "ペリッパー"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 50,
+      "def": 100,
+      "spa": 95,
+      "spd": 70,
+      "spe": 65
+    }
+  },
+  "280": {
+    "resourceType": "pokemon",
+    "id": 280,
+    "speciesId": 280,
+    "pokemonSlug": "ralts",
+    "speciesSlug": "ralts",
+    "calcSpeciesName": "Ralts",
+    "names": {
+      "zh-hans": "拉鲁拉丝",
+      "zh-hant": "拉魯拉絲",
+      "en": "Ralts",
+      "ja": "ラルトス"
+    },
+    "speciesNames": {
+      "zh-hans": "拉鲁拉丝",
+      "zh-hant": "拉魯拉絲",
+      "en": "Ralts",
+      "ja": "ラルトス"
+    },
+    "formNames": {},
+    "types": [
+      "psychic",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 28,
+      "atk": 25,
+      "def": 25,
+      "spa": 45,
+      "spd": 35,
+      "spe": 40
+    }
+  },
+  "281": {
+    "resourceType": "pokemon",
+    "id": 281,
+    "speciesId": 281,
+    "pokemonSlug": "kirlia",
+    "speciesSlug": "kirlia",
+    "calcSpeciesName": "Kirlia",
+    "names": {
+      "zh-hans": "奇鲁莉安",
+      "zh-hant": "奇魯莉安",
+      "en": "Kirlia",
+      "ja": "キルリア"
+    },
+    "speciesNames": {
+      "zh-hans": "奇鲁莉安",
+      "zh-hant": "奇魯莉安",
+      "en": "Kirlia",
+      "ja": "キルリア"
+    },
+    "formNames": {},
+    "types": [
+      "psychic",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 38,
+      "atk": 35,
+      "def": 35,
+      "spa": 65,
+      "spd": 55,
+      "spe": 50
+    }
+  },
+  "282": {
+    "resourceType": "pokemon",
+    "id": 282,
+    "speciesId": 282,
+    "pokemonSlug": "gardevoir",
+    "speciesSlug": "gardevoir",
+    "calcSpeciesName": "Gardevoir",
+    "names": {
+      "zh-hans": "沙奈朵",
+      "zh-hant": "沙奈朵",
+      "en": "Gardevoir",
+      "ja": "サーナイト"
+    },
+    "speciesNames": {
+      "zh-hans": "沙奈朵",
+      "zh-hant": "沙奈朵",
+      "en": "Gardevoir",
+      "ja": "サーナイト"
+    },
+    "formNames": {},
+    "types": [
+      "psychic",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 65,
+      "def": 65,
+      "spa": 125,
+      "spd": 115,
+      "spe": 80
+    }
+  },
+  "283": {
+    "resourceType": "pokemon",
+    "id": 283,
+    "speciesId": 283,
+    "pokemonSlug": "surskit",
+    "speciesSlug": "surskit",
+    "calcSpeciesName": "Surskit",
+    "names": {
+      "zh-hans": "溜溜糖球",
+      "zh-hant": "溜溜糖球",
+      "en": "Surskit",
+      "ja": "アメタマ"
+    },
+    "speciesNames": {
+      "zh-hans": "溜溜糖球",
+      "zh-hant": "溜溜糖球",
+      "en": "Surskit",
+      "ja": "アメタマ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 30,
+      "def": 32,
+      "spa": 50,
+      "spd": 52,
+      "spe": 65
+    }
+  },
+  "284": {
+    "resourceType": "pokemon",
+    "id": 284,
+    "speciesId": 284,
+    "pokemonSlug": "masquerain",
+    "speciesSlug": "masquerain",
+    "calcSpeciesName": "Masquerain",
+    "names": {
+      "zh-hans": "雨翅蛾",
+      "zh-hant": "雨翅蛾",
+      "en": "Masquerain",
+      "ja": "アメモース"
+    },
+    "speciesNames": {
+      "zh-hans": "雨翅蛾",
+      "zh-hant": "雨翅蛾",
+      "en": "Masquerain",
+      "ja": "アメモース"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 60,
+      "def": 62,
+      "spa": 100,
+      "spd": 82,
+      "spe": 80
+    }
+  },
+  "285": {
+    "resourceType": "pokemon",
+    "id": 285,
+    "speciesId": 285,
+    "pokemonSlug": "shroomish",
+    "speciesSlug": "shroomish",
+    "calcSpeciesName": "Shroomish",
+    "names": {
+      "zh-hans": "蘑蘑菇",
+      "zh-hant": "蘑蘑菇",
+      "en": "Shroomish",
+      "ja": "キノココ"
+    },
+    "speciesNames": {
+      "zh-hans": "蘑蘑菇",
+      "zh-hant": "蘑蘑菇",
+      "en": "Shroomish",
+      "ja": "キノココ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 40,
+      "def": 60,
+      "spa": 40,
+      "spd": 60,
+      "spe": 35
+    }
+  },
+  "286": {
+    "resourceType": "pokemon",
+    "id": 286,
+    "speciesId": 286,
+    "pokemonSlug": "breloom",
+    "speciesSlug": "breloom",
+    "calcSpeciesName": "Breloom",
+    "names": {
+      "zh-hans": "斗笠菇",
+      "zh-hant": "斗笠菇",
+      "en": "Breloom",
+      "ja": "キノガッサ"
+    },
+    "speciesNames": {
+      "zh-hans": "斗笠菇",
+      "zh-hant": "斗笠菇",
+      "en": "Breloom",
+      "ja": "キノガッサ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 130,
+      "def": 80,
+      "spa": 60,
+      "spd": 60,
+      "spe": 70
+    }
+  },
+  "287": {
+    "resourceType": "pokemon",
+    "id": 287,
+    "speciesId": 287,
+    "pokemonSlug": "slakoth",
+    "speciesSlug": "slakoth",
+    "calcSpeciesName": "Slakoth",
+    "names": {
+      "zh-hans": "懒人獭",
+      "zh-hant": "懶人獺",
+      "en": "Slakoth",
+      "ja": "ナマケロ"
+    },
+    "speciesNames": {
+      "zh-hans": "懒人獭",
+      "zh-hant": "懶人獺",
+      "en": "Slakoth",
+      "ja": "ナマケロ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 60,
+      "def": 60,
+      "spa": 35,
+      "spd": 35,
+      "spe": 30
+    }
+  },
+  "288": {
+    "resourceType": "pokemon",
+    "id": 288,
+    "speciesId": 288,
+    "pokemonSlug": "vigoroth",
+    "speciesSlug": "vigoroth",
+    "calcSpeciesName": "Vigoroth",
+    "names": {
+      "zh-hans": "过动猿",
+      "zh-hant": "過動猿",
+      "en": "Vigoroth",
+      "ja": "ヤルキモノ"
+    },
+    "speciesNames": {
+      "zh-hans": "过动猿",
+      "zh-hant": "過動猿",
+      "en": "Vigoroth",
+      "ja": "ヤルキモノ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 80,
+      "def": 80,
+      "spa": 55,
+      "spd": 55,
+      "spe": 90
+    }
+  },
+  "289": {
+    "resourceType": "pokemon",
+    "id": 289,
+    "speciesId": 289,
+    "pokemonSlug": "slaking",
+    "speciesSlug": "slaking",
+    "calcSpeciesName": "Slaking",
+    "names": {
+      "zh-hans": "请假王",
+      "zh-hant": "請假王",
+      "en": "Slaking",
+      "ja": "ケッキング"
+    },
+    "speciesNames": {
+      "zh-hans": "请假王",
+      "zh-hant": "請假王",
+      "en": "Slaking",
+      "ja": "ケッキング"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 150,
+      "atk": 160,
+      "def": 100,
+      "spa": 95,
+      "spd": 65,
+      "spe": 100
+    }
+  },
+  "290": {
+    "resourceType": "pokemon",
+    "id": 290,
+    "speciesId": 290,
+    "pokemonSlug": "nincada",
+    "speciesSlug": "nincada",
+    "calcSpeciesName": "Nincada",
+    "names": {
+      "zh-hans": "土居忍士",
+      "zh-hant": "土居忍士",
+      "en": "Nincada",
+      "ja": "ツチニン"
+    },
+    "speciesNames": {
+      "zh-hans": "土居忍士",
+      "zh-hant": "土居忍士",
+      "en": "Nincada",
+      "ja": "ツチニン"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 31,
+      "atk": 45,
+      "def": 90,
+      "spa": 30,
+      "spd": 30,
+      "spe": 40
+    }
+  },
+  "291": {
+    "resourceType": "pokemon",
+    "id": 291,
+    "speciesId": 291,
+    "pokemonSlug": "ninjask",
+    "speciesSlug": "ninjask",
+    "calcSpeciesName": "Ninjask",
+    "names": {
+      "zh-hans": "铁面忍者",
+      "zh-hant": "鐵面忍者",
+      "en": "Ninjask",
+      "ja": "テッカニン"
+    },
+    "speciesNames": {
+      "zh-hans": "铁面忍者",
+      "zh-hant": "鐵面忍者",
+      "en": "Ninjask",
+      "ja": "テッカニン"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 61,
+      "atk": 90,
+      "def": 45,
+      "spa": 50,
+      "spd": 50,
+      "spe": 160
+    }
+  },
+  "292": {
+    "resourceType": "pokemon",
+    "id": 292,
+    "speciesId": 292,
+    "pokemonSlug": "shedinja",
+    "speciesSlug": "shedinja",
+    "calcSpeciesName": "Shedinja",
+    "names": {
+      "zh-hans": "脱壳忍者",
+      "zh-hant": "脫殼忍者",
+      "en": "Shedinja",
+      "ja": "ヌケニン"
+    },
+    "speciesNames": {
+      "zh-hans": "脱壳忍者",
+      "zh-hant": "脫殼忍者",
+      "en": "Shedinja",
+      "ja": "ヌケニン"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 1,
+      "atk": 90,
+      "def": 45,
+      "spa": 30,
+      "spd": 30,
+      "spe": 40
+    }
+  },
+  "293": {
+    "resourceType": "pokemon",
+    "id": 293,
+    "speciesId": 293,
+    "pokemonSlug": "whismur",
+    "speciesSlug": "whismur",
+    "calcSpeciesName": "Whismur",
+    "names": {
+      "zh-hans": "咕妞妞",
+      "zh-hant": "咕妞妞",
+      "en": "Whismur",
+      "ja": "ゴニョニョ"
+    },
+    "speciesNames": {
+      "zh-hans": "咕妞妞",
+      "zh-hant": "咕妞妞",
+      "en": "Whismur",
+      "ja": "ゴニョニョ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 64,
+      "atk": 51,
+      "def": 23,
+      "spa": 51,
+      "spd": 23,
+      "spe": 28
+    }
+  },
+  "294": {
+    "resourceType": "pokemon",
+    "id": 294,
+    "speciesId": 294,
+    "pokemonSlug": "loudred",
+    "speciesSlug": "loudred",
+    "calcSpeciesName": "Loudred",
+    "names": {
+      "zh-hans": "吼爆弹",
+      "zh-hant": "吼爆彈",
+      "en": "Loudred",
+      "ja": "ドゴーム"
+    },
+    "speciesNames": {
+      "zh-hans": "吼爆弹",
+      "zh-hant": "吼爆彈",
+      "en": "Loudred",
+      "ja": "ドゴーム"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 84,
+      "atk": 71,
+      "def": 43,
+      "spa": 71,
+      "spd": 43,
+      "spe": 48
+    }
+  },
+  "295": {
+    "resourceType": "pokemon",
+    "id": 295,
+    "speciesId": 295,
+    "pokemonSlug": "exploud",
+    "speciesSlug": "exploud",
+    "calcSpeciesName": "Exploud",
+    "names": {
+      "zh-hans": "爆音怪",
+      "zh-hant": "爆音怪",
+      "en": "Exploud",
+      "ja": "バクオング"
+    },
+    "speciesNames": {
+      "zh-hans": "爆音怪",
+      "zh-hant": "爆音怪",
+      "en": "Exploud",
+      "ja": "バクオング"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 104,
+      "atk": 91,
+      "def": 63,
+      "spa": 91,
+      "spd": 73,
+      "spe": 68
+    }
+  },
+  "296": {
+    "resourceType": "pokemon",
+    "id": 296,
+    "speciesId": 296,
+    "pokemonSlug": "makuhita",
+    "speciesSlug": "makuhita",
+    "calcSpeciesName": "Makuhita",
+    "names": {
+      "zh-hans": "幕下力士",
+      "zh-hant": "幕下力士",
+      "en": "Makuhita",
+      "ja": "マクノシタ"
+    },
+    "speciesNames": {
+      "zh-hans": "幕下力士",
+      "zh-hant": "幕下力士",
+      "en": "Makuhita",
+      "ja": "マクノシタ"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 72,
+      "atk": 60,
+      "def": 30,
+      "spa": 20,
+      "spd": 30,
+      "spe": 25
+    }
+  },
+  "297": {
+    "resourceType": "pokemon",
+    "id": 297,
+    "speciesId": 297,
+    "pokemonSlug": "hariyama",
+    "speciesSlug": "hariyama",
+    "calcSpeciesName": "Hariyama",
+    "names": {
+      "zh-hans": "铁掌力士",
+      "zh-hant": "鐵掌力士",
+      "en": "Hariyama",
+      "ja": "ハリテヤマ"
+    },
+    "speciesNames": {
+      "zh-hans": "铁掌力士",
+      "zh-hant": "鐵掌力士",
+      "en": "Hariyama",
+      "ja": "ハリテヤマ"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 144,
+      "atk": 120,
+      "def": 60,
+      "spa": 40,
+      "spd": 60,
+      "spe": 50
+    }
+  },
+  "298": {
+    "resourceType": "pokemon",
+    "id": 298,
+    "speciesId": 298,
+    "pokemonSlug": "azurill",
+    "speciesSlug": "azurill",
+    "calcSpeciesName": "Azurill",
+    "names": {
+      "zh-hans": "露力丽",
+      "zh-hant": "露力麗",
+      "en": "Azurill",
+      "ja": "ルリリ"
+    },
+    "speciesNames": {
+      "zh-hans": "露力丽",
+      "zh-hant": "露力麗",
+      "en": "Azurill",
+      "ja": "ルリリ"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 20,
+      "def": 40,
+      "spa": 20,
+      "spd": 40,
+      "spe": 20
+    }
+  },
+  "299": {
+    "resourceType": "pokemon",
+    "id": 299,
+    "speciesId": 299,
+    "pokemonSlug": "nosepass",
+    "speciesSlug": "nosepass",
+    "calcSpeciesName": "Nosepass",
+    "names": {
+      "zh-hans": "朝北鼻",
+      "zh-hant": "朝北鼻",
+      "en": "Nosepass",
+      "ja": "ノズパス"
+    },
+    "speciesNames": {
+      "zh-hans": "朝北鼻",
+      "zh-hant": "朝北鼻",
+      "en": "Nosepass",
+      "ja": "ノズパス"
+    },
+    "formNames": {},
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 30,
+      "atk": 45,
+      "def": 135,
+      "spa": 45,
+      "spd": 90,
+      "spe": 30
+    }
+  },
+  "300": {
+    "resourceType": "pokemon",
+    "id": 300,
+    "speciesId": 300,
+    "pokemonSlug": "skitty",
+    "speciesSlug": "skitty",
+    "calcSpeciesName": "Skitty",
+    "names": {
+      "zh-hans": "向尾喵",
+      "zh-hant": "向尾喵",
+      "en": "Skitty",
+      "ja": "エネコ"
+    },
+    "speciesNames": {
+      "zh-hans": "向尾喵",
+      "zh-hant": "向尾喵",
+      "en": "Skitty",
+      "ja": "エネコ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 45,
+      "def": 45,
+      "spa": 35,
+      "spd": 35,
+      "spe": 50
+    }
+  },
+  "301": {
+    "resourceType": "pokemon",
+    "id": 301,
+    "speciesId": 301,
+    "pokemonSlug": "delcatty",
+    "speciesSlug": "delcatty",
+    "calcSpeciesName": "Delcatty",
+    "names": {
+      "zh-hans": "优雅猫",
+      "zh-hant": "優雅貓",
+      "en": "Delcatty",
+      "ja": "エネコロロ"
+    },
+    "speciesNames": {
+      "zh-hans": "优雅猫",
+      "zh-hant": "優雅貓",
+      "en": "Delcatty",
+      "ja": "エネコロロ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 65,
+      "def": 65,
+      "spa": 55,
+      "spd": 55,
+      "spe": 90
+    }
+  },
+  "302": {
+    "resourceType": "pokemon",
+    "id": 302,
+    "speciesId": 302,
+    "pokemonSlug": "sableye",
+    "speciesSlug": "sableye",
+    "calcSpeciesName": "Sableye",
+    "names": {
+      "zh-hans": "勾魂眼",
+      "zh-hant": "勾魂眼",
+      "en": "Sableye",
+      "ja": "ヤミラミ"
+    },
+    "speciesNames": {
+      "zh-hans": "勾魂眼",
+      "zh-hant": "勾魂眼",
+      "en": "Sableye",
+      "ja": "ヤミラミ"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 75,
+      "def": 75,
+      "spa": 65,
+      "spd": 65,
+      "spe": 50
+    }
+  },
+  "303": {
+    "resourceType": "pokemon",
+    "id": 303,
+    "speciesId": 303,
+    "pokemonSlug": "mawile",
+    "speciesSlug": "mawile",
+    "calcSpeciesName": "Mawile",
+    "names": {
+      "zh-hans": "大嘴娃",
+      "zh-hant": "大嘴娃",
+      "en": "Mawile",
+      "ja": "クチート"
+    },
+    "speciesNames": {
+      "zh-hans": "大嘴娃",
+      "zh-hant": "大嘴娃",
+      "en": "Mawile",
+      "ja": "クチート"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 85,
+      "def": 85,
+      "spa": 55,
+      "spd": 55,
+      "spe": 50
+    }
+  },
+  "304": {
+    "resourceType": "pokemon",
+    "id": 304,
+    "speciesId": 304,
+    "pokemonSlug": "aron",
+    "speciesSlug": "aron",
+    "calcSpeciesName": "Aron",
+    "names": {
+      "zh-hans": "可可多拉",
+      "zh-hant": "可可多拉",
+      "en": "Aron",
+      "ja": "ココドラ"
+    },
+    "speciesNames": {
+      "zh-hans": "可可多拉",
+      "zh-hant": "可可多拉",
+      "en": "Aron",
+      "ja": "ココドラ"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 70,
+      "def": 100,
+      "spa": 40,
+      "spd": 40,
+      "spe": 30
+    }
+  },
+  "305": {
+    "resourceType": "pokemon",
+    "id": 305,
+    "speciesId": 305,
+    "pokemonSlug": "lairon",
+    "speciesSlug": "lairon",
+    "calcSpeciesName": "Lairon",
+    "names": {
+      "zh-hans": "可多拉",
+      "zh-hant": "可多拉",
+      "en": "Lairon",
+      "ja": "コドラ"
+    },
+    "speciesNames": {
+      "zh-hans": "可多拉",
+      "zh-hant": "可多拉",
+      "en": "Lairon",
+      "ja": "コドラ"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 90,
+      "def": 140,
+      "spa": 50,
+      "spd": 50,
+      "spe": 40
+    }
+  },
+  "306": {
+    "resourceType": "pokemon",
+    "id": 306,
+    "speciesId": 306,
+    "pokemonSlug": "aggron",
+    "speciesSlug": "aggron",
+    "calcSpeciesName": "Aggron",
+    "names": {
+      "zh-hans": "波士可多拉",
+      "zh-hant": "波士可多拉",
+      "en": "Aggron",
+      "ja": "ボスゴドラ"
+    },
+    "speciesNames": {
+      "zh-hans": "波士可多拉",
+      "zh-hant": "波士可多拉",
+      "en": "Aggron",
+      "ja": "ボスゴドラ"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 110,
+      "def": 180,
+      "spa": 60,
+      "spd": 60,
+      "spe": 50
+    }
+  },
+  "307": {
+    "resourceType": "pokemon",
+    "id": 307,
+    "speciesId": 307,
+    "pokemonSlug": "meditite",
+    "speciesSlug": "meditite",
+    "calcSpeciesName": "Meditite",
+    "names": {
+      "zh-hans": "玛沙那",
+      "zh-hant": "瑪沙那",
+      "en": "Meditite",
+      "ja": "アサナン"
+    },
+    "speciesNames": {
+      "zh-hans": "玛沙那",
+      "zh-hant": "瑪沙那",
+      "en": "Meditite",
+      "ja": "アサナン"
+    },
+    "formNames": {},
+    "types": [
+      "fighting",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 30,
+      "atk": 40,
+      "def": 55,
+      "spa": 40,
+      "spd": 55,
+      "spe": 60
+    }
+  },
+  "308": {
+    "resourceType": "pokemon",
+    "id": 308,
+    "speciesId": 308,
+    "pokemonSlug": "medicham",
+    "speciesSlug": "medicham",
+    "calcSpeciesName": "Medicham",
+    "names": {
+      "zh-hans": "恰雷姆",
+      "zh-hant": "恰雷姆",
+      "en": "Medicham",
+      "ja": "チャーレム"
+    },
+    "speciesNames": {
+      "zh-hans": "恰雷姆",
+      "zh-hant": "恰雷姆",
+      "en": "Medicham",
+      "ja": "チャーレム"
+    },
+    "formNames": {},
+    "types": [
+      "fighting",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 60,
+      "def": 75,
+      "spa": 60,
+      "spd": 75,
+      "spe": 80
+    }
+  },
+  "309": {
+    "resourceType": "pokemon",
+    "id": 309,
+    "speciesId": 309,
+    "pokemonSlug": "electrike",
+    "speciesSlug": "electrike",
+    "calcSpeciesName": "Electrike",
+    "names": {
+      "zh-hans": "落雷兽",
+      "zh-hant": "落雷獸",
+      "en": "Electrike",
+      "ja": "ラクライ"
+    },
+    "speciesNames": {
+      "zh-hans": "落雷兽",
+      "zh-hant": "落雷獸",
+      "en": "Electrike",
+      "ja": "ラクライ"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 45,
+      "def": 40,
+      "spa": 65,
+      "spd": 40,
+      "spe": 65
+    }
+  },
+  "310": {
+    "resourceType": "pokemon",
+    "id": 310,
+    "speciesId": 310,
+    "pokemonSlug": "manectric",
+    "speciesSlug": "manectric",
+    "calcSpeciesName": "Manectric",
+    "names": {
+      "zh-hans": "雷电兽",
+      "zh-hant": "雷電獸",
+      "en": "Manectric",
+      "ja": "ライボルト"
+    },
+    "speciesNames": {
+      "zh-hans": "雷电兽",
+      "zh-hant": "雷電獸",
+      "en": "Manectric",
+      "ja": "ライボルト"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 75,
+      "def": 60,
+      "spa": 105,
+      "spd": 60,
+      "spe": 105
+    }
+  },
+  "311": {
+    "resourceType": "pokemon",
+    "id": 311,
+    "speciesId": 311,
+    "pokemonSlug": "plusle",
+    "speciesSlug": "plusle",
+    "calcSpeciesName": "Plusle",
+    "names": {
+      "zh-hans": "正电拍拍",
+      "zh-hant": "正電拍拍",
+      "en": "Plusle",
+      "ja": "プラスル"
+    },
+    "speciesNames": {
+      "zh-hans": "正电拍拍",
+      "zh-hant": "正電拍拍",
+      "en": "Plusle",
+      "ja": "プラスル"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 50,
+      "def": 40,
+      "spa": 85,
+      "spd": 75,
+      "spe": 95
+    }
+  },
+  "312": {
+    "resourceType": "pokemon",
+    "id": 312,
+    "speciesId": 312,
+    "pokemonSlug": "minun",
+    "speciesSlug": "minun",
+    "calcSpeciesName": "Minun",
+    "names": {
+      "zh-hans": "負电拍拍",
+      "zh-hant": "負電拍拍",
+      "en": "Minun",
+      "ja": "マイナン"
+    },
+    "speciesNames": {
+      "zh-hans": "負电拍拍",
+      "zh-hant": "負電拍拍",
+      "en": "Minun",
+      "ja": "マイナン"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 40,
+      "def": 50,
+      "spa": 75,
+      "spd": 85,
+      "spe": 95
+    }
+  },
+  "313": {
+    "resourceType": "pokemon",
+    "id": 313,
+    "speciesId": 313,
+    "pokemonSlug": "volbeat",
+    "speciesSlug": "volbeat",
+    "calcSpeciesName": "Volbeat",
+    "names": {
+      "zh-hans": "电萤虫",
+      "zh-hant": "電螢蟲",
+      "en": "Volbeat",
+      "ja": "バルビート"
+    },
+    "speciesNames": {
+      "zh-hans": "电萤虫",
+      "zh-hant": "電螢蟲",
+      "en": "Volbeat",
+      "ja": "バルビート"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 73,
+      "def": 75,
+      "spa": 47,
+      "spd": 85,
+      "spe": 85
+    }
+  },
+  "314": {
+    "resourceType": "pokemon",
+    "id": 314,
+    "speciesId": 314,
+    "pokemonSlug": "illumise",
+    "speciesSlug": "illumise",
+    "calcSpeciesName": "Illumise",
+    "names": {
+      "zh-hans": "甜甜萤",
+      "zh-hant": "甜甜螢",
+      "en": "Illumise",
+      "ja": "イルミーゼ"
+    },
+    "speciesNames": {
+      "zh-hans": "甜甜萤",
+      "zh-hant": "甜甜螢",
+      "en": "Illumise",
+      "ja": "イルミーゼ"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 47,
+      "def": 75,
+      "spa": 73,
+      "spd": 85,
+      "spe": 85
+    }
+  },
+  "315": {
+    "resourceType": "pokemon",
+    "id": 315,
+    "speciesId": 315,
+    "pokemonSlug": "roselia",
+    "speciesSlug": "roselia",
+    "calcSpeciesName": "Roselia",
+    "names": {
+      "zh-hans": "毒蔷薇",
+      "zh-hant": "毒薔薇",
+      "en": "Roselia",
+      "ja": "ロゼリア"
+    },
+    "speciesNames": {
+      "zh-hans": "毒蔷薇",
+      "zh-hant": "毒薔薇",
+      "en": "Roselia",
+      "ja": "ロゼリア"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 60,
+      "def": 45,
+      "spa": 100,
+      "spd": 80,
+      "spe": 65
+    }
+  },
+  "316": {
+    "resourceType": "pokemon",
+    "id": 316,
+    "speciesId": 316,
+    "pokemonSlug": "gulpin",
+    "speciesSlug": "gulpin",
+    "calcSpeciesName": "Gulpin",
+    "names": {
+      "zh-hans": "溶食兽",
+      "zh-hant": "溶食獸",
+      "en": "Gulpin",
+      "ja": "ゴクリン"
+    },
+    "speciesNames": {
+      "zh-hans": "溶食兽",
+      "zh-hant": "溶食獸",
+      "en": "Gulpin",
+      "ja": "ゴクリン"
+    },
+    "formNames": {},
+    "types": [
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 43,
+      "def": 53,
+      "spa": 43,
+      "spd": 53,
+      "spe": 40
+    }
+  },
+  "317": {
+    "resourceType": "pokemon",
+    "id": 317,
+    "speciesId": 317,
+    "pokemonSlug": "swalot",
+    "speciesSlug": "swalot",
+    "calcSpeciesName": "Swalot",
+    "names": {
+      "zh-hans": "吞食兽",
+      "zh-hant": "吞食獸",
+      "en": "Swalot",
+      "ja": "マルノーム"
+    },
+    "speciesNames": {
+      "zh-hans": "吞食兽",
+      "zh-hant": "吞食獸",
+      "en": "Swalot",
+      "ja": "マルノーム"
+    },
+    "formNames": {},
+    "types": [
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 73,
+      "def": 83,
+      "spa": 73,
+      "spd": 83,
+      "spe": 55
+    }
+  },
+  "318": {
+    "resourceType": "pokemon",
+    "id": 318,
+    "speciesId": 318,
+    "pokemonSlug": "carvanha",
+    "speciesSlug": "carvanha",
+    "calcSpeciesName": "Carvanha",
+    "names": {
+      "zh-hans": "利牙鱼",
+      "zh-hant": "利牙魚",
+      "en": "Carvanha",
+      "ja": "キバニア"
+    },
+    "speciesNames": {
+      "zh-hans": "利牙鱼",
+      "zh-hant": "利牙魚",
+      "en": "Carvanha",
+      "ja": "キバニア"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 90,
+      "def": 20,
+      "spa": 65,
+      "spd": 20,
+      "spe": 65
+    }
+  },
+  "319": {
+    "resourceType": "pokemon",
+    "id": 319,
+    "speciesId": 319,
+    "pokemonSlug": "sharpedo",
+    "speciesSlug": "sharpedo",
+    "calcSpeciesName": "Sharpedo",
+    "names": {
+      "zh-hans": "巨牙鲨",
+      "zh-hant": "巨牙鯊",
+      "en": "Sharpedo",
+      "ja": "サメハダー"
+    },
+    "speciesNames": {
+      "zh-hans": "巨牙鲨",
+      "zh-hant": "巨牙鯊",
+      "en": "Sharpedo",
+      "ja": "サメハダー"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 120,
+      "def": 40,
+      "spa": 95,
+      "spd": 40,
+      "spe": 95
+    }
+  },
+  "320": {
+    "resourceType": "pokemon",
+    "id": 320,
+    "speciesId": 320,
+    "pokemonSlug": "wailmer",
+    "speciesSlug": "wailmer",
+    "calcSpeciesName": "Wailmer",
+    "names": {
+      "zh-hans": "吼吼鲸",
+      "zh-hant": "吼吼鯨",
+      "en": "Wailmer",
+      "ja": "ホエルコ"
+    },
+    "speciesNames": {
+      "zh-hans": "吼吼鲸",
+      "zh-hant": "吼吼鯨",
+      "en": "Wailmer",
+      "ja": "ホエルコ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 130,
+      "atk": 70,
+      "def": 35,
+      "spa": 70,
+      "spd": 35,
+      "spe": 60
+    }
+  },
+  "321": {
+    "resourceType": "pokemon",
+    "id": 321,
+    "speciesId": 321,
+    "pokemonSlug": "wailord",
+    "speciesSlug": "wailord",
+    "calcSpeciesName": "Wailord",
+    "names": {
+      "zh-hans": "吼鲸王",
+      "zh-hant": "吼鯨王",
+      "en": "Wailord",
+      "ja": "ホエルオー"
+    },
+    "speciesNames": {
+      "zh-hans": "吼鲸王",
+      "zh-hant": "吼鯨王",
+      "en": "Wailord",
+      "ja": "ホエルオー"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 170,
+      "atk": 90,
+      "def": 45,
+      "spa": 90,
+      "spd": 45,
+      "spe": 60
+    }
+  },
+  "322": {
+    "resourceType": "pokemon",
+    "id": 322,
+    "speciesId": 322,
+    "pokemonSlug": "numel",
+    "speciesSlug": "numel",
+    "calcSpeciesName": "Numel",
+    "names": {
+      "zh-hans": "呆火驼",
+      "zh-hant": "呆火駝",
+      "en": "Numel",
+      "ja": "ドンメル"
+    },
+    "speciesNames": {
+      "zh-hans": "呆火驼",
+      "zh-hant": "呆火駝",
+      "en": "Numel",
+      "ja": "ドンメル"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 60,
+      "def": 40,
+      "spa": 65,
+      "spd": 45,
+      "spe": 35
+    }
+  },
+  "323": {
+    "resourceType": "pokemon",
+    "id": 323,
+    "speciesId": 323,
+    "pokemonSlug": "camerupt",
+    "speciesSlug": "camerupt",
+    "calcSpeciesName": "Camerupt",
+    "names": {
+      "zh-hans": "喷火驼",
+      "zh-hant": "噴火駝",
+      "en": "Camerupt",
+      "ja": "バクーダ"
+    },
+    "speciesNames": {
+      "zh-hans": "喷火驼",
+      "zh-hant": "噴火駝",
+      "en": "Camerupt",
+      "ja": "バクーダ"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 100,
+      "def": 70,
+      "spa": 105,
+      "spd": 75,
+      "spe": 40
+    }
+  },
+  "324": {
+    "resourceType": "pokemon",
+    "id": 324,
+    "speciesId": 324,
+    "pokemonSlug": "torkoal",
+    "speciesSlug": "torkoal",
+    "calcSpeciesName": "Torkoal",
+    "names": {
+      "zh-hans": "煤炭龟",
+      "zh-hant": "煤炭龜",
+      "en": "Torkoal",
+      "ja": "コータス"
+    },
+    "speciesNames": {
+      "zh-hans": "煤炭龟",
+      "zh-hant": "煤炭龜",
+      "en": "Torkoal",
+      "ja": "コータス"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 85,
+      "def": 140,
+      "spa": 85,
+      "spd": 70,
+      "spe": 20
+    }
+  },
+  "325": {
+    "resourceType": "pokemon",
+    "id": 325,
+    "speciesId": 325,
+    "pokemonSlug": "spoink",
+    "speciesSlug": "spoink",
+    "calcSpeciesName": "Spoink",
+    "names": {
+      "zh-hans": "跳跳猪",
+      "zh-hant": "跳跳豬",
+      "en": "Spoink",
+      "ja": "バネブー"
+    },
+    "speciesNames": {
+      "zh-hans": "跳跳猪",
+      "zh-hant": "跳跳豬",
+      "en": "Spoink",
+      "ja": "バネブー"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 25,
+      "def": 35,
+      "spa": 70,
+      "spd": 80,
+      "spe": 60
+    }
+  },
+  "326": {
+    "resourceType": "pokemon",
+    "id": 326,
+    "speciesId": 326,
+    "pokemonSlug": "grumpig",
+    "speciesSlug": "grumpig",
+    "calcSpeciesName": "Grumpig",
+    "names": {
+      "zh-hans": "噗噗猪",
+      "zh-hant": "噗噗豬",
+      "en": "Grumpig",
+      "ja": "ブーピッグ"
+    },
+    "speciesNames": {
+      "zh-hans": "噗噗猪",
+      "zh-hant": "噗噗豬",
+      "en": "Grumpig",
+      "ja": "ブーピッグ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 45,
+      "def": 65,
+      "spa": 90,
+      "spd": 110,
+      "spe": 80
+    }
+  },
+  "327": {
+    "resourceType": "pokemon",
+    "id": 327,
+    "speciesId": 327,
+    "pokemonSlug": "spinda",
+    "speciesSlug": "spinda",
+    "calcSpeciesName": "Spinda",
+    "names": {
+      "zh-hans": "晃晃斑",
+      "zh-hant": "晃晃斑",
+      "en": "Spinda",
+      "ja": "パッチール"
+    },
+    "speciesNames": {
+      "zh-hans": "晃晃斑",
+      "zh-hant": "晃晃斑",
+      "en": "Spinda",
+      "ja": "パッチール"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 60,
+      "def": 60,
+      "spa": 60,
+      "spd": 60,
+      "spe": 60
+    }
+  },
+  "328": {
+    "resourceType": "pokemon",
+    "id": 328,
+    "speciesId": 328,
+    "pokemonSlug": "trapinch",
+    "speciesSlug": "trapinch",
+    "calcSpeciesName": "Trapinch",
+    "names": {
+      "zh-hans": "大颚蚁",
+      "zh-hant": "大顎蟻",
+      "en": "Trapinch",
+      "ja": "ナックラー"
+    },
+    "speciesNames": {
+      "zh-hans": "大颚蚁",
+      "zh-hant": "大顎蟻",
+      "en": "Trapinch",
+      "ja": "ナックラー"
+    },
+    "formNames": {},
+    "types": [
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 100,
+      "def": 45,
+      "spa": 45,
+      "spd": 45,
+      "spe": 10
+    }
+  },
+  "329": {
+    "resourceType": "pokemon",
+    "id": 329,
+    "speciesId": 329,
+    "pokemonSlug": "vibrava",
+    "speciesSlug": "vibrava",
+    "calcSpeciesName": "Vibrava",
+    "names": {
+      "zh-hans": "超音波幼虫",
+      "zh-hant": "超音波幼蟲",
+      "en": "Vibrava",
+      "ja": "ビブラーバ"
+    },
+    "speciesNames": {
+      "zh-hans": "超音波幼虫",
+      "zh-hant": "超音波幼蟲",
+      "en": "Vibrava",
+      "ja": "ビブラーバ"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 70,
+      "def": 50,
+      "spa": 50,
+      "spd": 50,
+      "spe": 70
+    }
+  },
+  "330": {
+    "resourceType": "pokemon",
+    "id": 330,
+    "speciesId": 330,
+    "pokemonSlug": "flygon",
+    "speciesSlug": "flygon",
+    "calcSpeciesName": "Flygon",
+    "names": {
+      "zh-hans": "沙漠蜻蜓",
+      "zh-hant": "沙漠蜻蜓",
+      "en": "Flygon",
+      "ja": "フライゴン"
+    },
+    "speciesNames": {
+      "zh-hans": "沙漠蜻蜓",
+      "zh-hant": "沙漠蜻蜓",
+      "en": "Flygon",
+      "ja": "フライゴン"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 100,
+      "def": 80,
+      "spa": 80,
+      "spd": 80,
+      "spe": 100
+    }
+  },
+  "331": {
+    "resourceType": "pokemon",
+    "id": 331,
+    "speciesId": 331,
+    "pokemonSlug": "cacnea",
+    "speciesSlug": "cacnea",
+    "calcSpeciesName": "Cacnea",
+    "names": {
+      "zh-hans": "刺球仙人掌",
+      "zh-hant": "刺球仙人掌",
+      "en": "Cacnea",
+      "ja": "サボネア"
+    },
+    "speciesNames": {
+      "zh-hans": "刺球仙人掌",
+      "zh-hant": "刺球仙人掌",
+      "en": "Cacnea",
+      "ja": "サボネア"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 85,
+      "def": 40,
+      "spa": 85,
+      "spd": 40,
+      "spe": 35
+    }
+  },
+  "332": {
+    "resourceType": "pokemon",
+    "id": 332,
+    "speciesId": 332,
+    "pokemonSlug": "cacturne",
+    "speciesSlug": "cacturne",
+    "calcSpeciesName": "Cacturne",
+    "names": {
+      "zh-hans": "梦歌仙人掌",
+      "zh-hant": "夢歌仙人掌",
+      "en": "Cacturne",
+      "ja": "ノクタス"
+    },
+    "speciesNames": {
+      "zh-hans": "梦歌仙人掌",
+      "zh-hant": "夢歌仙人掌",
+      "en": "Cacturne",
+      "ja": "ノクタス"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 115,
+      "def": 60,
+      "spa": 115,
+      "spd": 60,
+      "spe": 55
+    }
+  },
+  "333": {
+    "resourceType": "pokemon",
+    "id": 333,
+    "speciesId": 333,
+    "pokemonSlug": "swablu",
+    "speciesSlug": "swablu",
+    "calcSpeciesName": "Swablu",
+    "names": {
+      "zh-hans": "青绵鸟",
+      "zh-hant": "青綿鳥",
+      "en": "Swablu",
+      "ja": "チルット"
+    },
+    "speciesNames": {
+      "zh-hans": "青绵鸟",
+      "zh-hant": "青綿鳥",
+      "en": "Swablu",
+      "ja": "チルット"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 40,
+      "def": 60,
+      "spa": 40,
+      "spd": 75,
+      "spe": 50
+    }
+  },
+  "334": {
+    "resourceType": "pokemon",
+    "id": 334,
+    "speciesId": 334,
+    "pokemonSlug": "altaria",
+    "speciesSlug": "altaria",
+    "calcSpeciesName": "Altaria",
+    "names": {
+      "zh-hans": "七夕青鸟",
+      "zh-hant": "七夕青鳥",
+      "en": "Altaria",
+      "ja": "チルタリス"
+    },
+    "speciesNames": {
+      "zh-hans": "七夕青鸟",
+      "zh-hant": "七夕青鳥",
+      "en": "Altaria",
+      "ja": "チルタリス"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 70,
+      "def": 90,
+      "spa": 70,
+      "spd": 105,
+      "spe": 80
+    }
+  },
+  "335": {
+    "resourceType": "pokemon",
+    "id": 335,
+    "speciesId": 335,
+    "pokemonSlug": "zangoose",
+    "speciesSlug": "zangoose",
+    "calcSpeciesName": "Zangoose",
+    "names": {
+      "zh-hans": "猫鼬斩",
+      "zh-hant": "貓鼬斬",
+      "en": "Zangoose",
+      "ja": "ザングース"
+    },
+    "speciesNames": {
+      "zh-hans": "猫鼬斩",
+      "zh-hant": "貓鼬斬",
+      "en": "Zangoose",
+      "ja": "ザングース"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 73,
+      "atk": 115,
+      "def": 60,
+      "spa": 60,
+      "spd": 60,
+      "spe": 90
+    }
+  },
+  "336": {
+    "resourceType": "pokemon",
+    "id": 336,
+    "speciesId": 336,
+    "pokemonSlug": "seviper",
+    "speciesSlug": "seviper",
+    "calcSpeciesName": "Seviper",
+    "names": {
+      "zh-hans": "饭匙蛇",
+      "zh-hant": "飯匙蛇",
+      "en": "Seviper",
+      "ja": "ハブネーク"
+    },
+    "speciesNames": {
+      "zh-hans": "饭匙蛇",
+      "zh-hant": "飯匙蛇",
+      "en": "Seviper",
+      "ja": "ハブネーク"
+    },
+    "formNames": {},
+    "types": [
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 73,
+      "atk": 100,
+      "def": 60,
+      "spa": 100,
+      "spd": 60,
+      "spe": 65
+    }
+  },
+  "337": {
+    "resourceType": "pokemon",
+    "id": 337,
+    "speciesId": 337,
+    "pokemonSlug": "lunatone",
+    "speciesSlug": "lunatone",
+    "calcSpeciesName": "Lunatone",
+    "names": {
+      "zh-hans": "月石",
+      "zh-hant": "月石",
+      "en": "Lunatone",
+      "ja": "ルナトーン"
+    },
+    "speciesNames": {
+      "zh-hans": "月石",
+      "zh-hant": "月石",
+      "en": "Lunatone",
+      "ja": "ルナトーン"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 55,
+      "def": 65,
+      "spa": 95,
+      "spd": 85,
+      "spe": 70
+    }
+  },
+  "338": {
+    "resourceType": "pokemon",
+    "id": 338,
+    "speciesId": 338,
+    "pokemonSlug": "solrock",
+    "speciesSlug": "solrock",
+    "calcSpeciesName": "Solrock",
+    "names": {
+      "zh-hans": "太阳岩",
+      "zh-hant": "太陽岩",
+      "en": "Solrock",
+      "ja": "ソルロック"
+    },
+    "speciesNames": {
+      "zh-hans": "太阳岩",
+      "zh-hant": "太陽岩",
+      "en": "Solrock",
+      "ja": "ソルロック"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 95,
+      "def": 85,
+      "spa": 55,
+      "spd": 65,
+      "spe": 70
+    }
+  },
+  "339": {
+    "resourceType": "pokemon",
+    "id": 339,
+    "speciesId": 339,
+    "pokemonSlug": "barboach",
+    "speciesSlug": "barboach",
+    "calcSpeciesName": "Barboach",
+    "names": {
+      "zh-hans": "泥泥鳅",
+      "zh-hant": "泥泥鰍",
+      "en": "Barboach",
+      "ja": "ドジョッチ"
+    },
+    "speciesNames": {
+      "zh-hans": "泥泥鳅",
+      "zh-hant": "泥泥鰍",
+      "en": "Barboach",
+      "ja": "ドジョッチ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 48,
+      "def": 43,
+      "spa": 46,
+      "spd": 41,
+      "spe": 60
+    }
+  },
+  "340": {
+    "resourceType": "pokemon",
+    "id": 340,
+    "speciesId": 340,
+    "pokemonSlug": "whiscash",
+    "speciesSlug": "whiscash",
+    "calcSpeciesName": "Whiscash",
+    "names": {
+      "zh-hans": "鲶鱼王",
+      "zh-hant": "鯰魚王",
+      "en": "Whiscash",
+      "ja": "ナマズン"
+    },
+    "speciesNames": {
+      "zh-hans": "鲶鱼王",
+      "zh-hant": "鯰魚王",
+      "en": "Whiscash",
+      "ja": "ナマズン"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 110,
+      "atk": 78,
+      "def": 73,
+      "spa": 76,
+      "spd": 71,
+      "spe": 60
+    }
+  },
+  "341": {
+    "resourceType": "pokemon",
+    "id": 341,
+    "speciesId": 341,
+    "pokemonSlug": "corphish",
+    "speciesSlug": "corphish",
+    "calcSpeciesName": "Corphish",
+    "names": {
+      "zh-hans": "龙虾小兵",
+      "zh-hant": "龍蝦小兵",
+      "en": "Corphish",
+      "ja": "ヘイガニ"
+    },
+    "speciesNames": {
+      "zh-hans": "龙虾小兵",
+      "zh-hant": "龍蝦小兵",
+      "en": "Corphish",
+      "ja": "ヘイガニ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 43,
+      "atk": 80,
+      "def": 65,
+      "spa": 50,
+      "spd": 35,
+      "spe": 35
+    }
+  },
+  "342": {
+    "resourceType": "pokemon",
+    "id": 342,
+    "speciesId": 342,
+    "pokemonSlug": "crawdaunt",
+    "speciesSlug": "crawdaunt",
+    "calcSpeciesName": "Crawdaunt",
+    "names": {
+      "zh-hans": "铁螯龙虾",
+      "zh-hant": "鐵螯龍蝦",
+      "en": "Crawdaunt",
+      "ja": "シザリガー"
+    },
+    "speciesNames": {
+      "zh-hans": "铁螯龙虾",
+      "zh-hant": "鐵螯龍蝦",
+      "en": "Crawdaunt",
+      "ja": "シザリガー"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 63,
+      "atk": 120,
+      "def": 85,
+      "spa": 90,
+      "spd": 55,
+      "spe": 55
+    }
+  },
+  "343": {
+    "resourceType": "pokemon",
+    "id": 343,
+    "speciesId": 343,
+    "pokemonSlug": "baltoy",
+    "speciesSlug": "baltoy",
+    "calcSpeciesName": "Baltoy",
+    "names": {
+      "zh-hans": "天秤偶",
+      "zh-hant": "天秤偶",
+      "en": "Baltoy",
+      "ja": "ヤジロン"
+    },
+    "speciesNames": {
+      "zh-hans": "天秤偶",
+      "zh-hant": "天秤偶",
+      "en": "Baltoy",
+      "ja": "ヤジロン"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 40,
+      "def": 55,
+      "spa": 40,
+      "spd": 70,
+      "spe": 55
+    }
+  },
+  "344": {
+    "resourceType": "pokemon",
+    "id": 344,
+    "speciesId": 344,
+    "pokemonSlug": "claydol",
+    "speciesSlug": "claydol",
+    "calcSpeciesName": "Claydol",
+    "names": {
+      "zh-hans": "念力土偶",
+      "zh-hant": "念力土偶",
+      "en": "Claydol",
+      "ja": "ネンドール"
+    },
+    "speciesNames": {
+      "zh-hans": "念力土偶",
+      "zh-hant": "念力土偶",
+      "en": "Claydol",
+      "ja": "ネンドール"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 70,
+      "def": 105,
+      "spa": 70,
+      "spd": 120,
+      "spe": 75
+    }
+  },
+  "345": {
+    "resourceType": "pokemon",
+    "id": 345,
+    "speciesId": 345,
+    "pokemonSlug": "lileep",
+    "speciesSlug": "lileep",
+    "calcSpeciesName": "Lileep",
+    "names": {
+      "zh-hans": "触手百合",
+      "zh-hant": "觸手百合",
+      "en": "Lileep",
+      "ja": "リリーラ"
+    },
+    "speciesNames": {
+      "zh-hans": "触手百合",
+      "zh-hant": "觸手百合",
+      "en": "Lileep",
+      "ja": "リリーラ"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 66,
+      "atk": 41,
+      "def": 77,
+      "spa": 61,
+      "spd": 87,
+      "spe": 23
+    }
+  },
+  "346": {
+    "resourceType": "pokemon",
+    "id": 346,
+    "speciesId": 346,
+    "pokemonSlug": "cradily",
+    "speciesSlug": "cradily",
+    "calcSpeciesName": "Cradily",
+    "names": {
+      "zh-hans": "摇篮百合",
+      "zh-hant": "搖籃百合",
+      "en": "Cradily",
+      "ja": "ユレイドル"
+    },
+    "speciesNames": {
+      "zh-hans": "摇篮百合",
+      "zh-hant": "搖籃百合",
+      "en": "Cradily",
+      "ja": "ユレイドル"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 86,
+      "atk": 81,
+      "def": 97,
+      "spa": 81,
+      "spd": 107,
+      "spe": 43
+    }
+  },
+  "347": {
+    "resourceType": "pokemon",
+    "id": 347,
+    "speciesId": 347,
+    "pokemonSlug": "anorith",
+    "speciesSlug": "anorith",
+    "calcSpeciesName": "Anorith",
+    "names": {
+      "zh-hans": "太古羽虫",
+      "zh-hant": "太古羽蟲",
+      "en": "Anorith",
+      "ja": "アノプス"
+    },
+    "speciesNames": {
+      "zh-hans": "太古羽虫",
+      "zh-hant": "太古羽蟲",
+      "en": "Anorith",
+      "ja": "アノプス"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 95,
+      "def": 50,
+      "spa": 40,
+      "spd": 50,
+      "spe": 75
+    }
+  },
+  "348": {
+    "resourceType": "pokemon",
+    "id": 348,
+    "speciesId": 348,
+    "pokemonSlug": "armaldo",
+    "speciesSlug": "armaldo",
+    "calcSpeciesName": "Armaldo",
+    "names": {
+      "zh-hans": "太古盔甲",
+      "zh-hant": "太古盔甲",
+      "en": "Armaldo",
+      "ja": "アーマルド"
+    },
+    "speciesNames": {
+      "zh-hans": "太古盔甲",
+      "zh-hant": "太古盔甲",
+      "en": "Armaldo",
+      "ja": "アーマルド"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 125,
+      "def": 100,
+      "spa": 70,
+      "spd": 80,
+      "spe": 45
+    }
+  },
+  "349": {
+    "resourceType": "pokemon",
+    "id": 349,
+    "speciesId": 349,
+    "pokemonSlug": "feebas",
+    "speciesSlug": "feebas",
+    "calcSpeciesName": "Feebas",
+    "names": {
+      "zh-hans": "丑丑鱼",
+      "zh-hant": "醜醜魚",
+      "en": "Feebas",
+      "ja": "ヒンバス"
+    },
+    "speciesNames": {
+      "zh-hans": "丑丑鱼",
+      "zh-hant": "醜醜魚",
+      "en": "Feebas",
+      "ja": "ヒンバス"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 20,
+      "atk": 15,
+      "def": 20,
+      "spa": 10,
+      "spd": 55,
+      "spe": 80
+    }
+  },
+  "350": {
+    "resourceType": "pokemon",
+    "id": 350,
+    "speciesId": 350,
+    "pokemonSlug": "milotic",
+    "speciesSlug": "milotic",
+    "calcSpeciesName": "Milotic",
+    "names": {
+      "zh-hans": "美纳斯",
+      "zh-hant": "美納斯",
+      "en": "Milotic",
+      "ja": "ミロカロス"
+    },
+    "speciesNames": {
+      "zh-hans": "美纳斯",
+      "zh-hant": "美納斯",
+      "en": "Milotic",
+      "ja": "ミロカロス"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 60,
+      "def": 79,
+      "spa": 100,
+      "spd": 125,
+      "spe": 81
+    }
+  },
+  "351": {
+    "resourceType": "pokemon",
+    "id": 351,
+    "speciesId": 351,
+    "pokemonSlug": "castform",
+    "speciesSlug": "castform",
+    "calcSpeciesName": "Castform",
+    "names": {
+      "zh-hans": "飘浮泡泡",
+      "zh-hant": "飄浮泡泡",
+      "en": "Castform",
+      "ja": "ポワルン"
+    },
+    "speciesNames": {
+      "zh-hans": "飘浮泡泡",
+      "zh-hant": "飄浮泡泡",
+      "en": "Castform",
+      "ja": "ポワルン"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 70,
+      "def": 70,
+      "spa": 70,
+      "spd": 70,
+      "spe": 70
+    }
+  },
+  "352": {
+    "resourceType": "pokemon",
+    "id": 352,
+    "speciesId": 352,
+    "pokemonSlug": "kecleon",
+    "speciesSlug": "kecleon",
+    "calcSpeciesName": "Kecleon",
+    "names": {
+      "zh-hans": "变隐龙",
+      "zh-hant": "變隱龍",
+      "en": "Kecleon",
+      "ja": "カクレオン"
+    },
+    "speciesNames": {
+      "zh-hans": "变隐龙",
+      "zh-hant": "變隱龍",
+      "en": "Kecleon",
+      "ja": "カクレオン"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 90,
+      "def": 70,
+      "spa": 60,
+      "spd": 120,
+      "spe": 40
+    }
+  },
+  "353": {
+    "resourceType": "pokemon",
+    "id": 353,
+    "speciesId": 353,
+    "pokemonSlug": "shuppet",
+    "speciesSlug": "shuppet",
+    "calcSpeciesName": "Shuppet",
+    "names": {
+      "zh-hans": "怨影娃娃",
+      "zh-hant": "怨影娃娃",
+      "en": "Shuppet",
+      "ja": "カゲボウズ"
+    },
+    "speciesNames": {
+      "zh-hans": "怨影娃娃",
+      "zh-hant": "怨影娃娃",
+      "en": "Shuppet",
+      "ja": "カゲボウズ"
+    },
+    "formNames": {},
+    "types": [
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 44,
+      "atk": 75,
+      "def": 35,
+      "spa": 63,
+      "spd": 33,
+      "spe": 45
+    }
+  },
+  "354": {
+    "resourceType": "pokemon",
+    "id": 354,
+    "speciesId": 354,
+    "pokemonSlug": "banette",
+    "speciesSlug": "banette",
+    "calcSpeciesName": "Banette",
+    "names": {
+      "zh-hans": "诅咒娃娃",
+      "zh-hant": "詛咒娃娃",
+      "en": "Banette",
+      "ja": "ジュペッタ"
+    },
+    "speciesNames": {
+      "zh-hans": "诅咒娃娃",
+      "zh-hant": "詛咒娃娃",
+      "en": "Banette",
+      "ja": "ジュペッタ"
+    },
+    "formNames": {},
+    "types": [
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 64,
+      "atk": 115,
+      "def": 65,
+      "spa": 83,
+      "spd": 63,
+      "spe": 65
+    }
+  },
+  "355": {
+    "resourceType": "pokemon",
+    "id": 355,
+    "speciesId": 355,
+    "pokemonSlug": "duskull",
+    "speciesSlug": "duskull",
+    "calcSpeciesName": "Duskull",
+    "names": {
+      "zh-hans": "夜巡灵",
+      "zh-hant": "夜巡靈",
+      "en": "Duskull",
+      "ja": "ヨマワル"
+    },
+    "speciesNames": {
+      "zh-hans": "夜巡灵",
+      "zh-hant": "夜巡靈",
+      "en": "Duskull",
+      "ja": "ヨマワル"
+    },
+    "formNames": {},
+    "types": [
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 20,
+      "atk": 40,
+      "def": 90,
+      "spa": 30,
+      "spd": 90,
+      "spe": 25
+    }
+  },
+  "356": {
+    "resourceType": "pokemon",
+    "id": 356,
+    "speciesId": 356,
+    "pokemonSlug": "dusclops",
+    "speciesSlug": "dusclops",
+    "calcSpeciesName": "Dusclops",
+    "names": {
+      "zh-hans": "彷徨夜灵",
+      "zh-hant": "彷徨夜靈",
+      "en": "Dusclops",
+      "ja": "サマヨール"
+    },
+    "speciesNames": {
+      "zh-hans": "彷徨夜灵",
+      "zh-hant": "彷徨夜靈",
+      "en": "Dusclops",
+      "ja": "サマヨール"
+    },
+    "formNames": {},
+    "types": [
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 70,
+      "def": 130,
+      "spa": 60,
+      "spd": 130,
+      "spe": 25
+    }
+  },
+  "357": {
+    "resourceType": "pokemon",
+    "id": 357,
+    "speciesId": 357,
+    "pokemonSlug": "tropius",
+    "speciesSlug": "tropius",
+    "calcSpeciesName": "Tropius",
+    "names": {
+      "zh-hans": "热带龙",
+      "zh-hant": "熱帶龍",
+      "en": "Tropius",
+      "ja": "トロピウス"
+    },
+    "speciesNames": {
+      "zh-hans": "热带龙",
+      "zh-hant": "熱帶龍",
+      "en": "Tropius",
+      "ja": "トロピウス"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 99,
+      "atk": 68,
+      "def": 83,
+      "spa": 72,
+      "spd": 87,
+      "spe": 51
+    }
+  },
+  "358": {
+    "resourceType": "pokemon",
+    "id": 358,
+    "speciesId": 358,
+    "pokemonSlug": "chimecho",
+    "speciesSlug": "chimecho",
+    "calcSpeciesName": "Chimecho",
+    "names": {
+      "zh-hans": "风铃铃",
+      "zh-hant": "風鈴鈴",
+      "en": "Chimecho",
+      "ja": "チリーン"
+    },
+    "speciesNames": {
+      "zh-hans": "风铃铃",
+      "zh-hant": "風鈴鈴",
+      "en": "Chimecho",
+      "ja": "チリーン"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 50,
+      "def": 80,
+      "spa": 95,
+      "spd": 90,
+      "spe": 65
+    }
+  },
+  "359": {
+    "resourceType": "pokemon",
+    "id": 359,
+    "speciesId": 359,
+    "pokemonSlug": "absol",
+    "speciesSlug": "absol",
+    "calcSpeciesName": "Absol",
+    "names": {
+      "zh-hans": "阿勃梭鲁",
+      "zh-hant": "阿勃梭魯",
+      "en": "Absol",
+      "ja": "アブソル"
+    },
+    "speciesNames": {
+      "zh-hans": "阿勃梭鲁",
+      "zh-hant": "阿勃梭魯",
+      "en": "Absol",
+      "ja": "アブソル"
+    },
+    "formNames": {},
+    "types": [
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 130,
+      "def": 60,
+      "spa": 75,
+      "spd": 60,
+      "spe": 75
+    }
+  },
+  "360": {
+    "resourceType": "pokemon",
+    "id": 360,
+    "speciesId": 360,
+    "pokemonSlug": "wynaut",
+    "speciesSlug": "wynaut",
+    "calcSpeciesName": "Wynaut",
+    "names": {
+      "zh-hans": "小果然",
+      "zh-hant": "小果然",
+      "en": "Wynaut",
+      "ja": "ソーナノ"
+    },
+    "speciesNames": {
+      "zh-hans": "小果然",
+      "zh-hant": "小果然",
+      "en": "Wynaut",
+      "ja": "ソーナノ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 23,
+      "def": 48,
+      "spa": 23,
+      "spd": 48,
+      "spe": 23
+    }
+  },
+  "361": {
+    "resourceType": "pokemon",
+    "id": 361,
+    "speciesId": 361,
+    "pokemonSlug": "snorunt",
+    "speciesSlug": "snorunt",
+    "calcSpeciesName": "Snorunt",
+    "names": {
+      "zh-hans": "雪童子",
+      "zh-hant": "雪童子",
+      "en": "Snorunt",
+      "ja": "ユキワラシ"
+    },
+    "speciesNames": {
+      "zh-hans": "雪童子",
+      "zh-hant": "雪童子",
+      "en": "Snorunt",
+      "ja": "ユキワラシ"
+    },
+    "formNames": {},
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 50,
+      "def": 50,
+      "spa": 50,
+      "spd": 50,
+      "spe": 50
+    }
+  },
+  "362": {
+    "resourceType": "pokemon",
+    "id": 362,
+    "speciesId": 362,
+    "pokemonSlug": "glalie",
+    "speciesSlug": "glalie",
+    "calcSpeciesName": "Glalie",
+    "names": {
+      "zh-hans": "冰鬼护",
+      "zh-hant": "冰鬼護",
+      "en": "Glalie",
+      "ja": "オニゴーリ"
+    },
+    "speciesNames": {
+      "zh-hans": "冰鬼护",
+      "zh-hant": "冰鬼護",
+      "en": "Glalie",
+      "ja": "オニゴーリ"
+    },
+    "formNames": {},
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 80,
+      "def": 80,
+      "spa": 80,
+      "spd": 80,
+      "spe": 80
+    }
+  },
+  "363": {
+    "resourceType": "pokemon",
+    "id": 363,
+    "speciesId": 363,
+    "pokemonSlug": "spheal",
+    "speciesSlug": "spheal",
+    "calcSpeciesName": "Spheal",
+    "names": {
+      "zh-hans": "海豹球",
+      "zh-hant": "海豹球",
+      "en": "Spheal",
+      "ja": "タマザラシ"
+    },
+    "speciesNames": {
+      "zh-hans": "海豹球",
+      "zh-hant": "海豹球",
+      "en": "Spheal",
+      "ja": "タマザラシ"
+    },
+    "formNames": {},
+    "types": [
+      "ice",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 40,
+      "def": 50,
+      "spa": 55,
+      "spd": 50,
+      "spe": 25
+    }
+  },
+  "364": {
+    "resourceType": "pokemon",
+    "id": 364,
+    "speciesId": 364,
+    "pokemonSlug": "sealeo",
+    "speciesSlug": "sealeo",
+    "calcSpeciesName": "Sealeo",
+    "names": {
+      "zh-hans": "海魔狮",
+      "zh-hant": "海魔獅",
+      "en": "Sealeo",
+      "ja": "トドグラー"
+    },
+    "speciesNames": {
+      "zh-hans": "海魔狮",
+      "zh-hant": "海魔獅",
+      "en": "Sealeo",
+      "ja": "トドグラー"
+    },
+    "formNames": {},
+    "types": [
+      "ice",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 60,
+      "def": 70,
+      "spa": 75,
+      "spd": 70,
+      "spe": 45
+    }
+  },
+  "365": {
+    "resourceType": "pokemon",
+    "id": 365,
+    "speciesId": 365,
+    "pokemonSlug": "walrein",
+    "speciesSlug": "walrein",
+    "calcSpeciesName": "Walrein",
+    "names": {
+      "zh-hans": "帝牙海狮",
+      "zh-hant": "帝牙海獅",
+      "en": "Walrein",
+      "ja": "トドゼルガ"
+    },
+    "speciesNames": {
+      "zh-hans": "帝牙海狮",
+      "zh-hant": "帝牙海獅",
+      "en": "Walrein",
+      "ja": "トドゼルガ"
+    },
+    "formNames": {},
+    "types": [
+      "ice",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 110,
+      "atk": 80,
+      "def": 90,
+      "spa": 95,
+      "spd": 90,
+      "spe": 65
+    }
+  },
+  "366": {
+    "resourceType": "pokemon",
+    "id": 366,
+    "speciesId": 366,
+    "pokemonSlug": "clamperl",
+    "speciesSlug": "clamperl",
+    "calcSpeciesName": "Clamperl",
+    "names": {
+      "zh-hans": "珍珠贝",
+      "zh-hant": "珍珠貝",
+      "en": "Clamperl",
+      "ja": "パールル"
+    },
+    "speciesNames": {
+      "zh-hans": "珍珠贝",
+      "zh-hant": "珍珠貝",
+      "en": "Clamperl",
+      "ja": "パールル"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 64,
+      "def": 85,
+      "spa": 74,
+      "spd": 55,
+      "spe": 32
+    }
+  },
+  "367": {
+    "resourceType": "pokemon",
+    "id": 367,
+    "speciesId": 367,
+    "pokemonSlug": "huntail",
+    "speciesSlug": "huntail",
+    "calcSpeciesName": "Huntail",
+    "names": {
+      "zh-hans": "猎斑鱼",
+      "zh-hant": "獵斑魚",
+      "en": "Huntail",
+      "ja": "ハンテール"
+    },
+    "speciesNames": {
+      "zh-hans": "猎斑鱼",
+      "zh-hant": "獵斑魚",
+      "en": "Huntail",
+      "ja": "ハンテール"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 104,
+      "def": 105,
+      "spa": 94,
+      "spd": 75,
+      "spe": 52
+    }
+  },
+  "368": {
+    "resourceType": "pokemon",
+    "id": 368,
+    "speciesId": 368,
+    "pokemonSlug": "gorebyss",
+    "speciesSlug": "gorebyss",
+    "calcSpeciesName": "Gorebyss",
+    "names": {
+      "zh-hans": "樱花鱼",
+      "zh-hant": "櫻花魚",
+      "en": "Gorebyss",
+      "ja": "サクラビス"
+    },
+    "speciesNames": {
+      "zh-hans": "樱花鱼",
+      "zh-hant": "櫻花魚",
+      "en": "Gorebyss",
+      "ja": "サクラビス"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 84,
+      "def": 105,
+      "spa": 114,
+      "spd": 75,
+      "spe": 52
+    }
+  },
+  "369": {
+    "resourceType": "pokemon",
+    "id": 369,
+    "speciesId": 369,
+    "pokemonSlug": "relicanth",
+    "speciesSlug": "relicanth",
+    "calcSpeciesName": "Relicanth",
+    "names": {
+      "zh-hans": "古空棘鱼",
+      "zh-hant": "古空棘魚",
+      "en": "Relicanth",
+      "ja": "ジーランス"
+    },
+    "speciesNames": {
+      "zh-hans": "古空棘鱼",
+      "zh-hant": "古空棘魚",
+      "en": "Relicanth",
+      "ja": "ジーランス"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 90,
+      "def": 130,
+      "spa": 45,
+      "spd": 65,
+      "spe": 55
+    }
+  },
+  "370": {
+    "resourceType": "pokemon",
+    "id": 370,
+    "speciesId": 370,
+    "pokemonSlug": "luvdisc",
+    "speciesSlug": "luvdisc",
+    "calcSpeciesName": "Luvdisc",
+    "names": {
+      "zh-hans": "爱心鱼",
+      "zh-hant": "愛心魚",
+      "en": "Luvdisc",
+      "ja": "ラブカス"
+    },
+    "speciesNames": {
+      "zh-hans": "爱心鱼",
+      "zh-hant": "愛心魚",
+      "en": "Luvdisc",
+      "ja": "ラブカス"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 43,
+      "atk": 30,
+      "def": 55,
+      "spa": 40,
+      "spd": 65,
+      "spe": 97
+    }
+  },
+  "371": {
+    "resourceType": "pokemon",
+    "id": 371,
+    "speciesId": 371,
+    "pokemonSlug": "bagon",
+    "speciesSlug": "bagon",
+    "calcSpeciesName": "Bagon",
+    "names": {
+      "zh-hans": "宝贝龙",
+      "zh-hant": "寶貝龍",
+      "en": "Bagon",
+      "ja": "タツベイ"
+    },
+    "speciesNames": {
+      "zh-hans": "宝贝龙",
+      "zh-hant": "寶貝龍",
+      "en": "Bagon",
+      "ja": "タツベイ"
+    },
+    "formNames": {},
+    "types": [
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 75,
+      "def": 60,
+      "spa": 40,
+      "spd": 30,
+      "spe": 50
+    }
+  },
+  "372": {
+    "resourceType": "pokemon",
+    "id": 372,
+    "speciesId": 372,
+    "pokemonSlug": "shelgon",
+    "speciesSlug": "shelgon",
+    "calcSpeciesName": "Shelgon",
+    "names": {
+      "zh-hans": "甲壳龙",
+      "zh-hant": "甲殼龍",
+      "en": "Shelgon",
+      "ja": "コモルー"
+    },
+    "speciesNames": {
+      "zh-hans": "甲壳龙",
+      "zh-hant": "甲殼龍",
+      "en": "Shelgon",
+      "ja": "コモルー"
+    },
+    "formNames": {},
+    "types": [
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 95,
+      "def": 100,
+      "spa": 60,
+      "spd": 50,
+      "spe": 50
+    }
+  },
+  "373": {
+    "resourceType": "pokemon",
+    "id": 373,
+    "speciesId": 373,
+    "pokemonSlug": "salamence",
+    "speciesSlug": "salamence",
+    "calcSpeciesName": "Salamence",
+    "names": {
+      "zh-hans": "暴飞龙",
+      "zh-hant": "暴飛龍",
+      "en": "Salamence",
+      "ja": "ボーマンダ"
+    },
+    "speciesNames": {
+      "zh-hans": "暴飞龙",
+      "zh-hant": "暴飛龍",
+      "en": "Salamence",
+      "ja": "ボーマンダ"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 135,
+      "def": 80,
+      "spa": 110,
+      "spd": 80,
+      "spe": 100
+    }
+  },
+  "374": {
+    "resourceType": "pokemon",
+    "id": 374,
+    "speciesId": 374,
+    "pokemonSlug": "beldum",
+    "speciesSlug": "beldum",
+    "calcSpeciesName": "Beldum",
+    "names": {
+      "zh-hans": "铁哑铃",
+      "zh-hant": "鐵啞鈴",
+      "en": "Beldum",
+      "ja": "ダンバル"
+    },
+    "speciesNames": {
+      "zh-hans": "铁哑铃",
+      "zh-hant": "鐵啞鈴",
+      "en": "Beldum",
+      "ja": "ダンバル"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 55,
+      "def": 80,
+      "spa": 35,
+      "spd": 60,
+      "spe": 30
+    }
+  },
+  "375": {
+    "resourceType": "pokemon",
+    "id": 375,
+    "speciesId": 375,
+    "pokemonSlug": "metang",
+    "speciesSlug": "metang",
+    "calcSpeciesName": "Metang",
+    "names": {
+      "zh-hans": "金属怪",
+      "zh-hant": "金屬怪",
+      "en": "Metang",
+      "ja": "メタング"
+    },
+    "speciesNames": {
+      "zh-hans": "金属怪",
+      "zh-hant": "金屬怪",
+      "en": "Metang",
+      "ja": "メタング"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 75,
+      "def": 100,
+      "spa": 55,
+      "spd": 80,
+      "spe": 50
+    }
+  },
+  "376": {
+    "resourceType": "pokemon",
+    "id": 376,
+    "speciesId": 376,
+    "pokemonSlug": "metagross",
+    "speciesSlug": "metagross",
+    "calcSpeciesName": "Metagross",
+    "names": {
+      "zh-hans": "巨金怪",
+      "zh-hant": "巨金怪",
+      "en": "Metagross",
+      "ja": "メタグロス"
+    },
+    "speciesNames": {
+      "zh-hans": "巨金怪",
+      "zh-hant": "巨金怪",
+      "en": "Metagross",
+      "ja": "メタグロス"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 135,
+      "def": 130,
+      "spa": 95,
+      "spd": 90,
+      "spe": 70
+    }
+  },
+  "377": {
+    "resourceType": "pokemon",
+    "id": 377,
+    "speciesId": 377,
+    "pokemonSlug": "regirock",
+    "speciesSlug": "regirock",
+    "calcSpeciesName": "Regirock",
+    "names": {
+      "zh-hans": "雷吉洛克",
+      "zh-hant": "雷吉洛克",
+      "en": "Regirock",
+      "ja": "レジロック"
+    },
+    "speciesNames": {
+      "zh-hans": "雷吉洛克",
+      "zh-hant": "雷吉洛克",
+      "en": "Regirock",
+      "ja": "レジロック"
+    },
+    "formNames": {},
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 100,
+      "def": 200,
+      "spa": 50,
+      "spd": 100,
+      "spe": 50
+    }
+  },
+  "378": {
+    "resourceType": "pokemon",
+    "id": 378,
+    "speciesId": 378,
+    "pokemonSlug": "regice",
+    "speciesSlug": "regice",
+    "calcSpeciesName": "Regice",
+    "names": {
+      "zh-hans": "雷吉艾斯",
+      "zh-hant": "雷吉艾斯",
+      "en": "Regice",
+      "ja": "レジアイス"
+    },
+    "speciesNames": {
+      "zh-hans": "雷吉艾斯",
+      "zh-hant": "雷吉艾斯",
+      "en": "Regice",
+      "ja": "レジアイス"
+    },
+    "formNames": {},
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 50,
+      "def": 100,
+      "spa": 100,
+      "spd": 200,
+      "spe": 50
+    }
+  },
+  "379": {
+    "resourceType": "pokemon",
+    "id": 379,
+    "speciesId": 379,
+    "pokemonSlug": "registeel",
+    "speciesSlug": "registeel",
+    "calcSpeciesName": "Registeel",
+    "names": {
+      "zh-hans": "雷吉斯奇鲁",
+      "zh-hant": "雷吉斯奇魯",
+      "en": "Registeel",
+      "ja": "レジスチル"
+    },
+    "speciesNames": {
+      "zh-hans": "雷吉斯奇鲁",
+      "zh-hant": "雷吉斯奇魯",
+      "en": "Registeel",
+      "ja": "レジスチル"
+    },
+    "formNames": {},
+    "types": [
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 75,
+      "def": 150,
+      "spa": 75,
+      "spd": 150,
+      "spe": 50
+    }
+  },
+  "380": {
+    "resourceType": "pokemon",
+    "id": 380,
+    "speciesId": 380,
+    "pokemonSlug": "latias",
+    "speciesSlug": "latias",
+    "calcSpeciesName": "Latias",
+    "names": {
+      "zh-hans": "拉帝亚斯",
+      "zh-hant": "拉帝亞斯",
+      "en": "Latias",
+      "ja": "ラティアス"
+    },
+    "speciesNames": {
+      "zh-hans": "拉帝亚斯",
+      "zh-hant": "拉帝亞斯",
+      "en": "Latias",
+      "ja": "ラティアス"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 80,
+      "def": 90,
+      "spa": 110,
+      "spd": 130,
+      "spe": 110
+    }
+  },
+  "381": {
+    "resourceType": "pokemon",
+    "id": 381,
+    "speciesId": 381,
+    "pokemonSlug": "latios",
+    "speciesSlug": "latios",
+    "calcSpeciesName": "Latios",
+    "names": {
+      "zh-hans": "拉帝欧斯",
+      "zh-hant": "拉帝歐斯",
+      "en": "Latios",
+      "ja": "ラティオス"
+    },
+    "speciesNames": {
+      "zh-hans": "拉帝欧斯",
+      "zh-hant": "拉帝歐斯",
+      "en": "Latios",
+      "ja": "ラティオス"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 90,
+      "def": 80,
+      "spa": 130,
+      "spd": 110,
+      "spe": 110
+    }
+  },
+  "382": {
+    "resourceType": "pokemon",
+    "id": 382,
+    "speciesId": 382,
+    "pokemonSlug": "kyogre",
+    "speciesSlug": "kyogre",
+    "calcSpeciesName": "Kyogre",
+    "names": {
+      "zh-hans": "盖欧卡",
+      "zh-hant": "蓋歐卡",
+      "en": "Kyogre",
+      "ja": "カイオーガ"
+    },
+    "speciesNames": {
+      "zh-hans": "盖欧卡",
+      "zh-hant": "蓋歐卡",
+      "en": "Kyogre",
+      "ja": "カイオーガ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 100,
+      "def": 90,
+      "spa": 150,
+      "spd": 140,
+      "spe": 90
+    }
+  },
+  "383": {
+    "resourceType": "pokemon",
+    "id": 383,
+    "speciesId": 383,
+    "pokemonSlug": "groudon",
+    "speciesSlug": "groudon",
+    "calcSpeciesName": "Groudon",
+    "names": {
+      "zh-hans": "固拉多",
+      "zh-hant": "固拉多",
+      "en": "Groudon",
+      "ja": "グラードン"
+    },
+    "speciesNames": {
+      "zh-hans": "固拉多",
+      "zh-hant": "固拉多",
+      "en": "Groudon",
+      "ja": "グラードン"
+    },
+    "formNames": {},
+    "types": [
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 150,
+      "def": 140,
+      "spa": 100,
+      "spd": 90,
+      "spe": 90
+    }
+  },
+  "384": {
+    "resourceType": "pokemon",
+    "id": 384,
+    "speciesId": 384,
+    "pokemonSlug": "rayquaza",
+    "speciesSlug": "rayquaza",
+    "calcSpeciesName": "Rayquaza",
+    "names": {
+      "zh-hans": "烈空坐",
+      "zh-hant": "烈空坐",
+      "en": "Rayquaza",
+      "ja": "レックウザ"
+    },
+    "speciesNames": {
+      "zh-hans": "烈空坐",
+      "zh-hant": "烈空坐",
+      "en": "Rayquaza",
+      "ja": "レックウザ"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 105,
+      "atk": 150,
+      "def": 90,
+      "spa": 150,
+      "spd": 90,
+      "spe": 95
+    }
+  },
+  "385": {
+    "resourceType": "pokemon",
+    "id": 385,
+    "speciesId": 385,
+    "pokemonSlug": "jirachi",
+    "speciesSlug": "jirachi",
+    "calcSpeciesName": "Jirachi",
+    "names": {
+      "zh-hans": "基拉祈",
+      "zh-hant": "基拉祈",
+      "en": "Jirachi",
+      "ja": "ジラーチ"
+    },
+    "speciesNames": {
+      "zh-hans": "基拉祈",
+      "zh-hant": "基拉祈",
+      "en": "Jirachi",
+      "ja": "ジラーチ"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 100,
+      "def": 100,
+      "spa": 100,
+      "spd": 100,
+      "spe": 100
+    }
+  },
+  "386": {
+    "resourceType": "pokemon",
+    "id": 386,
+    "speciesId": 386,
+    "pokemonSlug": "deoxys-normal",
+    "speciesSlug": "deoxys",
+    "calcSpeciesName": "Deoxys",
+    "names": {
+      "zh-hans": "代欧奇希斯",
+      "zh-hant": "代歐奇希斯",
+      "en": "Deoxys",
+      "ja": "デオキシス"
+    },
+    "speciesNames": {
+      "zh-hans": "代欧奇希斯",
+      "zh-hant": "代歐奇希斯",
+      "en": "Deoxys",
+      "ja": "デオキシス"
+    },
+    "formNames": {
+      "zh-hans": "普通形态",
+      "zh-hant": "普通形態",
+      "en": "Normal Forme",
+      "ja": "ノーマルフォルム"
+    },
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 150,
+      "def": 50,
+      "spa": 150,
+      "spd": 50,
+      "spe": 150
+    }
+  },
+  "387": {
+    "resourceType": "pokemon",
+    "id": 387,
+    "speciesId": 387,
+    "pokemonSlug": "turtwig",
+    "speciesSlug": "turtwig",
+    "calcSpeciesName": "Turtwig",
+    "names": {
+      "zh-hans": "草苗龟",
+      "zh-hant": "草苗龜",
+      "en": "Turtwig",
+      "ja": "ナエトル"
+    },
+    "speciesNames": {
+      "zh-hans": "草苗龟",
+      "zh-hant": "草苗龜",
+      "en": "Turtwig",
+      "ja": "ナエトル"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 68,
+      "def": 64,
+      "spa": 45,
+      "spd": 55,
+      "spe": 31
+    }
+  },
+  "388": {
+    "resourceType": "pokemon",
+    "id": 388,
+    "speciesId": 388,
+    "pokemonSlug": "grotle",
+    "speciesSlug": "grotle",
+    "calcSpeciesName": "Grotle",
+    "names": {
+      "zh-hans": "树林龟",
+      "zh-hant": "樹林龜",
+      "en": "Grotle",
+      "ja": "ハヤシガメ"
+    },
+    "speciesNames": {
+      "zh-hans": "树林龟",
+      "zh-hant": "樹林龜",
+      "en": "Grotle",
+      "ja": "ハヤシガメ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 89,
+      "def": 85,
+      "spa": 55,
+      "spd": 65,
+      "spe": 36
+    }
+  },
+  "389": {
+    "resourceType": "pokemon",
+    "id": 389,
+    "speciesId": 389,
+    "pokemonSlug": "torterra",
+    "speciesSlug": "torterra",
+    "calcSpeciesName": "Torterra",
+    "names": {
+      "zh-hans": "土台龟",
+      "zh-hant": "土台龜",
+      "en": "Torterra",
+      "ja": "ドダイトス"
+    },
+    "speciesNames": {
+      "zh-hans": "土台龟",
+      "zh-hant": "土台龜",
+      "en": "Torterra",
+      "ja": "ドダイトス"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 109,
+      "def": 105,
+      "spa": 75,
+      "spd": 85,
+      "spe": 56
+    }
+  },
+  "390": {
+    "resourceType": "pokemon",
+    "id": 390,
+    "speciesId": 390,
+    "pokemonSlug": "chimchar",
+    "speciesSlug": "chimchar",
+    "calcSpeciesName": "Chimchar",
+    "names": {
+      "zh-hans": "小火焰猴",
+      "zh-hant": "小火焰猴",
+      "en": "Chimchar",
+      "ja": "ヒコザル"
+    },
+    "speciesNames": {
+      "zh-hans": "小火焰猴",
+      "zh-hant": "小火焰猴",
+      "en": "Chimchar",
+      "ja": "ヒコザル"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 44,
+      "atk": 58,
+      "def": 44,
+      "spa": 58,
+      "spd": 44,
+      "spe": 61
+    }
+  },
+  "391": {
+    "resourceType": "pokemon",
+    "id": 391,
+    "speciesId": 391,
+    "pokemonSlug": "monferno",
+    "speciesSlug": "monferno",
+    "calcSpeciesName": "Monferno",
+    "names": {
+      "zh-hans": "猛火猴",
+      "zh-hant": "猛火猴",
+      "en": "Monferno",
+      "ja": "モウカザル"
+    },
+    "speciesNames": {
+      "zh-hans": "猛火猴",
+      "zh-hant": "猛火猴",
+      "en": "Monferno",
+      "ja": "モウカザル"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 64,
+      "atk": 78,
+      "def": 52,
+      "spa": 78,
+      "spd": 52,
+      "spe": 81
+    }
+  },
+  "392": {
+    "resourceType": "pokemon",
+    "id": 392,
+    "speciesId": 392,
+    "pokemonSlug": "infernape",
+    "speciesSlug": "infernape",
+    "calcSpeciesName": "Infernape",
+    "names": {
+      "zh-hans": "烈焰猴",
+      "zh-hant": "烈焰猴",
+      "en": "Infernape",
+      "ja": "ゴウカザル"
+    },
+    "speciesNames": {
+      "zh-hans": "烈焰猴",
+      "zh-hant": "烈焰猴",
+      "en": "Infernape",
+      "ja": "ゴウカザル"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 76,
+      "atk": 104,
+      "def": 71,
+      "spa": 104,
+      "spd": 71,
+      "spe": 108
+    }
+  },
+  "393": {
+    "resourceType": "pokemon",
+    "id": 393,
+    "speciesId": 393,
+    "pokemonSlug": "piplup",
+    "speciesSlug": "piplup",
+    "calcSpeciesName": "Piplup",
+    "names": {
+      "zh-hans": "波加曼",
+      "zh-hant": "波加曼",
+      "en": "Piplup",
+      "ja": "ポッチャマ"
+    },
+    "speciesNames": {
+      "zh-hans": "波加曼",
+      "zh-hant": "波加曼",
+      "en": "Piplup",
+      "ja": "ポッチャマ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 53,
+      "atk": 51,
+      "def": 53,
+      "spa": 61,
+      "spd": 56,
+      "spe": 40
+    }
+  },
+  "394": {
+    "resourceType": "pokemon",
+    "id": 394,
+    "speciesId": 394,
+    "pokemonSlug": "prinplup",
+    "speciesSlug": "prinplup",
+    "calcSpeciesName": "Prinplup",
+    "names": {
+      "zh-hans": "波皇子",
+      "zh-hant": "波皇子",
+      "en": "Prinplup",
+      "ja": "ポッタイシ"
+    },
+    "speciesNames": {
+      "zh-hans": "波皇子",
+      "zh-hant": "波皇子",
+      "en": "Prinplup",
+      "ja": "ポッタイシ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 64,
+      "atk": 66,
+      "def": 68,
+      "spa": 81,
+      "spd": 76,
+      "spe": 50
+    }
+  },
+  "395": {
+    "resourceType": "pokemon",
+    "id": 395,
+    "speciesId": 395,
+    "pokemonSlug": "empoleon",
+    "speciesSlug": "empoleon",
+    "calcSpeciesName": "Empoleon",
+    "names": {
+      "zh-hans": "帝王拿波",
+      "zh-hant": "帝王拿波",
+      "en": "Empoleon",
+      "ja": "エンペルト"
+    },
+    "speciesNames": {
+      "zh-hans": "帝王拿波",
+      "zh-hant": "帝王拿波",
+      "en": "Empoleon",
+      "ja": "エンペルト"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 84,
+      "atk": 86,
+      "def": 88,
+      "spa": 111,
+      "spd": 101,
+      "spe": 60
+    }
+  },
+  "396": {
+    "resourceType": "pokemon",
+    "id": 396,
+    "speciesId": 396,
+    "pokemonSlug": "starly",
+    "speciesSlug": "starly",
+    "calcSpeciesName": "Starly",
+    "names": {
+      "zh-hans": "姆克儿",
+      "zh-hant": "姆克兒",
+      "en": "Starly",
+      "ja": "ムックル"
+    },
+    "speciesNames": {
+      "zh-hans": "姆克儿",
+      "zh-hant": "姆克兒",
+      "en": "Starly",
+      "ja": "ムックル"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 55,
+      "def": 30,
+      "spa": 30,
+      "spd": 30,
+      "spe": 60
+    }
+  },
+  "397": {
+    "resourceType": "pokemon",
+    "id": 397,
+    "speciesId": 397,
+    "pokemonSlug": "staravia",
+    "speciesSlug": "staravia",
+    "calcSpeciesName": "Staravia",
+    "names": {
+      "zh-hans": "姆克鸟",
+      "zh-hant": "姆克鳥",
+      "en": "Staravia",
+      "ja": "ムクバード"
+    },
+    "speciesNames": {
+      "zh-hans": "姆克鸟",
+      "zh-hant": "姆克鳥",
+      "en": "Staravia",
+      "ja": "ムクバード"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 75,
+      "def": 50,
+      "spa": 40,
+      "spd": 40,
+      "spe": 80
+    }
+  },
+  "398": {
+    "resourceType": "pokemon",
+    "id": 398,
+    "speciesId": 398,
+    "pokemonSlug": "staraptor",
+    "speciesSlug": "staraptor",
+    "calcSpeciesName": "Staraptor",
+    "names": {
+      "zh-hans": "姆克鹰",
+      "zh-hant": "姆克鷹",
+      "en": "Staraptor",
+      "ja": "ムクホーク"
+    },
+    "speciesNames": {
+      "zh-hans": "姆克鹰",
+      "zh-hant": "姆克鷹",
+      "en": "Staraptor",
+      "ja": "ムクホーク"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 120,
+      "def": 70,
+      "spa": 50,
+      "spd": 60,
+      "spe": 100
+    }
+  },
+  "399": {
+    "resourceType": "pokemon",
+    "id": 399,
+    "speciesId": 399,
+    "pokemonSlug": "bidoof",
+    "speciesSlug": "bidoof",
+    "calcSpeciesName": "Bidoof",
+    "names": {
+      "zh-hans": "大牙狸",
+      "zh-hant": "大牙狸",
+      "en": "Bidoof",
+      "ja": "ビッパ"
+    },
+    "speciesNames": {
+      "zh-hans": "大牙狸",
+      "zh-hant": "大牙狸",
+      "en": "Bidoof",
+      "ja": "ビッパ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 59,
+      "atk": 45,
+      "def": 40,
+      "spa": 35,
+      "spd": 40,
+      "spe": 31
+    }
+  },
+  "400": {
+    "resourceType": "pokemon",
+    "id": 400,
+    "speciesId": 400,
+    "pokemonSlug": "bibarel",
+    "speciesSlug": "bibarel",
+    "calcSpeciesName": "Bibarel",
+    "names": {
+      "zh-hans": "大尾狸",
+      "zh-hant": "大尾狸",
+      "en": "Bibarel",
+      "ja": "ビーダル"
+    },
+    "speciesNames": {
+      "zh-hans": "大尾狸",
+      "zh-hant": "大尾狸",
+      "en": "Bibarel",
+      "ja": "ビーダル"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 79,
+      "atk": 85,
+      "def": 60,
+      "spa": 55,
+      "spd": 60,
+      "spe": 71
+    }
+  },
+  "401": {
+    "resourceType": "pokemon",
+    "id": 401,
+    "speciesId": 401,
+    "pokemonSlug": "kricketot",
+    "speciesSlug": "kricketot",
+    "calcSpeciesName": "Kricketot",
+    "names": {
+      "zh-hans": "圆法师",
+      "zh-hant": "圓法師",
+      "en": "Kricketot",
+      "ja": "コロボーシ"
+    },
+    "speciesNames": {
+      "zh-hans": "圆法师",
+      "zh-hant": "圓法師",
+      "en": "Kricketot",
+      "ja": "コロボーシ"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 37,
+      "atk": 25,
+      "def": 41,
+      "spa": 25,
+      "spd": 41,
+      "spe": 25
+    }
+  },
+  "402": {
+    "resourceType": "pokemon",
+    "id": 402,
+    "speciesId": 402,
+    "pokemonSlug": "kricketune",
+    "speciesSlug": "kricketune",
+    "calcSpeciesName": "Kricketune",
+    "names": {
+      "zh-hans": "音箱蟀",
+      "zh-hant": "音箱蟀",
+      "en": "Kricketune",
+      "ja": "コロトック"
+    },
+    "speciesNames": {
+      "zh-hans": "音箱蟀",
+      "zh-hant": "音箱蟀",
+      "en": "Kricketune",
+      "ja": "コロトック"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 77,
+      "atk": 85,
+      "def": 51,
+      "spa": 55,
+      "spd": 51,
+      "spe": 65
+    }
+  },
+  "403": {
+    "resourceType": "pokemon",
+    "id": 403,
+    "speciesId": 403,
+    "pokemonSlug": "shinx",
+    "speciesSlug": "shinx",
+    "calcSpeciesName": "Shinx",
+    "names": {
+      "zh-hans": "小猫怪",
+      "zh-hant": "小貓怪",
+      "en": "Shinx",
+      "ja": "コリンク"
+    },
+    "speciesNames": {
+      "zh-hans": "小猫怪",
+      "zh-hant": "小貓怪",
+      "en": "Shinx",
+      "ja": "コリンク"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 65,
+      "def": 34,
+      "spa": 40,
+      "spd": 34,
+      "spe": 45
+    }
+  },
+  "404": {
+    "resourceType": "pokemon",
+    "id": 404,
+    "speciesId": 404,
+    "pokemonSlug": "luxio",
+    "speciesSlug": "luxio",
+    "calcSpeciesName": "Luxio",
+    "names": {
+      "zh-hans": "勒克猫",
+      "zh-hant": "勒克貓",
+      "en": "Luxio",
+      "ja": "ルクシオ"
+    },
+    "speciesNames": {
+      "zh-hans": "勒克猫",
+      "zh-hant": "勒克貓",
+      "en": "Luxio",
+      "ja": "ルクシオ"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 85,
+      "def": 49,
+      "spa": 60,
+      "spd": 49,
+      "spe": 60
+    }
+  },
+  "405": {
+    "resourceType": "pokemon",
+    "id": 405,
+    "speciesId": 405,
+    "pokemonSlug": "luxray",
+    "speciesSlug": "luxray",
+    "calcSpeciesName": "Luxray",
+    "names": {
+      "zh-hans": "伦琴猫",
+      "zh-hant": "倫琴貓",
+      "en": "Luxray",
+      "ja": "レントラー"
+    },
+    "speciesNames": {
+      "zh-hans": "伦琴猫",
+      "zh-hant": "倫琴貓",
+      "en": "Luxray",
+      "ja": "レントラー"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 120,
+      "def": 79,
+      "spa": 95,
+      "spd": 79,
+      "spe": 70
+    }
+  },
+  "406": {
+    "resourceType": "pokemon",
+    "id": 406,
+    "speciesId": 406,
+    "pokemonSlug": "budew",
+    "speciesSlug": "budew",
+    "calcSpeciesName": "Budew",
+    "names": {
+      "zh-hans": "含羞苞",
+      "zh-hant": "含羞苞",
+      "en": "Budew",
+      "ja": "スボミー"
+    },
+    "speciesNames": {
+      "zh-hans": "含羞苞",
+      "zh-hant": "含羞苞",
+      "en": "Budew",
+      "ja": "スボミー"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 30,
+      "def": 35,
+      "spa": 50,
+      "spd": 70,
+      "spe": 55
+    }
+  },
+  "407": {
+    "resourceType": "pokemon",
+    "id": 407,
+    "speciesId": 407,
+    "pokemonSlug": "roserade",
+    "speciesSlug": "roserade",
+    "calcSpeciesName": "Roserade",
+    "names": {
+      "zh-hans": "罗丝雷朵",
+      "zh-hant": "羅絲雷朵",
+      "en": "Roserade",
+      "ja": "ロズレイド"
+    },
+    "speciesNames": {
+      "zh-hans": "罗丝雷朵",
+      "zh-hant": "羅絲雷朵",
+      "en": "Roserade",
+      "ja": "ロズレイド"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 70,
+      "def": 65,
+      "spa": 125,
+      "spd": 105,
+      "spe": 90
+    }
+  },
+  "408": {
+    "resourceType": "pokemon",
+    "id": 408,
+    "speciesId": 408,
+    "pokemonSlug": "cranidos",
+    "speciesSlug": "cranidos",
+    "calcSpeciesName": "Cranidos",
+    "names": {
+      "zh-hans": "头盖龙",
+      "zh-hant": "頭蓋龍",
+      "en": "Cranidos",
+      "ja": "ズガイドス"
+    },
+    "speciesNames": {
+      "zh-hans": "头盖龙",
+      "zh-hant": "頭蓋龍",
+      "en": "Cranidos",
+      "ja": "ズガイドス"
+    },
+    "formNames": {},
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 67,
+      "atk": 125,
+      "def": 40,
+      "spa": 30,
+      "spd": 30,
+      "spe": 58
+    }
+  },
+  "409": {
+    "resourceType": "pokemon",
+    "id": 409,
+    "speciesId": 409,
+    "pokemonSlug": "rampardos",
+    "speciesSlug": "rampardos",
+    "calcSpeciesName": "Rampardos",
+    "names": {
+      "zh-hans": "战槌龙",
+      "zh-hant": "戰槌龍",
+      "en": "Rampardos",
+      "ja": "ラムパルド"
+    },
+    "speciesNames": {
+      "zh-hans": "战槌龙",
+      "zh-hant": "戰槌龍",
+      "en": "Rampardos",
+      "ja": "ラムパルド"
+    },
+    "formNames": {},
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 97,
+      "atk": 165,
+      "def": 60,
+      "spa": 65,
+      "spd": 50,
+      "spe": 58
+    }
+  },
+  "410": {
+    "resourceType": "pokemon",
+    "id": 410,
+    "speciesId": 410,
+    "pokemonSlug": "shieldon",
+    "speciesSlug": "shieldon",
+    "calcSpeciesName": "Shieldon",
+    "names": {
+      "zh-hans": "盾甲龙",
+      "zh-hant": "盾甲龍",
+      "en": "Shieldon",
+      "ja": "タテトプス"
+    },
+    "speciesNames": {
+      "zh-hans": "盾甲龙",
+      "zh-hant": "盾甲龍",
+      "en": "Shieldon",
+      "ja": "タテトプス"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 30,
+      "atk": 42,
+      "def": 118,
+      "spa": 42,
+      "spd": 88,
+      "spe": 30
+    }
+  },
+  "411": {
+    "resourceType": "pokemon",
+    "id": 411,
+    "speciesId": 411,
+    "pokemonSlug": "bastiodon",
+    "speciesSlug": "bastiodon",
+    "calcSpeciesName": "Bastiodon",
+    "names": {
+      "zh-hans": "护城龙",
+      "zh-hant": "護城龍",
+      "en": "Bastiodon",
+      "ja": "トリデプス"
+    },
+    "speciesNames": {
+      "zh-hans": "护城龙",
+      "zh-hant": "護城龍",
+      "en": "Bastiodon",
+      "ja": "トリデプス"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 52,
+      "def": 168,
+      "spa": 47,
+      "spd": 138,
+      "spe": 30
+    }
+  },
+  "412": {
+    "resourceType": "pokemon",
+    "id": 412,
+    "speciesId": 412,
+    "pokemonSlug": "burmy",
+    "speciesSlug": "burmy",
+    "calcSpeciesName": "Burmy",
+    "names": {
+      "zh-hans": "结草儿",
+      "zh-hant": "結草兒",
+      "en": "Burmy",
+      "ja": "ミノムッチ"
+    },
+    "speciesNames": {
+      "zh-hans": "结草儿",
+      "zh-hant": "結草兒",
+      "en": "Burmy",
+      "ja": "ミノムッチ"
+    },
+    "formNames": {
+      "zh-hans": "Plant Cloak",
+      "zh-hant": "Plant Cloak",
+      "en": "Plant Cloak",
+      "ja": "くさきのミノ"
+    },
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 29,
+      "def": 45,
+      "spa": 29,
+      "spd": 45,
+      "spe": 36
+    }
+  },
+  "413": {
+    "resourceType": "pokemon",
+    "id": 413,
+    "speciesId": 413,
+    "pokemonSlug": "wormadam-plant",
+    "speciesSlug": "wormadam",
+    "calcSpeciesName": "Wormadam",
+    "names": {
+      "zh-hans": "结草贵妇",
+      "zh-hant": "結草貴婦",
+      "en": "Wormadam",
+      "ja": "ミノマダム"
+    },
+    "speciesNames": {
+      "zh-hans": "结草贵妇",
+      "zh-hant": "結草貴婦",
+      "en": "Wormadam",
+      "ja": "ミノマダム"
+    },
+    "formNames": {
+      "zh-hans": "草木蓑衣",
+      "zh-hant": "草木蓑衣",
+      "en": "Plant Cloak",
+      "ja": "くさきのミノ"
+    },
+    "types": [
+      "bug",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 59,
+      "def": 85,
+      "spa": 79,
+      "spd": 105,
+      "spe": 36
+    }
+  },
+  "414": {
+    "resourceType": "pokemon",
+    "id": 414,
+    "speciesId": 414,
+    "pokemonSlug": "mothim",
+    "speciesSlug": "mothim",
+    "calcSpeciesName": "Mothim",
+    "names": {
+      "zh-hans": "绅士蛾",
+      "zh-hant": "紳士蛾",
+      "en": "Mothim",
+      "ja": "ガーメイル"
+    },
+    "speciesNames": {
+      "zh-hans": "绅士蛾",
+      "zh-hant": "紳士蛾",
+      "en": "Mothim",
+      "ja": "ガーメイル"
+    },
+    "formNames": {
+      "zh-hans": "",
+      "zh-hant": "",
+      "en": "",
+      "ja": ""
+    },
+    "types": [
+      "bug",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 94,
+      "def": 50,
+      "spa": 94,
+      "spd": 50,
+      "spe": 66
+    }
+  },
+  "415": {
+    "resourceType": "pokemon",
+    "id": 415,
+    "speciesId": 415,
+    "pokemonSlug": "combee",
+    "speciesSlug": "combee",
+    "calcSpeciesName": "Combee",
+    "names": {
+      "zh-hans": "三蜜蜂",
+      "zh-hant": "三蜜蜂",
+      "en": "Combee",
+      "ja": "ミツハニー"
+    },
+    "speciesNames": {
+      "zh-hans": "三蜜蜂",
+      "zh-hant": "三蜜蜂",
+      "en": "Combee",
+      "ja": "ミツハニー"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 30,
+      "atk": 30,
+      "def": 42,
+      "spa": 30,
+      "spd": 42,
+      "spe": 70
+    }
+  },
+  "416": {
+    "resourceType": "pokemon",
+    "id": 416,
+    "speciesId": 416,
+    "pokemonSlug": "vespiquen",
+    "speciesSlug": "vespiquen",
+    "calcSpeciesName": "Vespiquen",
+    "names": {
+      "zh-hans": "蜂女王",
+      "zh-hant": "蜂女王",
+      "en": "Vespiquen",
+      "ja": "ビークイン"
+    },
+    "speciesNames": {
+      "zh-hans": "蜂女王",
+      "zh-hant": "蜂女王",
+      "en": "Vespiquen",
+      "ja": "ビークイン"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 80,
+      "def": 102,
+      "spa": 80,
+      "spd": 102,
+      "spe": 40
+    }
+  },
+  "417": {
+    "resourceType": "pokemon",
+    "id": 417,
+    "speciesId": 417,
+    "pokemonSlug": "pachirisu",
+    "speciesSlug": "pachirisu",
+    "calcSpeciesName": "Pachirisu",
+    "names": {
+      "zh-hans": "帕奇利兹",
+      "zh-hant": "帕奇利茲",
+      "en": "Pachirisu",
+      "ja": "パチリス"
+    },
+    "speciesNames": {
+      "zh-hans": "帕奇利兹",
+      "zh-hant": "帕奇利茲",
+      "en": "Pachirisu",
+      "ja": "パチリス"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 45,
+      "def": 70,
+      "spa": 45,
+      "spd": 90,
+      "spe": 95
+    }
+  },
+  "418": {
+    "resourceType": "pokemon",
+    "id": 418,
+    "speciesId": 418,
+    "pokemonSlug": "buizel",
+    "speciesSlug": "buizel",
+    "calcSpeciesName": "Buizel",
+    "names": {
+      "zh-hans": "泳圈鼬",
+      "zh-hant": "泳圈鼬",
+      "en": "Buizel",
+      "ja": "ブイゼル"
+    },
+    "speciesNames": {
+      "zh-hans": "泳圈鼬",
+      "zh-hant": "泳圈鼬",
+      "en": "Buizel",
+      "ja": "ブイゼル"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 65,
+      "def": 35,
+      "spa": 60,
+      "spd": 30,
+      "spe": 85
+    }
+  },
+  "419": {
+    "resourceType": "pokemon",
+    "id": 419,
+    "speciesId": 419,
+    "pokemonSlug": "floatzel",
+    "speciesSlug": "floatzel",
+    "calcSpeciesName": "Floatzel",
+    "names": {
+      "zh-hans": "浮潜鼬",
+      "zh-hant": "浮潛鼬",
+      "en": "Floatzel",
+      "ja": "フローゼル"
+    },
+    "speciesNames": {
+      "zh-hans": "浮潜鼬",
+      "zh-hant": "浮潛鼬",
+      "en": "Floatzel",
+      "ja": "フローゼル"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 105,
+      "def": 55,
+      "spa": 85,
+      "spd": 50,
+      "spe": 115
+    }
+  },
+  "420": {
+    "resourceType": "pokemon",
+    "id": 420,
+    "speciesId": 420,
+    "pokemonSlug": "cherubi",
+    "speciesSlug": "cherubi",
+    "calcSpeciesName": "Cherubi",
+    "names": {
+      "zh-hans": "樱花宝",
+      "zh-hant": "櫻花寶",
+      "en": "Cherubi",
+      "ja": "チェリンボ"
+    },
+    "speciesNames": {
+      "zh-hans": "樱花宝",
+      "zh-hant": "櫻花寶",
+      "en": "Cherubi",
+      "ja": "チェリンボ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 35,
+      "def": 45,
+      "spa": 62,
+      "spd": 53,
+      "spe": 35
+    }
+  },
+  "421": {
+    "resourceType": "pokemon",
+    "id": 421,
+    "speciesId": 421,
+    "pokemonSlug": "cherrim",
+    "speciesSlug": "cherrim",
+    "calcSpeciesName": "Cherrim",
+    "names": {
+      "zh-hans": "樱花儿",
+      "zh-hant": "櫻花兒",
+      "en": "Cherrim",
+      "ja": "チェリム"
+    },
+    "speciesNames": {
+      "zh-hans": "樱花儿",
+      "zh-hant": "櫻花兒",
+      "en": "Cherrim",
+      "ja": "チェリム"
+    },
+    "formNames": {
+      "zh-hans": "阴天形态",
+      "zh-hant": "陰天形態",
+      "en": "Overcast Form",
+      "ja": "ネガフォルム"
+    },
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 60,
+      "def": 70,
+      "spa": 87,
+      "spd": 78,
+      "spe": 85
+    }
+  },
+  "422": {
+    "resourceType": "pokemon",
+    "id": 422,
+    "speciesId": 422,
+    "pokemonSlug": "shellos",
+    "speciesSlug": "shellos",
+    "calcSpeciesName": "Shellos",
+    "names": {
+      "zh-hans": "无壳海兔",
+      "zh-hant": "無殼海兔",
+      "en": "Shellos",
+      "ja": "カラナクシ"
+    },
+    "speciesNames": {
+      "zh-hans": "无壳海兔",
+      "zh-hant": "無殼海兔",
+      "en": "Shellos",
+      "ja": "カラナクシ"
+    },
+    "formNames": {
+      "zh-hans": "西海",
+      "zh-hant": "西海",
+      "en": "West Sea",
+      "ja": "にしのうみ"
+    },
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 76,
+      "atk": 48,
+      "def": 48,
+      "spa": 57,
+      "spd": 62,
+      "spe": 34
+    }
+  },
+  "423": {
+    "resourceType": "pokemon",
+    "id": 423,
+    "speciesId": 423,
+    "pokemonSlug": "gastrodon",
+    "speciesSlug": "gastrodon",
+    "calcSpeciesName": "Gastrodon",
+    "names": {
+      "zh-hans": "海兔兽",
+      "zh-hant": "海兔獸",
+      "en": "Gastrodon",
+      "ja": "トリトドン"
+    },
+    "speciesNames": {
+      "zh-hans": "海兔兽",
+      "zh-hant": "海兔獸",
+      "en": "Gastrodon",
+      "ja": "トリトドン"
+    },
+    "formNames": {
+      "zh-hans": "西海",
+      "zh-hant": "西海",
+      "en": "West Sea",
+      "ja": "にしのうみ"
+    },
+    "types": [
+      "water",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 111,
+      "atk": 83,
+      "def": 68,
+      "spa": 92,
+      "spd": 82,
+      "spe": 39
+    }
+  },
+  "424": {
+    "resourceType": "pokemon",
+    "id": 424,
+    "speciesId": 424,
+    "pokemonSlug": "ambipom",
+    "speciesSlug": "ambipom",
+    "calcSpeciesName": "Ambipom",
+    "names": {
+      "zh-hans": "双尾怪手",
+      "zh-hant": "雙尾怪手",
+      "en": "Ambipom",
+      "ja": "エテボース"
+    },
+    "speciesNames": {
+      "zh-hans": "双尾怪手",
+      "zh-hant": "雙尾怪手",
+      "en": "Ambipom",
+      "ja": "エテボース"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 100,
+      "def": 66,
+      "spa": 60,
+      "spd": 66,
+      "spe": 115
+    }
+  },
+  "425": {
+    "resourceType": "pokemon",
+    "id": 425,
+    "speciesId": 425,
+    "pokemonSlug": "drifloon",
+    "speciesSlug": "drifloon",
+    "calcSpeciesName": "Drifloon",
+    "names": {
+      "zh-hans": "飘飘球",
+      "zh-hant": "飄飄球",
+      "en": "Drifloon",
+      "ja": "フワンテ"
+    },
+    "speciesNames": {
+      "zh-hans": "飘飘球",
+      "zh-hant": "飄飄球",
+      "en": "Drifloon",
+      "ja": "フワンテ"
+    },
+    "formNames": {},
+    "types": [
+      "ghost",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 50,
+      "def": 34,
+      "spa": 60,
+      "spd": 44,
+      "spe": 70
+    }
+  },
+  "426": {
+    "resourceType": "pokemon",
+    "id": 426,
+    "speciesId": 426,
+    "pokemonSlug": "drifblim",
+    "speciesSlug": "drifblim",
+    "calcSpeciesName": "Drifblim",
+    "names": {
+      "zh-hans": "随风球",
+      "zh-hant": "隨風球",
+      "en": "Drifblim",
+      "ja": "フワライド"
+    },
+    "speciesNames": {
+      "zh-hans": "随风球",
+      "zh-hant": "隨風球",
+      "en": "Drifblim",
+      "ja": "フワライド"
+    },
+    "formNames": {},
+    "types": [
+      "ghost",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 150,
+      "atk": 80,
+      "def": 44,
+      "spa": 90,
+      "spd": 54,
+      "spe": 80
+    }
+  },
+  "427": {
+    "resourceType": "pokemon",
+    "id": 427,
+    "speciesId": 427,
+    "pokemonSlug": "buneary",
+    "speciesSlug": "buneary",
+    "calcSpeciesName": "Buneary",
+    "names": {
+      "zh-hans": "卷卷耳",
+      "zh-hant": "捲捲耳",
+      "en": "Buneary",
+      "ja": "ミミロル"
+    },
+    "speciesNames": {
+      "zh-hans": "卷卷耳",
+      "zh-hant": "捲捲耳",
+      "en": "Buneary",
+      "ja": "ミミロル"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 66,
+      "def": 44,
+      "spa": 44,
+      "spd": 56,
+      "spe": 85
+    }
+  },
+  "428": {
+    "resourceType": "pokemon",
+    "id": 428,
+    "speciesId": 428,
+    "pokemonSlug": "lopunny",
+    "speciesSlug": "lopunny",
+    "calcSpeciesName": "Lopunny",
+    "names": {
+      "zh-hans": "长耳兔",
+      "zh-hant": "長耳兔",
+      "en": "Lopunny",
+      "ja": "ミミロップ"
+    },
+    "speciesNames": {
+      "zh-hans": "长耳兔",
+      "zh-hant": "長耳兔",
+      "en": "Lopunny",
+      "ja": "ミミロップ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 76,
+      "def": 84,
+      "spa": 54,
+      "spd": 96,
+      "spe": 105
+    }
+  },
+  "429": {
+    "resourceType": "pokemon",
+    "id": 429,
+    "speciesId": 429,
+    "pokemonSlug": "mismagius",
+    "speciesSlug": "mismagius",
+    "calcSpeciesName": "Mismagius",
+    "names": {
+      "zh-hans": "梦妖魔",
+      "zh-hant": "夢妖魔",
+      "en": "Mismagius",
+      "ja": "ムウマージ"
+    },
+    "speciesNames": {
+      "zh-hans": "梦妖魔",
+      "zh-hant": "夢妖魔",
+      "en": "Mismagius",
+      "ja": "ムウマージ"
+    },
+    "formNames": {},
+    "types": [
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 60,
+      "def": 60,
+      "spa": 105,
+      "spd": 105,
+      "spe": 105
+    }
+  },
+  "430": {
+    "resourceType": "pokemon",
+    "id": 430,
+    "speciesId": 430,
+    "pokemonSlug": "honchkrow",
+    "speciesSlug": "honchkrow",
+    "calcSpeciesName": "Honchkrow",
+    "names": {
+      "zh-hans": "乌鸦头头",
+      "zh-hant": "烏鴉頭頭",
+      "en": "Honchkrow",
+      "ja": "ドンカラス"
+    },
+    "speciesNames": {
+      "zh-hans": "乌鸦头头",
+      "zh-hant": "烏鴉頭頭",
+      "en": "Honchkrow",
+      "ja": "ドンカラス"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 125,
+      "def": 52,
+      "spa": 105,
+      "spd": 52,
+      "spe": 71
+    }
+  },
+  "431": {
+    "resourceType": "pokemon",
+    "id": 431,
+    "speciesId": 431,
+    "pokemonSlug": "glameow",
+    "speciesSlug": "glameow",
+    "calcSpeciesName": "Glameow",
+    "names": {
+      "zh-hans": "魅力喵",
+      "zh-hant": "魅力喵",
+      "en": "Glameow",
+      "ja": "ニャルマー"
+    },
+    "speciesNames": {
+      "zh-hans": "魅力喵",
+      "zh-hant": "魅力喵",
+      "en": "Glameow",
+      "ja": "ニャルマー"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 49,
+      "atk": 55,
+      "def": 42,
+      "spa": 42,
+      "spd": 37,
+      "spe": 85
+    }
+  },
+  "432": {
+    "resourceType": "pokemon",
+    "id": 432,
+    "speciesId": 432,
+    "pokemonSlug": "purugly",
+    "speciesSlug": "purugly",
+    "calcSpeciesName": "Purugly",
+    "names": {
+      "zh-hans": "东施喵",
+      "zh-hant": "東施喵",
+      "en": "Purugly",
+      "ja": "ブニャット"
+    },
+    "speciesNames": {
+      "zh-hans": "东施喵",
+      "zh-hant": "東施喵",
+      "en": "Purugly",
+      "ja": "ブニャット"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 71,
+      "atk": 82,
+      "def": 64,
+      "spa": 64,
+      "spd": 59,
+      "spe": 112
+    }
+  },
+  "433": {
+    "resourceType": "pokemon",
+    "id": 433,
+    "speciesId": 433,
+    "pokemonSlug": "chingling",
+    "speciesSlug": "chingling",
+    "calcSpeciesName": "Chingling",
+    "names": {
+      "zh-hans": "铃铛响",
+      "zh-hant": "鈴鐺響",
+      "en": "Chingling",
+      "ja": "リーシャン"
+    },
+    "speciesNames": {
+      "zh-hans": "铃铛响",
+      "zh-hant": "鈴鐺響",
+      "en": "Chingling",
+      "ja": "リーシャン"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 30,
+      "def": 50,
+      "spa": 65,
+      "spd": 50,
+      "spe": 45
+    }
+  },
+  "434": {
+    "resourceType": "pokemon",
+    "id": 434,
+    "speciesId": 434,
+    "pokemonSlug": "stunky",
+    "speciesSlug": "stunky",
+    "calcSpeciesName": "Stunky",
+    "names": {
+      "zh-hans": "臭鼬噗",
+      "zh-hant": "臭鼬噗",
+      "en": "Stunky",
+      "ja": "スカンプー"
+    },
+    "speciesNames": {
+      "zh-hans": "臭鼬噗",
+      "zh-hant": "臭鼬噗",
+      "en": "Stunky",
+      "ja": "スカンプー"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 63,
+      "atk": 63,
+      "def": 47,
+      "spa": 41,
+      "spd": 41,
+      "spe": 74
+    }
+  },
+  "435": {
+    "resourceType": "pokemon",
+    "id": 435,
+    "speciesId": 435,
+    "pokemonSlug": "skuntank",
+    "speciesSlug": "skuntank",
+    "calcSpeciesName": "Skuntank",
+    "names": {
+      "zh-hans": "坦克臭鼬",
+      "zh-hant": "坦克臭鼬",
+      "en": "Skuntank",
+      "ja": "スカタンク"
+    },
+    "speciesNames": {
+      "zh-hans": "坦克臭鼬",
+      "zh-hant": "坦克臭鼬",
+      "en": "Skuntank",
+      "ja": "スカタンク"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 103,
+      "atk": 93,
+      "def": 67,
+      "spa": 71,
+      "spd": 61,
+      "spe": 84
+    }
+  },
+  "436": {
+    "resourceType": "pokemon",
+    "id": 436,
+    "speciesId": 436,
+    "pokemonSlug": "bronzor",
+    "speciesSlug": "bronzor",
+    "calcSpeciesName": "Bronzor",
+    "names": {
+      "zh-hans": "铜镜怪",
+      "zh-hant": "銅鏡怪",
+      "en": "Bronzor",
+      "ja": "ドーミラー"
+    },
+    "speciesNames": {
+      "zh-hans": "铜镜怪",
+      "zh-hant": "銅鏡怪",
+      "en": "Bronzor",
+      "ja": "ドーミラー"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 57,
+      "atk": 24,
+      "def": 86,
+      "spa": 24,
+      "spd": 86,
+      "spe": 23
+    }
+  },
+  "437": {
+    "resourceType": "pokemon",
+    "id": 437,
+    "speciesId": 437,
+    "pokemonSlug": "bronzong",
+    "speciesSlug": "bronzong",
+    "calcSpeciesName": "Bronzong",
+    "names": {
+      "zh-hans": "青铜钟",
+      "zh-hant": "青銅鐘",
+      "en": "Bronzong",
+      "ja": "ドータクン"
+    },
+    "speciesNames": {
+      "zh-hans": "青铜钟",
+      "zh-hant": "青銅鐘",
+      "en": "Bronzong",
+      "ja": "ドータクン"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 67,
+      "atk": 89,
+      "def": 116,
+      "spa": 79,
+      "spd": 116,
+      "spe": 33
+    }
+  },
+  "438": {
+    "resourceType": "pokemon",
+    "id": 438,
+    "speciesId": 438,
+    "pokemonSlug": "bonsly",
+    "speciesSlug": "bonsly",
+    "calcSpeciesName": "Bonsly",
+    "names": {
+      "zh-hans": "盆才怪",
+      "zh-hant": "盆才怪",
+      "en": "Bonsly",
+      "ja": "ウソハチ"
+    },
+    "speciesNames": {
+      "zh-hans": "盆才怪",
+      "zh-hant": "盆才怪",
+      "en": "Bonsly",
+      "ja": "ウソハチ"
+    },
+    "formNames": {},
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 80,
+      "def": 95,
+      "spa": 10,
+      "spd": 45,
+      "spe": 10
+    }
+  },
+  "439": {
+    "resourceType": "pokemon",
+    "id": 439,
+    "speciesId": 439,
+    "pokemonSlug": "mime-jr",
+    "speciesSlug": "mime-jr",
+    "calcSpeciesName": "Mime Jr.",
+    "names": {
+      "zh-hans": "魔尼尼",
+      "zh-hant": "魔尼尼",
+      "en": "Mime Jr.",
+      "ja": "マネネ"
+    },
+    "speciesNames": {
+      "zh-hans": "魔尼尼",
+      "zh-hant": "魔尼尼",
+      "en": "Mime Jr.",
+      "ja": "マネネ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 20,
+      "atk": 25,
+      "def": 45,
+      "spa": 70,
+      "spd": 90,
+      "spe": 60
+    }
+  },
+  "440": {
+    "resourceType": "pokemon",
+    "id": 440,
+    "speciesId": 440,
+    "pokemonSlug": "happiny",
+    "speciesSlug": "happiny",
+    "calcSpeciesName": "Happiny",
+    "names": {
+      "zh-hans": "小福蛋",
+      "zh-hant": "小福蛋",
+      "en": "Happiny",
+      "ja": "ピンプク"
+    },
+    "speciesNames": {
+      "zh-hans": "小福蛋",
+      "zh-hant": "小福蛋",
+      "en": "Happiny",
+      "ja": "ピンプク"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 5,
+      "def": 5,
+      "spa": 15,
+      "spd": 65,
+      "spe": 30
+    }
+  },
+  "441": {
+    "resourceType": "pokemon",
+    "id": 441,
+    "speciesId": 441,
+    "pokemonSlug": "chatot",
+    "speciesSlug": "chatot",
+    "calcSpeciesName": "Chatot",
+    "names": {
+      "zh-hans": "聒噪鸟",
+      "zh-hant": "聒噪鳥",
+      "en": "Chatot",
+      "ja": "ペラップ"
+    },
+    "speciesNames": {
+      "zh-hans": "聒噪鸟",
+      "zh-hant": "聒噪鳥",
+      "en": "Chatot",
+      "ja": "ペラップ"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 76,
+      "atk": 65,
+      "def": 45,
+      "spa": 92,
+      "spd": 42,
+      "spe": 91
+    }
+  },
+  "442": {
+    "resourceType": "pokemon",
+    "id": 442,
+    "speciesId": 442,
+    "pokemonSlug": "spiritomb",
+    "speciesSlug": "spiritomb",
+    "calcSpeciesName": "Spiritomb",
+    "names": {
+      "zh-hans": "花岩怪",
+      "zh-hant": "花岩怪",
+      "en": "Spiritomb",
+      "ja": "ミカルゲ"
+    },
+    "speciesNames": {
+      "zh-hans": "花岩怪",
+      "zh-hant": "花岩怪",
+      "en": "Spiritomb",
+      "ja": "ミカルゲ"
+    },
+    "formNames": {},
+    "types": [
+      "ghost",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 92,
+      "def": 108,
+      "spa": 92,
+      "spd": 108,
+      "spe": 35
+    }
+  },
+  "443": {
+    "resourceType": "pokemon",
+    "id": 443,
+    "speciesId": 443,
+    "pokemonSlug": "gible",
+    "speciesSlug": "gible",
+    "calcSpeciesName": "Gible",
+    "names": {
+      "zh-hans": "圆陆鲨",
+      "zh-hant": "圓陸鯊",
+      "en": "Gible",
+      "ja": "フカマル"
+    },
+    "speciesNames": {
+      "zh-hans": "圆陆鲨",
+      "zh-hant": "圓陸鯊",
+      "en": "Gible",
+      "ja": "フカマル"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 58,
+      "atk": 70,
+      "def": 45,
+      "spa": 40,
+      "spd": 45,
+      "spe": 42
+    }
+  },
+  "444": {
+    "resourceType": "pokemon",
+    "id": 444,
+    "speciesId": 444,
+    "pokemonSlug": "gabite",
+    "speciesSlug": "gabite",
+    "calcSpeciesName": "Gabite",
+    "names": {
+      "zh-hans": "尖牙陆鲨",
+      "zh-hant": "尖牙陸鯊",
+      "en": "Gabite",
+      "ja": "ガバイト"
+    },
+    "speciesNames": {
+      "zh-hans": "尖牙陆鲨",
+      "zh-hant": "尖牙陸鯊",
+      "en": "Gabite",
+      "ja": "ガバイト"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 90,
+      "def": 65,
+      "spa": 50,
+      "spd": 55,
+      "spe": 82
+    }
+  },
+  "445": {
+    "resourceType": "pokemon",
+    "id": 445,
+    "speciesId": 445,
+    "pokemonSlug": "garchomp",
+    "speciesSlug": "garchomp",
+    "calcSpeciesName": "Garchomp",
+    "names": {
+      "zh-hans": "烈咬陆鲨",
+      "zh-hant": "烈咬陸鯊",
+      "en": "Garchomp",
+      "ja": "ガブリアス"
+    },
+    "speciesNames": {
+      "zh-hans": "烈咬陆鲨",
+      "zh-hant": "烈咬陸鯊",
+      "en": "Garchomp",
+      "ja": "ガブリアス"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 108,
+      "atk": 130,
+      "def": 95,
+      "spa": 80,
+      "spd": 85,
+      "spe": 102
+    }
+  },
+  "446": {
+    "resourceType": "pokemon",
+    "id": 446,
+    "speciesId": 446,
+    "pokemonSlug": "munchlax",
+    "speciesSlug": "munchlax",
+    "calcSpeciesName": "Munchlax",
+    "names": {
+      "zh-hans": "小卡比兽",
+      "zh-hant": "小卡比獸",
+      "en": "Munchlax",
+      "ja": "ゴンベ"
+    },
+    "speciesNames": {
+      "zh-hans": "小卡比兽",
+      "zh-hant": "小卡比獸",
+      "en": "Munchlax",
+      "ja": "ゴンベ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 135,
+      "atk": 85,
+      "def": 40,
+      "spa": 40,
+      "spd": 85,
+      "spe": 5
+    }
+  },
+  "447": {
+    "resourceType": "pokemon",
+    "id": 447,
+    "speciesId": 447,
+    "pokemonSlug": "riolu",
+    "speciesSlug": "riolu",
+    "calcSpeciesName": "Riolu",
+    "names": {
+      "zh-hans": "利欧路",
+      "zh-hant": "利歐路",
+      "en": "Riolu",
+      "ja": "リオル"
+    },
+    "speciesNames": {
+      "zh-hans": "利欧路",
+      "zh-hant": "利歐路",
+      "en": "Riolu",
+      "ja": "リオル"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 70,
+      "def": 40,
+      "spa": 35,
+      "spd": 40,
+      "spe": 60
+    }
+  },
+  "448": {
+    "resourceType": "pokemon",
+    "id": 448,
+    "speciesId": 448,
+    "pokemonSlug": "lucario",
+    "speciesSlug": "lucario",
+    "calcSpeciesName": "Lucario",
+    "names": {
+      "zh-hans": "路卡利欧",
+      "zh-hant": "路卡利歐",
+      "en": "Lucario",
+      "ja": "ルカリオ"
+    },
+    "speciesNames": {
+      "zh-hans": "路卡利欧",
+      "zh-hant": "路卡利歐",
+      "en": "Lucario",
+      "ja": "ルカリオ"
+    },
+    "formNames": {},
+    "types": [
+      "fighting",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 110,
+      "def": 70,
+      "spa": 115,
+      "spd": 70,
+      "spe": 90
+    }
+  },
+  "449": {
+    "resourceType": "pokemon",
+    "id": 449,
+    "speciesId": 449,
+    "pokemonSlug": "hippopotas",
+    "speciesSlug": "hippopotas",
+    "calcSpeciesName": "Hippopotas",
+    "names": {
+      "zh-hans": "沙河马",
+      "zh-hant": "沙河馬",
+      "en": "Hippopotas",
+      "ja": "ヒポポタス"
+    },
+    "speciesNames": {
+      "zh-hans": "沙河马",
+      "zh-hant": "沙河馬",
+      "en": "Hippopotas",
+      "ja": "ヒポポタス"
+    },
+    "formNames": {},
+    "types": [
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 72,
+      "def": 78,
+      "spa": 38,
+      "spd": 42,
+      "spe": 32
+    }
+  },
+  "450": {
+    "resourceType": "pokemon",
+    "id": 450,
+    "speciesId": 450,
+    "pokemonSlug": "hippowdon",
+    "speciesSlug": "hippowdon",
+    "calcSpeciesName": "Hippowdon",
+    "names": {
+      "zh-hans": "河马兽",
+      "zh-hant": "河馬獸",
+      "en": "Hippowdon",
+      "ja": "カバルドン"
+    },
+    "speciesNames": {
+      "zh-hans": "河马兽",
+      "zh-hant": "河馬獸",
+      "en": "Hippowdon",
+      "ja": "カバルドン"
+    },
+    "formNames": {},
+    "types": [
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 108,
+      "atk": 112,
+      "def": 118,
+      "spa": 68,
+      "spd": 72,
+      "spe": 47
+    }
+  },
+  "451": {
+    "resourceType": "pokemon",
+    "id": 451,
+    "speciesId": 451,
+    "pokemonSlug": "skorupi",
+    "speciesSlug": "skorupi",
+    "calcSpeciesName": "Skorupi",
+    "names": {
+      "zh-hans": "钳尾蝎",
+      "zh-hant": "鉗尾蠍",
+      "en": "Skorupi",
+      "ja": "スコルピ"
+    },
+    "speciesNames": {
+      "zh-hans": "钳尾蝎",
+      "zh-hant": "鉗尾蠍",
+      "en": "Skorupi",
+      "ja": "スコルピ"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 50,
+      "def": 90,
+      "spa": 30,
+      "spd": 55,
+      "spe": 65
+    }
+  },
+  "452": {
+    "resourceType": "pokemon",
+    "id": 452,
+    "speciesId": 452,
+    "pokemonSlug": "drapion",
+    "speciesSlug": "drapion",
+    "calcSpeciesName": "Drapion",
+    "names": {
+      "zh-hans": "龙王蝎",
+      "zh-hant": "龍王蠍",
+      "en": "Drapion",
+      "ja": "ドラピオン"
+    },
+    "speciesNames": {
+      "zh-hans": "龙王蝎",
+      "zh-hant": "龍王蠍",
+      "en": "Drapion",
+      "ja": "ドラピオン"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 90,
+      "def": 110,
+      "spa": 60,
+      "spd": 75,
+      "spe": 95
+    }
+  },
+  "453": {
+    "resourceType": "pokemon",
+    "id": 453,
+    "speciesId": 453,
+    "pokemonSlug": "croagunk",
+    "speciesSlug": "croagunk",
+    "calcSpeciesName": "Croagunk",
+    "names": {
+      "zh-hans": "不良蛙",
+      "zh-hant": "不良蛙",
+      "en": "Croagunk",
+      "ja": "グレッグル"
+    },
+    "speciesNames": {
+      "zh-hans": "不良蛙",
+      "zh-hant": "不良蛙",
+      "en": "Croagunk",
+      "ja": "グレッグル"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 48,
+      "atk": 61,
+      "def": 40,
+      "spa": 61,
+      "spd": 40,
+      "spe": 50
+    }
+  },
+  "454": {
+    "resourceType": "pokemon",
+    "id": 454,
+    "speciesId": 454,
+    "pokemonSlug": "toxicroak",
+    "speciesSlug": "toxicroak",
+    "calcSpeciesName": "Toxicroak",
+    "names": {
+      "zh-hans": "毒骷蛙",
+      "zh-hant": "毒骷蛙",
+      "en": "Toxicroak",
+      "ja": "ドクロッグ"
+    },
+    "speciesNames": {
+      "zh-hans": "毒骷蛙",
+      "zh-hant": "毒骷蛙",
+      "en": "Toxicroak",
+      "ja": "ドクロッグ"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 83,
+      "atk": 106,
+      "def": 65,
+      "spa": 86,
+      "spd": 65,
+      "spe": 85
+    }
+  },
+  "455": {
+    "resourceType": "pokemon",
+    "id": 455,
+    "speciesId": 455,
+    "pokemonSlug": "carnivine",
+    "speciesSlug": "carnivine",
+    "calcSpeciesName": "Carnivine",
+    "names": {
+      "zh-hans": "尖牙笼",
+      "zh-hant": "尖牙籠",
+      "en": "Carnivine",
+      "ja": "マスキッパ"
+    },
+    "speciesNames": {
+      "zh-hans": "尖牙笼",
+      "zh-hant": "尖牙籠",
+      "en": "Carnivine",
+      "ja": "マスキッパ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 74,
+      "atk": 100,
+      "def": 72,
+      "spa": 90,
+      "spd": 72,
+      "spe": 46
+    }
+  },
+  "456": {
+    "resourceType": "pokemon",
+    "id": 456,
+    "speciesId": 456,
+    "pokemonSlug": "finneon",
+    "speciesSlug": "finneon",
+    "calcSpeciesName": "Finneon",
+    "names": {
+      "zh-hans": "荧光鱼",
+      "zh-hant": "螢光魚",
+      "en": "Finneon",
+      "ja": "ケイコウオ"
+    },
+    "speciesNames": {
+      "zh-hans": "荧光鱼",
+      "zh-hant": "螢光魚",
+      "en": "Finneon",
+      "ja": "ケイコウオ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 49,
+      "atk": 49,
+      "def": 56,
+      "spa": 49,
+      "spd": 61,
+      "spe": 66
+    }
+  },
+  "457": {
+    "resourceType": "pokemon",
+    "id": 457,
+    "speciesId": 457,
+    "pokemonSlug": "lumineon",
+    "speciesSlug": "lumineon",
+    "calcSpeciesName": "Lumineon",
+    "names": {
+      "zh-hans": "霓虹鱼",
+      "zh-hant": "霓虹魚",
+      "en": "Lumineon",
+      "ja": "ネオラント"
+    },
+    "speciesNames": {
+      "zh-hans": "霓虹鱼",
+      "zh-hant": "霓虹魚",
+      "en": "Lumineon",
+      "ja": "ネオラント"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 69,
+      "atk": 69,
+      "def": 76,
+      "spa": 69,
+      "spd": 86,
+      "spe": 91
+    }
+  },
+  "458": {
+    "resourceType": "pokemon",
+    "id": 458,
+    "speciesId": 458,
+    "pokemonSlug": "mantyke",
+    "speciesSlug": "mantyke",
+    "calcSpeciesName": "Mantyke",
+    "names": {
+      "zh-hans": "小球飞鱼",
+      "zh-hant": "小球飛魚",
+      "en": "Mantyke",
+      "ja": "タマンタ"
+    },
+    "speciesNames": {
+      "zh-hans": "小球飞鱼",
+      "zh-hant": "小球飛魚",
+      "en": "Mantyke",
+      "ja": "タマンタ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 20,
+      "def": 50,
+      "spa": 60,
+      "spd": 120,
+      "spe": 50
+    }
+  },
+  "459": {
+    "resourceType": "pokemon",
+    "id": 459,
+    "speciesId": 459,
+    "pokemonSlug": "snover",
+    "speciesSlug": "snover",
+    "calcSpeciesName": "Snover",
+    "names": {
+      "zh-hans": "雪笠怪",
+      "zh-hant": "雪笠怪",
+      "en": "Snover",
+      "ja": "ユキカブリ"
+    },
+    "speciesNames": {
+      "zh-hans": "雪笠怪",
+      "zh-hant": "雪笠怪",
+      "en": "Snover",
+      "ja": "ユキカブリ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 62,
+      "def": 50,
+      "spa": 62,
+      "spd": 60,
+      "spe": 40
+    }
+  },
+  "460": {
+    "resourceType": "pokemon",
+    "id": 460,
+    "speciesId": 460,
+    "pokemonSlug": "abomasnow",
+    "speciesSlug": "abomasnow",
+    "calcSpeciesName": "Abomasnow",
+    "names": {
+      "zh-hans": "暴雪王",
+      "zh-hant": "暴雪王",
+      "en": "Abomasnow",
+      "ja": "ユキノオー"
+    },
+    "speciesNames": {
+      "zh-hans": "暴雪王",
+      "zh-hant": "暴雪王",
+      "en": "Abomasnow",
+      "ja": "ユキノオー"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 92,
+      "def": 75,
+      "spa": 92,
+      "spd": 85,
+      "spe": 60
+    }
+  },
+  "461": {
+    "resourceType": "pokemon",
+    "id": 461,
+    "speciesId": 461,
+    "pokemonSlug": "weavile",
+    "speciesSlug": "weavile",
+    "calcSpeciesName": "Weavile",
+    "names": {
+      "zh-hans": "玛狃拉",
+      "zh-hant": "瑪狃拉",
+      "en": "Weavile",
+      "ja": "マニューラ"
+    },
+    "speciesNames": {
+      "zh-hans": "玛狃拉",
+      "zh-hant": "瑪狃拉",
+      "en": "Weavile",
+      "ja": "マニューラ"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 120,
+      "def": 65,
+      "spa": 45,
+      "spd": 85,
+      "spe": 125
+    }
+  },
+  "462": {
+    "resourceType": "pokemon",
+    "id": 462,
+    "speciesId": 462,
+    "pokemonSlug": "magnezone",
+    "speciesSlug": "magnezone",
+    "calcSpeciesName": "Magnezone",
+    "names": {
+      "zh-hans": "自爆磁怪",
+      "zh-hant": "自爆磁怪",
+      "en": "Magnezone",
+      "ja": "ジバコイル"
+    },
+    "speciesNames": {
+      "zh-hans": "自爆磁怪",
+      "zh-hant": "自爆磁怪",
+      "en": "Magnezone",
+      "ja": "ジバコイル"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 70,
+      "def": 115,
+      "spa": 130,
+      "spd": 90,
+      "spe": 60
+    }
+  },
+  "463": {
+    "resourceType": "pokemon",
+    "id": 463,
+    "speciesId": 463,
+    "pokemonSlug": "lickilicky",
+    "speciesSlug": "lickilicky",
+    "calcSpeciesName": "Lickilicky",
+    "names": {
+      "zh-hans": "大舌舔",
+      "zh-hant": "大舌舔",
+      "en": "Lickilicky",
+      "ja": "ベロベルト"
+    },
+    "speciesNames": {
+      "zh-hans": "大舌舔",
+      "zh-hant": "大舌舔",
+      "en": "Lickilicky",
+      "ja": "ベロベルト"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 110,
+      "atk": 85,
+      "def": 95,
+      "spa": 80,
+      "spd": 95,
+      "spe": 50
+    }
+  },
+  "464": {
+    "resourceType": "pokemon",
+    "id": 464,
+    "speciesId": 464,
+    "pokemonSlug": "rhyperior",
+    "speciesSlug": "rhyperior",
+    "calcSpeciesName": "Rhyperior",
+    "names": {
+      "zh-hans": "超甲狂犀",
+      "zh-hant": "超甲狂犀",
+      "en": "Rhyperior",
+      "ja": "ドサイドン"
+    },
+    "speciesNames": {
+      "zh-hans": "超甲狂犀",
+      "zh-hant": "超甲狂犀",
+      "en": "Rhyperior",
+      "ja": "ドサイドン"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 115,
+      "atk": 140,
+      "def": 130,
+      "spa": 55,
+      "spd": 55,
+      "spe": 40
+    }
+  },
+  "465": {
+    "resourceType": "pokemon",
+    "id": 465,
+    "speciesId": 465,
+    "pokemonSlug": "tangrowth",
+    "speciesSlug": "tangrowth",
+    "calcSpeciesName": "Tangrowth",
+    "names": {
+      "zh-hans": "巨蔓藤",
+      "zh-hant": "巨蔓藤",
+      "en": "Tangrowth",
+      "ja": "モジャンボ"
+    },
+    "speciesNames": {
+      "zh-hans": "巨蔓藤",
+      "zh-hant": "巨蔓藤",
+      "en": "Tangrowth",
+      "ja": "モジャンボ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 100,
+      "def": 125,
+      "spa": 110,
+      "spd": 50,
+      "spe": 50
+    }
+  },
+  "466": {
+    "resourceType": "pokemon",
+    "id": 466,
+    "speciesId": 466,
+    "pokemonSlug": "electivire",
+    "speciesSlug": "electivire",
+    "calcSpeciesName": "Electivire",
+    "names": {
+      "zh-hans": "电击魔兽",
+      "zh-hant": "電擊魔獸",
+      "en": "Electivire",
+      "ja": "エレキブル"
+    },
+    "speciesNames": {
+      "zh-hans": "电击魔兽",
+      "zh-hant": "電擊魔獸",
+      "en": "Electivire",
+      "ja": "エレキブル"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 123,
+      "def": 67,
+      "spa": 95,
+      "spd": 85,
+      "spe": 95
+    }
+  },
+  "467": {
+    "resourceType": "pokemon",
+    "id": 467,
+    "speciesId": 467,
+    "pokemonSlug": "magmortar",
+    "speciesSlug": "magmortar",
+    "calcSpeciesName": "Magmortar",
+    "names": {
+      "zh-hans": "鸭嘴炎兽",
+      "zh-hant": "鴨嘴炎獸",
+      "en": "Magmortar",
+      "ja": "ブーバーン"
+    },
+    "speciesNames": {
+      "zh-hans": "鸭嘴炎兽",
+      "zh-hant": "鴨嘴炎獸",
+      "en": "Magmortar",
+      "ja": "ブーバーン"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 95,
+      "def": 67,
+      "spa": 125,
+      "spd": 95,
+      "spe": 83
+    }
+  },
+  "468": {
+    "resourceType": "pokemon",
+    "id": 468,
+    "speciesId": 468,
+    "pokemonSlug": "togekiss",
+    "speciesSlug": "togekiss",
+    "calcSpeciesName": "Togekiss",
+    "names": {
+      "zh-hans": "波克基斯",
+      "zh-hant": "波克基斯",
+      "en": "Togekiss",
+      "ja": "トゲキッス"
+    },
+    "speciesNames": {
+      "zh-hans": "波克基斯",
+      "zh-hant": "波克基斯",
+      "en": "Togekiss",
+      "ja": "トゲキッス"
+    },
+    "formNames": {},
+    "types": [
+      "fairy",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 50,
+      "def": 95,
+      "spa": 120,
+      "spd": 115,
+      "spe": 80
+    }
+  },
+  "469": {
+    "resourceType": "pokemon",
+    "id": 469,
+    "speciesId": 469,
+    "pokemonSlug": "yanmega",
+    "speciesSlug": "yanmega",
+    "calcSpeciesName": "Yanmega",
+    "names": {
+      "zh-hans": "远古巨蜓",
+      "zh-hant": "遠古巨蜓",
+      "en": "Yanmega",
+      "ja": "メガヤンマ"
+    },
+    "speciesNames": {
+      "zh-hans": "远古巨蜓",
+      "zh-hant": "遠古巨蜓",
+      "en": "Yanmega",
+      "ja": "メガヤンマ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 86,
+      "atk": 76,
+      "def": 86,
+      "spa": 116,
+      "spd": 56,
+      "spe": 95
+    }
+  },
+  "470": {
+    "resourceType": "pokemon",
+    "id": 470,
+    "speciesId": 470,
+    "pokemonSlug": "leafeon",
+    "speciesSlug": "leafeon",
+    "calcSpeciesName": "Leafeon",
+    "names": {
+      "zh-hans": "叶伊布",
+      "zh-hant": "葉伊布",
+      "en": "Leafeon",
+      "ja": "リーフィア"
+    },
+    "speciesNames": {
+      "zh-hans": "叶伊布",
+      "zh-hant": "葉伊布",
+      "en": "Leafeon",
+      "ja": "リーフィア"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 110,
+      "def": 130,
+      "spa": 60,
+      "spd": 65,
+      "spe": 95
+    }
+  },
+  "471": {
+    "resourceType": "pokemon",
+    "id": 471,
+    "speciesId": 471,
+    "pokemonSlug": "glaceon",
+    "speciesSlug": "glaceon",
+    "calcSpeciesName": "Glaceon",
+    "names": {
+      "zh-hans": "冰伊布",
+      "zh-hant": "冰伊布",
+      "en": "Glaceon",
+      "ja": "グレイシア"
+    },
+    "speciesNames": {
+      "zh-hans": "冰伊布",
+      "zh-hant": "冰伊布",
+      "en": "Glaceon",
+      "ja": "グレイシア"
+    },
+    "formNames": {},
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 60,
+      "def": 110,
+      "spa": 130,
+      "spd": 95,
+      "spe": 65
+    }
+  },
+  "472": {
+    "resourceType": "pokemon",
+    "id": 472,
+    "speciesId": 472,
+    "pokemonSlug": "gliscor",
+    "speciesSlug": "gliscor",
+    "calcSpeciesName": "Gliscor",
+    "names": {
+      "zh-hans": "天蝎王",
+      "zh-hant": "天蠍王",
+      "en": "Gliscor",
+      "ja": "グライオン"
+    },
+    "speciesNames": {
+      "zh-hans": "天蝎王",
+      "zh-hant": "天蠍王",
+      "en": "Gliscor",
+      "ja": "グライオン"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 95,
+      "def": 125,
+      "spa": 45,
+      "spd": 75,
+      "spe": 95
+    }
+  },
+  "473": {
+    "resourceType": "pokemon",
+    "id": 473,
+    "speciesId": 473,
+    "pokemonSlug": "mamoswine",
+    "speciesSlug": "mamoswine",
+    "calcSpeciesName": "Mamoswine",
+    "names": {
+      "zh-hans": "象牙猪",
+      "zh-hant": "象牙豬",
+      "en": "Mamoswine",
+      "ja": "マンムー"
+    },
+    "speciesNames": {
+      "zh-hans": "象牙猪",
+      "zh-hant": "象牙豬",
+      "en": "Mamoswine",
+      "ja": "マンムー"
+    },
+    "formNames": {},
+    "types": [
+      "ice",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 110,
+      "atk": 130,
+      "def": 80,
+      "spa": 70,
+      "spd": 60,
+      "spe": 80
+    }
+  },
+  "474": {
+    "resourceType": "pokemon",
+    "id": 474,
+    "speciesId": 474,
+    "pokemonSlug": "porygon-z",
+    "speciesSlug": "porygon-z",
+    "calcSpeciesName": "Porygon-Z",
+    "names": {
+      "zh-hans": "多边兽乙型",
+      "zh-hant": "多邊獸Ｚ",
+      "en": "Porygon-Z",
+      "ja": "ポリゴンＺ"
+    },
+    "speciesNames": {
+      "zh-hans": "多边兽乙型",
+      "zh-hant": "多邊獸Ｚ",
+      "en": "Porygon-Z",
+      "ja": "ポリゴンＺ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 80,
+      "def": 70,
+      "spa": 135,
+      "spd": 75,
+      "spe": 90
+    }
+  },
+  "475": {
+    "resourceType": "pokemon",
+    "id": 475,
+    "speciesId": 475,
+    "pokemonSlug": "gallade",
+    "speciesSlug": "gallade",
+    "calcSpeciesName": "Gallade",
+    "names": {
+      "zh-hans": "艾路雷朵",
+      "zh-hant": "艾路雷朵",
+      "en": "Gallade",
+      "ja": "エルレイド"
+    },
+    "speciesNames": {
+      "zh-hans": "艾路雷朵",
+      "zh-hant": "艾路雷朵",
+      "en": "Gallade",
+      "ja": "エルレイド"
+    },
+    "formNames": {},
+    "types": [
+      "psychic",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 125,
+      "def": 65,
+      "spa": 65,
+      "spd": 115,
+      "spe": 80
+    }
+  },
+  "476": {
+    "resourceType": "pokemon",
+    "id": 476,
+    "speciesId": 476,
+    "pokemonSlug": "probopass",
+    "speciesSlug": "probopass",
+    "calcSpeciesName": "Probopass",
+    "names": {
+      "zh-hans": "大朝北鼻",
+      "zh-hant": "大朝北鼻",
+      "en": "Probopass",
+      "ja": "ダイノーズ"
+    },
+    "speciesNames": {
+      "zh-hans": "大朝北鼻",
+      "zh-hant": "大朝北鼻",
+      "en": "Probopass",
+      "ja": "ダイノーズ"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 55,
+      "def": 145,
+      "spa": 75,
+      "spd": 150,
+      "spe": 40
+    }
+  },
+  "477": {
+    "resourceType": "pokemon",
+    "id": 477,
+    "speciesId": 477,
+    "pokemonSlug": "dusknoir",
+    "speciesSlug": "dusknoir",
+    "calcSpeciesName": "Dusknoir",
+    "names": {
+      "zh-hans": "黑夜魔灵",
+      "zh-hant": "黑夜魔靈",
+      "en": "Dusknoir",
+      "ja": "ヨノワール"
+    },
+    "speciesNames": {
+      "zh-hans": "黑夜魔灵",
+      "zh-hant": "黑夜魔靈",
+      "en": "Dusknoir",
+      "ja": "ヨノワール"
+    },
+    "formNames": {},
+    "types": [
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 100,
+      "def": 135,
+      "spa": 65,
+      "spd": 135,
+      "spe": 45
+    }
+  },
+  "478": {
+    "resourceType": "pokemon",
+    "id": 478,
+    "speciesId": 478,
+    "pokemonSlug": "froslass",
+    "speciesSlug": "froslass",
+    "calcSpeciesName": "Froslass",
+    "names": {
+      "zh-hans": "雪妖女",
+      "zh-hant": "雪妖女",
+      "en": "Froslass",
+      "ja": "ユキメノコ"
+    },
+    "speciesNames": {
+      "zh-hans": "雪妖女",
+      "zh-hant": "雪妖女",
+      "en": "Froslass",
+      "ja": "ユキメノコ"
+    },
+    "formNames": {},
+    "types": [
+      "ice",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 80,
+      "def": 70,
+      "spa": 80,
+      "spd": 70,
+      "spe": 110
+    }
+  },
+  "479": {
+    "resourceType": "pokemon",
+    "id": 479,
+    "speciesId": 479,
+    "pokemonSlug": "rotom",
+    "speciesSlug": "rotom",
+    "calcSpeciesName": "Rotom",
+    "names": {
+      "zh-hans": "洛托姆",
+      "zh-hant": "洛托姆",
+      "en": "Rotom",
+      "ja": "ロトム"
+    },
+    "speciesNames": {
+      "zh-hans": "洛托姆",
+      "zh-hant": "洛托姆",
+      "en": "Rotom",
+      "ja": "ロトム"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 50,
+      "def": 77,
+      "spa": 95,
+      "spd": 77,
+      "spe": 91
+    }
+  },
+  "480": {
+    "resourceType": "pokemon",
+    "id": 480,
+    "speciesId": 480,
+    "pokemonSlug": "uxie",
+    "speciesSlug": "uxie",
+    "calcSpeciesName": "Uxie",
+    "names": {
+      "zh-hans": "由克希",
+      "zh-hant": "由克希",
+      "en": "Uxie",
+      "ja": "ユクシー"
+    },
+    "speciesNames": {
+      "zh-hans": "由克希",
+      "zh-hant": "由克希",
+      "en": "Uxie",
+      "ja": "ユクシー"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 75,
+      "def": 130,
+      "spa": 75,
+      "spd": 130,
+      "spe": 95
+    }
+  },
+  "481": {
+    "resourceType": "pokemon",
+    "id": 481,
+    "speciesId": 481,
+    "pokemonSlug": "mesprit",
+    "speciesSlug": "mesprit",
+    "calcSpeciesName": "Mesprit",
+    "names": {
+      "zh-hans": "艾姆利多",
+      "zh-hant": "艾姆利多",
+      "en": "Mesprit",
+      "ja": "エムリット"
+    },
+    "speciesNames": {
+      "zh-hans": "艾姆利多",
+      "zh-hant": "艾姆利多",
+      "en": "Mesprit",
+      "ja": "エムリット"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 105,
+      "def": 105,
+      "spa": 105,
+      "spd": 105,
+      "spe": 80
+    }
+  },
+  "482": {
+    "resourceType": "pokemon",
+    "id": 482,
+    "speciesId": 482,
+    "pokemonSlug": "azelf",
+    "speciesSlug": "azelf",
+    "calcSpeciesName": "Azelf",
+    "names": {
+      "zh-hans": "亚克诺姆",
+      "zh-hant": "亞克諾姆",
+      "en": "Azelf",
+      "ja": "アグノム"
+    },
+    "speciesNames": {
+      "zh-hans": "亚克诺姆",
+      "zh-hant": "亞克諾姆",
+      "en": "Azelf",
+      "ja": "アグノム"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 125,
+      "def": 70,
+      "spa": 125,
+      "spd": 70,
+      "spe": 115
+    }
+  },
+  "483": {
+    "resourceType": "pokemon",
+    "id": 483,
+    "speciesId": 483,
+    "pokemonSlug": "dialga",
+    "speciesSlug": "dialga",
+    "calcSpeciesName": "Dialga",
+    "names": {
+      "zh-hans": "帝牙卢卡",
+      "zh-hant": "帝牙盧卡",
+      "en": "Dialga",
+      "ja": "ディアルガ"
+    },
+    "speciesNames": {
+      "zh-hans": "帝牙卢卡",
+      "zh-hant": "帝牙盧卡",
+      "en": "Dialga",
+      "ja": "ディアルガ"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 120,
+      "def": 120,
+      "spa": 150,
+      "spd": 100,
+      "spe": 90
+    }
+  },
+  "484": {
+    "resourceType": "pokemon",
+    "id": 484,
+    "speciesId": 484,
+    "pokemonSlug": "palkia",
+    "speciesSlug": "palkia",
+    "calcSpeciesName": "Palkia",
+    "names": {
+      "zh-hans": "帕路奇亚",
+      "zh-hant": "帕路奇亞",
+      "en": "Palkia",
+      "ja": "パルキア"
+    },
+    "speciesNames": {
+      "zh-hans": "帕路奇亚",
+      "zh-hant": "帕路奇亞",
+      "en": "Palkia",
+      "ja": "パルキア"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 120,
+      "def": 100,
+      "spa": 150,
+      "spd": 120,
+      "spe": 100
+    }
+  },
+  "485": {
+    "resourceType": "pokemon",
+    "id": 485,
+    "speciesId": 485,
+    "pokemonSlug": "heatran",
+    "speciesSlug": "heatran",
+    "calcSpeciesName": "Heatran",
+    "names": {
+      "zh-hans": "席多蓝恩",
+      "zh-hant": "席多藍恩",
+      "en": "Heatran",
+      "ja": "ヒードラン"
+    },
+    "speciesNames": {
+      "zh-hans": "席多蓝恩",
+      "zh-hant": "席多藍恩",
+      "en": "Heatran",
+      "ja": "ヒードラン"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 91,
+      "atk": 90,
+      "def": 106,
+      "spa": 130,
+      "spd": 106,
+      "spe": 77
+    }
+  },
+  "486": {
+    "resourceType": "pokemon",
+    "id": 486,
+    "speciesId": 486,
+    "pokemonSlug": "regigigas",
+    "speciesSlug": "regigigas",
+    "calcSpeciesName": "Regigigas",
+    "names": {
+      "zh-hans": "雷吉奇卡斯",
+      "zh-hant": "雷吉奇卡斯",
+      "en": "Regigigas",
+      "ja": "レジギガス"
+    },
+    "speciesNames": {
+      "zh-hans": "雷吉奇卡斯",
+      "zh-hant": "雷吉奇卡斯",
+      "en": "Regigigas",
+      "ja": "レジギガス"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 110,
+      "atk": 160,
+      "def": 110,
+      "spa": 80,
+      "spd": 110,
+      "spe": 100
+    }
+  },
+  "487": {
+    "resourceType": "pokemon",
+    "id": 487,
+    "speciesId": 487,
+    "pokemonSlug": "giratina-altered",
+    "speciesSlug": "giratina",
+    "calcSpeciesName": "Giratina",
+    "names": {
+      "zh-hans": "骑拉帝纳",
+      "zh-hant": "騎拉帝納",
+      "en": "Giratina",
+      "ja": "ギラティナ"
+    },
+    "speciesNames": {
+      "zh-hans": "骑拉帝纳",
+      "zh-hant": "騎拉帝納",
+      "en": "Giratina",
+      "ja": "ギラティナ"
+    },
+    "formNames": {
+      "zh-hans": "别种形态",
+      "zh-hant": "別種形態",
+      "en": "Altered Forme",
+      "ja": "アナザーフォルム"
+    },
+    "types": [
+      "ghost",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 150,
+      "atk": 100,
+      "def": 120,
+      "spa": 100,
+      "spd": 120,
+      "spe": 90
+    }
+  },
+  "488": {
+    "resourceType": "pokemon",
+    "id": 488,
+    "speciesId": 488,
+    "pokemonSlug": "cresselia",
+    "speciesSlug": "cresselia",
+    "calcSpeciesName": "Cresselia",
+    "names": {
+      "zh-hans": "克雷色利亚",
+      "zh-hant": "克雷色利亞",
+      "en": "Cresselia",
+      "ja": "クレセリア"
+    },
+    "speciesNames": {
+      "zh-hans": "克雷色利亚",
+      "zh-hant": "克雷色利亞",
+      "en": "Cresselia",
+      "ja": "クレセリア"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 120,
+      "atk": 70,
+      "def": 110,
+      "spa": 75,
+      "spd": 120,
+      "spe": 85
+    }
+  },
+  "489": {
+    "resourceType": "pokemon",
+    "id": 489,
+    "speciesId": 489,
+    "pokemonSlug": "phione",
+    "speciesSlug": "phione",
+    "calcSpeciesName": "Phione",
+    "names": {
+      "zh-hans": "霏欧纳",
+      "zh-hant": "霏歐納",
+      "en": "Phione",
+      "ja": "フィオネ"
+    },
+    "speciesNames": {
+      "zh-hans": "霏欧纳",
+      "zh-hant": "霏歐納",
+      "en": "Phione",
+      "ja": "フィオネ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 80,
+      "def": 80,
+      "spa": 80,
+      "spd": 80,
+      "spe": 80
+    }
+  },
+  "490": {
+    "resourceType": "pokemon",
+    "id": 490,
+    "speciesId": 490,
+    "pokemonSlug": "manaphy",
+    "speciesSlug": "manaphy",
+    "calcSpeciesName": "Manaphy",
+    "names": {
+      "zh-hans": "玛纳霏",
+      "zh-hant": "瑪納霏",
+      "en": "Manaphy",
+      "ja": "マナフィ"
+    },
+    "speciesNames": {
+      "zh-hans": "玛纳霏",
+      "zh-hant": "瑪納霏",
+      "en": "Manaphy",
+      "ja": "マナフィ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 100,
+      "def": 100,
+      "spa": 100,
+      "spd": 100,
+      "spe": 100
+    }
+  },
+  "491": {
+    "resourceType": "pokemon",
+    "id": 491,
+    "speciesId": 491,
+    "pokemonSlug": "darkrai",
+    "speciesSlug": "darkrai",
+    "calcSpeciesName": "Darkrai",
+    "names": {
+      "zh-hans": "达克莱伊",
+      "zh-hant": "達克萊伊",
+      "en": "Darkrai",
+      "ja": "ダークライ"
+    },
+    "speciesNames": {
+      "zh-hans": "达克莱伊",
+      "zh-hant": "達克萊伊",
+      "en": "Darkrai",
+      "ja": "ダークライ"
+    },
+    "formNames": {},
+    "types": [
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 90,
+      "def": 90,
+      "spa": 135,
+      "spd": 90,
+      "spe": 125
+    }
+  },
+  "492": {
+    "resourceType": "pokemon",
+    "id": 492,
+    "speciesId": 492,
+    "pokemonSlug": "shaymin-land",
+    "speciesSlug": "shaymin",
+    "calcSpeciesName": "Shaymin",
+    "names": {
+      "zh-hans": "谢米",
+      "zh-hant": "謝米",
+      "en": "Shaymin",
+      "ja": "シェイミ"
+    },
+    "speciesNames": {
+      "zh-hans": "谢米",
+      "zh-hant": "謝米",
+      "en": "Shaymin",
+      "ja": "シェイミ"
+    },
+    "formNames": {
+      "zh-hans": "陆上形态",
+      "zh-hant": "陸上形態",
+      "en": "Land Forme",
+      "ja": "ランドフォルム"
+    },
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 100,
+      "def": 100,
+      "spa": 100,
+      "spd": 100,
+      "spe": 100
+    }
+  },
+  "493": {
+    "resourceType": "pokemon",
+    "id": 493,
+    "speciesId": 493,
+    "pokemonSlug": "arceus",
+    "speciesSlug": "arceus",
+    "calcSpeciesName": "Arceus",
+    "names": {
+      "zh-hans": "阿尔宙斯",
+      "zh-hant": "阿爾宙斯",
+      "en": "Arceus",
+      "ja": "アルセウス"
+    },
+    "speciesNames": {
+      "zh-hans": "阿尔宙斯",
+      "zh-hant": "阿爾宙斯",
+      "en": "Arceus",
+      "ja": "アルセウス"
+    },
+    "formNames": {
+      "zh-hans": "Normal Type",
+      "zh-hant": "Normal Type",
+      "en": "Normal Type",
+      "ja": "ノーマルタイプ"
+    },
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 120,
+      "atk": 120,
+      "def": 120,
+      "spa": 120,
+      "spd": 120,
+      "spe": 120
+    }
+  },
+  "494": {
+    "resourceType": "pokemon",
+    "id": 494,
+    "speciesId": 494,
+    "pokemonSlug": "victini",
+    "speciesSlug": "victini",
+    "calcSpeciesName": "Victini",
+    "names": {
+      "zh-hans": "比克提尼",
+      "zh-hant": "比克提尼",
+      "en": "Victini",
+      "ja": "ビクティニ"
+    },
+    "speciesNames": {
+      "zh-hans": "比克提尼",
+      "zh-hant": "比克提尼",
+      "en": "Victini",
+      "ja": "ビクティニ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 100,
+      "def": 100,
+      "spa": 100,
+      "spd": 100,
+      "spe": 100
+    }
+  },
+  "495": {
+    "resourceType": "pokemon",
+    "id": 495,
+    "speciesId": 495,
+    "pokemonSlug": "snivy",
+    "speciesSlug": "snivy",
+    "calcSpeciesName": "Snivy",
+    "names": {
+      "zh-hans": "藤藤蛇",
+      "zh-hant": "藤藤蛇",
+      "en": "Snivy",
+      "ja": "ツタージャ"
+    },
+    "speciesNames": {
+      "zh-hans": "藤藤蛇",
+      "zh-hant": "藤藤蛇",
+      "en": "Snivy",
+      "ja": "ツタージャ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 45,
+      "def": 55,
+      "spa": 45,
+      "spd": 55,
+      "spe": 63
+    }
+  },
+  "496": {
+    "resourceType": "pokemon",
+    "id": 496,
+    "speciesId": 496,
+    "pokemonSlug": "servine",
+    "speciesSlug": "servine",
+    "calcSpeciesName": "Servine",
+    "names": {
+      "zh-hans": "青藤蛇",
+      "zh-hant": "青藤蛇",
+      "en": "Servine",
+      "ja": "ジャノビー"
+    },
+    "speciesNames": {
+      "zh-hans": "青藤蛇",
+      "zh-hant": "青藤蛇",
+      "en": "Servine",
+      "ja": "ジャノビー"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 60,
+      "def": 75,
+      "spa": 60,
+      "spd": 75,
+      "spe": 83
+    }
+  },
+  "497": {
+    "resourceType": "pokemon",
+    "id": 497,
+    "speciesId": 497,
+    "pokemonSlug": "serperior",
+    "speciesSlug": "serperior",
+    "calcSpeciesName": "Serperior",
+    "names": {
+      "zh-hans": "君主蛇",
+      "zh-hant": "君主蛇",
+      "en": "Serperior",
+      "ja": "ジャローダ"
+    },
+    "speciesNames": {
+      "zh-hans": "君主蛇",
+      "zh-hant": "君主蛇",
+      "en": "Serperior",
+      "ja": "ジャローダ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 75,
+      "def": 95,
+      "spa": 75,
+      "spd": 95,
+      "spe": 113
+    }
+  },
+  "498": {
+    "resourceType": "pokemon",
+    "id": 498,
+    "speciesId": 498,
+    "pokemonSlug": "tepig",
+    "speciesSlug": "tepig",
+    "calcSpeciesName": "Tepig",
+    "names": {
+      "zh-hans": "暖暖猪",
+      "zh-hant": "暖暖豬",
+      "en": "Tepig",
+      "ja": "ポカブ"
+    },
+    "speciesNames": {
+      "zh-hans": "暖暖猪",
+      "zh-hant": "暖暖豬",
+      "en": "Tepig",
+      "ja": "ポカブ"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 63,
+      "def": 45,
+      "spa": 45,
+      "spd": 45,
+      "spe": 45
+    }
+  },
+  "499": {
+    "resourceType": "pokemon",
+    "id": 499,
+    "speciesId": 499,
+    "pokemonSlug": "pignite",
+    "speciesSlug": "pignite",
+    "calcSpeciesName": "Pignite",
+    "names": {
+      "zh-hans": "炒炒猪",
+      "zh-hant": "炒炒豬",
+      "en": "Pignite",
+      "ja": "チャオブー"
+    },
+    "speciesNames": {
+      "zh-hans": "炒炒猪",
+      "zh-hant": "炒炒豬",
+      "en": "Pignite",
+      "ja": "チャオブー"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 93,
+      "def": 55,
+      "spa": 70,
+      "spd": 55,
+      "spe": 55
+    }
+  },
+  "500": {
+    "resourceType": "pokemon",
+    "id": 500,
+    "speciesId": 500,
+    "pokemonSlug": "emboar",
+    "speciesSlug": "emboar",
+    "calcSpeciesName": "Emboar",
+    "names": {
+      "zh-hans": "炎武王",
+      "zh-hant": "炎武王",
+      "en": "Emboar",
+      "ja": "エンブオー"
+    },
+    "speciesNames": {
+      "zh-hans": "炎武王",
+      "zh-hant": "炎武王",
+      "en": "Emboar",
+      "ja": "エンブオー"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 110,
+      "atk": 123,
+      "def": 65,
+      "spa": 100,
+      "spd": 65,
+      "spe": 65
+    }
+  },
+  "501": {
+    "resourceType": "pokemon",
+    "id": 501,
+    "speciesId": 501,
+    "pokemonSlug": "oshawott",
+    "speciesSlug": "oshawott",
+    "calcSpeciesName": "Oshawott",
+    "names": {
+      "zh-hans": "水水獭",
+      "zh-hant": "水水獺",
+      "en": "Oshawott",
+      "ja": "ミジュマル"
+    },
+    "speciesNames": {
+      "zh-hans": "水水獭",
+      "zh-hant": "水水獺",
+      "en": "Oshawott",
+      "ja": "ミジュマル"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 55,
+      "def": 45,
+      "spa": 63,
+      "spd": 45,
+      "spe": 45
+    }
+  },
+  "502": {
+    "resourceType": "pokemon",
+    "id": 502,
+    "speciesId": 502,
+    "pokemonSlug": "dewott",
+    "speciesSlug": "dewott",
+    "calcSpeciesName": "Dewott",
+    "names": {
+      "zh-hans": "双刃丸",
+      "zh-hant": "雙刃丸",
+      "en": "Dewott",
+      "ja": "フタチマル"
+    },
+    "speciesNames": {
+      "zh-hans": "双刃丸",
+      "zh-hant": "雙刃丸",
+      "en": "Dewott",
+      "ja": "フタチマル"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 75,
+      "def": 60,
+      "spa": 83,
+      "spd": 60,
+      "spe": 60
+    }
+  },
+  "503": {
+    "resourceType": "pokemon",
+    "id": 503,
+    "speciesId": 503,
+    "pokemonSlug": "samurott",
+    "speciesSlug": "samurott",
+    "calcSpeciesName": "Samurott",
+    "names": {
+      "zh-hans": "大剑鬼",
+      "zh-hant": "大劍鬼",
+      "en": "Samurott",
+      "ja": "ダイケンキ"
+    },
+    "speciesNames": {
+      "zh-hans": "大剑鬼",
+      "zh-hant": "大劍鬼",
+      "en": "Samurott",
+      "ja": "ダイケンキ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 100,
+      "def": 85,
+      "spa": 108,
+      "spd": 70,
+      "spe": 70
+    }
+  },
+  "504": {
+    "resourceType": "pokemon",
+    "id": 504,
+    "speciesId": 504,
+    "pokemonSlug": "patrat",
+    "speciesSlug": "patrat",
+    "calcSpeciesName": "Patrat",
+    "names": {
+      "zh-hans": "探探鼠",
+      "zh-hant": "探探鼠",
+      "en": "Patrat",
+      "ja": "ミネズミ"
+    },
+    "speciesNames": {
+      "zh-hans": "探探鼠",
+      "zh-hant": "探探鼠",
+      "en": "Patrat",
+      "ja": "ミネズミ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 55,
+      "def": 39,
+      "spa": 35,
+      "spd": 39,
+      "spe": 42
+    }
+  },
+  "505": {
+    "resourceType": "pokemon",
+    "id": 505,
+    "speciesId": 505,
+    "pokemonSlug": "watchog",
+    "speciesSlug": "watchog",
+    "calcSpeciesName": "Watchog",
+    "names": {
+      "zh-hans": "步哨鼠",
+      "zh-hant": "步哨鼠",
+      "en": "Watchog",
+      "ja": "ミルホッグ"
+    },
+    "speciesNames": {
+      "zh-hans": "步哨鼠",
+      "zh-hant": "步哨鼠",
+      "en": "Watchog",
+      "ja": "ミルホッグ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 85,
+      "def": 69,
+      "spa": 60,
+      "spd": 69,
+      "spe": 77
+    }
+  },
+  "506": {
+    "resourceType": "pokemon",
+    "id": 506,
+    "speciesId": 506,
+    "pokemonSlug": "lillipup",
+    "speciesSlug": "lillipup",
+    "calcSpeciesName": "Lillipup",
+    "names": {
+      "zh-hans": "小约克",
+      "zh-hant": "小約克",
+      "en": "Lillipup",
+      "ja": "ヨーテリー"
+    },
+    "speciesNames": {
+      "zh-hans": "小约克",
+      "zh-hant": "小約克",
+      "en": "Lillipup",
+      "ja": "ヨーテリー"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 60,
+      "def": 45,
+      "spa": 25,
+      "spd": 45,
+      "spe": 55
+    }
+  },
+  "507": {
+    "resourceType": "pokemon",
+    "id": 507,
+    "speciesId": 507,
+    "pokemonSlug": "herdier",
+    "speciesSlug": "herdier",
+    "calcSpeciesName": "Herdier",
+    "names": {
+      "zh-hans": "哈约克",
+      "zh-hant": "哈約克",
+      "en": "Herdier",
+      "ja": "ハーデリア"
+    },
+    "speciesNames": {
+      "zh-hans": "哈约克",
+      "zh-hant": "哈約克",
+      "en": "Herdier",
+      "ja": "ハーデリア"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 80,
+      "def": 65,
+      "spa": 35,
+      "spd": 65,
+      "spe": 60
+    }
+  },
+  "508": {
+    "resourceType": "pokemon",
+    "id": 508,
+    "speciesId": 508,
+    "pokemonSlug": "stoutland",
+    "speciesSlug": "stoutland",
+    "calcSpeciesName": "Stoutland",
+    "names": {
+      "zh-hans": "长毛狗",
+      "zh-hant": "長毛狗",
+      "en": "Stoutland",
+      "ja": "ムーランド"
+    },
+    "speciesNames": {
+      "zh-hans": "长毛狗",
+      "zh-hant": "長毛狗",
+      "en": "Stoutland",
+      "ja": "ムーランド"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 110,
+      "def": 90,
+      "spa": 45,
+      "spd": 90,
+      "spe": 80
+    }
+  },
+  "509": {
+    "resourceType": "pokemon",
+    "id": 509,
+    "speciesId": 509,
+    "pokemonSlug": "purrloin",
+    "speciesSlug": "purrloin",
+    "calcSpeciesName": "Purrloin",
+    "names": {
+      "zh-hans": "扒手猫",
+      "zh-hant": "扒手貓",
+      "en": "Purrloin",
+      "ja": "チョロネコ"
+    },
+    "speciesNames": {
+      "zh-hans": "扒手猫",
+      "zh-hant": "扒手貓",
+      "en": "Purrloin",
+      "ja": "チョロネコ"
+    },
+    "formNames": {},
+    "types": [
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 41,
+      "atk": 50,
+      "def": 37,
+      "spa": 50,
+      "spd": 37,
+      "spe": 66
+    }
+  },
+  "510": {
+    "resourceType": "pokemon",
+    "id": 510,
+    "speciesId": 510,
+    "pokemonSlug": "liepard",
+    "speciesSlug": "liepard",
+    "calcSpeciesName": "Liepard",
+    "names": {
+      "zh-hans": "酷豹",
+      "zh-hant": "酷豹",
+      "en": "Liepard",
+      "ja": "レパルダス"
+    },
+    "speciesNames": {
+      "zh-hans": "酷豹",
+      "zh-hant": "酷豹",
+      "en": "Liepard",
+      "ja": "レパルダス"
+    },
+    "formNames": {},
+    "types": [
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 64,
+      "atk": 88,
+      "def": 50,
+      "spa": 88,
+      "spd": 50,
+      "spe": 106
+    }
+  },
+  "511": {
+    "resourceType": "pokemon",
+    "id": 511,
+    "speciesId": 511,
+    "pokemonSlug": "pansage",
+    "speciesSlug": "pansage",
+    "calcSpeciesName": "Pansage",
+    "names": {
+      "zh-hans": "花椰猴",
+      "zh-hant": "花椰猴",
+      "en": "Pansage",
+      "ja": "ヤナップ"
+    },
+    "speciesNames": {
+      "zh-hans": "花椰猴",
+      "zh-hant": "花椰猴",
+      "en": "Pansage",
+      "ja": "ヤナップ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 53,
+      "def": 48,
+      "spa": 53,
+      "spd": 48,
+      "spe": 64
+    }
+  },
+  "512": {
+    "resourceType": "pokemon",
+    "id": 512,
+    "speciesId": 512,
+    "pokemonSlug": "simisage",
+    "speciesSlug": "simisage",
+    "calcSpeciesName": "Simisage",
+    "names": {
+      "zh-hans": "花椰猿",
+      "zh-hant": "花椰猿",
+      "en": "Simisage",
+      "ja": "ヤナッキー"
+    },
+    "speciesNames": {
+      "zh-hans": "花椰猿",
+      "zh-hant": "花椰猿",
+      "en": "Simisage",
+      "ja": "ヤナッキー"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 98,
+      "def": 63,
+      "spa": 98,
+      "spd": 63,
+      "spe": 101
+    }
+  },
+  "513": {
+    "resourceType": "pokemon",
+    "id": 513,
+    "speciesId": 513,
+    "pokemonSlug": "pansear",
+    "speciesSlug": "pansear",
+    "calcSpeciesName": "Pansear",
+    "names": {
+      "zh-hans": "爆香猴",
+      "zh-hant": "爆香猴",
+      "en": "Pansear",
+      "ja": "バオップ"
+    },
+    "speciesNames": {
+      "zh-hans": "爆香猴",
+      "zh-hant": "爆香猴",
+      "en": "Pansear",
+      "ja": "バオップ"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 53,
+      "def": 48,
+      "spa": 53,
+      "spd": 48,
+      "spe": 64
+    }
+  },
+  "514": {
+    "resourceType": "pokemon",
+    "id": 514,
+    "speciesId": 514,
+    "pokemonSlug": "simisear",
+    "speciesSlug": "simisear",
+    "calcSpeciesName": "Simisear",
+    "names": {
+      "zh-hans": "爆香猿",
+      "zh-hant": "爆香猿",
+      "en": "Simisear",
+      "ja": "バオッキー"
+    },
+    "speciesNames": {
+      "zh-hans": "爆香猿",
+      "zh-hant": "爆香猿",
+      "en": "Simisear",
+      "ja": "バオッキー"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 98,
+      "def": 63,
+      "spa": 98,
+      "spd": 63,
+      "spe": 101
+    }
+  },
+  "515": {
+    "resourceType": "pokemon",
+    "id": 515,
+    "speciesId": 515,
+    "pokemonSlug": "panpour",
+    "speciesSlug": "panpour",
+    "calcSpeciesName": "Panpour",
+    "names": {
+      "zh-hans": "冷水猴",
+      "zh-hant": "冷水猴",
+      "en": "Panpour",
+      "ja": "ヒヤップ"
+    },
+    "speciesNames": {
+      "zh-hans": "冷水猴",
+      "zh-hant": "冷水猴",
+      "en": "Panpour",
+      "ja": "ヒヤップ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 53,
+      "def": 48,
+      "spa": 53,
+      "spd": 48,
+      "spe": 64
+    }
+  },
+  "516": {
+    "resourceType": "pokemon",
+    "id": 516,
+    "speciesId": 516,
+    "pokemonSlug": "simipour",
+    "speciesSlug": "simipour",
+    "calcSpeciesName": "Simipour",
+    "names": {
+      "zh-hans": "冷水猿",
+      "zh-hant": "冷水猿",
+      "en": "Simipour",
+      "ja": "ヒヤッキー"
+    },
+    "speciesNames": {
+      "zh-hans": "冷水猿",
+      "zh-hant": "冷水猿",
+      "en": "Simipour",
+      "ja": "ヒヤッキー"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 98,
+      "def": 63,
+      "spa": 98,
+      "spd": 63,
+      "spe": 101
+    }
+  },
+  "517": {
+    "resourceType": "pokemon",
+    "id": 517,
+    "speciesId": 517,
+    "pokemonSlug": "munna",
+    "speciesSlug": "munna",
+    "calcSpeciesName": "Munna",
+    "names": {
+      "zh-hans": "食梦梦",
+      "zh-hant": "食夢夢",
+      "en": "Munna",
+      "ja": "ムンナ"
+    },
+    "speciesNames": {
+      "zh-hans": "食梦梦",
+      "zh-hant": "食夢夢",
+      "en": "Munna",
+      "ja": "ムンナ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 76,
+      "atk": 25,
+      "def": 45,
+      "spa": 67,
+      "spd": 55,
+      "spe": 24
+    }
+  },
+  "518": {
+    "resourceType": "pokemon",
+    "id": 518,
+    "speciesId": 518,
+    "pokemonSlug": "musharna",
+    "speciesSlug": "musharna",
+    "calcSpeciesName": "Musharna",
+    "names": {
+      "zh-hans": "梦梦蚀",
+      "zh-hant": "夢夢蝕",
+      "en": "Musharna",
+      "ja": "ムシャーナ"
+    },
+    "speciesNames": {
+      "zh-hans": "梦梦蚀",
+      "zh-hant": "夢夢蝕",
+      "en": "Musharna",
+      "ja": "ムシャーナ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 116,
+      "atk": 55,
+      "def": 85,
+      "spa": 107,
+      "spd": 95,
+      "spe": 29
+    }
+  },
+  "519": {
+    "resourceType": "pokemon",
+    "id": 519,
+    "speciesId": 519,
+    "pokemonSlug": "pidove",
+    "speciesSlug": "pidove",
+    "calcSpeciesName": "Pidove",
+    "names": {
+      "zh-hans": "豆豆鸽",
+      "zh-hant": "豆豆鴿",
+      "en": "Pidove",
+      "ja": "マメパト"
+    },
+    "speciesNames": {
+      "zh-hans": "豆豆鸽",
+      "zh-hant": "豆豆鴿",
+      "en": "Pidove",
+      "ja": "マメパト"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 55,
+      "def": 50,
+      "spa": 36,
+      "spd": 30,
+      "spe": 43
+    }
+  },
+  "520": {
+    "resourceType": "pokemon",
+    "id": 520,
+    "speciesId": 520,
+    "pokemonSlug": "tranquill",
+    "speciesSlug": "tranquill",
+    "calcSpeciesName": "Tranquill",
+    "names": {
+      "zh-hans": "咕咕鸽",
+      "zh-hant": "咕咕鴿",
+      "en": "Tranquill",
+      "ja": "ハトーボー"
+    },
+    "speciesNames": {
+      "zh-hans": "咕咕鸽",
+      "zh-hant": "咕咕鴿",
+      "en": "Tranquill",
+      "ja": "ハトーボー"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 62,
+      "atk": 77,
+      "def": 62,
+      "spa": 50,
+      "spd": 42,
+      "spe": 65
+    }
+  },
+  "521": {
+    "resourceType": "pokemon",
+    "id": 521,
+    "speciesId": 521,
+    "pokemonSlug": "unfezant",
+    "speciesSlug": "unfezant",
+    "calcSpeciesName": "Unfezant",
+    "names": {
+      "zh-hans": "高傲雉鸡",
+      "zh-hant": "高傲雉雞",
+      "en": "Unfezant",
+      "ja": "ケンホロウ"
+    },
+    "speciesNames": {
+      "zh-hans": "高傲雉鸡",
+      "zh-hant": "高傲雉雞",
+      "en": "Unfezant",
+      "ja": "ケンホロウ"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 115,
+      "def": 80,
+      "spa": 65,
+      "spd": 55,
+      "spe": 93
+    }
+  },
+  "522": {
+    "resourceType": "pokemon",
+    "id": 522,
+    "speciesId": 522,
+    "pokemonSlug": "blitzle",
+    "speciesSlug": "blitzle",
+    "calcSpeciesName": "Blitzle",
+    "names": {
+      "zh-hans": "斑斑马",
+      "zh-hant": "斑斑馬",
+      "en": "Blitzle",
+      "ja": "シママ"
+    },
+    "speciesNames": {
+      "zh-hans": "斑斑马",
+      "zh-hant": "斑斑馬",
+      "en": "Blitzle",
+      "ja": "シママ"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 60,
+      "def": 32,
+      "spa": 50,
+      "spd": 32,
+      "spe": 76
+    }
+  },
+  "523": {
+    "resourceType": "pokemon",
+    "id": 523,
+    "speciesId": 523,
+    "pokemonSlug": "zebstrika",
+    "speciesSlug": "zebstrika",
+    "calcSpeciesName": "Zebstrika",
+    "names": {
+      "zh-hans": "雷电斑马",
+      "zh-hant": "雷電斑馬",
+      "en": "Zebstrika",
+      "ja": "ゼブライカ"
+    },
+    "speciesNames": {
+      "zh-hans": "雷电斑马",
+      "zh-hant": "雷電斑馬",
+      "en": "Zebstrika",
+      "ja": "ゼブライカ"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 100,
+      "def": 63,
+      "spa": 80,
+      "spd": 63,
+      "spe": 116
+    }
+  },
+  "524": {
+    "resourceType": "pokemon",
+    "id": 524,
+    "speciesId": 524,
+    "pokemonSlug": "roggenrola",
+    "speciesSlug": "roggenrola",
+    "calcSpeciesName": "Roggenrola",
+    "names": {
+      "zh-hans": "石丸子",
+      "zh-hant": "石丸子",
+      "en": "Roggenrola",
+      "ja": "ダンゴロ"
+    },
+    "speciesNames": {
+      "zh-hans": "石丸子",
+      "zh-hant": "石丸子",
+      "en": "Roggenrola",
+      "ja": "ダンゴロ"
+    },
+    "formNames": {},
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 75,
+      "def": 85,
+      "spa": 25,
+      "spd": 25,
+      "spe": 15
+    }
+  },
+  "525": {
+    "resourceType": "pokemon",
+    "id": 525,
+    "speciesId": 525,
+    "pokemonSlug": "boldore",
+    "speciesSlug": "boldore",
+    "calcSpeciesName": "Boldore",
+    "names": {
+      "zh-hans": "地幔岩",
+      "zh-hant": "地幔岩",
+      "en": "Boldore",
+      "ja": "ガントル"
+    },
+    "speciesNames": {
+      "zh-hans": "地幔岩",
+      "zh-hant": "地幔岩",
+      "en": "Boldore",
+      "ja": "ガントル"
+    },
+    "formNames": {},
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 105,
+      "def": 105,
+      "spa": 50,
+      "spd": 40,
+      "spe": 20
+    }
+  },
+  "526": {
+    "resourceType": "pokemon",
+    "id": 526,
+    "speciesId": 526,
+    "pokemonSlug": "gigalith",
+    "speciesSlug": "gigalith",
+    "calcSpeciesName": "Gigalith",
+    "names": {
+      "zh-hans": "庞岩怪",
+      "zh-hant": "龐岩怪",
+      "en": "Gigalith",
+      "ja": "ギガイアス"
+    },
+    "speciesNames": {
+      "zh-hans": "庞岩怪",
+      "zh-hant": "龐岩怪",
+      "en": "Gigalith",
+      "ja": "ギガイアス"
+    },
+    "formNames": {},
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 135,
+      "def": 130,
+      "spa": 60,
+      "spd": 80,
+      "spe": 25
+    }
+  },
+  "527": {
+    "resourceType": "pokemon",
+    "id": 527,
+    "speciesId": 527,
+    "pokemonSlug": "woobat",
+    "speciesSlug": "woobat",
+    "calcSpeciesName": "Woobat",
+    "names": {
+      "zh-hans": "滚滚蝙蝠",
+      "zh-hant": "滾滾蝙蝠",
+      "en": "Woobat",
+      "ja": "コロモリ"
+    },
+    "speciesNames": {
+      "zh-hans": "滚滚蝙蝠",
+      "zh-hant": "滾滾蝙蝠",
+      "en": "Woobat",
+      "ja": "コロモリ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 45,
+      "def": 43,
+      "spa": 55,
+      "spd": 43,
+      "spe": 72
+    }
+  },
+  "528": {
+    "resourceType": "pokemon",
+    "id": 528,
+    "speciesId": 528,
+    "pokemonSlug": "swoobat",
+    "speciesSlug": "swoobat",
+    "calcSpeciesName": "Swoobat",
+    "names": {
+      "zh-hans": "心蝙蝠",
+      "zh-hant": "心蝙蝠",
+      "en": "Swoobat",
+      "ja": "ココロモリ"
+    },
+    "speciesNames": {
+      "zh-hans": "心蝙蝠",
+      "zh-hant": "心蝙蝠",
+      "en": "Swoobat",
+      "ja": "ココロモリ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 67,
+      "atk": 57,
+      "def": 55,
+      "spa": 77,
+      "spd": 55,
+      "spe": 114
+    }
+  },
+  "529": {
+    "resourceType": "pokemon",
+    "id": 529,
+    "speciesId": 529,
+    "pokemonSlug": "drilbur",
+    "speciesSlug": "drilbur",
+    "calcSpeciesName": "Drilbur",
+    "names": {
+      "zh-hans": "螺钉地鼠",
+      "zh-hant": "螺釘地鼠",
+      "en": "Drilbur",
+      "ja": "モグリュー"
+    },
+    "speciesNames": {
+      "zh-hans": "螺钉地鼠",
+      "zh-hant": "螺釘地鼠",
+      "en": "Drilbur",
+      "ja": "モグリュー"
+    },
+    "formNames": {},
+    "types": [
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 85,
+      "def": 40,
+      "spa": 30,
+      "spd": 45,
+      "spe": 68
+    }
+  },
+  "530": {
+    "resourceType": "pokemon",
+    "id": 530,
+    "speciesId": 530,
+    "pokemonSlug": "excadrill",
+    "speciesSlug": "excadrill",
+    "calcSpeciesName": "Excadrill",
+    "names": {
+      "zh-hans": "龙头地鼠",
+      "zh-hant": "龍頭地鼠",
+      "en": "Excadrill",
+      "ja": "ドリュウズ"
+    },
+    "speciesNames": {
+      "zh-hans": "龙头地鼠",
+      "zh-hant": "龍頭地鼠",
+      "en": "Excadrill",
+      "ja": "ドリュウズ"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 110,
+      "atk": 135,
+      "def": 60,
+      "spa": 50,
+      "spd": 65,
+      "spe": 88
+    }
+  },
+  "531": {
+    "resourceType": "pokemon",
+    "id": 531,
+    "speciesId": 531,
+    "pokemonSlug": "audino",
+    "speciesSlug": "audino",
+    "calcSpeciesName": "Audino",
+    "names": {
+      "zh-hans": "差不多娃娃",
+      "zh-hant": "差不多娃娃",
+      "en": "Audino",
+      "ja": "タブンネ"
+    },
+    "speciesNames": {
+      "zh-hans": "差不多娃娃",
+      "zh-hant": "差不多娃娃",
+      "en": "Audino",
+      "ja": "タブンネ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 103,
+      "atk": 60,
+      "def": 86,
+      "spa": 60,
+      "spd": 86,
+      "spe": 50
+    }
+  },
+  "532": {
+    "resourceType": "pokemon",
+    "id": 532,
+    "speciesId": 532,
+    "pokemonSlug": "timburr",
+    "speciesSlug": "timburr",
+    "calcSpeciesName": "Timburr",
+    "names": {
+      "zh-hans": "搬运小匠",
+      "zh-hant": "搬運小匠",
+      "en": "Timburr",
+      "ja": "ドッコラー"
+    },
+    "speciesNames": {
+      "zh-hans": "搬运小匠",
+      "zh-hant": "搬運小匠",
+      "en": "Timburr",
+      "ja": "ドッコラー"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 80,
+      "def": 55,
+      "spa": 25,
+      "spd": 35,
+      "spe": 35
+    }
+  },
+  "533": {
+    "resourceType": "pokemon",
+    "id": 533,
+    "speciesId": 533,
+    "pokemonSlug": "gurdurr",
+    "speciesSlug": "gurdurr",
+    "calcSpeciesName": "Gurdurr",
+    "names": {
+      "zh-hans": "铁骨土人",
+      "zh-hant": "鐵骨土人",
+      "en": "Gurdurr",
+      "ja": "ドテッコツ"
+    },
+    "speciesNames": {
+      "zh-hans": "铁骨土人",
+      "zh-hant": "鐵骨土人",
+      "en": "Gurdurr",
+      "ja": "ドテッコツ"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 105,
+      "def": 85,
+      "spa": 40,
+      "spd": 50,
+      "spe": 40
+    }
+  },
+  "534": {
+    "resourceType": "pokemon",
+    "id": 534,
+    "speciesId": 534,
+    "pokemonSlug": "conkeldurr",
+    "speciesSlug": "conkeldurr",
+    "calcSpeciesName": "Conkeldurr",
+    "names": {
+      "zh-hans": "修建老匠",
+      "zh-hant": "修建老匠",
+      "en": "Conkeldurr",
+      "ja": "ローブシン"
+    },
+    "speciesNames": {
+      "zh-hans": "修建老匠",
+      "zh-hant": "修建老匠",
+      "en": "Conkeldurr",
+      "ja": "ローブシン"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 105,
+      "atk": 140,
+      "def": 95,
+      "spa": 55,
+      "spd": 65,
+      "spe": 45
+    }
+  },
+  "535": {
+    "resourceType": "pokemon",
+    "id": 535,
+    "speciesId": 535,
+    "pokemonSlug": "tympole",
+    "speciesSlug": "tympole",
+    "calcSpeciesName": "Tympole",
+    "names": {
+      "zh-hans": "圆蝌蚪",
+      "zh-hant": "圓蝌蚪",
+      "en": "Tympole",
+      "ja": "オタマロ"
+    },
+    "speciesNames": {
+      "zh-hans": "圆蝌蚪",
+      "zh-hant": "圓蝌蚪",
+      "en": "Tympole",
+      "ja": "オタマロ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 50,
+      "def": 40,
+      "spa": 50,
+      "spd": 40,
+      "spe": 64
+    }
+  },
+  "536": {
+    "resourceType": "pokemon",
+    "id": 536,
+    "speciesId": 536,
+    "pokemonSlug": "palpitoad",
+    "speciesSlug": "palpitoad",
+    "calcSpeciesName": "Palpitoad",
+    "names": {
+      "zh-hans": "蓝蟾蜍",
+      "zh-hant": "藍蟾蜍",
+      "en": "Palpitoad",
+      "ja": "ガマガル"
+    },
+    "speciesNames": {
+      "zh-hans": "蓝蟾蜍",
+      "zh-hant": "藍蟾蜍",
+      "en": "Palpitoad",
+      "ja": "ガマガル"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 65,
+      "def": 55,
+      "spa": 65,
+      "spd": 55,
+      "spe": 69
+    }
+  },
+  "537": {
+    "resourceType": "pokemon",
+    "id": 537,
+    "speciesId": 537,
+    "pokemonSlug": "seismitoad",
+    "speciesSlug": "seismitoad",
+    "calcSpeciesName": "Seismitoad",
+    "names": {
+      "zh-hans": "蟾蜍王",
+      "zh-hant": "蟾蜍王",
+      "en": "Seismitoad",
+      "ja": "ガマゲロゲ"
+    },
+    "speciesNames": {
+      "zh-hans": "蟾蜍王",
+      "zh-hant": "蟾蜍王",
+      "en": "Seismitoad",
+      "ja": "ガマゲロゲ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 105,
+      "atk": 95,
+      "def": 75,
+      "spa": 85,
+      "spd": 75,
+      "spe": 74
+    }
+  },
+  "538": {
+    "resourceType": "pokemon",
+    "id": 538,
+    "speciesId": 538,
+    "pokemonSlug": "throh",
+    "speciesSlug": "throh",
+    "calcSpeciesName": "Throh",
+    "names": {
+      "zh-hans": "投摔鬼",
+      "zh-hant": "投摔鬼",
+      "en": "Throh",
+      "ja": "ナゲキ"
+    },
+    "speciesNames": {
+      "zh-hans": "投摔鬼",
+      "zh-hant": "投摔鬼",
+      "en": "Throh",
+      "ja": "ナゲキ"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 120,
+      "atk": 100,
+      "def": 85,
+      "spa": 30,
+      "spd": 85,
+      "spe": 45
+    }
+  },
+  "539": {
+    "resourceType": "pokemon",
+    "id": 539,
+    "speciesId": 539,
+    "pokemonSlug": "sawk",
+    "speciesSlug": "sawk",
+    "calcSpeciesName": "Sawk",
+    "names": {
+      "zh-hans": "打击鬼",
+      "zh-hant": "打擊鬼",
+      "en": "Sawk",
+      "ja": "ダゲキ"
+    },
+    "speciesNames": {
+      "zh-hans": "打击鬼",
+      "zh-hant": "打擊鬼",
+      "en": "Sawk",
+      "ja": "ダゲキ"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 125,
+      "def": 75,
+      "spa": 30,
+      "spd": 75,
+      "spe": 85
+    }
+  },
+  "540": {
+    "resourceType": "pokemon",
+    "id": 540,
+    "speciesId": 540,
+    "pokemonSlug": "sewaddle",
+    "speciesSlug": "sewaddle",
+    "calcSpeciesName": "Sewaddle",
+    "names": {
+      "zh-hans": "虫宝包",
+      "zh-hant": "蟲寶包",
+      "en": "Sewaddle",
+      "ja": "クルミル"
+    },
+    "speciesNames": {
+      "zh-hans": "虫宝包",
+      "zh-hant": "蟲寶包",
+      "en": "Sewaddle",
+      "ja": "クルミル"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 53,
+      "def": 70,
+      "spa": 40,
+      "spd": 60,
+      "spe": 42
+    }
+  },
+  "541": {
+    "resourceType": "pokemon",
+    "id": 541,
+    "speciesId": 541,
+    "pokemonSlug": "swadloon",
+    "speciesSlug": "swadloon",
+    "calcSpeciesName": "Swadloon",
+    "names": {
+      "zh-hans": "宝包茧",
+      "zh-hant": "寶包繭",
+      "en": "Swadloon",
+      "ja": "クルマユ"
+    },
+    "speciesNames": {
+      "zh-hans": "宝包茧",
+      "zh-hant": "寶包繭",
+      "en": "Swadloon",
+      "ja": "クルマユ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 63,
+      "def": 90,
+      "spa": 50,
+      "spd": 80,
+      "spe": 42
+    }
+  },
+  "542": {
+    "resourceType": "pokemon",
+    "id": 542,
+    "speciesId": 542,
+    "pokemonSlug": "leavanny",
+    "speciesSlug": "leavanny",
+    "calcSpeciesName": "Leavanny",
+    "names": {
+      "zh-hans": "保姆虫",
+      "zh-hant": "保母蟲",
+      "en": "Leavanny",
+      "ja": "ハハコモリ"
+    },
+    "speciesNames": {
+      "zh-hans": "保姆虫",
+      "zh-hant": "保母蟲",
+      "en": "Leavanny",
+      "ja": "ハハコモリ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 103,
+      "def": 80,
+      "spa": 70,
+      "spd": 80,
+      "spe": 92
+    }
+  },
+  "543": {
+    "resourceType": "pokemon",
+    "id": 543,
+    "speciesId": 543,
+    "pokemonSlug": "venipede",
+    "speciesSlug": "venipede",
+    "calcSpeciesName": "Venipede",
+    "names": {
+      "zh-hans": "百足蜈蚣",
+      "zh-hant": "百足蜈蚣",
+      "en": "Venipede",
+      "ja": "フシデ"
+    },
+    "speciesNames": {
+      "zh-hans": "百足蜈蚣",
+      "zh-hant": "百足蜈蚣",
+      "en": "Venipede",
+      "ja": "フシデ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 30,
+      "atk": 45,
+      "def": 59,
+      "spa": 30,
+      "spd": 39,
+      "spe": 57
+    }
+  },
+  "544": {
+    "resourceType": "pokemon",
+    "id": 544,
+    "speciesId": 544,
+    "pokemonSlug": "whirlipede",
+    "speciesSlug": "whirlipede",
+    "calcSpeciesName": "Whirlipede",
+    "names": {
+      "zh-hans": "车轮球",
+      "zh-hant": "車輪毬",
+      "en": "Whirlipede",
+      "ja": "ホイーガ"
+    },
+    "speciesNames": {
+      "zh-hans": "车轮球",
+      "zh-hant": "車輪毬",
+      "en": "Whirlipede",
+      "ja": "ホイーガ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 55,
+      "def": 99,
+      "spa": 40,
+      "spd": 79,
+      "spe": 47
+    }
+  },
+  "545": {
+    "resourceType": "pokemon",
+    "id": 545,
+    "speciesId": 545,
+    "pokemonSlug": "scolipede",
+    "speciesSlug": "scolipede",
+    "calcSpeciesName": "Scolipede",
+    "names": {
+      "zh-hans": "蜈蚣王",
+      "zh-hant": "蜈蚣王",
+      "en": "Scolipede",
+      "ja": "ペンドラー"
+    },
+    "speciesNames": {
+      "zh-hans": "蜈蚣王",
+      "zh-hant": "蜈蚣王",
+      "en": "Scolipede",
+      "ja": "ペンドラー"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 100,
+      "def": 89,
+      "spa": 55,
+      "spd": 69,
+      "spe": 112
+    }
+  },
+  "546": {
+    "resourceType": "pokemon",
+    "id": 546,
+    "speciesId": 546,
+    "pokemonSlug": "cottonee",
+    "speciesSlug": "cottonee",
+    "calcSpeciesName": "Cottonee",
+    "names": {
+      "zh-hans": "木棉球",
+      "zh-hant": "木棉球",
+      "en": "Cottonee",
+      "ja": "モンメン"
+    },
+    "speciesNames": {
+      "zh-hans": "木棉球",
+      "zh-hant": "木棉球",
+      "en": "Cottonee",
+      "ja": "モンメン"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 27,
+      "def": 60,
+      "spa": 37,
+      "spd": 50,
+      "spe": 66
+    }
+  },
+  "547": {
+    "resourceType": "pokemon",
+    "id": 547,
+    "speciesId": 547,
+    "pokemonSlug": "whimsicott",
+    "speciesSlug": "whimsicott",
+    "calcSpeciesName": "Whimsicott",
+    "names": {
+      "zh-hans": "风妖精",
+      "zh-hant": "風妖精",
+      "en": "Whimsicott",
+      "ja": "エルフーン"
+    },
+    "speciesNames": {
+      "zh-hans": "风妖精",
+      "zh-hant": "風妖精",
+      "en": "Whimsicott",
+      "ja": "エルフーン"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 67,
+      "def": 85,
+      "spa": 77,
+      "spd": 75,
+      "spe": 116
+    }
+  },
+  "548": {
+    "resourceType": "pokemon",
+    "id": 548,
+    "speciesId": 548,
+    "pokemonSlug": "petilil",
+    "speciesSlug": "petilil",
+    "calcSpeciesName": "Petilil",
+    "names": {
+      "zh-hans": "百合根娃娃",
+      "zh-hant": "百合根娃娃",
+      "en": "Petilil",
+      "ja": "チュリネ"
+    },
+    "speciesNames": {
+      "zh-hans": "百合根娃娃",
+      "zh-hant": "百合根娃娃",
+      "en": "Petilil",
+      "ja": "チュリネ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 35,
+      "def": 50,
+      "spa": 70,
+      "spd": 50,
+      "spe": 30
+    }
+  },
+  "549": {
+    "resourceType": "pokemon",
+    "id": 549,
+    "speciesId": 549,
+    "pokemonSlug": "lilligant",
+    "speciesSlug": "lilligant",
+    "calcSpeciesName": "Lilligant",
+    "names": {
+      "zh-hans": "裙儿小姐",
+      "zh-hant": "裙兒小姐",
+      "en": "Lilligant",
+      "ja": "ドレディア"
+    },
+    "speciesNames": {
+      "zh-hans": "裙儿小姐",
+      "zh-hant": "裙兒小姐",
+      "en": "Lilligant",
+      "ja": "ドレディア"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 60,
+      "def": 75,
+      "spa": 110,
+      "spd": 75,
+      "spe": 90
+    }
+  },
+  "550": {
+    "resourceType": "pokemon",
+    "id": 550,
+    "speciesId": 550,
+    "pokemonSlug": "basculin-red-striped",
+    "speciesSlug": "basculin",
+    "calcSpeciesName": "Basculin",
+    "names": {
+      "zh-hans": "野蛮鲈鱼",
+      "zh-hant": "野蠻鱸魚",
+      "en": "Basculin",
+      "ja": "バスラオ"
+    },
+    "speciesNames": {
+      "zh-hans": "野蛮鲈鱼",
+      "zh-hant": "野蠻鱸魚",
+      "en": "Basculin",
+      "ja": "バスラオ"
+    },
+    "formNames": {
+      "zh-hans": "红条纹的样子",
+      "zh-hant": "紅條紋的樣子",
+      "en": "Red-Striped Form",
+      "ja": "あかすじのすがた"
+    },
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 92,
+      "def": 65,
+      "spa": 80,
+      "spd": 55,
+      "spe": 98
+    }
+  },
+  "551": {
+    "resourceType": "pokemon",
+    "id": 551,
+    "speciesId": 551,
+    "pokemonSlug": "sandile",
+    "speciesSlug": "sandile",
+    "calcSpeciesName": "Sandile",
+    "names": {
+      "zh-hans": "黑眼鳄",
+      "zh-hant": "黑眼鱷",
+      "en": "Sandile",
+      "ja": "メグロコ"
+    },
+    "speciesNames": {
+      "zh-hans": "黑眼鳄",
+      "zh-hant": "黑眼鱷",
+      "en": "Sandile",
+      "ja": "メグロコ"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 72,
+      "def": 35,
+      "spa": 35,
+      "spd": 35,
+      "spe": 65
+    }
+  },
+  "552": {
+    "resourceType": "pokemon",
+    "id": 552,
+    "speciesId": 552,
+    "pokemonSlug": "krokorok",
+    "speciesSlug": "krokorok",
+    "calcSpeciesName": "Krokorok",
+    "names": {
+      "zh-hans": "混混鳄",
+      "zh-hant": "混混鱷",
+      "en": "Krokorok",
+      "ja": "ワルビル"
+    },
+    "speciesNames": {
+      "zh-hans": "混混鳄",
+      "zh-hant": "混混鱷",
+      "en": "Krokorok",
+      "ja": "ワルビル"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 82,
+      "def": 45,
+      "spa": 45,
+      "spd": 45,
+      "spe": 74
+    }
+  },
+  "553": {
+    "resourceType": "pokemon",
+    "id": 553,
+    "speciesId": 553,
+    "pokemonSlug": "krookodile",
+    "speciesSlug": "krookodile",
+    "calcSpeciesName": "Krookodile",
+    "names": {
+      "zh-hans": "流氓鳄",
+      "zh-hant": "流氓鱷",
+      "en": "Krookodile",
+      "ja": "ワルビアル"
+    },
+    "speciesNames": {
+      "zh-hans": "流氓鳄",
+      "zh-hant": "流氓鱷",
+      "en": "Krookodile",
+      "ja": "ワルビアル"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 117,
+      "def": 80,
+      "spa": 65,
+      "spd": 70,
+      "spe": 92
+    }
+  },
+  "554": {
+    "resourceType": "pokemon",
+    "id": 554,
+    "speciesId": 554,
+    "pokemonSlug": "darumaka",
+    "speciesSlug": "darumaka",
+    "calcSpeciesName": "Darumaka",
+    "names": {
+      "zh-hans": "火红不倒翁",
+      "zh-hant": "火紅不倒翁",
+      "en": "Darumaka",
+      "ja": "ダルマッカ"
+    },
+    "speciesNames": {
+      "zh-hans": "火红不倒翁",
+      "zh-hant": "火紅不倒翁",
+      "en": "Darumaka",
+      "ja": "ダルマッカ"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 90,
+      "def": 45,
+      "spa": 15,
+      "spd": 45,
+      "spe": 50
+    }
+  },
+  "555": {
+    "resourceType": "pokemon",
+    "id": 555,
+    "speciesId": 555,
+    "pokemonSlug": "darmanitan-standard",
+    "speciesSlug": "darmanitan",
+    "calcSpeciesName": "Darmanitan",
+    "names": {
+      "zh-hans": "达摩狒狒",
+      "zh-hant": "達摩狒狒",
+      "en": "Darmanitan",
+      "ja": "ヒヒダルマ"
+    },
+    "speciesNames": {
+      "zh-hans": "达摩狒狒",
+      "zh-hant": "達摩狒狒",
+      "en": "Darmanitan",
+      "ja": "ヒヒダルマ"
+    },
+    "formNames": {
+      "zh-hans": "普通模式",
+      "zh-hant": "普通模式",
+      "en": "Standard Mode",
+      "ja": "ノーマルモード"
+    },
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 105,
+      "atk": 140,
+      "def": 55,
+      "spa": 30,
+      "spd": 55,
+      "spe": 95
+    }
+  },
+  "556": {
+    "resourceType": "pokemon",
+    "id": 556,
+    "speciesId": 556,
+    "pokemonSlug": "maractus",
+    "speciesSlug": "maractus",
+    "calcSpeciesName": "Maractus",
+    "names": {
+      "zh-hans": "沙铃仙人掌",
+      "zh-hant": "沙鈴仙人掌",
+      "en": "Maractus",
+      "ja": "マラカッチ"
+    },
+    "speciesNames": {
+      "zh-hans": "沙铃仙人掌",
+      "zh-hant": "沙鈴仙人掌",
+      "en": "Maractus",
+      "ja": "マラカッチ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 86,
+      "def": 67,
+      "spa": 106,
+      "spd": 67,
+      "spe": 60
+    }
+  },
+  "557": {
+    "resourceType": "pokemon",
+    "id": 557,
+    "speciesId": 557,
+    "pokemonSlug": "dwebble",
+    "speciesSlug": "dwebble",
+    "calcSpeciesName": "Dwebble",
+    "names": {
+      "zh-hans": "石居蟹",
+      "zh-hant": "石居蟹",
+      "en": "Dwebble",
+      "ja": "イシズマイ"
+    },
+    "speciesNames": {
+      "zh-hans": "石居蟹",
+      "zh-hant": "石居蟹",
+      "en": "Dwebble",
+      "ja": "イシズマイ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 65,
+      "def": 85,
+      "spa": 35,
+      "spd": 35,
+      "spe": 55
+    }
+  },
+  "558": {
+    "resourceType": "pokemon",
+    "id": 558,
+    "speciesId": 558,
+    "pokemonSlug": "crustle",
+    "speciesSlug": "crustle",
+    "calcSpeciesName": "Crustle",
+    "names": {
+      "zh-hans": "岩殿居蟹",
+      "zh-hant": "岩殿居蟹",
+      "en": "Crustle",
+      "ja": "イワパレス"
+    },
+    "speciesNames": {
+      "zh-hans": "岩殿居蟹",
+      "zh-hant": "岩殿居蟹",
+      "en": "Crustle",
+      "ja": "イワパレス"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 105,
+      "def": 125,
+      "spa": 65,
+      "spd": 75,
+      "spe": 45
+    }
+  },
+  "559": {
+    "resourceType": "pokemon",
+    "id": 559,
+    "speciesId": 559,
+    "pokemonSlug": "scraggy",
+    "speciesSlug": "scraggy",
+    "calcSpeciesName": "Scraggy",
+    "names": {
+      "zh-hans": "滑滑小子",
+      "zh-hant": "滑滑小子",
+      "en": "Scraggy",
+      "ja": "ズルッグ"
+    },
+    "speciesNames": {
+      "zh-hans": "滑滑小子",
+      "zh-hant": "滑滑小子",
+      "en": "Scraggy",
+      "ja": "ズルッグ"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 75,
+      "def": 70,
+      "spa": 35,
+      "spd": 70,
+      "spe": 48
+    }
+  },
+  "560": {
+    "resourceType": "pokemon",
+    "id": 560,
+    "speciesId": 560,
+    "pokemonSlug": "scrafty",
+    "speciesSlug": "scrafty",
+    "calcSpeciesName": "Scrafty",
+    "names": {
+      "zh-hans": "头巾混混",
+      "zh-hant": "頭巾混混",
+      "en": "Scrafty",
+      "ja": "ズルズキン"
+    },
+    "speciesNames": {
+      "zh-hans": "头巾混混",
+      "zh-hant": "頭巾混混",
+      "en": "Scrafty",
+      "ja": "ズルズキン"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 90,
+      "def": 115,
+      "spa": 45,
+      "spd": 115,
+      "spe": 58
+    }
+  },
+  "561": {
+    "resourceType": "pokemon",
+    "id": 561,
+    "speciesId": 561,
+    "pokemonSlug": "sigilyph",
+    "speciesSlug": "sigilyph",
+    "calcSpeciesName": "Sigilyph",
+    "names": {
+      "zh-hans": "象征鸟",
+      "zh-hant": "象徵鳥",
+      "en": "Sigilyph",
+      "ja": "シンボラー"
+    },
+    "speciesNames": {
+      "zh-hans": "象征鸟",
+      "zh-hant": "象徵鳥",
+      "en": "Sigilyph",
+      "ja": "シンボラー"
+    },
+    "formNames": {},
+    "types": [
+      "psychic",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 72,
+      "atk": 58,
+      "def": 80,
+      "spa": 103,
+      "spd": 80,
+      "spe": 97
+    }
+  },
+  "562": {
+    "resourceType": "pokemon",
+    "id": 562,
+    "speciesId": 562,
+    "pokemonSlug": "yamask",
+    "speciesSlug": "yamask",
+    "calcSpeciesName": "Yamask",
+    "names": {
+      "zh-hans": "哭哭面具",
+      "zh-hant": "哭哭面具",
+      "en": "Yamask",
+      "ja": "デスマス"
+    },
+    "speciesNames": {
+      "zh-hans": "哭哭面具",
+      "zh-hant": "哭哭面具",
+      "en": "Yamask",
+      "ja": "デスマス"
+    },
+    "formNames": {},
+    "types": [
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 38,
+      "atk": 30,
+      "def": 85,
+      "spa": 55,
+      "spd": 65,
+      "spe": 30
+    }
+  },
+  "563": {
+    "resourceType": "pokemon",
+    "id": 563,
+    "speciesId": 563,
+    "pokemonSlug": "cofagrigus",
+    "speciesSlug": "cofagrigus",
+    "calcSpeciesName": "Cofagrigus",
+    "names": {
+      "zh-hans": "迭失棺",
+      "zh-hant": "死神棺",
+      "en": "Cofagrigus",
+      "ja": "デスカーン"
+    },
+    "speciesNames": {
+      "zh-hans": "迭失棺",
+      "zh-hant": "死神棺",
+      "en": "Cofagrigus",
+      "ja": "デスカーン"
+    },
+    "formNames": {},
+    "types": [
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 58,
+      "atk": 50,
+      "def": 145,
+      "spa": 95,
+      "spd": 105,
+      "spe": 30
+    }
+  },
+  "564": {
+    "resourceType": "pokemon",
+    "id": 564,
+    "speciesId": 564,
+    "pokemonSlug": "tirtouga",
+    "speciesSlug": "tirtouga",
+    "calcSpeciesName": "Tirtouga",
+    "names": {
+      "zh-hans": "原盖海龟",
+      "zh-hant": "原蓋海龜",
+      "en": "Tirtouga",
+      "ja": "プロトーガ"
+    },
+    "speciesNames": {
+      "zh-hans": "原盖海龟",
+      "zh-hant": "原蓋海龜",
+      "en": "Tirtouga",
+      "ja": "プロトーガ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 54,
+      "atk": 78,
+      "def": 103,
+      "spa": 53,
+      "spd": 45,
+      "spe": 22
+    }
+  },
+  "565": {
+    "resourceType": "pokemon",
+    "id": 565,
+    "speciesId": 565,
+    "pokemonSlug": "carracosta",
+    "speciesSlug": "carracosta",
+    "calcSpeciesName": "Carracosta",
+    "names": {
+      "zh-hans": "肋骨海龟",
+      "zh-hant": "肋骨海龜",
+      "en": "Carracosta",
+      "ja": "アバゴーラ"
+    },
+    "speciesNames": {
+      "zh-hans": "肋骨海龟",
+      "zh-hant": "肋骨海龜",
+      "en": "Carracosta",
+      "ja": "アバゴーラ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 74,
+      "atk": 108,
+      "def": 133,
+      "spa": 83,
+      "spd": 65,
+      "spe": 32
+    }
+  },
+  "566": {
+    "resourceType": "pokemon",
+    "id": 566,
+    "speciesId": 566,
+    "pokemonSlug": "archen",
+    "speciesSlug": "archen",
+    "calcSpeciesName": "Archen",
+    "names": {
+      "zh-hans": "始祖小鸟",
+      "zh-hant": "始祖小鳥",
+      "en": "Archen",
+      "ja": "アーケン"
+    },
+    "speciesNames": {
+      "zh-hans": "始祖小鸟",
+      "zh-hant": "始祖小鳥",
+      "en": "Archen",
+      "ja": "アーケン"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 112,
+      "def": 45,
+      "spa": 74,
+      "spd": 45,
+      "spe": 70
+    }
+  },
+  "567": {
+    "resourceType": "pokemon",
+    "id": 567,
+    "speciesId": 567,
+    "pokemonSlug": "archeops",
+    "speciesSlug": "archeops",
+    "calcSpeciesName": "Archeops",
+    "names": {
+      "zh-hans": "始祖大鸟",
+      "zh-hant": "始祖大鳥",
+      "en": "Archeops",
+      "ja": "アーケオス"
+    },
+    "speciesNames": {
+      "zh-hans": "始祖大鸟",
+      "zh-hant": "始祖大鳥",
+      "en": "Archeops",
+      "ja": "アーケオス"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 140,
+      "def": 65,
+      "spa": 112,
+      "spd": 65,
+      "spe": 110
+    }
+  },
+  "568": {
+    "resourceType": "pokemon",
+    "id": 568,
+    "speciesId": 568,
+    "pokemonSlug": "trubbish",
+    "speciesSlug": "trubbish",
+    "calcSpeciesName": "Trubbish",
+    "names": {
+      "zh-hans": "破破袋",
+      "zh-hant": "破破袋",
+      "en": "Trubbish",
+      "ja": "ヤブクロン"
+    },
+    "speciesNames": {
+      "zh-hans": "破破袋",
+      "zh-hant": "破破袋",
+      "en": "Trubbish",
+      "ja": "ヤブクロン"
+    },
+    "formNames": {},
+    "types": [
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 50,
+      "def": 62,
+      "spa": 40,
+      "spd": 62,
+      "spe": 65
+    }
+  },
+  "569": {
+    "resourceType": "pokemon",
+    "id": 569,
+    "speciesId": 569,
+    "pokemonSlug": "garbodor",
+    "speciesSlug": "garbodor",
+    "calcSpeciesName": "Garbodor",
+    "names": {
+      "zh-hans": "灰尘山",
+      "zh-hant": "灰塵山",
+      "en": "Garbodor",
+      "ja": "ダストダス"
+    },
+    "speciesNames": {
+      "zh-hans": "灰尘山",
+      "zh-hant": "灰塵山",
+      "en": "Garbodor",
+      "ja": "ダストダス"
+    },
+    "formNames": {},
+    "types": [
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 95,
+      "def": 82,
+      "spa": 60,
+      "spd": 82,
+      "spe": 75
+    }
+  },
+  "570": {
+    "resourceType": "pokemon",
+    "id": 570,
+    "speciesId": 570,
+    "pokemonSlug": "zorua",
+    "speciesSlug": "zorua",
+    "calcSpeciesName": "Zorua",
+    "names": {
+      "zh-hans": "索罗亚",
+      "zh-hant": "索羅亞",
+      "en": "Zorua",
+      "ja": "ゾロア"
+    },
+    "speciesNames": {
+      "zh-hans": "索罗亚",
+      "zh-hant": "索羅亞",
+      "en": "Zorua",
+      "ja": "ゾロア"
+    },
+    "formNames": {},
+    "types": [
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 65,
+      "def": 40,
+      "spa": 80,
+      "spd": 40,
+      "spe": 65
+    }
+  },
+  "571": {
+    "resourceType": "pokemon",
+    "id": 571,
+    "speciesId": 571,
+    "pokemonSlug": "zoroark",
+    "speciesSlug": "zoroark",
+    "calcSpeciesName": "Zoroark",
+    "names": {
+      "zh-hans": "索罗亚克",
+      "zh-hant": "索羅亞克",
+      "en": "Zoroark",
+      "ja": "ゾロアーク"
+    },
+    "speciesNames": {
+      "zh-hans": "索罗亚克",
+      "zh-hant": "索羅亞克",
+      "en": "Zoroark",
+      "ja": "ゾロアーク"
+    },
+    "formNames": {},
+    "types": [
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 105,
+      "def": 60,
+      "spa": 120,
+      "spd": 60,
+      "spe": 105
+    }
+  },
+  "572": {
+    "resourceType": "pokemon",
+    "id": 572,
+    "speciesId": 572,
+    "pokemonSlug": "minccino",
+    "speciesSlug": "minccino",
+    "calcSpeciesName": "Minccino",
+    "names": {
+      "zh-hans": "泡沫栗鼠",
+      "zh-hant": "泡沫栗鼠",
+      "en": "Minccino",
+      "ja": "チラーミィ"
+    },
+    "speciesNames": {
+      "zh-hans": "泡沫栗鼠",
+      "zh-hant": "泡沫栗鼠",
+      "en": "Minccino",
+      "ja": "チラーミィ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 50,
+      "def": 40,
+      "spa": 40,
+      "spd": 40,
+      "spe": 75
+    }
+  },
+  "573": {
+    "resourceType": "pokemon",
+    "id": 573,
+    "speciesId": 573,
+    "pokemonSlug": "cinccino",
+    "speciesSlug": "cinccino",
+    "calcSpeciesName": "Cinccino",
+    "names": {
+      "zh-hans": "奇诺栗鼠",
+      "zh-hant": "奇諾栗鼠",
+      "en": "Cinccino",
+      "ja": "チラチーノ"
+    },
+    "speciesNames": {
+      "zh-hans": "奇诺栗鼠",
+      "zh-hant": "奇諾栗鼠",
+      "en": "Cinccino",
+      "ja": "チラチーノ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 95,
+      "def": 60,
+      "spa": 65,
+      "spd": 60,
+      "spe": 115
+    }
+  },
+  "574": {
+    "resourceType": "pokemon",
+    "id": 574,
+    "speciesId": 574,
+    "pokemonSlug": "gothita",
+    "speciesSlug": "gothita",
+    "calcSpeciesName": "Gothita",
+    "names": {
+      "zh-hans": "哥德宝宝",
+      "zh-hant": "哥德寶寶",
+      "en": "Gothita",
+      "ja": "ゴチム"
+    },
+    "speciesNames": {
+      "zh-hans": "哥德宝宝",
+      "zh-hant": "哥德寶寶",
+      "en": "Gothita",
+      "ja": "ゴチム"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 30,
+      "def": 50,
+      "spa": 55,
+      "spd": 65,
+      "spe": 45
+    }
+  },
+  "575": {
+    "resourceType": "pokemon",
+    "id": 575,
+    "speciesId": 575,
+    "pokemonSlug": "gothorita",
+    "speciesSlug": "gothorita",
+    "calcSpeciesName": "Gothorita",
+    "names": {
+      "zh-hans": "哥德小童",
+      "zh-hant": "哥德小童",
+      "en": "Gothorita",
+      "ja": "ゴチミル"
+    },
+    "speciesNames": {
+      "zh-hans": "哥德小童",
+      "zh-hant": "哥德小童",
+      "en": "Gothorita",
+      "ja": "ゴチミル"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 45,
+      "def": 70,
+      "spa": 75,
+      "spd": 85,
+      "spe": 55
+    }
+  },
+  "576": {
+    "resourceType": "pokemon",
+    "id": 576,
+    "speciesId": 576,
+    "pokemonSlug": "gothitelle",
+    "speciesSlug": "gothitelle",
+    "calcSpeciesName": "Gothitelle",
+    "names": {
+      "zh-hans": "哥德小姐",
+      "zh-hant": "哥德小姐",
+      "en": "Gothitelle",
+      "ja": "ゴチルゼル"
+    },
+    "speciesNames": {
+      "zh-hans": "哥德小姐",
+      "zh-hant": "哥德小姐",
+      "en": "Gothitelle",
+      "ja": "ゴチルゼル"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 55,
+      "def": 95,
+      "spa": 95,
+      "spd": 110,
+      "spe": 65
+    }
+  },
+  "577": {
+    "resourceType": "pokemon",
+    "id": 577,
+    "speciesId": 577,
+    "pokemonSlug": "solosis",
+    "speciesSlug": "solosis",
+    "calcSpeciesName": "Solosis",
+    "names": {
+      "zh-hans": "单卵细胞球",
+      "zh-hant": "單卵細胞球",
+      "en": "Solosis",
+      "ja": "ユニラン"
+    },
+    "speciesNames": {
+      "zh-hans": "单卵细胞球",
+      "zh-hant": "單卵細胞球",
+      "en": "Solosis",
+      "ja": "ユニラン"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 30,
+      "def": 40,
+      "spa": 105,
+      "spd": 50,
+      "spe": 20
+    }
+  },
+  "578": {
+    "resourceType": "pokemon",
+    "id": 578,
+    "speciesId": 578,
+    "pokemonSlug": "duosion",
+    "speciesSlug": "duosion",
+    "calcSpeciesName": "Duosion",
+    "names": {
+      "zh-hans": "双卵细胞球",
+      "zh-hant": "雙卵細胞球",
+      "en": "Duosion",
+      "ja": "ダブラン"
+    },
+    "speciesNames": {
+      "zh-hans": "双卵细胞球",
+      "zh-hant": "雙卵細胞球",
+      "en": "Duosion",
+      "ja": "ダブラン"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 40,
+      "def": 50,
+      "spa": 125,
+      "spd": 60,
+      "spe": 30
+    }
+  },
+  "579": {
+    "resourceType": "pokemon",
+    "id": 579,
+    "speciesId": 579,
+    "pokemonSlug": "reuniclus",
+    "speciesSlug": "reuniclus",
+    "calcSpeciesName": "Reuniclus",
+    "names": {
+      "zh-hans": "人造细胞卵",
+      "zh-hant": "人造細胞卵",
+      "en": "Reuniclus",
+      "ja": "ランクルス"
+    },
+    "speciesNames": {
+      "zh-hans": "人造细胞卵",
+      "zh-hant": "人造細胞卵",
+      "en": "Reuniclus",
+      "ja": "ランクルス"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 110,
+      "atk": 65,
+      "def": 75,
+      "spa": 125,
+      "spd": 85,
+      "spe": 30
+    }
+  },
+  "580": {
+    "resourceType": "pokemon",
+    "id": 580,
+    "speciesId": 580,
+    "pokemonSlug": "ducklett",
+    "speciesSlug": "ducklett",
+    "calcSpeciesName": "Ducklett",
+    "names": {
+      "zh-hans": "鸭宝宝",
+      "zh-hant": "鴨寶寶",
+      "en": "Ducklett",
+      "ja": "コアルヒー"
+    },
+    "speciesNames": {
+      "zh-hans": "鸭宝宝",
+      "zh-hant": "鴨寶寶",
+      "en": "Ducklett",
+      "ja": "コアルヒー"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 62,
+      "atk": 44,
+      "def": 50,
+      "spa": 44,
+      "spd": 50,
+      "spe": 55
+    }
+  },
+  "581": {
+    "resourceType": "pokemon",
+    "id": 581,
+    "speciesId": 581,
+    "pokemonSlug": "swanna",
+    "speciesSlug": "swanna",
+    "calcSpeciesName": "Swanna",
+    "names": {
+      "zh-hans": "舞天鹅",
+      "zh-hant": "舞天鵝",
+      "en": "Swanna",
+      "ja": "スワンナ"
+    },
+    "speciesNames": {
+      "zh-hans": "舞天鹅",
+      "zh-hant": "舞天鵝",
+      "en": "Swanna",
+      "ja": "スワンナ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 87,
+      "def": 63,
+      "spa": 87,
+      "spd": 63,
+      "spe": 98
+    }
+  },
+  "582": {
+    "resourceType": "pokemon",
+    "id": 582,
+    "speciesId": 582,
+    "pokemonSlug": "vanillite",
+    "speciesSlug": "vanillite",
+    "calcSpeciesName": "Vanillite",
+    "names": {
+      "zh-hans": "迷你冰",
+      "zh-hant": "迷你冰",
+      "en": "Vanillite",
+      "ja": "バニプッチ"
+    },
+    "speciesNames": {
+      "zh-hans": "迷你冰",
+      "zh-hant": "迷你冰",
+      "en": "Vanillite",
+      "ja": "バニプッチ"
+    },
+    "formNames": {},
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 36,
+      "atk": 50,
+      "def": 50,
+      "spa": 65,
+      "spd": 60,
+      "spe": 44
+    }
+  },
+  "583": {
+    "resourceType": "pokemon",
+    "id": 583,
+    "speciesId": 583,
+    "pokemonSlug": "vanillish",
+    "speciesSlug": "vanillish",
+    "calcSpeciesName": "Vanillish",
+    "names": {
+      "zh-hans": "多多冰",
+      "zh-hant": "多多冰",
+      "en": "Vanillish",
+      "ja": "バニリッチ"
+    },
+    "speciesNames": {
+      "zh-hans": "多多冰",
+      "zh-hant": "多多冰",
+      "en": "Vanillish",
+      "ja": "バニリッチ"
+    },
+    "formNames": {},
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 51,
+      "atk": 65,
+      "def": 65,
+      "spa": 80,
+      "spd": 75,
+      "spe": 59
+    }
+  },
+  "584": {
+    "resourceType": "pokemon",
+    "id": 584,
+    "speciesId": 584,
+    "pokemonSlug": "vanilluxe",
+    "speciesSlug": "vanilluxe",
+    "calcSpeciesName": "Vanilluxe",
+    "names": {
+      "zh-hans": "双倍多多冰",
+      "zh-hant": "雙倍多多冰",
+      "en": "Vanilluxe",
+      "ja": "バイバニラ"
+    },
+    "speciesNames": {
+      "zh-hans": "双倍多多冰",
+      "zh-hant": "雙倍多多冰",
+      "en": "Vanilluxe",
+      "ja": "バイバニラ"
+    },
+    "formNames": {},
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 71,
+      "atk": 95,
+      "def": 85,
+      "spa": 110,
+      "spd": 95,
+      "spe": 79
+    }
+  },
+  "585": {
+    "resourceType": "pokemon",
+    "id": 585,
+    "speciesId": 585,
+    "pokemonSlug": "deerling",
+    "speciesSlug": "deerling",
+    "calcSpeciesName": "Deerling",
+    "names": {
+      "zh-hans": "四季鹿",
+      "zh-hant": "四季鹿",
+      "en": "Deerling",
+      "ja": "シキジカ"
+    },
+    "speciesNames": {
+      "zh-hans": "四季鹿",
+      "zh-hant": "四季鹿",
+      "en": "Deerling",
+      "ja": "シキジカ"
+    },
+    "formNames": {
+      "zh-hans": "Spring Form",
+      "zh-hant": "Spring Form",
+      "en": "Spring Form",
+      "ja": "はるのすがた"
+    },
+    "types": [
+      "normal",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 60,
+      "def": 50,
+      "spa": 40,
+      "spd": 50,
+      "spe": 75
+    }
+  },
+  "586": {
+    "resourceType": "pokemon",
+    "id": 586,
+    "speciesId": 586,
+    "pokemonSlug": "sawsbuck",
+    "speciesSlug": "sawsbuck",
+    "calcSpeciesName": "Sawsbuck",
+    "names": {
+      "zh-hans": "萌芽鹿",
+      "zh-hant": "萌芽鹿",
+      "en": "Sawsbuck",
+      "ja": "メブキジカ"
+    },
+    "speciesNames": {
+      "zh-hans": "萌芽鹿",
+      "zh-hant": "萌芽鹿",
+      "en": "Sawsbuck",
+      "ja": "メブキジカ"
+    },
+    "formNames": {
+      "zh-hans": "Spring Form",
+      "zh-hant": "Spring Form",
+      "en": "Spring Form",
+      "ja": "はるのすがた"
+    },
+    "types": [
+      "normal",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 100,
+      "def": 70,
+      "spa": 60,
+      "spd": 70,
+      "spe": 95
+    }
+  },
+  "587": {
+    "resourceType": "pokemon",
+    "id": 587,
+    "speciesId": 587,
+    "pokemonSlug": "emolga",
+    "speciesSlug": "emolga",
+    "calcSpeciesName": "Emolga",
+    "names": {
+      "zh-hans": "电飞鼠",
+      "zh-hant": "電飛鼠",
+      "en": "Emolga",
+      "ja": "エモンガ"
+    },
+    "speciesNames": {
+      "zh-hans": "电飞鼠",
+      "zh-hant": "電飛鼠",
+      "en": "Emolga",
+      "ja": "エモンガ"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 75,
+      "def": 60,
+      "spa": 75,
+      "spd": 60,
+      "spe": 103
+    }
+  },
+  "588": {
+    "resourceType": "pokemon",
+    "id": 588,
+    "speciesId": 588,
+    "pokemonSlug": "karrablast",
+    "speciesSlug": "karrablast",
+    "calcSpeciesName": "Karrablast",
+    "names": {
+      "zh-hans": "盖盖虫",
+      "zh-hant": "蓋蓋蟲",
+      "en": "Karrablast",
+      "ja": "カブルモ"
+    },
+    "speciesNames": {
+      "zh-hans": "盖盖虫",
+      "zh-hant": "蓋蓋蟲",
+      "en": "Karrablast",
+      "ja": "カブルモ"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 75,
+      "def": 45,
+      "spa": 40,
+      "spd": 45,
+      "spe": 60
+    }
+  },
+  "589": {
+    "resourceType": "pokemon",
+    "id": 589,
+    "speciesId": 589,
+    "pokemonSlug": "escavalier",
+    "speciesSlug": "escavalier",
+    "calcSpeciesName": "Escavalier",
+    "names": {
+      "zh-hans": "骑士蜗牛",
+      "zh-hant": "騎士蝸牛",
+      "en": "Escavalier",
+      "ja": "シュバルゴ"
+    },
+    "speciesNames": {
+      "zh-hans": "骑士蜗牛",
+      "zh-hant": "騎士蝸牛",
+      "en": "Escavalier",
+      "ja": "シュバルゴ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 135,
+      "def": 105,
+      "spa": 60,
+      "spd": 105,
+      "spe": 20
+    }
+  },
+  "590": {
+    "resourceType": "pokemon",
+    "id": 590,
+    "speciesId": 590,
+    "pokemonSlug": "foongus",
+    "speciesSlug": "foongus",
+    "calcSpeciesName": "Foongus",
+    "names": {
+      "zh-hans": "哎呀球菇",
+      "zh-hant": "哎呀球菇",
+      "en": "Foongus",
+      "ja": "タマゲタケ"
+    },
+    "speciesNames": {
+      "zh-hans": "哎呀球菇",
+      "zh-hant": "哎呀球菇",
+      "en": "Foongus",
+      "ja": "タマゲタケ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 69,
+      "atk": 55,
+      "def": 45,
+      "spa": 55,
+      "spd": 55,
+      "spe": 15
+    }
+  },
+  "591": {
+    "resourceType": "pokemon",
+    "id": 591,
+    "speciesId": 591,
+    "pokemonSlug": "amoonguss",
+    "speciesSlug": "amoonguss",
+    "calcSpeciesName": "Amoonguss",
+    "names": {
+      "zh-hans": "败露球菇",
+      "zh-hant": "敗露球菇",
+      "en": "Amoonguss",
+      "ja": "モロバレル"
+    },
+    "speciesNames": {
+      "zh-hans": "败露球菇",
+      "zh-hant": "敗露球菇",
+      "en": "Amoonguss",
+      "ja": "モロバレル"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 114,
+      "atk": 85,
+      "def": 70,
+      "spa": 85,
+      "spd": 80,
+      "spe": 30
+    }
+  },
+  "592": {
+    "resourceType": "pokemon",
+    "id": 592,
+    "speciesId": 592,
+    "pokemonSlug": "frillish-male",
+    "speciesSlug": "frillish",
+    "calcSpeciesName": "Frillish",
+    "names": {
+      "zh-hans": "轻飘飘",
+      "zh-hant": "輕飄飄",
+      "en": "Frillish",
+      "ja": "プルリル"
+    },
+    "speciesNames": {
+      "zh-hans": "轻飘飘",
+      "zh-hant": "輕飄飄",
+      "en": "Frillish",
+      "ja": "プルリル"
+    },
+    "formNames": {
+      "zh-hans": "雄性的样子",
+      "zh-hant": "雄性的樣子",
+      "en": "Male",
+      "ja": "オスのすがた"
+    },
+    "types": [
+      "water",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 40,
+      "def": 50,
+      "spa": 65,
+      "spd": 85,
+      "spe": 40
+    }
+  },
+  "593": {
+    "resourceType": "pokemon",
+    "id": 593,
+    "speciesId": 593,
+    "pokemonSlug": "jellicent-male",
+    "speciesSlug": "jellicent",
+    "calcSpeciesName": "Jellicent",
+    "names": {
+      "zh-hans": "胖嘟嘟",
+      "zh-hant": "胖嘟嘟",
+      "en": "Jellicent",
+      "ja": "ブルンゲル"
+    },
+    "speciesNames": {
+      "zh-hans": "胖嘟嘟",
+      "zh-hant": "胖嘟嘟",
+      "en": "Jellicent",
+      "ja": "ブルンゲル"
+    },
+    "formNames": {
+      "zh-hans": "雄性的样子",
+      "zh-hant": "雄性的樣子",
+      "en": "Male",
+      "ja": "オスのすがた"
+    },
+    "types": [
+      "water",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 60,
+      "def": 70,
+      "spa": 85,
+      "spd": 105,
+      "spe": 60
+    }
+  },
+  "594": {
+    "resourceType": "pokemon",
+    "id": 594,
+    "speciesId": 594,
+    "pokemonSlug": "alomomola",
+    "speciesSlug": "alomomola",
+    "calcSpeciesName": "Alomomola",
+    "names": {
+      "zh-hans": "保姆曼波",
+      "zh-hant": "保母曼波",
+      "en": "Alomomola",
+      "ja": "ママンボウ"
+    },
+    "speciesNames": {
+      "zh-hans": "保姆曼波",
+      "zh-hant": "保母曼波",
+      "en": "Alomomola",
+      "ja": "ママンボウ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 165,
+      "atk": 75,
+      "def": 80,
+      "spa": 40,
+      "spd": 45,
+      "spe": 65
+    }
+  },
+  "595": {
+    "resourceType": "pokemon",
+    "id": 595,
+    "speciesId": 595,
+    "pokemonSlug": "joltik",
+    "speciesSlug": "joltik",
+    "calcSpeciesName": "Joltik",
+    "names": {
+      "zh-hans": "电电虫",
+      "zh-hant": "電電蟲",
+      "en": "Joltik",
+      "ja": "バチュル"
+    },
+    "speciesNames": {
+      "zh-hans": "电电虫",
+      "zh-hant": "電電蟲",
+      "en": "Joltik",
+      "ja": "バチュル"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 47,
+      "def": 50,
+      "spa": 57,
+      "spd": 50,
+      "spe": 65
+    }
+  },
+  "596": {
+    "resourceType": "pokemon",
+    "id": 596,
+    "speciesId": 596,
+    "pokemonSlug": "galvantula",
+    "speciesSlug": "galvantula",
+    "calcSpeciesName": "Galvantula",
+    "names": {
+      "zh-hans": "电蜘蛛",
+      "zh-hant": "電蜘蛛",
+      "en": "Galvantula",
+      "ja": "デンチュラ"
+    },
+    "speciesNames": {
+      "zh-hans": "电蜘蛛",
+      "zh-hant": "電蜘蛛",
+      "en": "Galvantula",
+      "ja": "デンチュラ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 77,
+      "def": 60,
+      "spa": 97,
+      "spd": 60,
+      "spe": 108
+    }
+  },
+  "597": {
+    "resourceType": "pokemon",
+    "id": 597,
+    "speciesId": 597,
+    "pokemonSlug": "ferroseed",
+    "speciesSlug": "ferroseed",
+    "calcSpeciesName": "Ferroseed",
+    "names": {
+      "zh-hans": "种子铁球",
+      "zh-hant": "種子鐵球",
+      "en": "Ferroseed",
+      "ja": "テッシード"
+    },
+    "speciesNames": {
+      "zh-hans": "种子铁球",
+      "zh-hant": "種子鐵球",
+      "en": "Ferroseed",
+      "ja": "テッシード"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 44,
+      "atk": 50,
+      "def": 91,
+      "spa": 24,
+      "spd": 86,
+      "spe": 10
+    }
+  },
+  "598": {
+    "resourceType": "pokemon",
+    "id": 598,
+    "speciesId": 598,
+    "pokemonSlug": "ferrothorn",
+    "speciesSlug": "ferrothorn",
+    "calcSpeciesName": "Ferrothorn",
+    "names": {
+      "zh-hans": "坚果哑铃",
+      "zh-hant": "堅果啞鈴",
+      "en": "Ferrothorn",
+      "ja": "ナットレイ"
+    },
+    "speciesNames": {
+      "zh-hans": "坚果哑铃",
+      "zh-hant": "堅果啞鈴",
+      "en": "Ferrothorn",
+      "ja": "ナットレイ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 74,
+      "atk": 94,
+      "def": 131,
+      "spa": 54,
+      "spd": 116,
+      "spe": 20
+    }
+  },
+  "599": {
+    "resourceType": "pokemon",
+    "id": 599,
+    "speciesId": 599,
+    "pokemonSlug": "klink",
+    "speciesSlug": "klink",
+    "calcSpeciesName": "Klink",
+    "names": {
+      "zh-hans": "齿轮儿",
+      "zh-hant": "齒輪兒",
+      "en": "Klink",
+      "ja": "ギアル"
+    },
+    "speciesNames": {
+      "zh-hans": "齿轮儿",
+      "zh-hant": "齒輪兒",
+      "en": "Klink",
+      "ja": "ギアル"
+    },
+    "formNames": {},
+    "types": [
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 55,
+      "def": 70,
+      "spa": 45,
+      "spd": 60,
+      "spe": 30
+    }
+  },
+  "600": {
+    "resourceType": "pokemon",
+    "id": 600,
+    "speciesId": 600,
+    "pokemonSlug": "klang",
+    "speciesSlug": "klang",
+    "calcSpeciesName": "Klang",
+    "names": {
+      "zh-hans": "齿轮组",
+      "zh-hant": "齒輪組",
+      "en": "Klang",
+      "ja": "ギギアル"
+    },
+    "speciesNames": {
+      "zh-hans": "齿轮组",
+      "zh-hant": "齒輪組",
+      "en": "Klang",
+      "ja": "ギギアル"
+    },
+    "formNames": {},
+    "types": [
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 80,
+      "def": 95,
+      "spa": 70,
+      "spd": 85,
+      "spe": 50
+    }
+  },
+  "601": {
+    "resourceType": "pokemon",
+    "id": 601,
+    "speciesId": 601,
+    "pokemonSlug": "klinklang",
+    "speciesSlug": "klinklang",
+    "calcSpeciesName": "Klinklang",
+    "names": {
+      "zh-hans": "齿轮怪",
+      "zh-hant": "齒輪怪",
+      "en": "Klinklang",
+      "ja": "ギギギアル"
+    },
+    "speciesNames": {
+      "zh-hans": "齿轮怪",
+      "zh-hant": "齒輪怪",
+      "en": "Klinklang",
+      "ja": "ギギギアル"
+    },
+    "formNames": {},
+    "types": [
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 100,
+      "def": 115,
+      "spa": 70,
+      "spd": 85,
+      "spe": 90
+    }
+  },
+  "602": {
+    "resourceType": "pokemon",
+    "id": 602,
+    "speciesId": 602,
+    "pokemonSlug": "tynamo",
+    "speciesSlug": "tynamo",
+    "calcSpeciesName": "Tynamo",
+    "names": {
+      "zh-hans": "麻麻小鱼",
+      "zh-hant": "麻麻小魚",
+      "en": "Tynamo",
+      "ja": "シビシラス"
+    },
+    "speciesNames": {
+      "zh-hans": "麻麻小鱼",
+      "zh-hant": "麻麻小魚",
+      "en": "Tynamo",
+      "ja": "シビシラス"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 55,
+      "def": 40,
+      "spa": 45,
+      "spd": 40,
+      "spe": 60
+    }
+  },
+  "603": {
+    "resourceType": "pokemon",
+    "id": 603,
+    "speciesId": 603,
+    "pokemonSlug": "eelektrik",
+    "speciesSlug": "eelektrik",
+    "calcSpeciesName": "Eelektrik",
+    "names": {
+      "zh-hans": "麻麻鳗",
+      "zh-hant": "麻麻鰻",
+      "en": "Eelektrik",
+      "ja": "シビビール"
+    },
+    "speciesNames": {
+      "zh-hans": "麻麻鳗",
+      "zh-hant": "麻麻鰻",
+      "en": "Eelektrik",
+      "ja": "シビビール"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 85,
+      "def": 70,
+      "spa": 75,
+      "spd": 70,
+      "spe": 40
+    }
+  },
+  "604": {
+    "resourceType": "pokemon",
+    "id": 604,
+    "speciesId": 604,
+    "pokemonSlug": "eelektross",
+    "speciesSlug": "eelektross",
+    "calcSpeciesName": "Eelektross",
+    "names": {
+      "zh-hans": "麻麻鳗鱼王",
+      "zh-hant": "麻麻鰻魚王",
+      "en": "Eelektross",
+      "ja": "シビルドン"
+    },
+    "speciesNames": {
+      "zh-hans": "麻麻鳗鱼王",
+      "zh-hant": "麻麻鰻魚王",
+      "en": "Eelektross",
+      "ja": "シビルドン"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 115,
+      "def": 80,
+      "spa": 105,
+      "spd": 80,
+      "spe": 50
+    }
+  },
+  "605": {
+    "resourceType": "pokemon",
+    "id": 605,
+    "speciesId": 605,
+    "pokemonSlug": "elgyem",
+    "speciesSlug": "elgyem",
+    "calcSpeciesName": "Elgyem",
+    "names": {
+      "zh-hans": "小灰怪",
+      "zh-hant": "小灰怪",
+      "en": "Elgyem",
+      "ja": "リグレー"
+    },
+    "speciesNames": {
+      "zh-hans": "小灰怪",
+      "zh-hant": "小灰怪",
+      "en": "Elgyem",
+      "ja": "リグレー"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 55,
+      "def": 55,
+      "spa": 85,
+      "spd": 55,
+      "spe": 30
+    }
+  },
+  "606": {
+    "resourceType": "pokemon",
+    "id": 606,
+    "speciesId": 606,
+    "pokemonSlug": "beheeyem",
+    "speciesSlug": "beheeyem",
+    "calcSpeciesName": "Beheeyem",
+    "names": {
+      "zh-hans": "大宇怪",
+      "zh-hant": "大宇怪",
+      "en": "Beheeyem",
+      "ja": "オーベム"
+    },
+    "speciesNames": {
+      "zh-hans": "大宇怪",
+      "zh-hant": "大宇怪",
+      "en": "Beheeyem",
+      "ja": "オーベム"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 75,
+      "def": 75,
+      "spa": 125,
+      "spd": 95,
+      "spe": 40
+    }
+  },
+  "607": {
+    "resourceType": "pokemon",
+    "id": 607,
+    "speciesId": 607,
+    "pokemonSlug": "litwick",
+    "speciesSlug": "litwick",
+    "calcSpeciesName": "Litwick",
+    "names": {
+      "zh-hans": "烛光灵",
+      "zh-hant": "燭光靈",
+      "en": "Litwick",
+      "ja": "ヒトモシ"
+    },
+    "speciesNames": {
+      "zh-hans": "烛光灵",
+      "zh-hant": "燭光靈",
+      "en": "Litwick",
+      "ja": "ヒトモシ"
+    },
+    "formNames": {},
+    "types": [
+      "ghost",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 30,
+      "def": 55,
+      "spa": 65,
+      "spd": 55,
+      "spe": 20
+    }
+  },
+  "608": {
+    "resourceType": "pokemon",
+    "id": 608,
+    "speciesId": 608,
+    "pokemonSlug": "lampent",
+    "speciesSlug": "lampent",
+    "calcSpeciesName": "Lampent",
+    "names": {
+      "zh-hans": "灯火幽灵",
+      "zh-hant": "燈火幽靈",
+      "en": "Lampent",
+      "ja": "ランプラー"
+    },
+    "speciesNames": {
+      "zh-hans": "灯火幽灵",
+      "zh-hant": "燈火幽靈",
+      "en": "Lampent",
+      "ja": "ランプラー"
+    },
+    "formNames": {},
+    "types": [
+      "ghost",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 40,
+      "def": 60,
+      "spa": 95,
+      "spd": 60,
+      "spe": 55
+    }
+  },
+  "609": {
+    "resourceType": "pokemon",
+    "id": 609,
+    "speciesId": 609,
+    "pokemonSlug": "chandelure",
+    "speciesSlug": "chandelure",
+    "calcSpeciesName": "Chandelure",
+    "names": {
+      "zh-hans": "水晶灯火灵",
+      "zh-hant": "水晶燈火靈",
+      "en": "Chandelure",
+      "ja": "シャンデラ"
+    },
+    "speciesNames": {
+      "zh-hans": "水晶灯火灵",
+      "zh-hant": "水晶燈火靈",
+      "en": "Chandelure",
+      "ja": "シャンデラ"
+    },
+    "formNames": {},
+    "types": [
+      "ghost",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 55,
+      "def": 90,
+      "spa": 145,
+      "spd": 90,
+      "spe": 80
+    }
+  },
+  "610": {
+    "resourceType": "pokemon",
+    "id": 610,
+    "speciesId": 610,
+    "pokemonSlug": "axew",
+    "speciesSlug": "axew",
+    "calcSpeciesName": "Axew",
+    "names": {
+      "zh-hans": "牙牙",
+      "zh-hant": "牙牙",
+      "en": "Axew",
+      "ja": "キバゴ"
+    },
+    "speciesNames": {
+      "zh-hans": "牙牙",
+      "zh-hant": "牙牙",
+      "en": "Axew",
+      "ja": "キバゴ"
+    },
+    "formNames": {},
+    "types": [
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 46,
+      "atk": 87,
+      "def": 60,
+      "spa": 30,
+      "spd": 40,
+      "spe": 57
+    }
+  },
+  "611": {
+    "resourceType": "pokemon",
+    "id": 611,
+    "speciesId": 611,
+    "pokemonSlug": "fraxure",
+    "speciesSlug": "fraxure",
+    "calcSpeciesName": "Fraxure",
+    "names": {
+      "zh-hans": "斧牙龙",
+      "zh-hant": "斧牙龍",
+      "en": "Fraxure",
+      "ja": "オノンド"
+    },
+    "speciesNames": {
+      "zh-hans": "斧牙龙",
+      "zh-hant": "斧牙龍",
+      "en": "Fraxure",
+      "ja": "オノンド"
+    },
+    "formNames": {},
+    "types": [
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 66,
+      "atk": 117,
+      "def": 70,
+      "spa": 40,
+      "spd": 50,
+      "spe": 67
+    }
+  },
+  "612": {
+    "resourceType": "pokemon",
+    "id": 612,
+    "speciesId": 612,
+    "pokemonSlug": "haxorus",
+    "speciesSlug": "haxorus",
+    "calcSpeciesName": "Haxorus",
+    "names": {
+      "zh-hans": "双斧战龙",
+      "zh-hant": "雙斧戰龍",
+      "en": "Haxorus",
+      "ja": "オノノクス"
+    },
+    "speciesNames": {
+      "zh-hans": "双斧战龙",
+      "zh-hant": "雙斧戰龍",
+      "en": "Haxorus",
+      "ja": "オノノクス"
+    },
+    "formNames": {},
+    "types": [
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 76,
+      "atk": 147,
+      "def": 90,
+      "spa": 60,
+      "spd": 70,
+      "spe": 97
+    }
+  },
+  "613": {
+    "resourceType": "pokemon",
+    "id": 613,
+    "speciesId": 613,
+    "pokemonSlug": "cubchoo",
+    "speciesSlug": "cubchoo",
+    "calcSpeciesName": "Cubchoo",
+    "names": {
+      "zh-hans": "喷嚏熊",
+      "zh-hant": "噴嚏熊",
+      "en": "Cubchoo",
+      "ja": "クマシュン"
+    },
+    "speciesNames": {
+      "zh-hans": "喷嚏熊",
+      "zh-hant": "噴嚏熊",
+      "en": "Cubchoo",
+      "ja": "クマシュン"
+    },
+    "formNames": {},
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 70,
+      "def": 40,
+      "spa": 60,
+      "spd": 40,
+      "spe": 40
+    }
+  },
+  "614": {
+    "resourceType": "pokemon",
+    "id": 614,
+    "speciesId": 614,
+    "pokemonSlug": "beartic",
+    "speciesSlug": "beartic",
+    "calcSpeciesName": "Beartic",
+    "names": {
+      "zh-hans": "冻原熊",
+      "zh-hant": "凍原熊",
+      "en": "Beartic",
+      "ja": "ツンベアー"
+    },
+    "speciesNames": {
+      "zh-hans": "冻原熊",
+      "zh-hant": "凍原熊",
+      "en": "Beartic",
+      "ja": "ツンベアー"
+    },
+    "formNames": {},
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 130,
+      "def": 80,
+      "spa": 70,
+      "spd": 80,
+      "spe": 50
+    }
+  },
+  "615": {
+    "resourceType": "pokemon",
+    "id": 615,
+    "speciesId": 615,
+    "pokemonSlug": "cryogonal",
+    "speciesSlug": "cryogonal",
+    "calcSpeciesName": "Cryogonal",
+    "names": {
+      "zh-hans": "几何雪花",
+      "zh-hant": "幾何雪花",
+      "en": "Cryogonal",
+      "ja": "フリージオ"
+    },
+    "speciesNames": {
+      "zh-hans": "几何雪花",
+      "zh-hant": "幾何雪花",
+      "en": "Cryogonal",
+      "ja": "フリージオ"
+    },
+    "formNames": {},
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 50,
+      "def": 50,
+      "spa": 95,
+      "spd": 135,
+      "spe": 105
+    }
+  },
+  "616": {
+    "resourceType": "pokemon",
+    "id": 616,
+    "speciesId": 616,
+    "pokemonSlug": "shelmet",
+    "speciesSlug": "shelmet",
+    "calcSpeciesName": "Shelmet",
+    "names": {
+      "zh-hans": "小嘴蜗",
+      "zh-hant": "小嘴蝸",
+      "en": "Shelmet",
+      "ja": "チョボマキ"
+    },
+    "speciesNames": {
+      "zh-hans": "小嘴蜗",
+      "zh-hant": "小嘴蝸",
+      "en": "Shelmet",
+      "ja": "チョボマキ"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 40,
+      "def": 85,
+      "spa": 40,
+      "spd": 65,
+      "spe": 25
+    }
+  },
+  "617": {
+    "resourceType": "pokemon",
+    "id": 617,
+    "speciesId": 617,
+    "pokemonSlug": "accelgor",
+    "speciesSlug": "accelgor",
+    "calcSpeciesName": "Accelgor",
+    "names": {
+      "zh-hans": "敏捷虫",
+      "zh-hant": "敏捷蟲",
+      "en": "Accelgor",
+      "ja": "アギルダー"
+    },
+    "speciesNames": {
+      "zh-hans": "敏捷虫",
+      "zh-hant": "敏捷蟲",
+      "en": "Accelgor",
+      "ja": "アギルダー"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 70,
+      "def": 40,
+      "spa": 100,
+      "spd": 60,
+      "spe": 145
+    }
+  },
+  "618": {
+    "resourceType": "pokemon",
+    "id": 618,
+    "speciesId": 618,
+    "pokemonSlug": "stunfisk",
+    "speciesSlug": "stunfisk",
+    "calcSpeciesName": "Stunfisk",
+    "names": {
+      "zh-hans": "泥巴鱼",
+      "zh-hant": "泥巴魚",
+      "en": "Stunfisk",
+      "ja": "マッギョ"
+    },
+    "speciesNames": {
+      "zh-hans": "泥巴鱼",
+      "zh-hant": "泥巴魚",
+      "en": "Stunfisk",
+      "ja": "マッギョ"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 109,
+      "atk": 66,
+      "def": 84,
+      "spa": 81,
+      "spd": 99,
+      "spe": 32
+    }
+  },
+  "619": {
+    "resourceType": "pokemon",
+    "id": 619,
+    "speciesId": 619,
+    "pokemonSlug": "mienfoo",
+    "speciesSlug": "mienfoo",
+    "calcSpeciesName": "Mienfoo",
+    "names": {
+      "zh-hans": "功夫鼬",
+      "zh-hant": "功夫鼬",
+      "en": "Mienfoo",
+      "ja": "コジョフー"
+    },
+    "speciesNames": {
+      "zh-hans": "功夫鼬",
+      "zh-hant": "功夫鼬",
+      "en": "Mienfoo",
+      "ja": "コジョフー"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 85,
+      "def": 50,
+      "spa": 55,
+      "spd": 50,
+      "spe": 65
+    }
+  },
+  "620": {
+    "resourceType": "pokemon",
+    "id": 620,
+    "speciesId": 620,
+    "pokemonSlug": "mienshao",
+    "speciesSlug": "mienshao",
+    "calcSpeciesName": "Mienshao",
+    "names": {
+      "zh-hans": "师父鼬",
+      "zh-hant": "師父鼬",
+      "en": "Mienshao",
+      "ja": "コジョンド"
+    },
+    "speciesNames": {
+      "zh-hans": "师父鼬",
+      "zh-hant": "師父鼬",
+      "en": "Mienshao",
+      "ja": "コジョンド"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 125,
+      "def": 60,
+      "spa": 95,
+      "spd": 60,
+      "spe": 105
+    }
+  },
+  "621": {
+    "resourceType": "pokemon",
+    "id": 621,
+    "speciesId": 621,
+    "pokemonSlug": "druddigon",
+    "speciesSlug": "druddigon",
+    "calcSpeciesName": "Druddigon",
+    "names": {
+      "zh-hans": "赤面龙",
+      "zh-hant": "赤面龍",
+      "en": "Druddigon",
+      "ja": "クリムガン"
+    },
+    "speciesNames": {
+      "zh-hans": "赤面龙",
+      "zh-hant": "赤面龍",
+      "en": "Druddigon",
+      "ja": "クリムガン"
+    },
+    "formNames": {},
+    "types": [
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 77,
+      "atk": 120,
+      "def": 90,
+      "spa": 60,
+      "spd": 90,
+      "spe": 48
+    }
+  },
+  "622": {
+    "resourceType": "pokemon",
+    "id": 622,
+    "speciesId": 622,
+    "pokemonSlug": "golett",
+    "speciesSlug": "golett",
+    "calcSpeciesName": "Golett",
+    "names": {
+      "zh-hans": "泥偶小人",
+      "zh-hant": "泥偶小人",
+      "en": "Golett",
+      "ja": "ゴビット"
+    },
+    "speciesNames": {
+      "zh-hans": "泥偶小人",
+      "zh-hant": "泥偶小人",
+      "en": "Golett",
+      "ja": "ゴビット"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 59,
+      "atk": 74,
+      "def": 50,
+      "spa": 35,
+      "spd": 50,
+      "spe": 35
+    }
+  },
+  "623": {
+    "resourceType": "pokemon",
+    "id": 623,
+    "speciesId": 623,
+    "pokemonSlug": "golurk",
+    "speciesSlug": "golurk",
+    "calcSpeciesName": "Golurk",
+    "names": {
+      "zh-hans": "泥偶巨人",
+      "zh-hant": "泥偶巨人",
+      "en": "Golurk",
+      "ja": "ゴルーグ"
+    },
+    "speciesNames": {
+      "zh-hans": "泥偶巨人",
+      "zh-hant": "泥偶巨人",
+      "en": "Golurk",
+      "ja": "ゴルーグ"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 89,
+      "atk": 124,
+      "def": 80,
+      "spa": 55,
+      "spd": 80,
+      "spe": 55
+    }
+  },
+  "624": {
+    "resourceType": "pokemon",
+    "id": 624,
+    "speciesId": 624,
+    "pokemonSlug": "pawniard",
+    "speciesSlug": "pawniard",
+    "calcSpeciesName": "Pawniard",
+    "names": {
+      "zh-hans": "驹刀小兵",
+      "zh-hant": "駒刀小兵",
+      "en": "Pawniard",
+      "ja": "コマタナ"
+    },
+    "speciesNames": {
+      "zh-hans": "驹刀小兵",
+      "zh-hant": "駒刀小兵",
+      "en": "Pawniard",
+      "ja": "コマタナ"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 85,
+      "def": 70,
+      "spa": 40,
+      "spd": 40,
+      "spe": 60
+    }
+  },
+  "625": {
+    "resourceType": "pokemon",
+    "id": 625,
+    "speciesId": 625,
+    "pokemonSlug": "bisharp",
+    "speciesSlug": "bisharp",
+    "calcSpeciesName": "Bisharp",
+    "names": {
+      "zh-hans": "劈斩司令",
+      "zh-hant": "劈斬司令",
+      "en": "Bisharp",
+      "ja": "キリキザン"
+    },
+    "speciesNames": {
+      "zh-hans": "劈斩司令",
+      "zh-hant": "劈斬司令",
+      "en": "Bisharp",
+      "ja": "キリキザン"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 125,
+      "def": 100,
+      "spa": 60,
+      "spd": 70,
+      "spe": 70
+    }
+  },
+  "626": {
+    "resourceType": "pokemon",
+    "id": 626,
+    "speciesId": 626,
+    "pokemonSlug": "bouffalant",
+    "speciesSlug": "bouffalant",
+    "calcSpeciesName": "Bouffalant",
+    "names": {
+      "zh-hans": "爆炸头水牛",
+      "zh-hant": "爆炸頭水牛",
+      "en": "Bouffalant",
+      "ja": "バッフロン"
+    },
+    "speciesNames": {
+      "zh-hans": "爆炸头水牛",
+      "zh-hant": "爆炸頭水牛",
+      "en": "Bouffalant",
+      "ja": "バッフロン"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 110,
+      "def": 95,
+      "spa": 40,
+      "spd": 95,
+      "spe": 55
+    }
+  },
+  "627": {
+    "resourceType": "pokemon",
+    "id": 627,
+    "speciesId": 627,
+    "pokemonSlug": "rufflet",
+    "speciesSlug": "rufflet",
+    "calcSpeciesName": "Rufflet",
+    "names": {
+      "zh-hans": "毛头小鹰",
+      "zh-hant": "毛頭小鷹",
+      "en": "Rufflet",
+      "ja": "ワシボン"
+    },
+    "speciesNames": {
+      "zh-hans": "毛头小鹰",
+      "zh-hant": "毛頭小鷹",
+      "en": "Rufflet",
+      "ja": "ワシボン"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 83,
+      "def": 50,
+      "spa": 37,
+      "spd": 50,
+      "spe": 60
+    }
+  },
+  "628": {
+    "resourceType": "pokemon",
+    "id": 628,
+    "speciesId": 628,
+    "pokemonSlug": "braviary",
+    "speciesSlug": "braviary",
+    "calcSpeciesName": "Braviary",
+    "names": {
+      "zh-hans": "勇士雄鹰",
+      "zh-hant": "勇士雄鷹",
+      "en": "Braviary",
+      "ja": "ウォーグル"
+    },
+    "speciesNames": {
+      "zh-hans": "勇士雄鹰",
+      "zh-hant": "勇士雄鷹",
+      "en": "Braviary",
+      "ja": "ウォーグル"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 123,
+      "def": 75,
+      "spa": 57,
+      "spd": 75,
+      "spe": 80
+    }
+  },
+  "629": {
+    "resourceType": "pokemon",
+    "id": 629,
+    "speciesId": 629,
+    "pokemonSlug": "vullaby",
+    "speciesSlug": "vullaby",
+    "calcSpeciesName": "Vullaby",
+    "names": {
+      "zh-hans": "秃鹰丫头",
+      "zh-hant": "禿鷹丫頭",
+      "en": "Vullaby",
+      "ja": "バルチャイ"
+    },
+    "speciesNames": {
+      "zh-hans": "秃鹰丫头",
+      "zh-hant": "禿鷹丫頭",
+      "en": "Vullaby",
+      "ja": "バルチャイ"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 55,
+      "def": 75,
+      "spa": 45,
+      "spd": 65,
+      "spe": 60
+    }
+  },
+  "630": {
+    "resourceType": "pokemon",
+    "id": 630,
+    "speciesId": 630,
+    "pokemonSlug": "mandibuzz",
+    "speciesSlug": "mandibuzz",
+    "calcSpeciesName": "Mandibuzz",
+    "names": {
+      "zh-hans": "秃鹰娜",
+      "zh-hant": "禿鷹娜",
+      "en": "Mandibuzz",
+      "ja": "バルジーナ"
+    },
+    "speciesNames": {
+      "zh-hans": "秃鹰娜",
+      "zh-hant": "禿鷹娜",
+      "en": "Mandibuzz",
+      "ja": "バルジーナ"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 110,
+      "atk": 65,
+      "def": 105,
+      "spa": 55,
+      "spd": 95,
+      "spe": 80
+    }
+  },
+  "631": {
+    "resourceType": "pokemon",
+    "id": 631,
+    "speciesId": 631,
+    "pokemonSlug": "heatmor",
+    "speciesSlug": "heatmor",
+    "calcSpeciesName": "Heatmor",
+    "names": {
+      "zh-hans": "熔蚁兽",
+      "zh-hant": "熔蟻獸",
+      "en": "Heatmor",
+      "ja": "クイタラン"
+    },
+    "speciesNames": {
+      "zh-hans": "熔蚁兽",
+      "zh-hant": "熔蟻獸",
+      "en": "Heatmor",
+      "ja": "クイタラン"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 97,
+      "def": 66,
+      "spa": 105,
+      "spd": 66,
+      "spe": 65
+    }
+  },
+  "632": {
+    "resourceType": "pokemon",
+    "id": 632,
+    "speciesId": 632,
+    "pokemonSlug": "durant",
+    "speciesSlug": "durant",
+    "calcSpeciesName": "Durant",
+    "names": {
+      "zh-hans": "铁蚁",
+      "zh-hant": "鐵蟻",
+      "en": "Durant",
+      "ja": "アイアント"
+    },
+    "speciesNames": {
+      "zh-hans": "铁蚁",
+      "zh-hant": "鐵蟻",
+      "en": "Durant",
+      "ja": "アイアント"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 58,
+      "atk": 109,
+      "def": 112,
+      "spa": 48,
+      "spd": 48,
+      "spe": 109
+    }
+  },
+  "633": {
+    "resourceType": "pokemon",
+    "id": 633,
+    "speciesId": 633,
+    "pokemonSlug": "deino",
+    "speciesSlug": "deino",
+    "calcSpeciesName": "Deino",
+    "names": {
+      "zh-hans": "单首龙",
+      "zh-hant": "單首龍",
+      "en": "Deino",
+      "ja": "モノズ"
+    },
+    "speciesNames": {
+      "zh-hans": "单首龙",
+      "zh-hant": "單首龍",
+      "en": "Deino",
+      "ja": "モノズ"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 52,
+      "atk": 65,
+      "def": 50,
+      "spa": 45,
+      "spd": 50,
+      "spe": 38
+    }
+  },
+  "634": {
+    "resourceType": "pokemon",
+    "id": 634,
+    "speciesId": 634,
+    "pokemonSlug": "zweilous",
+    "speciesSlug": "zweilous",
+    "calcSpeciesName": "Zweilous",
+    "names": {
+      "zh-hans": "双首暴龙",
+      "zh-hant": "雙首暴龍",
+      "en": "Zweilous",
+      "ja": "ジヘッド"
+    },
+    "speciesNames": {
+      "zh-hans": "双首暴龙",
+      "zh-hant": "雙首暴龍",
+      "en": "Zweilous",
+      "ja": "ジヘッド"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 72,
+      "atk": 85,
+      "def": 70,
+      "spa": 65,
+      "spd": 70,
+      "spe": 58
+    }
+  },
+  "635": {
+    "resourceType": "pokemon",
+    "id": 635,
+    "speciesId": 635,
+    "pokemonSlug": "hydreigon",
+    "speciesSlug": "hydreigon",
+    "calcSpeciesName": "Hydreigon",
+    "names": {
+      "zh-hans": "三首恶龙",
+      "zh-hant": "三首惡龍",
+      "en": "Hydreigon",
+      "ja": "サザンドラ"
+    },
+    "speciesNames": {
+      "zh-hans": "三首恶龙",
+      "zh-hant": "三首惡龍",
+      "en": "Hydreigon",
+      "ja": "サザンドラ"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 92,
+      "atk": 105,
+      "def": 90,
+      "spa": 125,
+      "spd": 90,
+      "spe": 98
+    }
+  },
+  "636": {
+    "resourceType": "pokemon",
+    "id": 636,
+    "speciesId": 636,
+    "pokemonSlug": "larvesta",
+    "speciesSlug": "larvesta",
+    "calcSpeciesName": "Larvesta",
+    "names": {
+      "zh-hans": "燃烧虫",
+      "zh-hant": "燃燒蟲",
+      "en": "Larvesta",
+      "ja": "メラルバ"
+    },
+    "speciesNames": {
+      "zh-hans": "燃烧虫",
+      "zh-hant": "燃燒蟲",
+      "en": "Larvesta",
+      "ja": "メラルバ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 85,
+      "def": 55,
+      "spa": 50,
+      "spd": 55,
+      "spe": 60
+    }
+  },
+  "637": {
+    "resourceType": "pokemon",
+    "id": 637,
+    "speciesId": 637,
+    "pokemonSlug": "volcarona",
+    "speciesSlug": "volcarona",
+    "calcSpeciesName": "Volcarona",
+    "names": {
+      "zh-hans": "火神蛾",
+      "zh-hant": "火神蛾",
+      "en": "Volcarona",
+      "ja": "ウルガモス"
+    },
+    "speciesNames": {
+      "zh-hans": "火神蛾",
+      "zh-hant": "火神蛾",
+      "en": "Volcarona",
+      "ja": "ウルガモス"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 60,
+      "def": 65,
+      "spa": 135,
+      "spd": 105,
+      "spe": 100
+    }
+  },
+  "638": {
+    "resourceType": "pokemon",
+    "id": 638,
+    "speciesId": 638,
+    "pokemonSlug": "cobalion",
+    "speciesSlug": "cobalion",
+    "calcSpeciesName": "Cobalion",
+    "names": {
+      "zh-hans": "勾帕路翁",
+      "zh-hant": "勾帕路翁",
+      "en": "Cobalion",
+      "ja": "コバルオン"
+    },
+    "speciesNames": {
+      "zh-hans": "勾帕路翁",
+      "zh-hant": "勾帕路翁",
+      "en": "Cobalion",
+      "ja": "コバルオン"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 91,
+      "atk": 90,
+      "def": 129,
+      "spa": 90,
+      "spd": 72,
+      "spe": 108
+    }
+  },
+  "639": {
+    "resourceType": "pokemon",
+    "id": 639,
+    "speciesId": 639,
+    "pokemonSlug": "terrakion",
+    "speciesSlug": "terrakion",
+    "calcSpeciesName": "Terrakion",
+    "names": {
+      "zh-hans": "代拉基翁",
+      "zh-hant": "代拉基翁",
+      "en": "Terrakion",
+      "ja": "テラキオン"
+    },
+    "speciesNames": {
+      "zh-hans": "代拉基翁",
+      "zh-hant": "代拉基翁",
+      "en": "Terrakion",
+      "ja": "テラキオン"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 91,
+      "atk": 129,
+      "def": 90,
+      "spa": 72,
+      "spd": 90,
+      "spe": 108
+    }
+  },
+  "640": {
+    "resourceType": "pokemon",
+    "id": 640,
+    "speciesId": 640,
+    "pokemonSlug": "virizion",
+    "speciesSlug": "virizion",
+    "calcSpeciesName": "Virizion",
+    "names": {
+      "zh-hans": "毕力吉翁",
+      "zh-hant": "畢力吉翁",
+      "en": "Virizion",
+      "ja": "ビリジオン"
+    },
+    "speciesNames": {
+      "zh-hans": "毕力吉翁",
+      "zh-hant": "畢力吉翁",
+      "en": "Virizion",
+      "ja": "ビリジオン"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 91,
+      "atk": 90,
+      "def": 72,
+      "spa": 90,
+      "spd": 129,
+      "spe": 108
+    }
+  },
+  "641": {
+    "resourceType": "pokemon",
+    "id": 641,
+    "speciesId": 641,
+    "pokemonSlug": "tornadus-incarnate",
+    "speciesSlug": "tornadus",
+    "calcSpeciesName": "Tornadus",
+    "names": {
+      "zh-hans": "龙卷云",
+      "zh-hant": "龍捲雲",
+      "en": "Tornadus",
+      "ja": "トルネロス"
+    },
+    "speciesNames": {
+      "zh-hans": "龙卷云",
+      "zh-hant": "龍捲雲",
+      "en": "Tornadus",
+      "ja": "トルネロス"
+    },
+    "formNames": {
+      "zh-hans": "化身形态",
+      "zh-hant": "化身形態",
+      "en": "Incarnate Forme",
+      "ja": "けしんフォルム"
+    },
+    "types": [
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 79,
+      "atk": 115,
+      "def": 70,
+      "spa": 125,
+      "spd": 80,
+      "spe": 111
+    }
+  },
+  "642": {
+    "resourceType": "pokemon",
+    "id": 642,
+    "speciesId": 642,
+    "pokemonSlug": "thundurus-incarnate",
+    "speciesSlug": "thundurus",
+    "calcSpeciesName": "Thundurus",
+    "names": {
+      "zh-hans": "雷电云",
+      "zh-hant": "雷電雲",
+      "en": "Thundurus",
+      "ja": "ボルトロス"
+    },
+    "speciesNames": {
+      "zh-hans": "雷电云",
+      "zh-hant": "雷電雲",
+      "en": "Thundurus",
+      "ja": "ボルトロス"
+    },
+    "formNames": {
+      "zh-hans": "化身形态",
+      "zh-hant": "化身形態",
+      "en": "Incarnate Forme",
+      "ja": "けしんフォルム"
+    },
+    "types": [
+      "electric",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 79,
+      "atk": 115,
+      "def": 70,
+      "spa": 125,
+      "spd": 80,
+      "spe": 111
+    }
+  },
+  "643": {
+    "resourceType": "pokemon",
+    "id": 643,
+    "speciesId": 643,
+    "pokemonSlug": "reshiram",
+    "speciesSlug": "reshiram",
+    "calcSpeciesName": "Reshiram",
+    "names": {
+      "zh-hans": "莱希拉姆",
+      "zh-hant": "萊希拉姆",
+      "en": "Reshiram",
+      "ja": "レシラム"
+    },
+    "speciesNames": {
+      "zh-hans": "莱希拉姆",
+      "zh-hant": "萊希拉姆",
+      "en": "Reshiram",
+      "ja": "レシラム"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 120,
+      "def": 100,
+      "spa": 150,
+      "spd": 120,
+      "spe": 90
+    }
+  },
+  "644": {
+    "resourceType": "pokemon",
+    "id": 644,
+    "speciesId": 644,
+    "pokemonSlug": "zekrom",
+    "speciesSlug": "zekrom",
+    "calcSpeciesName": "Zekrom",
+    "names": {
+      "zh-hans": "捷克罗姆",
+      "zh-hant": "捷克羅姆",
+      "en": "Zekrom",
+      "ja": "ゼクロム"
+    },
+    "speciesNames": {
+      "zh-hans": "捷克罗姆",
+      "zh-hant": "捷克羅姆",
+      "en": "Zekrom",
+      "ja": "ゼクロム"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 150,
+      "def": 120,
+      "spa": 120,
+      "spd": 100,
+      "spe": 90
+    }
+  },
+  "645": {
+    "resourceType": "pokemon",
+    "id": 645,
+    "speciesId": 645,
+    "pokemonSlug": "landorus-incarnate",
+    "speciesSlug": "landorus",
+    "calcSpeciesName": "Landorus",
+    "names": {
+      "zh-hans": "土地云",
+      "zh-hant": "土地雲",
+      "en": "Landorus",
+      "ja": "ランドロス"
+    },
+    "speciesNames": {
+      "zh-hans": "土地云",
+      "zh-hant": "土地雲",
+      "en": "Landorus",
+      "ja": "ランドロス"
+    },
+    "formNames": {
+      "zh-hans": "化身形态",
+      "zh-hant": "化身形態",
+      "en": "Incarnate Forme",
+      "ja": "けしんフォルム"
+    },
+    "types": [
+      "ground",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 89,
+      "atk": 125,
+      "def": 90,
+      "spa": 115,
+      "spd": 80,
+      "spe": 101
+    }
+  },
+  "646": {
+    "resourceType": "pokemon",
+    "id": 646,
+    "speciesId": 646,
+    "pokemonSlug": "kyurem",
+    "speciesSlug": "kyurem",
+    "calcSpeciesName": "Kyurem",
+    "names": {
+      "zh-hans": "酋雷姆",
+      "zh-hant": "酋雷姆",
+      "en": "Kyurem",
+      "ja": "キュレム"
+    },
+    "speciesNames": {
+      "zh-hans": "酋雷姆",
+      "zh-hant": "酋雷姆",
+      "en": "Kyurem",
+      "ja": "キュレム"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 125,
+      "atk": 130,
+      "def": 90,
+      "spa": 130,
+      "spd": 90,
+      "spe": 95
+    }
+  },
+  "647": {
+    "resourceType": "pokemon",
+    "id": 647,
+    "speciesId": 647,
+    "pokemonSlug": "keldeo-ordinary",
+    "speciesSlug": "keldeo",
+    "calcSpeciesName": "Keldeo",
+    "names": {
+      "zh-hans": "凯路迪欧",
+      "zh-hant": "凱路迪歐",
+      "en": "Keldeo",
+      "ja": "ケルディオ"
+    },
+    "speciesNames": {
+      "zh-hans": "凯路迪欧",
+      "zh-hant": "凱路迪歐",
+      "en": "Keldeo",
+      "ja": "ケルディオ"
+    },
+    "formNames": {
+      "zh-hans": "平常的样子",
+      "zh-hant": "平常的樣子",
+      "en": "Ordinary Form",
+      "ja": "いつものすがた"
+    },
+    "types": [
+      "water",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 91,
+      "atk": 72,
+      "def": 90,
+      "spa": 129,
+      "spd": 90,
+      "spe": 108
+    }
+  },
+  "648": {
+    "resourceType": "pokemon",
+    "id": 648,
+    "speciesId": 648,
+    "pokemonSlug": "meloetta-aria",
+    "speciesSlug": "meloetta",
+    "calcSpeciesName": "Meloetta",
+    "names": {
+      "zh-hans": "美洛耶塔",
+      "zh-hant": "美洛耶塔",
+      "en": "Meloetta",
+      "ja": "メロエッタ"
+    },
+    "speciesNames": {
+      "zh-hans": "美洛耶塔",
+      "zh-hant": "美洛耶塔",
+      "en": "Meloetta",
+      "ja": "メロエッタ"
+    },
+    "formNames": {
+      "zh-hans": "歌声形态",
+      "zh-hant": "歌聲形態",
+      "en": "Aria Forme",
+      "ja": "ボイスフォルム"
+    },
+    "types": [
+      "normal",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 77,
+      "def": 77,
+      "spa": 128,
+      "spd": 128,
+      "spe": 90
+    }
+  },
+  "649": {
+    "resourceType": "pokemon",
+    "id": 649,
+    "speciesId": 649,
+    "pokemonSlug": "genesect",
+    "speciesSlug": "genesect",
+    "calcSpeciesName": "Genesect",
+    "names": {
+      "zh-hans": "盖诺赛克特",
+      "zh-hant": "蓋諾賽克特",
+      "en": "Genesect",
+      "ja": "ゲノセクト"
+    },
+    "speciesNames": {
+      "zh-hans": "盖诺赛克特",
+      "zh-hant": "蓋諾賽克特",
+      "en": "Genesect",
+      "ja": "ゲノセクト"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 71,
+      "atk": 120,
+      "def": 95,
+      "spa": 120,
+      "spd": 95,
+      "spe": 99
+    }
+  },
+  "650": {
+    "resourceType": "pokemon",
+    "id": 650,
+    "speciesId": 650,
+    "pokemonSlug": "chespin",
+    "speciesSlug": "chespin",
+    "calcSpeciesName": "Chespin",
+    "names": {
+      "zh-hans": "哈力栗",
+      "zh-hant": "哈力栗",
+      "en": "Chespin",
+      "ja": "ハリマロン"
+    },
+    "speciesNames": {
+      "zh-hans": "哈力栗",
+      "zh-hant": "哈力栗",
+      "en": "Chespin",
+      "ja": "ハリマロン"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 56,
+      "atk": 61,
+      "def": 65,
+      "spa": 48,
+      "spd": 45,
+      "spe": 38
+    }
+  },
+  "651": {
+    "resourceType": "pokemon",
+    "id": 651,
+    "speciesId": 651,
+    "pokemonSlug": "quilladin",
+    "speciesSlug": "quilladin",
+    "calcSpeciesName": "Quilladin",
+    "names": {
+      "zh-hans": "胖胖哈力",
+      "zh-hant": "胖胖哈力",
+      "en": "Quilladin",
+      "ja": "ハリボーグ"
+    },
+    "speciesNames": {
+      "zh-hans": "胖胖哈力",
+      "zh-hant": "胖胖哈力",
+      "en": "Quilladin",
+      "ja": "ハリボーグ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 61,
+      "atk": 78,
+      "def": 95,
+      "spa": 56,
+      "spd": 58,
+      "spe": 57
+    }
+  },
+  "652": {
+    "resourceType": "pokemon",
+    "id": 652,
+    "speciesId": 652,
+    "pokemonSlug": "chesnaught",
+    "speciesSlug": "chesnaught",
+    "calcSpeciesName": "Chesnaught",
+    "names": {
+      "zh-hans": "布里卡隆",
+      "zh-hant": "布里卡隆",
+      "en": "Chesnaught",
+      "ja": "ブリガロン"
+    },
+    "speciesNames": {
+      "zh-hans": "布里卡隆",
+      "zh-hant": "布里卡隆",
+      "en": "Chesnaught",
+      "ja": "ブリガロン"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 88,
+      "atk": 107,
+      "def": 122,
+      "spa": 74,
+      "spd": 75,
+      "spe": 64
+    }
+  },
+  "653": {
+    "resourceType": "pokemon",
+    "id": 653,
+    "speciesId": 653,
+    "pokemonSlug": "fennekin",
+    "speciesSlug": "fennekin",
+    "calcSpeciesName": "Fennekin",
+    "names": {
+      "zh-hans": "火狐狸",
+      "zh-hant": "火狐狸",
+      "en": "Fennekin",
+      "ja": "フォッコ"
+    },
+    "speciesNames": {
+      "zh-hans": "火狐狸",
+      "zh-hant": "火狐狸",
+      "en": "Fennekin",
+      "ja": "フォッコ"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 45,
+      "def": 40,
+      "spa": 62,
+      "spd": 60,
+      "spe": 60
+    }
+  },
+  "654": {
+    "resourceType": "pokemon",
+    "id": 654,
+    "speciesId": 654,
+    "pokemonSlug": "braixen",
+    "speciesSlug": "braixen",
+    "calcSpeciesName": "Braixen",
+    "names": {
+      "zh-hans": "长尾火狐",
+      "zh-hant": "長尾火狐",
+      "en": "Braixen",
+      "ja": "テールナー"
+    },
+    "speciesNames": {
+      "zh-hans": "长尾火狐",
+      "zh-hant": "長尾火狐",
+      "en": "Braixen",
+      "ja": "テールナー"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 59,
+      "atk": 59,
+      "def": 58,
+      "spa": 90,
+      "spd": 70,
+      "spe": 73
+    }
+  },
+  "655": {
+    "resourceType": "pokemon",
+    "id": 655,
+    "speciesId": 655,
+    "pokemonSlug": "delphox",
+    "speciesSlug": "delphox",
+    "calcSpeciesName": "Delphox",
+    "names": {
+      "zh-hans": "妖火红狐",
+      "zh-hant": "妖火紅狐",
+      "en": "Delphox",
+      "ja": "マフォクシー"
+    },
+    "speciesNames": {
+      "zh-hans": "妖火红狐",
+      "zh-hant": "妖火紅狐",
+      "en": "Delphox",
+      "ja": "マフォクシー"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 69,
+      "def": 72,
+      "spa": 114,
+      "spd": 100,
+      "spe": 104
+    }
+  },
+  "656": {
+    "resourceType": "pokemon",
+    "id": 656,
+    "speciesId": 656,
+    "pokemonSlug": "froakie",
+    "speciesSlug": "froakie",
+    "calcSpeciesName": "Froakie",
+    "names": {
+      "zh-hans": "呱呱泡蛙",
+      "zh-hant": "呱呱泡蛙",
+      "en": "Froakie",
+      "ja": "ケロマツ"
+    },
+    "speciesNames": {
+      "zh-hans": "呱呱泡蛙",
+      "zh-hant": "呱呱泡蛙",
+      "en": "Froakie",
+      "ja": "ケロマツ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 41,
+      "atk": 56,
+      "def": 40,
+      "spa": 62,
+      "spd": 44,
+      "spe": 71
+    }
+  },
+  "657": {
+    "resourceType": "pokemon",
+    "id": 657,
+    "speciesId": 657,
+    "pokemonSlug": "frogadier",
+    "speciesSlug": "frogadier",
+    "calcSpeciesName": "Frogadier",
+    "names": {
+      "zh-hans": "呱头蛙",
+      "zh-hant": "呱頭蛙",
+      "en": "Frogadier",
+      "ja": "ゲコガシラ"
+    },
+    "speciesNames": {
+      "zh-hans": "呱头蛙",
+      "zh-hant": "呱頭蛙",
+      "en": "Frogadier",
+      "ja": "ゲコガシラ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 54,
+      "atk": 63,
+      "def": 52,
+      "spa": 83,
+      "spd": 56,
+      "spe": 97
+    }
+  },
+  "658": {
+    "resourceType": "pokemon",
+    "id": 658,
+    "speciesId": 658,
+    "pokemonSlug": "greninja",
+    "speciesSlug": "greninja",
+    "calcSpeciesName": "Greninja",
+    "names": {
+      "zh-hans": "甲贺忍蛙",
+      "zh-hant": "甲賀忍蛙",
+      "en": "Greninja",
+      "ja": "ゲッコウガ"
+    },
+    "speciesNames": {
+      "zh-hans": "甲贺忍蛙",
+      "zh-hant": "甲賀忍蛙",
+      "en": "Greninja",
+      "ja": "ゲッコウガ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 72,
+      "atk": 95,
+      "def": 67,
+      "spa": 103,
+      "spd": 71,
+      "spe": 122
+    }
+  },
+  "659": {
+    "resourceType": "pokemon",
+    "id": 659,
+    "speciesId": 659,
+    "pokemonSlug": "bunnelby",
+    "speciesSlug": "bunnelby",
+    "calcSpeciesName": "Bunnelby",
+    "names": {
+      "zh-hans": "掘掘兔",
+      "zh-hant": "掘掘兔",
+      "en": "Bunnelby",
+      "ja": "ホルビー"
+    },
+    "speciesNames": {
+      "zh-hans": "掘掘兔",
+      "zh-hant": "掘掘兔",
+      "en": "Bunnelby",
+      "ja": "ホルビー"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 38,
+      "atk": 36,
+      "def": 38,
+      "spa": 32,
+      "spd": 36,
+      "spe": 57
+    }
+  },
+  "660": {
+    "resourceType": "pokemon",
+    "id": 660,
+    "speciesId": 660,
+    "pokemonSlug": "diggersby",
+    "speciesSlug": "diggersby",
+    "calcSpeciesName": "Diggersby",
+    "names": {
+      "zh-hans": "掘地兔",
+      "zh-hant": "掘地兔",
+      "en": "Diggersby",
+      "ja": "ホルード"
+    },
+    "speciesNames": {
+      "zh-hans": "掘地兔",
+      "zh-hant": "掘地兔",
+      "en": "Diggersby",
+      "ja": "ホルード"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 56,
+      "def": 77,
+      "spa": 50,
+      "spd": 77,
+      "spe": 78
+    }
+  },
+  "661": {
+    "resourceType": "pokemon",
+    "id": 661,
+    "speciesId": 661,
+    "pokemonSlug": "fletchling",
+    "speciesSlug": "fletchling",
+    "calcSpeciesName": "Fletchling",
+    "names": {
+      "zh-hans": "小箭雀",
+      "zh-hant": "小箭雀",
+      "en": "Fletchling",
+      "ja": "ヤヤコマ"
+    },
+    "speciesNames": {
+      "zh-hans": "小箭雀",
+      "zh-hant": "小箭雀",
+      "en": "Fletchling",
+      "ja": "ヤヤコマ"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 50,
+      "def": 43,
+      "spa": 40,
+      "spd": 38,
+      "spe": 62
+    }
+  },
+  "662": {
+    "resourceType": "pokemon",
+    "id": 662,
+    "speciesId": 662,
+    "pokemonSlug": "fletchinder",
+    "speciesSlug": "fletchinder",
+    "calcSpeciesName": "Fletchinder",
+    "names": {
+      "zh-hans": "火箭雀",
+      "zh-hant": "火箭雀",
+      "en": "Fletchinder",
+      "ja": "ヒノヤコマ"
+    },
+    "speciesNames": {
+      "zh-hans": "火箭雀",
+      "zh-hant": "火箭雀",
+      "en": "Fletchinder",
+      "ja": "ヒノヤコマ"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 62,
+      "atk": 73,
+      "def": 55,
+      "spa": 56,
+      "spd": 52,
+      "spe": 84
+    }
+  },
+  "663": {
+    "resourceType": "pokemon",
+    "id": 663,
+    "speciesId": 663,
+    "pokemonSlug": "talonflame",
+    "speciesSlug": "talonflame",
+    "calcSpeciesName": "Talonflame",
+    "names": {
+      "zh-hans": "烈箭鹰",
+      "zh-hant": "烈箭鷹",
+      "en": "Talonflame",
+      "ja": "ファイアロー"
+    },
+    "speciesNames": {
+      "zh-hans": "烈箭鹰",
+      "zh-hant": "烈箭鷹",
+      "en": "Talonflame",
+      "ja": "ファイアロー"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 78,
+      "atk": 81,
+      "def": 71,
+      "spa": 74,
+      "spd": 69,
+      "spe": 126
+    }
+  },
+  "664": {
+    "resourceType": "pokemon",
+    "id": 664,
+    "speciesId": 664,
+    "pokemonSlug": "scatterbug",
+    "speciesSlug": "scatterbug",
+    "calcSpeciesName": "Scatterbug",
+    "names": {
+      "zh-hans": "粉蝶虫",
+      "zh-hant": "粉蝶蟲",
+      "en": "Scatterbug",
+      "ja": "コフキムシ"
+    },
+    "speciesNames": {
+      "zh-hans": "粉蝶虫",
+      "zh-hant": "粉蝶蟲",
+      "en": "Scatterbug",
+      "ja": "コフキムシ"
+    },
+    "formNames": {
+      "zh-hans": "",
+      "zh-hant": "",
+      "en": "",
+      "ja": ""
+    },
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 38,
+      "atk": 35,
+      "def": 40,
+      "spa": 27,
+      "spd": 25,
+      "spe": 35
+    }
+  },
+  "665": {
+    "resourceType": "pokemon",
+    "id": 665,
+    "speciesId": 665,
+    "pokemonSlug": "spewpa",
+    "speciesSlug": "spewpa",
+    "calcSpeciesName": "Spewpa",
+    "names": {
+      "zh-hans": "粉蝶蛹",
+      "zh-hant": "粉蝶蛹",
+      "en": "Spewpa",
+      "ja": "コフーライ"
+    },
+    "speciesNames": {
+      "zh-hans": "粉蝶蛹",
+      "zh-hant": "粉蝶蛹",
+      "en": "Spewpa",
+      "ja": "コフーライ"
+    },
+    "formNames": {
+      "zh-hans": "",
+      "zh-hant": "",
+      "en": "",
+      "ja": ""
+    },
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 22,
+      "def": 60,
+      "spa": 27,
+      "spd": 30,
+      "spe": 29
+    }
+  },
+  "666": {
+    "resourceType": "pokemon",
+    "id": 666,
+    "speciesId": 666,
+    "pokemonSlug": "vivillon",
+    "speciesSlug": "vivillon",
+    "calcSpeciesName": "Vivillon",
+    "names": {
+      "zh-hans": "彩粉蝶",
+      "zh-hant": "彩粉蝶",
+      "en": "Vivillon",
+      "ja": "ビビヨン"
+    },
+    "speciesNames": {
+      "zh-hans": "彩粉蝶",
+      "zh-hant": "彩粉蝶",
+      "en": "Vivillon",
+      "ja": "ビビヨン"
+    },
+    "formNames": {
+      "zh-hans": "Meadow Pattern",
+      "zh-hant": "Meadow Pattern",
+      "en": "Meadow Pattern",
+      "ja": "はなぞののもよう"
+    },
+    "types": [
+      "bug",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 52,
+      "def": 50,
+      "spa": 90,
+      "spd": 50,
+      "spe": 89
+    }
+  },
+  "667": {
+    "resourceType": "pokemon",
+    "id": 667,
+    "speciesId": 667,
+    "pokemonSlug": "litleo",
+    "speciesSlug": "litleo",
+    "calcSpeciesName": "Litleo",
+    "names": {
+      "zh-hans": "小狮狮",
+      "zh-hant": "小獅獅",
+      "en": "Litleo",
+      "ja": "シシコ"
+    },
+    "speciesNames": {
+      "zh-hans": "小狮狮",
+      "zh-hant": "小獅獅",
+      "en": "Litleo",
+      "ja": "シシコ"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 62,
+      "atk": 50,
+      "def": 58,
+      "spa": 73,
+      "spd": 54,
+      "spe": 72
+    }
+  },
+  "668": {
+    "resourceType": "pokemon",
+    "id": 668,
+    "speciesId": 668,
+    "pokemonSlug": "pyroar-male",
+    "speciesSlug": "pyroar",
+    "calcSpeciesName": "Pyroar",
+    "names": {
+      "zh-hans": "火炎狮",
+      "zh-hant": "火炎獅",
+      "en": "Pyroar",
+      "ja": "カエンジシ"
+    },
+    "speciesNames": {
+      "zh-hans": "火炎狮",
+      "zh-hant": "火炎獅",
+      "en": "Pyroar",
+      "ja": "カエンジシ"
+    },
+    "formNames": {
+      "zh-hans": "雄性的样子",
+      "zh-hant": "雄性的樣子",
+      "en": "Male",
+      "ja": "オスのすがた"
+    },
+    "types": [
+      "fire",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 86,
+      "atk": 68,
+      "def": 72,
+      "spa": 109,
+      "spd": 66,
+      "spe": 106
+    }
+  },
+  "669": {
+    "resourceType": "pokemon",
+    "id": 669,
+    "speciesId": 669,
+    "pokemonSlug": "flabebe",
+    "speciesSlug": "flabebe",
+    "calcSpeciesName": "Flabébé",
+    "names": {
+      "zh-hans": "花蓓蓓",
+      "zh-hant": "花蓓蓓",
+      "en": "Flabébé",
+      "ja": "フラベベ"
+    },
+    "speciesNames": {
+      "zh-hans": "花蓓蓓",
+      "zh-hant": "花蓓蓓",
+      "en": "Flabébé",
+      "ja": "フラベベ"
+    },
+    "formNames": {
+      "zh-hans": "Red Flower",
+      "zh-hant": "Red Flower",
+      "en": "Red Flower",
+      "ja": "あかいはな"
+    },
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 44,
+      "atk": 38,
+      "def": 39,
+      "spa": 61,
+      "spd": 79,
+      "spe": 42
+    }
+  },
+  "670": {
+    "resourceType": "pokemon",
+    "id": 670,
+    "speciesId": 670,
+    "pokemonSlug": "floette",
+    "speciesSlug": "floette",
+    "calcSpeciesName": "Floette",
+    "names": {
+      "zh-hans": "花叶蒂",
+      "zh-hant": "花葉蒂",
+      "en": "Floette",
+      "ja": "フラエッテ"
+    },
+    "speciesNames": {
+      "zh-hans": "花叶蒂",
+      "zh-hant": "花葉蒂",
+      "en": "Floette",
+      "ja": "フラエッテ"
+    },
+    "formNames": {
+      "zh-hans": "Red Flower",
+      "zh-hant": "Red Flower",
+      "en": "Red Flower",
+      "ja": "あかいはな"
+    },
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 54,
+      "atk": 45,
+      "def": 47,
+      "spa": 75,
+      "spd": 98,
+      "spe": 52
+    }
+  },
+  "671": {
+    "resourceType": "pokemon",
+    "id": 671,
+    "speciesId": 671,
+    "pokemonSlug": "florges",
+    "speciesSlug": "florges",
+    "calcSpeciesName": "Florges",
+    "names": {
+      "zh-hans": "花洁夫人",
+      "zh-hant": "花潔夫人",
+      "en": "Florges",
+      "ja": "フラージェス"
+    },
+    "speciesNames": {
+      "zh-hans": "花洁夫人",
+      "zh-hant": "花潔夫人",
+      "en": "Florges",
+      "ja": "フラージェス"
+    },
+    "formNames": {
+      "zh-hans": "Red Flower",
+      "zh-hant": "Red Flower",
+      "en": "Red Flower",
+      "ja": "あかいはな"
+    },
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 78,
+      "atk": 65,
+      "def": 68,
+      "spa": 112,
+      "spd": 154,
+      "spe": 75
+    }
+  },
+  "672": {
+    "resourceType": "pokemon",
+    "id": 672,
+    "speciesId": 672,
+    "pokemonSlug": "skiddo",
+    "speciesSlug": "skiddo",
+    "calcSpeciesName": "Skiddo",
+    "names": {
+      "zh-hans": "坐骑小羊",
+      "zh-hant": "坐騎小羊",
+      "en": "Skiddo",
+      "ja": "メェークル"
+    },
+    "speciesNames": {
+      "zh-hans": "坐骑小羊",
+      "zh-hant": "坐騎小羊",
+      "en": "Skiddo",
+      "ja": "メェークル"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 66,
+      "atk": 65,
+      "def": 48,
+      "spa": 62,
+      "spd": 57,
+      "spe": 52
+    }
+  },
+  "673": {
+    "resourceType": "pokemon",
+    "id": 673,
+    "speciesId": 673,
+    "pokemonSlug": "gogoat",
+    "speciesSlug": "gogoat",
+    "calcSpeciesName": "Gogoat",
+    "names": {
+      "zh-hans": "坐骑山羊",
+      "zh-hant": "坐騎山羊",
+      "en": "Gogoat",
+      "ja": "ゴーゴート"
+    },
+    "speciesNames": {
+      "zh-hans": "坐骑山羊",
+      "zh-hant": "坐騎山羊",
+      "en": "Gogoat",
+      "ja": "ゴーゴート"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 123,
+      "atk": 100,
+      "def": 62,
+      "spa": 97,
+      "spd": 81,
+      "spe": 68
+    }
+  },
+  "674": {
+    "resourceType": "pokemon",
+    "id": 674,
+    "speciesId": 674,
+    "pokemonSlug": "pancham",
+    "speciesSlug": "pancham",
+    "calcSpeciesName": "Pancham",
+    "names": {
+      "zh-hans": "顽皮熊猫",
+      "zh-hant": "頑皮熊貓",
+      "en": "Pancham",
+      "ja": "ヤンチャム"
+    },
+    "speciesNames": {
+      "zh-hans": "顽皮熊猫",
+      "zh-hant": "頑皮熊貓",
+      "en": "Pancham",
+      "ja": "ヤンチャム"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 67,
+      "atk": 82,
+      "def": 62,
+      "spa": 46,
+      "spd": 48,
+      "spe": 43
+    }
+  },
+  "675": {
+    "resourceType": "pokemon",
+    "id": 675,
+    "speciesId": 675,
+    "pokemonSlug": "pangoro",
+    "speciesSlug": "pangoro",
+    "calcSpeciesName": "Pangoro",
+    "names": {
+      "zh-hans": "霸道熊猫",
+      "zh-hant": "流氓熊貓",
+      "en": "Pangoro",
+      "ja": "ゴロンダ"
+    },
+    "speciesNames": {
+      "zh-hans": "霸道熊猫",
+      "zh-hant": "流氓熊貓",
+      "en": "Pangoro",
+      "ja": "ゴロンダ"
+    },
+    "formNames": {},
+    "types": [
+      "fighting",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 124,
+      "def": 78,
+      "spa": 69,
+      "spd": 71,
+      "spe": 58
+    }
+  },
+  "676": {
+    "resourceType": "pokemon",
+    "id": 676,
+    "speciesId": 676,
+    "pokemonSlug": "furfrou",
+    "speciesSlug": "furfrou",
+    "calcSpeciesName": "Furfrou",
+    "names": {
+      "zh-hans": "多丽米亚",
+      "zh-hant": "多麗米亞",
+      "en": "Furfrou",
+      "ja": "トリミアン"
+    },
+    "speciesNames": {
+      "zh-hans": "多丽米亚",
+      "zh-hant": "多麗米亞",
+      "en": "Furfrou",
+      "ja": "トリミアン"
+    },
+    "formNames": {
+      "zh-hans": "Natural Form",
+      "zh-hant": "Natural Form",
+      "en": "Natural Form",
+      "ja": "やせいのすがた"
+    },
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 80,
+      "def": 60,
+      "spa": 65,
+      "spd": 90,
+      "spe": 102
+    }
+  },
+  "677": {
+    "resourceType": "pokemon",
+    "id": 677,
+    "speciesId": 677,
+    "pokemonSlug": "espurr",
+    "speciesSlug": "espurr",
+    "calcSpeciesName": "Espurr",
+    "names": {
+      "zh-hans": "妙喵",
+      "zh-hant": "妙喵",
+      "en": "Espurr",
+      "ja": "ニャスパー"
+    },
+    "speciesNames": {
+      "zh-hans": "妙喵",
+      "zh-hant": "妙喵",
+      "en": "Espurr",
+      "ja": "ニャスパー"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 62,
+      "atk": 48,
+      "def": 54,
+      "spa": 63,
+      "spd": 60,
+      "spe": 68
+    }
+  },
+  "678": {
+    "resourceType": "pokemon",
+    "id": 678,
+    "speciesId": 678,
+    "pokemonSlug": "meowstic-male",
+    "speciesSlug": "meowstic",
+    "calcSpeciesName": "Meowstic",
+    "names": {
+      "zh-hans": "超能妙喵",
+      "zh-hant": "超能妙喵",
+      "en": "Meowstic",
+      "ja": "ニャオニクス"
+    },
+    "speciesNames": {
+      "zh-hans": "超能妙喵",
+      "zh-hant": "超能妙喵",
+      "en": "Meowstic",
+      "ja": "ニャオニクス"
+    },
+    "formNames": {
+      "zh-hans": "雄性的样子",
+      "zh-hant": "雄性的樣子",
+      "en": "Male",
+      "ja": "オスのすがた"
+    },
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 74,
+      "atk": 48,
+      "def": 76,
+      "spa": 83,
+      "spd": 81,
+      "spe": 104
+    }
+  },
+  "679": {
+    "resourceType": "pokemon",
+    "id": 679,
+    "speciesId": 679,
+    "pokemonSlug": "honedge",
+    "speciesSlug": "honedge",
+    "calcSpeciesName": "Honedge",
+    "names": {
+      "zh-hans": "独剑鞘",
+      "zh-hant": "獨劍鞘",
+      "en": "Honedge",
+      "ja": "ヒトツキ"
+    },
+    "speciesNames": {
+      "zh-hans": "独剑鞘",
+      "zh-hant": "獨劍鞘",
+      "en": "Honedge",
+      "ja": "ヒトツキ"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 80,
+      "def": 100,
+      "spa": 35,
+      "spd": 37,
+      "spe": 28
+    }
+  },
+  "680": {
+    "resourceType": "pokemon",
+    "id": 680,
+    "speciesId": 680,
+    "pokemonSlug": "doublade",
+    "speciesSlug": "doublade",
+    "calcSpeciesName": "Doublade",
+    "names": {
+      "zh-hans": "双剑鞘",
+      "zh-hant": "雙劍鞘",
+      "en": "Doublade",
+      "ja": "ニダンギル"
+    },
+    "speciesNames": {
+      "zh-hans": "双剑鞘",
+      "zh-hant": "雙劍鞘",
+      "en": "Doublade",
+      "ja": "ニダンギル"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 59,
+      "atk": 110,
+      "def": 150,
+      "spa": 45,
+      "spd": 49,
+      "spe": 35
+    }
+  },
+  "681": {
+    "resourceType": "pokemon",
+    "id": 681,
+    "speciesId": 681,
+    "pokemonSlug": "aegislash-shield",
+    "speciesSlug": "aegislash",
+    "calcSpeciesName": "Aegislash",
+    "names": {
+      "zh-hans": "坚盾剑怪",
+      "zh-hant": "堅盾劍怪",
+      "en": "Aegislash",
+      "ja": "ギルガルド"
+    },
+    "speciesNames": {
+      "zh-hans": "坚盾剑怪",
+      "zh-hant": "堅盾劍怪",
+      "en": "Aegislash",
+      "ja": "ギルガルド"
+    },
+    "formNames": {
+      "zh-hans": "盾牌形态",
+      "zh-hant": "盾牌形態",
+      "en": "Shield Forme",
+      "ja": "シールドフォルム"
+    },
+    "types": [
+      "steel",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 50,
+      "def": 140,
+      "spa": 50,
+      "spd": 140,
+      "spe": 60
+    }
+  },
+  "682": {
+    "resourceType": "pokemon",
+    "id": 682,
+    "speciesId": 682,
+    "pokemonSlug": "spritzee",
+    "speciesSlug": "spritzee",
+    "calcSpeciesName": "Spritzee",
+    "names": {
+      "zh-hans": "粉香香",
+      "zh-hant": "粉香香",
+      "en": "Spritzee",
+      "ja": "シュシュプ"
+    },
+    "speciesNames": {
+      "zh-hans": "粉香香",
+      "zh-hant": "粉香香",
+      "en": "Spritzee",
+      "ja": "シュシュプ"
+    },
+    "formNames": {},
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 78,
+      "atk": 52,
+      "def": 60,
+      "spa": 63,
+      "spd": 65,
+      "spe": 23
+    }
+  },
+  "683": {
+    "resourceType": "pokemon",
+    "id": 683,
+    "speciesId": 683,
+    "pokemonSlug": "aromatisse",
+    "speciesSlug": "aromatisse",
+    "calcSpeciesName": "Aromatisse",
+    "names": {
+      "zh-hans": "芳香精",
+      "zh-hant": "芳香精",
+      "en": "Aromatisse",
+      "ja": "フレフワン"
+    },
+    "speciesNames": {
+      "zh-hans": "芳香精",
+      "zh-hant": "芳香精",
+      "en": "Aromatisse",
+      "ja": "フレフワン"
+    },
+    "formNames": {},
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 101,
+      "atk": 72,
+      "def": 72,
+      "spa": 99,
+      "spd": 89,
+      "spe": 29
+    }
+  },
+  "684": {
+    "resourceType": "pokemon",
+    "id": 684,
+    "speciesId": 684,
+    "pokemonSlug": "swirlix",
+    "speciesSlug": "swirlix",
+    "calcSpeciesName": "Swirlix",
+    "names": {
+      "zh-hans": "绵绵泡芙",
+      "zh-hant": "綿綿泡芙",
+      "en": "Swirlix",
+      "ja": "ペロッパフ"
+    },
+    "speciesNames": {
+      "zh-hans": "绵绵泡芙",
+      "zh-hant": "綿綿泡芙",
+      "en": "Swirlix",
+      "ja": "ペロッパフ"
+    },
+    "formNames": {},
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 62,
+      "atk": 48,
+      "def": 66,
+      "spa": 59,
+      "spd": 57,
+      "spe": 49
+    }
+  },
+  "685": {
+    "resourceType": "pokemon",
+    "id": 685,
+    "speciesId": 685,
+    "pokemonSlug": "slurpuff",
+    "speciesSlug": "slurpuff",
+    "calcSpeciesName": "Slurpuff",
+    "names": {
+      "zh-hans": "胖甜妮",
+      "zh-hant": "胖甜妮",
+      "en": "Slurpuff",
+      "ja": "ペロリーム"
+    },
+    "speciesNames": {
+      "zh-hans": "胖甜妮",
+      "zh-hant": "胖甜妮",
+      "en": "Slurpuff",
+      "ja": "ペロリーム"
+    },
+    "formNames": {},
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 82,
+      "atk": 80,
+      "def": 86,
+      "spa": 85,
+      "spd": 75,
+      "spe": 72
+    }
+  },
+  "686": {
+    "resourceType": "pokemon",
+    "id": 686,
+    "speciesId": 686,
+    "pokemonSlug": "inkay",
+    "speciesSlug": "inkay",
+    "calcSpeciesName": "Inkay",
+    "names": {
+      "zh-hans": "好啦鱿",
+      "zh-hant": "好啦魷",
+      "en": "Inkay",
+      "ja": "マーイーカ"
+    },
+    "speciesNames": {
+      "zh-hans": "好啦鱿",
+      "zh-hant": "好啦魷",
+      "en": "Inkay",
+      "ja": "マーイーカ"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 53,
+      "atk": 54,
+      "def": 53,
+      "spa": 37,
+      "spd": 46,
+      "spe": 45
+    }
+  },
+  "687": {
+    "resourceType": "pokemon",
+    "id": 687,
+    "speciesId": 687,
+    "pokemonSlug": "malamar",
+    "speciesSlug": "malamar",
+    "calcSpeciesName": "Malamar",
+    "names": {
+      "zh-hans": "乌贼王",
+      "zh-hant": "烏賊王",
+      "en": "Malamar",
+      "ja": "カラマネロ"
+    },
+    "speciesNames": {
+      "zh-hans": "乌贼王",
+      "zh-hant": "烏賊王",
+      "en": "Malamar",
+      "ja": "カラマネロ"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 86,
+      "atk": 92,
+      "def": 88,
+      "spa": 68,
+      "spd": 75,
+      "spe": 73
+    }
+  },
+  "688": {
+    "resourceType": "pokemon",
+    "id": 688,
+    "speciesId": 688,
+    "pokemonSlug": "binacle",
+    "speciesSlug": "binacle",
+    "calcSpeciesName": "Binacle",
+    "names": {
+      "zh-hans": "龟脚脚",
+      "zh-hant": "龜腳腳",
+      "en": "Binacle",
+      "ja": "カメテテ"
+    },
+    "speciesNames": {
+      "zh-hans": "龟脚脚",
+      "zh-hant": "龜腳腳",
+      "en": "Binacle",
+      "ja": "カメテテ"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 42,
+      "atk": 52,
+      "def": 67,
+      "spa": 39,
+      "spd": 56,
+      "spe": 50
+    }
+  },
+  "689": {
+    "resourceType": "pokemon",
+    "id": 689,
+    "speciesId": 689,
+    "pokemonSlug": "barbaracle",
+    "speciesSlug": "barbaracle",
+    "calcSpeciesName": "Barbaracle",
+    "names": {
+      "zh-hans": "龟足巨铠",
+      "zh-hant": "龜足巨鎧",
+      "en": "Barbaracle",
+      "ja": "ガメノデス"
+    },
+    "speciesNames": {
+      "zh-hans": "龟足巨铠",
+      "zh-hant": "龜足巨鎧",
+      "en": "Barbaracle",
+      "ja": "ガメノデス"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 72,
+      "atk": 105,
+      "def": 115,
+      "spa": 54,
+      "spd": 86,
+      "spe": 68
+    }
+  },
+  "690": {
+    "resourceType": "pokemon",
+    "id": 690,
+    "speciesId": 690,
+    "pokemonSlug": "skrelp",
+    "speciesSlug": "skrelp",
+    "calcSpeciesName": "Skrelp",
+    "names": {
+      "zh-hans": "垃垃藻",
+      "zh-hant": "垃垃藻",
+      "en": "Skrelp",
+      "ja": "クズモー"
+    },
+    "speciesNames": {
+      "zh-hans": "垃垃藻",
+      "zh-hant": "垃垃藻",
+      "en": "Skrelp",
+      "ja": "クズモー"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 60,
+      "def": 60,
+      "spa": 60,
+      "spd": 60,
+      "spe": 30
+    }
+  },
+  "691": {
+    "resourceType": "pokemon",
+    "id": 691,
+    "speciesId": 691,
+    "pokemonSlug": "dragalge",
+    "speciesSlug": "dragalge",
+    "calcSpeciesName": "Dragalge",
+    "names": {
+      "zh-hans": "毒藻龙",
+      "zh-hant": "毒藻龍",
+      "en": "Dragalge",
+      "ja": "ドラミドロ"
+    },
+    "speciesNames": {
+      "zh-hans": "毒藻龙",
+      "zh-hant": "毒藻龍",
+      "en": "Dragalge",
+      "ja": "ドラミドロ"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 75,
+      "def": 90,
+      "spa": 97,
+      "spd": 123,
+      "spe": 44
+    }
+  },
+  "692": {
+    "resourceType": "pokemon",
+    "id": 692,
+    "speciesId": 692,
+    "pokemonSlug": "clauncher",
+    "speciesSlug": "clauncher",
+    "calcSpeciesName": "Clauncher",
+    "names": {
+      "zh-hans": "铁臂枪虾",
+      "zh-hant": "鐵臂槍蝦",
+      "en": "Clauncher",
+      "ja": "ウデッポウ"
+    },
+    "speciesNames": {
+      "zh-hans": "铁臂枪虾",
+      "zh-hant": "鐵臂槍蝦",
+      "en": "Clauncher",
+      "ja": "ウデッポウ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 53,
+      "def": 62,
+      "spa": 58,
+      "spd": 63,
+      "spe": 44
+    }
+  },
+  "693": {
+    "resourceType": "pokemon",
+    "id": 693,
+    "speciesId": 693,
+    "pokemonSlug": "clawitzer",
+    "speciesSlug": "clawitzer",
+    "calcSpeciesName": "Clawitzer",
+    "names": {
+      "zh-hans": "钢炮臂虾",
+      "zh-hant": "鋼炮臂蝦",
+      "en": "Clawitzer",
+      "ja": "ブロスター"
+    },
+    "speciesNames": {
+      "zh-hans": "钢炮臂虾",
+      "zh-hant": "鋼炮臂蝦",
+      "en": "Clawitzer",
+      "ja": "ブロスター"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 71,
+      "atk": 73,
+      "def": 88,
+      "spa": 120,
+      "spd": 89,
+      "spe": 59
+    }
+  },
+  "694": {
+    "resourceType": "pokemon",
+    "id": 694,
+    "speciesId": 694,
+    "pokemonSlug": "helioptile",
+    "speciesSlug": "helioptile",
+    "calcSpeciesName": "Helioptile",
+    "names": {
+      "zh-hans": "伞电蜥",
+      "zh-hant": "傘電蜥",
+      "en": "Helioptile",
+      "ja": "エリキテル"
+    },
+    "speciesNames": {
+      "zh-hans": "伞电蜥",
+      "zh-hant": "傘電蜥",
+      "en": "Helioptile",
+      "ja": "エリキテル"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 44,
+      "atk": 38,
+      "def": 33,
+      "spa": 61,
+      "spd": 43,
+      "spe": 70
+    }
+  },
+  "695": {
+    "resourceType": "pokemon",
+    "id": 695,
+    "speciesId": 695,
+    "pokemonSlug": "heliolisk",
+    "speciesSlug": "heliolisk",
+    "calcSpeciesName": "Heliolisk",
+    "names": {
+      "zh-hans": "光电伞蜥",
+      "zh-hant": "光電傘蜥",
+      "en": "Heliolisk",
+      "ja": "エレザード"
+    },
+    "speciesNames": {
+      "zh-hans": "光电伞蜥",
+      "zh-hant": "光電傘蜥",
+      "en": "Heliolisk",
+      "ja": "エレザード"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 62,
+      "atk": 55,
+      "def": 52,
+      "spa": 109,
+      "spd": 94,
+      "spe": 109
+    }
+  },
+  "696": {
+    "resourceType": "pokemon",
+    "id": 696,
+    "speciesId": 696,
+    "pokemonSlug": "tyrunt",
+    "speciesSlug": "tyrunt",
+    "calcSpeciesName": "Tyrunt",
+    "names": {
+      "zh-hans": "宝宝暴龙",
+      "zh-hant": "寶寶暴龍",
+      "en": "Tyrunt",
+      "ja": "チゴラス"
+    },
+    "speciesNames": {
+      "zh-hans": "宝宝暴龙",
+      "zh-hant": "寶寶暴龍",
+      "en": "Tyrunt",
+      "ja": "チゴラス"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 58,
+      "atk": 89,
+      "def": 77,
+      "spa": 45,
+      "spd": 45,
+      "spe": 48
+    }
+  },
+  "697": {
+    "resourceType": "pokemon",
+    "id": 697,
+    "speciesId": 697,
+    "pokemonSlug": "tyrantrum",
+    "speciesSlug": "tyrantrum",
+    "calcSpeciesName": "Tyrantrum",
+    "names": {
+      "zh-hans": "怪颚龙",
+      "zh-hant": "怪顎龍",
+      "en": "Tyrantrum",
+      "ja": "ガチゴラス"
+    },
+    "speciesNames": {
+      "zh-hans": "怪颚龙",
+      "zh-hant": "怪顎龍",
+      "en": "Tyrantrum",
+      "ja": "ガチゴラス"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 82,
+      "atk": 121,
+      "def": 119,
+      "spa": 69,
+      "spd": 59,
+      "spe": 71
+    }
+  },
+  "698": {
+    "resourceType": "pokemon",
+    "id": 698,
+    "speciesId": 698,
+    "pokemonSlug": "amaura",
+    "speciesSlug": "amaura",
+    "calcSpeciesName": "Amaura",
+    "names": {
+      "zh-hans": "冰雪龙",
+      "zh-hant": "冰雪龍",
+      "en": "Amaura",
+      "ja": "アマルス"
+    },
+    "speciesNames": {
+      "zh-hans": "冰雪龙",
+      "zh-hant": "冰雪龍",
+      "en": "Amaura",
+      "ja": "アマルス"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 77,
+      "atk": 59,
+      "def": 50,
+      "spa": 67,
+      "spd": 63,
+      "spe": 46
+    }
+  },
+  "699": {
+    "resourceType": "pokemon",
+    "id": 699,
+    "speciesId": 699,
+    "pokemonSlug": "aurorus",
+    "speciesSlug": "aurorus",
+    "calcSpeciesName": "Aurorus",
+    "names": {
+      "zh-hans": "冰雪巨龙",
+      "zh-hant": "冰雪巨龍",
+      "en": "Aurorus",
+      "ja": "アマルルガ"
+    },
+    "speciesNames": {
+      "zh-hans": "冰雪巨龙",
+      "zh-hant": "冰雪巨龍",
+      "en": "Aurorus",
+      "ja": "アマルルガ"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 123,
+      "atk": 77,
+      "def": 72,
+      "spa": 99,
+      "spd": 92,
+      "spe": 58
+    }
+  },
+  "700": {
+    "resourceType": "pokemon",
+    "id": 700,
+    "speciesId": 700,
+    "pokemonSlug": "sylveon",
+    "speciesSlug": "sylveon",
+    "calcSpeciesName": "Sylveon",
+    "names": {
+      "zh-hans": "仙子伊布",
+      "zh-hant": "仙子伊布",
+      "en": "Sylveon",
+      "ja": "ニンフィア"
+    },
+    "speciesNames": {
+      "zh-hans": "仙子伊布",
+      "zh-hant": "仙子伊布",
+      "en": "Sylveon",
+      "ja": "ニンフィア"
+    },
+    "formNames": {},
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 65,
+      "def": 65,
+      "spa": 110,
+      "spd": 130,
+      "spe": 60
+    }
+  },
+  "701": {
+    "resourceType": "pokemon",
+    "id": 701,
+    "speciesId": 701,
+    "pokemonSlug": "hawlucha",
+    "speciesSlug": "hawlucha",
+    "calcSpeciesName": "Hawlucha",
+    "names": {
+      "zh-hans": "摔角鹰人",
+      "zh-hant": "摔角鷹人",
+      "en": "Hawlucha",
+      "ja": "ルチャブル"
+    },
+    "speciesNames": {
+      "zh-hans": "摔角鹰人",
+      "zh-hant": "摔角鷹人",
+      "en": "Hawlucha",
+      "ja": "ルチャブル"
+    },
+    "formNames": {},
+    "types": [
+      "fighting",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 78,
+      "atk": 92,
+      "def": 75,
+      "spa": 74,
+      "spd": 63,
+      "spe": 118
+    }
+  },
+  "702": {
+    "resourceType": "pokemon",
+    "id": 702,
+    "speciesId": 702,
+    "pokemonSlug": "dedenne",
+    "speciesSlug": "dedenne",
+    "calcSpeciesName": "Dedenne",
+    "names": {
+      "zh-hans": "咚咚鼠",
+      "zh-hant": "咚咚鼠",
+      "en": "Dedenne",
+      "ja": "デデンネ"
+    },
+    "speciesNames": {
+      "zh-hans": "咚咚鼠",
+      "zh-hant": "咚咚鼠",
+      "en": "Dedenne",
+      "ja": "デデンネ"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 67,
+      "atk": 58,
+      "def": 57,
+      "spa": 81,
+      "spd": 67,
+      "spe": 101
+    }
+  },
+  "703": {
+    "resourceType": "pokemon",
+    "id": 703,
+    "speciesId": 703,
+    "pokemonSlug": "carbink",
+    "speciesSlug": "carbink",
+    "calcSpeciesName": "Carbink",
+    "names": {
+      "zh-hans": "小碎钻",
+      "zh-hant": "小碎鑽",
+      "en": "Carbink",
+      "ja": "メレシー"
+    },
+    "speciesNames": {
+      "zh-hans": "小碎钻",
+      "zh-hant": "小碎鑽",
+      "en": "Carbink",
+      "ja": "メレシー"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 50,
+      "def": 150,
+      "spa": 50,
+      "spd": 150,
+      "spe": 50
+    }
+  },
+  "704": {
+    "resourceType": "pokemon",
+    "id": 704,
+    "speciesId": 704,
+    "pokemonSlug": "goomy",
+    "speciesSlug": "goomy",
+    "calcSpeciesName": "Goomy",
+    "names": {
+      "zh-hans": "黏黏宝",
+      "zh-hant": "黏黏寶",
+      "en": "Goomy",
+      "ja": "ヌメラ"
+    },
+    "speciesNames": {
+      "zh-hans": "黏黏宝",
+      "zh-hant": "黏黏寶",
+      "en": "Goomy",
+      "ja": "ヌメラ"
+    },
+    "formNames": {},
+    "types": [
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 50,
+      "def": 35,
+      "spa": 55,
+      "spd": 75,
+      "spe": 40
+    }
+  },
+  "705": {
+    "resourceType": "pokemon",
+    "id": 705,
+    "speciesId": 705,
+    "pokemonSlug": "sliggoo",
+    "speciesSlug": "sliggoo",
+    "calcSpeciesName": "Sliggoo",
+    "names": {
+      "zh-hans": "黏美儿",
+      "zh-hant": "黏美兒",
+      "en": "Sliggoo",
+      "ja": "ヌメイル"
+    },
+    "speciesNames": {
+      "zh-hans": "黏美儿",
+      "zh-hant": "黏美兒",
+      "en": "Sliggoo",
+      "ja": "ヌメイル"
+    },
+    "formNames": {},
+    "types": [
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 75,
+      "def": 53,
+      "spa": 83,
+      "spd": 113,
+      "spe": 60
+    }
+  },
+  "706": {
+    "resourceType": "pokemon",
+    "id": 706,
+    "speciesId": 706,
+    "pokemonSlug": "goodra",
+    "speciesSlug": "goodra",
+    "calcSpeciesName": "Goodra",
+    "names": {
+      "zh-hans": "黏美龙",
+      "zh-hant": "黏美龍",
+      "en": "Goodra",
+      "ja": "ヌメルゴン"
+    },
+    "speciesNames": {
+      "zh-hans": "黏美龙",
+      "zh-hant": "黏美龍",
+      "en": "Goodra",
+      "ja": "ヌメルゴン"
+    },
+    "formNames": {},
+    "types": [
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 100,
+      "def": 70,
+      "spa": 110,
+      "spd": 150,
+      "spe": 80
+    }
+  },
+  "707": {
+    "resourceType": "pokemon",
+    "id": 707,
+    "speciesId": 707,
+    "pokemonSlug": "klefki",
+    "speciesSlug": "klefki",
+    "calcSpeciesName": "Klefki",
+    "names": {
+      "zh-hans": "钥圈儿",
+      "zh-hant": "鑰圈兒",
+      "en": "Klefki",
+      "ja": "クレッフィ"
+    },
+    "speciesNames": {
+      "zh-hans": "钥圈儿",
+      "zh-hant": "鑰圈兒",
+      "en": "Klefki",
+      "ja": "クレッフィ"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 57,
+      "atk": 80,
+      "def": 91,
+      "spa": 80,
+      "spd": 87,
+      "spe": 75
+    }
+  },
+  "708": {
+    "resourceType": "pokemon",
+    "id": 708,
+    "speciesId": 708,
+    "pokemonSlug": "phantump",
+    "speciesSlug": "phantump",
+    "calcSpeciesName": "Phantump",
+    "names": {
+      "zh-hans": "小木灵",
+      "zh-hant": "小木靈",
+      "en": "Phantump",
+      "ja": "ボクレー"
+    },
+    "speciesNames": {
+      "zh-hans": "小木灵",
+      "zh-hant": "小木靈",
+      "en": "Phantump",
+      "ja": "ボクレー"
+    },
+    "formNames": {},
+    "types": [
+      "ghost",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 43,
+      "atk": 70,
+      "def": 48,
+      "spa": 50,
+      "spd": 60,
+      "spe": 38
+    }
+  },
+  "709": {
+    "resourceType": "pokemon",
+    "id": 709,
+    "speciesId": 709,
+    "pokemonSlug": "trevenant",
+    "speciesSlug": "trevenant",
+    "calcSpeciesName": "Trevenant",
+    "names": {
+      "zh-hans": "朽木妖",
+      "zh-hant": "朽木妖",
+      "en": "Trevenant",
+      "ja": "オーロット"
+    },
+    "speciesNames": {
+      "zh-hans": "朽木妖",
+      "zh-hant": "朽木妖",
+      "en": "Trevenant",
+      "ja": "オーロット"
+    },
+    "formNames": {},
+    "types": [
+      "ghost",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 110,
+      "def": 76,
+      "spa": 65,
+      "spd": 82,
+      "spe": 56
+    }
+  },
+  "710": {
+    "resourceType": "pokemon",
+    "id": 710,
+    "speciesId": 710,
+    "pokemonSlug": "pumpkaboo-average",
+    "speciesSlug": "pumpkaboo",
+    "calcSpeciesName": "Pumpkaboo",
+    "names": {
+      "zh-hans": "南瓜精",
+      "zh-hant": "南瓜精",
+      "en": "Pumpkaboo",
+      "ja": "バケッチャ"
+    },
+    "speciesNames": {
+      "zh-hans": "南瓜精",
+      "zh-hant": "南瓜精",
+      "en": "Pumpkaboo",
+      "ja": "バケッチャ"
+    },
+    "formNames": {
+      "zh-hans": "普通尺寸",
+      "zh-hant": "普通尺寸",
+      "en": "Average Size",
+      "ja": "ふつうのサイズ"
+    },
+    "types": [
+      "ghost",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 49,
+      "atk": 66,
+      "def": 70,
+      "spa": 44,
+      "spd": 55,
+      "spe": 51
+    }
+  },
+  "711": {
+    "resourceType": "pokemon",
+    "id": 711,
+    "speciesId": 711,
+    "pokemonSlug": "gourgeist-average",
+    "speciesSlug": "gourgeist",
+    "calcSpeciesName": "Gourgeist",
+    "names": {
+      "zh-hans": "南瓜怪人",
+      "zh-hant": "南瓜怪人",
+      "en": "Gourgeist",
+      "ja": "パンプジン"
+    },
+    "speciesNames": {
+      "zh-hans": "南瓜怪人",
+      "zh-hant": "南瓜怪人",
+      "en": "Gourgeist",
+      "ja": "パンプジン"
+    },
+    "formNames": {
+      "zh-hans": "普通尺寸",
+      "zh-hant": "普通尺寸",
+      "en": "Average Size",
+      "ja": "ふつうのサイズ"
+    },
+    "types": [
+      "ghost",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 90,
+      "def": 122,
+      "spa": 58,
+      "spd": 75,
+      "spe": 84
+    }
+  },
+  "712": {
+    "resourceType": "pokemon",
+    "id": 712,
+    "speciesId": 712,
+    "pokemonSlug": "bergmite",
+    "speciesSlug": "bergmite",
+    "calcSpeciesName": "Bergmite",
+    "names": {
+      "zh-hans": "冰宝",
+      "zh-hant": "冰寶",
+      "en": "Bergmite",
+      "ja": "カチコール"
+    },
+    "speciesNames": {
+      "zh-hans": "冰宝",
+      "zh-hant": "冰寶",
+      "en": "Bergmite",
+      "ja": "カチコール"
+    },
+    "formNames": {},
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 69,
+      "def": 85,
+      "spa": 32,
+      "spd": 35,
+      "spe": 28
+    }
+  },
+  "713": {
+    "resourceType": "pokemon",
+    "id": 713,
+    "speciesId": 713,
+    "pokemonSlug": "avalugg",
+    "speciesSlug": "avalugg",
+    "calcSpeciesName": "Avalugg",
+    "names": {
+      "zh-hans": "冰岩怪",
+      "zh-hant": "冰岩怪",
+      "en": "Avalugg",
+      "ja": "クレベース"
+    },
+    "speciesNames": {
+      "zh-hans": "冰岩怪",
+      "zh-hant": "冰岩怪",
+      "en": "Avalugg",
+      "ja": "クレベース"
+    },
+    "formNames": {},
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 117,
+      "def": 184,
+      "spa": 44,
+      "spd": 46,
+      "spe": 28
+    }
+  },
+  "714": {
+    "resourceType": "pokemon",
+    "id": 714,
+    "speciesId": 714,
+    "pokemonSlug": "noibat",
+    "speciesSlug": "noibat",
+    "calcSpeciesName": "Noibat",
+    "names": {
+      "zh-hans": "嗡蝠",
+      "zh-hant": "嗡蝠",
+      "en": "Noibat",
+      "ja": "オンバット"
+    },
+    "speciesNames": {
+      "zh-hans": "嗡蝠",
+      "zh-hant": "嗡蝠",
+      "en": "Noibat",
+      "ja": "オンバット"
+    },
+    "formNames": {},
+    "types": [
+      "flying",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 30,
+      "def": 35,
+      "spa": 45,
+      "spd": 40,
+      "spe": 55
+    }
+  },
+  "715": {
+    "resourceType": "pokemon",
+    "id": 715,
+    "speciesId": 715,
+    "pokemonSlug": "noivern",
+    "speciesSlug": "noivern",
+    "calcSpeciesName": "Noivern",
+    "names": {
+      "zh-hans": "音波龙",
+      "zh-hant": "音波龍",
+      "en": "Noivern",
+      "ja": "オンバーン"
+    },
+    "speciesNames": {
+      "zh-hans": "音波龙",
+      "zh-hant": "音波龍",
+      "en": "Noivern",
+      "ja": "オンバーン"
+    },
+    "formNames": {},
+    "types": [
+      "flying",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 70,
+      "def": 80,
+      "spa": 97,
+      "spd": 80,
+      "spe": 123
+    }
+  },
+  "716": {
+    "resourceType": "pokemon",
+    "id": 716,
+    "speciesId": 716,
+    "pokemonSlug": "xerneas",
+    "speciesSlug": "xerneas",
+    "calcSpeciesName": "Xerneas",
+    "names": {
+      "zh-hans": "哲尔尼亚斯",
+      "zh-hant": "哲爾尼亞斯",
+      "en": "Xerneas",
+      "ja": "ゼルネアス"
+    },
+    "speciesNames": {
+      "zh-hans": "哲尔尼亚斯",
+      "zh-hant": "哲爾尼亞斯",
+      "en": "Xerneas",
+      "ja": "ゼルネアス"
+    },
+    "formNames": {
+      "zh-hans": "放松模式",
+      "zh-hant": "放鬆模式",
+      "en": "Neutral Mode",
+      "ja": "リラックスモード"
+    },
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 126,
+      "atk": 131,
+      "def": 95,
+      "spa": 131,
+      "spd": 98,
+      "spe": 99
+    }
+  },
+  "717": {
+    "resourceType": "pokemon",
+    "id": 717,
+    "speciesId": 717,
+    "pokemonSlug": "yveltal",
+    "speciesSlug": "yveltal",
+    "calcSpeciesName": "Yveltal",
+    "names": {
+      "zh-hans": "伊裴尔塔尔",
+      "zh-hant": "伊裴爾塔爾",
+      "en": "Yveltal",
+      "ja": "イベルタル"
+    },
+    "speciesNames": {
+      "zh-hans": "伊裴尔塔尔",
+      "zh-hant": "伊裴爾塔爾",
+      "en": "Yveltal",
+      "ja": "イベルタル"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 126,
+      "atk": 131,
+      "def": 95,
+      "spa": 131,
+      "spd": 98,
+      "spe": 99
+    }
+  },
+  "718": {
+    "resourceType": "pokemon",
+    "id": 718,
+    "speciesId": 718,
+    "pokemonSlug": "zygarde-50",
+    "speciesSlug": "zygarde",
+    "calcSpeciesName": "Zygarde",
+    "names": {
+      "zh-hans": "基格尔德",
+      "zh-hant": "基格爾德",
+      "en": "Zygarde",
+      "ja": "ジガルデ"
+    },
+    "speciesNames": {
+      "zh-hans": "基格尔德",
+      "zh-hant": "基格爾德",
+      "en": "Zygarde",
+      "ja": "ジガルデ"
+    },
+    "formNames": {
+      "zh-hans": "５０％形态",
+      "zh-hant": "５０％形態",
+      "en": "50% Forme",
+      "ja": "５０％フォルム"
+    },
+    "types": [
+      "dragon",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 108,
+      "atk": 100,
+      "def": 121,
+      "spa": 81,
+      "spd": 95,
+      "spe": 95
+    }
+  },
+  "719": {
+    "resourceType": "pokemon",
+    "id": 719,
+    "speciesId": 719,
+    "pokemonSlug": "diancie",
+    "speciesSlug": "diancie",
+    "calcSpeciesName": "Diancie",
+    "names": {
+      "zh-hans": "蒂安希",
+      "zh-hant": "蒂安希",
+      "en": "Diancie",
+      "ja": "ディアンシー"
+    },
+    "speciesNames": {
+      "zh-hans": "蒂安希",
+      "zh-hant": "蒂安希",
+      "en": "Diancie",
+      "ja": "ディアンシー"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 100,
+      "def": 150,
+      "spa": 100,
+      "spd": 150,
+      "spe": 50
+    }
+  },
+  "720": {
+    "resourceType": "pokemon",
+    "id": 720,
+    "speciesId": 720,
+    "pokemonSlug": "hoopa",
+    "speciesSlug": "hoopa",
+    "calcSpeciesName": "Hoopa",
+    "names": {
+      "zh-hans": "胡帕",
+      "zh-hant": "胡帕",
+      "en": "Hoopa",
+      "ja": "フーパ"
+    },
+    "speciesNames": {
+      "zh-hans": "胡帕",
+      "zh-hant": "胡帕",
+      "en": "Hoopa",
+      "ja": "フーパ"
+    },
+    "formNames": {
+      "zh-hans": "惩戒胡帕",
+      "zh-hant": "懲戒胡帕",
+      "en": "Hoopa Confined",
+      "ja": "いましめられしフーパ"
+    },
+    "types": [
+      "psychic",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 110,
+      "def": 60,
+      "spa": 150,
+      "spd": 130,
+      "spe": 70
+    }
+  },
+  "721": {
+    "resourceType": "pokemon",
+    "id": 721,
+    "speciesId": 721,
+    "pokemonSlug": "volcanion",
+    "speciesSlug": "volcanion",
+    "calcSpeciesName": "Volcanion",
+    "names": {
+      "zh-hans": "波尔凯尼恩",
+      "zh-hant": "波爾凱尼恩",
+      "en": "Volcanion",
+      "ja": "ボルケニオン"
+    },
+    "speciesNames": {
+      "zh-hans": "波尔凯尼恩",
+      "zh-hant": "波爾凱尼恩",
+      "en": "Volcanion",
+      "ja": "ボルケニオン"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 110,
+      "def": 120,
+      "spa": 130,
+      "spd": 90,
+      "spe": 70
+    }
+  },
+  "722": {
+    "resourceType": "pokemon",
+    "id": 722,
+    "speciesId": 722,
+    "pokemonSlug": "rowlet",
+    "speciesSlug": "rowlet",
+    "calcSpeciesName": "Rowlet",
+    "names": {
+      "zh-hans": "木木枭",
+      "zh-hant": "木木梟",
+      "en": "Rowlet",
+      "ja": "モクロー"
+    },
+    "speciesNames": {
+      "zh-hans": "木木枭",
+      "zh-hant": "木木梟",
+      "en": "Rowlet",
+      "ja": "モクロー"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 55,
+      "def": 55,
+      "spa": 50,
+      "spd": 50,
+      "spe": 42
+    }
+  },
+  "723": {
+    "resourceType": "pokemon",
+    "id": 723,
+    "speciesId": 723,
+    "pokemonSlug": "dartrix",
+    "speciesSlug": "dartrix",
+    "calcSpeciesName": "Dartrix",
+    "names": {
+      "zh-hans": "投羽枭",
+      "zh-hant": "投羽梟",
+      "en": "Dartrix",
+      "ja": "フクスロー"
+    },
+    "speciesNames": {
+      "zh-hans": "投羽枭",
+      "zh-hant": "投羽梟",
+      "en": "Dartrix",
+      "ja": "フクスロー"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 78,
+      "atk": 75,
+      "def": 75,
+      "spa": 70,
+      "spd": 70,
+      "spe": 52
+    }
+  },
+  "724": {
+    "resourceType": "pokemon",
+    "id": 724,
+    "speciesId": 724,
+    "pokemonSlug": "decidueye",
+    "speciesSlug": "decidueye",
+    "calcSpeciesName": "Decidueye",
+    "names": {
+      "zh-hans": "狙射树枭",
+      "zh-hant": "狙射樹梟",
+      "en": "Decidueye",
+      "ja": "ジュナイパー"
+    },
+    "speciesNames": {
+      "zh-hans": "狙射树枭",
+      "zh-hant": "狙射樹梟",
+      "en": "Decidueye",
+      "ja": "ジュナイパー"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 78,
+      "atk": 107,
+      "def": 75,
+      "spa": 100,
+      "spd": 100,
+      "spe": 70
+    }
+  },
+  "725": {
+    "resourceType": "pokemon",
+    "id": 725,
+    "speciesId": 725,
+    "pokemonSlug": "litten",
+    "speciesSlug": "litten",
+    "calcSpeciesName": "Litten",
+    "names": {
+      "zh-hans": "火斑喵",
+      "zh-hant": "火斑喵",
+      "en": "Litten",
+      "ja": "ニャビー"
+    },
+    "speciesNames": {
+      "zh-hans": "火斑喵",
+      "zh-hant": "火斑喵",
+      "en": "Litten",
+      "ja": "ニャビー"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 65,
+      "def": 40,
+      "spa": 60,
+      "spd": 40,
+      "spe": 70
+    }
+  },
+  "726": {
+    "resourceType": "pokemon",
+    "id": 726,
+    "speciesId": 726,
+    "pokemonSlug": "torracat",
+    "speciesSlug": "torracat",
+    "calcSpeciesName": "Torracat",
+    "names": {
+      "zh-hans": "炎热喵",
+      "zh-hant": "炎熱喵",
+      "en": "Torracat",
+      "ja": "ニャヒート"
+    },
+    "speciesNames": {
+      "zh-hans": "炎热喵",
+      "zh-hant": "炎熱喵",
+      "en": "Torracat",
+      "ja": "ニャヒート"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 85,
+      "def": 50,
+      "spa": 80,
+      "spd": 50,
+      "spe": 90
+    }
+  },
+  "727": {
+    "resourceType": "pokemon",
+    "id": 727,
+    "speciesId": 727,
+    "pokemonSlug": "incineroar",
+    "speciesSlug": "incineroar",
+    "calcSpeciesName": "Incineroar",
+    "names": {
+      "zh-hans": "炽焰咆哮虎",
+      "zh-hant": "熾焰咆哮虎",
+      "en": "Incineroar",
+      "ja": "ガオガエン"
+    },
+    "speciesNames": {
+      "zh-hans": "炽焰咆哮虎",
+      "zh-hant": "熾焰咆哮虎",
+      "en": "Incineroar",
+      "ja": "ガオガエン"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 115,
+      "def": 90,
+      "spa": 80,
+      "spd": 90,
+      "spe": 60
+    }
+  },
+  "728": {
+    "resourceType": "pokemon",
+    "id": 728,
+    "speciesId": 728,
+    "pokemonSlug": "popplio",
+    "speciesSlug": "popplio",
+    "calcSpeciesName": "Popplio",
+    "names": {
+      "zh-hans": "球球海狮",
+      "zh-hant": "球球海獅",
+      "en": "Popplio",
+      "ja": "アシマリ"
+    },
+    "speciesNames": {
+      "zh-hans": "球球海狮",
+      "zh-hant": "球球海獅",
+      "en": "Popplio",
+      "ja": "アシマリ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 54,
+      "def": 54,
+      "spa": 66,
+      "spd": 56,
+      "spe": 40
+    }
+  },
+  "729": {
+    "resourceType": "pokemon",
+    "id": 729,
+    "speciesId": 729,
+    "pokemonSlug": "brionne",
+    "speciesSlug": "brionne",
+    "calcSpeciesName": "Brionne",
+    "names": {
+      "zh-hans": "花漾海狮",
+      "zh-hant": "花漾海獅",
+      "en": "Brionne",
+      "ja": "オシャマリ"
+    },
+    "speciesNames": {
+      "zh-hans": "花漾海狮",
+      "zh-hant": "花漾海獅",
+      "en": "Brionne",
+      "ja": "オシャマリ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 69,
+      "def": 69,
+      "spa": 91,
+      "spd": 81,
+      "spe": 50
+    }
+  },
+  "730": {
+    "resourceType": "pokemon",
+    "id": 730,
+    "speciesId": 730,
+    "pokemonSlug": "primarina",
+    "speciesSlug": "primarina",
+    "calcSpeciesName": "Primarina",
+    "names": {
+      "zh-hans": "西狮海壬",
+      "zh-hant": "西獅海壬",
+      "en": "Primarina",
+      "ja": "アシレーヌ"
+    },
+    "speciesNames": {
+      "zh-hans": "西狮海壬",
+      "zh-hant": "西獅海壬",
+      "en": "Primarina",
+      "ja": "アシレーヌ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 74,
+      "def": 74,
+      "spa": 126,
+      "spd": 116,
+      "spe": 60
+    }
+  },
+  "731": {
+    "resourceType": "pokemon",
+    "id": 731,
+    "speciesId": 731,
+    "pokemonSlug": "pikipek",
+    "speciesSlug": "pikipek",
+    "calcSpeciesName": "Pikipek",
+    "names": {
+      "zh-hans": "小笃儿",
+      "zh-hant": "小篤兒",
+      "en": "Pikipek",
+      "ja": "ツツケラ"
+    },
+    "speciesNames": {
+      "zh-hans": "小笃儿",
+      "zh-hant": "小篤兒",
+      "en": "Pikipek",
+      "ja": "ツツケラ"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 75,
+      "def": 30,
+      "spa": 30,
+      "spd": 30,
+      "spe": 65
+    }
+  },
+  "732": {
+    "resourceType": "pokemon",
+    "id": 732,
+    "speciesId": 732,
+    "pokemonSlug": "trumbeak",
+    "speciesSlug": "trumbeak",
+    "calcSpeciesName": "Trumbeak",
+    "names": {
+      "zh-hans": "喇叭啄鸟",
+      "zh-hant": "喇叭啄鳥",
+      "en": "Trumbeak",
+      "ja": "ケララッパ"
+    },
+    "speciesNames": {
+      "zh-hans": "喇叭啄鸟",
+      "zh-hant": "喇叭啄鳥",
+      "en": "Trumbeak",
+      "ja": "ケララッパ"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 85,
+      "def": 50,
+      "spa": 40,
+      "spd": 50,
+      "spe": 75
+    }
+  },
+  "733": {
+    "resourceType": "pokemon",
+    "id": 733,
+    "speciesId": 733,
+    "pokemonSlug": "toucannon",
+    "speciesSlug": "toucannon",
+    "calcSpeciesName": "Toucannon",
+    "names": {
+      "zh-hans": "铳嘴大鸟",
+      "zh-hant": "銃嘴大鳥",
+      "en": "Toucannon",
+      "ja": "ドデカバシ"
+    },
+    "speciesNames": {
+      "zh-hans": "铳嘴大鸟",
+      "zh-hant": "銃嘴大鳥",
+      "en": "Toucannon",
+      "ja": "ドデカバシ"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 120,
+      "def": 75,
+      "spa": 75,
+      "spd": 75,
+      "spe": 60
+    }
+  },
+  "734": {
+    "resourceType": "pokemon",
+    "id": 734,
+    "speciesId": 734,
+    "pokemonSlug": "yungoos",
+    "speciesSlug": "yungoos",
+    "calcSpeciesName": "Yungoos",
+    "names": {
+      "zh-hans": "猫鼬少",
+      "zh-hant": "貓鼬少",
+      "en": "Yungoos",
+      "ja": "ヤングース"
+    },
+    "speciesNames": {
+      "zh-hans": "猫鼬少",
+      "zh-hant": "貓鼬少",
+      "en": "Yungoos",
+      "ja": "ヤングース"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 48,
+      "atk": 70,
+      "def": 30,
+      "spa": 30,
+      "spd": 30,
+      "spe": 45
+    }
+  },
+  "735": {
+    "resourceType": "pokemon",
+    "id": 735,
+    "speciesId": 735,
+    "pokemonSlug": "gumshoos",
+    "speciesSlug": "gumshoos",
+    "calcSpeciesName": "Gumshoos",
+    "names": {
+      "zh-hans": "猫鼬探长",
+      "zh-hant": "貓鼬探長",
+      "en": "Gumshoos",
+      "ja": "デカグース"
+    },
+    "speciesNames": {
+      "zh-hans": "猫鼬探长",
+      "zh-hant": "貓鼬探長",
+      "en": "Gumshoos",
+      "ja": "デカグース"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 88,
+      "atk": 110,
+      "def": 60,
+      "spa": 55,
+      "spd": 60,
+      "spe": 45
+    }
+  },
+  "736": {
+    "resourceType": "pokemon",
+    "id": 736,
+    "speciesId": 736,
+    "pokemonSlug": "grubbin",
+    "speciesSlug": "grubbin",
+    "calcSpeciesName": "Grubbin",
+    "names": {
+      "zh-hans": "强颚鸡母虫",
+      "zh-hant": "強顎雞母蟲",
+      "en": "Grubbin",
+      "ja": "アゴジムシ"
+    },
+    "speciesNames": {
+      "zh-hans": "强颚鸡母虫",
+      "zh-hant": "強顎雞母蟲",
+      "en": "Grubbin",
+      "ja": "アゴジムシ"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 47,
+      "atk": 62,
+      "def": 45,
+      "spa": 55,
+      "spd": 45,
+      "spe": 46
+    }
+  },
+  "737": {
+    "resourceType": "pokemon",
+    "id": 737,
+    "speciesId": 737,
+    "pokemonSlug": "charjabug",
+    "speciesSlug": "charjabug",
+    "calcSpeciesName": "Charjabug",
+    "names": {
+      "zh-hans": "虫电宝",
+      "zh-hant": "蟲電寶",
+      "en": "Charjabug",
+      "ja": "デンヂムシ"
+    },
+    "speciesNames": {
+      "zh-hans": "虫电宝",
+      "zh-hant": "蟲電寶",
+      "en": "Charjabug",
+      "ja": "デンヂムシ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 57,
+      "atk": 82,
+      "def": 95,
+      "spa": 55,
+      "spd": 75,
+      "spe": 36
+    }
+  },
+  "738": {
+    "resourceType": "pokemon",
+    "id": 738,
+    "speciesId": 738,
+    "pokemonSlug": "vikavolt",
+    "speciesSlug": "vikavolt",
+    "calcSpeciesName": "Vikavolt",
+    "names": {
+      "zh-hans": "锹农炮虫",
+      "zh-hant": "鍬農炮蟲",
+      "en": "Vikavolt",
+      "ja": "クワガノン"
+    },
+    "speciesNames": {
+      "zh-hans": "锹农炮虫",
+      "zh-hant": "鍬農炮蟲",
+      "en": "Vikavolt",
+      "ja": "クワガノン"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 77,
+      "atk": 70,
+      "def": 90,
+      "spa": 145,
+      "spd": 75,
+      "spe": 43
+    }
+  },
+  "739": {
+    "resourceType": "pokemon",
+    "id": 739,
+    "speciesId": 739,
+    "pokemonSlug": "crabrawler",
+    "speciesSlug": "crabrawler",
+    "calcSpeciesName": "Crabrawler",
+    "names": {
+      "zh-hans": "好胜蟹",
+      "zh-hant": "好勝蟹",
+      "en": "Crabrawler",
+      "ja": "マケンカニ"
+    },
+    "speciesNames": {
+      "zh-hans": "好胜蟹",
+      "zh-hant": "好勝蟹",
+      "en": "Crabrawler",
+      "ja": "マケンカニ"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 47,
+      "atk": 82,
+      "def": 57,
+      "spa": 42,
+      "spd": 47,
+      "spe": 63
+    }
+  },
+  "740": {
+    "resourceType": "pokemon",
+    "id": 740,
+    "speciesId": 740,
+    "pokemonSlug": "crabominable",
+    "speciesSlug": "crabominable",
+    "calcSpeciesName": "Crabominable",
+    "names": {
+      "zh-hans": "好胜毛蟹",
+      "zh-hant": "好勝毛蟹",
+      "en": "Crabominable",
+      "ja": "ケケンカニ"
+    },
+    "speciesNames": {
+      "zh-hans": "好胜毛蟹",
+      "zh-hant": "好勝毛蟹",
+      "en": "Crabominable",
+      "ja": "ケケンカニ"
+    },
+    "formNames": {},
+    "types": [
+      "fighting",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 97,
+      "atk": 132,
+      "def": 77,
+      "spa": 62,
+      "spd": 67,
+      "spe": 43
+    }
+  },
+  "741": {
+    "resourceType": "pokemon",
+    "id": 741,
+    "speciesId": 741,
+    "pokemonSlug": "oricorio-baile",
+    "speciesSlug": "oricorio",
+    "calcSpeciesName": "Oricorio",
+    "names": {
+      "zh-hans": "花舞鸟",
+      "zh-hant": "花舞鳥",
+      "en": "Oricorio",
+      "ja": "オドリドリ"
+    },
+    "speciesNames": {
+      "zh-hans": "花舞鸟",
+      "zh-hant": "花舞鳥",
+      "en": "Oricorio",
+      "ja": "オドリドリ"
+    },
+    "formNames": {
+      "zh-hans": "热辣热辣风格",
+      "zh-hant": "熱辣熱辣風格",
+      "en": "Baile Style",
+      "ja": "めらめらスタイル"
+    },
+    "types": [
+      "fire",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 70,
+      "def": 70,
+      "spa": 98,
+      "spd": 70,
+      "spe": 93
+    }
+  },
+  "742": {
+    "resourceType": "pokemon",
+    "id": 742,
+    "speciesId": 742,
+    "pokemonSlug": "cutiefly",
+    "speciesSlug": "cutiefly",
+    "calcSpeciesName": "Cutiefly",
+    "names": {
+      "zh-hans": "萌虻",
+      "zh-hant": "萌虻",
+      "en": "Cutiefly",
+      "ja": "アブリー"
+    },
+    "speciesNames": {
+      "zh-hans": "萌虻",
+      "zh-hant": "萌虻",
+      "en": "Cutiefly",
+      "ja": "アブリー"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 45,
+      "def": 40,
+      "spa": 55,
+      "spd": 40,
+      "spe": 84
+    }
+  },
+  "743": {
+    "resourceType": "pokemon",
+    "id": 743,
+    "speciesId": 743,
+    "pokemonSlug": "ribombee",
+    "speciesSlug": "ribombee",
+    "calcSpeciesName": "Ribombee",
+    "names": {
+      "zh-hans": "蝶结萌虻",
+      "zh-hant": "蝶結萌虻",
+      "en": "Ribombee",
+      "ja": "アブリボン"
+    },
+    "speciesNames": {
+      "zh-hans": "蝶结萌虻",
+      "zh-hant": "蝶結萌虻",
+      "en": "Ribombee",
+      "ja": "アブリボン"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 55,
+      "def": 60,
+      "spa": 95,
+      "spd": 70,
+      "spe": 124
+    }
+  },
+  "744": {
+    "resourceType": "pokemon",
+    "id": 744,
+    "speciesId": 744,
+    "pokemonSlug": "rockruff",
+    "speciesSlug": "rockruff",
+    "calcSpeciesName": "Rockruff",
+    "names": {
+      "zh-hans": "岩狗狗",
+      "zh-hant": "岩狗狗",
+      "en": "Rockruff",
+      "ja": "イワンコ"
+    },
+    "speciesNames": {
+      "zh-hans": "岩狗狗",
+      "zh-hant": "岩狗狗",
+      "en": "Rockruff",
+      "ja": "イワンコ"
+    },
+    "formNames": {},
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 65,
+      "def": 40,
+      "spa": 30,
+      "spd": 40,
+      "spe": 60
+    }
+  },
+  "745": {
+    "resourceType": "pokemon",
+    "id": 745,
+    "speciesId": 745,
+    "pokemonSlug": "lycanroc-midday",
+    "speciesSlug": "lycanroc",
+    "calcSpeciesName": "Lycanroc",
+    "names": {
+      "zh-hans": "鬃岩狼人",
+      "zh-hant": "鬃岩狼人",
+      "en": "Lycanroc",
+      "ja": "ルガルガン"
+    },
+    "speciesNames": {
+      "zh-hans": "鬃岩狼人",
+      "zh-hant": "鬃岩狼人",
+      "en": "Lycanroc",
+      "ja": "ルガルガン"
+    },
+    "formNames": {
+      "zh-hans": "白昼的样子",
+      "zh-hant": "白晝的樣子",
+      "en": "Midday Form",
+      "ja": "まひるのすがた"
+    },
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 115,
+      "def": 65,
+      "spa": 55,
+      "spd": 65,
+      "spe": 112
+    }
+  },
+  "746": {
+    "resourceType": "pokemon",
+    "id": 746,
+    "speciesId": 746,
+    "pokemonSlug": "wishiwashi-solo",
+    "speciesSlug": "wishiwashi",
+    "calcSpeciesName": "Wishiwashi",
+    "names": {
+      "zh-hans": "弱丁鱼",
+      "zh-hant": "弱丁魚",
+      "en": "Wishiwashi",
+      "ja": "ヨワシ"
+    },
+    "speciesNames": {
+      "zh-hans": "弱丁鱼",
+      "zh-hant": "弱丁魚",
+      "en": "Wishiwashi",
+      "ja": "ヨワシ"
+    },
+    "formNames": {
+      "zh-hans": "单独的样子",
+      "zh-hant": "單獨的樣子",
+      "en": "Solo Form",
+      "ja": "たんどくのすがた"
+    },
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 20,
+      "def": 20,
+      "spa": 25,
+      "spd": 25,
+      "spe": 40
+    }
+  },
+  "747": {
+    "resourceType": "pokemon",
+    "id": 747,
+    "speciesId": 747,
+    "pokemonSlug": "mareanie",
+    "speciesSlug": "mareanie",
+    "calcSpeciesName": "Mareanie",
+    "names": {
+      "zh-hans": "好坏星",
+      "zh-hant": "好壞星",
+      "en": "Mareanie",
+      "ja": "ヒドイデ"
+    },
+    "speciesNames": {
+      "zh-hans": "好坏星",
+      "zh-hant": "好壞星",
+      "en": "Mareanie",
+      "ja": "ヒドイデ"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 53,
+      "def": 62,
+      "spa": 43,
+      "spd": 52,
+      "spe": 45
+    }
+  },
+  "748": {
+    "resourceType": "pokemon",
+    "id": 748,
+    "speciesId": 748,
+    "pokemonSlug": "toxapex",
+    "speciesSlug": "toxapex",
+    "calcSpeciesName": "Toxapex",
+    "names": {
+      "zh-hans": "超坏星",
+      "zh-hant": "超壞星",
+      "en": "Toxapex",
+      "ja": "ドヒドイデ"
+    },
+    "speciesNames": {
+      "zh-hans": "超坏星",
+      "zh-hant": "超壞星",
+      "en": "Toxapex",
+      "ja": "ドヒドイデ"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 63,
+      "def": 152,
+      "spa": 53,
+      "spd": 142,
+      "spe": 35
+    }
+  },
+  "749": {
+    "resourceType": "pokemon",
+    "id": 749,
+    "speciesId": 749,
+    "pokemonSlug": "mudbray",
+    "speciesSlug": "mudbray",
+    "calcSpeciesName": "Mudbray",
+    "names": {
+      "zh-hans": "泥驴仔",
+      "zh-hant": "泥驢仔",
+      "en": "Mudbray",
+      "ja": "ドロバンコ"
+    },
+    "speciesNames": {
+      "zh-hans": "泥驴仔",
+      "zh-hant": "泥驢仔",
+      "en": "Mudbray",
+      "ja": "ドロバンコ"
+    },
+    "formNames": {},
+    "types": [
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 100,
+      "def": 70,
+      "spa": 45,
+      "spd": 55,
+      "spe": 45
+    }
+  },
+  "750": {
+    "resourceType": "pokemon",
+    "id": 750,
+    "speciesId": 750,
+    "pokemonSlug": "mudsdale",
+    "speciesSlug": "mudsdale",
+    "calcSpeciesName": "Mudsdale",
+    "names": {
+      "zh-hans": "重泥挽马",
+      "zh-hant": "重泥挽馬",
+      "en": "Mudsdale",
+      "ja": "バンバドロ"
+    },
+    "speciesNames": {
+      "zh-hans": "重泥挽马",
+      "zh-hant": "重泥挽馬",
+      "en": "Mudsdale",
+      "ja": "バンバドロ"
+    },
+    "formNames": {},
+    "types": [
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 125,
+      "def": 100,
+      "spa": 55,
+      "spd": 85,
+      "spe": 35
+    }
+  },
+  "751": {
+    "resourceType": "pokemon",
+    "id": 751,
+    "speciesId": 751,
+    "pokemonSlug": "dewpider",
+    "speciesSlug": "dewpider",
+    "calcSpeciesName": "Dewpider",
+    "names": {
+      "zh-hans": "滴蛛",
+      "zh-hant": "滴蛛",
+      "en": "Dewpider",
+      "ja": "シズクモ"
+    },
+    "speciesNames": {
+      "zh-hans": "滴蛛",
+      "zh-hant": "滴蛛",
+      "en": "Dewpider",
+      "ja": "シズクモ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 38,
+      "atk": 40,
+      "def": 52,
+      "spa": 40,
+      "spd": 72,
+      "spe": 27
+    }
+  },
+  "752": {
+    "resourceType": "pokemon",
+    "id": 752,
+    "speciesId": 752,
+    "pokemonSlug": "araquanid",
+    "speciesSlug": "araquanid",
+    "calcSpeciesName": "Araquanid",
+    "names": {
+      "zh-hans": "滴蛛霸",
+      "zh-hant": "滴蛛霸",
+      "en": "Araquanid",
+      "ja": "オニシズクモ"
+    },
+    "speciesNames": {
+      "zh-hans": "滴蛛霸",
+      "zh-hant": "滴蛛霸",
+      "en": "Araquanid",
+      "ja": "オニシズクモ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 70,
+      "def": 92,
+      "spa": 50,
+      "spd": 132,
+      "spe": 42
+    }
+  },
+  "753": {
+    "resourceType": "pokemon",
+    "id": 753,
+    "speciesId": 753,
+    "pokemonSlug": "fomantis",
+    "speciesSlug": "fomantis",
+    "calcSpeciesName": "Fomantis",
+    "names": {
+      "zh-hans": "伪螳草",
+      "zh-hant": "偽螳草",
+      "en": "Fomantis",
+      "ja": "カリキリ"
+    },
+    "speciesNames": {
+      "zh-hans": "伪螳草",
+      "zh-hant": "偽螳草",
+      "en": "Fomantis",
+      "ja": "カリキリ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 55,
+      "def": 35,
+      "spa": 50,
+      "spd": 35,
+      "spe": 35
+    }
+  },
+  "754": {
+    "resourceType": "pokemon",
+    "id": 754,
+    "speciesId": 754,
+    "pokemonSlug": "lurantis",
+    "speciesSlug": "lurantis",
+    "calcSpeciesName": "Lurantis",
+    "names": {
+      "zh-hans": "兰螳花",
+      "zh-hant": "蘭螳花",
+      "en": "Lurantis",
+      "ja": "ラランテス"
+    },
+    "speciesNames": {
+      "zh-hans": "兰螳花",
+      "zh-hant": "蘭螳花",
+      "en": "Lurantis",
+      "ja": "ラランテス"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 105,
+      "def": 90,
+      "spa": 80,
+      "spd": 90,
+      "spe": 45
+    }
+  },
+  "755": {
+    "resourceType": "pokemon",
+    "id": 755,
+    "speciesId": 755,
+    "pokemonSlug": "morelull",
+    "speciesSlug": "morelull",
+    "calcSpeciesName": "Morelull",
+    "names": {
+      "zh-hans": "睡睡菇",
+      "zh-hant": "睡睡菇",
+      "en": "Morelull",
+      "ja": "ネマシュ"
+    },
+    "speciesNames": {
+      "zh-hans": "睡睡菇",
+      "zh-hant": "睡睡菇",
+      "en": "Morelull",
+      "ja": "ネマシュ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 35,
+      "def": 55,
+      "spa": 65,
+      "spd": 75,
+      "spe": 15
+    }
+  },
+  "756": {
+    "resourceType": "pokemon",
+    "id": 756,
+    "speciesId": 756,
+    "pokemonSlug": "shiinotic",
+    "speciesSlug": "shiinotic",
+    "calcSpeciesName": "Shiinotic",
+    "names": {
+      "zh-hans": "灯罩夜菇",
+      "zh-hant": "燈罩夜菇",
+      "en": "Shiinotic",
+      "ja": "マシェード"
+    },
+    "speciesNames": {
+      "zh-hans": "灯罩夜菇",
+      "zh-hant": "燈罩夜菇",
+      "en": "Shiinotic",
+      "ja": "マシェード"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 45,
+      "def": 80,
+      "spa": 90,
+      "spd": 100,
+      "spe": 30
+    }
+  },
+  "757": {
+    "resourceType": "pokemon",
+    "id": 757,
+    "speciesId": 757,
+    "pokemonSlug": "salandit",
+    "speciesSlug": "salandit",
+    "calcSpeciesName": "Salandit",
+    "names": {
+      "zh-hans": "夜盗火蜥",
+      "zh-hant": "夜盜火蜥",
+      "en": "Salandit",
+      "ja": "ヤトウモリ"
+    },
+    "speciesNames": {
+      "zh-hans": "夜盗火蜥",
+      "zh-hant": "夜盜火蜥",
+      "en": "Salandit",
+      "ja": "ヤトウモリ"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 48,
+      "atk": 44,
+      "def": 40,
+      "spa": 71,
+      "spd": 40,
+      "spe": 77
+    }
+  },
+  "758": {
+    "resourceType": "pokemon",
+    "id": 758,
+    "speciesId": 758,
+    "pokemonSlug": "salazzle",
+    "speciesSlug": "salazzle",
+    "calcSpeciesName": "Salazzle",
+    "names": {
+      "zh-hans": "焰后蜥",
+      "zh-hant": "焰后蜥",
+      "en": "Salazzle",
+      "ja": "エンニュート"
+    },
+    "speciesNames": {
+      "zh-hans": "焰后蜥",
+      "zh-hant": "焰后蜥",
+      "en": "Salazzle",
+      "ja": "エンニュート"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 64,
+      "def": 60,
+      "spa": 111,
+      "spd": 60,
+      "spe": 117
+    }
+  },
+  "759": {
+    "resourceType": "pokemon",
+    "id": 759,
+    "speciesId": 759,
+    "pokemonSlug": "stufful",
+    "speciesSlug": "stufful",
+    "calcSpeciesName": "Stufful",
+    "names": {
+      "zh-hans": "童偶熊",
+      "zh-hant": "童偶熊",
+      "en": "Stufful",
+      "ja": "ヌイコグマ"
+    },
+    "speciesNames": {
+      "zh-hans": "童偶熊",
+      "zh-hant": "童偶熊",
+      "en": "Stufful",
+      "ja": "ヌイコグマ"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 75,
+      "def": 50,
+      "spa": 45,
+      "spd": 50,
+      "spe": 50
+    }
+  },
+  "760": {
+    "resourceType": "pokemon",
+    "id": 760,
+    "speciesId": 760,
+    "pokemonSlug": "bewear",
+    "speciesSlug": "bewear",
+    "calcSpeciesName": "Bewear",
+    "names": {
+      "zh-hans": "穿着熊",
+      "zh-hant": "穿著熊",
+      "en": "Bewear",
+      "ja": "キテルグマ"
+    },
+    "speciesNames": {
+      "zh-hans": "穿着熊",
+      "zh-hant": "穿著熊",
+      "en": "Bewear",
+      "ja": "キテルグマ"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 120,
+      "atk": 125,
+      "def": 80,
+      "spa": 55,
+      "spd": 60,
+      "spe": 60
+    }
+  },
+  "761": {
+    "resourceType": "pokemon",
+    "id": 761,
+    "speciesId": 761,
+    "pokemonSlug": "bounsweet",
+    "speciesSlug": "bounsweet",
+    "calcSpeciesName": "Bounsweet",
+    "names": {
+      "zh-hans": "甜竹竹",
+      "zh-hant": "甜竹竹",
+      "en": "Bounsweet",
+      "ja": "アマカジ"
+    },
+    "speciesNames": {
+      "zh-hans": "甜竹竹",
+      "zh-hant": "甜竹竹",
+      "en": "Bounsweet",
+      "ja": "アマカジ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 42,
+      "atk": 30,
+      "def": 38,
+      "spa": 30,
+      "spd": 38,
+      "spe": 32
+    }
+  },
+  "762": {
+    "resourceType": "pokemon",
+    "id": 762,
+    "speciesId": 762,
+    "pokemonSlug": "steenee",
+    "speciesSlug": "steenee",
+    "calcSpeciesName": "Steenee",
+    "names": {
+      "zh-hans": "甜舞妮",
+      "zh-hant": "甜舞妮",
+      "en": "Steenee",
+      "ja": "アママイコ"
+    },
+    "speciesNames": {
+      "zh-hans": "甜舞妮",
+      "zh-hant": "甜舞妮",
+      "en": "Steenee",
+      "ja": "アママイコ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 52,
+      "atk": 40,
+      "def": 48,
+      "spa": 40,
+      "spd": 48,
+      "spe": 62
+    }
+  },
+  "763": {
+    "resourceType": "pokemon",
+    "id": 763,
+    "speciesId": 763,
+    "pokemonSlug": "tsareena",
+    "speciesSlug": "tsareena",
+    "calcSpeciesName": "Tsareena",
+    "names": {
+      "zh-hans": "甜冷美后",
+      "zh-hant": "甜冷美后",
+      "en": "Tsareena",
+      "ja": "アマージョ"
+    },
+    "speciesNames": {
+      "zh-hans": "甜冷美后",
+      "zh-hant": "甜冷美后",
+      "en": "Tsareena",
+      "ja": "アマージョ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 72,
+      "atk": 120,
+      "def": 98,
+      "spa": 50,
+      "spd": 98,
+      "spe": 72
+    }
+  },
+  "764": {
+    "resourceType": "pokemon",
+    "id": 764,
+    "speciesId": 764,
+    "pokemonSlug": "comfey",
+    "speciesSlug": "comfey",
+    "calcSpeciesName": "Comfey",
+    "names": {
+      "zh-hans": "花疗环环",
+      "zh-hant": "花療環環",
+      "en": "Comfey",
+      "ja": "キュワワー"
+    },
+    "speciesNames": {
+      "zh-hans": "花疗环环",
+      "zh-hant": "花療環環",
+      "en": "Comfey",
+      "ja": "キュワワー"
+    },
+    "formNames": {},
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 51,
+      "atk": 52,
+      "def": 90,
+      "spa": 82,
+      "spd": 110,
+      "spe": 100
+    }
+  },
+  "765": {
+    "resourceType": "pokemon",
+    "id": 765,
+    "speciesId": 765,
+    "pokemonSlug": "oranguru",
+    "speciesSlug": "oranguru",
+    "calcSpeciesName": "Oranguru",
+    "names": {
+      "zh-hans": "智挥猩",
+      "zh-hant": "智揮猩",
+      "en": "Oranguru",
+      "ja": "ヤレユータン"
+    },
+    "speciesNames": {
+      "zh-hans": "智挥猩",
+      "zh-hant": "智揮猩",
+      "en": "Oranguru",
+      "ja": "ヤレユータン"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 60,
+      "def": 80,
+      "spa": 90,
+      "spd": 110,
+      "spe": 60
+    }
+  },
+  "766": {
+    "resourceType": "pokemon",
+    "id": 766,
+    "speciesId": 766,
+    "pokemonSlug": "passimian",
+    "speciesSlug": "passimian",
+    "calcSpeciesName": "Passimian",
+    "names": {
+      "zh-hans": "投掷猴",
+      "zh-hant": "投擲猴",
+      "en": "Passimian",
+      "ja": "ナゲツケサル"
+    },
+    "speciesNames": {
+      "zh-hans": "投掷猴",
+      "zh-hant": "投擲猴",
+      "en": "Passimian",
+      "ja": "ナゲツケサル"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 120,
+      "def": 90,
+      "spa": 40,
+      "spd": 60,
+      "spe": 80
+    }
+  },
+  "767": {
+    "resourceType": "pokemon",
+    "id": 767,
+    "speciesId": 767,
+    "pokemonSlug": "wimpod",
+    "speciesSlug": "wimpod",
+    "calcSpeciesName": "Wimpod",
+    "names": {
+      "zh-hans": "胆小虫",
+      "zh-hant": "膽小蟲",
+      "en": "Wimpod",
+      "ja": "コソクムシ"
+    },
+    "speciesNames": {
+      "zh-hans": "胆小虫",
+      "zh-hant": "膽小蟲",
+      "en": "Wimpod",
+      "ja": "コソクムシ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 25,
+      "atk": 35,
+      "def": 40,
+      "spa": 20,
+      "spd": 30,
+      "spe": 80
+    }
+  },
+  "768": {
+    "resourceType": "pokemon",
+    "id": 768,
+    "speciesId": 768,
+    "pokemonSlug": "golisopod",
+    "speciesSlug": "golisopod",
+    "calcSpeciesName": "Golisopod",
+    "names": {
+      "zh-hans": "具甲武者",
+      "zh-hant": "具甲武者",
+      "en": "Golisopod",
+      "ja": "グソクムシャ"
+    },
+    "speciesNames": {
+      "zh-hans": "具甲武者",
+      "zh-hant": "具甲武者",
+      "en": "Golisopod",
+      "ja": "グソクムシャ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 125,
+      "def": 140,
+      "spa": 60,
+      "spd": 90,
+      "spe": 40
+    }
+  },
+  "769": {
+    "resourceType": "pokemon",
+    "id": 769,
+    "speciesId": 769,
+    "pokemonSlug": "sandygast",
+    "speciesSlug": "sandygast",
+    "calcSpeciesName": "Sandygast",
+    "names": {
+      "zh-hans": "沙丘娃",
+      "zh-hant": "沙丘娃",
+      "en": "Sandygast",
+      "ja": "スナバァ"
+    },
+    "speciesNames": {
+      "zh-hans": "沙丘娃",
+      "zh-hant": "沙丘娃",
+      "en": "Sandygast",
+      "ja": "スナバァ"
+    },
+    "formNames": {},
+    "types": [
+      "ghost",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 55,
+      "def": 80,
+      "spa": 70,
+      "spd": 45,
+      "spe": 15
+    }
+  },
+  "770": {
+    "resourceType": "pokemon",
+    "id": 770,
+    "speciesId": 770,
+    "pokemonSlug": "palossand",
+    "speciesSlug": "palossand",
+    "calcSpeciesName": "Palossand",
+    "names": {
+      "zh-hans": "噬沙堡爷",
+      "zh-hant": "噬沙堡爺",
+      "en": "Palossand",
+      "ja": "シロデスナ"
+    },
+    "speciesNames": {
+      "zh-hans": "噬沙堡爷",
+      "zh-hant": "噬沙堡爺",
+      "en": "Palossand",
+      "ja": "シロデスナ"
+    },
+    "formNames": {},
+    "types": [
+      "ghost",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 75,
+      "def": 110,
+      "spa": 100,
+      "spd": 75,
+      "spe": 35
+    }
+  },
+  "771": {
+    "resourceType": "pokemon",
+    "id": 771,
+    "speciesId": 771,
+    "pokemonSlug": "pyukumuku",
+    "speciesSlug": "pyukumuku",
+    "calcSpeciesName": "Pyukumuku",
+    "names": {
+      "zh-hans": "拳海参",
+      "zh-hant": "拳海參",
+      "en": "Pyukumuku",
+      "ja": "ナマコブシ"
+    },
+    "speciesNames": {
+      "zh-hans": "拳海参",
+      "zh-hant": "拳海參",
+      "en": "Pyukumuku",
+      "ja": "ナマコブシ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 60,
+      "def": 130,
+      "spa": 30,
+      "spd": 130,
+      "spe": 5
+    }
+  },
+  "772": {
+    "resourceType": "pokemon",
+    "id": 772,
+    "speciesId": 772,
+    "pokemonSlug": "type-null",
+    "speciesSlug": "type-null",
+    "calcSpeciesName": "Type: Null",
+    "names": {
+      "zh-hans": "属性：空",
+      "zh-hant": "屬性：空",
+      "en": "Type: Null",
+      "ja": "タイプ：ヌル"
+    },
+    "speciesNames": {
+      "zh-hans": "属性：空",
+      "zh-hant": "屬性：空",
+      "en": "Type: Null",
+      "ja": "タイプ：ヌル"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 95,
+      "def": 95,
+      "spa": 95,
+      "spd": 95,
+      "spe": 59
+    }
+  },
+  "773": {
+    "resourceType": "pokemon",
+    "id": 773,
+    "speciesId": 773,
+    "pokemonSlug": "silvally",
+    "speciesSlug": "silvally",
+    "calcSpeciesName": "Silvally",
+    "names": {
+      "zh-hans": "银伴战兽",
+      "zh-hant": "銀伴戰獸",
+      "en": "Silvally",
+      "ja": "シルヴァディ"
+    },
+    "speciesNames": {
+      "zh-hans": "银伴战兽",
+      "zh-hant": "銀伴戰獸",
+      "en": "Silvally",
+      "ja": "シルヴァディ"
+    },
+    "formNames": {
+      "zh-hans": "属性：一般",
+      "zh-hant": "屬性：一般",
+      "en": "Type: Normal",
+      "ja": "タイプ：ノーマル"
+    },
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 95,
+      "def": 95,
+      "spa": 95,
+      "spd": 95,
+      "spe": 95
+    }
+  },
+  "774": {
+    "resourceType": "pokemon",
+    "id": 774,
+    "speciesId": 774,
+    "pokemonSlug": "minior-red-meteor",
+    "speciesSlug": "minior",
+    "calcSpeciesName": "Minior",
+    "names": {
+      "zh-hans": "小陨星",
+      "zh-hant": "小隕星",
+      "en": "Minior",
+      "ja": "メテノ"
+    },
+    "speciesNames": {
+      "zh-hans": "小陨星",
+      "zh-hant": "小隕星",
+      "en": "Minior",
+      "ja": "メテノ"
+    },
+    "formNames": {
+      "zh-hans": "流星的样子",
+      "zh-hant": "流星的樣子",
+      "en": "Meteor Form",
+      "ja": "りゅうせいのすがた"
+    },
+    "types": [
+      "rock",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 60,
+      "def": 100,
+      "spa": 60,
+      "spd": 100,
+      "spe": 60
+    }
+  },
+  "775": {
+    "resourceType": "pokemon",
+    "id": 775,
+    "speciesId": 775,
+    "pokemonSlug": "komala",
+    "speciesSlug": "komala",
+    "calcSpeciesName": "Komala",
+    "names": {
+      "zh-hans": "树枕尾熊",
+      "zh-hant": "樹枕尾熊",
+      "en": "Komala",
+      "ja": "ネッコアラ"
+    },
+    "speciesNames": {
+      "zh-hans": "树枕尾熊",
+      "zh-hant": "樹枕尾熊",
+      "en": "Komala",
+      "ja": "ネッコアラ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 115,
+      "def": 65,
+      "spa": 75,
+      "spd": 95,
+      "spe": 65
+    }
+  },
+  "776": {
+    "resourceType": "pokemon",
+    "id": 776,
+    "speciesId": 776,
+    "pokemonSlug": "turtonator",
+    "speciesSlug": "turtonator",
+    "calcSpeciesName": "Turtonator",
+    "names": {
+      "zh-hans": "爆焰龟兽",
+      "zh-hant": "爆焰龜獸",
+      "en": "Turtonator",
+      "ja": "バクガメス"
+    },
+    "speciesNames": {
+      "zh-hans": "爆焰龟兽",
+      "zh-hant": "爆焰龜獸",
+      "en": "Turtonator",
+      "ja": "バクガメス"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 78,
+      "def": 135,
+      "spa": 91,
+      "spd": 85,
+      "spe": 36
+    }
+  },
+  "777": {
+    "resourceType": "pokemon",
+    "id": 777,
+    "speciesId": 777,
+    "pokemonSlug": "togedemaru",
+    "speciesSlug": "togedemaru",
+    "calcSpeciesName": "Togedemaru",
+    "names": {
+      "zh-hans": "托戈德玛尔",
+      "zh-hant": "托戈德瑪爾",
+      "en": "Togedemaru",
+      "ja": "トゲデマル"
+    },
+    "speciesNames": {
+      "zh-hans": "托戈德玛尔",
+      "zh-hant": "托戈德瑪爾",
+      "en": "Togedemaru",
+      "ja": "トゲデマル"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 98,
+      "def": 63,
+      "spa": 40,
+      "spd": 73,
+      "spe": 96
+    }
+  },
+  "778": {
+    "resourceType": "pokemon",
+    "id": 778,
+    "speciesId": 778,
+    "pokemonSlug": "mimikyu-disguised",
+    "speciesSlug": "mimikyu",
+    "calcSpeciesName": "Mimikyu",
+    "names": {
+      "zh-hans": "谜拟丘",
+      "zh-hant": "謎擬Ｑ",
+      "en": "Mimikyu",
+      "ja": "ミミッキュ"
+    },
+    "speciesNames": {
+      "zh-hans": "谜拟丘",
+      "zh-hant": "謎擬Ｑ",
+      "en": "Mimikyu",
+      "ja": "ミミッキュ"
+    },
+    "formNames": {
+      "zh-hans": "化形的样子",
+      "zh-hant": "化形的樣子",
+      "en": "Disguised Form",
+      "ja": "ばけたすがた"
+    },
+    "types": [
+      "ghost",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 90,
+      "def": 80,
+      "spa": 50,
+      "spd": 105,
+      "spe": 96
+    }
+  },
+  "779": {
+    "resourceType": "pokemon",
+    "id": 779,
+    "speciesId": 779,
+    "pokemonSlug": "bruxish",
+    "speciesSlug": "bruxish",
+    "calcSpeciesName": "Bruxish",
+    "names": {
+      "zh-hans": "磨牙彩皮鱼",
+      "zh-hant": "磨牙彩皮魚",
+      "en": "Bruxish",
+      "ja": "ハギギシリ"
+    },
+    "speciesNames": {
+      "zh-hans": "磨牙彩皮鱼",
+      "zh-hant": "磨牙彩皮魚",
+      "en": "Bruxish",
+      "ja": "ハギギシリ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 105,
+      "def": 70,
+      "spa": 70,
+      "spd": 70,
+      "spe": 92
+    }
+  },
+  "780": {
+    "resourceType": "pokemon",
+    "id": 780,
+    "speciesId": 780,
+    "pokemonSlug": "drampa",
+    "speciesSlug": "drampa",
+    "calcSpeciesName": "Drampa",
+    "names": {
+      "zh-hans": "老翁龙",
+      "zh-hant": "老翁龍",
+      "en": "Drampa",
+      "ja": "ジジーロン"
+    },
+    "speciesNames": {
+      "zh-hans": "老翁龙",
+      "zh-hant": "老翁龍",
+      "en": "Drampa",
+      "ja": "ジジーロン"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 78,
+      "atk": 60,
+      "def": 85,
+      "spa": 135,
+      "spd": 91,
+      "spe": 36
+    }
+  },
+  "781": {
+    "resourceType": "pokemon",
+    "id": 781,
+    "speciesId": 781,
+    "pokemonSlug": "dhelmise",
+    "speciesSlug": "dhelmise",
+    "calcSpeciesName": "Dhelmise",
+    "names": {
+      "zh-hans": "破破舵轮",
+      "zh-hant": "破破舵輪",
+      "en": "Dhelmise",
+      "ja": "ダダリン"
+    },
+    "speciesNames": {
+      "zh-hans": "破破舵轮",
+      "zh-hant": "破破舵輪",
+      "en": "Dhelmise",
+      "ja": "ダダリン"
+    },
+    "formNames": {},
+    "types": [
+      "ghost",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 131,
+      "def": 100,
+      "spa": 86,
+      "spd": 90,
+      "spe": 40
+    }
+  },
+  "782": {
+    "resourceType": "pokemon",
+    "id": 782,
+    "speciesId": 782,
+    "pokemonSlug": "jangmo-o",
+    "speciesSlug": "jangmo-o",
+    "calcSpeciesName": "Jangmo-o",
+    "names": {
+      "zh-hans": "心鳞宝",
+      "zh-hant": "心鱗寶",
+      "en": "Jangmo-o",
+      "ja": "ジャラコ"
+    },
+    "speciesNames": {
+      "zh-hans": "心鳞宝",
+      "zh-hant": "心鱗寶",
+      "en": "Jangmo-o",
+      "ja": "ジャラコ"
+    },
+    "formNames": {},
+    "types": [
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 55,
+      "def": 65,
+      "spa": 45,
+      "spd": 45,
+      "spe": 45
+    }
+  },
+  "783": {
+    "resourceType": "pokemon",
+    "id": 783,
+    "speciesId": 783,
+    "pokemonSlug": "hakamo-o",
+    "speciesSlug": "hakamo-o",
+    "calcSpeciesName": "Hakamo-o",
+    "names": {
+      "zh-hans": "鳞甲龙",
+      "zh-hant": "鱗甲龍",
+      "en": "Hakamo-o",
+      "ja": "ジャランゴ"
+    },
+    "speciesNames": {
+      "zh-hans": "鳞甲龙",
+      "zh-hant": "鱗甲龍",
+      "en": "Hakamo-o",
+      "ja": "ジャランゴ"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 75,
+      "def": 90,
+      "spa": 65,
+      "spd": 70,
+      "spe": 65
+    }
+  },
+  "784": {
+    "resourceType": "pokemon",
+    "id": 784,
+    "speciesId": 784,
+    "pokemonSlug": "kommo-o",
+    "speciesSlug": "kommo-o",
+    "calcSpeciesName": "Kommo-o",
+    "names": {
+      "zh-hans": "杖尾鳞甲龙",
+      "zh-hant": "杖尾鱗甲龍",
+      "en": "Kommo-o",
+      "ja": "ジャラランガ"
+    },
+    "speciesNames": {
+      "zh-hans": "杖尾鳞甲龙",
+      "zh-hant": "杖尾鱗甲龍",
+      "en": "Kommo-o",
+      "ja": "ジャラランガ"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 110,
+      "def": 125,
+      "spa": 100,
+      "spd": 105,
+      "spe": 85
+    }
+  },
+  "785": {
+    "resourceType": "pokemon",
+    "id": 785,
+    "speciesId": 785,
+    "pokemonSlug": "tapu-koko",
+    "speciesSlug": "tapu-koko",
+    "calcSpeciesName": "Tapu Koko",
+    "names": {
+      "zh-hans": "卡璞・鸣鸣",
+      "zh-hant": "卡璞・鳴鳴",
+      "en": "Tapu Koko",
+      "ja": "カプ・コケコ"
+    },
+    "speciesNames": {
+      "zh-hans": "卡璞・鸣鸣",
+      "zh-hant": "卡璞・鳴鳴",
+      "en": "Tapu Koko",
+      "ja": "カプ・コケコ"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 115,
+      "def": 85,
+      "spa": 95,
+      "spd": 75,
+      "spe": 130
+    }
+  },
+  "786": {
+    "resourceType": "pokemon",
+    "id": 786,
+    "speciesId": 786,
+    "pokemonSlug": "tapu-lele",
+    "speciesSlug": "tapu-lele",
+    "calcSpeciesName": "Tapu Lele",
+    "names": {
+      "zh-hans": "卡璞・蝶蝶",
+      "zh-hant": "卡璞・蝶蝶",
+      "en": "Tapu Lele",
+      "ja": "カプ・テテフ"
+    },
+    "speciesNames": {
+      "zh-hans": "卡璞・蝶蝶",
+      "zh-hant": "卡璞・蝶蝶",
+      "en": "Tapu Lele",
+      "ja": "カプ・テテフ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 85,
+      "def": 75,
+      "spa": 130,
+      "spd": 115,
+      "spe": 95
+    }
+  },
+  "787": {
+    "resourceType": "pokemon",
+    "id": 787,
+    "speciesId": 787,
+    "pokemonSlug": "tapu-bulu",
+    "speciesSlug": "tapu-bulu",
+    "calcSpeciesName": "Tapu Bulu",
+    "names": {
+      "zh-hans": "卡璞・哞哞",
+      "zh-hant": "卡璞・哞哞",
+      "en": "Tapu Bulu",
+      "ja": "カプ・ブルル"
+    },
+    "speciesNames": {
+      "zh-hans": "卡璞・哞哞",
+      "zh-hant": "卡璞・哞哞",
+      "en": "Tapu Bulu",
+      "ja": "カプ・ブルル"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 130,
+      "def": 115,
+      "spa": 85,
+      "spd": 95,
+      "spe": 75
+    }
+  },
+  "788": {
+    "resourceType": "pokemon",
+    "id": 788,
+    "speciesId": 788,
+    "pokemonSlug": "tapu-fini",
+    "speciesSlug": "tapu-fini",
+    "calcSpeciesName": "Tapu Fini",
+    "names": {
+      "zh-hans": "卡璞・鳍鳍",
+      "zh-hant": "卡璞・鰭鰭",
+      "en": "Tapu Fini",
+      "ja": "カプ・レヒレ"
+    },
+    "speciesNames": {
+      "zh-hans": "卡璞・鳍鳍",
+      "zh-hant": "卡璞・鰭鰭",
+      "en": "Tapu Fini",
+      "ja": "カプ・レヒレ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 75,
+      "def": 115,
+      "spa": 95,
+      "spd": 130,
+      "spe": 85
+    }
+  },
+  "789": {
+    "resourceType": "pokemon",
+    "id": 789,
+    "speciesId": 789,
+    "pokemonSlug": "cosmog",
+    "speciesSlug": "cosmog",
+    "calcSpeciesName": "Cosmog",
+    "names": {
+      "zh-hans": "科斯莫古",
+      "zh-hant": "科斯莫古",
+      "en": "Cosmog",
+      "ja": "コスモッグ"
+    },
+    "speciesNames": {
+      "zh-hans": "科斯莫古",
+      "zh-hant": "科斯莫古",
+      "en": "Cosmog",
+      "ja": "コスモッグ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 43,
+      "atk": 29,
+      "def": 31,
+      "spa": 29,
+      "spd": 31,
+      "spe": 37
+    }
+  },
+  "790": {
+    "resourceType": "pokemon",
+    "id": 790,
+    "speciesId": 790,
+    "pokemonSlug": "cosmoem",
+    "speciesSlug": "cosmoem",
+    "calcSpeciesName": "Cosmoem",
+    "names": {
+      "zh-hans": "科斯莫姆",
+      "zh-hant": "科斯莫姆",
+      "en": "Cosmoem",
+      "ja": "コスモウム"
+    },
+    "speciesNames": {
+      "zh-hans": "科斯莫姆",
+      "zh-hant": "科斯莫姆",
+      "en": "Cosmoem",
+      "ja": "コスモウム"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 43,
+      "atk": 29,
+      "def": 131,
+      "spa": 29,
+      "spd": 131,
+      "spe": 37
+    }
+  },
+  "791": {
+    "resourceType": "pokemon",
+    "id": 791,
+    "speciesId": 791,
+    "pokemonSlug": "solgaleo",
+    "speciesSlug": "solgaleo",
+    "calcSpeciesName": "Solgaleo",
+    "names": {
+      "zh-hans": "索尔迦雷欧",
+      "zh-hant": "索爾迦雷歐",
+      "en": "Solgaleo",
+      "ja": "ソルガレオ"
+    },
+    "speciesNames": {
+      "zh-hans": "索尔迦雷欧",
+      "zh-hant": "索爾迦雷歐",
+      "en": "Solgaleo",
+      "ja": "ソルガレオ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 137,
+      "atk": 137,
+      "def": 107,
+      "spa": 113,
+      "spd": 89,
+      "spe": 97
+    }
+  },
+  "792": {
+    "resourceType": "pokemon",
+    "id": 792,
+    "speciesId": 792,
+    "pokemonSlug": "lunala",
+    "speciesSlug": "lunala",
+    "calcSpeciesName": "Lunala",
+    "names": {
+      "zh-hans": "露奈雅拉",
+      "zh-hant": "露奈雅拉",
+      "en": "Lunala",
+      "ja": "ルナアーラ"
+    },
+    "speciesNames": {
+      "zh-hans": "露奈雅拉",
+      "zh-hant": "露奈雅拉",
+      "en": "Lunala",
+      "ja": "ルナアーラ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 137,
+      "atk": 113,
+      "def": 89,
+      "spa": 137,
+      "spd": 107,
+      "spe": 97
+    }
+  },
+  "793": {
+    "resourceType": "pokemon",
+    "id": 793,
+    "speciesId": 793,
+    "pokemonSlug": "nihilego",
+    "speciesSlug": "nihilego",
+    "calcSpeciesName": "Nihilego",
+    "names": {
+      "zh-hans": "虚吾伊德",
+      "zh-hant": "虛吾伊德",
+      "en": "Nihilego",
+      "ja": "ウツロイド"
+    },
+    "speciesNames": {
+      "zh-hans": "虚吾伊德",
+      "zh-hant": "虛吾伊德",
+      "en": "Nihilego",
+      "ja": "ウツロイド"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 109,
+      "atk": 53,
+      "def": 47,
+      "spa": 127,
+      "spd": 131,
+      "spe": 103
+    }
+  },
+  "794": {
+    "resourceType": "pokemon",
+    "id": 794,
+    "speciesId": 794,
+    "pokemonSlug": "buzzwole",
+    "speciesSlug": "buzzwole",
+    "calcSpeciesName": "Buzzwole",
+    "names": {
+      "zh-hans": "爆肌蚊",
+      "zh-hant": "爆肌蚊",
+      "en": "Buzzwole",
+      "ja": "マッシブーン"
+    },
+    "speciesNames": {
+      "zh-hans": "爆肌蚊",
+      "zh-hant": "爆肌蚊",
+      "en": "Buzzwole",
+      "ja": "マッシブーン"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 107,
+      "atk": 139,
+      "def": 139,
+      "spa": 53,
+      "spd": 53,
+      "spe": 79
+    }
+  },
+  "795": {
+    "resourceType": "pokemon",
+    "id": 795,
+    "speciesId": 795,
+    "pokemonSlug": "pheromosa",
+    "speciesSlug": "pheromosa",
+    "calcSpeciesName": "Pheromosa",
+    "names": {
+      "zh-hans": "费洛美螂",
+      "zh-hant": "費洛美螂",
+      "en": "Pheromosa",
+      "ja": "フェローチェ"
+    },
+    "speciesNames": {
+      "zh-hans": "费洛美螂",
+      "zh-hant": "費洛美螂",
+      "en": "Pheromosa",
+      "ja": "フェローチェ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 71,
+      "atk": 137,
+      "def": 37,
+      "spa": 137,
+      "spd": 37,
+      "spe": 151
+    }
+  },
+  "796": {
+    "resourceType": "pokemon",
+    "id": 796,
+    "speciesId": 796,
+    "pokemonSlug": "xurkitree",
+    "speciesSlug": "xurkitree",
+    "calcSpeciesName": "Xurkitree",
+    "names": {
+      "zh-hans": "电束木",
+      "zh-hant": "電束木",
+      "en": "Xurkitree",
+      "ja": "デンジュモク"
+    },
+    "speciesNames": {
+      "zh-hans": "电束木",
+      "zh-hant": "電束木",
+      "en": "Xurkitree",
+      "ja": "デンジュモク"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 83,
+      "atk": 89,
+      "def": 71,
+      "spa": 173,
+      "spd": 71,
+      "spe": 83
+    }
+  },
+  "797": {
+    "resourceType": "pokemon",
+    "id": 797,
+    "speciesId": 797,
+    "pokemonSlug": "celesteela",
+    "speciesSlug": "celesteela",
+    "calcSpeciesName": "Celesteela",
+    "names": {
+      "zh-hans": "铁火辉夜",
+      "zh-hant": "鐵火輝夜",
+      "en": "Celesteela",
+      "ja": "テッカグヤ"
+    },
+    "speciesNames": {
+      "zh-hans": "铁火辉夜",
+      "zh-hant": "鐵火輝夜",
+      "en": "Celesteela",
+      "ja": "テッカグヤ"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 97,
+      "atk": 101,
+      "def": 103,
+      "spa": 107,
+      "spd": 101,
+      "spe": 61
+    }
+  },
+  "798": {
+    "resourceType": "pokemon",
+    "id": 798,
+    "speciesId": 798,
+    "pokemonSlug": "kartana",
+    "speciesSlug": "kartana",
+    "calcSpeciesName": "Kartana",
+    "names": {
+      "zh-hans": "纸御剑",
+      "zh-hant": "紙御劍",
+      "en": "Kartana",
+      "ja": "カミツルギ"
+    },
+    "speciesNames": {
+      "zh-hans": "纸御剑",
+      "zh-hant": "紙御劍",
+      "en": "Kartana",
+      "ja": "カミツルギ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 59,
+      "atk": 181,
+      "def": 131,
+      "spa": 59,
+      "spd": 31,
+      "spe": 109
+    }
+  },
+  "799": {
+    "resourceType": "pokemon",
+    "id": 799,
+    "speciesId": 799,
+    "pokemonSlug": "guzzlord",
+    "speciesSlug": "guzzlord",
+    "calcSpeciesName": "Guzzlord",
+    "names": {
+      "zh-hans": "恶食大王",
+      "zh-hant": "惡食大王",
+      "en": "Guzzlord",
+      "ja": "アクジキング"
+    },
+    "speciesNames": {
+      "zh-hans": "恶食大王",
+      "zh-hant": "惡食大王",
+      "en": "Guzzlord",
+      "ja": "アクジキング"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 223,
+      "atk": 101,
+      "def": 53,
+      "spa": 97,
+      "spd": 53,
+      "spe": 43
+    }
+  },
+  "800": {
+    "resourceType": "pokemon",
+    "id": 800,
+    "speciesId": 800,
+    "pokemonSlug": "necrozma",
+    "speciesSlug": "necrozma",
+    "calcSpeciesName": "Necrozma",
+    "names": {
+      "zh-hans": "奈克洛兹玛",
+      "zh-hant": "奈克洛茲瑪",
+      "en": "Necrozma",
+      "ja": "ネクロズマ"
+    },
+    "speciesNames": {
+      "zh-hans": "奈克洛兹玛",
+      "zh-hant": "奈克洛茲瑪",
+      "en": "Necrozma",
+      "ja": "ネクロズマ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 97,
+      "atk": 107,
+      "def": 101,
+      "spa": 127,
+      "spd": 89,
+      "spe": 79
+    }
+  },
+  "801": {
+    "resourceType": "pokemon",
+    "id": 801,
+    "speciesId": 801,
+    "pokemonSlug": "magearna",
+    "speciesSlug": "magearna",
+    "calcSpeciesName": "Magearna",
+    "names": {
+      "zh-hans": "玛机雅娜",
+      "zh-hant": "瑪機雅娜",
+      "en": "Magearna",
+      "ja": "マギアナ"
+    },
+    "speciesNames": {
+      "zh-hans": "玛机雅娜",
+      "zh-hant": "瑪機雅娜",
+      "en": "Magearna",
+      "ja": "マギアナ"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 95,
+      "def": 115,
+      "spa": 130,
+      "spd": 115,
+      "spe": 65
+    }
+  },
+  "802": {
+    "resourceType": "pokemon",
+    "id": 802,
+    "speciesId": 802,
+    "pokemonSlug": "marshadow",
+    "speciesSlug": "marshadow",
+    "calcSpeciesName": "Marshadow",
+    "names": {
+      "zh-hans": "玛夏多",
+      "zh-hant": "瑪夏多",
+      "en": "Marshadow",
+      "ja": "マーシャドー"
+    },
+    "speciesNames": {
+      "zh-hans": "玛夏多",
+      "zh-hant": "瑪夏多",
+      "en": "Marshadow",
+      "ja": "マーシャドー"
+    },
+    "formNames": {},
+    "types": [
+      "fighting",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 125,
+      "def": 80,
+      "spa": 90,
+      "spd": 90,
+      "spe": 125
+    }
+  },
+  "803": {
+    "resourceType": "pokemon",
+    "id": 803,
+    "speciesId": 803,
+    "pokemonSlug": "poipole",
+    "speciesSlug": "poipole",
+    "calcSpeciesName": "Poipole",
+    "names": {
+      "zh-hans": "毒贝比",
+      "zh-hant": "毒貝比",
+      "en": "Poipole",
+      "ja": "ベベノム"
+    },
+    "speciesNames": {
+      "zh-hans": "毒贝比",
+      "zh-hant": "毒貝比",
+      "en": "Poipole",
+      "ja": "ベベノム"
+    },
+    "formNames": {},
+    "types": [
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 67,
+      "atk": 73,
+      "def": 67,
+      "spa": 73,
+      "spd": 67,
+      "spe": 73
+    }
+  },
+  "804": {
+    "resourceType": "pokemon",
+    "id": 804,
+    "speciesId": 804,
+    "pokemonSlug": "naganadel",
+    "speciesSlug": "naganadel",
+    "calcSpeciesName": "Naganadel",
+    "names": {
+      "zh-hans": "四颚针龙",
+      "zh-hant": "四顎針龍",
+      "en": "Naganadel",
+      "ja": "アーゴヨン"
+    },
+    "speciesNames": {
+      "zh-hans": "四颚针龙",
+      "zh-hant": "四顎針龍",
+      "en": "Naganadel",
+      "ja": "アーゴヨン"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 73,
+      "atk": 73,
+      "def": 73,
+      "spa": 127,
+      "spd": 73,
+      "spe": 121
+    }
+  },
+  "805": {
+    "resourceType": "pokemon",
+    "id": 805,
+    "speciesId": 805,
+    "pokemonSlug": "stakataka",
+    "speciesSlug": "stakataka",
+    "calcSpeciesName": "Stakataka",
+    "names": {
+      "zh-hans": "垒磊石",
+      "zh-hant": "壘磊石",
+      "en": "Stakataka",
+      "ja": "ツンデツンデ"
+    },
+    "speciesNames": {
+      "zh-hans": "垒磊石",
+      "zh-hant": "壘磊石",
+      "en": "Stakataka",
+      "ja": "ツンデツンデ"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 61,
+      "atk": 131,
+      "def": 211,
+      "spa": 53,
+      "spd": 101,
+      "spe": 13
+    }
+  },
+  "806": {
+    "resourceType": "pokemon",
+    "id": 806,
+    "speciesId": 806,
+    "pokemonSlug": "blacephalon",
+    "speciesSlug": "blacephalon",
+    "calcSpeciesName": "Blacephalon",
+    "names": {
+      "zh-hans": "砰头小丑",
+      "zh-hant": "砰頭小丑",
+      "en": "Blacephalon",
+      "ja": "ズガドーン"
+    },
+    "speciesNames": {
+      "zh-hans": "砰头小丑",
+      "zh-hant": "砰頭小丑",
+      "en": "Blacephalon",
+      "ja": "ズガドーン"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 53,
+      "atk": 127,
+      "def": 53,
+      "spa": 151,
+      "spd": 79,
+      "spe": 107
+    }
+  },
+  "807": {
+    "resourceType": "pokemon",
+    "id": 807,
+    "speciesId": 807,
+    "pokemonSlug": "zeraora",
+    "speciesSlug": "zeraora",
+    "calcSpeciesName": "Zeraora",
+    "names": {
+      "zh-hans": "捷拉奥拉",
+      "zh-hant": "捷拉奧拉",
+      "en": "Zeraora",
+      "ja": "ゼラオラ"
+    },
+    "speciesNames": {
+      "zh-hans": "捷拉奥拉",
+      "zh-hant": "捷拉奧拉",
+      "en": "Zeraora",
+      "ja": "ゼラオラ"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 88,
+      "atk": 112,
+      "def": 75,
+      "spa": 102,
+      "spd": 80,
+      "spe": 143
+    }
+  },
+  "808": {
+    "resourceType": "pokemon",
+    "id": 808,
+    "speciesId": 808,
+    "pokemonSlug": "meltan",
+    "speciesSlug": "meltan",
+    "calcSpeciesName": "Meltan",
+    "names": {
+      "zh-hans": "美录坦",
+      "zh-hant": "美錄坦",
+      "en": "Meltan",
+      "ja": "メルタン"
+    },
+    "speciesNames": {
+      "zh-hans": "美录坦",
+      "zh-hant": "美錄坦",
+      "en": "Meltan",
+      "ja": "メルタン"
+    },
+    "formNames": {},
+    "types": [
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 46,
+      "atk": 65,
+      "def": 65,
+      "spa": 55,
+      "spd": 35,
+      "spe": 34
+    }
+  },
+  "809": {
+    "resourceType": "pokemon",
+    "id": 809,
+    "speciesId": 809,
+    "pokemonSlug": "melmetal",
+    "speciesSlug": "melmetal",
+    "calcSpeciesName": "Melmetal",
+    "names": {
+      "zh-hans": "美录梅塔",
+      "zh-hant": "美錄梅塔",
+      "en": "Melmetal",
+      "ja": "メルメタル"
+    },
+    "speciesNames": {
+      "zh-hans": "美录梅塔",
+      "zh-hant": "美錄梅塔",
+      "en": "Melmetal",
+      "ja": "メルメタル"
+    },
+    "formNames": {},
+    "types": [
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 135,
+      "atk": 143,
+      "def": 143,
+      "spa": 80,
+      "spd": 65,
+      "spe": 34
+    }
+  },
+  "810": {
+    "resourceType": "pokemon",
+    "id": 810,
+    "speciesId": 810,
+    "pokemonSlug": "grookey",
+    "speciesSlug": "grookey",
+    "calcSpeciesName": "Grookey",
+    "names": {
+      "zh-hans": "敲音猴",
+      "zh-hant": "敲音猴",
+      "en": "Grookey",
+      "ja": "サルノリ"
+    },
+    "speciesNames": {
+      "zh-hans": "敲音猴",
+      "zh-hant": "敲音猴",
+      "en": "Grookey",
+      "ja": "サルノリ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 65,
+      "def": 50,
+      "spa": 40,
+      "spd": 40,
+      "spe": 65
+    }
+  },
+  "811": {
+    "resourceType": "pokemon",
+    "id": 811,
+    "speciesId": 811,
+    "pokemonSlug": "thwackey",
+    "speciesSlug": "thwackey",
+    "calcSpeciesName": "Thwackey",
+    "names": {
+      "zh-hans": "啪咚猴",
+      "zh-hant": "啪咚猴",
+      "en": "Thwackey",
+      "ja": "バチンキー"
+    },
+    "speciesNames": {
+      "zh-hans": "啪咚猴",
+      "zh-hant": "啪咚猴",
+      "en": "Thwackey",
+      "ja": "バチンキー"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 85,
+      "def": 70,
+      "spa": 55,
+      "spd": 60,
+      "spe": 80
+    }
+  },
+  "812": {
+    "resourceType": "pokemon",
+    "id": 812,
+    "speciesId": 812,
+    "pokemonSlug": "rillaboom",
+    "speciesSlug": "rillaboom",
+    "calcSpeciesName": "Rillaboom",
+    "names": {
+      "zh-hans": "轰擂金刚猩",
+      "zh-hant": "轟擂金剛猩",
+      "en": "Rillaboom",
+      "ja": "ゴリランダー"
+    },
+    "speciesNames": {
+      "zh-hans": "轰擂金刚猩",
+      "zh-hant": "轟擂金剛猩",
+      "en": "Rillaboom",
+      "ja": "ゴリランダー"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 125,
+      "def": 90,
+      "spa": 60,
+      "spd": 70,
+      "spe": 85
+    }
+  },
+  "813": {
+    "resourceType": "pokemon",
+    "id": 813,
+    "speciesId": 813,
+    "pokemonSlug": "scorbunny",
+    "speciesSlug": "scorbunny",
+    "calcSpeciesName": "Scorbunny",
+    "names": {
+      "zh-hans": "炎兔儿",
+      "zh-hant": "炎兔兒",
+      "en": "Scorbunny",
+      "ja": "ヒバニー"
+    },
+    "speciesNames": {
+      "zh-hans": "炎兔儿",
+      "zh-hant": "炎兔兒",
+      "en": "Scorbunny",
+      "ja": "ヒバニー"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 71,
+      "def": 40,
+      "spa": 40,
+      "spd": 40,
+      "spe": 69
+    }
+  },
+  "814": {
+    "resourceType": "pokemon",
+    "id": 814,
+    "speciesId": 814,
+    "pokemonSlug": "raboot",
+    "speciesSlug": "raboot",
+    "calcSpeciesName": "Raboot",
+    "names": {
+      "zh-hans": "腾蹴小将",
+      "zh-hant": "騰蹴小將",
+      "en": "Raboot",
+      "ja": "ラビフット"
+    },
+    "speciesNames": {
+      "zh-hans": "腾蹴小将",
+      "zh-hant": "騰蹴小將",
+      "en": "Raboot",
+      "ja": "ラビフット"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 86,
+      "def": 60,
+      "spa": 55,
+      "spd": 60,
+      "spe": 94
+    }
+  },
+  "815": {
+    "resourceType": "pokemon",
+    "id": 815,
+    "speciesId": 815,
+    "pokemonSlug": "cinderace",
+    "speciesSlug": "cinderace",
+    "calcSpeciesName": "Cinderace",
+    "names": {
+      "zh-hans": "闪焰王牌",
+      "zh-hant": "閃焰王牌",
+      "en": "Cinderace",
+      "ja": "エースバーン"
+    },
+    "speciesNames": {
+      "zh-hans": "闪焰王牌",
+      "zh-hant": "閃焰王牌",
+      "en": "Cinderace",
+      "ja": "エースバーン"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 116,
+      "def": 75,
+      "spa": 65,
+      "spd": 75,
+      "spe": 119
+    }
+  },
+  "816": {
+    "resourceType": "pokemon",
+    "id": 816,
+    "speciesId": 816,
+    "pokemonSlug": "sobble",
+    "speciesSlug": "sobble",
+    "calcSpeciesName": "Sobble",
+    "names": {
+      "zh-hans": "泪眼蜥",
+      "zh-hant": "淚眼蜥",
+      "en": "Sobble",
+      "ja": "メッソン"
+    },
+    "speciesNames": {
+      "zh-hans": "泪眼蜥",
+      "zh-hant": "淚眼蜥",
+      "en": "Sobble",
+      "ja": "メッソン"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 40,
+      "def": 40,
+      "spa": 70,
+      "spd": 40,
+      "spe": 70
+    }
+  },
+  "817": {
+    "resourceType": "pokemon",
+    "id": 817,
+    "speciesId": 817,
+    "pokemonSlug": "drizzile",
+    "speciesSlug": "drizzile",
+    "calcSpeciesName": "Drizzile",
+    "names": {
+      "zh-hans": "变涩蜥",
+      "zh-hant": "變澀蜥",
+      "en": "Drizzile",
+      "ja": "ジメレオン"
+    },
+    "speciesNames": {
+      "zh-hans": "变涩蜥",
+      "zh-hant": "變澀蜥",
+      "en": "Drizzile",
+      "ja": "ジメレオン"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 60,
+      "def": 55,
+      "spa": 95,
+      "spd": 55,
+      "spe": 90
+    }
+  },
+  "818": {
+    "resourceType": "pokemon",
+    "id": 818,
+    "speciesId": 818,
+    "pokemonSlug": "inteleon",
+    "speciesSlug": "inteleon",
+    "calcSpeciesName": "Inteleon",
+    "names": {
+      "zh-hans": "千面避役",
+      "zh-hant": "千面避役",
+      "en": "Inteleon",
+      "ja": "インテレオン"
+    },
+    "speciesNames": {
+      "zh-hans": "千面避役",
+      "zh-hant": "千面避役",
+      "en": "Inteleon",
+      "ja": "インテレオン"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 85,
+      "def": 65,
+      "spa": 125,
+      "spd": 65,
+      "spe": 120
+    }
+  },
+  "819": {
+    "resourceType": "pokemon",
+    "id": 819,
+    "speciesId": 819,
+    "pokemonSlug": "skwovet",
+    "speciesSlug": "skwovet",
+    "calcSpeciesName": "Skwovet",
+    "names": {
+      "zh-hans": "贪心栗鼠",
+      "zh-hant": "貪心栗鼠",
+      "en": "Skwovet",
+      "ja": "ホシガリス"
+    },
+    "speciesNames": {
+      "zh-hans": "贪心栗鼠",
+      "zh-hant": "貪心栗鼠",
+      "en": "Skwovet",
+      "ja": "ホシガリス"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 55,
+      "def": 55,
+      "spa": 35,
+      "spd": 35,
+      "spe": 25
+    }
+  },
+  "820": {
+    "resourceType": "pokemon",
+    "id": 820,
+    "speciesId": 820,
+    "pokemonSlug": "greedent",
+    "speciesSlug": "greedent",
+    "calcSpeciesName": "Greedent",
+    "names": {
+      "zh-hans": "藏饱栗鼠",
+      "zh-hant": "藏飽栗鼠",
+      "en": "Greedent",
+      "ja": "ヨクバリス"
+    },
+    "speciesNames": {
+      "zh-hans": "藏饱栗鼠",
+      "zh-hant": "藏飽栗鼠",
+      "en": "Greedent",
+      "ja": "ヨクバリス"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 120,
+      "atk": 95,
+      "def": 95,
+      "spa": 55,
+      "spd": 75,
+      "spe": 20
+    }
+  },
+  "821": {
+    "resourceType": "pokemon",
+    "id": 821,
+    "speciesId": 821,
+    "pokemonSlug": "rookidee",
+    "speciesSlug": "rookidee",
+    "calcSpeciesName": "Rookidee",
+    "names": {
+      "zh-hans": "稚山雀",
+      "zh-hant": "稚山雀",
+      "en": "Rookidee",
+      "ja": "ココガラ"
+    },
+    "speciesNames": {
+      "zh-hans": "稚山雀",
+      "zh-hant": "稚山雀",
+      "en": "Rookidee",
+      "ja": "ココガラ"
+    },
+    "formNames": {},
+    "types": [
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 38,
+      "atk": 47,
+      "def": 35,
+      "spa": 33,
+      "spd": 35,
+      "spe": 57
+    }
+  },
+  "822": {
+    "resourceType": "pokemon",
+    "id": 822,
+    "speciesId": 822,
+    "pokemonSlug": "corvisquire",
+    "speciesSlug": "corvisquire",
+    "calcSpeciesName": "Corvisquire",
+    "names": {
+      "zh-hans": "蓝鸦",
+      "zh-hant": "藍鴉",
+      "en": "Corvisquire",
+      "ja": "アオガラス"
+    },
+    "speciesNames": {
+      "zh-hans": "蓝鸦",
+      "zh-hant": "藍鴉",
+      "en": "Corvisquire",
+      "ja": "アオガラス"
+    },
+    "formNames": {},
+    "types": [
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 67,
+      "def": 55,
+      "spa": 43,
+      "spd": 55,
+      "spe": 77
+    }
+  },
+  "823": {
+    "resourceType": "pokemon",
+    "id": 823,
+    "speciesId": 823,
+    "pokemonSlug": "corviknight",
+    "speciesSlug": "corviknight",
+    "calcSpeciesName": "Corviknight",
+    "names": {
+      "zh-hans": "钢铠鸦",
+      "zh-hant": "鋼鎧鴉",
+      "en": "Corviknight",
+      "ja": "アーマーガア"
+    },
+    "speciesNames": {
+      "zh-hans": "钢铠鸦",
+      "zh-hant": "鋼鎧鴉",
+      "en": "Corviknight",
+      "ja": "アーマーガア"
+    },
+    "formNames": {},
+    "types": [
+      "flying",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 98,
+      "atk": 87,
+      "def": 105,
+      "spa": 53,
+      "spd": 85,
+      "spe": 67
+    }
+  },
+  "824": {
+    "resourceType": "pokemon",
+    "id": 824,
+    "speciesId": 824,
+    "pokemonSlug": "blipbug",
+    "speciesSlug": "blipbug",
+    "calcSpeciesName": "Blipbug",
+    "names": {
+      "zh-hans": "索侦虫",
+      "zh-hant": "索偵蟲",
+      "en": "Blipbug",
+      "ja": "サッチムシ"
+    },
+    "speciesNames": {
+      "zh-hans": "索侦虫",
+      "zh-hant": "索偵蟲",
+      "en": "Blipbug",
+      "ja": "サッチムシ"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 25,
+      "atk": 20,
+      "def": 20,
+      "spa": 25,
+      "spd": 45,
+      "spe": 45
+    }
+  },
+  "825": {
+    "resourceType": "pokemon",
+    "id": 825,
+    "speciesId": 825,
+    "pokemonSlug": "dottler",
+    "speciesSlug": "dottler",
+    "calcSpeciesName": "Dottler",
+    "names": {
+      "zh-hans": "天罩虫",
+      "zh-hant": "天罩蟲",
+      "en": "Dottler",
+      "ja": "レドームシ"
+    },
+    "speciesNames": {
+      "zh-hans": "天罩虫",
+      "zh-hant": "天罩蟲",
+      "en": "Dottler",
+      "ja": "レドームシ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 35,
+      "def": 80,
+      "spa": 50,
+      "spd": 90,
+      "spe": 30
+    }
+  },
+  "826": {
+    "resourceType": "pokemon",
+    "id": 826,
+    "speciesId": 826,
+    "pokemonSlug": "orbeetle",
+    "speciesSlug": "orbeetle",
+    "calcSpeciesName": "Orbeetle",
+    "names": {
+      "zh-hans": "以欧路普",
+      "zh-hant": "以歐路普",
+      "en": "Orbeetle",
+      "ja": "イオルブ"
+    },
+    "speciesNames": {
+      "zh-hans": "以欧路普",
+      "zh-hant": "以歐路普",
+      "en": "Orbeetle",
+      "ja": "イオルブ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 45,
+      "def": 110,
+      "spa": 80,
+      "spd": 120,
+      "spe": 90
+    }
+  },
+  "827": {
+    "resourceType": "pokemon",
+    "id": 827,
+    "speciesId": 827,
+    "pokemonSlug": "nickit",
+    "speciesSlug": "nickit",
+    "calcSpeciesName": "Nickit",
+    "names": {
+      "zh-hans": "狡小狐",
+      "zh-hant": "偷兒狐",
+      "en": "Nickit",
+      "ja": "クスネ"
+    },
+    "speciesNames": {
+      "zh-hans": "狡小狐",
+      "zh-hant": "偷兒狐",
+      "en": "Nickit",
+      "ja": "クスネ"
+    },
+    "formNames": {},
+    "types": [
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 28,
+      "def": 28,
+      "spa": 47,
+      "spd": 52,
+      "spe": 50
+    }
+  },
+  "828": {
+    "resourceType": "pokemon",
+    "id": 828,
+    "speciesId": 828,
+    "pokemonSlug": "thievul",
+    "speciesSlug": "thievul",
+    "calcSpeciesName": "Thievul",
+    "names": {
+      "zh-hans": "猾大狐",
+      "zh-hant": "狐大盜",
+      "en": "Thievul",
+      "ja": "フォクスライ"
+    },
+    "speciesNames": {
+      "zh-hans": "猾大狐",
+      "zh-hant": "狐大盜",
+      "en": "Thievul",
+      "ja": "フォクスライ"
+    },
+    "formNames": {},
+    "types": [
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 58,
+      "def": 58,
+      "spa": 87,
+      "spd": 92,
+      "spe": 90
+    }
+  },
+  "829": {
+    "resourceType": "pokemon",
+    "id": 829,
+    "speciesId": 829,
+    "pokemonSlug": "gossifleur",
+    "speciesSlug": "gossifleur",
+    "calcSpeciesName": "Gossifleur",
+    "names": {
+      "zh-hans": "幼棉棉",
+      "zh-hant": "幼棉棉",
+      "en": "Gossifleur",
+      "ja": "ヒメンカ"
+    },
+    "speciesNames": {
+      "zh-hans": "幼棉棉",
+      "zh-hant": "幼棉棉",
+      "en": "Gossifleur",
+      "ja": "ヒメンカ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 40,
+      "def": 60,
+      "spa": 40,
+      "spd": 60,
+      "spe": 10
+    }
+  },
+  "830": {
+    "resourceType": "pokemon",
+    "id": 830,
+    "speciesId": 830,
+    "pokemonSlug": "eldegoss",
+    "speciesSlug": "eldegoss",
+    "calcSpeciesName": "Eldegoss",
+    "names": {
+      "zh-hans": "白蓬蓬",
+      "zh-hant": "白蓬蓬",
+      "en": "Eldegoss",
+      "ja": "ワタシラガ"
+    },
+    "speciesNames": {
+      "zh-hans": "白蓬蓬",
+      "zh-hant": "白蓬蓬",
+      "en": "Eldegoss",
+      "ja": "ワタシラガ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 50,
+      "def": 90,
+      "spa": 80,
+      "spd": 120,
+      "spe": 60
+    }
+  },
+  "831": {
+    "resourceType": "pokemon",
+    "id": 831,
+    "speciesId": 831,
+    "pokemonSlug": "wooloo",
+    "speciesSlug": "wooloo",
+    "calcSpeciesName": "Wooloo",
+    "names": {
+      "zh-hans": "毛辫羊",
+      "zh-hant": "毛辮羊",
+      "en": "Wooloo",
+      "ja": "ウールー"
+    },
+    "speciesNames": {
+      "zh-hans": "毛辫羊",
+      "zh-hant": "毛辮羊",
+      "en": "Wooloo",
+      "ja": "ウールー"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 42,
+      "atk": 40,
+      "def": 55,
+      "spa": 40,
+      "spd": 45,
+      "spe": 48
+    }
+  },
+  "832": {
+    "resourceType": "pokemon",
+    "id": 832,
+    "speciesId": 832,
+    "pokemonSlug": "dubwool",
+    "speciesSlug": "dubwool",
+    "calcSpeciesName": "Dubwool",
+    "names": {
+      "zh-hans": "毛毛角羊",
+      "zh-hant": "毛毛角羊",
+      "en": "Dubwool",
+      "ja": "バイウールー"
+    },
+    "speciesNames": {
+      "zh-hans": "毛毛角羊",
+      "zh-hant": "毛毛角羊",
+      "en": "Dubwool",
+      "ja": "バイウールー"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 72,
+      "atk": 80,
+      "def": 100,
+      "spa": 60,
+      "spd": 90,
+      "spe": 88
+    }
+  },
+  "833": {
+    "resourceType": "pokemon",
+    "id": 833,
+    "speciesId": 833,
+    "pokemonSlug": "chewtle",
+    "speciesSlug": "chewtle",
+    "calcSpeciesName": "Chewtle",
+    "names": {
+      "zh-hans": "咬咬龟",
+      "zh-hant": "咬咬龜",
+      "en": "Chewtle",
+      "ja": "カムカメ"
+    },
+    "speciesNames": {
+      "zh-hans": "咬咬龟",
+      "zh-hant": "咬咬龜",
+      "en": "Chewtle",
+      "ja": "カムカメ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 64,
+      "def": 50,
+      "spa": 38,
+      "spd": 38,
+      "spe": 44
+    }
+  },
+  "834": {
+    "resourceType": "pokemon",
+    "id": 834,
+    "speciesId": 834,
+    "pokemonSlug": "drednaw",
+    "speciesSlug": "drednaw",
+    "calcSpeciesName": "Drednaw",
+    "names": {
+      "zh-hans": "暴噬龟",
+      "zh-hant": "暴噬龜",
+      "en": "Drednaw",
+      "ja": "カジリガメ"
+    },
+    "speciesNames": {
+      "zh-hans": "暴噬龟",
+      "zh-hant": "暴噬龜",
+      "en": "Drednaw",
+      "ja": "カジリガメ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 115,
+      "def": 90,
+      "spa": 48,
+      "spd": 68,
+      "spe": 74
+    }
+  },
+  "835": {
+    "resourceType": "pokemon",
+    "id": 835,
+    "speciesId": 835,
+    "pokemonSlug": "yamper",
+    "speciesSlug": "yamper",
+    "calcSpeciesName": "Yamper",
+    "names": {
+      "zh-hans": "来电汪",
+      "zh-hant": "來電汪",
+      "en": "Yamper",
+      "ja": "ワンパチ"
+    },
+    "speciesNames": {
+      "zh-hans": "来电汪",
+      "zh-hant": "來電汪",
+      "en": "Yamper",
+      "ja": "ワンパチ"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 59,
+      "atk": 45,
+      "def": 50,
+      "spa": 40,
+      "spd": 50,
+      "spe": 26
+    }
+  },
+  "836": {
+    "resourceType": "pokemon",
+    "id": 836,
+    "speciesId": 836,
+    "pokemonSlug": "boltund",
+    "speciesSlug": "boltund",
+    "calcSpeciesName": "Boltund",
+    "names": {
+      "zh-hans": "逐电犬",
+      "zh-hant": "逐電犬",
+      "en": "Boltund",
+      "ja": "パルスワン"
+    },
+    "speciesNames": {
+      "zh-hans": "逐电犬",
+      "zh-hant": "逐電犬",
+      "en": "Boltund",
+      "ja": "パルスワン"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 69,
+      "atk": 90,
+      "def": 60,
+      "spa": 90,
+      "spd": 60,
+      "spe": 121
+    }
+  },
+  "837": {
+    "resourceType": "pokemon",
+    "id": 837,
+    "speciesId": 837,
+    "pokemonSlug": "rolycoly",
+    "speciesSlug": "rolycoly",
+    "calcSpeciesName": "Rolycoly",
+    "names": {
+      "zh-hans": "小炭仔",
+      "zh-hant": "小炭仔",
+      "en": "Rolycoly",
+      "ja": "タンドン"
+    },
+    "speciesNames": {
+      "zh-hans": "小炭仔",
+      "zh-hant": "小炭仔",
+      "en": "Rolycoly",
+      "ja": "タンドン"
+    },
+    "formNames": {},
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 30,
+      "atk": 40,
+      "def": 50,
+      "spa": 40,
+      "spd": 50,
+      "spe": 30
+    }
+  },
+  "838": {
+    "resourceType": "pokemon",
+    "id": 838,
+    "speciesId": 838,
+    "pokemonSlug": "carkol",
+    "speciesSlug": "carkol",
+    "calcSpeciesName": "Carkol",
+    "names": {
+      "zh-hans": "大炭车",
+      "zh-hant": "大炭車",
+      "en": "Carkol",
+      "ja": "トロッゴン"
+    },
+    "speciesNames": {
+      "zh-hans": "大炭车",
+      "zh-hant": "大炭車",
+      "en": "Carkol",
+      "ja": "トロッゴン"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 60,
+      "def": 90,
+      "spa": 60,
+      "spd": 70,
+      "spe": 50
+    }
+  },
+  "839": {
+    "resourceType": "pokemon",
+    "id": 839,
+    "speciesId": 839,
+    "pokemonSlug": "coalossal",
+    "speciesSlug": "coalossal",
+    "calcSpeciesName": "Coalossal",
+    "names": {
+      "zh-hans": "巨炭山",
+      "zh-hant": "巨炭山",
+      "en": "Coalossal",
+      "ja": "セキタンザン"
+    },
+    "speciesNames": {
+      "zh-hans": "巨炭山",
+      "zh-hant": "巨炭山",
+      "en": "Coalossal",
+      "ja": "セキタンザン"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 110,
+      "atk": 80,
+      "def": 120,
+      "spa": 80,
+      "spd": 90,
+      "spe": 30
+    }
+  },
+  "840": {
+    "resourceType": "pokemon",
+    "id": 840,
+    "speciesId": 840,
+    "pokemonSlug": "applin",
+    "speciesSlug": "applin",
+    "calcSpeciesName": "Applin",
+    "names": {
+      "zh-hans": "啃果虫",
+      "zh-hant": "啃果蟲",
+      "en": "Applin",
+      "ja": "カジッチュ"
+    },
+    "speciesNames": {
+      "zh-hans": "啃果虫",
+      "zh-hant": "啃果蟲",
+      "en": "Applin",
+      "ja": "カジッチュ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 40,
+      "def": 80,
+      "spa": 40,
+      "spd": 40,
+      "spe": 20
+    }
+  },
+  "841": {
+    "resourceType": "pokemon",
+    "id": 841,
+    "speciesId": 841,
+    "pokemonSlug": "flapple",
+    "speciesSlug": "flapple",
+    "calcSpeciesName": "Flapple",
+    "names": {
+      "zh-hans": "苹裹龙",
+      "zh-hant": "蘋裹龍",
+      "en": "Flapple",
+      "ja": "アップリュー"
+    },
+    "speciesNames": {
+      "zh-hans": "苹裹龙",
+      "zh-hant": "蘋裹龍",
+      "en": "Flapple",
+      "ja": "アップリュー"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 110,
+      "def": 80,
+      "spa": 95,
+      "spd": 60,
+      "spe": 70
+    }
+  },
+  "842": {
+    "resourceType": "pokemon",
+    "id": 842,
+    "speciesId": 842,
+    "pokemonSlug": "appletun",
+    "speciesSlug": "appletun",
+    "calcSpeciesName": "Appletun",
+    "names": {
+      "zh-hans": "丰蜜龙",
+      "zh-hant": "豐蜜龍",
+      "en": "Appletun",
+      "ja": "タルップル"
+    },
+    "speciesNames": {
+      "zh-hans": "丰蜜龙",
+      "zh-hant": "豐蜜龍",
+      "en": "Appletun",
+      "ja": "タルップル"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 110,
+      "atk": 85,
+      "def": 80,
+      "spa": 100,
+      "spd": 80,
+      "spe": 30
+    }
+  },
+  "843": {
+    "resourceType": "pokemon",
+    "id": 843,
+    "speciesId": 843,
+    "pokemonSlug": "silicobra",
+    "speciesSlug": "silicobra",
+    "calcSpeciesName": "Silicobra",
+    "names": {
+      "zh-hans": "沙包蛇",
+      "zh-hant": "沙包蛇",
+      "en": "Silicobra",
+      "ja": "スナヘビ"
+    },
+    "speciesNames": {
+      "zh-hans": "沙包蛇",
+      "zh-hant": "沙包蛇",
+      "en": "Silicobra",
+      "ja": "スナヘビ"
+    },
+    "formNames": {},
+    "types": [
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 52,
+      "atk": 57,
+      "def": 75,
+      "spa": 35,
+      "spd": 50,
+      "spe": 46
+    }
+  },
+  "844": {
+    "resourceType": "pokemon",
+    "id": 844,
+    "speciesId": 844,
+    "pokemonSlug": "sandaconda",
+    "speciesSlug": "sandaconda",
+    "calcSpeciesName": "Sandaconda",
+    "names": {
+      "zh-hans": "沙螺蟒",
+      "zh-hant": "沙螺蟒",
+      "en": "Sandaconda",
+      "ja": "サダイジャ"
+    },
+    "speciesNames": {
+      "zh-hans": "沙螺蟒",
+      "zh-hant": "沙螺蟒",
+      "en": "Sandaconda",
+      "ja": "サダイジャ"
+    },
+    "formNames": {},
+    "types": [
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 72,
+      "atk": 107,
+      "def": 125,
+      "spa": 65,
+      "spd": 70,
+      "spe": 71
+    }
+  },
+  "845": {
+    "resourceType": "pokemon",
+    "id": 845,
+    "speciesId": 845,
+    "pokemonSlug": "cramorant",
+    "speciesSlug": "cramorant",
+    "calcSpeciesName": "Cramorant",
+    "names": {
+      "zh-hans": "古月鸟",
+      "zh-hant": "古月鳥",
+      "en": "Cramorant",
+      "ja": "ウッウ"
+    },
+    "speciesNames": {
+      "zh-hans": "古月鸟",
+      "zh-hant": "古月鳥",
+      "en": "Cramorant",
+      "ja": "ウッウ"
+    },
+    "formNames": {},
+    "types": [
+      "flying",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 85,
+      "def": 55,
+      "spa": 85,
+      "spd": 95,
+      "spe": 85
+    }
+  },
+  "846": {
+    "resourceType": "pokemon",
+    "id": 846,
+    "speciesId": 846,
+    "pokemonSlug": "arrokuda",
+    "speciesSlug": "arrokuda",
+    "calcSpeciesName": "Arrokuda",
+    "names": {
+      "zh-hans": "刺梭鱼",
+      "zh-hant": "刺梭魚",
+      "en": "Arrokuda",
+      "ja": "サシカマス"
+    },
+    "speciesNames": {
+      "zh-hans": "刺梭鱼",
+      "zh-hant": "刺梭魚",
+      "en": "Arrokuda",
+      "ja": "サシカマス"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 41,
+      "atk": 63,
+      "def": 40,
+      "spa": 40,
+      "spd": 30,
+      "spe": 66
+    }
+  },
+  "847": {
+    "resourceType": "pokemon",
+    "id": 847,
+    "speciesId": 847,
+    "pokemonSlug": "barraskewda",
+    "speciesSlug": "barraskewda",
+    "calcSpeciesName": "Barraskewda",
+    "names": {
+      "zh-hans": "戽斗尖梭",
+      "zh-hant": "戽斗尖梭",
+      "en": "Barraskewda",
+      "ja": "カマスジョー"
+    },
+    "speciesNames": {
+      "zh-hans": "戽斗尖梭",
+      "zh-hant": "戽斗尖梭",
+      "en": "Barraskewda",
+      "ja": "カマスジョー"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 61,
+      "atk": 123,
+      "def": 60,
+      "spa": 60,
+      "spd": 50,
+      "spe": 136
+    }
+  },
+  "848": {
+    "resourceType": "pokemon",
+    "id": 848,
+    "speciesId": 848,
+    "pokemonSlug": "toxel",
+    "speciesSlug": "toxel",
+    "calcSpeciesName": "Toxel",
+    "names": {
+      "zh-hans": "电音婴",
+      "zh-hant": "毒電嬰",
+      "en": "Toxel",
+      "ja": "エレズン"
+    },
+    "speciesNames": {
+      "zh-hans": "电音婴",
+      "zh-hant": "毒電嬰",
+      "en": "Toxel",
+      "ja": "エレズン"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 38,
+      "def": 35,
+      "spa": 54,
+      "spd": 35,
+      "spe": 40
+    }
+  },
+  "849": {
+    "resourceType": "pokemon",
+    "id": 849,
+    "speciesId": 849,
+    "pokemonSlug": "toxtricity-amped",
+    "speciesSlug": "toxtricity",
+    "calcSpeciesName": "Toxtricity",
+    "names": {
+      "zh-hans": "颤弦蝾螈",
+      "zh-hant": "顫弦蠑螈",
+      "en": "Toxtricity",
+      "ja": "ストリンダー"
+    },
+    "speciesNames": {
+      "zh-hans": "颤弦蝾螈",
+      "zh-hant": "顫弦蠑螈",
+      "en": "Toxtricity",
+      "ja": "ストリンダー"
+    },
+    "formNames": {
+      "zh-hans": "高调的样子",
+      "zh-hant": "高調的樣子",
+      "en": "Amped Form",
+      "ja": "ハイなすがた"
+    },
+    "types": [
+      "electric",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 98,
+      "def": 70,
+      "spa": 114,
+      "spd": 70,
+      "spe": 75
+    }
+  },
+  "850": {
+    "resourceType": "pokemon",
+    "id": 850,
+    "speciesId": 850,
+    "pokemonSlug": "sizzlipede",
+    "speciesSlug": "sizzlipede",
+    "calcSpeciesName": "Sizzlipede",
+    "names": {
+      "zh-hans": "烧火蚣",
+      "zh-hant": "燒火蚣",
+      "en": "Sizzlipede",
+      "ja": "ヤクデ"
+    },
+    "speciesNames": {
+      "zh-hans": "烧火蚣",
+      "zh-hant": "燒火蚣",
+      "en": "Sizzlipede",
+      "ja": "ヤクデ"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 65,
+      "def": 45,
+      "spa": 50,
+      "spd": 50,
+      "spe": 45
+    }
+  },
+  "851": {
+    "resourceType": "pokemon",
+    "id": 851,
+    "speciesId": 851,
+    "pokemonSlug": "centiskorch",
+    "speciesSlug": "centiskorch",
+    "calcSpeciesName": "Centiskorch",
+    "names": {
+      "zh-hans": "焚焰蚣",
+      "zh-hant": "焚焰蚣",
+      "en": "Centiskorch",
+      "ja": "マルヤクデ"
+    },
+    "speciesNames": {
+      "zh-hans": "焚焰蚣",
+      "zh-hant": "焚焰蚣",
+      "en": "Centiskorch",
+      "ja": "マルヤクデ"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 115,
+      "def": 65,
+      "spa": 90,
+      "spd": 90,
+      "spe": 65
+    }
+  },
+  "852": {
+    "resourceType": "pokemon",
+    "id": 852,
+    "speciesId": 852,
+    "pokemonSlug": "clobbopus",
+    "speciesSlug": "clobbopus",
+    "calcSpeciesName": "Clobbopus",
+    "names": {
+      "zh-hans": "拳拳蛸",
+      "zh-hant": "拳拳蛸",
+      "en": "Clobbopus",
+      "ja": "タタッコ"
+    },
+    "speciesNames": {
+      "zh-hans": "拳拳蛸",
+      "zh-hant": "拳拳蛸",
+      "en": "Clobbopus",
+      "ja": "タタッコ"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 68,
+      "def": 60,
+      "spa": 50,
+      "spd": 50,
+      "spe": 32
+    }
+  },
+  "853": {
+    "resourceType": "pokemon",
+    "id": 853,
+    "speciesId": 853,
+    "pokemonSlug": "grapploct",
+    "speciesSlug": "grapploct",
+    "calcSpeciesName": "Grapploct",
+    "names": {
+      "zh-hans": "八爪武师",
+      "zh-hant": "八爪武師",
+      "en": "Grapploct",
+      "ja": "オトスパス"
+    },
+    "speciesNames": {
+      "zh-hans": "八爪武师",
+      "zh-hant": "八爪武師",
+      "en": "Grapploct",
+      "ja": "オトスパス"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 118,
+      "def": 90,
+      "spa": 70,
+      "spd": 80,
+      "spe": 42
+    }
+  },
+  "854": {
+    "resourceType": "pokemon",
+    "id": 854,
+    "speciesId": 854,
+    "pokemonSlug": "sinistea",
+    "speciesSlug": "sinistea",
+    "calcSpeciesName": "Sinistea",
+    "names": {
+      "zh-hans": "来悲茶",
+      "zh-hant": "來悲茶",
+      "en": "Sinistea",
+      "ja": "ヤバチャ"
+    },
+    "speciesNames": {
+      "zh-hans": "来悲茶",
+      "zh-hant": "來悲茶",
+      "en": "Sinistea",
+      "ja": "ヤバチャ"
+    },
+    "formNames": {
+      "zh-hans": "Phony Form",
+      "zh-hant": "Phony Form",
+      "en": "Phony Form",
+      "ja": "がんさくフォルム"
+    },
+    "types": [
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 45,
+      "def": 45,
+      "spa": 74,
+      "spd": 54,
+      "spe": 50
+    }
+  },
+  "855": {
+    "resourceType": "pokemon",
+    "id": 855,
+    "speciesId": 855,
+    "pokemonSlug": "polteageist",
+    "speciesSlug": "polteageist",
+    "calcSpeciesName": "Polteageist",
+    "names": {
+      "zh-hans": "怖思壶",
+      "zh-hant": "怖思壺",
+      "en": "Polteageist",
+      "ja": "ポットデス"
+    },
+    "speciesNames": {
+      "zh-hans": "怖思壶",
+      "zh-hant": "怖思壺",
+      "en": "Polteageist",
+      "ja": "ポットデス"
+    },
+    "formNames": {
+      "zh-hans": "Phony Form",
+      "zh-hant": "Phony Form",
+      "en": "Phony Form",
+      "ja": "がんさくフォルム"
+    },
+    "types": [
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 65,
+      "def": 65,
+      "spa": 134,
+      "spd": 114,
+      "spe": 70
+    }
+  },
+  "856": {
+    "resourceType": "pokemon",
+    "id": 856,
+    "speciesId": 856,
+    "pokemonSlug": "hatenna",
+    "speciesSlug": "hatenna",
+    "calcSpeciesName": "Hatenna",
+    "names": {
+      "zh-hans": "迷布莉姆",
+      "zh-hant": "迷布莉姆",
+      "en": "Hatenna",
+      "ja": "ミブリム"
+    },
+    "speciesNames": {
+      "zh-hans": "迷布莉姆",
+      "zh-hant": "迷布莉姆",
+      "en": "Hatenna",
+      "ja": "ミブリム"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 42,
+      "atk": 30,
+      "def": 45,
+      "spa": 56,
+      "spd": 53,
+      "spe": 39
+    }
+  },
+  "857": {
+    "resourceType": "pokemon",
+    "id": 857,
+    "speciesId": 857,
+    "pokemonSlug": "hattrem",
+    "speciesSlug": "hattrem",
+    "calcSpeciesName": "Hattrem",
+    "names": {
+      "zh-hans": "提布莉姆",
+      "zh-hant": "提布莉姆",
+      "en": "Hattrem",
+      "ja": "テブリム"
+    },
+    "speciesNames": {
+      "zh-hans": "提布莉姆",
+      "zh-hant": "提布莉姆",
+      "en": "Hattrem",
+      "ja": "テブリム"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 57,
+      "atk": 40,
+      "def": 65,
+      "spa": 86,
+      "spd": 73,
+      "spe": 49
+    }
+  },
+  "858": {
+    "resourceType": "pokemon",
+    "id": 858,
+    "speciesId": 858,
+    "pokemonSlug": "hatterene",
+    "speciesSlug": "hatterene",
+    "calcSpeciesName": "Hatterene",
+    "names": {
+      "zh-hans": "布莉姆温",
+      "zh-hant": "布莉姆溫",
+      "en": "Hatterene",
+      "ja": "ブリムオン"
+    },
+    "speciesNames": {
+      "zh-hans": "布莉姆温",
+      "zh-hant": "布莉姆溫",
+      "en": "Hatterene",
+      "ja": "ブリムオン"
+    },
+    "formNames": {},
+    "types": [
+      "psychic",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 57,
+      "atk": 90,
+      "def": 95,
+      "spa": 136,
+      "spd": 103,
+      "spe": 29
+    }
+  },
+  "859": {
+    "resourceType": "pokemon",
+    "id": 859,
+    "speciesId": 859,
+    "pokemonSlug": "impidimp",
+    "speciesSlug": "impidimp",
+    "calcSpeciesName": "Impidimp",
+    "names": {
+      "zh-hans": "捣蛋小妖",
+      "zh-hant": "搗蛋小妖",
+      "en": "Impidimp",
+      "ja": "ベロバー"
+    },
+    "speciesNames": {
+      "zh-hans": "捣蛋小妖",
+      "zh-hant": "搗蛋小妖",
+      "en": "Impidimp",
+      "ja": "ベロバー"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 45,
+      "def": 30,
+      "spa": 55,
+      "spd": 40,
+      "spe": 50
+    }
+  },
+  "860": {
+    "resourceType": "pokemon",
+    "id": 860,
+    "speciesId": 860,
+    "pokemonSlug": "morgrem",
+    "speciesSlug": "morgrem",
+    "calcSpeciesName": "Morgrem",
+    "names": {
+      "zh-hans": "诈唬魔",
+      "zh-hant": "詐唬魔",
+      "en": "Morgrem",
+      "ja": "ギモー"
+    },
+    "speciesNames": {
+      "zh-hans": "诈唬魔",
+      "zh-hant": "詐唬魔",
+      "en": "Morgrem",
+      "ja": "ギモー"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 60,
+      "def": 45,
+      "spa": 75,
+      "spd": 55,
+      "spe": 70
+    }
+  },
+  "861": {
+    "resourceType": "pokemon",
+    "id": 861,
+    "speciesId": 861,
+    "pokemonSlug": "grimmsnarl",
+    "speciesSlug": "grimmsnarl",
+    "calcSpeciesName": "Grimmsnarl",
+    "names": {
+      "zh-hans": "长毛巨魔",
+      "zh-hant": "長毛巨魔",
+      "en": "Grimmsnarl",
+      "ja": "オーロンゲ"
+    },
+    "speciesNames": {
+      "zh-hans": "长毛巨魔",
+      "zh-hant": "長毛巨魔",
+      "en": "Grimmsnarl",
+      "ja": "オーロンゲ"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 120,
+      "def": 65,
+      "spa": 95,
+      "spd": 75,
+      "spe": 60
+    }
+  },
+  "862": {
+    "resourceType": "pokemon",
+    "id": 862,
+    "speciesId": 862,
+    "pokemonSlug": "obstagoon",
+    "speciesSlug": "obstagoon",
+    "calcSpeciesName": "Obstagoon",
+    "names": {
+      "zh-hans": "堵拦熊",
+      "zh-hant": "堵攔熊",
+      "en": "Obstagoon",
+      "ja": "タチフサグマ"
+    },
+    "speciesNames": {
+      "zh-hans": "堵拦熊",
+      "zh-hant": "堵攔熊",
+      "en": "Obstagoon",
+      "ja": "タチフサグマ"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 93,
+      "atk": 90,
+      "def": 101,
+      "spa": 60,
+      "spd": 81,
+      "spe": 95
+    }
+  },
+  "863": {
+    "resourceType": "pokemon",
+    "id": 863,
+    "speciesId": 863,
+    "pokemonSlug": "perrserker",
+    "speciesSlug": "perrserker",
+    "calcSpeciesName": "Perrserker",
+    "names": {
+      "zh-hans": "喵头目",
+      "zh-hant": "喵頭目",
+      "en": "Perrserker",
+      "ja": "ニャイキング"
+    },
+    "speciesNames": {
+      "zh-hans": "喵头目",
+      "zh-hant": "喵頭目",
+      "en": "Perrserker",
+      "ja": "ニャイキング"
+    },
+    "formNames": {},
+    "types": [
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 110,
+      "def": 100,
+      "spa": 50,
+      "spd": 60,
+      "spe": 50
+    }
+  },
+  "864": {
+    "resourceType": "pokemon",
+    "id": 864,
+    "speciesId": 864,
+    "pokemonSlug": "cursola",
+    "speciesSlug": "cursola",
+    "calcSpeciesName": "Cursola",
+    "names": {
+      "zh-hans": "魔灵珊瑚",
+      "zh-hant": "魔靈珊瑚",
+      "en": "Cursola",
+      "ja": "サニゴーン"
+    },
+    "speciesNames": {
+      "zh-hans": "魔灵珊瑚",
+      "zh-hant": "魔靈珊瑚",
+      "en": "Cursola",
+      "ja": "サニゴーン"
+    },
+    "formNames": {},
+    "types": [
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 95,
+      "def": 50,
+      "spa": 145,
+      "spd": 130,
+      "spe": 30
+    }
+  },
+  "865": {
+    "resourceType": "pokemon",
+    "id": 865,
+    "speciesId": 865,
+    "pokemonSlug": "sirfetchd",
+    "speciesSlug": "sirfetchd",
+    "calcSpeciesName": "Sirfetch’d",
+    "names": {
+      "zh-hans": "葱游兵",
+      "zh-hant": "蔥遊兵",
+      "en": "Sirfetch’d",
+      "ja": "ネギガナイト"
+    },
+    "speciesNames": {
+      "zh-hans": "葱游兵",
+      "zh-hant": "蔥遊兵",
+      "en": "Sirfetch’d",
+      "ja": "ネギガナイト"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 62,
+      "atk": 135,
+      "def": 95,
+      "spa": 68,
+      "spd": 82,
+      "spe": 65
+    }
+  },
+  "866": {
+    "resourceType": "pokemon",
+    "id": 866,
+    "speciesId": 866,
+    "pokemonSlug": "mr-rime",
+    "speciesSlug": "mr-rime",
+    "calcSpeciesName": "Mr. Rime",
+    "names": {
+      "zh-hans": "踏冰人偶",
+      "zh-hant": "踏冰人偶",
+      "en": "Mr. Rime",
+      "ja": "バリコオル"
+    },
+    "speciesNames": {
+      "zh-hans": "踏冰人偶",
+      "zh-hant": "踏冰人偶",
+      "en": "Mr. Rime",
+      "ja": "バリコオル"
+    },
+    "formNames": {},
+    "types": [
+      "ice",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 85,
+      "def": 75,
+      "spa": 110,
+      "spd": 100,
+      "spe": 70
+    }
+  },
+  "867": {
+    "resourceType": "pokemon",
+    "id": 867,
+    "speciesId": 867,
+    "pokemonSlug": "runerigus",
+    "speciesSlug": "runerigus",
+    "calcSpeciesName": "Runerigus",
+    "names": {
+      "zh-hans": "迭失板",
+      "zh-hant": "死神板",
+      "en": "Runerigus",
+      "ja": "デスバーン"
+    },
+    "speciesNames": {
+      "zh-hans": "迭失板",
+      "zh-hant": "死神板",
+      "en": "Runerigus",
+      "ja": "デスバーン"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 58,
+      "atk": 95,
+      "def": 145,
+      "spa": 50,
+      "spd": 105,
+      "spe": 30
+    }
+  },
+  "868": {
+    "resourceType": "pokemon",
+    "id": 868,
+    "speciesId": 868,
+    "pokemonSlug": "milcery",
+    "speciesSlug": "milcery",
+    "calcSpeciesName": "Milcery",
+    "names": {
+      "zh-hans": "小仙奶",
+      "zh-hant": "小仙奶",
+      "en": "Milcery",
+      "ja": "マホミル"
+    },
+    "speciesNames": {
+      "zh-hans": "小仙奶",
+      "zh-hant": "小仙奶",
+      "en": "Milcery",
+      "ja": "マホミル"
+    },
+    "formNames": {},
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 40,
+      "def": 40,
+      "spa": 50,
+      "spd": 61,
+      "spe": 34
+    }
+  },
+  "869": {
+    "resourceType": "pokemon",
+    "id": 869,
+    "speciesId": 869,
+    "pokemonSlug": "alcremie",
+    "speciesSlug": "alcremie",
+    "calcSpeciesName": "Alcremie",
+    "names": {
+      "zh-hans": "霜奶仙",
+      "zh-hant": "霜奶仙",
+      "en": "Alcremie",
+      "ja": "マホイップ"
+    },
+    "speciesNames": {
+      "zh-hans": "霜奶仙",
+      "zh-hant": "霜奶仙",
+      "en": "Alcremie",
+      "ja": "マホイップ"
+    },
+    "formNames": {
+      "zh-hans": "奶香香草",
+      "zh-hant": "奶香香草",
+      "en": "Vanilla Cream Strawberry Sweet",
+      "ja": "ミルキィバニラ"
+    },
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 60,
+      "def": 75,
+      "spa": 110,
+      "spd": 121,
+      "spe": 64
+    }
+  },
+  "870": {
+    "resourceType": "pokemon",
+    "id": 870,
+    "speciesId": 870,
+    "pokemonSlug": "falinks",
+    "speciesSlug": "falinks",
+    "calcSpeciesName": "Falinks",
+    "names": {
+      "zh-hans": "列阵兵",
+      "zh-hant": "列陣兵",
+      "en": "Falinks",
+      "ja": "タイレーツ"
+    },
+    "speciesNames": {
+      "zh-hans": "列阵兵",
+      "zh-hant": "列陣兵",
+      "en": "Falinks",
+      "ja": "タイレーツ"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 100,
+      "def": 100,
+      "spa": 70,
+      "spd": 60,
+      "spe": 75
+    }
+  },
+  "871": {
+    "resourceType": "pokemon",
+    "id": 871,
+    "speciesId": 871,
+    "pokemonSlug": "pincurchin",
+    "speciesSlug": "pincurchin",
+    "calcSpeciesName": "Pincurchin",
+    "names": {
+      "zh-hans": "啪嚓海胆",
+      "zh-hant": "啪嚓海膽",
+      "en": "Pincurchin",
+      "ja": "バチンウニ"
+    },
+    "speciesNames": {
+      "zh-hans": "啪嚓海胆",
+      "zh-hant": "啪嚓海膽",
+      "en": "Pincurchin",
+      "ja": "バチンウニ"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 48,
+      "atk": 101,
+      "def": 95,
+      "spa": 91,
+      "spd": 85,
+      "spe": 15
+    }
+  },
+  "872": {
+    "resourceType": "pokemon",
+    "id": 872,
+    "speciesId": 872,
+    "pokemonSlug": "snom",
+    "speciesSlug": "snom",
+    "calcSpeciesName": "Snom",
+    "names": {
+      "zh-hans": "雪吞虫",
+      "zh-hant": "雪吞蟲",
+      "en": "Snom",
+      "ja": "ユキハミ"
+    },
+    "speciesNames": {
+      "zh-hans": "雪吞虫",
+      "zh-hant": "雪吞蟲",
+      "en": "Snom",
+      "ja": "ユキハミ"
+    },
+    "formNames": {},
+    "types": [
+      "ice",
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 30,
+      "atk": 25,
+      "def": 35,
+      "spa": 45,
+      "spd": 30,
+      "spe": 20
+    }
+  },
+  "873": {
+    "resourceType": "pokemon",
+    "id": 873,
+    "speciesId": 873,
+    "pokemonSlug": "frosmoth",
+    "speciesSlug": "frosmoth",
+    "calcSpeciesName": "Frosmoth",
+    "names": {
+      "zh-hans": "雪绒蛾",
+      "zh-hant": "雪絨蛾",
+      "en": "Frosmoth",
+      "ja": "モスノウ"
+    },
+    "speciesNames": {
+      "zh-hans": "雪绒蛾",
+      "zh-hant": "雪絨蛾",
+      "en": "Frosmoth",
+      "ja": "モスノウ"
+    },
+    "formNames": {},
+    "types": [
+      "ice",
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 65,
+      "def": 60,
+      "spa": 125,
+      "spd": 90,
+      "spe": 65
+    }
+  },
+  "874": {
+    "resourceType": "pokemon",
+    "id": 874,
+    "speciesId": 874,
+    "pokemonSlug": "stonjourner",
+    "speciesSlug": "stonjourner",
+    "calcSpeciesName": "Stonjourner",
+    "names": {
+      "zh-hans": "巨石丁",
+      "zh-hant": "巨石丁",
+      "en": "Stonjourner",
+      "ja": "イシヘンジン"
+    },
+    "speciesNames": {
+      "zh-hans": "巨石丁",
+      "zh-hant": "巨石丁",
+      "en": "Stonjourner",
+      "ja": "イシヘンジン"
+    },
+    "formNames": {},
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 125,
+      "def": 135,
+      "spa": 20,
+      "spd": 20,
+      "spe": 70
+    }
+  },
+  "875": {
+    "resourceType": "pokemon",
+    "id": 875,
+    "speciesId": 875,
+    "pokemonSlug": "eiscue-ice",
+    "speciesSlug": "eiscue",
+    "calcSpeciesName": "Eiscue",
+    "names": {
+      "zh-hans": "冰砌鹅",
+      "zh-hant": "冰砌鵝",
+      "en": "Eiscue",
+      "ja": "コオリッポ"
+    },
+    "speciesNames": {
+      "zh-hans": "冰砌鹅",
+      "zh-hant": "冰砌鵝",
+      "en": "Eiscue",
+      "ja": "コオリッポ"
+    },
+    "formNames": {
+      "zh-hans": "结冻头",
+      "zh-hant": "結凍頭",
+      "en": "Ice Face",
+      "ja": "アイスフェイス"
+    },
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 80,
+      "def": 110,
+      "spa": 65,
+      "spd": 90,
+      "spe": 50
+    }
+  },
+  "876": {
+    "resourceType": "pokemon",
+    "id": 876,
+    "speciesId": 876,
+    "pokemonSlug": "indeedee-male",
+    "speciesSlug": "indeedee",
+    "calcSpeciesName": "Indeedee",
+    "names": {
+      "zh-hans": "爱管侍",
+      "zh-hant": "愛管侍",
+      "en": "Indeedee",
+      "ja": "イエッサン"
+    },
+    "speciesNames": {
+      "zh-hans": "爱管侍",
+      "zh-hant": "愛管侍",
+      "en": "Indeedee",
+      "ja": "イエッサン"
+    },
+    "formNames": {
+      "zh-hans": "雄性的样子",
+      "zh-hant": "雄性的樣子",
+      "en": "Male",
+      "ja": "オスのすがた"
+    },
+    "types": [
+      "psychic",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 65,
+      "def": 55,
+      "spa": 105,
+      "spd": 95,
+      "spe": 95
+    }
+  },
+  "877": {
+    "resourceType": "pokemon",
+    "id": 877,
+    "speciesId": 877,
+    "pokemonSlug": "morpeko-full-belly",
+    "speciesSlug": "morpeko",
+    "calcSpeciesName": "Morpeko",
+    "names": {
+      "zh-hans": "莫鲁贝可",
+      "zh-hant": "莫魯貝可",
+      "en": "Morpeko",
+      "ja": "モルペコ"
+    },
+    "speciesNames": {
+      "zh-hans": "莫鲁贝可",
+      "zh-hant": "莫魯貝可",
+      "en": "Morpeko",
+      "ja": "モルペコ"
+    },
+    "formNames": {
+      "zh-hans": "满腹花纹",
+      "zh-hant": "滿腹花紋",
+      "en": "Full Belly Mode",
+      "ja": "まんぷくもよう"
+    },
+    "types": [
+      "electric",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 58,
+      "atk": 95,
+      "def": 58,
+      "spa": 70,
+      "spd": 58,
+      "spe": 97
+    }
+  },
+  "878": {
+    "resourceType": "pokemon",
+    "id": 878,
+    "speciesId": 878,
+    "pokemonSlug": "cufant",
+    "speciesSlug": "cufant",
+    "calcSpeciesName": "Cufant",
+    "names": {
+      "zh-hans": "铜象",
+      "zh-hant": "銅象",
+      "en": "Cufant",
+      "ja": "ゾウドウ"
+    },
+    "speciesNames": {
+      "zh-hans": "铜象",
+      "zh-hant": "銅象",
+      "en": "Cufant",
+      "ja": "ゾウドウ"
+    },
+    "formNames": {},
+    "types": [
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 72,
+      "atk": 80,
+      "def": 49,
+      "spa": 40,
+      "spd": 49,
+      "spe": 40
+    }
+  },
+  "879": {
+    "resourceType": "pokemon",
+    "id": 879,
+    "speciesId": 879,
+    "pokemonSlug": "copperajah",
+    "speciesSlug": "copperajah",
+    "calcSpeciesName": "Copperajah",
+    "names": {
+      "zh-hans": "大王铜象",
+      "zh-hant": "大王銅象",
+      "en": "Copperajah",
+      "ja": "ダイオウドウ"
+    },
+    "speciesNames": {
+      "zh-hans": "大王铜象",
+      "zh-hant": "大王銅象",
+      "en": "Copperajah",
+      "ja": "ダイオウドウ"
+    },
+    "formNames": {},
+    "types": [
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 122,
+      "atk": 130,
+      "def": 69,
+      "spa": 80,
+      "spd": 69,
+      "spe": 30
+    }
+  },
+  "880": {
+    "resourceType": "pokemon",
+    "id": 880,
+    "speciesId": 880,
+    "pokemonSlug": "dracozolt",
+    "speciesSlug": "dracozolt",
+    "calcSpeciesName": "Dracozolt",
+    "names": {
+      "zh-hans": "雷鸟龙",
+      "zh-hant": "雷鳥龍",
+      "en": "Dracozolt",
+      "ja": "パッチラゴン"
+    },
+    "speciesNames": {
+      "zh-hans": "雷鸟龙",
+      "zh-hant": "雷鳥龍",
+      "en": "Dracozolt",
+      "ja": "パッチラゴン"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 100,
+      "def": 90,
+      "spa": 80,
+      "spd": 70,
+      "spe": 75
+    }
+  },
+  "881": {
+    "resourceType": "pokemon",
+    "id": 881,
+    "speciesId": 881,
+    "pokemonSlug": "arctozolt",
+    "speciesSlug": "arctozolt",
+    "calcSpeciesName": "Arctozolt",
+    "names": {
+      "zh-hans": "雷鸟海兽",
+      "zh-hant": "雷鳥海獸",
+      "en": "Arctozolt",
+      "ja": "パッチルドン"
+    },
+    "speciesNames": {
+      "zh-hans": "雷鸟海兽",
+      "zh-hant": "雷鳥海獸",
+      "en": "Arctozolt",
+      "ja": "パッチルドン"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 100,
+      "def": 90,
+      "spa": 90,
+      "spd": 80,
+      "spe": 55
+    }
+  },
+  "882": {
+    "resourceType": "pokemon",
+    "id": 882,
+    "speciesId": 882,
+    "pokemonSlug": "dracovish",
+    "speciesSlug": "dracovish",
+    "calcSpeciesName": "Dracovish",
+    "names": {
+      "zh-hans": "鳃鱼龙",
+      "zh-hant": "鰓魚龍",
+      "en": "Dracovish",
+      "ja": "ウオノラゴン"
+    },
+    "speciesNames": {
+      "zh-hans": "鳃鱼龙",
+      "zh-hant": "鰓魚龍",
+      "en": "Dracovish",
+      "ja": "ウオノラゴン"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 90,
+      "def": 100,
+      "spa": 70,
+      "spd": 80,
+      "spe": 75
+    }
+  },
+  "883": {
+    "resourceType": "pokemon",
+    "id": 883,
+    "speciesId": 883,
+    "pokemonSlug": "arctovish",
+    "speciesSlug": "arctovish",
+    "calcSpeciesName": "Arctovish",
+    "names": {
+      "zh-hans": "鳃鱼海兽",
+      "zh-hant": "鰓魚海獸",
+      "en": "Arctovish",
+      "ja": "ウオチルドン"
+    },
+    "speciesNames": {
+      "zh-hans": "鳃鱼海兽",
+      "zh-hant": "鰓魚海獸",
+      "en": "Arctovish",
+      "ja": "ウオチルドン"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 90,
+      "def": 100,
+      "spa": 80,
+      "spd": 90,
+      "spe": 55
+    }
+  },
+  "884": {
+    "resourceType": "pokemon",
+    "id": 884,
+    "speciesId": 884,
+    "pokemonSlug": "duraludon",
+    "speciesSlug": "duraludon",
+    "calcSpeciesName": "Duraludon",
+    "names": {
+      "zh-hans": "铝钢龙",
+      "zh-hant": "鋁鋼龍",
+      "en": "Duraludon",
+      "ja": "ジュラルドン"
+    },
+    "speciesNames": {
+      "zh-hans": "铝钢龙",
+      "zh-hant": "鋁鋼龍",
+      "en": "Duraludon",
+      "ja": "ジュラルドン"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 95,
+      "def": 115,
+      "spa": 120,
+      "spd": 50,
+      "spe": 85
+    }
+  },
+  "885": {
+    "resourceType": "pokemon",
+    "id": 885,
+    "speciesId": 885,
+    "pokemonSlug": "dreepy",
+    "speciesSlug": "dreepy",
+    "calcSpeciesName": "Dreepy",
+    "names": {
+      "zh-hans": "多龙梅西亚",
+      "zh-hant": "多龍梅西亞",
+      "en": "Dreepy",
+      "ja": "ドラメシヤ"
+    },
+    "speciesNames": {
+      "zh-hans": "多龙梅西亚",
+      "zh-hant": "多龍梅西亞",
+      "en": "Dreepy",
+      "ja": "ドラメシヤ"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 28,
+      "atk": 60,
+      "def": 30,
+      "spa": 40,
+      "spd": 30,
+      "spe": 82
+    }
+  },
+  "886": {
+    "resourceType": "pokemon",
+    "id": 886,
+    "speciesId": 886,
+    "pokemonSlug": "drakloak",
+    "speciesSlug": "drakloak",
+    "calcSpeciesName": "Drakloak",
+    "names": {
+      "zh-hans": "多龙奇",
+      "zh-hant": "多龍奇",
+      "en": "Drakloak",
+      "ja": "ドロンチ"
+    },
+    "speciesNames": {
+      "zh-hans": "多龙奇",
+      "zh-hant": "多龍奇",
+      "en": "Drakloak",
+      "ja": "ドロンチ"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 80,
+      "def": 50,
+      "spa": 60,
+      "spd": 50,
+      "spe": 102
+    }
+  },
+  "887": {
+    "resourceType": "pokemon",
+    "id": 887,
+    "speciesId": 887,
+    "pokemonSlug": "dragapult",
+    "speciesSlug": "dragapult",
+    "calcSpeciesName": "Dragapult",
+    "names": {
+      "zh-hans": "多龙巴鲁托",
+      "zh-hant": "多龍巴魯托",
+      "en": "Dragapult",
+      "ja": "ドラパルト"
+    },
+    "speciesNames": {
+      "zh-hans": "多龙巴鲁托",
+      "zh-hant": "多龍巴魯托",
+      "en": "Dragapult",
+      "ja": "ドラパルト"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 88,
+      "atk": 120,
+      "def": 75,
+      "spa": 100,
+      "spd": 75,
+      "spe": 142
+    }
+  },
+  "888": {
+    "resourceType": "pokemon",
+    "id": 888,
+    "speciesId": 888,
+    "pokemonSlug": "zacian",
+    "speciesSlug": "zacian",
+    "calcSpeciesName": "Zacian",
+    "names": {
+      "zh-hans": "苍响",
+      "zh-hant": "蒼響",
+      "en": "Zacian",
+      "ja": "ザシアン"
+    },
+    "speciesNames": {
+      "zh-hans": "苍响",
+      "zh-hant": "蒼響",
+      "en": "Zacian",
+      "ja": "ザシアン"
+    },
+    "formNames": {},
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 92,
+      "atk": 120,
+      "def": 115,
+      "spa": 80,
+      "spd": 115,
+      "spe": 138
+    }
+  },
+  "889": {
+    "resourceType": "pokemon",
+    "id": 889,
+    "speciesId": 889,
+    "pokemonSlug": "zamazenta",
+    "speciesSlug": "zamazenta",
+    "calcSpeciesName": "Zamazenta",
+    "names": {
+      "zh-hans": "藏玛然特",
+      "zh-hant": "藏瑪然特",
+      "en": "Zamazenta",
+      "ja": "ザマゼンタ"
+    },
+    "speciesNames": {
+      "zh-hans": "藏玛然特",
+      "zh-hant": "藏瑪然特",
+      "en": "Zamazenta",
+      "ja": "ザマゼンタ"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 92,
+      "atk": 120,
+      "def": 115,
+      "spa": 80,
+      "spd": 115,
+      "spe": 138
+    }
+  },
+  "890": {
+    "resourceType": "pokemon",
+    "id": 890,
+    "speciesId": 890,
+    "pokemonSlug": "eternatus",
+    "speciesSlug": "eternatus",
+    "calcSpeciesName": "Eternatus",
+    "names": {
+      "zh-hans": "无极汰那",
+      "zh-hant": "無極汰那",
+      "en": "Eternatus",
+      "ja": "ムゲンダイナ"
+    },
+    "speciesNames": {
+      "zh-hans": "无极汰那",
+      "zh-hant": "無極汰那",
+      "en": "Eternatus",
+      "ja": "ムゲンダイナ"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 140,
+      "atk": 85,
+      "def": 95,
+      "spa": 145,
+      "spd": 95,
+      "spe": 130
+    }
+  },
+  "891": {
+    "resourceType": "pokemon",
+    "id": 891,
+    "speciesId": 891,
+    "pokemonSlug": "kubfu",
+    "speciesSlug": "kubfu",
+    "calcSpeciesName": "Kubfu",
+    "names": {
+      "zh-hans": "熊徒弟",
+      "zh-hant": "熊徒弟",
+      "en": "Kubfu",
+      "ja": "ダクマ"
+    },
+    "speciesNames": {
+      "zh-hans": "熊徒弟",
+      "zh-hant": "熊徒弟",
+      "en": "Kubfu",
+      "ja": "ダクマ"
+    },
+    "formNames": {},
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 90,
+      "def": 60,
+      "spa": 53,
+      "spd": 50,
+      "spe": 72
+    }
+  },
+  "892": {
+    "resourceType": "pokemon",
+    "id": 892,
+    "speciesId": 892,
+    "pokemonSlug": "urshifu-single-strike",
+    "speciesSlug": "urshifu",
+    "calcSpeciesName": "Urshifu",
+    "names": {
+      "zh-hans": "武道熊师",
+      "zh-hant": "武道熊師",
+      "en": "Urshifu",
+      "ja": "ウーラオス"
+    },
+    "speciesNames": {
+      "zh-hans": "武道熊师",
+      "zh-hant": "武道熊師",
+      "en": "Urshifu",
+      "ja": "ウーラオス"
+    },
+    "formNames": {
+      "zh-hans": "一击流",
+      "zh-hant": "一擊流",
+      "en": "Single Strike Style",
+      "ja": "いちげきのかた"
+    },
+    "types": [
+      "fighting",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 130,
+      "def": 100,
+      "spa": 63,
+      "spd": 60,
+      "spe": 97
+    }
+  },
+  "893": {
+    "resourceType": "pokemon",
+    "id": 893,
+    "speciesId": 893,
+    "pokemonSlug": "zarude",
+    "speciesSlug": "zarude",
+    "calcSpeciesName": "Zarude",
+    "names": {
+      "zh-hans": "萨戮德",
+      "zh-hant": "薩戮德",
+      "en": "Zarude",
+      "ja": "ザルード"
+    },
+    "speciesNames": {
+      "zh-hans": "萨戮德",
+      "zh-hant": "薩戮德",
+      "en": "Zarude",
+      "ja": "ザルード"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 105,
+      "atk": 120,
+      "def": 105,
+      "spa": 70,
+      "spd": 95,
+      "spe": 105
+    }
+  },
+  "894": {
+    "resourceType": "pokemon",
+    "id": 894,
+    "speciesId": 894,
+    "pokemonSlug": "regieleki",
+    "speciesSlug": "regieleki",
+    "calcSpeciesName": "Regieleki",
+    "names": {
+      "zh-hans": "雷吉艾勒奇",
+      "zh-hant": "雷吉艾勒奇",
+      "en": "Regieleki",
+      "ja": "レジエレキ"
+    },
+    "speciesNames": {
+      "zh-hans": "雷吉艾勒奇",
+      "zh-hant": "雷吉艾勒奇",
+      "en": "Regieleki",
+      "ja": "レジエレキ"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 100,
+      "def": 50,
+      "spa": 100,
+      "spd": 50,
+      "spe": 200
+    }
+  },
+  "895": {
+    "resourceType": "pokemon",
+    "id": 895,
+    "speciesId": 895,
+    "pokemonSlug": "regidrago",
+    "speciesSlug": "regidrago",
+    "calcSpeciesName": "Regidrago",
+    "names": {
+      "zh-hans": "雷吉铎拉戈",
+      "zh-hant": "雷吉鐸拉戈",
+      "en": "Regidrago",
+      "ja": "レジドラゴ"
+    },
+    "speciesNames": {
+      "zh-hans": "雷吉铎拉戈",
+      "zh-hant": "雷吉鐸拉戈",
+      "en": "Regidrago",
+      "ja": "レジドラゴ"
+    },
+    "formNames": {},
+    "types": [
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 200,
+      "atk": 100,
+      "def": 50,
+      "spa": 100,
+      "spd": 50,
+      "spe": 80
+    }
+  },
+  "896": {
+    "resourceType": "pokemon",
+    "id": 896,
+    "speciesId": 896,
+    "pokemonSlug": "glastrier",
+    "speciesSlug": "glastrier",
+    "calcSpeciesName": "Glastrier",
+    "names": {
+      "zh-hans": "雪暴马",
+      "zh-hant": "雪暴馬",
+      "en": "Glastrier",
+      "ja": "ブリザポス"
+    },
+    "speciesNames": {
+      "zh-hans": "雪暴马",
+      "zh-hant": "雪暴馬",
+      "en": "Glastrier",
+      "ja": "ブリザポス"
+    },
+    "formNames": {},
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 145,
+      "def": 130,
+      "spa": 65,
+      "spd": 110,
+      "spe": 30
+    }
+  },
+  "897": {
+    "resourceType": "pokemon",
+    "id": 897,
+    "speciesId": 897,
+    "pokemonSlug": "spectrier",
+    "speciesSlug": "spectrier",
+    "calcSpeciesName": "Spectrier",
+    "names": {
+      "zh-hans": "灵幽马",
+      "zh-hant": "靈幽馬",
+      "en": "Spectrier",
+      "ja": "レイスポス"
+    },
+    "speciesNames": {
+      "zh-hans": "灵幽马",
+      "zh-hant": "靈幽馬",
+      "en": "Spectrier",
+      "ja": "レイスポス"
+    },
+    "formNames": {},
+    "types": [
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 65,
+      "def": 60,
+      "spa": 145,
+      "spd": 80,
+      "spe": 130
+    }
+  },
+  "898": {
+    "resourceType": "pokemon",
+    "id": 898,
+    "speciesId": 898,
+    "pokemonSlug": "calyrex",
+    "speciesSlug": "calyrex",
+    "calcSpeciesName": "Calyrex",
+    "names": {
+      "zh-hans": "蕾冠王",
+      "zh-hant": "蕾冠王",
+      "en": "Calyrex",
+      "ja": "バドレックス"
+    },
+    "speciesNames": {
+      "zh-hans": "蕾冠王",
+      "zh-hant": "蕾冠王",
+      "en": "Calyrex",
+      "ja": "バドレックス"
+    },
+    "formNames": {},
+    "types": [
+      "psychic",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 80,
+      "def": 80,
+      "spa": 80,
+      "spd": 80,
+      "spe": 80
+    }
+  },
+  "899": {
+    "resourceType": "pokemon",
+    "id": 899,
+    "speciesId": 899,
+    "pokemonSlug": "wyrdeer",
+    "speciesSlug": "wyrdeer",
+    "calcSpeciesName": "Wyrdeer",
+    "names": {
+      "zh-hans": "诡角鹿",
+      "zh-hant": "詭角鹿",
+      "en": "Wyrdeer",
+      "ja": "アヤシシ"
+    },
+    "speciesNames": {
+      "zh-hans": "诡角鹿",
+      "zh-hant": "詭角鹿",
+      "en": "Wyrdeer",
+      "ja": "アヤシシ"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 103,
+      "atk": 105,
+      "def": 72,
+      "spa": 105,
+      "spd": 75,
+      "spe": 65
+    }
+  },
+  "900": {
+    "resourceType": "pokemon",
+    "id": 900,
+    "speciesId": 900,
+    "pokemonSlug": "kleavor",
+    "speciesSlug": "kleavor",
+    "calcSpeciesName": "Kleavor",
+    "names": {
+      "zh-hans": "劈斧螳螂",
+      "zh-hant": "劈斧螳螂",
+      "en": "Kleavor",
+      "ja": "バサギリ"
+    },
+    "speciesNames": {
+      "zh-hans": "劈斧螳螂",
+      "zh-hant": "劈斧螳螂",
+      "en": "Kleavor",
+      "ja": "バサギリ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 135,
+      "def": 95,
+      "spa": 45,
+      "spd": 70,
+      "spe": 85
+    }
+  },
+  "901": {
+    "resourceType": "pokemon",
+    "id": 901,
+    "speciesId": 901,
+    "pokemonSlug": "ursaluna",
+    "speciesSlug": "ursaluna",
+    "calcSpeciesName": "Ursaluna",
+    "names": {
+      "zh-hans": "月月熊",
+      "zh-hant": "月月熊",
+      "en": "Ursaluna",
+      "ja": "ガチグマ"
+    },
+    "speciesNames": {
+      "zh-hans": "月月熊",
+      "zh-hant": "月月熊",
+      "en": "Ursaluna",
+      "ja": "ガチグマ"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 130,
+      "atk": 140,
+      "def": 105,
+      "spa": 45,
+      "spd": 80,
+      "spe": 50
+    }
+  },
+  "902": {
+    "resourceType": "pokemon",
+    "id": 902,
+    "speciesId": 902,
+    "pokemonSlug": "basculegion-male",
+    "speciesSlug": "basculegion",
+    "calcSpeciesName": "Basculegion",
+    "names": {
+      "zh-hans": "幽尾玄鱼",
+      "zh-hant": "幽尾玄魚",
+      "en": "Basculegion",
+      "ja": "イダイトウ"
+    },
+    "speciesNames": {
+      "zh-hans": "幽尾玄鱼",
+      "zh-hant": "幽尾玄魚",
+      "en": "Basculegion",
+      "ja": "イダイトウ"
+    },
+    "formNames": {
+      "zh-hans": "Male",
+      "zh-hant": "Male",
+      "en": "Male",
+      "ja": "オスのすがた"
+    },
+    "types": [
+      "water",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 120,
+      "atk": 112,
+      "def": 65,
+      "spa": 80,
+      "spd": 75,
+      "spe": 78
+    }
+  },
+  "903": {
+    "resourceType": "pokemon",
+    "id": 903,
+    "speciesId": 903,
+    "pokemonSlug": "sneasler",
+    "speciesSlug": "sneasler",
+    "calcSpeciesName": "Sneasler",
+    "names": {
+      "zh-hans": "大狃拉",
+      "zh-hant": "大狃拉",
+      "en": "Sneasler",
+      "ja": "オオニューラ"
+    },
+    "speciesNames": {
+      "zh-hans": "大狃拉",
+      "zh-hant": "大狃拉",
+      "en": "Sneasler",
+      "ja": "オオニューラ"
+    },
+    "formNames": {},
+    "types": [
+      "fighting",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 130,
+      "def": 60,
+      "spa": 40,
+      "spd": 80,
+      "spe": 120
+    }
+  },
+  "904": {
+    "resourceType": "pokemon",
+    "id": 904,
+    "speciesId": 904,
+    "pokemonSlug": "overqwil",
+    "speciesSlug": "overqwil",
+    "calcSpeciesName": "Overqwil",
+    "names": {
+      "zh-hans": "万针鱼",
+      "zh-hant": "萬針魚",
+      "en": "Overqwil",
+      "ja": "ハリーマン"
+    },
+    "speciesNames": {
+      "zh-hans": "万针鱼",
+      "zh-hant": "萬針魚",
+      "en": "Overqwil",
+      "ja": "ハリーマン"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 115,
+      "def": 95,
+      "spa": 65,
+      "spd": 65,
+      "spe": 85
+    }
+  },
+  "905": {
+    "resourceType": "pokemon",
+    "id": 905,
+    "speciesId": 905,
+    "pokemonSlug": "enamorus-incarnate",
+    "speciesSlug": "enamorus",
+    "calcSpeciesName": "Enamorus",
+    "names": {
+      "zh-hans": "眷恋云",
+      "zh-hant": "眷戀雲",
+      "en": "Enamorus",
+      "ja": "ラブトロス"
+    },
+    "speciesNames": {
+      "zh-hans": "眷恋云",
+      "zh-hant": "眷戀雲",
+      "en": "Enamorus",
+      "ja": "ラブトロス"
+    },
+    "formNames": {
+      "zh-hans": "Incarnate Forme",
+      "zh-hant": "Incarnate Forme",
+      "en": "Incarnate Forme",
+      "ja": "けしんフォルム"
+    },
+    "types": [
+      "fairy",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 74,
+      "atk": 115,
+      "def": 70,
+      "spa": 135,
+      "spd": 80,
+      "spe": 106
+    }
+  },
+  "906": {
+    "resourceType": "pokemon",
+    "id": 906,
+    "speciesId": 906,
+    "pokemonSlug": "sprigatito",
+    "speciesSlug": "sprigatito",
+    "calcSpeciesName": "Sprigatito",
+    "names": {
+      "zh-hans": "新叶喵",
+      "zh-hant": "新葉喵",
+      "en": "Sprigatito",
+      "ja": "ニャオハ"
+    },
+    "speciesNames": {
+      "zh-hans": "新叶喵",
+      "zh-hant": "新葉喵",
+      "en": "Sprigatito",
+      "ja": "ニャオハ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 61,
+      "def": 54,
+      "spa": 45,
+      "spd": 45,
+      "spe": 65
+    }
+  },
+  "907": {
+    "resourceType": "pokemon",
+    "id": 907,
+    "speciesId": 907,
+    "pokemonSlug": "floragato",
+    "speciesSlug": "floragato",
+    "calcSpeciesName": "Floragato",
+    "names": {
+      "zh-hans": "蒂蕾喵",
+      "zh-hant": "蒂蕾喵",
+      "en": "Floragato",
+      "ja": "ニャローテ"
+    },
+    "speciesNames": {
+      "zh-hans": "蒂蕾喵",
+      "zh-hant": "蒂蕾喵",
+      "en": "Floragato",
+      "ja": "ニャローテ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 61,
+      "atk": 80,
+      "def": 63,
+      "spa": 60,
+      "spd": 63,
+      "spe": 83
+    }
+  },
+  "908": {
+    "resourceType": "pokemon",
+    "id": 908,
+    "speciesId": 908,
+    "pokemonSlug": "meowscarada",
+    "speciesSlug": "meowscarada",
+    "calcSpeciesName": "Meowscarada",
+    "names": {
+      "zh-hans": "魔幻假面喵",
+      "zh-hant": "魔幻假面喵",
+      "en": "Meowscarada",
+      "ja": "マスカーニャ"
+    },
+    "speciesNames": {
+      "zh-hans": "魔幻假面喵",
+      "zh-hant": "魔幻假面喵",
+      "en": "Meowscarada",
+      "ja": "マスカーニャ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 76,
+      "atk": 110,
+      "def": 70,
+      "spa": 81,
+      "spd": 70,
+      "spe": 123
+    }
+  },
+  "909": {
+    "resourceType": "pokemon",
+    "id": 909,
+    "speciesId": 909,
+    "pokemonSlug": "fuecoco",
+    "speciesSlug": "fuecoco",
+    "calcSpeciesName": "Fuecoco",
+    "names": {
+      "zh-hans": "呆火鳄",
+      "zh-hant": "呆火鱷",
+      "en": "Fuecoco",
+      "ja": "ホゲータ"
+    },
+    "speciesNames": {
+      "zh-hans": "呆火鳄",
+      "zh-hant": "呆火鱷",
+      "en": "Fuecoco",
+      "ja": "ホゲータ"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 67,
+      "atk": 45,
+      "def": 59,
+      "spa": 63,
+      "spd": 40,
+      "spe": 36
+    }
+  },
+  "910": {
+    "resourceType": "pokemon",
+    "id": 910,
+    "speciesId": 910,
+    "pokemonSlug": "crocalor",
+    "speciesSlug": "crocalor",
+    "calcSpeciesName": "Crocalor",
+    "names": {
+      "zh-hans": "炙烫鳄",
+      "zh-hant": "炙燙鱷",
+      "en": "Crocalor",
+      "ja": "アチゲータ"
+    },
+    "speciesNames": {
+      "zh-hans": "炙烫鳄",
+      "zh-hant": "炙燙鱷",
+      "en": "Crocalor",
+      "ja": "アチゲータ"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 81,
+      "atk": 55,
+      "def": 78,
+      "spa": 90,
+      "spd": 58,
+      "spe": 49
+    }
+  },
+  "911": {
+    "resourceType": "pokemon",
+    "id": 911,
+    "speciesId": 911,
+    "pokemonSlug": "skeledirge",
+    "speciesSlug": "skeledirge",
+    "calcSpeciesName": "Skeledirge",
+    "names": {
+      "zh-hans": "骨纹巨声鳄",
+      "zh-hant": "骨紋巨聲鱷",
+      "en": "Skeledirge",
+      "ja": "ラウドボーン"
+    },
+    "speciesNames": {
+      "zh-hans": "骨纹巨声鳄",
+      "zh-hant": "骨紋巨聲鱷",
+      "en": "Skeledirge",
+      "ja": "ラウドボーン"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 104,
+      "atk": 75,
+      "def": 100,
+      "spa": 110,
+      "spd": 75,
+      "spe": 66
+    }
+  },
+  "912": {
+    "resourceType": "pokemon",
+    "id": 912,
+    "speciesId": 912,
+    "pokemonSlug": "quaxly",
+    "speciesSlug": "quaxly",
+    "calcSpeciesName": "Quaxly",
+    "names": {
+      "zh-hans": "润水鸭",
+      "zh-hant": "潤水鴨",
+      "en": "Quaxly",
+      "ja": "クワッス"
+    },
+    "speciesNames": {
+      "zh-hans": "润水鸭",
+      "zh-hant": "潤水鴨",
+      "en": "Quaxly",
+      "ja": "クワッス"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 65,
+      "def": 45,
+      "spa": 50,
+      "spd": 45,
+      "spe": 50
+    }
+  },
+  "913": {
+    "resourceType": "pokemon",
+    "id": 913,
+    "speciesId": 913,
+    "pokemonSlug": "quaxwell",
+    "speciesSlug": "quaxwell",
+    "calcSpeciesName": "Quaxwell",
+    "names": {
+      "zh-hans": "涌跃鸭",
+      "zh-hant": "湧躍鴨",
+      "en": "Quaxwell",
+      "ja": "ウェルカモ"
+    },
+    "speciesNames": {
+      "zh-hans": "涌跃鸭",
+      "zh-hant": "湧躍鴨",
+      "en": "Quaxwell",
+      "ja": "ウェルカモ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 85,
+      "def": 65,
+      "spa": 65,
+      "spd": 60,
+      "spe": 65
+    }
+  },
+  "914": {
+    "resourceType": "pokemon",
+    "id": 914,
+    "speciesId": 914,
+    "pokemonSlug": "quaquaval",
+    "speciesSlug": "quaquaval",
+    "calcSpeciesName": "Quaquaval",
+    "names": {
+      "zh-hans": "狂欢浪舞鸭",
+      "zh-hant": "狂歡浪舞鴨",
+      "en": "Quaquaval",
+      "ja": "ウェーニバル"
+    },
+    "speciesNames": {
+      "zh-hans": "狂欢浪舞鸭",
+      "zh-hant": "狂歡浪舞鴨",
+      "en": "Quaquaval",
+      "ja": "ウェーニバル"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 120,
+      "def": 80,
+      "spa": 85,
+      "spd": 75,
+      "spe": 85
+    }
+  },
+  "915": {
+    "resourceType": "pokemon",
+    "id": 915,
+    "speciesId": 915,
+    "pokemonSlug": "lechonk",
+    "speciesSlug": "lechonk",
+    "calcSpeciesName": "Lechonk",
+    "names": {
+      "zh-hans": "爱吃豚",
+      "zh-hant": "愛吃豚",
+      "en": "Lechonk",
+      "ja": "グルトン"
+    },
+    "speciesNames": {
+      "zh-hans": "爱吃豚",
+      "zh-hant": "愛吃豚",
+      "en": "Lechonk",
+      "ja": "グルトン"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 54,
+      "atk": 45,
+      "def": 40,
+      "spa": 35,
+      "spd": 45,
+      "spe": 35
+    }
+  },
+  "916": {
+    "resourceType": "pokemon",
+    "id": 916,
+    "speciesId": 916,
+    "pokemonSlug": "oinkologne-male",
+    "speciesSlug": "oinkologne",
+    "calcSpeciesName": "Oinkologne",
+    "names": {
+      "zh-hans": "飘香豚",
+      "zh-hant": "飄香豚",
+      "en": "Oinkologne",
+      "ja": "パフュートン"
+    },
+    "speciesNames": {
+      "zh-hans": "飘香豚",
+      "zh-hant": "飄香豚",
+      "en": "Oinkologne",
+      "ja": "パフュートン"
+    },
+    "formNames": {
+      "zh-hans": "Male",
+      "zh-hant": "Male",
+      "en": "Male",
+      "ja": "オスのすがた"
+    },
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 110,
+      "atk": 100,
+      "def": 75,
+      "spa": 59,
+      "spd": 80,
+      "spe": 65
+    }
+  },
+  "917": {
+    "resourceType": "pokemon",
+    "id": 917,
+    "speciesId": 917,
+    "pokemonSlug": "tarountula",
+    "speciesSlug": "tarountula",
+    "calcSpeciesName": "Tarountula",
+    "names": {
+      "zh-hans": "团珠蛛",
+      "zh-hant": "團珠蛛",
+      "en": "Tarountula",
+      "ja": "タマンチュラ"
+    },
+    "speciesNames": {
+      "zh-hans": "团珠蛛",
+      "zh-hant": "團珠蛛",
+      "en": "Tarountula",
+      "ja": "タマンチュラ"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 41,
+      "def": 45,
+      "spa": 29,
+      "spd": 40,
+      "spe": 20
+    }
+  },
+  "918": {
+    "resourceType": "pokemon",
+    "id": 918,
+    "speciesId": 918,
+    "pokemonSlug": "spidops",
+    "speciesSlug": "spidops",
+    "calcSpeciesName": "Spidops",
+    "names": {
+      "zh-hans": "操陷蛛",
+      "zh-hant": "操陷蛛",
+      "en": "Spidops",
+      "ja": "ワナイダー"
+    },
+    "speciesNames": {
+      "zh-hans": "操陷蛛",
+      "zh-hant": "操陷蛛",
+      "en": "Spidops",
+      "ja": "ワナイダー"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 79,
+      "def": 92,
+      "spa": 52,
+      "spd": 86,
+      "spe": 35
+    }
+  },
+  "919": {
+    "resourceType": "pokemon",
+    "id": 919,
+    "speciesId": 919,
+    "pokemonSlug": "nymble",
+    "speciesSlug": "nymble",
+    "calcSpeciesName": "Nymble",
+    "names": {
+      "zh-hans": "豆蟋蟀",
+      "zh-hant": "豆蟋蟀",
+      "en": "Nymble",
+      "ja": "マメバッタ"
+    },
+    "speciesNames": {
+      "zh-hans": "豆蟋蟀",
+      "zh-hant": "豆蟋蟀",
+      "en": "Nymble",
+      "ja": "マメバッタ"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 33,
+      "atk": 46,
+      "def": 40,
+      "spa": 21,
+      "spd": 25,
+      "spe": 45
+    }
+  },
+  "920": {
+    "resourceType": "pokemon",
+    "id": 920,
+    "speciesId": 920,
+    "pokemonSlug": "lokix",
+    "speciesSlug": "lokix",
+    "calcSpeciesName": "Lokix",
+    "names": {
+      "zh-hans": "烈腿蝗",
+      "zh-hant": "烈腿蝗",
+      "en": "Lokix",
+      "ja": "エクスレッグ"
+    },
+    "speciesNames": {
+      "zh-hans": "烈腿蝗",
+      "zh-hant": "烈腿蝗",
+      "en": "Lokix",
+      "ja": "エクスレッグ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 71,
+      "atk": 102,
+      "def": 78,
+      "spa": 52,
+      "spd": 55,
+      "spe": 92
+    }
+  },
+  "921": {
+    "resourceType": "pokemon",
+    "id": 921,
+    "speciesId": 921,
+    "pokemonSlug": "pawmi",
+    "speciesSlug": "pawmi",
+    "calcSpeciesName": "Pawmi",
+    "names": {
+      "zh-hans": "布拨",
+      "zh-hant": "布撥",
+      "en": "Pawmi",
+      "ja": "パモ"
+    },
+    "speciesNames": {
+      "zh-hans": "布拨",
+      "zh-hant": "布撥",
+      "en": "Pawmi",
+      "ja": "パモ"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 50,
+      "def": 20,
+      "spa": 40,
+      "spd": 25,
+      "spe": 60
+    }
+  },
+  "922": {
+    "resourceType": "pokemon",
+    "id": 922,
+    "speciesId": 922,
+    "pokemonSlug": "pawmo",
+    "speciesSlug": "pawmo",
+    "calcSpeciesName": "Pawmo",
+    "names": {
+      "zh-hans": "布土拨",
+      "zh-hant": "布土撥",
+      "en": "Pawmo",
+      "ja": "パモット"
+    },
+    "speciesNames": {
+      "zh-hans": "布土拨",
+      "zh-hant": "布土撥",
+      "en": "Pawmo",
+      "ja": "パモット"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 75,
+      "def": 40,
+      "spa": 50,
+      "spd": 40,
+      "spe": 85
+    }
+  },
+  "923": {
+    "resourceType": "pokemon",
+    "id": 923,
+    "speciesId": 923,
+    "pokemonSlug": "pawmot",
+    "speciesSlug": "pawmot",
+    "calcSpeciesName": "Pawmot",
+    "names": {
+      "zh-hans": "巴布土拨",
+      "zh-hant": "巴布土撥",
+      "en": "Pawmot",
+      "ja": "パーモット"
+    },
+    "speciesNames": {
+      "zh-hans": "巴布土拨",
+      "zh-hant": "巴布土撥",
+      "en": "Pawmot",
+      "ja": "パーモット"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 115,
+      "def": 70,
+      "spa": 70,
+      "spd": 60,
+      "spe": 105
+    }
+  },
+  "924": {
+    "resourceType": "pokemon",
+    "id": 924,
+    "speciesId": 924,
+    "pokemonSlug": "tandemaus",
+    "speciesSlug": "tandemaus",
+    "calcSpeciesName": "Tandemaus",
+    "names": {
+      "zh-hans": "一对鼠",
+      "zh-hant": "一對鼠",
+      "en": "Tandemaus",
+      "ja": "ワッカネズミ"
+    },
+    "speciesNames": {
+      "zh-hans": "一对鼠",
+      "zh-hant": "一對鼠",
+      "en": "Tandemaus",
+      "ja": "ワッカネズミ"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 50,
+      "def": 45,
+      "spa": 40,
+      "spd": 45,
+      "spe": 75
+    }
+  },
+  "925": {
+    "resourceType": "pokemon",
+    "id": 925,
+    "speciesId": 925,
+    "pokemonSlug": "maushold-family-of-four",
+    "speciesSlug": "maushold",
+    "calcSpeciesName": "Maushold",
+    "names": {
+      "zh-hans": "一家鼠",
+      "zh-hant": "一家鼠",
+      "en": "Maushold",
+      "ja": "イッカネズミ"
+    },
+    "speciesNames": {
+      "zh-hans": "一家鼠",
+      "zh-hant": "一家鼠",
+      "en": "Maushold",
+      "ja": "イッカネズミ"
+    },
+    "formNames": {
+      "zh-hans": "Family of Four",
+      "zh-hant": "Family of Four",
+      "en": "Family of Four",
+      "ja": "４ひきかぞく"
+    },
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 74,
+      "atk": 75,
+      "def": 70,
+      "spa": 65,
+      "spd": 75,
+      "spe": 111
+    }
+  },
+  "926": {
+    "resourceType": "pokemon",
+    "id": 926,
+    "speciesId": 926,
+    "pokemonSlug": "fidough",
+    "speciesSlug": "fidough",
+    "calcSpeciesName": "Fidough",
+    "names": {
+      "zh-hans": "狗仔包",
+      "zh-hant": "狗仔包",
+      "en": "Fidough",
+      "ja": "パピモッチ"
+    },
+    "speciesNames": {
+      "zh-hans": "狗仔包",
+      "zh-hant": "狗仔包",
+      "en": "Fidough",
+      "ja": "パピモッチ"
+    },
+    "formNames": {},
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 37,
+      "atk": 55,
+      "def": 70,
+      "spa": 30,
+      "spd": 55,
+      "spe": 65
+    }
+  },
+  "927": {
+    "resourceType": "pokemon",
+    "id": 927,
+    "speciesId": 927,
+    "pokemonSlug": "dachsbun",
+    "speciesSlug": "dachsbun",
+    "calcSpeciesName": "Dachsbun",
+    "names": {
+      "zh-hans": "麻花犬",
+      "zh-hant": "麻花犬",
+      "en": "Dachsbun",
+      "ja": "バウッツェル"
+    },
+    "speciesNames": {
+      "zh-hans": "麻花犬",
+      "zh-hant": "麻花犬",
+      "en": "Dachsbun",
+      "ja": "バウッツェル"
+    },
+    "formNames": {},
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 57,
+      "atk": 80,
+      "def": 115,
+      "spa": 50,
+      "spd": 80,
+      "spe": 95
+    }
+  },
+  "928": {
+    "resourceType": "pokemon",
+    "id": 928,
+    "speciesId": 928,
+    "pokemonSlug": "smoliv",
+    "speciesSlug": "smoliv",
+    "calcSpeciesName": "Smoliv",
+    "names": {
+      "zh-hans": "迷你芙",
+      "zh-hant": "迷你芙",
+      "en": "Smoliv",
+      "ja": "ミニーブ"
+    },
+    "speciesNames": {
+      "zh-hans": "迷你芙",
+      "zh-hant": "迷你芙",
+      "en": "Smoliv",
+      "ja": "ミニーブ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 41,
+      "atk": 35,
+      "def": 45,
+      "spa": 58,
+      "spd": 51,
+      "spe": 30
+    }
+  },
+  "929": {
+    "resourceType": "pokemon",
+    "id": 929,
+    "speciesId": 929,
+    "pokemonSlug": "dolliv",
+    "speciesSlug": "dolliv",
+    "calcSpeciesName": "Dolliv",
+    "names": {
+      "zh-hans": "奥利纽",
+      "zh-hant": "奧利紐",
+      "en": "Dolliv",
+      "ja": "オリーニョ"
+    },
+    "speciesNames": {
+      "zh-hans": "奥利纽",
+      "zh-hant": "奧利紐",
+      "en": "Dolliv",
+      "ja": "オリーニョ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 52,
+      "atk": 53,
+      "def": 60,
+      "spa": 78,
+      "spd": 78,
+      "spe": 33
+    }
+  },
+  "930": {
+    "resourceType": "pokemon",
+    "id": 930,
+    "speciesId": 930,
+    "pokemonSlug": "arboliva",
+    "speciesSlug": "arboliva",
+    "calcSpeciesName": "Arboliva",
+    "names": {
+      "zh-hans": "奥利瓦",
+      "zh-hant": "奧利瓦",
+      "en": "Arboliva",
+      "ja": "オリーヴァ"
+    },
+    "speciesNames": {
+      "zh-hans": "奥利瓦",
+      "zh-hant": "奧利瓦",
+      "en": "Arboliva",
+      "ja": "オリーヴァ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 78,
+      "atk": 69,
+      "def": 90,
+      "spa": 125,
+      "spd": 109,
+      "spe": 39
+    }
+  },
+  "931": {
+    "resourceType": "pokemon",
+    "id": 931,
+    "speciesId": 931,
+    "pokemonSlug": "squawkabilly-green-plumage",
+    "speciesSlug": "squawkabilly",
+    "calcSpeciesName": "Squawkabilly",
+    "names": {
+      "zh-hans": "怒鹦哥",
+      "zh-hant": "怒鸚哥",
+      "en": "Squawkabilly",
+      "ja": "イキリンコ"
+    },
+    "speciesNames": {
+      "zh-hans": "怒鹦哥",
+      "zh-hant": "怒鸚哥",
+      "en": "Squawkabilly",
+      "ja": "イキリンコ"
+    },
+    "formNames": {
+      "zh-hans": "Green Plumage",
+      "zh-hant": "Green Plumage",
+      "en": "Green Plumage",
+      "ja": "グリーンフェザー"
+    },
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 82,
+      "atk": 96,
+      "def": 51,
+      "spa": 45,
+      "spd": 51,
+      "spe": 92
+    }
+  },
+  "932": {
+    "resourceType": "pokemon",
+    "id": 932,
+    "speciesId": 932,
+    "pokemonSlug": "nacli",
+    "speciesSlug": "nacli",
+    "calcSpeciesName": "Nacli",
+    "names": {
+      "zh-hans": "盐石宝",
+      "zh-hant": "鹽石寶",
+      "en": "Nacli",
+      "ja": "コジオ"
+    },
+    "speciesNames": {
+      "zh-hans": "盐石宝",
+      "zh-hant": "鹽石寶",
+      "en": "Nacli",
+      "ja": "コジオ"
+    },
+    "formNames": {},
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 55,
+      "def": 75,
+      "spa": 35,
+      "spd": 35,
+      "spe": 25
+    }
+  },
+  "933": {
+    "resourceType": "pokemon",
+    "id": 933,
+    "speciesId": 933,
+    "pokemonSlug": "naclstack",
+    "speciesSlug": "naclstack",
+    "calcSpeciesName": "Naclstack",
+    "names": {
+      "zh-hans": "盐石垒",
+      "zh-hant": "鹽石壘",
+      "en": "Naclstack",
+      "ja": "ジオヅム"
+    },
+    "speciesNames": {
+      "zh-hans": "盐石垒",
+      "zh-hant": "鹽石壘",
+      "en": "Naclstack",
+      "ja": "ジオヅム"
+    },
+    "formNames": {},
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 60,
+      "def": 100,
+      "spa": 35,
+      "spd": 65,
+      "spe": 35
+    }
+  },
+  "934": {
+    "resourceType": "pokemon",
+    "id": 934,
+    "speciesId": 934,
+    "pokemonSlug": "garganacl",
+    "speciesSlug": "garganacl",
+    "calcSpeciesName": "Garganacl",
+    "names": {
+      "zh-hans": "盐石巨灵",
+      "zh-hant": "鹽石巨靈",
+      "en": "Garganacl",
+      "ja": "キョジオーン"
+    },
+    "speciesNames": {
+      "zh-hans": "盐石巨灵",
+      "zh-hant": "鹽石巨靈",
+      "en": "Garganacl",
+      "ja": "キョジオーン"
+    },
+    "formNames": {},
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 100,
+      "def": 130,
+      "spa": 45,
+      "spd": 90,
+      "spe": 35
+    }
+  },
+  "935": {
+    "resourceType": "pokemon",
+    "id": 935,
+    "speciesId": 935,
+    "pokemonSlug": "charcadet",
+    "speciesSlug": "charcadet",
+    "calcSpeciesName": "Charcadet",
+    "names": {
+      "zh-hans": "炭小侍",
+      "zh-hant": "炭小侍",
+      "en": "Charcadet",
+      "ja": "カルボウ"
+    },
+    "speciesNames": {
+      "zh-hans": "炭小侍",
+      "zh-hant": "炭小侍",
+      "en": "Charcadet",
+      "ja": "カルボウ"
+    },
+    "formNames": {},
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 50,
+      "def": 40,
+      "spa": 50,
+      "spd": 40,
+      "spe": 35
+    }
+  },
+  "936": {
+    "resourceType": "pokemon",
+    "id": 936,
+    "speciesId": 936,
+    "pokemonSlug": "armarouge",
+    "speciesSlug": "armarouge",
+    "calcSpeciesName": "Armarouge",
+    "names": {
+      "zh-hans": "红莲铠骑",
+      "zh-hant": "紅蓮鎧騎",
+      "en": "Armarouge",
+      "ja": "グレンアルマ"
+    },
+    "speciesNames": {
+      "zh-hans": "红莲铠骑",
+      "zh-hant": "紅蓮鎧騎",
+      "en": "Armarouge",
+      "ja": "グレンアルマ"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 60,
+      "def": 100,
+      "spa": 125,
+      "spd": 80,
+      "spe": 75
+    }
+  },
+  "937": {
+    "resourceType": "pokemon",
+    "id": 937,
+    "speciesId": 937,
+    "pokemonSlug": "ceruledge",
+    "speciesSlug": "ceruledge",
+    "calcSpeciesName": "Ceruledge",
+    "names": {
+      "zh-hans": "苍炎刃鬼",
+      "zh-hant": "蒼炎刃鬼",
+      "en": "Ceruledge",
+      "ja": "ソウブレイズ"
+    },
+    "speciesNames": {
+      "zh-hans": "苍炎刃鬼",
+      "zh-hant": "蒼炎刃鬼",
+      "en": "Ceruledge",
+      "ja": "ソウブレイズ"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 125,
+      "def": 80,
+      "spa": 60,
+      "spd": 100,
+      "spe": 85
+    }
+  },
+  "938": {
+    "resourceType": "pokemon",
+    "id": 938,
+    "speciesId": 938,
+    "pokemonSlug": "tadbulb",
+    "speciesSlug": "tadbulb",
+    "calcSpeciesName": "Tadbulb",
+    "names": {
+      "zh-hans": "光蚪仔",
+      "zh-hant": "光蚪仔",
+      "en": "Tadbulb",
+      "ja": "ズピカ"
+    },
+    "speciesNames": {
+      "zh-hans": "光蚪仔",
+      "zh-hant": "光蚪仔",
+      "en": "Tadbulb",
+      "ja": "ズピカ"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 61,
+      "atk": 31,
+      "def": 41,
+      "spa": 59,
+      "spd": 35,
+      "spe": 45
+    }
+  },
+  "939": {
+    "resourceType": "pokemon",
+    "id": 939,
+    "speciesId": 939,
+    "pokemonSlug": "bellibolt",
+    "speciesSlug": "bellibolt",
+    "calcSpeciesName": "Bellibolt",
+    "names": {
+      "zh-hans": "电肚蛙",
+      "zh-hant": "電肚蛙",
+      "en": "Bellibolt",
+      "ja": "ハラバリー"
+    },
+    "speciesNames": {
+      "zh-hans": "电肚蛙",
+      "zh-hant": "電肚蛙",
+      "en": "Bellibolt",
+      "ja": "ハラバリー"
+    },
+    "formNames": {},
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 109,
+      "atk": 64,
+      "def": 91,
+      "spa": 103,
+      "spd": 83,
+      "spe": 45
+    }
+  },
+  "940": {
+    "resourceType": "pokemon",
+    "id": 940,
+    "speciesId": 940,
+    "pokemonSlug": "wattrel",
+    "speciesSlug": "wattrel",
+    "calcSpeciesName": "Wattrel",
+    "names": {
+      "zh-hans": "电海燕",
+      "zh-hant": "電海燕",
+      "en": "Wattrel",
+      "ja": "カイデン"
+    },
+    "speciesNames": {
+      "zh-hans": "电海燕",
+      "zh-hant": "電海燕",
+      "en": "Wattrel",
+      "ja": "カイデン"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 40,
+      "def": 35,
+      "spa": 55,
+      "spd": 40,
+      "spe": 70
+    }
+  },
+  "941": {
+    "resourceType": "pokemon",
+    "id": 941,
+    "speciesId": 941,
+    "pokemonSlug": "kilowattrel",
+    "speciesSlug": "kilowattrel",
+    "calcSpeciesName": "Kilowattrel",
+    "names": {
+      "zh-hans": "大电海燕",
+      "zh-hant": "大電海燕",
+      "en": "Kilowattrel",
+      "ja": "タイカイデン"
+    },
+    "speciesNames": {
+      "zh-hans": "大电海燕",
+      "zh-hant": "大電海燕",
+      "en": "Kilowattrel",
+      "ja": "タイカイデン"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 70,
+      "def": 60,
+      "spa": 105,
+      "spd": 60,
+      "spe": 125
+    }
+  },
+  "942": {
+    "resourceType": "pokemon",
+    "id": 942,
+    "speciesId": 942,
+    "pokemonSlug": "maschiff",
+    "speciesSlug": "maschiff",
+    "calcSpeciesName": "Maschiff",
+    "names": {
+      "zh-hans": "偶叫獒",
+      "zh-hant": "偶叫獒",
+      "en": "Maschiff",
+      "ja": "オラチフ"
+    },
+    "speciesNames": {
+      "zh-hans": "偶叫獒",
+      "zh-hant": "偶叫獒",
+      "en": "Maschiff",
+      "ja": "オラチフ"
+    },
+    "formNames": {},
+    "types": [
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 78,
+      "def": 60,
+      "spa": 40,
+      "spd": 51,
+      "spe": 51
+    }
+  },
+  "943": {
+    "resourceType": "pokemon",
+    "id": 943,
+    "speciesId": 943,
+    "pokemonSlug": "mabosstiff",
+    "speciesSlug": "mabosstiff",
+    "calcSpeciesName": "Mabosstiff",
+    "names": {
+      "zh-hans": "獒教父",
+      "zh-hant": "獒教父",
+      "en": "Mabosstiff",
+      "ja": "マフィティフ"
+    },
+    "speciesNames": {
+      "zh-hans": "獒教父",
+      "zh-hant": "獒教父",
+      "en": "Mabosstiff",
+      "ja": "マフィティフ"
+    },
+    "formNames": {},
+    "types": [
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 120,
+      "def": 90,
+      "spa": 60,
+      "spd": 70,
+      "spe": 85
+    }
+  },
+  "944": {
+    "resourceType": "pokemon",
+    "id": 944,
+    "speciesId": 944,
+    "pokemonSlug": "shroodle",
+    "speciesSlug": "shroodle",
+    "calcSpeciesName": "Shroodle",
+    "names": {
+      "zh-hans": "滋汁鼹",
+      "zh-hant": "滋汁鼴",
+      "en": "Shroodle",
+      "ja": "シルシュルー"
+    },
+    "speciesNames": {
+      "zh-hans": "滋汁鼹",
+      "zh-hant": "滋汁鼴",
+      "en": "Shroodle",
+      "ja": "シルシュルー"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 65,
+      "def": 35,
+      "spa": 40,
+      "spd": 35,
+      "spe": 75
+    }
+  },
+  "945": {
+    "resourceType": "pokemon",
+    "id": 945,
+    "speciesId": 945,
+    "pokemonSlug": "grafaiai",
+    "speciesSlug": "grafaiai",
+    "calcSpeciesName": "Grafaiai",
+    "names": {
+      "zh-hans": "涂标客",
+      "zh-hant": "塗標客",
+      "en": "Grafaiai",
+      "ja": "タギングル"
+    },
+    "speciesNames": {
+      "zh-hans": "涂标客",
+      "zh-hant": "塗標客",
+      "en": "Grafaiai",
+      "ja": "タギングル"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 63,
+      "atk": 95,
+      "def": 65,
+      "spa": 80,
+      "spd": 72,
+      "spe": 110
+    }
+  },
+  "946": {
+    "resourceType": "pokemon",
+    "id": 946,
+    "speciesId": 946,
+    "pokemonSlug": "bramblin",
+    "speciesSlug": "bramblin",
+    "calcSpeciesName": "Bramblin",
+    "names": {
+      "zh-hans": "纳噬草",
+      "zh-hant": "納噬草",
+      "en": "Bramblin",
+      "ja": "アノクサ"
+    },
+    "speciesNames": {
+      "zh-hans": "纳噬草",
+      "zh-hant": "納噬草",
+      "en": "Bramblin",
+      "ja": "アノクサ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 65,
+      "def": 30,
+      "spa": 45,
+      "spd": 35,
+      "spe": 60
+    }
+  },
+  "947": {
+    "resourceType": "pokemon",
+    "id": 947,
+    "speciesId": 947,
+    "pokemonSlug": "brambleghast",
+    "speciesSlug": "brambleghast",
+    "calcSpeciesName": "Brambleghast",
+    "names": {
+      "zh-hans": "怖纳噬草",
+      "zh-hant": "怖納噬草",
+      "en": "Brambleghast",
+      "ja": "アノホラグサ"
+    },
+    "speciesNames": {
+      "zh-hans": "怖纳噬草",
+      "zh-hant": "怖納噬草",
+      "en": "Brambleghast",
+      "ja": "アノホラグサ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 115,
+      "def": 70,
+      "spa": 80,
+      "spd": 70,
+      "spe": 90
+    }
+  },
+  "948": {
+    "resourceType": "pokemon",
+    "id": 948,
+    "speciesId": 948,
+    "pokemonSlug": "toedscool",
+    "speciesSlug": "toedscool",
+    "calcSpeciesName": "Toedscool",
+    "names": {
+      "zh-hans": "原野水母",
+      "zh-hant": "原野水母",
+      "en": "Toedscool",
+      "ja": "ノノクラゲ"
+    },
+    "speciesNames": {
+      "zh-hans": "原野水母",
+      "zh-hant": "原野水母",
+      "en": "Toedscool",
+      "ja": "ノノクラゲ"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 40,
+      "def": 35,
+      "spa": 50,
+      "spd": 100,
+      "spe": 70
+    }
+  },
+  "949": {
+    "resourceType": "pokemon",
+    "id": 949,
+    "speciesId": 949,
+    "pokemonSlug": "toedscruel",
+    "speciesSlug": "toedscruel",
+    "calcSpeciesName": "Toedscruel",
+    "names": {
+      "zh-hans": "陆地水母",
+      "zh-hant": "陸地水母",
+      "en": "Toedscruel",
+      "ja": "リククラゲ"
+    },
+    "speciesNames": {
+      "zh-hans": "陆地水母",
+      "zh-hant": "陸地水母",
+      "en": "Toedscruel",
+      "ja": "リククラゲ"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 70,
+      "def": 65,
+      "spa": 80,
+      "spd": 120,
+      "spe": 100
+    }
+  },
+  "950": {
+    "resourceType": "pokemon",
+    "id": 950,
+    "speciesId": 950,
+    "pokemonSlug": "klawf",
+    "speciesSlug": "klawf",
+    "calcSpeciesName": "Klawf",
+    "names": {
+      "zh-hans": "毛崖蟹",
+      "zh-hant": "毛崖蟹",
+      "en": "Klawf",
+      "ja": "ガケガニ"
+    },
+    "speciesNames": {
+      "zh-hans": "毛崖蟹",
+      "zh-hant": "毛崖蟹",
+      "en": "Klawf",
+      "ja": "ガケガニ"
+    },
+    "formNames": {},
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 100,
+      "def": 115,
+      "spa": 35,
+      "spd": 55,
+      "spe": 75
+    }
+  },
+  "951": {
+    "resourceType": "pokemon",
+    "id": 951,
+    "speciesId": 951,
+    "pokemonSlug": "capsakid",
+    "speciesSlug": "capsakid",
+    "calcSpeciesName": "Capsakid",
+    "names": {
+      "zh-hans": "热辣娃",
+      "zh-hant": "熱辣娃",
+      "en": "Capsakid",
+      "ja": "カプサイジ"
+    },
+    "speciesNames": {
+      "zh-hans": "热辣娃",
+      "zh-hant": "熱辣娃",
+      "en": "Capsakid",
+      "ja": "カプサイジ"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 62,
+      "def": 40,
+      "spa": 62,
+      "spd": 40,
+      "spe": 50
+    }
+  },
+  "952": {
+    "resourceType": "pokemon",
+    "id": 952,
+    "speciesId": 952,
+    "pokemonSlug": "scovillain",
+    "speciesSlug": "scovillain",
+    "calcSpeciesName": "Scovillain",
+    "names": {
+      "zh-hans": "狠辣椒",
+      "zh-hant": "狠辣椒",
+      "en": "Scovillain",
+      "ja": "スコヴィラン"
+    },
+    "speciesNames": {
+      "zh-hans": "狠辣椒",
+      "zh-hant": "狠辣椒",
+      "en": "Scovillain",
+      "ja": "スコヴィラン"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 108,
+      "def": 65,
+      "spa": 108,
+      "spd": 65,
+      "spe": 75
+    }
+  },
+  "953": {
+    "resourceType": "pokemon",
+    "id": 953,
+    "speciesId": 953,
+    "pokemonSlug": "rellor",
+    "speciesSlug": "rellor",
+    "calcSpeciesName": "Rellor",
+    "names": {
+      "zh-hans": "虫滚泥",
+      "zh-hant": "蟲滾泥",
+      "en": "Rellor",
+      "ja": "シガロコ"
+    },
+    "speciesNames": {
+      "zh-hans": "虫滚泥",
+      "zh-hant": "蟲滾泥",
+      "en": "Rellor",
+      "ja": "シガロコ"
+    },
+    "formNames": {},
+    "types": [
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 41,
+      "atk": 50,
+      "def": 60,
+      "spa": 31,
+      "spd": 58,
+      "spe": 30
+    }
+  },
+  "954": {
+    "resourceType": "pokemon",
+    "id": 954,
+    "speciesId": 954,
+    "pokemonSlug": "rabsca",
+    "speciesSlug": "rabsca",
+    "calcSpeciesName": "Rabsca",
+    "names": {
+      "zh-hans": "虫甲圣",
+      "zh-hant": "蟲甲聖",
+      "en": "Rabsca",
+      "ja": "ベラカス"
+    },
+    "speciesNames": {
+      "zh-hans": "虫甲圣",
+      "zh-hant": "蟲甲聖",
+      "en": "Rabsca",
+      "ja": "ベラカス"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 50,
+      "def": 85,
+      "spa": 115,
+      "spd": 100,
+      "spe": 45
+    }
+  },
+  "955": {
+    "resourceType": "pokemon",
+    "id": 955,
+    "speciesId": 955,
+    "pokemonSlug": "flittle",
+    "speciesSlug": "flittle",
+    "calcSpeciesName": "Flittle",
+    "names": {
+      "zh-hans": "飘飘雏",
+      "zh-hant": "飄飄雛",
+      "en": "Flittle",
+      "ja": "ヒラヒナ"
+    },
+    "speciesNames": {
+      "zh-hans": "飘飘雏",
+      "zh-hant": "飄飄雛",
+      "en": "Flittle",
+      "ja": "ヒラヒナ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 30,
+      "atk": 35,
+      "def": 30,
+      "spa": 55,
+      "spd": 30,
+      "spe": 75
+    }
+  },
+  "956": {
+    "resourceType": "pokemon",
+    "id": 956,
+    "speciesId": 956,
+    "pokemonSlug": "espathra",
+    "speciesSlug": "espathra",
+    "calcSpeciesName": "Espathra",
+    "names": {
+      "zh-hans": "超能艳鸵",
+      "zh-hant": "超能艷鴕",
+      "en": "Espathra",
+      "ja": "クエスパトラ"
+    },
+    "speciesNames": {
+      "zh-hans": "超能艳鸵",
+      "zh-hant": "超能艷鴕",
+      "en": "Espathra",
+      "ja": "クエスパトラ"
+    },
+    "formNames": {},
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 60,
+      "def": 60,
+      "spa": 101,
+      "spd": 60,
+      "spe": 105
+    }
+  },
+  "957": {
+    "resourceType": "pokemon",
+    "id": 957,
+    "speciesId": 957,
+    "pokemonSlug": "tinkatink",
+    "speciesSlug": "tinkatink",
+    "calcSpeciesName": "Tinkatink",
+    "names": {
+      "zh-hans": "小锻匠",
+      "zh-hant": "小鍛匠",
+      "en": "Tinkatink",
+      "ja": "カヌチャン"
+    },
+    "speciesNames": {
+      "zh-hans": "小锻匠",
+      "zh-hant": "小鍛匠",
+      "en": "Tinkatink",
+      "ja": "カヌチャン"
+    },
+    "formNames": {},
+    "types": [
+      "fairy",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 45,
+      "def": 45,
+      "spa": 35,
+      "spd": 64,
+      "spe": 58
+    }
+  },
+  "958": {
+    "resourceType": "pokemon",
+    "id": 958,
+    "speciesId": 958,
+    "pokemonSlug": "tinkatuff",
+    "speciesSlug": "tinkatuff",
+    "calcSpeciesName": "Tinkatuff",
+    "names": {
+      "zh-hans": "巧锻匠",
+      "zh-hant": "巧鍛匠",
+      "en": "Tinkatuff",
+      "ja": "ナカヌチャン"
+    },
+    "speciesNames": {
+      "zh-hans": "巧锻匠",
+      "zh-hant": "巧鍛匠",
+      "en": "Tinkatuff",
+      "ja": "ナカヌチャン"
+    },
+    "formNames": {},
+    "types": [
+      "fairy",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 55,
+      "def": 55,
+      "spa": 45,
+      "spd": 82,
+      "spe": 78
+    }
+  },
+  "959": {
+    "resourceType": "pokemon",
+    "id": 959,
+    "speciesId": 959,
+    "pokemonSlug": "tinkaton",
+    "speciesSlug": "tinkaton",
+    "calcSpeciesName": "Tinkaton",
+    "names": {
+      "zh-hans": "巨锻匠",
+      "zh-hant": "巨鍛匠",
+      "en": "Tinkaton",
+      "ja": "デカヌチャン"
+    },
+    "speciesNames": {
+      "zh-hans": "巨锻匠",
+      "zh-hant": "巨鍛匠",
+      "en": "Tinkaton",
+      "ja": "デカヌチャン"
+    },
+    "formNames": {},
+    "types": [
+      "fairy",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 75,
+      "def": 77,
+      "spa": 70,
+      "spd": 105,
+      "spe": 94
+    }
+  },
+  "960": {
+    "resourceType": "pokemon",
+    "id": 960,
+    "speciesId": 960,
+    "pokemonSlug": "wiglett",
+    "speciesSlug": "wiglett",
+    "calcSpeciesName": "Wiglett",
+    "names": {
+      "zh-hans": "海地鼠",
+      "zh-hant": "海地鼠",
+      "en": "Wiglett",
+      "ja": "ウミディグダ"
+    },
+    "speciesNames": {
+      "zh-hans": "海地鼠",
+      "zh-hant": "海地鼠",
+      "en": "Wiglett",
+      "ja": "ウミディグダ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 10,
+      "atk": 55,
+      "def": 25,
+      "spa": 35,
+      "spd": 25,
+      "spe": 95
+    }
+  },
+  "961": {
+    "resourceType": "pokemon",
+    "id": 961,
+    "speciesId": 961,
+    "pokemonSlug": "wugtrio",
+    "speciesSlug": "wugtrio",
+    "calcSpeciesName": "Wugtrio",
+    "names": {
+      "zh-hans": "三海地鼠",
+      "zh-hant": "三海地鼠",
+      "en": "Wugtrio",
+      "ja": "ウミトリオ"
+    },
+    "speciesNames": {
+      "zh-hans": "三海地鼠",
+      "zh-hant": "三海地鼠",
+      "en": "Wugtrio",
+      "ja": "ウミトリオ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 100,
+      "def": 50,
+      "spa": 50,
+      "spd": 70,
+      "spe": 120
+    }
+  },
+  "962": {
+    "resourceType": "pokemon",
+    "id": 962,
+    "speciesId": 962,
+    "pokemonSlug": "bombirdier",
+    "speciesSlug": "bombirdier",
+    "calcSpeciesName": "Bombirdier",
+    "names": {
+      "zh-hans": "下石鸟",
+      "zh-hant": "下石鳥",
+      "en": "Bombirdier",
+      "ja": "オトシドリ"
+    },
+    "speciesNames": {
+      "zh-hans": "下石鸟",
+      "zh-hant": "下石鳥",
+      "en": "Bombirdier",
+      "ja": "オトシドリ"
+    },
+    "formNames": {},
+    "types": [
+      "flying",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 103,
+      "def": 85,
+      "spa": 60,
+      "spd": 85,
+      "spe": 82
+    }
+  },
+  "963": {
+    "resourceType": "pokemon",
+    "id": 963,
+    "speciesId": 963,
+    "pokemonSlug": "finizen",
+    "speciesSlug": "finizen",
+    "calcSpeciesName": "Finizen",
+    "names": {
+      "zh-hans": "波普海豚",
+      "zh-hant": "波普海豚",
+      "en": "Finizen",
+      "ja": "ナミイルカ"
+    },
+    "speciesNames": {
+      "zh-hans": "波普海豚",
+      "zh-hant": "波普海豚",
+      "en": "Finizen",
+      "ja": "ナミイルカ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 45,
+      "def": 40,
+      "spa": 45,
+      "spd": 40,
+      "spe": 75
+    }
+  },
+  "964": {
+    "resourceType": "pokemon",
+    "id": 964,
+    "speciesId": 964,
+    "pokemonSlug": "palafin-zero",
+    "speciesSlug": "palafin",
+    "calcSpeciesName": "Palafin",
+    "names": {
+      "zh-hans": "海豚侠",
+      "zh-hant": "海豚俠",
+      "en": "Palafin",
+      "ja": "イルカマン"
+    },
+    "speciesNames": {
+      "zh-hans": "海豚侠",
+      "zh-hant": "海豚俠",
+      "en": "Palafin",
+      "ja": "イルカマン"
+    },
+    "formNames": {
+      "zh-hans": "Zero Form",
+      "zh-hant": "Zero Form",
+      "en": "Zero Form",
+      "ja": "ナイーブフォルム"
+    },
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 70,
+      "def": 72,
+      "spa": 53,
+      "spd": 62,
+      "spe": 100
+    }
+  },
+  "965": {
+    "resourceType": "pokemon",
+    "id": 965,
+    "speciesId": 965,
+    "pokemonSlug": "varoom",
+    "speciesSlug": "varoom",
+    "calcSpeciesName": "Varoom",
+    "names": {
+      "zh-hans": "噗隆隆",
+      "zh-hant": "噗隆隆",
+      "en": "Varoom",
+      "ja": "ブロロン"
+    },
+    "speciesNames": {
+      "zh-hans": "噗隆隆",
+      "zh-hant": "噗隆隆",
+      "en": "Varoom",
+      "ja": "ブロロン"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 70,
+      "def": 63,
+      "spa": 30,
+      "spd": 45,
+      "spe": 47
+    }
+  },
+  "966": {
+    "resourceType": "pokemon",
+    "id": 966,
+    "speciesId": 966,
+    "pokemonSlug": "revavroom",
+    "speciesSlug": "revavroom",
+    "calcSpeciesName": "Revavroom",
+    "names": {
+      "zh-hans": "普隆隆姆",
+      "zh-hant": "普隆隆姆",
+      "en": "Revavroom",
+      "ja": "ブロロローム"
+    },
+    "speciesNames": {
+      "zh-hans": "普隆隆姆",
+      "zh-hant": "普隆隆姆",
+      "en": "Revavroom",
+      "ja": "ブロロローム"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 119,
+      "def": 90,
+      "spa": 54,
+      "spd": 67,
+      "spe": 90
+    }
+  },
+  "967": {
+    "resourceType": "pokemon",
+    "id": 967,
+    "speciesId": 967,
+    "pokemonSlug": "cyclizar",
+    "speciesSlug": "cyclizar",
+    "calcSpeciesName": "Cyclizar",
+    "names": {
+      "zh-hans": "摩托蜥",
+      "zh-hant": "摩托蜥",
+      "en": "Cyclizar",
+      "ja": "モトトカゲ"
+    },
+    "speciesNames": {
+      "zh-hans": "摩托蜥",
+      "zh-hant": "摩托蜥",
+      "en": "Cyclizar",
+      "ja": "モトトカゲ"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 95,
+      "def": 65,
+      "spa": 85,
+      "spd": 65,
+      "spe": 121
+    }
+  },
+  "968": {
+    "resourceType": "pokemon",
+    "id": 968,
+    "speciesId": 968,
+    "pokemonSlug": "orthworm",
+    "speciesSlug": "orthworm",
+    "calcSpeciesName": "Orthworm",
+    "names": {
+      "zh-hans": "拖拖蚓",
+      "zh-hant": "拖拖蚓",
+      "en": "Orthworm",
+      "ja": "ミミズズ"
+    },
+    "speciesNames": {
+      "zh-hans": "拖拖蚓",
+      "zh-hant": "拖拖蚓",
+      "en": "Orthworm",
+      "ja": "ミミズズ"
+    },
+    "formNames": {},
+    "types": [
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 85,
+      "def": 145,
+      "spa": 60,
+      "spd": 55,
+      "spe": 65
+    }
+  },
+  "969": {
+    "resourceType": "pokemon",
+    "id": 969,
+    "speciesId": 969,
+    "pokemonSlug": "glimmet",
+    "speciesSlug": "glimmet",
+    "calcSpeciesName": "Glimmet",
+    "names": {
+      "zh-hans": "晶光芽",
+      "zh-hant": "晶光芽",
+      "en": "Glimmet",
+      "ja": "キラーメ"
+    },
+    "speciesNames": {
+      "zh-hans": "晶光芽",
+      "zh-hant": "晶光芽",
+      "en": "Glimmet",
+      "ja": "キラーメ"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 48,
+      "atk": 35,
+      "def": 42,
+      "spa": 105,
+      "spd": 60,
+      "spe": 60
+    }
+  },
+  "970": {
+    "resourceType": "pokemon",
+    "id": 970,
+    "speciesId": 970,
+    "pokemonSlug": "glimmora",
+    "speciesSlug": "glimmora",
+    "calcSpeciesName": "Glimmora",
+    "names": {
+      "zh-hans": "晶光花",
+      "zh-hant": "晶光花",
+      "en": "Glimmora",
+      "ja": "キラフロル"
+    },
+    "speciesNames": {
+      "zh-hans": "晶光花",
+      "zh-hant": "晶光花",
+      "en": "Glimmora",
+      "ja": "キラフロル"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 83,
+      "atk": 55,
+      "def": 90,
+      "spa": 130,
+      "spd": 81,
+      "spe": 86
+    }
+  },
+  "971": {
+    "resourceType": "pokemon",
+    "id": 971,
+    "speciesId": 971,
+    "pokemonSlug": "greavard",
+    "speciesSlug": "greavard",
+    "calcSpeciesName": "Greavard",
+    "names": {
+      "zh-hans": "墓仔狗",
+      "zh-hant": "墓仔狗",
+      "en": "Greavard",
+      "ja": "ボチ"
+    },
+    "speciesNames": {
+      "zh-hans": "墓仔狗",
+      "zh-hant": "墓仔狗",
+      "en": "Greavard",
+      "ja": "ボチ"
+    },
+    "formNames": {},
+    "types": [
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 61,
+      "def": 60,
+      "spa": 30,
+      "spd": 55,
+      "spe": 34
+    }
+  },
+  "972": {
+    "resourceType": "pokemon",
+    "id": 972,
+    "speciesId": 972,
+    "pokemonSlug": "houndstone",
+    "speciesSlug": "houndstone",
+    "calcSpeciesName": "Houndstone",
+    "names": {
+      "zh-hans": "墓扬犬",
+      "zh-hant": "墓揚犬",
+      "en": "Houndstone",
+      "ja": "ハカドッグ"
+    },
+    "speciesNames": {
+      "zh-hans": "墓扬犬",
+      "zh-hant": "墓揚犬",
+      "en": "Houndstone",
+      "ja": "ハカドッグ"
+    },
+    "formNames": {},
+    "types": [
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 72,
+      "atk": 101,
+      "def": 100,
+      "spa": 50,
+      "spd": 97,
+      "spe": 68
+    }
+  },
+  "973": {
+    "resourceType": "pokemon",
+    "id": 973,
+    "speciesId": 973,
+    "pokemonSlug": "flamigo",
+    "speciesSlug": "flamigo",
+    "calcSpeciesName": "Flamigo",
+    "names": {
+      "zh-hans": "纏红鹤",
+      "zh-hant": "纏紅鶴",
+      "en": "Flamigo",
+      "ja": "カラミンゴ"
+    },
+    "speciesNames": {
+      "zh-hans": "纏红鹤",
+      "zh-hant": "纏紅鶴",
+      "en": "Flamigo",
+      "ja": "カラミンゴ"
+    },
+    "formNames": {},
+    "types": [
+      "flying",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 82,
+      "atk": 115,
+      "def": 74,
+      "spa": 75,
+      "spd": 64,
+      "spe": 90
+    }
+  },
+  "974": {
+    "resourceType": "pokemon",
+    "id": 974,
+    "speciesId": 974,
+    "pokemonSlug": "cetoddle",
+    "speciesSlug": "cetoddle",
+    "calcSpeciesName": "Cetoddle",
+    "names": {
+      "zh-hans": "走鲸",
+      "zh-hant": "走鯨",
+      "en": "Cetoddle",
+      "ja": "アルクジラ"
+    },
+    "speciesNames": {
+      "zh-hans": "走鲸",
+      "zh-hant": "走鯨",
+      "en": "Cetoddle",
+      "ja": "アルクジラ"
+    },
+    "formNames": {},
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 108,
+      "atk": 68,
+      "def": 45,
+      "spa": 30,
+      "spd": 40,
+      "spe": 43
+    }
+  },
+  "975": {
+    "resourceType": "pokemon",
+    "id": 975,
+    "speciesId": 975,
+    "pokemonSlug": "cetitan",
+    "speciesSlug": "cetitan",
+    "calcSpeciesName": "Cetitan",
+    "names": {
+      "zh-hans": "浩大鲸",
+      "zh-hant": "浩大鯨",
+      "en": "Cetitan",
+      "ja": "ハルクジラ"
+    },
+    "speciesNames": {
+      "zh-hans": "浩大鲸",
+      "zh-hant": "浩大鯨",
+      "en": "Cetitan",
+      "ja": "ハルクジラ"
+    },
+    "formNames": {},
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 170,
+      "atk": 113,
+      "def": 65,
+      "spa": 45,
+      "spd": 55,
+      "spe": 73
+    }
+  },
+  "976": {
+    "resourceType": "pokemon",
+    "id": 976,
+    "speciesId": 976,
+    "pokemonSlug": "veluza",
+    "speciesSlug": "veluza",
+    "calcSpeciesName": "Veluza",
+    "names": {
+      "zh-hans": "轻身鳕",
+      "zh-hant": "輕身鱈",
+      "en": "Veluza",
+      "ja": "ミガルーサ"
+    },
+    "speciesNames": {
+      "zh-hans": "轻身鳕",
+      "zh-hant": "輕身鱈",
+      "en": "Veluza",
+      "ja": "ミガルーサ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 102,
+      "def": 73,
+      "spa": 78,
+      "spd": 65,
+      "spe": 70
+    }
+  },
+  "977": {
+    "resourceType": "pokemon",
+    "id": 977,
+    "speciesId": 977,
+    "pokemonSlug": "dondozo",
+    "speciesSlug": "dondozo",
+    "calcSpeciesName": "Dondozo",
+    "names": {
+      "zh-hans": "吃吼霸",
+      "zh-hant": "吃吼霸",
+      "en": "Dondozo",
+      "ja": "ヘイラッシャ"
+    },
+    "speciesNames": {
+      "zh-hans": "吃吼霸",
+      "zh-hant": "吃吼霸",
+      "en": "Dondozo",
+      "ja": "ヘイラッシャ"
+    },
+    "formNames": {},
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 150,
+      "atk": 100,
+      "def": 115,
+      "spa": 65,
+      "spd": 65,
+      "spe": 35
+    }
+  },
+  "978": {
+    "resourceType": "pokemon",
+    "id": 978,
+    "speciesId": 978,
+    "pokemonSlug": "tatsugiri-curly",
+    "speciesSlug": "tatsugiri",
+    "calcSpeciesName": "Tatsugiri",
+    "names": {
+      "zh-hans": "米立龙",
+      "zh-hant": "米立龍",
+      "en": "Tatsugiri",
+      "ja": "シャリタツ"
+    },
+    "speciesNames": {
+      "zh-hans": "米立龙",
+      "zh-hant": "米立龍",
+      "en": "Tatsugiri",
+      "ja": "シャリタツ"
+    },
+    "formNames": {
+      "zh-hans": "Curly Form",
+      "zh-hant": "Curly Form",
+      "en": "Curly Form",
+      "ja": "そったすがた"
+    },
+    "types": [
+      "dragon",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 50,
+      "def": 60,
+      "spa": 120,
+      "spd": 95,
+      "spe": 82
+    }
+  },
+  "979": {
+    "resourceType": "pokemon",
+    "id": 979,
+    "speciesId": 979,
+    "pokemonSlug": "annihilape",
+    "speciesSlug": "annihilape",
+    "calcSpeciesName": "Annihilape",
+    "names": {
+      "zh-hans": "弃世猴",
+      "zh-hant": "棄世猴",
+      "en": "Annihilape",
+      "ja": "コノヨザル"
+    },
+    "speciesNames": {
+      "zh-hans": "弃世猴",
+      "zh-hant": "棄世猴",
+      "en": "Annihilape",
+      "ja": "コノヨザル"
+    },
+    "formNames": {},
+    "types": [
+      "fighting",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 110,
+      "atk": 115,
+      "def": 80,
+      "spa": 50,
+      "spd": 90,
+      "spe": 90
+    }
+  },
+  "980": {
+    "resourceType": "pokemon",
+    "id": 980,
+    "speciesId": 980,
+    "pokemonSlug": "clodsire",
+    "speciesSlug": "clodsire",
+    "calcSpeciesName": "Clodsire",
+    "names": {
+      "zh-hans": "土王",
+      "zh-hant": "土王",
+      "en": "Clodsire",
+      "ja": "ドオー"
+    },
+    "speciesNames": {
+      "zh-hans": "土王",
+      "zh-hant": "土王",
+      "en": "Clodsire",
+      "ja": "ドオー"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 130,
+      "atk": 75,
+      "def": 60,
+      "spa": 45,
+      "spd": 100,
+      "spe": 20
+    }
+  },
+  "981": {
+    "resourceType": "pokemon",
+    "id": 981,
+    "speciesId": 981,
+    "pokemonSlug": "farigiraf",
+    "speciesSlug": "farigiraf",
+    "calcSpeciesName": "Farigiraf",
+    "names": {
+      "zh-hans": "奇麒麟",
+      "zh-hant": "奇麒麟",
+      "en": "Farigiraf",
+      "ja": "リキキリン"
+    },
+    "speciesNames": {
+      "zh-hans": "奇麒麟",
+      "zh-hant": "奇麒麟",
+      "en": "Farigiraf",
+      "ja": "リキキリン"
+    },
+    "formNames": {},
+    "types": [
+      "normal",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 120,
+      "atk": 90,
+      "def": 70,
+      "spa": 110,
+      "spd": 70,
+      "spe": 60
+    }
+  },
+  "982": {
+    "resourceType": "pokemon",
+    "id": 982,
+    "speciesId": 982,
+    "pokemonSlug": "dudunsparce-two-segment",
+    "speciesSlug": "dudunsparce",
+    "calcSpeciesName": "Dudunsparce",
+    "names": {
+      "zh-hans": "土龙节节",
+      "zh-hant": "土龍節節",
+      "en": "Dudunsparce",
+      "ja": "ノココッチ"
+    },
+    "speciesNames": {
+      "zh-hans": "土龙节节",
+      "zh-hant": "土龍節節",
+      "en": "Dudunsparce",
+      "ja": "ノココッチ"
+    },
+    "formNames": {
+      "zh-hans": "Two-Segment Form",
+      "zh-hant": "Two-Segment Form",
+      "en": "Two-Segment Form",
+      "ja": "ふたふしフォルム"
+    },
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 125,
+      "atk": 100,
+      "def": 80,
+      "spa": 85,
+      "spd": 75,
+      "spe": 55
+    }
+  },
+  "983": {
+    "resourceType": "pokemon",
+    "id": 983,
+    "speciesId": 983,
+    "pokemonSlug": "kingambit",
+    "speciesSlug": "kingambit",
+    "calcSpeciesName": "Kingambit",
+    "names": {
+      "zh-hans": "仆刀将军",
+      "zh-hant": "仆刀將軍",
+      "en": "Kingambit",
+      "ja": "ドドゲザン"
+    },
+    "speciesNames": {
+      "zh-hans": "仆刀将军",
+      "zh-hant": "仆刀將軍",
+      "en": "Kingambit",
+      "ja": "ドドゲザン"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 135,
+      "def": 120,
+      "spa": 60,
+      "spd": 85,
+      "spe": 50
+    }
+  },
+  "984": {
+    "resourceType": "pokemon",
+    "id": 984,
+    "speciesId": 984,
+    "pokemonSlug": "great-tusk",
+    "speciesSlug": "great-tusk",
+    "calcSpeciesName": "Great Tusk",
+    "names": {
+      "zh-hans": "雄伟牙",
+      "zh-hant": "雄偉牙",
+      "en": "Great Tusk",
+      "ja": "イダイナキバ"
+    },
+    "speciesNames": {
+      "zh-hans": "雄伟牙",
+      "zh-hant": "雄偉牙",
+      "en": "Great Tusk",
+      "ja": "イダイナキバ"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 115,
+      "atk": 131,
+      "def": 131,
+      "spa": 53,
+      "spd": 53,
+      "spe": 87
+    }
+  },
+  "985": {
+    "resourceType": "pokemon",
+    "id": 985,
+    "speciesId": 985,
+    "pokemonSlug": "scream-tail",
+    "speciesSlug": "scream-tail",
+    "calcSpeciesName": "Scream Tail",
+    "names": {
+      "zh-hans": "吼叫尾",
+      "zh-hant": "吼叫尾",
+      "en": "Scream Tail",
+      "ja": "サケブシッポ"
+    },
+    "speciesNames": {
+      "zh-hans": "吼叫尾",
+      "zh-hant": "吼叫尾",
+      "en": "Scream Tail",
+      "ja": "サケブシッポ"
+    },
+    "formNames": {},
+    "types": [
+      "fairy",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 115,
+      "atk": 65,
+      "def": 99,
+      "spa": 65,
+      "spd": 115,
+      "spe": 111
+    }
+  },
+  "986": {
+    "resourceType": "pokemon",
+    "id": 986,
+    "speciesId": 986,
+    "pokemonSlug": "brute-bonnet",
+    "speciesSlug": "brute-bonnet",
+    "calcSpeciesName": "Brute Bonnet",
+    "names": {
+      "zh-hans": "猛恶菇",
+      "zh-hant": "猛惡菇",
+      "en": "Brute Bonnet",
+      "ja": "アラブルタケ"
+    },
+    "speciesNames": {
+      "zh-hans": "猛恶菇",
+      "zh-hant": "猛惡菇",
+      "en": "Brute Bonnet",
+      "ja": "アラブルタケ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 111,
+      "atk": 127,
+      "def": 99,
+      "spa": 79,
+      "spd": 99,
+      "spe": 55
+    }
+  },
+  "987": {
+    "resourceType": "pokemon",
+    "id": 987,
+    "speciesId": 987,
+    "pokemonSlug": "flutter-mane",
+    "speciesSlug": "flutter-mane",
+    "calcSpeciesName": "Flutter Mane",
+    "names": {
+      "zh-hans": "振翼发",
+      "zh-hant": "振翼髮",
+      "en": "Flutter Mane",
+      "ja": "ハバタクカミ"
+    },
+    "speciesNames": {
+      "zh-hans": "振翼发",
+      "zh-hant": "振翼髮",
+      "en": "Flutter Mane",
+      "ja": "ハバタクカミ"
+    },
+    "formNames": {},
+    "types": [
+      "ghost",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 55,
+      "def": 55,
+      "spa": 135,
+      "spd": 135,
+      "spe": 135
+    }
+  },
+  "988": {
+    "resourceType": "pokemon",
+    "id": 988,
+    "speciesId": 988,
+    "pokemonSlug": "slither-wing",
+    "speciesSlug": "slither-wing",
+    "calcSpeciesName": "Slither Wing",
+    "names": {
+      "zh-hans": "爬地翅",
+      "zh-hant": "爬地翅",
+      "en": "Slither Wing",
+      "ja": "チヲハウハネ"
+    },
+    "speciesNames": {
+      "zh-hans": "爬地翅",
+      "zh-hant": "爬地翅",
+      "en": "Slither Wing",
+      "ja": "チヲハウハネ"
+    },
+    "formNames": {},
+    "types": [
+      "bug",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 135,
+      "def": 79,
+      "spa": 85,
+      "spd": 105,
+      "spe": 81
+    }
+  },
+  "989": {
+    "resourceType": "pokemon",
+    "id": 989,
+    "speciesId": 989,
+    "pokemonSlug": "sandy-shocks",
+    "speciesSlug": "sandy-shocks",
+    "calcSpeciesName": "Sandy Shocks",
+    "names": {
+      "zh-hans": "沙铁皮",
+      "zh-hant": "沙鐵皮",
+      "en": "Sandy Shocks",
+      "ja": "スナノケガワ"
+    },
+    "speciesNames": {
+      "zh-hans": "沙铁皮",
+      "zh-hant": "沙鐵皮",
+      "en": "Sandy Shocks",
+      "ja": "スナノケガワ"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 81,
+      "def": 97,
+      "spa": 121,
+      "spd": 85,
+      "spe": 101
+    }
+  },
+  "990": {
+    "resourceType": "pokemon",
+    "id": 990,
+    "speciesId": 990,
+    "pokemonSlug": "iron-treads",
+    "speciesSlug": "iron-treads",
+    "calcSpeciesName": "Iron Treads",
+    "names": {
+      "zh-hans": "铁轍迹",
+      "zh-hant": "鐵轍跡",
+      "en": "Iron Treads",
+      "ja": "テツノワダチ"
+    },
+    "speciesNames": {
+      "zh-hans": "铁轍迹",
+      "zh-hant": "鐵轍跡",
+      "en": "Iron Treads",
+      "ja": "テツノワダチ"
+    },
+    "formNames": {},
+    "types": [
+      "ground",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 112,
+      "def": 120,
+      "spa": 72,
+      "spd": 70,
+      "spe": 106
+    }
+  },
+  "991": {
+    "resourceType": "pokemon",
+    "id": 991,
+    "speciesId": 991,
+    "pokemonSlug": "iron-bundle",
+    "speciesSlug": "iron-bundle",
+    "calcSpeciesName": "Iron Bundle",
+    "names": {
+      "zh-hans": "铁包袱",
+      "zh-hant": "鐵包袱",
+      "en": "Iron Bundle",
+      "ja": "テツノツツミ"
+    },
+    "speciesNames": {
+      "zh-hans": "铁包袱",
+      "zh-hant": "鐵包袱",
+      "en": "Iron Bundle",
+      "ja": "テツノツツミ"
+    },
+    "formNames": {},
+    "types": [
+      "ice",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 56,
+      "atk": 80,
+      "def": 114,
+      "spa": 124,
+      "spd": 60,
+      "spe": 136
+    }
+  },
+  "992": {
+    "resourceType": "pokemon",
+    "id": 992,
+    "speciesId": 992,
+    "pokemonSlug": "iron-hands",
+    "speciesSlug": "iron-hands",
+    "calcSpeciesName": "Iron Hands",
+    "names": {
+      "zh-hans": "铁臂膀",
+      "zh-hant": "鐵臂膀",
+      "en": "Iron Hands",
+      "ja": "テツノカイナ"
+    },
+    "speciesNames": {
+      "zh-hans": "铁臂膀",
+      "zh-hant": "鐵臂膀",
+      "en": "Iron Hands",
+      "ja": "テツノカイナ"
+    },
+    "formNames": {},
+    "types": [
+      "fighting",
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 154,
+      "atk": 140,
+      "def": 108,
+      "spa": 50,
+      "spd": 68,
+      "spe": 50
+    }
+  },
+  "993": {
+    "resourceType": "pokemon",
+    "id": 993,
+    "speciesId": 993,
+    "pokemonSlug": "iron-jugulis",
+    "speciesSlug": "iron-jugulis",
+    "calcSpeciesName": "Iron Jugulis",
+    "names": {
+      "zh-hans": "铁脖颈",
+      "zh-hant": "鐵脖頸",
+      "en": "Iron Jugulis",
+      "ja": "テツノコウベ"
+    },
+    "speciesNames": {
+      "zh-hans": "铁脖颈",
+      "zh-hant": "鐵脖頸",
+      "en": "Iron Jugulis",
+      "ja": "テツノコウベ"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 94,
+      "atk": 80,
+      "def": 86,
+      "spa": 122,
+      "spd": 80,
+      "spe": 108
+    }
+  },
+  "994": {
+    "resourceType": "pokemon",
+    "id": 994,
+    "speciesId": 994,
+    "pokemonSlug": "iron-moth",
+    "speciesSlug": "iron-moth",
+    "calcSpeciesName": "Iron Moth",
+    "names": {
+      "zh-hans": "铁毒蛾",
+      "zh-hant": "鐵毒蛾",
+      "en": "Iron Moth",
+      "ja": "テツノドクガ"
+    },
+    "speciesNames": {
+      "zh-hans": "铁毒蛾",
+      "zh-hant": "鐵毒蛾",
+      "en": "Iron Moth",
+      "ja": "テツノドクガ"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 70,
+      "def": 60,
+      "spa": 140,
+      "spd": 110,
+      "spe": 110
+    }
+  },
+  "995": {
+    "resourceType": "pokemon",
+    "id": 995,
+    "speciesId": 995,
+    "pokemonSlug": "iron-thorns",
+    "speciesSlug": "iron-thorns",
+    "calcSpeciesName": "Iron Thorns",
+    "names": {
+      "zh-hans": "铁荆棘",
+      "zh-hant": "鐵荊棘",
+      "en": "Iron Thorns",
+      "ja": "テツノイバラ"
+    },
+    "speciesNames": {
+      "zh-hans": "铁荆棘",
+      "zh-hant": "鐵荊棘",
+      "en": "Iron Thorns",
+      "ja": "テツノイバラ"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 134,
+      "def": 110,
+      "spa": 70,
+      "spd": 84,
+      "spe": 72
+    }
+  },
+  "996": {
+    "resourceType": "pokemon",
+    "id": 996,
+    "speciesId": 996,
+    "pokemonSlug": "frigibax",
+    "speciesSlug": "frigibax",
+    "calcSpeciesName": "Frigibax",
+    "names": {
+      "zh-hans": "凉脊龙",
+      "zh-hant": "涼脊龍",
+      "en": "Frigibax",
+      "ja": "セビエ"
+    },
+    "speciesNames": {
+      "zh-hans": "凉脊龙",
+      "zh-hant": "涼脊龍",
+      "en": "Frigibax",
+      "ja": "セビエ"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 75,
+      "def": 45,
+      "spa": 35,
+      "spd": 45,
+      "spe": 55
+    }
+  },
+  "997": {
+    "resourceType": "pokemon",
+    "id": 997,
+    "speciesId": 997,
+    "pokemonSlug": "arctibax",
+    "speciesSlug": "arctibax",
+    "calcSpeciesName": "Arctibax",
+    "names": {
+      "zh-hans": "冻脊龙",
+      "zh-hant": "凍脊龍",
+      "en": "Arctibax",
+      "ja": "セゴール"
+    },
+    "speciesNames": {
+      "zh-hans": "冻脊龙",
+      "zh-hant": "凍脊龍",
+      "en": "Arctibax",
+      "ja": "セゴール"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 95,
+      "def": 66,
+      "spa": 45,
+      "spd": 65,
+      "spe": 62
+    }
+  },
+  "998": {
+    "resourceType": "pokemon",
+    "id": 998,
+    "speciesId": 998,
+    "pokemonSlug": "baxcalibur",
+    "speciesSlug": "baxcalibur",
+    "calcSpeciesName": "Baxcalibur",
+    "names": {
+      "zh-hans": "戟脊龙",
+      "zh-hant": "戟脊龍",
+      "en": "Baxcalibur",
+      "ja": "セグレイブ"
+    },
+    "speciesNames": {
+      "zh-hans": "戟脊龙",
+      "zh-hant": "戟脊龍",
+      "en": "Baxcalibur",
+      "ja": "セグレイブ"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 115,
+      "atk": 145,
+      "def": 92,
+      "spa": 75,
+      "spd": 86,
+      "spe": 87
+    }
+  },
+  "999": {
+    "resourceType": "pokemon",
+    "id": 999,
+    "speciesId": 999,
+    "pokemonSlug": "gimmighoul",
+    "speciesSlug": "gimmighoul",
+    "calcSpeciesName": "Gimmighoul",
+    "names": {
+      "zh-hans": "索财灵",
+      "zh-hant": "索財靈",
+      "en": "Gimmighoul",
+      "ja": "コレクレー"
+    },
+    "speciesNames": {
+      "zh-hans": "索财灵",
+      "zh-hant": "索財靈",
+      "en": "Gimmighoul",
+      "ja": "コレクレー"
+    },
+    "formNames": {
+      "zh-hans": "Chest Form",
+      "zh-hant": "Chest Form",
+      "en": "Chest Form",
+      "ja": "はこフォルム"
+    },
+    "types": [
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 30,
+      "def": 70,
+      "spa": 75,
+      "spd": 70,
+      "spe": 10
+    }
+  },
+  "1000": {
+    "resourceType": "pokemon",
+    "id": 1000,
+    "speciesId": 1000,
+    "pokemonSlug": "gholdengo",
+    "speciesSlug": "gholdengo",
+    "calcSpeciesName": "Gholdengo",
+    "names": {
+      "zh-hans": "赛富豪",
+      "zh-hant": "賽富豪",
+      "en": "Gholdengo",
+      "ja": "サーフゴー"
+    },
+    "speciesNames": {
+      "zh-hans": "赛富豪",
+      "zh-hant": "賽富豪",
+      "en": "Gholdengo",
+      "ja": "サーフゴー"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 87,
+      "atk": 60,
+      "def": 95,
+      "spa": 133,
+      "spd": 91,
+      "spe": 84
+    }
+  },
+  "1001": {
+    "resourceType": "pokemon",
+    "id": 1001,
+    "speciesId": 1001,
+    "pokemonSlug": "wo-chien",
+    "speciesSlug": "wo-chien",
+    "calcSpeciesName": "Wo-Chien",
+    "names": {
+      "zh-hans": "古简蜗",
+      "zh-hant": "古簡蝸",
+      "en": "Wo-Chien",
+      "ja": "チオンジェン"
+    },
+    "speciesNames": {
+      "zh-hans": "古简蜗",
+      "zh-hant": "古簡蝸",
+      "en": "Wo-Chien",
+      "ja": "チオンジェン"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 85,
+      "def": 100,
+      "spa": 95,
+      "spd": 135,
+      "spe": 70
+    }
+  },
+  "1002": {
+    "resourceType": "pokemon",
+    "id": 1002,
+    "speciesId": 1002,
+    "pokemonSlug": "chien-pao",
+    "speciesSlug": "chien-pao",
+    "calcSpeciesName": "Chien-Pao",
+    "names": {
+      "zh-hans": "古剑豹",
+      "zh-hant": "古劍豹",
+      "en": "Chien-Pao",
+      "ja": "パオジアン"
+    },
+    "speciesNames": {
+      "zh-hans": "古剑豹",
+      "zh-hant": "古劍豹",
+      "en": "Chien-Pao",
+      "ja": "パオジアン"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 120,
+      "def": 80,
+      "spa": 90,
+      "spd": 65,
+      "spe": 135
+    }
+  },
+  "1003": {
+    "resourceType": "pokemon",
+    "id": 1003,
+    "speciesId": 1003,
+    "pokemonSlug": "ting-lu",
+    "speciesSlug": "ting-lu",
+    "calcSpeciesName": "Ting-Lu",
+    "names": {
+      "zh-hans": "古鼎鹿",
+      "zh-hant": "古鼎鹿",
+      "en": "Ting-Lu",
+      "ja": "ディンルー"
+    },
+    "speciesNames": {
+      "zh-hans": "古鼎鹿",
+      "zh-hant": "古鼎鹿",
+      "en": "Ting-Lu",
+      "ja": "ディンルー"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 155,
+      "atk": 110,
+      "def": 125,
+      "spa": 55,
+      "spd": 80,
+      "spe": 45
+    }
+  },
+  "1004": {
+    "resourceType": "pokemon",
+    "id": 1004,
+    "speciesId": 1004,
+    "pokemonSlug": "chi-yu",
+    "speciesSlug": "chi-yu",
+    "calcSpeciesName": "Chi-Yu",
+    "names": {
+      "zh-hans": "古玉鱼",
+      "zh-hant": "古玉魚",
+      "en": "Chi-Yu",
+      "ja": "イーユイ"
+    },
+    "speciesNames": {
+      "zh-hans": "古玉鱼",
+      "zh-hant": "古玉魚",
+      "en": "Chi-Yu",
+      "ja": "イーユイ"
+    },
+    "formNames": {},
+    "types": [
+      "dark",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 80,
+      "def": 80,
+      "spa": 135,
+      "spd": 120,
+      "spe": 100
+    }
+  },
+  "1005": {
+    "resourceType": "pokemon",
+    "id": 1005,
+    "speciesId": 1005,
+    "pokemonSlug": "roaring-moon",
+    "speciesSlug": "roaring-moon",
+    "calcSpeciesName": "Roaring Moon",
+    "names": {
+      "zh-hans": "轰鸣月",
+      "zh-hant": "轟鳴月",
+      "en": "Roaring Moon",
+      "ja": "トドロクツキ"
+    },
+    "speciesNames": {
+      "zh-hans": "轰鸣月",
+      "zh-hant": "轟鳴月",
+      "en": "Roaring Moon",
+      "ja": "トドロクツキ"
+    },
+    "formNames": {},
+    "types": [
+      "dragon",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 105,
+      "atk": 139,
+      "def": 71,
+      "spa": 55,
+      "spd": 101,
+      "spe": 119
+    }
+  },
+  "1006": {
+    "resourceType": "pokemon",
+    "id": 1006,
+    "speciesId": 1006,
+    "pokemonSlug": "iron-valiant",
+    "speciesSlug": "iron-valiant",
+    "calcSpeciesName": "Iron Valiant",
+    "names": {
+      "zh-hans": "铁武者",
+      "zh-hant": "鐵武者",
+      "en": "Iron Valiant",
+      "ja": "テツノブジン"
+    },
+    "speciesNames": {
+      "zh-hans": "铁武者",
+      "zh-hant": "鐵武者",
+      "en": "Iron Valiant",
+      "ja": "テツノブジン"
+    },
+    "formNames": {},
+    "types": [
+      "fairy",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 74,
+      "atk": 130,
+      "def": 90,
+      "spa": 120,
+      "spd": 60,
+      "spe": 116
+    }
+  },
+  "1007": {
+    "resourceType": "pokemon",
+    "id": 1007,
+    "speciesId": 1007,
+    "pokemonSlug": "koraidon",
+    "speciesSlug": "koraidon",
+    "calcSpeciesName": "Koraidon",
+    "names": {
+      "zh-hans": "故勒顿",
+      "zh-hant": "故勒頓",
+      "en": "Koraidon",
+      "ja": "コライドン"
+    },
+    "speciesNames": {
+      "zh-hans": "故勒顿",
+      "zh-hant": "故勒頓",
+      "en": "Koraidon",
+      "ja": "コライドン"
+    },
+    "formNames": {
+      "zh-hans": "Apex Build",
+      "zh-hant": "Apex Build",
+      "en": "Apex Build",
+      "ja": "かんぜんけいたい"
+    },
+    "types": [
+      "fighting",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 135,
+      "def": 115,
+      "spa": 85,
+      "spd": 100,
+      "spe": 135
+    }
+  },
+  "1008": {
+    "resourceType": "pokemon",
+    "id": 1008,
+    "speciesId": 1008,
+    "pokemonSlug": "miraidon",
+    "speciesSlug": "miraidon",
+    "calcSpeciesName": "Miraidon",
+    "names": {
+      "zh-hans": "密勒顿",
+      "zh-hant": "密勒頓",
+      "en": "Miraidon",
+      "ja": "ミライドン"
+    },
+    "speciesNames": {
+      "zh-hans": "密勒顿",
+      "zh-hant": "密勒頓",
+      "en": "Miraidon",
+      "ja": "ミライドン"
+    },
+    "formNames": {
+      "zh-hans": "Ultimate Mode",
+      "zh-hant": "Ultimate Mode",
+      "en": "Ultimate Mode",
+      "ja": "コンプリートモード"
+    },
+    "types": [
+      "electric",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 85,
+      "def": 100,
+      "spa": 135,
+      "spd": 115,
+      "spe": 135
+    }
+  },
+  "1009": {
+    "resourceType": "pokemon",
+    "id": 1009,
+    "speciesId": 1009,
+    "pokemonSlug": "walking-wake",
+    "speciesSlug": "walking-wake",
+    "calcSpeciesName": "Walking Wake",
+    "names": {
+      "zh-hans": "波荡水",
+      "zh-hant": "波盪水",
+      "en": "Walking Wake",
+      "ja": "ウネルミナモ"
+    },
+    "speciesNames": {
+      "zh-hans": "波荡水",
+      "zh-hant": "波盪水",
+      "en": "Walking Wake",
+      "ja": "ウネルミナモ"
+    },
+    "formNames": {},
+    "types": [
+      "water",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 99,
+      "atk": 83,
+      "def": 91,
+      "spa": 125,
+      "spd": 83,
+      "spe": 109
+    }
+  },
+  "1010": {
+    "resourceType": "pokemon",
+    "id": 1010,
+    "speciesId": 1010,
+    "pokemonSlug": "iron-leaves",
+    "speciesSlug": "iron-leaves",
+    "calcSpeciesName": "Iron Leaves",
+    "names": {
+      "zh-hans": "铁斑叶",
+      "zh-hant": "鐵斑葉",
+      "en": "Iron Leaves",
+      "ja": "テツノイサハ"
+    },
+    "speciesNames": {
+      "zh-hans": "铁斑叶",
+      "zh-hant": "鐵斑葉",
+      "en": "Iron Leaves",
+      "ja": "テツノイサハ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 130,
+      "def": 88,
+      "spa": 70,
+      "spd": 108,
+      "spe": 104
+    }
+  },
+  "1011": {
+    "resourceType": "pokemon",
+    "id": 1011,
+    "speciesId": 1011,
+    "pokemonSlug": "dipplin",
+    "speciesSlug": "dipplin",
+    "calcSpeciesName": "Dipplin",
+    "names": {
+      "zh-hans": "裹蜜虫",
+      "zh-hant": "裹蜜蟲",
+      "en": "Dipplin",
+      "ja": "カミッチュ"
+    },
+    "speciesNames": {
+      "zh-hans": "裹蜜虫",
+      "zh-hant": "裹蜜蟲",
+      "en": "Dipplin",
+      "ja": "カミッチュ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 80,
+      "def": 110,
+      "spa": 95,
+      "spd": 80,
+      "spe": 40
+    }
+  },
+  "1012": {
+    "resourceType": "pokemon",
+    "id": 1012,
+    "speciesId": 1012,
+    "pokemonSlug": "poltchageist",
+    "speciesSlug": "poltchageist",
+    "calcSpeciesName": "Poltchageist",
+    "names": {
+      "zh-hans": "斯魔茶",
+      "zh-hant": "斯魔茶",
+      "en": "Poltchageist",
+      "ja": "チャデス"
+    },
+    "speciesNames": {
+      "zh-hans": "斯魔茶",
+      "zh-hant": "斯魔茶",
+      "en": "Poltchageist",
+      "ja": "チャデス"
+    },
+    "formNames": {
+      "zh-hans": "高檔貨的樣子",
+      "zh-hant": "冒牌貨的樣子",
+      "en": "Counterfeit Form",
+      "ja": "マガイモノのすがた"
+    },
+    "types": [
+      "grass",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 45,
+      "def": 45,
+      "spa": 74,
+      "spd": 54,
+      "spe": 50
+    }
+  },
+  "1013": {
+    "resourceType": "pokemon",
+    "id": 1013,
+    "speciesId": 1013,
+    "pokemonSlug": "sinistcha",
+    "speciesSlug": "sinistcha",
+    "calcSpeciesName": "Sinistcha",
+    "names": {
+      "zh-hans": "来悲粗茶",
+      "zh-hant": "來悲粗茶",
+      "en": "Sinistcha",
+      "ja": "ヤバソチャ"
+    },
+    "speciesNames": {
+      "zh-hans": "来悲粗茶",
+      "zh-hant": "來悲粗茶",
+      "en": "Sinistcha",
+      "ja": "ヤバソチャ"
+    },
+    "formNames": {
+      "zh-hans": "凡作的样子",
+      "zh-hant": "凡作的樣子",
+      "en": "Unremarkable Form",
+      "ja": "ボンサクのすがた"
+    },
+    "types": [
+      "grass",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 71,
+      "atk": 60,
+      "def": 106,
+      "spa": 121,
+      "spd": 80,
+      "spe": 70
+    }
+  },
+  "1014": {
+    "resourceType": "pokemon",
+    "id": 1014,
+    "speciesId": 1014,
+    "pokemonSlug": "okidogi",
+    "speciesSlug": "okidogi",
+    "calcSpeciesName": "Okidogi",
+    "names": {
+      "zh-hans": "够赞狗",
+      "zh-hant": "夠讚狗",
+      "en": "Okidogi",
+      "ja": "イイネイヌ"
+    },
+    "speciesNames": {
+      "zh-hans": "够赞狗",
+      "zh-hant": "夠讚狗",
+      "en": "Okidogi",
+      "ja": "イイネイヌ"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 88,
+      "atk": 128,
+      "def": 115,
+      "spa": 58,
+      "spd": 86,
+      "spe": 80
+    }
+  },
+  "1015": {
+    "resourceType": "pokemon",
+    "id": 1015,
+    "speciesId": 1015,
+    "pokemonSlug": "munkidori",
+    "speciesSlug": "munkidori",
+    "calcSpeciesName": "Munkidori",
+    "names": {
+      "zh-hans": "愿增猿",
+      "zh-hant": "願增猿",
+      "en": "Munkidori",
+      "ja": "マシマシラ"
+    },
+    "speciesNames": {
+      "zh-hans": "愿增猿",
+      "zh-hant": "願增猿",
+      "en": "Munkidori",
+      "ja": "マシマシラ"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 88,
+      "atk": 75,
+      "def": 66,
+      "spa": 130,
+      "spd": 90,
+      "spe": 106
+    }
+  },
+  "1016": {
+    "resourceType": "pokemon",
+    "id": 1016,
+    "speciesId": 1016,
+    "pokemonSlug": "fezandipiti",
+    "speciesSlug": "fezandipiti",
+    "calcSpeciesName": "Fezandipiti",
+    "names": {
+      "zh-hans": "吉雉鸡",
+      "zh-hant": "吉雉雞",
+      "en": "Fezandipiti",
+      "ja": "キチキギス"
+    },
+    "speciesNames": {
+      "zh-hans": "吉雉鸡",
+      "zh-hant": "吉雉雞",
+      "en": "Fezandipiti",
+      "ja": "キチキギス"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 88,
+      "atk": 91,
+      "def": 82,
+      "spa": 70,
+      "spd": 125,
+      "spe": 99
+    }
+  },
+  "1017": {
+    "resourceType": "pokemon",
+    "id": 1017,
+    "speciesId": 1017,
+    "pokemonSlug": "ogerpon",
+    "speciesSlug": "ogerpon",
+    "calcSpeciesName": "Ogerpon",
+    "names": {
+      "zh-hans": "厄诡椪",
+      "zh-hant": "厄鬼椪",
+      "en": "Ogerpon",
+      "ja": "オーガポン"
+    },
+    "speciesNames": {
+      "zh-hans": "厄诡椪",
+      "zh-hant": "厄鬼椪",
+      "en": "Ogerpon",
+      "ja": "オーガポン"
+    },
+    "formNames": {},
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 120,
+      "def": 84,
+      "spa": 60,
+      "spd": 96,
+      "spe": 110
+    }
+  },
+  "1018": {
+    "resourceType": "pokemon",
+    "id": 1018,
+    "speciesId": 1018,
+    "pokemonSlug": "archaludon",
+    "speciesSlug": "archaludon",
+    "calcSpeciesName": "Archaludon",
+    "names": {
+      "zh-hans": "铝钢桥龙",
+      "zh-hant": "鋁鋼橋龍",
+      "en": "Archaludon",
+      "ja": "ブリジュラス"
+    },
+    "speciesNames": {
+      "zh-hans": "铝钢桥龙",
+      "zh-hant": "鋁鋼橋龍",
+      "en": "Archaludon",
+      "ja": "ブリジュラス"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 105,
+      "def": 130,
+      "spa": 125,
+      "spd": 65,
+      "spe": 85
+    }
+  },
+  "1019": {
+    "resourceType": "pokemon",
+    "id": 1019,
+    "speciesId": 1019,
+    "pokemonSlug": "hydrapple",
+    "speciesSlug": "hydrapple",
+    "calcSpeciesName": "Hydrapple",
+    "names": {
+      "zh-hans": "蜜集大蛇",
+      "zh-hant": "蜜集大蛇",
+      "en": "Hydrapple",
+      "ja": "カミツオロチ"
+    },
+    "speciesNames": {
+      "zh-hans": "蜜集大蛇",
+      "zh-hant": "蜜集大蛇",
+      "en": "Hydrapple",
+      "ja": "カミツオロチ"
+    },
+    "formNames": {},
+    "types": [
+      "grass",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 106,
+      "atk": 80,
+      "def": 110,
+      "spa": 120,
+      "spd": 80,
+      "spe": 44
+    }
+  },
+  "1020": {
+    "resourceType": "pokemon",
+    "id": 1020,
+    "speciesId": 1020,
+    "pokemonSlug": "gouging-fire",
+    "speciesSlug": "gouging-fire",
+    "calcSpeciesName": "Gouging Fire",
+    "names": {
+      "zh-hans": "破空焰",
+      "zh-hant": "破空焰",
+      "en": "Gouging Fire",
+      "ja": "ウガツホムラ"
+    },
+    "speciesNames": {
+      "zh-hans": "破空焰",
+      "zh-hant": "破空焰",
+      "en": "Gouging Fire",
+      "ja": "ウガツホムラ"
+    },
+    "formNames": {},
+    "types": [
+      "fire",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 105,
+      "atk": 115,
+      "def": 121,
+      "spa": 65,
+      "spd": 93,
+      "spe": 91
+    }
+  },
+  "1021": {
+    "resourceType": "pokemon",
+    "id": 1021,
+    "speciesId": 1021,
+    "pokemonSlug": "raging-bolt",
+    "speciesSlug": "raging-bolt",
+    "calcSpeciesName": "Raging Bolt",
+    "names": {
+      "zh-hans": "猛雷鼓",
+      "zh-hant": "猛雷鼓",
+      "en": "Raging Bolt",
+      "ja": "タケルライコ"
+    },
+    "speciesNames": {
+      "zh-hans": "猛雷鼓",
+      "zh-hant": "猛雷鼓",
+      "en": "Raging Bolt",
+      "ja": "タケルライコ"
+    },
+    "formNames": {},
+    "types": [
+      "electric",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 125,
+      "atk": 73,
+      "def": 91,
+      "spa": 137,
+      "spd": 89,
+      "spe": 75
+    }
+  },
+  "1022": {
+    "resourceType": "pokemon",
+    "id": 1022,
+    "speciesId": 1022,
+    "pokemonSlug": "iron-boulder",
+    "speciesSlug": "iron-boulder",
+    "calcSpeciesName": "Iron Boulder",
+    "names": {
+      "zh-hans": "鐵磐岩",
+      "zh-hant": "铁磐岩",
+      "en": "Iron Boulder",
+      "ja": "テツノイワオ"
+    },
+    "speciesNames": {
+      "zh-hans": "鐵磐岩",
+      "zh-hant": "铁磐岩",
+      "en": "Iron Boulder",
+      "ja": "テツノイワオ"
+    },
+    "formNames": {},
+    "types": [
+      "rock",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 120,
+      "def": 80,
+      "spa": 68,
+      "spd": 108,
+      "spe": 124
+    }
+  },
+  "1023": {
+    "resourceType": "pokemon",
+    "id": 1023,
+    "speciesId": 1023,
+    "pokemonSlug": "iron-crown",
+    "speciesSlug": "iron-crown",
+    "calcSpeciesName": "Iron Crown",
+    "names": {
+      "zh-hans": "鐵頭殼",
+      "zh-hant": "铁头壳",
+      "en": "Iron Crown",
+      "ja": "テツノカシラ"
+    },
+    "speciesNames": {
+      "zh-hans": "鐵頭殼",
+      "zh-hant": "铁头壳",
+      "en": "Iron Crown",
+      "ja": "テツノカシラ"
+    },
+    "formNames": {},
+    "types": [
+      "steel",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 72,
+      "def": 100,
+      "spa": 122,
+      "spd": 108,
+      "spe": 98
+    }
+  },
+  "1024": {
+    "resourceType": "pokemon",
+    "id": 1024,
+    "speciesId": 1024,
+    "pokemonSlug": "terapagos",
+    "speciesSlug": "terapagos",
+    "calcSpeciesName": "Terapagos",
+    "names": {
+      "zh-hans": "太乐巴戈斯",
+      "zh-hant": "太樂巴戈斯",
+      "en": "Terapagos",
+      "ja": "テラパゴス"
+    },
+    "speciesNames": {
+      "zh-hans": "太乐巴戈斯",
+      "zh-hant": "太樂巴戈斯",
+      "en": "Terapagos",
+      "ja": "テラパゴス"
+    },
+    "formNames": {},
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 65,
+      "def": 85,
+      "spa": 65,
+      "spd": 85,
+      "spe": 60
+    }
+  },
+  "1025": {
+    "resourceType": "pokemon",
+    "id": 1025,
+    "speciesId": 1025,
+    "pokemonSlug": "pecharunt",
+    "speciesSlug": "pecharunt",
+    "calcSpeciesName": "Pecharunt",
+    "names": {
+      "zh-hans": "桃歹郎",
+      "zh-hant": "桃歹郎",
+      "en": "Pecharunt",
+      "ja": "モモワロウ"
+    },
+    "speciesNames": {
+      "zh-hans": "桃歹郎",
+      "zh-hant": "桃歹郎",
+      "en": "Pecharunt",
+      "ja": "モモワロウ"
+    },
+    "formNames": {},
+    "types": [
+      "poison",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 88,
+      "atk": 88,
+      "def": 160,
+      "spa": 88,
+      "spd": 88,
+      "spe": 88
+    }
+  },
+  "10001": {
+    "resourceType": "pokemon",
+    "id": 10001,
+    "speciesId": 386,
+    "pokemonSlug": "deoxys-attack",
+    "speciesSlug": "deoxys",
+    "calcSpeciesName": "Deoxys-Attack Forme",
+    "names": {
+      "zh-hans": "代欧奇希斯-攻击形态",
+      "zh-hant": "代歐奇希斯-攻擊形態",
+      "en": "Deoxys-Attack Forme",
+      "ja": "デオキシス-アタックフォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "代欧奇希斯",
+      "zh-hant": "代歐奇希斯",
+      "en": "Deoxys",
+      "ja": "デオキシス"
+    },
+    "formNames": {
+      "zh-hans": "攻击形态",
+      "zh-hant": "攻擊形態",
+      "en": "Attack Forme",
+      "ja": "アタックフォルム"
+    },
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 180,
+      "def": 20,
+      "spa": 180,
+      "spd": 20,
+      "spe": 150
+    }
+  },
+  "10002": {
+    "resourceType": "pokemon",
+    "id": 10002,
+    "speciesId": 386,
+    "pokemonSlug": "deoxys-defense",
+    "speciesSlug": "deoxys",
+    "calcSpeciesName": "Deoxys-Defense Forme",
+    "names": {
+      "zh-hans": "代欧奇希斯-防御形态",
+      "zh-hant": "代歐奇希斯-防禦形態",
+      "en": "Deoxys-Defense Forme",
+      "ja": "デオキシス-ディフェンスフォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "代欧奇希斯",
+      "zh-hant": "代歐奇希斯",
+      "en": "Deoxys",
+      "ja": "デオキシス"
+    },
+    "formNames": {
+      "zh-hans": "防御形态",
+      "zh-hant": "防禦形態",
+      "en": "Defense Forme",
+      "ja": "ディフェンスフォルム"
+    },
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 70,
+      "def": 160,
+      "spa": 70,
+      "spd": 160,
+      "spe": 90
+    }
+  },
+  "10003": {
+    "resourceType": "pokemon",
+    "id": 10003,
+    "speciesId": 386,
+    "pokemonSlug": "deoxys-speed",
+    "speciesSlug": "deoxys",
+    "calcSpeciesName": "Deoxys-Speed Forme",
+    "names": {
+      "zh-hans": "代欧奇希斯-速度形态",
+      "zh-hant": "代歐奇希斯-速度形態",
+      "en": "Deoxys-Speed Forme",
+      "ja": "デオキシス-スピードフォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "代欧奇希斯",
+      "zh-hant": "代歐奇希斯",
+      "en": "Deoxys",
+      "ja": "デオキシス"
+    },
+    "formNames": {
+      "zh-hans": "速度形态",
+      "zh-hant": "速度形態",
+      "en": "Speed Forme",
+      "ja": "スピードフォルム"
+    },
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 95,
+      "def": 90,
+      "spa": 95,
+      "spd": 90,
+      "spe": 180
+    }
+  },
+  "10004": {
+    "resourceType": "pokemon",
+    "id": 10004,
+    "speciesId": 413,
+    "pokemonSlug": "wormadam-sandy",
+    "speciesSlug": "wormadam",
+    "calcSpeciesName": "Wormadam-Sandy Cloak",
+    "names": {
+      "zh-hans": "结草贵妇-砂土蓑衣",
+      "zh-hant": "結草貴婦-砂土蓑衣",
+      "en": "Wormadam-Sandy Cloak",
+      "ja": "ミノマダム-すなちのミノ"
+    },
+    "speciesNames": {
+      "zh-hans": "结草贵妇",
+      "zh-hant": "結草貴婦",
+      "en": "Wormadam",
+      "ja": "ミノマダム"
+    },
+    "formNames": {
+      "zh-hans": "砂土蓑衣",
+      "zh-hant": "砂土蓑衣",
+      "en": "Sandy Cloak",
+      "ja": "すなちのミノ"
+    },
+    "types": [
+      "bug",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 79,
+      "def": 105,
+      "spa": 59,
+      "spd": 85,
+      "spe": 36
+    }
+  },
+  "10005": {
+    "resourceType": "pokemon",
+    "id": 10005,
+    "speciesId": 413,
+    "pokemonSlug": "wormadam-trash",
+    "speciesSlug": "wormadam",
+    "calcSpeciesName": "Wormadam-Trash Cloak",
+    "names": {
+      "zh-hans": "结草贵妇-垃圾蓑衣",
+      "zh-hant": "結草貴婦-垃圾蓑衣",
+      "en": "Wormadam-Trash Cloak",
+      "ja": "ミノマダム-ゴミのミノ"
+    },
+    "speciesNames": {
+      "zh-hans": "结草贵妇",
+      "zh-hant": "結草貴婦",
+      "en": "Wormadam",
+      "ja": "ミノマダム"
+    },
+    "formNames": {
+      "zh-hans": "垃圾蓑衣",
+      "zh-hant": "垃圾蓑衣",
+      "en": "Trash Cloak",
+      "ja": "ゴミのミノ"
+    },
+    "types": [
+      "bug",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 69,
+      "def": 95,
+      "spa": 69,
+      "spd": 95,
+      "spe": 36
+    }
+  },
+  "10006": {
+    "resourceType": "pokemon",
+    "id": 10006,
+    "speciesId": 492,
+    "pokemonSlug": "shaymin-sky",
+    "speciesSlug": "shaymin",
+    "calcSpeciesName": "Shaymin-Sky Forme",
+    "names": {
+      "zh-hans": "谢米-天空形态",
+      "zh-hant": "謝米-天空形態",
+      "en": "Shaymin-Sky Forme",
+      "ja": "シェイミ-スカイフォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "谢米",
+      "zh-hant": "謝米",
+      "en": "Shaymin",
+      "ja": "シェイミ"
+    },
+    "formNames": {
+      "zh-hans": "天空形态",
+      "zh-hant": "天空形態",
+      "en": "Sky Forme",
+      "ja": "スカイフォルム"
+    },
+    "types": [
+      "grass",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 103,
+      "def": 75,
+      "spa": 120,
+      "spd": 75,
+      "spe": 127
+    }
+  },
+  "10007": {
+    "resourceType": "pokemon",
+    "id": 10007,
+    "speciesId": 487,
+    "pokemonSlug": "giratina-origin",
+    "speciesSlug": "giratina",
+    "calcSpeciesName": "Giratina-Origin Forme",
+    "names": {
+      "zh-hans": "骑拉帝纳-起源形态",
+      "zh-hant": "騎拉帝納-起源形態",
+      "en": "Giratina-Origin Forme",
+      "ja": "ギラティナ-オリジンフォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "骑拉帝纳",
+      "zh-hant": "騎拉帝納",
+      "en": "Giratina",
+      "ja": "ギラティナ"
+    },
+    "formNames": {
+      "zh-hans": "起源形态",
+      "zh-hant": "起源形態",
+      "en": "Origin Forme",
+      "ja": "オリジンフォルム"
+    },
+    "types": [
+      "ghost",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 150,
+      "atk": 120,
+      "def": 100,
+      "spa": 120,
+      "spd": 100,
+      "spe": 90
+    }
+  },
+  "10008": {
+    "resourceType": "pokemon",
+    "id": 10008,
+    "speciesId": 479,
+    "pokemonSlug": "rotom-heat",
+    "speciesSlug": "rotom",
+    "calcSpeciesName": "Rotom-Heat Rotom",
+    "names": {
+      "zh-hans": "洛托姆-加热洛托姆",
+      "zh-hant": "洛托姆-加熱洛托姆",
+      "en": "Rotom-Heat Rotom",
+      "ja": "ロトム-ヒートロトム"
+    },
+    "speciesNames": {
+      "zh-hans": "洛托姆",
+      "zh-hant": "洛托姆",
+      "en": "Rotom",
+      "ja": "ロトム"
+    },
+    "formNames": {
+      "zh-hans": "加热洛托姆",
+      "zh-hant": "加熱洛托姆",
+      "en": "Heat Rotom",
+      "ja": "ヒートロトム"
+    },
+    "types": [
+      "electric",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 65,
+      "def": 107,
+      "spa": 105,
+      "spd": 107,
+      "spe": 86
+    }
+  },
+  "10009": {
+    "resourceType": "pokemon",
+    "id": 10009,
+    "speciesId": 479,
+    "pokemonSlug": "rotom-wash",
+    "speciesSlug": "rotom",
+    "calcSpeciesName": "Rotom-Wash Rotom",
+    "names": {
+      "zh-hans": "洛托姆-清洗洛托姆",
+      "zh-hant": "洛托姆-清洗洛托姆",
+      "en": "Rotom-Wash Rotom",
+      "ja": "ロトム-ウォッシュロトム"
+    },
+    "speciesNames": {
+      "zh-hans": "洛托姆",
+      "zh-hant": "洛托姆",
+      "en": "Rotom",
+      "ja": "ロトム"
+    },
+    "formNames": {
+      "zh-hans": "清洗洛托姆",
+      "zh-hant": "清洗洛托姆",
+      "en": "Wash Rotom",
+      "ja": "ウォッシュロトム"
+    },
+    "types": [
+      "electric",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 65,
+      "def": 107,
+      "spa": 105,
+      "spd": 107,
+      "spe": 86
+    }
+  },
+  "10010": {
+    "resourceType": "pokemon",
+    "id": 10010,
+    "speciesId": 479,
+    "pokemonSlug": "rotom-frost",
+    "speciesSlug": "rotom",
+    "calcSpeciesName": "Rotom-Frost Rotom",
+    "names": {
+      "zh-hans": "洛托姆-结冰洛托姆",
+      "zh-hant": "洛托姆-結冰洛托姆",
+      "en": "Rotom-Frost Rotom",
+      "ja": "ロトム-フロストロトム"
+    },
+    "speciesNames": {
+      "zh-hans": "洛托姆",
+      "zh-hant": "洛托姆",
+      "en": "Rotom",
+      "ja": "ロトム"
+    },
+    "formNames": {
+      "zh-hans": "结冰洛托姆",
+      "zh-hant": "結冰洛托姆",
+      "en": "Frost Rotom",
+      "ja": "フロストロトム"
+    },
+    "types": [
+      "electric",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 65,
+      "def": 107,
+      "spa": 105,
+      "spd": 107,
+      "spe": 86
+    }
+  },
+  "10011": {
+    "resourceType": "pokemon",
+    "id": 10011,
+    "speciesId": 479,
+    "pokemonSlug": "rotom-fan",
+    "speciesSlug": "rotom",
+    "calcSpeciesName": "Rotom-Fan Rotom",
+    "names": {
+      "zh-hans": "洛托姆-旋转洛托姆",
+      "zh-hant": "洛托姆-旋轉洛托姆",
+      "en": "Rotom-Fan Rotom",
+      "ja": "ロトム-スピンロトム"
+    },
+    "speciesNames": {
+      "zh-hans": "洛托姆",
+      "zh-hant": "洛托姆",
+      "en": "Rotom",
+      "ja": "ロトム"
+    },
+    "formNames": {
+      "zh-hans": "旋转洛托姆",
+      "zh-hant": "旋轉洛托姆",
+      "en": "Fan Rotom",
+      "ja": "スピンロトム"
+    },
+    "types": [
+      "electric",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 65,
+      "def": 107,
+      "spa": 105,
+      "spd": 107,
+      "spe": 86
+    }
+  },
+  "10012": {
+    "resourceType": "pokemon",
+    "id": 10012,
+    "speciesId": 479,
+    "pokemonSlug": "rotom-mow",
+    "speciesSlug": "rotom",
+    "calcSpeciesName": "Rotom-Mow Rotom",
+    "names": {
+      "zh-hans": "洛托姆-切割洛托姆",
+      "zh-hant": "洛托姆-切割洛托姆",
+      "en": "Rotom-Mow Rotom",
+      "ja": "ロトム-カットロトム"
+    },
+    "speciesNames": {
+      "zh-hans": "洛托姆",
+      "zh-hant": "洛托姆",
+      "en": "Rotom",
+      "ja": "ロトム"
+    },
+    "formNames": {
+      "zh-hans": "切割洛托姆",
+      "zh-hant": "切割洛托姆",
+      "en": "Mow Rotom",
+      "ja": "カットロトム"
+    },
+    "types": [
+      "electric",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 65,
+      "def": 107,
+      "spa": 105,
+      "spd": 107,
+      "spe": 86
+    }
+  },
+  "10013": {
+    "resourceType": "pokemon",
+    "id": 10013,
+    "speciesId": 351,
+    "pokemonSlug": "castform-sunny",
+    "speciesSlug": "castform",
+    "calcSpeciesName": "Castform-Sunny Form",
+    "names": {
+      "zh-hans": "飘浮泡泡-太阳的样子",
+      "zh-hant": "飄浮泡泡-太陽的樣子",
+      "en": "Castform-Sunny Form",
+      "ja": "ポワルン-たいようのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "飘浮泡泡",
+      "zh-hant": "飄浮泡泡",
+      "en": "Castform",
+      "ja": "ポワルン"
+    },
+    "formNames": {
+      "zh-hans": "太阳的样子",
+      "zh-hant": "太陽的樣子",
+      "en": "Sunny Form",
+      "ja": "たいようのすがた"
+    },
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 70,
+      "def": 70,
+      "spa": 70,
+      "spd": 70,
+      "spe": 70
+    }
+  },
+  "10014": {
+    "resourceType": "pokemon",
+    "id": 10014,
+    "speciesId": 351,
+    "pokemonSlug": "castform-rainy",
+    "speciesSlug": "castform",
+    "calcSpeciesName": "Castform-Rainy Form",
+    "names": {
+      "zh-hans": "飘浮泡泡-雨水的样子",
+      "zh-hant": "飄浮泡泡-雨水的樣子",
+      "en": "Castform-Rainy Form",
+      "ja": "ポワルン-あまみずのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "飘浮泡泡",
+      "zh-hant": "飄浮泡泡",
+      "en": "Castform",
+      "ja": "ポワルン"
+    },
+    "formNames": {
+      "zh-hans": "雨水的样子",
+      "zh-hant": "雨水的樣子",
+      "en": "Rainy Form",
+      "ja": "あまみずのすがた"
+    },
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 70,
+      "def": 70,
+      "spa": 70,
+      "spd": 70,
+      "spe": 70
+    }
+  },
+  "10015": {
+    "resourceType": "pokemon",
+    "id": 10015,
+    "speciesId": 351,
+    "pokemonSlug": "castform-snowy",
+    "speciesSlug": "castform",
+    "calcSpeciesName": "Castform-Snowy Form",
+    "names": {
+      "zh-hans": "飘浮泡泡-雪云的样子",
+      "zh-hant": "飄浮泡泡-雪雲的樣子",
+      "en": "Castform-Snowy Form",
+      "ja": "ポワルン-ゆきぐものすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "飘浮泡泡",
+      "zh-hant": "飄浮泡泡",
+      "en": "Castform",
+      "ja": "ポワルン"
+    },
+    "formNames": {
+      "zh-hans": "雪云的样子",
+      "zh-hant": "雪雲的樣子",
+      "en": "Snowy Form",
+      "ja": "ゆきぐものすがた"
+    },
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 70,
+      "def": 70,
+      "spa": 70,
+      "spd": 70,
+      "spe": 70
+    }
+  },
+  "10016": {
+    "resourceType": "pokemon",
+    "id": 10016,
+    "speciesId": 550,
+    "pokemonSlug": "basculin-blue-striped",
+    "speciesSlug": "basculin",
+    "calcSpeciesName": "Basculin-Blue-Striped Form",
+    "names": {
+      "zh-hans": "野蛮鲈鱼-蓝条纹的样子",
+      "zh-hant": "野蠻鱸魚-藍條紋的樣子",
+      "en": "Basculin-Blue-Striped Form",
+      "ja": "バスラオ-あおすじのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "野蛮鲈鱼",
+      "zh-hant": "野蠻鱸魚",
+      "en": "Basculin",
+      "ja": "バスラオ"
+    },
+    "formNames": {
+      "zh-hans": "蓝条纹的样子",
+      "zh-hant": "藍條紋的樣子",
+      "en": "Blue-Striped Form",
+      "ja": "あおすじのすがた"
+    },
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 92,
+      "def": 65,
+      "spa": 80,
+      "spd": 55,
+      "spe": 98
+    }
+  },
+  "10017": {
+    "resourceType": "pokemon",
+    "id": 10017,
+    "speciesId": 555,
+    "pokemonSlug": "darmanitan-zen",
+    "speciesSlug": "darmanitan",
+    "calcSpeciesName": "Darmanitan-Zen Mode",
+    "names": {
+      "zh-hans": "达摩狒狒-达摩模式",
+      "zh-hant": "達摩狒狒-達摩模式",
+      "en": "Darmanitan-Zen Mode",
+      "ja": "ヒヒダルマ-ダルマモード"
+    },
+    "speciesNames": {
+      "zh-hans": "达摩狒狒",
+      "zh-hant": "達摩狒狒",
+      "en": "Darmanitan",
+      "ja": "ヒヒダルマ"
+    },
+    "formNames": {
+      "zh-hans": "达摩模式",
+      "zh-hant": "達摩模式",
+      "en": "Zen Mode",
+      "ja": "ダルマモード"
+    },
+    "types": [
+      "fire",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 105,
+      "atk": 30,
+      "def": 105,
+      "spa": 140,
+      "spd": 105,
+      "spe": 55
+    }
+  },
+  "10018": {
+    "resourceType": "pokemon",
+    "id": 10018,
+    "speciesId": 648,
+    "pokemonSlug": "meloetta-pirouette",
+    "speciesSlug": "meloetta",
+    "calcSpeciesName": "Meloetta-Pirouette Forme",
+    "names": {
+      "zh-hans": "美洛耶塔-舞步形态",
+      "zh-hant": "美洛耶塔-舞步形態",
+      "en": "Meloetta-Pirouette Forme",
+      "ja": "メロエッタ-ステップフォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "美洛耶塔",
+      "zh-hant": "美洛耶塔",
+      "en": "Meloetta",
+      "ja": "メロエッタ"
+    },
+    "formNames": {
+      "zh-hans": "舞步形态",
+      "zh-hant": "舞步形態",
+      "en": "Pirouette Forme",
+      "ja": "ステップフォルム"
+    },
+    "types": [
+      "normal",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 128,
+      "def": 90,
+      "spa": 77,
+      "spd": 77,
+      "spe": 128
+    }
+  },
+  "10019": {
+    "resourceType": "pokemon",
+    "id": 10019,
+    "speciesId": 641,
+    "pokemonSlug": "tornadus-therian",
+    "speciesSlug": "tornadus",
+    "calcSpeciesName": "Tornadus-Therian Forme",
+    "names": {
+      "zh-hans": "龙卷云-灵兽形态",
+      "zh-hant": "龍捲雲-靈獸形態",
+      "en": "Tornadus-Therian Forme",
+      "ja": "トルネロス-れいじゅうフォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "龙卷云",
+      "zh-hant": "龍捲雲",
+      "en": "Tornadus",
+      "ja": "トルネロス"
+    },
+    "formNames": {
+      "zh-hans": "灵兽形态",
+      "zh-hant": "靈獸形態",
+      "en": "Therian Forme",
+      "ja": "れいじゅうフォルム"
+    },
+    "types": [
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 79,
+      "atk": 100,
+      "def": 80,
+      "spa": 110,
+      "spd": 90,
+      "spe": 121
+    }
+  },
+  "10020": {
+    "resourceType": "pokemon",
+    "id": 10020,
+    "speciesId": 642,
+    "pokemonSlug": "thundurus-therian",
+    "speciesSlug": "thundurus",
+    "calcSpeciesName": "Thundurus-Therian Forme",
+    "names": {
+      "zh-hans": "雷电云-灵兽形态",
+      "zh-hant": "雷電雲-靈獸形態",
+      "en": "Thundurus-Therian Forme",
+      "ja": "ボルトロス-れいじゅうフォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "雷电云",
+      "zh-hant": "雷電雲",
+      "en": "Thundurus",
+      "ja": "ボルトロス"
+    },
+    "formNames": {
+      "zh-hans": "灵兽形态",
+      "zh-hant": "靈獸形態",
+      "en": "Therian Forme",
+      "ja": "れいじゅうフォルム"
+    },
+    "types": [
+      "electric",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 79,
+      "atk": 105,
+      "def": 70,
+      "spa": 145,
+      "spd": 80,
+      "spe": 101
+    }
+  },
+  "10021": {
+    "resourceType": "pokemon",
+    "id": 10021,
+    "speciesId": 645,
+    "pokemonSlug": "landorus-therian",
+    "speciesSlug": "landorus",
+    "calcSpeciesName": "Landorus-Therian Forme",
+    "names": {
+      "zh-hans": "土地云-灵兽形态",
+      "zh-hant": "土地雲-靈獸形態",
+      "en": "Landorus-Therian Forme",
+      "ja": "ランドロス-れいじゅうフォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "土地云",
+      "zh-hant": "土地雲",
+      "en": "Landorus",
+      "ja": "ランドロス"
+    },
+    "formNames": {
+      "zh-hans": "灵兽形态",
+      "zh-hant": "靈獸形態",
+      "en": "Therian Forme",
+      "ja": "れいじゅうフォルム"
+    },
+    "types": [
+      "ground",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 89,
+      "atk": 145,
+      "def": 90,
+      "spa": 105,
+      "spd": 80,
+      "spe": 91
+    }
+  },
+  "10022": {
+    "resourceType": "pokemon",
+    "id": 10022,
+    "speciesId": 646,
+    "pokemonSlug": "kyurem-black",
+    "speciesSlug": "kyurem",
+    "calcSpeciesName": "Kyurem-Black Kyurem",
+    "names": {
+      "zh-hans": "酋雷姆-暗黑酋雷姆",
+      "zh-hant": "酋雷姆-闇黑酋雷姆",
+      "en": "Kyurem-Black Kyurem",
+      "ja": "キュレム-ブラックキュレム"
+    },
+    "speciesNames": {
+      "zh-hans": "酋雷姆",
+      "zh-hant": "酋雷姆",
+      "en": "Kyurem",
+      "ja": "キュレム"
+    },
+    "formNames": {
+      "zh-hans": "暗黑酋雷姆",
+      "zh-hant": "闇黑酋雷姆",
+      "en": "Black Kyurem",
+      "ja": "ブラックキュレム"
+    },
+    "types": [
+      "dragon",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 125,
+      "atk": 170,
+      "def": 100,
+      "spa": 120,
+      "spd": 90,
+      "spe": 95
+    }
+  },
+  "10023": {
+    "resourceType": "pokemon",
+    "id": 10023,
+    "speciesId": 646,
+    "pokemonSlug": "kyurem-white",
+    "speciesSlug": "kyurem",
+    "calcSpeciesName": "Kyurem-White Kyurem",
+    "names": {
+      "zh-hans": "酋雷姆-焰白酋雷姆",
+      "zh-hant": "酋雷姆-焰白酋雷姆",
+      "en": "Kyurem-White Kyurem",
+      "ja": "キュレム-ホワイトキュレム"
+    },
+    "speciesNames": {
+      "zh-hans": "酋雷姆",
+      "zh-hant": "酋雷姆",
+      "en": "Kyurem",
+      "ja": "キュレム"
+    },
+    "formNames": {
+      "zh-hans": "焰白酋雷姆",
+      "zh-hant": "焰白酋雷姆",
+      "en": "White Kyurem",
+      "ja": "ホワイトキュレム"
+    },
+    "types": [
+      "dragon",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 125,
+      "atk": 120,
+      "def": 90,
+      "spa": 170,
+      "spd": 100,
+      "spe": 95
+    }
+  },
+  "10024": {
+    "resourceType": "pokemon",
+    "id": 10024,
+    "speciesId": 647,
+    "pokemonSlug": "keldeo-resolute",
+    "speciesSlug": "keldeo",
+    "calcSpeciesName": "Keldeo-Resolute Form",
+    "names": {
+      "zh-hans": "凯路迪欧-觉悟的样子",
+      "zh-hant": "凱路迪歐-覺悟的樣子",
+      "en": "Keldeo-Resolute Form",
+      "ja": "ケルディオ-かくごのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "凯路迪欧",
+      "zh-hant": "凱路迪歐",
+      "en": "Keldeo",
+      "ja": "ケルディオ"
+    },
+    "formNames": {
+      "zh-hans": "觉悟的样子",
+      "zh-hant": "覺悟的樣子",
+      "en": "Resolute Form",
+      "ja": "かくごのすがた"
+    },
+    "types": [
+      "water",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 91,
+      "atk": 72,
+      "def": 90,
+      "spa": 129,
+      "spd": 90,
+      "spe": 108
+    }
+  },
+  "10025": {
+    "resourceType": "pokemon",
+    "id": 10025,
+    "speciesId": 678,
+    "pokemonSlug": "meowstic-female",
+    "speciesSlug": "meowstic",
+    "calcSpeciesName": "Meowstic-Female",
+    "names": {
+      "zh-hans": "超能妙喵-雌性的样子",
+      "zh-hant": "超能妙喵-雌性的樣子",
+      "en": "Meowstic-Female",
+      "ja": "ニャオニクス-メスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "超能妙喵",
+      "zh-hant": "超能妙喵",
+      "en": "Meowstic",
+      "ja": "ニャオニクス"
+    },
+    "formNames": {
+      "zh-hans": "雌性的样子",
+      "zh-hant": "雌性的樣子",
+      "en": "Female",
+      "ja": "メスのすがた"
+    },
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 74,
+      "atk": 48,
+      "def": 76,
+      "spa": 83,
+      "spd": 81,
+      "spe": 104
+    }
+  },
+  "10026": {
+    "resourceType": "pokemon",
+    "id": 10026,
+    "speciesId": 681,
+    "pokemonSlug": "aegislash-blade",
+    "speciesSlug": "aegislash",
+    "calcSpeciesName": "Aegislash-Blade Forme",
+    "names": {
+      "zh-hans": "坚盾剑怪-刀剑形态",
+      "zh-hant": "堅盾劍怪-刀劍形態",
+      "en": "Aegislash-Blade Forme",
+      "ja": "ギルガルド-ブレードフォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "坚盾剑怪",
+      "zh-hant": "堅盾劍怪",
+      "en": "Aegislash",
+      "ja": "ギルガルド"
+    },
+    "formNames": {
+      "zh-hans": "刀剑形态",
+      "zh-hant": "刀劍形態",
+      "en": "Blade Forme",
+      "ja": "ブレードフォルム"
+    },
+    "types": [
+      "steel",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 140,
+      "def": 50,
+      "spa": 140,
+      "spd": 50,
+      "spe": 60
+    }
+  },
+  "10027": {
+    "resourceType": "pokemon",
+    "id": 10027,
+    "speciesId": 710,
+    "pokemonSlug": "pumpkaboo-small",
+    "speciesSlug": "pumpkaboo",
+    "calcSpeciesName": "Pumpkaboo-Small Size",
+    "names": {
+      "zh-hans": "南瓜精-小尺寸",
+      "zh-hant": "南瓜精-小尺寸",
+      "en": "Pumpkaboo-Small Size",
+      "ja": "バケッチャ-ちいさいサイズ"
+    },
+    "speciesNames": {
+      "zh-hans": "南瓜精",
+      "zh-hant": "南瓜精",
+      "en": "Pumpkaboo",
+      "ja": "バケッチャ"
+    },
+    "formNames": {
+      "zh-hans": "小尺寸",
+      "zh-hant": "小尺寸",
+      "en": "Small Size",
+      "ja": "ちいさいサイズ"
+    },
+    "types": [
+      "ghost",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 44,
+      "atk": 66,
+      "def": 70,
+      "spa": 44,
+      "spd": 55,
+      "spe": 56
+    }
+  },
+  "10028": {
+    "resourceType": "pokemon",
+    "id": 10028,
+    "speciesId": 710,
+    "pokemonSlug": "pumpkaboo-large",
+    "speciesSlug": "pumpkaboo",
+    "calcSpeciesName": "Pumpkaboo-Large Size",
+    "names": {
+      "zh-hans": "南瓜精-大尺寸",
+      "zh-hant": "南瓜精-大尺寸",
+      "en": "Pumpkaboo-Large Size",
+      "ja": "バケッチャ-おおきいサイズ"
+    },
+    "speciesNames": {
+      "zh-hans": "南瓜精",
+      "zh-hant": "南瓜精",
+      "en": "Pumpkaboo",
+      "ja": "バケッチャ"
+    },
+    "formNames": {
+      "zh-hans": "大尺寸",
+      "zh-hant": "大尺寸",
+      "en": "Large Size",
+      "ja": "おおきいサイズ"
+    },
+    "types": [
+      "ghost",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 54,
+      "atk": 66,
+      "def": 70,
+      "spa": 44,
+      "spd": 55,
+      "spe": 46
+    }
+  },
+  "10029": {
+    "resourceType": "pokemon",
+    "id": 10029,
+    "speciesId": 710,
+    "pokemonSlug": "pumpkaboo-super",
+    "speciesSlug": "pumpkaboo",
+    "calcSpeciesName": "Pumpkaboo-Super Size",
+    "names": {
+      "zh-hans": "南瓜精-特大尺寸",
+      "zh-hant": "南瓜精-特大尺寸",
+      "en": "Pumpkaboo-Super Size",
+      "ja": "バケッチャ-とくだいサイズ"
+    },
+    "speciesNames": {
+      "zh-hans": "南瓜精",
+      "zh-hant": "南瓜精",
+      "en": "Pumpkaboo",
+      "ja": "バケッチャ"
+    },
+    "formNames": {
+      "zh-hans": "特大尺寸",
+      "zh-hant": "特大尺寸",
+      "en": "Super Size",
+      "ja": "とくだいサイズ"
+    },
+    "types": [
+      "ghost",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 59,
+      "atk": 66,
+      "def": 70,
+      "spa": 44,
+      "spd": 55,
+      "spe": 41
+    }
+  },
+  "10030": {
+    "resourceType": "pokemon",
+    "id": 10030,
+    "speciesId": 711,
+    "pokemonSlug": "gourgeist-small",
+    "speciesSlug": "gourgeist",
+    "calcSpeciesName": "Gourgeist-Small Size",
+    "names": {
+      "zh-hans": "南瓜怪人-小尺寸",
+      "zh-hant": "南瓜怪人-小尺寸",
+      "en": "Gourgeist-Small Size",
+      "ja": "パンプジン-ちいさいサイズ"
+    },
+    "speciesNames": {
+      "zh-hans": "南瓜怪人",
+      "zh-hant": "南瓜怪人",
+      "en": "Gourgeist",
+      "ja": "パンプジン"
+    },
+    "formNames": {
+      "zh-hans": "小尺寸",
+      "zh-hant": "小尺寸",
+      "en": "Small Size",
+      "ja": "ちいさいサイズ"
+    },
+    "types": [
+      "ghost",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 85,
+      "def": 122,
+      "spa": 58,
+      "spd": 75,
+      "spe": 99
+    }
+  },
+  "10031": {
+    "resourceType": "pokemon",
+    "id": 10031,
+    "speciesId": 711,
+    "pokemonSlug": "gourgeist-large",
+    "speciesSlug": "gourgeist",
+    "calcSpeciesName": "Gourgeist-Large Size",
+    "names": {
+      "zh-hans": "南瓜怪人-大尺寸",
+      "zh-hant": "南瓜怪人-大尺寸",
+      "en": "Gourgeist-Large Size",
+      "ja": "パンプジン-おおきいサイズ"
+    },
+    "speciesNames": {
+      "zh-hans": "南瓜怪人",
+      "zh-hant": "南瓜怪人",
+      "en": "Gourgeist",
+      "ja": "パンプジン"
+    },
+    "formNames": {
+      "zh-hans": "大尺寸",
+      "zh-hant": "大尺寸",
+      "en": "Large Size",
+      "ja": "おおきいサイズ"
+    },
+    "types": [
+      "ghost",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 95,
+      "def": 122,
+      "spa": 58,
+      "spd": 75,
+      "spe": 69
+    }
+  },
+  "10032": {
+    "resourceType": "pokemon",
+    "id": 10032,
+    "speciesId": 711,
+    "pokemonSlug": "gourgeist-super",
+    "speciesSlug": "gourgeist",
+    "calcSpeciesName": "Gourgeist-Super Size",
+    "names": {
+      "zh-hans": "南瓜怪人-特大尺寸",
+      "zh-hant": "南瓜怪人-特大尺寸",
+      "en": "Gourgeist-Super Size",
+      "ja": "パンプジン-とくだいサイズ"
+    },
+    "speciesNames": {
+      "zh-hans": "南瓜怪人",
+      "zh-hant": "南瓜怪人",
+      "en": "Gourgeist",
+      "ja": "パンプジン"
+    },
+    "formNames": {
+      "zh-hans": "特大尺寸",
+      "zh-hant": "特大尺寸",
+      "en": "Super Size",
+      "ja": "とくだいサイズ"
+    },
+    "types": [
+      "ghost",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 100,
+      "def": 122,
+      "spa": 58,
+      "spd": 75,
+      "spe": 54
+    }
+  },
+  "10033": {
+    "resourceType": "pokemon",
+    "id": 10033,
+    "speciesId": 3,
+    "pokemonSlug": "venusaur-mega",
+    "speciesSlug": "venusaur",
+    "calcSpeciesName": "Venusaur-Mega Venusaur",
+    "names": {
+      "zh-hans": "妙蛙花-超级妙蛙花",
+      "zh-hant": "妙蛙花-超級妙蛙花",
+      "en": "Venusaur-Mega Venusaur",
+      "ja": "フシギバナ-メガフシギバナ"
+    },
+    "speciesNames": {
+      "zh-hans": "妙蛙花",
+      "zh-hant": "妙蛙花",
+      "en": "Venusaur",
+      "ja": "フシギバナ"
+    },
+    "formNames": {
+      "zh-hans": "超级妙蛙花",
+      "zh-hant": "超級妙蛙花",
+      "en": "Mega Venusaur",
+      "ja": "メガフシギバナ"
+    },
+    "types": [
+      "grass",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 100,
+      "def": 123,
+      "spa": 122,
+      "spd": 120,
+      "spe": 80
+    }
+  },
+  "10034": {
+    "resourceType": "pokemon",
+    "id": 10034,
+    "speciesId": 6,
+    "pokemonSlug": "charizard-mega-x",
+    "speciesSlug": "charizard",
+    "calcSpeciesName": "Charizard-Mega Charizard X",
+    "names": {
+      "zh-hans": "喷火龙-超级喷火龙Ｘ",
+      "zh-hant": "噴火龍-超級噴火龍Ｘ",
+      "en": "Charizard-Mega Charizard X",
+      "ja": "リザードン-メガリザードンＸ"
+    },
+    "speciesNames": {
+      "zh-hans": "喷火龙",
+      "zh-hant": "噴火龍",
+      "en": "Charizard",
+      "ja": "リザードン"
+    },
+    "formNames": {
+      "zh-hans": "超级喷火龙Ｘ",
+      "zh-hant": "超級噴火龍Ｘ",
+      "en": "Mega Charizard X",
+      "ja": "メガリザードンＸ"
+    },
+    "types": [
+      "fire",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 78,
+      "atk": 130,
+      "def": 111,
+      "spa": 130,
+      "spd": 85,
+      "spe": 100
+    }
+  },
+  "10035": {
+    "resourceType": "pokemon",
+    "id": 10035,
+    "speciesId": 6,
+    "pokemonSlug": "charizard-mega-y",
+    "speciesSlug": "charizard",
+    "calcSpeciesName": "Charizard-Mega Charizard Y",
+    "names": {
+      "zh-hans": "喷火龙-超级喷火龙Ｙ",
+      "zh-hant": "噴火龍-超級噴火龍Ｙ",
+      "en": "Charizard-Mega Charizard Y",
+      "ja": "リザードン-メガリザードンＹ"
+    },
+    "speciesNames": {
+      "zh-hans": "喷火龙",
+      "zh-hant": "噴火龍",
+      "en": "Charizard",
+      "ja": "リザードン"
+    },
+    "formNames": {
+      "zh-hans": "超级喷火龙Ｙ",
+      "zh-hant": "超級噴火龍Ｙ",
+      "en": "Mega Charizard Y",
+      "ja": "メガリザードンＹ"
+    },
+    "types": [
+      "fire",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 78,
+      "atk": 104,
+      "def": 78,
+      "spa": 159,
+      "spd": 115,
+      "spe": 100
+    }
+  },
+  "10036": {
+    "resourceType": "pokemon",
+    "id": 10036,
+    "speciesId": 9,
+    "pokemonSlug": "blastoise-mega",
+    "speciesSlug": "blastoise",
+    "calcSpeciesName": "Blastoise-Mega Blastoise",
+    "names": {
+      "zh-hans": "水箭龟-超级水箭龟",
+      "zh-hant": "水箭龜-超級水箭龜",
+      "en": "Blastoise-Mega Blastoise",
+      "ja": "カメックス-メガカメックス"
+    },
+    "speciesNames": {
+      "zh-hans": "水箭龟",
+      "zh-hant": "水箭龜",
+      "en": "Blastoise",
+      "ja": "カメックス"
+    },
+    "formNames": {
+      "zh-hans": "超级水箭龟",
+      "zh-hant": "超級水箭龜",
+      "en": "Mega Blastoise",
+      "ja": "メガカメックス"
+    },
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 79,
+      "atk": 103,
+      "def": 120,
+      "spa": 135,
+      "spd": 115,
+      "spe": 78
+    }
+  },
+  "10037": {
+    "resourceType": "pokemon",
+    "id": 10037,
+    "speciesId": 65,
+    "pokemonSlug": "alakazam-mega",
+    "speciesSlug": "alakazam",
+    "calcSpeciesName": "Alakazam-Mega Alakazam",
+    "names": {
+      "zh-hans": "胡地-超级胡地",
+      "zh-hant": "胡地-超級胡地",
+      "en": "Alakazam-Mega Alakazam",
+      "ja": "フーディン-メガフーディン"
+    },
+    "speciesNames": {
+      "zh-hans": "胡地",
+      "zh-hant": "胡地",
+      "en": "Alakazam",
+      "ja": "フーディン"
+    },
+    "formNames": {
+      "zh-hans": "超级胡地",
+      "zh-hant": "超級胡地",
+      "en": "Mega Alakazam",
+      "ja": "メガフーディン"
+    },
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 50,
+      "def": 65,
+      "spa": 175,
+      "spd": 105,
+      "spe": 150
+    }
+  },
+  "10038": {
+    "resourceType": "pokemon",
+    "id": 10038,
+    "speciesId": 94,
+    "pokemonSlug": "gengar-mega",
+    "speciesSlug": "gengar",
+    "calcSpeciesName": "Gengar-Mega Gengar",
+    "names": {
+      "zh-hans": "耿鬼-超级耿鬼",
+      "zh-hant": "耿鬼-超級耿鬼",
+      "en": "Gengar-Mega Gengar",
+      "ja": "ゲンガー-メガゲンガー"
+    },
+    "speciesNames": {
+      "zh-hans": "耿鬼",
+      "zh-hant": "耿鬼",
+      "en": "Gengar",
+      "ja": "ゲンガー"
+    },
+    "formNames": {
+      "zh-hans": "超级耿鬼",
+      "zh-hant": "超級耿鬼",
+      "en": "Mega Gengar",
+      "ja": "メガゲンガー"
+    },
+    "types": [
+      "ghost",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 65,
+      "def": 80,
+      "spa": 170,
+      "spd": 95,
+      "spe": 130
+    }
+  },
+  "10039": {
+    "resourceType": "pokemon",
+    "id": 10039,
+    "speciesId": 115,
+    "pokemonSlug": "kangaskhan-mega",
+    "speciesSlug": "kangaskhan",
+    "calcSpeciesName": "Kangaskhan-Mega Kangaskhan",
+    "names": {
+      "zh-hans": "袋兽-超级袋兽",
+      "zh-hant": "袋獸-超級袋獸",
+      "en": "Kangaskhan-Mega Kangaskhan",
+      "ja": "ガルーラ-メガガルーラ"
+    },
+    "speciesNames": {
+      "zh-hans": "袋兽",
+      "zh-hant": "袋獸",
+      "en": "Kangaskhan",
+      "ja": "ガルーラ"
+    },
+    "formNames": {
+      "zh-hans": "超级袋兽",
+      "zh-hant": "超級袋獸",
+      "en": "Mega Kangaskhan",
+      "ja": "メガガルーラ"
+    },
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 105,
+      "atk": 125,
+      "def": 100,
+      "spa": 60,
+      "spd": 100,
+      "spe": 100
+    }
+  },
+  "10040": {
+    "resourceType": "pokemon",
+    "id": 10040,
+    "speciesId": 127,
+    "pokemonSlug": "pinsir-mega",
+    "speciesSlug": "pinsir",
+    "calcSpeciesName": "Pinsir-Mega Pinsir",
+    "names": {
+      "zh-hans": "凯罗斯-超级凯罗斯",
+      "zh-hant": "凱羅斯-超級凱羅斯",
+      "en": "Pinsir-Mega Pinsir",
+      "ja": "カイロス-メガカイロス"
+    },
+    "speciesNames": {
+      "zh-hans": "凯罗斯",
+      "zh-hant": "凱羅斯",
+      "en": "Pinsir",
+      "ja": "カイロス"
+    },
+    "formNames": {
+      "zh-hans": "超级凯罗斯",
+      "zh-hant": "超級凱羅斯",
+      "en": "Mega Pinsir",
+      "ja": "メガカイロス"
+    },
+    "types": [
+      "bug",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 155,
+      "def": 120,
+      "spa": 65,
+      "spd": 90,
+      "spe": 105
+    }
+  },
+  "10041": {
+    "resourceType": "pokemon",
+    "id": 10041,
+    "speciesId": 130,
+    "pokemonSlug": "gyarados-mega",
+    "speciesSlug": "gyarados",
+    "calcSpeciesName": "Gyarados-Mega Gyarados",
+    "names": {
+      "zh-hans": "暴鲤龙-超级暴鲤龙",
+      "zh-hant": "暴鯉龍-超級暴鯉龍",
+      "en": "Gyarados-Mega Gyarados",
+      "ja": "ギャラドス-メガギャラドス"
+    },
+    "speciesNames": {
+      "zh-hans": "暴鲤龙",
+      "zh-hant": "暴鯉龍",
+      "en": "Gyarados",
+      "ja": "ギャラドス"
+    },
+    "formNames": {
+      "zh-hans": "超级暴鲤龙",
+      "zh-hant": "超級暴鯉龍",
+      "en": "Mega Gyarados",
+      "ja": "メガギャラドス"
+    },
+    "types": [
+      "water",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 155,
+      "def": 109,
+      "spa": 70,
+      "spd": 130,
+      "spe": 81
+    }
+  },
+  "10042": {
+    "resourceType": "pokemon",
+    "id": 10042,
+    "speciesId": 142,
+    "pokemonSlug": "aerodactyl-mega",
+    "speciesSlug": "aerodactyl",
+    "calcSpeciesName": "Aerodactyl-Mega Aerodactyl",
+    "names": {
+      "zh-hans": "化石翼龙-超级化石翼龙",
+      "zh-hant": "化石翼龍-超級化石翼龍",
+      "en": "Aerodactyl-Mega Aerodactyl",
+      "ja": "プテラ-メガプテラ"
+    },
+    "speciesNames": {
+      "zh-hans": "化石翼龙",
+      "zh-hant": "化石翼龍",
+      "en": "Aerodactyl",
+      "ja": "プテラ"
+    },
+    "formNames": {
+      "zh-hans": "超级化石翼龙",
+      "zh-hant": "超級化石翼龍",
+      "en": "Mega Aerodactyl",
+      "ja": "メガプテラ"
+    },
+    "types": [
+      "rock",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 135,
+      "def": 85,
+      "spa": 70,
+      "spd": 95,
+      "spe": 150
+    }
+  },
+  "10043": {
+    "resourceType": "pokemon",
+    "id": 10043,
+    "speciesId": 150,
+    "pokemonSlug": "mewtwo-mega-x",
+    "speciesSlug": "mewtwo",
+    "calcSpeciesName": "Mewtwo-Mega Mewtwo X",
+    "names": {
+      "zh-hans": "超梦-超级超梦Ｘ",
+      "zh-hant": "超夢-超級超夢Ｘ",
+      "en": "Mewtwo-Mega Mewtwo X",
+      "ja": "ミュウツー-メガミュウツーＸ"
+    },
+    "speciesNames": {
+      "zh-hans": "超梦",
+      "zh-hant": "超夢",
+      "en": "Mewtwo",
+      "ja": "ミュウツー"
+    },
+    "formNames": {
+      "zh-hans": "超级超梦Ｘ",
+      "zh-hant": "超級超夢Ｘ",
+      "en": "Mega Mewtwo X",
+      "ja": "メガミュウツーＸ"
+    },
+    "types": [
+      "psychic",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 106,
+      "atk": 190,
+      "def": 100,
+      "spa": 154,
+      "spd": 100,
+      "spe": 130
+    }
+  },
+  "10044": {
+    "resourceType": "pokemon",
+    "id": 10044,
+    "speciesId": 150,
+    "pokemonSlug": "mewtwo-mega-y",
+    "speciesSlug": "mewtwo",
+    "calcSpeciesName": "Mewtwo-Mega Mewtwo Y",
+    "names": {
+      "zh-hans": "超梦-超级超梦Ｙ",
+      "zh-hant": "超夢-超級超夢Ｙ",
+      "en": "Mewtwo-Mega Mewtwo Y",
+      "ja": "ミュウツー-メガミュウツーＹ"
+    },
+    "speciesNames": {
+      "zh-hans": "超梦",
+      "zh-hant": "超夢",
+      "en": "Mewtwo",
+      "ja": "ミュウツー"
+    },
+    "formNames": {
+      "zh-hans": "超级超梦Ｙ",
+      "zh-hant": "超級超夢Ｙ",
+      "en": "Mega Mewtwo Y",
+      "ja": "メガミュウツーＹ"
+    },
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 106,
+      "atk": 150,
+      "def": 70,
+      "spa": 194,
+      "spd": 120,
+      "spe": 140
+    }
+  },
+  "10045": {
+    "resourceType": "pokemon",
+    "id": 10045,
+    "speciesId": 181,
+    "pokemonSlug": "ampharos-mega",
+    "speciesSlug": "ampharos",
+    "calcSpeciesName": "Ampharos-Mega Ampharos",
+    "names": {
+      "zh-hans": "电龙-超级电龙",
+      "zh-hant": "電龍-超級電龍",
+      "en": "Ampharos-Mega Ampharos",
+      "ja": "デンリュウ-メガデンリュウ"
+    },
+    "speciesNames": {
+      "zh-hans": "电龙",
+      "zh-hant": "電龍",
+      "en": "Ampharos",
+      "ja": "デンリュウ"
+    },
+    "formNames": {
+      "zh-hans": "超级电龙",
+      "zh-hant": "超級電龍",
+      "en": "Mega Ampharos",
+      "ja": "メガデンリュウ"
+    },
+    "types": [
+      "electric",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 95,
+      "def": 105,
+      "spa": 165,
+      "spd": 110,
+      "spe": 45
+    }
+  },
+  "10046": {
+    "resourceType": "pokemon",
+    "id": 10046,
+    "speciesId": 212,
+    "pokemonSlug": "scizor-mega",
+    "speciesSlug": "scizor",
+    "calcSpeciesName": "Scizor-Mega Scizor",
+    "names": {
+      "zh-hans": "巨钳螳螂-超级巨钳螳螂",
+      "zh-hant": "巨鉗螳螂-超級巨鉗螳螂",
+      "en": "Scizor-Mega Scizor",
+      "ja": "ハッサム-メガハッサム"
+    },
+    "speciesNames": {
+      "zh-hans": "巨钳螳螂",
+      "zh-hant": "巨鉗螳螂",
+      "en": "Scizor",
+      "ja": "ハッサム"
+    },
+    "formNames": {
+      "zh-hans": "超级巨钳螳螂",
+      "zh-hant": "超級巨鉗螳螂",
+      "en": "Mega Scizor",
+      "ja": "メガハッサム"
+    },
+    "types": [
+      "bug",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 150,
+      "def": 140,
+      "spa": 65,
+      "spd": 100,
+      "spe": 75
+    }
+  },
+  "10047": {
+    "resourceType": "pokemon",
+    "id": 10047,
+    "speciesId": 214,
+    "pokemonSlug": "heracross-mega",
+    "speciesSlug": "heracross",
+    "calcSpeciesName": "Heracross-Mega Heracross",
+    "names": {
+      "zh-hans": "赫拉克罗斯-超级赫拉克罗斯",
+      "zh-hant": "赫拉克羅斯-超級赫拉克羅斯",
+      "en": "Heracross-Mega Heracross",
+      "ja": "ヘラクロス-メガヘラクロス"
+    },
+    "speciesNames": {
+      "zh-hans": "赫拉克罗斯",
+      "zh-hant": "赫拉克羅斯",
+      "en": "Heracross",
+      "ja": "ヘラクロス"
+    },
+    "formNames": {
+      "zh-hans": "超级赫拉克罗斯",
+      "zh-hant": "超級赫拉克羅斯",
+      "en": "Mega Heracross",
+      "ja": "メガヘラクロス"
+    },
+    "types": [
+      "bug",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 185,
+      "def": 115,
+      "spa": 40,
+      "spd": 105,
+      "spe": 75
+    }
+  },
+  "10048": {
+    "resourceType": "pokemon",
+    "id": 10048,
+    "speciesId": 229,
+    "pokemonSlug": "houndoom-mega",
+    "speciesSlug": "houndoom",
+    "calcSpeciesName": "Houndoom-Mega Houndoom",
+    "names": {
+      "zh-hans": "黑鲁加-超级黑鲁加",
+      "zh-hant": "黑魯加-超級黑魯加",
+      "en": "Houndoom-Mega Houndoom",
+      "ja": "ヘルガー-メガヘルガー"
+    },
+    "speciesNames": {
+      "zh-hans": "黑鲁加",
+      "zh-hant": "黑魯加",
+      "en": "Houndoom",
+      "ja": "ヘルガー"
+    },
+    "formNames": {
+      "zh-hans": "超级黑鲁加",
+      "zh-hant": "超級黑魯加",
+      "en": "Mega Houndoom",
+      "ja": "メガヘルガー"
+    },
+    "types": [
+      "dark",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 90,
+      "def": 90,
+      "spa": 140,
+      "spd": 90,
+      "spe": 115
+    }
+  },
+  "10049": {
+    "resourceType": "pokemon",
+    "id": 10049,
+    "speciesId": 248,
+    "pokemonSlug": "tyranitar-mega",
+    "speciesSlug": "tyranitar",
+    "calcSpeciesName": "Tyranitar-Mega Tyranitar",
+    "names": {
+      "zh-hans": "班基拉斯-超级班基拉斯",
+      "zh-hant": "班基拉斯-超級班基拉斯",
+      "en": "Tyranitar-Mega Tyranitar",
+      "ja": "バンギラス-メガバンギラス"
+    },
+    "speciesNames": {
+      "zh-hans": "班基拉斯",
+      "zh-hant": "班基拉斯",
+      "en": "Tyranitar",
+      "ja": "バンギラス"
+    },
+    "formNames": {
+      "zh-hans": "超级班基拉斯",
+      "zh-hant": "超級班基拉斯",
+      "en": "Mega Tyranitar",
+      "ja": "メガバンギラス"
+    },
+    "types": [
+      "rock",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 164,
+      "def": 150,
+      "spa": 95,
+      "spd": 120,
+      "spe": 71
+    }
+  },
+  "10050": {
+    "resourceType": "pokemon",
+    "id": 10050,
+    "speciesId": 257,
+    "pokemonSlug": "blaziken-mega",
+    "speciesSlug": "blaziken",
+    "calcSpeciesName": "Blaziken-Mega Blaziken",
+    "names": {
+      "zh-hans": "火焰鸡-超级火焰鸡",
+      "zh-hant": "火焰雞-超級火焰雞",
+      "en": "Blaziken-Mega Blaziken",
+      "ja": "バシャーモ-メガバシャーモ"
+    },
+    "speciesNames": {
+      "zh-hans": "火焰鸡",
+      "zh-hant": "火焰雞",
+      "en": "Blaziken",
+      "ja": "バシャーモ"
+    },
+    "formNames": {
+      "zh-hans": "超级火焰鸡",
+      "zh-hant": "超級火焰雞",
+      "en": "Mega Blaziken",
+      "ja": "メガバシャーモ"
+    },
+    "types": [
+      "fire",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 160,
+      "def": 80,
+      "spa": 130,
+      "spd": 80,
+      "spe": 100
+    }
+  },
+  "10051": {
+    "resourceType": "pokemon",
+    "id": 10051,
+    "speciesId": 282,
+    "pokemonSlug": "gardevoir-mega",
+    "speciesSlug": "gardevoir",
+    "calcSpeciesName": "Gardevoir-Mega Gardevoir",
+    "names": {
+      "zh-hans": "沙奈朵-超级沙奈朵",
+      "zh-hant": "沙奈朵-超級沙奈朵",
+      "en": "Gardevoir-Mega Gardevoir",
+      "ja": "サーナイト-メガサーナイト"
+    },
+    "speciesNames": {
+      "zh-hans": "沙奈朵",
+      "zh-hant": "沙奈朵",
+      "en": "Gardevoir",
+      "ja": "サーナイト"
+    },
+    "formNames": {
+      "zh-hans": "超级沙奈朵",
+      "zh-hant": "超級沙奈朵",
+      "en": "Mega Gardevoir",
+      "ja": "メガサーナイト"
+    },
+    "types": [
+      "psychic",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 85,
+      "def": 65,
+      "spa": 165,
+      "spd": 135,
+      "spe": 100
+    }
+  },
+  "10052": {
+    "resourceType": "pokemon",
+    "id": 10052,
+    "speciesId": 303,
+    "pokemonSlug": "mawile-mega",
+    "speciesSlug": "mawile",
+    "calcSpeciesName": "Mawile-Mega Mawile",
+    "names": {
+      "zh-hans": "大嘴娃-超级大嘴娃",
+      "zh-hant": "大嘴娃-超級大嘴娃",
+      "en": "Mawile-Mega Mawile",
+      "ja": "クチート-メガクチート"
+    },
+    "speciesNames": {
+      "zh-hans": "大嘴娃",
+      "zh-hant": "大嘴娃",
+      "en": "Mawile",
+      "ja": "クチート"
+    },
+    "formNames": {
+      "zh-hans": "超级大嘴娃",
+      "zh-hant": "超級大嘴娃",
+      "en": "Mega Mawile",
+      "ja": "メガクチート"
+    },
+    "types": [
+      "steel",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 105,
+      "def": 125,
+      "spa": 55,
+      "spd": 95,
+      "spe": 50
+    }
+  },
+  "10053": {
+    "resourceType": "pokemon",
+    "id": 10053,
+    "speciesId": 306,
+    "pokemonSlug": "aggron-mega",
+    "speciesSlug": "aggron",
+    "calcSpeciesName": "Aggron-Mega Aggron",
+    "names": {
+      "zh-hans": "波士可多拉-超级波士可多拉",
+      "zh-hant": "波士可多拉-超級波士可多拉",
+      "en": "Aggron-Mega Aggron",
+      "ja": "ボスゴドラ-メガボスゴドラ"
+    },
+    "speciesNames": {
+      "zh-hans": "波士可多拉",
+      "zh-hant": "波士可多拉",
+      "en": "Aggron",
+      "ja": "ボスゴドラ"
+    },
+    "formNames": {
+      "zh-hans": "超级波士可多拉",
+      "zh-hant": "超級波士可多拉",
+      "en": "Mega Aggron",
+      "ja": "メガボスゴドラ"
+    },
+    "types": [
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 140,
+      "def": 230,
+      "spa": 60,
+      "spd": 80,
+      "spe": 50
+    }
+  },
+  "10054": {
+    "resourceType": "pokemon",
+    "id": 10054,
+    "speciesId": 308,
+    "pokemonSlug": "medicham-mega",
+    "speciesSlug": "medicham",
+    "calcSpeciesName": "Medicham-Mega Medicham",
+    "names": {
+      "zh-hans": "恰雷姆-超级恰雷姆",
+      "zh-hant": "恰雷姆-超級恰雷姆",
+      "en": "Medicham-Mega Medicham",
+      "ja": "チャーレム-メガチャーレム"
+    },
+    "speciesNames": {
+      "zh-hans": "恰雷姆",
+      "zh-hant": "恰雷姆",
+      "en": "Medicham",
+      "ja": "チャーレム"
+    },
+    "formNames": {
+      "zh-hans": "超级恰雷姆",
+      "zh-hant": "超級恰雷姆",
+      "en": "Mega Medicham",
+      "ja": "メガチャーレム"
+    },
+    "types": [
+      "fighting",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 100,
+      "def": 85,
+      "spa": 80,
+      "spd": 85,
+      "spe": 100
+    }
+  },
+  "10055": {
+    "resourceType": "pokemon",
+    "id": 10055,
+    "speciesId": 310,
+    "pokemonSlug": "manectric-mega",
+    "speciesSlug": "manectric",
+    "calcSpeciesName": "Manectric-Mega Manectric",
+    "names": {
+      "zh-hans": "雷电兽-超级雷电兽",
+      "zh-hant": "雷電獸-超級雷電獸",
+      "en": "Manectric-Mega Manectric",
+      "ja": "ライボルト-メガライボルト"
+    },
+    "speciesNames": {
+      "zh-hans": "雷电兽",
+      "zh-hant": "雷電獸",
+      "en": "Manectric",
+      "ja": "ライボルト"
+    },
+    "formNames": {
+      "zh-hans": "超级雷电兽",
+      "zh-hant": "超級雷電獸",
+      "en": "Mega Manectric",
+      "ja": "メガライボルト"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 75,
+      "def": 80,
+      "spa": 135,
+      "spd": 80,
+      "spe": 135
+    }
+  },
+  "10056": {
+    "resourceType": "pokemon",
+    "id": 10056,
+    "speciesId": 354,
+    "pokemonSlug": "banette-mega",
+    "speciesSlug": "banette",
+    "calcSpeciesName": "Banette-Mega Banette",
+    "names": {
+      "zh-hans": "诅咒娃娃-超级诅咒娃娃",
+      "zh-hant": "詛咒娃娃-超級詛咒娃娃",
+      "en": "Banette-Mega Banette",
+      "ja": "ジュペッタ-メガジュペッタ"
+    },
+    "speciesNames": {
+      "zh-hans": "诅咒娃娃",
+      "zh-hant": "詛咒娃娃",
+      "en": "Banette",
+      "ja": "ジュペッタ"
+    },
+    "formNames": {
+      "zh-hans": "超级诅咒娃娃",
+      "zh-hant": "超級詛咒娃娃",
+      "en": "Mega Banette",
+      "ja": "メガジュペッタ"
+    },
+    "types": [
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 64,
+      "atk": 165,
+      "def": 75,
+      "spa": 93,
+      "spd": 83,
+      "spe": 75
+    }
+  },
+  "10057": {
+    "resourceType": "pokemon",
+    "id": 10057,
+    "speciesId": 359,
+    "pokemonSlug": "absol-mega",
+    "speciesSlug": "absol",
+    "calcSpeciesName": "Absol-Mega Absol",
+    "names": {
+      "zh-hans": "阿勃梭鲁-超级阿勃梭鲁",
+      "zh-hant": "阿勃梭魯-超級阿勃梭魯",
+      "en": "Absol-Mega Absol",
+      "ja": "アブソル-メガアブソル"
+    },
+    "speciesNames": {
+      "zh-hans": "阿勃梭鲁",
+      "zh-hant": "阿勃梭魯",
+      "en": "Absol",
+      "ja": "アブソル"
+    },
+    "formNames": {
+      "zh-hans": "超级阿勃梭鲁",
+      "zh-hant": "超級阿勃梭魯",
+      "en": "Mega Absol",
+      "ja": "メガアブソル"
+    },
+    "types": [
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 150,
+      "def": 60,
+      "spa": 115,
+      "spd": 60,
+      "spe": 115
+    }
+  },
+  "10058": {
+    "resourceType": "pokemon",
+    "id": 10058,
+    "speciesId": 445,
+    "pokemonSlug": "garchomp-mega",
+    "speciesSlug": "garchomp",
+    "calcSpeciesName": "Garchomp-Mega Garchomp",
+    "names": {
+      "zh-hans": "烈咬陆鲨-超级烈咬陆鲨",
+      "zh-hant": "烈咬陸鯊-超級烈咬陸鯊",
+      "en": "Garchomp-Mega Garchomp",
+      "ja": "ガブリアス-メガガブリアス"
+    },
+    "speciesNames": {
+      "zh-hans": "烈咬陆鲨",
+      "zh-hant": "烈咬陸鯊",
+      "en": "Garchomp",
+      "ja": "ガブリアス"
+    },
+    "formNames": {
+      "zh-hans": "超级烈咬陆鲨",
+      "zh-hant": "超級烈咬陸鯊",
+      "en": "Mega Garchomp",
+      "ja": "メガガブリアス"
+    },
+    "types": [
+      "dragon",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 108,
+      "atk": 170,
+      "def": 115,
+      "spa": 120,
+      "spd": 95,
+      "spe": 92
+    }
+  },
+  "10059": {
+    "resourceType": "pokemon",
+    "id": 10059,
+    "speciesId": 448,
+    "pokemonSlug": "lucario-mega",
+    "speciesSlug": "lucario",
+    "calcSpeciesName": "Lucario-Mega Lucario",
+    "names": {
+      "zh-hans": "路卡利欧-超级路卡利欧",
+      "zh-hant": "路卡利歐-超級路卡利歐",
+      "en": "Lucario-Mega Lucario",
+      "ja": "ルカリオ-メガルカリオ"
+    },
+    "speciesNames": {
+      "zh-hans": "路卡利欧",
+      "zh-hant": "路卡利歐",
+      "en": "Lucario",
+      "ja": "ルカリオ"
+    },
+    "formNames": {
+      "zh-hans": "超级路卡利欧",
+      "zh-hant": "超級路卡利歐",
+      "en": "Mega Lucario",
+      "ja": "メガルカリオ"
+    },
+    "types": [
+      "fighting",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 145,
+      "def": 88,
+      "spa": 140,
+      "spd": 70,
+      "spe": 112
+    }
+  },
+  "10060": {
+    "resourceType": "pokemon",
+    "id": 10060,
+    "speciesId": 460,
+    "pokemonSlug": "abomasnow-mega",
+    "speciesSlug": "abomasnow",
+    "calcSpeciesName": "Abomasnow-Mega Abomasnow",
+    "names": {
+      "zh-hans": "暴雪王-超级暴雪王",
+      "zh-hant": "暴雪王-超級暴雪王",
+      "en": "Abomasnow-Mega Abomasnow",
+      "ja": "ユキノオー-メガユキノオー"
+    },
+    "speciesNames": {
+      "zh-hans": "暴雪王",
+      "zh-hant": "暴雪王",
+      "en": "Abomasnow",
+      "ja": "ユキノオー"
+    },
+    "formNames": {
+      "zh-hans": "超级暴雪王",
+      "zh-hant": "超級暴雪王",
+      "en": "Mega Abomasnow",
+      "ja": "メガユキノオー"
+    },
+    "types": [
+      "grass",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 132,
+      "def": 105,
+      "spa": 132,
+      "spd": 105,
+      "spe": 30
+    }
+  },
+  "10061": {
+    "resourceType": "pokemon",
+    "id": 10061,
+    "speciesId": 670,
+    "pokemonSlug": "floette-eternal",
+    "speciesSlug": "floette",
+    "calcSpeciesName": "Floette-Eternal Flower",
+    "names": {
+      "zh-hans": "花叶蒂-Eternal Flower",
+      "zh-hant": "花葉蒂-Eternal Flower",
+      "en": "Floette-Eternal Flower",
+      "ja": "フラエッテ-えいえんのはな"
+    },
+    "speciesNames": {
+      "zh-hans": "花叶蒂",
+      "zh-hant": "花葉蒂",
+      "en": "Floette",
+      "ja": "フラエッテ"
+    },
+    "formNames": {
+      "zh-hans": "Eternal Flower",
+      "zh-hant": "Eternal Flower",
+      "en": "Eternal Flower",
+      "ja": "えいえんのはな"
+    },
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 74,
+      "atk": 65,
+      "def": 67,
+      "spa": 125,
+      "spd": 128,
+      "spe": 92
+    }
+  },
+  "10062": {
+    "resourceType": "pokemon",
+    "id": 10062,
+    "speciesId": 380,
+    "pokemonSlug": "latias-mega",
+    "speciesSlug": "latias",
+    "calcSpeciesName": "Latias-Mega Latias",
+    "names": {
+      "zh-hans": "拉帝亚斯-超级拉帝亚斯",
+      "zh-hant": "拉帝亞斯-超級拉帝亞斯",
+      "en": "Latias-Mega Latias",
+      "ja": "ラティアス-メガラティアス"
+    },
+    "speciesNames": {
+      "zh-hans": "拉帝亚斯",
+      "zh-hant": "拉帝亞斯",
+      "en": "Latias",
+      "ja": "ラティアス"
+    },
+    "formNames": {
+      "zh-hans": "超级拉帝亚斯",
+      "zh-hant": "超級拉帝亞斯",
+      "en": "Mega Latias",
+      "ja": "メガラティアス"
+    },
+    "types": [
+      "dragon",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 100,
+      "def": 120,
+      "spa": 140,
+      "spd": 150,
+      "spe": 110
+    }
+  },
+  "10063": {
+    "resourceType": "pokemon",
+    "id": 10063,
+    "speciesId": 381,
+    "pokemonSlug": "latios-mega",
+    "speciesSlug": "latios",
+    "calcSpeciesName": "Latios-Mega Latios",
+    "names": {
+      "zh-hans": "拉帝欧斯-超级拉帝欧斯",
+      "zh-hant": "拉帝歐斯-超級拉帝歐斯",
+      "en": "Latios-Mega Latios",
+      "ja": "ラティオス-メガラティオス"
+    },
+    "speciesNames": {
+      "zh-hans": "拉帝欧斯",
+      "zh-hant": "拉帝歐斯",
+      "en": "Latios",
+      "ja": "ラティオス"
+    },
+    "formNames": {
+      "zh-hans": "超级拉帝欧斯",
+      "zh-hant": "超級拉帝歐斯",
+      "en": "Mega Latios",
+      "ja": "メガラティオス"
+    },
+    "types": [
+      "dragon",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 130,
+      "def": 100,
+      "spa": 160,
+      "spd": 120,
+      "spe": 110
+    }
+  },
+  "10064": {
+    "resourceType": "pokemon",
+    "id": 10064,
+    "speciesId": 260,
+    "pokemonSlug": "swampert-mega",
+    "speciesSlug": "swampert",
+    "calcSpeciesName": "Swampert-Mega Swampert",
+    "names": {
+      "zh-hans": "巨沼怪-超级巨沼怪",
+      "zh-hant": "巨沼怪-超級巨沼怪",
+      "en": "Swampert-Mega Swampert",
+      "ja": "ラグラージ-メガラグラージ"
+    },
+    "speciesNames": {
+      "zh-hans": "巨沼怪",
+      "zh-hant": "巨沼怪",
+      "en": "Swampert",
+      "ja": "ラグラージ"
+    },
+    "formNames": {
+      "zh-hans": "超级巨沼怪",
+      "zh-hant": "超級巨沼怪",
+      "en": "Mega Swampert",
+      "ja": "メガラグラージ"
+    },
+    "types": [
+      "water",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 150,
+      "def": 110,
+      "spa": 95,
+      "spd": 110,
+      "spe": 70
+    }
+  },
+  "10065": {
+    "resourceType": "pokemon",
+    "id": 10065,
+    "speciesId": 254,
+    "pokemonSlug": "sceptile-mega",
+    "speciesSlug": "sceptile",
+    "calcSpeciesName": "Sceptile-Mega Sceptile",
+    "names": {
+      "zh-hans": "蜥蜴王-超级蜥蜴王",
+      "zh-hant": "蜥蜴王-超級蜥蜴王",
+      "en": "Sceptile-Mega Sceptile",
+      "ja": "ジュカイン-メガジュカイン"
+    },
+    "speciesNames": {
+      "zh-hans": "蜥蜴王",
+      "zh-hant": "蜥蜴王",
+      "en": "Sceptile",
+      "ja": "ジュカイン"
+    },
+    "formNames": {
+      "zh-hans": "超级蜥蜴王",
+      "zh-hant": "超級蜥蜴王",
+      "en": "Mega Sceptile",
+      "ja": "メガジュカイン"
+    },
+    "types": [
+      "grass",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 110,
+      "def": 75,
+      "spa": 145,
+      "spd": 85,
+      "spe": 145
+    }
+  },
+  "10066": {
+    "resourceType": "pokemon",
+    "id": 10066,
+    "speciesId": 302,
+    "pokemonSlug": "sableye-mega",
+    "speciesSlug": "sableye",
+    "calcSpeciesName": "Sableye-Mega Sableye",
+    "names": {
+      "zh-hans": "勾魂眼-超级勾魂眼",
+      "zh-hant": "勾魂眼-超級勾魂眼",
+      "en": "Sableye-Mega Sableye",
+      "ja": "ヤミラミ-メガヤミラミ"
+    },
+    "speciesNames": {
+      "zh-hans": "勾魂眼",
+      "zh-hant": "勾魂眼",
+      "en": "Sableye",
+      "ja": "ヤミラミ"
+    },
+    "formNames": {
+      "zh-hans": "超级勾魂眼",
+      "zh-hant": "超級勾魂眼",
+      "en": "Mega Sableye",
+      "ja": "メガヤミラミ"
+    },
+    "types": [
+      "dark",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 85,
+      "def": 125,
+      "spa": 85,
+      "spd": 115,
+      "spe": 20
+    }
+  },
+  "10067": {
+    "resourceType": "pokemon",
+    "id": 10067,
+    "speciesId": 334,
+    "pokemonSlug": "altaria-mega",
+    "speciesSlug": "altaria",
+    "calcSpeciesName": "Altaria-Mega Altaria",
+    "names": {
+      "zh-hans": "七夕青鸟-超级七夕青鸟",
+      "zh-hant": "七夕青鳥-超級七夕青鳥",
+      "en": "Altaria-Mega Altaria",
+      "ja": "チルタリス-メガチルタリス"
+    },
+    "speciesNames": {
+      "zh-hans": "七夕青鸟",
+      "zh-hant": "七夕青鳥",
+      "en": "Altaria",
+      "ja": "チルタリス"
+    },
+    "formNames": {
+      "zh-hans": "超级七夕青鸟",
+      "zh-hant": "超級七夕青鳥",
+      "en": "Mega Altaria",
+      "ja": "メガチルタリス"
+    },
+    "types": [
+      "dragon",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 110,
+      "def": 110,
+      "spa": 110,
+      "spd": 105,
+      "spe": 80
+    }
+  },
+  "10068": {
+    "resourceType": "pokemon",
+    "id": 10068,
+    "speciesId": 475,
+    "pokemonSlug": "gallade-mega",
+    "speciesSlug": "gallade",
+    "calcSpeciesName": "Gallade-Mega Gallade",
+    "names": {
+      "zh-hans": "艾路雷朵-超级艾路雷朵",
+      "zh-hant": "艾路雷朵-超級艾路雷朵",
+      "en": "Gallade-Mega Gallade",
+      "ja": "エルレイド-メガエルレイド"
+    },
+    "speciesNames": {
+      "zh-hans": "艾路雷朵",
+      "zh-hant": "艾路雷朵",
+      "en": "Gallade",
+      "ja": "エルレイド"
+    },
+    "formNames": {
+      "zh-hans": "超级艾路雷朵",
+      "zh-hant": "超級艾路雷朵",
+      "en": "Mega Gallade",
+      "ja": "メガエルレイド"
+    },
+    "types": [
+      "psychic",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 165,
+      "def": 95,
+      "spa": 65,
+      "spd": 115,
+      "spe": 110
+    }
+  },
+  "10069": {
+    "resourceType": "pokemon",
+    "id": 10069,
+    "speciesId": 531,
+    "pokemonSlug": "audino-mega",
+    "speciesSlug": "audino",
+    "calcSpeciesName": "Audino-Mega Audino",
+    "names": {
+      "zh-hans": "差不多娃娃-超级差不多娃娃",
+      "zh-hant": "差不多娃娃-超級差不多娃娃",
+      "en": "Audino-Mega Audino",
+      "ja": "タブンネ-メガタブンネ"
+    },
+    "speciesNames": {
+      "zh-hans": "差不多娃娃",
+      "zh-hant": "差不多娃娃",
+      "en": "Audino",
+      "ja": "タブンネ"
+    },
+    "formNames": {
+      "zh-hans": "超级差不多娃娃",
+      "zh-hant": "超級差不多娃娃",
+      "en": "Mega Audino",
+      "ja": "メガタブンネ"
+    },
+    "types": [
+      "normal",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 103,
+      "atk": 60,
+      "def": 126,
+      "spa": 80,
+      "spd": 126,
+      "spe": 50
+    }
+  },
+  "10070": {
+    "resourceType": "pokemon",
+    "id": 10070,
+    "speciesId": 319,
+    "pokemonSlug": "sharpedo-mega",
+    "speciesSlug": "sharpedo",
+    "calcSpeciesName": "Sharpedo-Mega Sharpedo",
+    "names": {
+      "zh-hans": "巨牙鲨-超级巨牙鲨",
+      "zh-hant": "巨牙鯊-超級巨牙鯊",
+      "en": "Sharpedo-Mega Sharpedo",
+      "ja": "サメハダー-メガサメハダー"
+    },
+    "speciesNames": {
+      "zh-hans": "巨牙鲨",
+      "zh-hant": "巨牙鯊",
+      "en": "Sharpedo",
+      "ja": "サメハダー"
+    },
+    "formNames": {
+      "zh-hans": "超级巨牙鲨",
+      "zh-hant": "超級巨牙鯊",
+      "en": "Mega Sharpedo",
+      "ja": "メガサメハダー"
+    },
+    "types": [
+      "water",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 140,
+      "def": 70,
+      "spa": 110,
+      "spd": 65,
+      "spe": 105
+    }
+  },
+  "10071": {
+    "resourceType": "pokemon",
+    "id": 10071,
+    "speciesId": 80,
+    "pokemonSlug": "slowbro-mega",
+    "speciesSlug": "slowbro",
+    "calcSpeciesName": "Slowbro-Mega Slowbro",
+    "names": {
+      "zh-hans": "呆壳兽-超级呆壳兽",
+      "zh-hant": "呆殼獸-超級呆殼獸",
+      "en": "Slowbro-Mega Slowbro",
+      "ja": "ヤドラン-メガヤドラン"
+    },
+    "speciesNames": {
+      "zh-hans": "呆壳兽",
+      "zh-hant": "呆殼獸",
+      "en": "Slowbro",
+      "ja": "ヤドラン"
+    },
+    "formNames": {
+      "zh-hans": "超级呆壳兽",
+      "zh-hant": "超級呆殼獸",
+      "en": "Mega Slowbro",
+      "ja": "メガヤドラン"
+    },
+    "types": [
+      "water",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 75,
+      "def": 180,
+      "spa": 130,
+      "spd": 80,
+      "spe": 30
+    }
+  },
+  "10072": {
+    "resourceType": "pokemon",
+    "id": 10072,
+    "speciesId": 208,
+    "pokemonSlug": "steelix-mega",
+    "speciesSlug": "steelix",
+    "calcSpeciesName": "Steelix-Mega Steelix",
+    "names": {
+      "zh-hans": "大钢蛇-超级大钢蛇",
+      "zh-hant": "大鋼蛇-超級大鋼蛇",
+      "en": "Steelix-Mega Steelix",
+      "ja": "ハガネール-メガハガネール"
+    },
+    "speciesNames": {
+      "zh-hans": "大钢蛇",
+      "zh-hant": "大鋼蛇",
+      "en": "Steelix",
+      "ja": "ハガネール"
+    },
+    "formNames": {
+      "zh-hans": "超级大钢蛇",
+      "zh-hant": "超級大鋼蛇",
+      "en": "Mega Steelix",
+      "ja": "メガハガネール"
+    },
+    "types": [
+      "steel",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 125,
+      "def": 230,
+      "spa": 55,
+      "spd": 95,
+      "spe": 30
+    }
+  },
+  "10073": {
+    "resourceType": "pokemon",
+    "id": 10073,
+    "speciesId": 18,
+    "pokemonSlug": "pidgeot-mega",
+    "speciesSlug": "pidgeot",
+    "calcSpeciesName": "Pidgeot-Mega Pidgeot",
+    "names": {
+      "zh-hans": "大比鸟-超级大比鸟",
+      "zh-hant": "大比鳥-超級大比鳥",
+      "en": "Pidgeot-Mega Pidgeot",
+      "ja": "ピジョット-メガピジョット"
+    },
+    "speciesNames": {
+      "zh-hans": "大比鸟",
+      "zh-hant": "大比鳥",
+      "en": "Pidgeot",
+      "ja": "ピジョット"
+    },
+    "formNames": {
+      "zh-hans": "超级大比鸟",
+      "zh-hant": "超級大比鳥",
+      "en": "Mega Pidgeot",
+      "ja": "メガピジョット"
+    },
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 83,
+      "atk": 80,
+      "def": 80,
+      "spa": 135,
+      "spd": 80,
+      "spe": 121
+    }
+  },
+  "10074": {
+    "resourceType": "pokemon",
+    "id": 10074,
+    "speciesId": 362,
+    "pokemonSlug": "glalie-mega",
+    "speciesSlug": "glalie",
+    "calcSpeciesName": "Glalie-Mega Glalie",
+    "names": {
+      "zh-hans": "冰鬼护-超级冰鬼护",
+      "zh-hant": "冰鬼護-超級冰鬼護",
+      "en": "Glalie-Mega Glalie",
+      "ja": "オニゴーリ-メガオニゴーリ"
+    },
+    "speciesNames": {
+      "zh-hans": "冰鬼护",
+      "zh-hant": "冰鬼護",
+      "en": "Glalie",
+      "ja": "オニゴーリ"
+    },
+    "formNames": {
+      "zh-hans": "超级冰鬼护",
+      "zh-hant": "超級冰鬼護",
+      "en": "Mega Glalie",
+      "ja": "メガオニゴーリ"
+    },
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 120,
+      "def": 80,
+      "spa": 120,
+      "spd": 80,
+      "spe": 100
+    }
+  },
+  "10075": {
+    "resourceType": "pokemon",
+    "id": 10075,
+    "speciesId": 719,
+    "pokemonSlug": "diancie-mega",
+    "speciesSlug": "diancie",
+    "calcSpeciesName": "Diancie-Mega Diancie",
+    "names": {
+      "zh-hans": "蒂安希-超级蒂安希",
+      "zh-hant": "蒂安希-超級蒂安希",
+      "en": "Diancie-Mega Diancie",
+      "ja": "ディアンシー-メガディアンシー"
+    },
+    "speciesNames": {
+      "zh-hans": "蒂安希",
+      "zh-hant": "蒂安希",
+      "en": "Diancie",
+      "ja": "ディアンシー"
+    },
+    "formNames": {
+      "zh-hans": "超级蒂安希",
+      "zh-hant": "超級蒂安希",
+      "en": "Mega Diancie",
+      "ja": "メガディアンシー"
+    },
+    "types": [
+      "rock",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 160,
+      "def": 110,
+      "spa": 160,
+      "spd": 110,
+      "spe": 110
+    }
+  },
+  "10076": {
+    "resourceType": "pokemon",
+    "id": 10076,
+    "speciesId": 376,
+    "pokemonSlug": "metagross-mega",
+    "speciesSlug": "metagross",
+    "calcSpeciesName": "Metagross-Mega Metagross",
+    "names": {
+      "zh-hans": "巨金怪-超级巨金怪",
+      "zh-hant": "巨金怪-超級巨金怪",
+      "en": "Metagross-Mega Metagross",
+      "ja": "メタグロス-メガメタグロス"
+    },
+    "speciesNames": {
+      "zh-hans": "巨金怪",
+      "zh-hant": "巨金怪",
+      "en": "Metagross",
+      "ja": "メタグロス"
+    },
+    "formNames": {
+      "zh-hans": "超级巨金怪",
+      "zh-hant": "超級巨金怪",
+      "en": "Mega Metagross",
+      "ja": "メガメタグロス"
+    },
+    "types": [
+      "steel",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 145,
+      "def": 150,
+      "spa": 105,
+      "spd": 110,
+      "spe": 110
+    }
+  },
+  "10077": {
+    "resourceType": "pokemon",
+    "id": 10077,
+    "speciesId": 382,
+    "pokemonSlug": "kyogre-primal",
+    "speciesSlug": "kyogre",
+    "calcSpeciesName": "Kyogre-Primal Reversion",
+    "names": {
+      "zh-hans": "盖欧卡-原始回归的样子",
+      "zh-hant": "蓋歐卡-原始回歸的樣子",
+      "en": "Kyogre-Primal Reversion",
+      "ja": "カイオーガ-ゲンシカイキのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "盖欧卡",
+      "zh-hant": "蓋歐卡",
+      "en": "Kyogre",
+      "ja": "カイオーガ"
+    },
+    "formNames": {
+      "zh-hans": "原始回归的样子",
+      "zh-hant": "原始回歸的樣子",
+      "en": "Primal Reversion",
+      "ja": "ゲンシカイキのすがた"
+    },
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 150,
+      "def": 90,
+      "spa": 180,
+      "spd": 160,
+      "spe": 90
+    }
+  },
+  "10078": {
+    "resourceType": "pokemon",
+    "id": 10078,
+    "speciesId": 383,
+    "pokemonSlug": "groudon-primal",
+    "speciesSlug": "groudon",
+    "calcSpeciesName": "Groudon-Primal Reversion",
+    "names": {
+      "zh-hans": "固拉多-原始回归的样子",
+      "zh-hant": "固拉多-原始回歸的樣子",
+      "en": "Groudon-Primal Reversion",
+      "ja": "グラードン-ゲンシカイキのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "固拉多",
+      "zh-hant": "固拉多",
+      "en": "Groudon",
+      "ja": "グラードン"
+    },
+    "formNames": {
+      "zh-hans": "原始回归的样子",
+      "zh-hant": "原始回歸的樣子",
+      "en": "Primal Reversion",
+      "ja": "ゲンシカイキのすがた"
+    },
+    "types": [
+      "ground",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 180,
+      "def": 160,
+      "spa": 150,
+      "spd": 90,
+      "spe": 90
+    }
+  },
+  "10079": {
+    "resourceType": "pokemon",
+    "id": 10079,
+    "speciesId": 384,
+    "pokemonSlug": "rayquaza-mega",
+    "speciesSlug": "rayquaza",
+    "calcSpeciesName": "Rayquaza-Mega Rayquaza",
+    "names": {
+      "zh-hans": "烈空坐-超级烈空坐",
+      "zh-hant": "烈空坐-超級烈空坐",
+      "en": "Rayquaza-Mega Rayquaza",
+      "ja": "レックウザ-メガレックウザ"
+    },
+    "speciesNames": {
+      "zh-hans": "烈空坐",
+      "zh-hant": "烈空坐",
+      "en": "Rayquaza",
+      "ja": "レックウザ"
+    },
+    "formNames": {
+      "zh-hans": "超级烈空坐",
+      "zh-hant": "超級烈空坐",
+      "en": "Mega Rayquaza",
+      "ja": "メガレックウザ"
+    },
+    "types": [
+      "dragon",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 105,
+      "atk": 180,
+      "def": 100,
+      "spa": 180,
+      "spd": 100,
+      "spe": 115
+    }
+  },
+  "10080": {
+    "resourceType": "pokemon",
+    "id": 10080,
+    "speciesId": 25,
+    "pokemonSlug": "pikachu-rock-star",
+    "speciesSlug": "pikachu",
+    "calcSpeciesName": "Pikachu-Pikachu Rock Star",
+    "names": {
+      "zh-hans": "皮卡丘-Pikachu Rock Star",
+      "zh-hant": "皮卡丘-Pikachu Rock Star",
+      "en": "Pikachu-Pikachu Rock Star",
+      "ja": "ピカチュウ-ハードロック・ピカチュウ"
+    },
+    "speciesNames": {
+      "zh-hans": "皮卡丘",
+      "zh-hant": "皮卡丘",
+      "en": "Pikachu",
+      "ja": "ピカチュウ"
+    },
+    "formNames": {
+      "zh-hans": "Pikachu Rock Star",
+      "zh-hant": "Pikachu Rock Star",
+      "en": "Pikachu Rock Star",
+      "ja": "ハードロック・ピカチュウ"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 55,
+      "def": 40,
+      "spa": 50,
+      "spd": 50,
+      "spe": 90
+    }
+  },
+  "10081": {
+    "resourceType": "pokemon",
+    "id": 10081,
+    "speciesId": 25,
+    "pokemonSlug": "pikachu-belle",
+    "speciesSlug": "pikachu",
+    "calcSpeciesName": "Pikachu-Pikachu Belle",
+    "names": {
+      "zh-hans": "皮卡丘-Pikachu Belle",
+      "zh-hant": "皮卡丘-Pikachu Belle",
+      "en": "Pikachu-Pikachu Belle",
+      "ja": "ピカチュウ-マダム・ピカチュウ"
+    },
+    "speciesNames": {
+      "zh-hans": "皮卡丘",
+      "zh-hant": "皮卡丘",
+      "en": "Pikachu",
+      "ja": "ピカチュウ"
+    },
+    "formNames": {
+      "zh-hans": "Pikachu Belle",
+      "zh-hant": "Pikachu Belle",
+      "en": "Pikachu Belle",
+      "ja": "マダム・ピカチュウ"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 55,
+      "def": 40,
+      "spa": 50,
+      "spd": 50,
+      "spe": 90
+    }
+  },
+  "10082": {
+    "resourceType": "pokemon",
+    "id": 10082,
+    "speciesId": 25,
+    "pokemonSlug": "pikachu-pop-star",
+    "speciesSlug": "pikachu",
+    "calcSpeciesName": "Pikachu-Pikachu Pop Star",
+    "names": {
+      "zh-hans": "皮卡丘-Pikachu Pop Star",
+      "zh-hant": "皮卡丘-Pikachu Pop Star",
+      "en": "Pikachu-Pikachu Pop Star",
+      "ja": "ピカチュウ-アイドル・ピカチュウ"
+    },
+    "speciesNames": {
+      "zh-hans": "皮卡丘",
+      "zh-hant": "皮卡丘",
+      "en": "Pikachu",
+      "ja": "ピカチュウ"
+    },
+    "formNames": {
+      "zh-hans": "Pikachu Pop Star",
+      "zh-hant": "Pikachu Pop Star",
+      "en": "Pikachu Pop Star",
+      "ja": "アイドル・ピカチュウ"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 55,
+      "def": 40,
+      "spa": 50,
+      "spd": 50,
+      "spe": 90
+    }
+  },
+  "10083": {
+    "resourceType": "pokemon",
+    "id": 10083,
+    "speciesId": 25,
+    "pokemonSlug": "pikachu-phd",
+    "speciesSlug": "pikachu",
+    "calcSpeciesName": "Pikachu-Pikachu Ph.D.",
+    "names": {
+      "zh-hans": "皮卡丘-Pikachu Ph.D.",
+      "zh-hant": "皮卡丘-Pikachu Ph.D.",
+      "en": "Pikachu-Pikachu Ph.D.",
+      "ja": "ピカチュウ-ドクター・ピカチュウ"
+    },
+    "speciesNames": {
+      "zh-hans": "皮卡丘",
+      "zh-hant": "皮卡丘",
+      "en": "Pikachu",
+      "ja": "ピカチュウ"
+    },
+    "formNames": {
+      "zh-hans": "Pikachu Ph.D.",
+      "zh-hant": "Pikachu Ph.D.",
+      "en": "Pikachu Ph.D.",
+      "ja": "ドクター・ピカチュウ"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 55,
+      "def": 40,
+      "spa": 50,
+      "spd": 50,
+      "spe": 90
+    }
+  },
+  "10084": {
+    "resourceType": "pokemon",
+    "id": 10084,
+    "speciesId": 25,
+    "pokemonSlug": "pikachu-libre",
+    "speciesSlug": "pikachu",
+    "calcSpeciesName": "Pikachu-Pikachu Libre",
+    "names": {
+      "zh-hans": "皮卡丘-Pikachu Libre",
+      "zh-hant": "皮卡丘-Pikachu Libre",
+      "en": "Pikachu-Pikachu Libre",
+      "ja": "ピカチュウ-マスクド・ピカチュウ"
+    },
+    "speciesNames": {
+      "zh-hans": "皮卡丘",
+      "zh-hant": "皮卡丘",
+      "en": "Pikachu",
+      "ja": "ピカチュウ"
+    },
+    "formNames": {
+      "zh-hans": "Pikachu Libre",
+      "zh-hant": "Pikachu Libre",
+      "en": "Pikachu Libre",
+      "ja": "マスクド・ピカチュウ"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 55,
+      "def": 40,
+      "spa": 50,
+      "spd": 50,
+      "spe": 90
+    }
+  },
+  "10085": {
+    "resourceType": "pokemon",
+    "id": 10085,
+    "speciesId": 25,
+    "pokemonSlug": "pikachu-cosplay",
+    "speciesSlug": "pikachu",
+    "calcSpeciesName": "Pikachu-Cosplay Pikachu",
+    "names": {
+      "zh-hans": "皮卡丘-Cosplay Pikachu",
+      "zh-hant": "皮卡丘-Cosplay Pikachu",
+      "en": "Pikachu-Cosplay Pikachu",
+      "ja": "ピカチュウ-おきがえピカチュウ"
+    },
+    "speciesNames": {
+      "zh-hans": "皮卡丘",
+      "zh-hant": "皮卡丘",
+      "en": "Pikachu",
+      "ja": "ピカチュウ"
+    },
+    "formNames": {
+      "zh-hans": "Cosplay Pikachu",
+      "zh-hant": "Cosplay Pikachu",
+      "en": "Cosplay Pikachu",
+      "ja": "おきがえピカチュウ"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 55,
+      "def": 40,
+      "spa": 50,
+      "spd": 50,
+      "spe": 90
+    }
+  },
+  "10086": {
+    "resourceType": "pokemon",
+    "id": 10086,
+    "speciesId": 720,
+    "pokemonSlug": "hoopa-unbound",
+    "speciesSlug": "hoopa",
+    "calcSpeciesName": "Hoopa-Hoopa Unbound",
+    "names": {
+      "zh-hans": "胡帕-解放胡帕",
+      "zh-hant": "胡帕-解放胡帕",
+      "en": "Hoopa-Hoopa Unbound",
+      "ja": "フーパ-ときはなたれしフーパ"
+    },
+    "speciesNames": {
+      "zh-hans": "胡帕",
+      "zh-hant": "胡帕",
+      "en": "Hoopa",
+      "ja": "フーパ"
+    },
+    "formNames": {
+      "zh-hans": "解放胡帕",
+      "zh-hant": "解放胡帕",
+      "en": "Hoopa Unbound",
+      "ja": "ときはなたれしフーパ"
+    },
+    "types": [
+      "psychic",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 160,
+      "def": 60,
+      "spa": 170,
+      "spd": 130,
+      "spe": 80
+    }
+  },
+  "10087": {
+    "resourceType": "pokemon",
+    "id": 10087,
+    "speciesId": 323,
+    "pokemonSlug": "camerupt-mega",
+    "speciesSlug": "camerupt",
+    "calcSpeciesName": "Camerupt-Mega Camerupt",
+    "names": {
+      "zh-hans": "喷火驼-超级喷火驼",
+      "zh-hant": "噴火駝-超級噴火駝",
+      "en": "Camerupt-Mega Camerupt",
+      "ja": "バクーダ-メガバクーダ"
+    },
+    "speciesNames": {
+      "zh-hans": "喷火驼",
+      "zh-hant": "噴火駝",
+      "en": "Camerupt",
+      "ja": "バクーダ"
+    },
+    "formNames": {
+      "zh-hans": "超级喷火驼",
+      "zh-hant": "超級噴火駝",
+      "en": "Mega Camerupt",
+      "ja": "メガバクーダ"
+    },
+    "types": [
+      "fire",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 120,
+      "def": 100,
+      "spa": 145,
+      "spd": 105,
+      "spe": 20
+    }
+  },
+  "10088": {
+    "resourceType": "pokemon",
+    "id": 10088,
+    "speciesId": 428,
+    "pokemonSlug": "lopunny-mega",
+    "speciesSlug": "lopunny",
+    "calcSpeciesName": "Lopunny-Mega Lopunny",
+    "names": {
+      "zh-hans": "长耳兔-超级长耳兔",
+      "zh-hant": "長耳兔-超級長耳兔",
+      "en": "Lopunny-Mega Lopunny",
+      "ja": "ミミロップ-メガミミロップ"
+    },
+    "speciesNames": {
+      "zh-hans": "长耳兔",
+      "zh-hant": "長耳兔",
+      "en": "Lopunny",
+      "ja": "ミミロップ"
+    },
+    "formNames": {
+      "zh-hans": "超级长耳兔",
+      "zh-hant": "超級長耳兔",
+      "en": "Mega Lopunny",
+      "ja": "メガミミロップ"
+    },
+    "types": [
+      "normal",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 136,
+      "def": 94,
+      "spa": 54,
+      "spd": 96,
+      "spe": 135
+    }
+  },
+  "10089": {
+    "resourceType": "pokemon",
+    "id": 10089,
+    "speciesId": 373,
+    "pokemonSlug": "salamence-mega",
+    "speciesSlug": "salamence",
+    "calcSpeciesName": "Salamence-Mega Salamence",
+    "names": {
+      "zh-hans": "暴飞龙-超级暴飞龙",
+      "zh-hant": "暴飛龍-超級暴飛龍",
+      "en": "Salamence-Mega Salamence",
+      "ja": "ボーマンダ-メガボーマンダ"
+    },
+    "speciesNames": {
+      "zh-hans": "暴飞龙",
+      "zh-hant": "暴飛龍",
+      "en": "Salamence",
+      "ja": "ボーマンダ"
+    },
+    "formNames": {
+      "zh-hans": "超级暴飞龙",
+      "zh-hant": "超級暴飛龍",
+      "en": "Mega Salamence",
+      "ja": "メガボーマンダ"
+    },
+    "types": [
+      "dragon",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 145,
+      "def": 130,
+      "spa": 120,
+      "spd": 90,
+      "spe": 120
+    }
+  },
+  "10090": {
+    "resourceType": "pokemon",
+    "id": 10090,
+    "speciesId": 15,
+    "pokemonSlug": "beedrill-mega",
+    "speciesSlug": "beedrill",
+    "calcSpeciesName": "Beedrill-Mega Beedrill",
+    "names": {
+      "zh-hans": "大针蜂-超级大针蜂",
+      "zh-hant": "大針蜂-超級大針蜂",
+      "en": "Beedrill-Mega Beedrill",
+      "ja": "スピアー-メガスピアー"
+    },
+    "speciesNames": {
+      "zh-hans": "大针蜂",
+      "zh-hant": "大針蜂",
+      "en": "Beedrill",
+      "ja": "スピアー"
+    },
+    "formNames": {
+      "zh-hans": "超级大针蜂",
+      "zh-hant": "超級大針蜂",
+      "en": "Mega Beedrill",
+      "ja": "メガスピアー"
+    },
+    "types": [
+      "bug",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 150,
+      "def": 40,
+      "spa": 15,
+      "spd": 80,
+      "spe": 145
+    }
+  },
+  "10091": {
+    "resourceType": "pokemon",
+    "id": 10091,
+    "speciesId": 19,
+    "pokemonSlug": "rattata-alola",
+    "speciesSlug": "rattata",
+    "calcSpeciesName": "Rattata-Alolan Form",
+    "names": {
+      "zh-hans": "小拉达-阿罗拉的样子",
+      "zh-hant": "小拉達-阿羅拉的樣子",
+      "en": "Rattata-Alolan Form",
+      "ja": "コラッタ-アローラのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "小拉达",
+      "zh-hant": "小拉達",
+      "en": "Rattata",
+      "ja": "コラッタ"
+    },
+    "formNames": {
+      "zh-hans": "阿罗拉的样子",
+      "zh-hant": "阿羅拉的樣子",
+      "en": "Alolan Form",
+      "ja": "アローラのすがた"
+    },
+    "types": [
+      "dark",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 30,
+      "atk": 56,
+      "def": 35,
+      "spa": 25,
+      "spd": 35,
+      "spe": 72
+    }
+  },
+  "10092": {
+    "resourceType": "pokemon",
+    "id": 10092,
+    "speciesId": 20,
+    "pokemonSlug": "raticate-alola",
+    "speciesSlug": "raticate",
+    "calcSpeciesName": "Raticate-Alolan Form",
+    "names": {
+      "zh-hans": "拉达-阿罗拉的样子",
+      "zh-hant": "拉達-阿羅拉的樣子",
+      "en": "Raticate-Alolan Form",
+      "ja": "ラッタ-アローラのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "拉达",
+      "zh-hant": "拉達",
+      "en": "Raticate",
+      "ja": "ラッタ"
+    },
+    "formNames": {
+      "zh-hans": "阿罗拉的样子",
+      "zh-hant": "阿羅拉的樣子",
+      "en": "Alolan Form",
+      "ja": "アローラのすがた"
+    },
+    "types": [
+      "dark",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 71,
+      "def": 70,
+      "spa": 40,
+      "spd": 80,
+      "spe": 77
+    }
+  },
+  "10093": {
+    "resourceType": "pokemon",
+    "id": 10093,
+    "speciesId": 20,
+    "pokemonSlug": "raticate-totem-alola",
+    "speciesSlug": "raticate",
+    "calcSpeciesName": "Raticate",
+    "names": {
+      "zh-hans": "拉达",
+      "zh-hant": "拉達",
+      "en": "Raticate",
+      "ja": "ラッタ"
+    },
+    "speciesNames": {
+      "zh-hans": "拉达",
+      "zh-hant": "拉達",
+      "en": "Raticate",
+      "ja": "ラッタ"
+    },
+    "formNames": {
+      "zh-hans": "",
+      "zh-hant": "",
+      "en": "",
+      "ja": ""
+    },
+    "types": [
+      "dark",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 71,
+      "def": 70,
+      "spa": 40,
+      "spd": 80,
+      "spe": 77
+    }
+  },
+  "10094": {
+    "resourceType": "pokemon",
+    "id": 10094,
+    "speciesId": 25,
+    "pokemonSlug": "pikachu-original-cap",
+    "speciesSlug": "pikachu",
+    "calcSpeciesName": "Pikachu-Original Cap",
+    "names": {
+      "zh-hans": "皮卡丘-初始帽子",
+      "zh-hant": "皮卡丘-初始帽子",
+      "en": "Pikachu-Original Cap",
+      "ja": "ピカチュウ-オリジナルキャップ"
+    },
+    "speciesNames": {
+      "zh-hans": "皮卡丘",
+      "zh-hant": "皮卡丘",
+      "en": "Pikachu",
+      "ja": "ピカチュウ"
+    },
+    "formNames": {
+      "zh-hans": "初始帽子",
+      "zh-hant": "初始帽子",
+      "en": "Original Cap",
+      "ja": "オリジナルキャップ"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 55,
+      "def": 40,
+      "spa": 50,
+      "spd": 50,
+      "spe": 90
+    }
+  },
+  "10095": {
+    "resourceType": "pokemon",
+    "id": 10095,
+    "speciesId": 25,
+    "pokemonSlug": "pikachu-hoenn-cap",
+    "speciesSlug": "pikachu",
+    "calcSpeciesName": "Pikachu-Hoenn Cap",
+    "names": {
+      "zh-hans": "皮卡丘-丰缘帽子",
+      "zh-hant": "皮卡丘-豐緣帽子",
+      "en": "Pikachu-Hoenn Cap",
+      "ja": "ピカチュウ-ホウエンキャップ"
+    },
+    "speciesNames": {
+      "zh-hans": "皮卡丘",
+      "zh-hant": "皮卡丘",
+      "en": "Pikachu",
+      "ja": "ピカチュウ"
+    },
+    "formNames": {
+      "zh-hans": "丰缘帽子",
+      "zh-hant": "豐緣帽子",
+      "en": "Hoenn Cap",
+      "ja": "ホウエンキャップ"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 55,
+      "def": 40,
+      "spa": 50,
+      "spd": 50,
+      "spe": 90
+    }
+  },
+  "10096": {
+    "resourceType": "pokemon",
+    "id": 10096,
+    "speciesId": 25,
+    "pokemonSlug": "pikachu-sinnoh-cap",
+    "speciesSlug": "pikachu",
+    "calcSpeciesName": "Pikachu-Sinnoh Cap",
+    "names": {
+      "zh-hans": "皮卡丘-神奥帽子",
+      "zh-hant": "皮卡丘-神奧帽子",
+      "en": "Pikachu-Sinnoh Cap",
+      "ja": "ピカチュウ-シンオウキャップ"
+    },
+    "speciesNames": {
+      "zh-hans": "皮卡丘",
+      "zh-hant": "皮卡丘",
+      "en": "Pikachu",
+      "ja": "ピカチュウ"
+    },
+    "formNames": {
+      "zh-hans": "神奥帽子",
+      "zh-hant": "神奧帽子",
+      "en": "Sinnoh Cap",
+      "ja": "シンオウキャップ"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 55,
+      "def": 40,
+      "spa": 50,
+      "spd": 50,
+      "spe": 90
+    }
+  },
+  "10097": {
+    "resourceType": "pokemon",
+    "id": 10097,
+    "speciesId": 25,
+    "pokemonSlug": "pikachu-unova-cap",
+    "speciesSlug": "pikachu",
+    "calcSpeciesName": "Pikachu-Unova Cap",
+    "names": {
+      "zh-hans": "皮卡丘-合众帽子",
+      "zh-hant": "皮卡丘-合眾帽子",
+      "en": "Pikachu-Unova Cap",
+      "ja": "ピカチュウ-イッシュキャップ"
+    },
+    "speciesNames": {
+      "zh-hans": "皮卡丘",
+      "zh-hant": "皮卡丘",
+      "en": "Pikachu",
+      "ja": "ピカチュウ"
+    },
+    "formNames": {
+      "zh-hans": "合众帽子",
+      "zh-hant": "合眾帽子",
+      "en": "Unova Cap",
+      "ja": "イッシュキャップ"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 55,
+      "def": 40,
+      "spa": 50,
+      "spd": 50,
+      "spe": 90
+    }
+  },
+  "10098": {
+    "resourceType": "pokemon",
+    "id": 10098,
+    "speciesId": 25,
+    "pokemonSlug": "pikachu-kalos-cap",
+    "speciesSlug": "pikachu",
+    "calcSpeciesName": "Pikachu-Kalos Cap",
+    "names": {
+      "zh-hans": "皮卡丘-卡洛斯帽子",
+      "zh-hant": "皮卡丘-卡洛斯帽子",
+      "en": "Pikachu-Kalos Cap",
+      "ja": "ピカチュウ-カロスキャップ"
+    },
+    "speciesNames": {
+      "zh-hans": "皮卡丘",
+      "zh-hant": "皮卡丘",
+      "en": "Pikachu",
+      "ja": "ピカチュウ"
+    },
+    "formNames": {
+      "zh-hans": "卡洛斯帽子",
+      "zh-hant": "卡洛斯帽子",
+      "en": "Kalos Cap",
+      "ja": "カロスキャップ"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 55,
+      "def": 40,
+      "spa": 50,
+      "spd": 50,
+      "spe": 90
+    }
+  },
+  "10099": {
+    "resourceType": "pokemon",
+    "id": 10099,
+    "speciesId": 25,
+    "pokemonSlug": "pikachu-alola-cap",
+    "speciesSlug": "pikachu",
+    "calcSpeciesName": "Pikachu-Alola Cap",
+    "names": {
+      "zh-hans": "皮卡丘-阿罗拉帽子",
+      "zh-hant": "皮卡丘-阿羅拉帽子",
+      "en": "Pikachu-Alola Cap",
+      "ja": "ピカチュウ-アローラキャップ"
+    },
+    "speciesNames": {
+      "zh-hans": "皮卡丘",
+      "zh-hant": "皮卡丘",
+      "en": "Pikachu",
+      "ja": "ピカチュウ"
+    },
+    "formNames": {
+      "zh-hans": "阿罗拉帽子",
+      "zh-hant": "阿羅拉帽子",
+      "en": "Alola Cap",
+      "ja": "アローラキャップ"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 55,
+      "def": 40,
+      "spa": 50,
+      "spd": 50,
+      "spe": 90
+    }
+  },
+  "10100": {
+    "resourceType": "pokemon",
+    "id": 10100,
+    "speciesId": 26,
+    "pokemonSlug": "raichu-alola",
+    "speciesSlug": "raichu",
+    "calcSpeciesName": "Raichu-Alolan Form",
+    "names": {
+      "zh-hans": "雷丘-阿罗拉的样子",
+      "zh-hant": "雷丘-阿羅拉的樣子",
+      "en": "Raichu-Alolan Form",
+      "ja": "ライチュウ-アローラのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "雷丘",
+      "zh-hant": "雷丘",
+      "en": "Raichu",
+      "ja": "ライチュウ"
+    },
+    "formNames": {
+      "zh-hans": "阿罗拉的样子",
+      "zh-hant": "阿羅拉的樣子",
+      "en": "Alolan Form",
+      "ja": "アローラのすがた"
+    },
+    "types": [
+      "electric",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 85,
+      "def": 50,
+      "spa": 95,
+      "spd": 85,
+      "spe": 110
+    }
+  },
+  "10101": {
+    "resourceType": "pokemon",
+    "id": 10101,
+    "speciesId": 27,
+    "pokemonSlug": "sandshrew-alola",
+    "speciesSlug": "sandshrew",
+    "calcSpeciesName": "Sandshrew-Alolan Form",
+    "names": {
+      "zh-hans": "穿山鼠-阿罗拉的样子",
+      "zh-hant": "穿山鼠-阿羅拉的樣子",
+      "en": "Sandshrew-Alolan Form",
+      "ja": "サンド-アローラのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "穿山鼠",
+      "zh-hant": "穿山鼠",
+      "en": "Sandshrew",
+      "ja": "サンド"
+    },
+    "formNames": {
+      "zh-hans": "阿罗拉的样子",
+      "zh-hant": "阿羅拉的樣子",
+      "en": "Alolan Form",
+      "ja": "アローラのすがた"
+    },
+    "types": [
+      "ice",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 75,
+      "def": 90,
+      "spa": 10,
+      "spd": 35,
+      "spe": 40
+    }
+  },
+  "10102": {
+    "resourceType": "pokemon",
+    "id": 10102,
+    "speciesId": 28,
+    "pokemonSlug": "sandslash-alola",
+    "speciesSlug": "sandslash",
+    "calcSpeciesName": "Sandslash-Alolan Form",
+    "names": {
+      "zh-hans": "穿山王-阿罗拉的样子",
+      "zh-hant": "穿山王-阿羅拉的樣子",
+      "en": "Sandslash-Alolan Form",
+      "ja": "サンドパン-アローラのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "穿山王",
+      "zh-hant": "穿山王",
+      "en": "Sandslash",
+      "ja": "サンドパン"
+    },
+    "formNames": {
+      "zh-hans": "阿罗拉的样子",
+      "zh-hant": "阿羅拉的樣子",
+      "en": "Alolan Form",
+      "ja": "アローラのすがた"
+    },
+    "types": [
+      "ice",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 100,
+      "def": 120,
+      "spa": 25,
+      "spd": 65,
+      "spe": 65
+    }
+  },
+  "10103": {
+    "resourceType": "pokemon",
+    "id": 10103,
+    "speciesId": 37,
+    "pokemonSlug": "vulpix-alola",
+    "speciesSlug": "vulpix",
+    "calcSpeciesName": "Vulpix-Alolan Form",
+    "names": {
+      "zh-hans": "六尾-阿罗拉的样子",
+      "zh-hant": "六尾-阿羅拉的樣子",
+      "en": "Vulpix-Alolan Form",
+      "ja": "ロコン-アローラのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "六尾",
+      "zh-hant": "六尾",
+      "en": "Vulpix",
+      "ja": "ロコン"
+    },
+    "formNames": {
+      "zh-hans": "阿罗拉的样子",
+      "zh-hant": "阿羅拉的樣子",
+      "en": "Alolan Form",
+      "ja": "アローラのすがた"
+    },
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 38,
+      "atk": 41,
+      "def": 40,
+      "spa": 50,
+      "spd": 65,
+      "spe": 65
+    }
+  },
+  "10104": {
+    "resourceType": "pokemon",
+    "id": 10104,
+    "speciesId": 38,
+    "pokemonSlug": "ninetales-alola",
+    "speciesSlug": "ninetales",
+    "calcSpeciesName": "Ninetales-Alolan Form",
+    "names": {
+      "zh-hans": "九尾-阿罗拉的样子",
+      "zh-hant": "九尾-阿羅拉的樣子",
+      "en": "Ninetales-Alolan Form",
+      "ja": "キュウコン-アローラのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "九尾",
+      "zh-hant": "九尾",
+      "en": "Ninetales",
+      "ja": "キュウコン"
+    },
+    "formNames": {
+      "zh-hans": "阿罗拉的样子",
+      "zh-hant": "阿羅拉的樣子",
+      "en": "Alolan Form",
+      "ja": "アローラのすがた"
+    },
+    "types": [
+      "ice",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 73,
+      "atk": 67,
+      "def": 75,
+      "spa": 81,
+      "spd": 100,
+      "spe": 109
+    }
+  },
+  "10105": {
+    "resourceType": "pokemon",
+    "id": 10105,
+    "speciesId": 50,
+    "pokemonSlug": "diglett-alola",
+    "speciesSlug": "diglett",
+    "calcSpeciesName": "Diglett-Alolan Form",
+    "names": {
+      "zh-hans": "地鼠-阿罗拉的样子",
+      "zh-hant": "地鼠-阿羅拉的樣子",
+      "en": "Diglett-Alolan Form",
+      "ja": "ディグダ-アローラのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "地鼠",
+      "zh-hant": "地鼠",
+      "en": "Diglett",
+      "ja": "ディグダ"
+    },
+    "formNames": {
+      "zh-hans": "阿罗拉的样子",
+      "zh-hant": "阿羅拉的樣子",
+      "en": "Alolan Form",
+      "ja": "アローラのすがた"
+    },
+    "types": [
+      "ground",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 10,
+      "atk": 55,
+      "def": 30,
+      "spa": 35,
+      "spd": 45,
+      "spe": 90
+    }
+  },
+  "10106": {
+    "resourceType": "pokemon",
+    "id": 10106,
+    "speciesId": 51,
+    "pokemonSlug": "dugtrio-alola",
+    "speciesSlug": "dugtrio",
+    "calcSpeciesName": "Dugtrio-Alolan Form",
+    "names": {
+      "zh-hans": "三地鼠-阿罗拉的样子",
+      "zh-hant": "三地鼠-阿羅拉的樣子",
+      "en": "Dugtrio-Alolan Form",
+      "ja": "ダグトリオ-アローラのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "三地鼠",
+      "zh-hant": "三地鼠",
+      "en": "Dugtrio",
+      "ja": "ダグトリオ"
+    },
+    "formNames": {
+      "zh-hans": "阿罗拉的样子",
+      "zh-hant": "阿羅拉的樣子",
+      "en": "Alolan Form",
+      "ja": "アローラのすがた"
+    },
+    "types": [
+      "ground",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 100,
+      "def": 60,
+      "spa": 50,
+      "spd": 70,
+      "spe": 110
+    }
+  },
+  "10107": {
+    "resourceType": "pokemon",
+    "id": 10107,
+    "speciesId": 52,
+    "pokemonSlug": "meowth-alola",
+    "speciesSlug": "meowth",
+    "calcSpeciesName": "Meowth-Alolan Form",
+    "names": {
+      "zh-hans": "喵喵-阿罗拉的样子",
+      "zh-hant": "喵喵-阿羅拉的樣子",
+      "en": "Meowth-Alolan Form",
+      "ja": "ニャース-アローラのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "喵喵",
+      "zh-hant": "喵喵",
+      "en": "Meowth",
+      "ja": "ニャース"
+    },
+    "formNames": {
+      "zh-hans": "阿罗拉的样子",
+      "zh-hant": "阿羅拉的樣子",
+      "en": "Alolan Form",
+      "ja": "アローラのすがた"
+    },
+    "types": [
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 35,
+      "def": 35,
+      "spa": 50,
+      "spd": 40,
+      "spe": 90
+    }
+  },
+  "10108": {
+    "resourceType": "pokemon",
+    "id": 10108,
+    "speciesId": 53,
+    "pokemonSlug": "persian-alola",
+    "speciesSlug": "persian",
+    "calcSpeciesName": "Persian-Alolan Form",
+    "names": {
+      "zh-hans": "猫老大-阿罗拉的样子",
+      "zh-hant": "貓老大-阿羅拉的樣子",
+      "en": "Persian-Alolan Form",
+      "ja": "ペルシアン-アローラのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "猫老大",
+      "zh-hant": "貓老大",
+      "en": "Persian",
+      "ja": "ペルシアン"
+    },
+    "formNames": {
+      "zh-hans": "阿罗拉的样子",
+      "zh-hant": "阿羅拉的樣子",
+      "en": "Alolan Form",
+      "ja": "アローラのすがた"
+    },
+    "types": [
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 60,
+      "def": 60,
+      "spa": 75,
+      "spd": 65,
+      "spe": 115
+    }
+  },
+  "10109": {
+    "resourceType": "pokemon",
+    "id": 10109,
+    "speciesId": 74,
+    "pokemonSlug": "geodude-alola",
+    "speciesSlug": "geodude",
+    "calcSpeciesName": "Geodude-Alolan Form",
+    "names": {
+      "zh-hans": "小拳石-阿罗拉的样子",
+      "zh-hant": "小拳石-阿羅拉的樣子",
+      "en": "Geodude-Alolan Form",
+      "ja": "イシツブテ-アローラのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "小拳石",
+      "zh-hant": "小拳石",
+      "en": "Geodude",
+      "ja": "イシツブテ"
+    },
+    "formNames": {
+      "zh-hans": "阿罗拉的样子",
+      "zh-hant": "阿羅拉的樣子",
+      "en": "Alolan Form",
+      "ja": "アローラのすがた"
+    },
+    "types": [
+      "rock",
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 80,
+      "def": 100,
+      "spa": 30,
+      "spd": 30,
+      "spe": 20
+    }
+  },
+  "10110": {
+    "resourceType": "pokemon",
+    "id": 10110,
+    "speciesId": 75,
+    "pokemonSlug": "graveler-alola",
+    "speciesSlug": "graveler",
+    "calcSpeciesName": "Graveler-Alolan Form",
+    "names": {
+      "zh-hans": "隆隆石-阿罗拉的样子",
+      "zh-hant": "隆隆石-阿羅拉的樣子",
+      "en": "Graveler-Alolan Form",
+      "ja": "ゴローン-アローラのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "隆隆石",
+      "zh-hant": "隆隆石",
+      "en": "Graveler",
+      "ja": "ゴローン"
+    },
+    "formNames": {
+      "zh-hans": "阿罗拉的样子",
+      "zh-hant": "阿羅拉的樣子",
+      "en": "Alolan Form",
+      "ja": "アローラのすがた"
+    },
+    "types": [
+      "rock",
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 95,
+      "def": 115,
+      "spa": 45,
+      "spd": 45,
+      "spe": 35
+    }
+  },
+  "10111": {
+    "resourceType": "pokemon",
+    "id": 10111,
+    "speciesId": 76,
+    "pokemonSlug": "golem-alola",
+    "speciesSlug": "golem",
+    "calcSpeciesName": "Golem-Alolan Form",
+    "names": {
+      "zh-hans": "隆隆岩-阿罗拉的样子",
+      "zh-hant": "隆隆岩-阿羅拉的樣子",
+      "en": "Golem-Alolan Form",
+      "ja": "ゴローニャ-アローラのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "隆隆岩",
+      "zh-hant": "隆隆岩",
+      "en": "Golem",
+      "ja": "ゴローニャ"
+    },
+    "formNames": {
+      "zh-hans": "阿罗拉的样子",
+      "zh-hant": "阿羅拉的樣子",
+      "en": "Alolan Form",
+      "ja": "アローラのすがた"
+    },
+    "types": [
+      "rock",
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 120,
+      "def": 130,
+      "spa": 55,
+      "spd": 65,
+      "spe": 45
+    }
+  },
+  "10112": {
+    "resourceType": "pokemon",
+    "id": 10112,
+    "speciesId": 88,
+    "pokemonSlug": "grimer-alola",
+    "speciesSlug": "grimer",
+    "calcSpeciesName": "Grimer-Alolan Form",
+    "names": {
+      "zh-hans": "臭泥-阿罗拉的样子",
+      "zh-hant": "臭泥-阿羅拉的樣子",
+      "en": "Grimer-Alolan Form",
+      "ja": "ベトベター-アローラのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "臭泥",
+      "zh-hant": "臭泥",
+      "en": "Grimer",
+      "ja": "ベトベター"
+    },
+    "formNames": {
+      "zh-hans": "阿罗拉的样子",
+      "zh-hant": "阿羅拉的樣子",
+      "en": "Alolan Form",
+      "ja": "アローラのすがた"
+    },
+    "types": [
+      "poison",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 80,
+      "def": 50,
+      "spa": 40,
+      "spd": 50,
+      "spe": 25
+    }
+  },
+  "10113": {
+    "resourceType": "pokemon",
+    "id": 10113,
+    "speciesId": 89,
+    "pokemonSlug": "muk-alola",
+    "speciesSlug": "muk",
+    "calcSpeciesName": "Muk-Alolan Form",
+    "names": {
+      "zh-hans": "臭臭泥-阿罗拉的样子",
+      "zh-hant": "臭臭泥-阿羅拉的樣子",
+      "en": "Muk-Alolan Form",
+      "ja": "ベトベトン-アローラのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "臭臭泥",
+      "zh-hant": "臭臭泥",
+      "en": "Muk",
+      "ja": "ベトベトン"
+    },
+    "formNames": {
+      "zh-hans": "阿罗拉的样子",
+      "zh-hant": "阿羅拉的樣子",
+      "en": "Alolan Form",
+      "ja": "アローラのすがた"
+    },
+    "types": [
+      "poison",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 105,
+      "atk": 105,
+      "def": 75,
+      "spa": 65,
+      "spd": 100,
+      "spe": 50
+    }
+  },
+  "10114": {
+    "resourceType": "pokemon",
+    "id": 10114,
+    "speciesId": 103,
+    "pokemonSlug": "exeggutor-alola",
+    "speciesSlug": "exeggutor",
+    "calcSpeciesName": "Exeggutor-Alolan Form",
+    "names": {
+      "zh-hans": "椰蛋树-阿罗拉的样子",
+      "zh-hant": "椰蛋樹-阿羅拉的樣子",
+      "en": "Exeggutor-Alolan Form",
+      "ja": "ナッシー-アローラのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "椰蛋树",
+      "zh-hant": "椰蛋樹",
+      "en": "Exeggutor",
+      "ja": "ナッシー"
+    },
+    "formNames": {
+      "zh-hans": "阿罗拉的样子",
+      "zh-hant": "阿羅拉的樣子",
+      "en": "Alolan Form",
+      "ja": "アローラのすがた"
+    },
+    "types": [
+      "grass",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 105,
+      "def": 85,
+      "spa": 125,
+      "spd": 75,
+      "spe": 45
+    }
+  },
+  "10115": {
+    "resourceType": "pokemon",
+    "id": 10115,
+    "speciesId": 105,
+    "pokemonSlug": "marowak-alola",
+    "speciesSlug": "marowak",
+    "calcSpeciesName": "Marowak-Alolan Form",
+    "names": {
+      "zh-hans": "嘎啦嘎啦-阿罗拉的样子",
+      "zh-hant": "嘎啦嘎啦-阿羅拉的樣子",
+      "en": "Marowak-Alolan Form",
+      "ja": "ガラガラ-アローラのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "嘎啦嘎啦",
+      "zh-hant": "嘎啦嘎啦",
+      "en": "Marowak",
+      "ja": "ガラガラ"
+    },
+    "formNames": {
+      "zh-hans": "阿罗拉的样子",
+      "zh-hant": "阿羅拉的樣子",
+      "en": "Alolan Form",
+      "ja": "アローラのすがた"
+    },
+    "types": [
+      "fire",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 80,
+      "def": 110,
+      "spa": 50,
+      "spd": 80,
+      "spe": 45
+    }
+  },
+  "10116": {
+    "resourceType": "pokemon",
+    "id": 10116,
+    "speciesId": 658,
+    "pokemonSlug": "greninja-battle-bond",
+    "speciesSlug": "greninja",
+    "calcSpeciesName": "Greninja",
+    "names": {
+      "zh-hans": "甲贺忍蛙",
+      "zh-hant": "甲賀忍蛙",
+      "en": "Greninja",
+      "ja": "ゲッコウガ"
+    },
+    "speciesNames": {
+      "zh-hans": "甲贺忍蛙",
+      "zh-hant": "甲賀忍蛙",
+      "en": "Greninja",
+      "ja": "ゲッコウガ"
+    },
+    "formNames": {
+      "zh-hans": "",
+      "zh-hant": "",
+      "en": "",
+      "ja": ""
+    },
+    "types": [
+      "water",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 72,
+      "atk": 95,
+      "def": 67,
+      "spa": 103,
+      "spd": 71,
+      "spe": 122
+    }
+  },
+  "10117": {
+    "resourceType": "pokemon",
+    "id": 10117,
+    "speciesId": 658,
+    "pokemonSlug": "greninja-ash",
+    "speciesSlug": "greninja",
+    "calcSpeciesName": "Greninja-Ash-Greninja",
+    "names": {
+      "zh-hans": "甲贺忍蛙-小智版甲贺忍蛙",
+      "zh-hant": "甲賀忍蛙-小智版甲賀忍蛙",
+      "en": "Greninja-Ash-Greninja",
+      "ja": "ゲッコウガ-サトシゲッコウガ"
+    },
+    "speciesNames": {
+      "zh-hans": "甲贺忍蛙",
+      "zh-hant": "甲賀忍蛙",
+      "en": "Greninja",
+      "ja": "ゲッコウガ"
+    },
+    "formNames": {
+      "zh-hans": "小智版甲贺忍蛙",
+      "zh-hant": "小智版甲賀忍蛙",
+      "en": "Ash-Greninja",
+      "ja": "サトシゲッコウガ"
+    },
+    "types": [
+      "water",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 72,
+      "atk": 145,
+      "def": 67,
+      "spa": 153,
+      "spd": 71,
+      "spe": 132
+    }
+  },
+  "10118": {
+    "resourceType": "pokemon",
+    "id": 10118,
+    "speciesId": 718,
+    "pokemonSlug": "zygarde-10-power-construct",
+    "speciesSlug": "zygarde",
+    "calcSpeciesName": "Zygarde-10% Forme",
+    "names": {
+      "zh-hans": "基格尔德-１０％形态",
+      "zh-hant": "基格爾德-１０％形態",
+      "en": "Zygarde-10% Forme",
+      "ja": "ジガルデ-１０％フォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "基格尔德",
+      "zh-hant": "基格爾德",
+      "en": "Zygarde",
+      "ja": "ジガルデ"
+    },
+    "formNames": {
+      "zh-hans": "１０％形态",
+      "zh-hant": "１０％形態",
+      "en": "10% Forme",
+      "ja": "１０％フォルム"
+    },
+    "types": [
+      "dragon",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 54,
+      "atk": 100,
+      "def": 71,
+      "spa": 61,
+      "spd": 85,
+      "spe": 115
+    }
+  },
+  "10119": {
+    "resourceType": "pokemon",
+    "id": 10119,
+    "speciesId": 718,
+    "pokemonSlug": "zygarde-50-power-construct",
+    "speciesSlug": "zygarde",
+    "calcSpeciesName": "Zygarde-50% Forme",
+    "names": {
+      "zh-hans": "基格尔德-５０％形态",
+      "zh-hant": "基格爾德-５０％形態",
+      "en": "Zygarde-50% Forme",
+      "ja": "ジガルデ-５０％フォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "基格尔德",
+      "zh-hant": "基格爾德",
+      "en": "Zygarde",
+      "ja": "ジガルデ"
+    },
+    "formNames": {
+      "zh-hans": "５０％形态",
+      "zh-hant": "５０％形態",
+      "en": "50% Forme",
+      "ja": "５０％フォルム"
+    },
+    "types": [
+      "dragon",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 108,
+      "atk": 100,
+      "def": 121,
+      "spa": 81,
+      "spd": 95,
+      "spe": 95
+    }
+  },
+  "10120": {
+    "resourceType": "pokemon",
+    "id": 10120,
+    "speciesId": 718,
+    "pokemonSlug": "zygarde-complete",
+    "speciesSlug": "zygarde",
+    "calcSpeciesName": "Zygarde-Complete Forme",
+    "names": {
+      "zh-hans": "基格尔德-完全体形态",
+      "zh-hant": "基格爾德-完全體形態",
+      "en": "Zygarde-Complete Forme",
+      "ja": "ジガルデ-パーフェクトフォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "基格尔德",
+      "zh-hant": "基格爾德",
+      "en": "Zygarde",
+      "ja": "ジガルデ"
+    },
+    "formNames": {
+      "zh-hans": "完全体形态",
+      "zh-hant": "完全體形態",
+      "en": "Complete Forme",
+      "ja": "パーフェクトフォルム"
+    },
+    "types": [
+      "dragon",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 216,
+      "atk": 100,
+      "def": 121,
+      "spa": 91,
+      "spd": 95,
+      "spe": 85
+    }
+  },
+  "10121": {
+    "resourceType": "pokemon",
+    "id": 10121,
+    "speciesId": 735,
+    "pokemonSlug": "gumshoos-totem",
+    "speciesSlug": "gumshoos",
+    "calcSpeciesName": "Gumshoos",
+    "names": {
+      "zh-hans": "猫鼬探长",
+      "zh-hant": "貓鼬探長",
+      "en": "Gumshoos",
+      "ja": "デカグース"
+    },
+    "speciesNames": {
+      "zh-hans": "猫鼬探长",
+      "zh-hant": "貓鼬探長",
+      "en": "Gumshoos",
+      "ja": "デカグース"
+    },
+    "formNames": {
+      "zh-hans": "",
+      "zh-hant": "",
+      "en": "",
+      "ja": ""
+    },
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 88,
+      "atk": 110,
+      "def": 60,
+      "spa": 55,
+      "spd": 60,
+      "spe": 45
+    }
+  },
+  "10122": {
+    "resourceType": "pokemon",
+    "id": 10122,
+    "speciesId": 738,
+    "pokemonSlug": "vikavolt-totem",
+    "speciesSlug": "vikavolt",
+    "calcSpeciesName": "Vikavolt",
+    "names": {
+      "zh-hans": "锹农炮虫",
+      "zh-hant": "鍬農炮蟲",
+      "en": "Vikavolt",
+      "ja": "クワガノン"
+    },
+    "speciesNames": {
+      "zh-hans": "锹农炮虫",
+      "zh-hant": "鍬農炮蟲",
+      "en": "Vikavolt",
+      "ja": "クワガノン"
+    },
+    "formNames": {
+      "zh-hans": "",
+      "zh-hant": "",
+      "en": "",
+      "ja": ""
+    },
+    "types": [
+      "bug",
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 77,
+      "atk": 70,
+      "def": 90,
+      "spa": 145,
+      "spd": 75,
+      "spe": 43
+    }
+  },
+  "10123": {
+    "resourceType": "pokemon",
+    "id": 10123,
+    "speciesId": 741,
+    "pokemonSlug": "oricorio-pom-pom",
+    "speciesSlug": "oricorio",
+    "calcSpeciesName": "Oricorio-Pom-Pom Style",
+    "names": {
+      "zh-hans": "花舞鸟-啪滋啪滋风格",
+      "zh-hant": "花舞鳥-啪滋啪滋風格",
+      "en": "Oricorio-Pom-Pom Style",
+      "ja": "オドリドリ-ぱちぱちスタイル"
+    },
+    "speciesNames": {
+      "zh-hans": "花舞鸟",
+      "zh-hant": "花舞鳥",
+      "en": "Oricorio",
+      "ja": "オドリドリ"
+    },
+    "formNames": {
+      "zh-hans": "啪滋啪滋风格",
+      "zh-hant": "啪滋啪滋風格",
+      "en": "Pom-Pom Style",
+      "ja": "ぱちぱちスタイル"
+    },
+    "types": [
+      "electric",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 70,
+      "def": 70,
+      "spa": 98,
+      "spd": 70,
+      "spe": 93
+    }
+  },
+  "10124": {
+    "resourceType": "pokemon",
+    "id": 10124,
+    "speciesId": 741,
+    "pokemonSlug": "oricorio-pau",
+    "speciesSlug": "oricorio",
+    "calcSpeciesName": "Oricorio-Pa’u Style",
+    "names": {
+      "zh-hans": "花舞鸟-呼拉呼拉风格",
+      "zh-hant": "花舞鳥-呼拉呼拉風格",
+      "en": "Oricorio-Pa’u Style",
+      "ja": "オドリドリ-ふらふらスタイル"
+    },
+    "speciesNames": {
+      "zh-hans": "花舞鸟",
+      "zh-hant": "花舞鳥",
+      "en": "Oricorio",
+      "ja": "オドリドリ"
+    },
+    "formNames": {
+      "zh-hans": "呼拉呼拉风格",
+      "zh-hant": "呼拉呼拉風格",
+      "en": "Pa’u Style",
+      "ja": "ふらふらスタイル"
+    },
+    "types": [
+      "psychic",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 70,
+      "def": 70,
+      "spa": 98,
+      "spd": 70,
+      "spe": 93
+    }
+  },
+  "10125": {
+    "resourceType": "pokemon",
+    "id": 10125,
+    "speciesId": 741,
+    "pokemonSlug": "oricorio-sensu",
+    "speciesSlug": "oricorio",
+    "calcSpeciesName": "Oricorio-Sensu Style",
+    "names": {
+      "zh-hans": "花舞鸟-轻盈轻盈风格",
+      "zh-hant": "花舞鳥-輕盈輕盈風格",
+      "en": "Oricorio-Sensu Style",
+      "ja": "オドリドリ-まいまいスタイル"
+    },
+    "speciesNames": {
+      "zh-hans": "花舞鸟",
+      "zh-hant": "花舞鳥",
+      "en": "Oricorio",
+      "ja": "オドリドリ"
+    },
+    "formNames": {
+      "zh-hans": "轻盈轻盈风格",
+      "zh-hant": "輕盈輕盈風格",
+      "en": "Sensu Style",
+      "ja": "まいまいスタイル"
+    },
+    "types": [
+      "ghost",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 70,
+      "def": 70,
+      "spa": 98,
+      "spd": 70,
+      "spe": 93
+    }
+  },
+  "10126": {
+    "resourceType": "pokemon",
+    "id": 10126,
+    "speciesId": 745,
+    "pokemonSlug": "lycanroc-midnight",
+    "speciesSlug": "lycanroc",
+    "calcSpeciesName": "Lycanroc-Midnight Form",
+    "names": {
+      "zh-hans": "鬃岩狼人-黑夜的样子",
+      "zh-hant": "鬃岩狼人-黑夜的樣子",
+      "en": "Lycanroc-Midnight Form",
+      "ja": "ルガルガン-まよなかのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "鬃岩狼人",
+      "zh-hant": "鬃岩狼人",
+      "en": "Lycanroc",
+      "ja": "ルガルガン"
+    },
+    "formNames": {
+      "zh-hans": "黑夜的样子",
+      "zh-hant": "黑夜的樣子",
+      "en": "Midnight Form",
+      "ja": "まよなかのすがた"
+    },
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 115,
+      "def": 75,
+      "spa": 55,
+      "spd": 75,
+      "spe": 82
+    }
+  },
+  "10127": {
+    "resourceType": "pokemon",
+    "id": 10127,
+    "speciesId": 746,
+    "pokemonSlug": "wishiwashi-school",
+    "speciesSlug": "wishiwashi",
+    "calcSpeciesName": "Wishiwashi-School Form",
+    "names": {
+      "zh-hans": "弱丁鱼-鱼群的样子",
+      "zh-hant": "弱丁魚-魚群的樣子",
+      "en": "Wishiwashi-School Form",
+      "ja": "ヨワシ-むれたすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "弱丁鱼",
+      "zh-hant": "弱丁魚",
+      "en": "Wishiwashi",
+      "ja": "ヨワシ"
+    },
+    "formNames": {
+      "zh-hans": "鱼群的样子",
+      "zh-hant": "魚群的樣子",
+      "en": "School Form",
+      "ja": "むれたすがた"
+    },
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 140,
+      "def": 130,
+      "spa": 140,
+      "spd": 135,
+      "spe": 30
+    }
+  },
+  "10128": {
+    "resourceType": "pokemon",
+    "id": 10128,
+    "speciesId": 754,
+    "pokemonSlug": "lurantis-totem",
+    "speciesSlug": "lurantis",
+    "calcSpeciesName": "Lurantis",
+    "names": {
+      "zh-hans": "兰螳花",
+      "zh-hant": "蘭螳花",
+      "en": "Lurantis",
+      "ja": "ラランテス"
+    },
+    "speciesNames": {
+      "zh-hans": "兰螳花",
+      "zh-hant": "蘭螳花",
+      "en": "Lurantis",
+      "ja": "ラランテス"
+    },
+    "formNames": {
+      "zh-hans": "",
+      "zh-hant": "",
+      "en": "",
+      "ja": ""
+    },
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 105,
+      "def": 90,
+      "spa": 80,
+      "spd": 90,
+      "spe": 45
+    }
+  },
+  "10129": {
+    "resourceType": "pokemon",
+    "id": 10129,
+    "speciesId": 758,
+    "pokemonSlug": "salazzle-totem",
+    "speciesSlug": "salazzle",
+    "calcSpeciesName": "Salazzle",
+    "names": {
+      "zh-hans": "焰后蜥",
+      "zh-hant": "焰后蜥",
+      "en": "Salazzle",
+      "ja": "エンニュート"
+    },
+    "speciesNames": {
+      "zh-hans": "焰后蜥",
+      "zh-hant": "焰后蜥",
+      "en": "Salazzle",
+      "ja": "エンニュート"
+    },
+    "formNames": {
+      "zh-hans": "",
+      "zh-hant": "",
+      "en": "",
+      "ja": ""
+    },
+    "types": [
+      "poison",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 64,
+      "def": 60,
+      "spa": 111,
+      "spd": 60,
+      "spe": 117
+    }
+  },
+  "10130": {
+    "resourceType": "pokemon",
+    "id": 10130,
+    "speciesId": 774,
+    "pokemonSlug": "minior-orange-meteor",
+    "speciesSlug": "minior",
+    "calcSpeciesName": "Minior-Meteor Form",
+    "names": {
+      "zh-hans": "小陨星-流星的样子",
+      "zh-hant": "小隕星-流星的樣子",
+      "en": "Minior-Meteor Form",
+      "ja": "メテノ-りゅうせいのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "小陨星",
+      "zh-hant": "小隕星",
+      "en": "Minior",
+      "ja": "メテノ"
+    },
+    "formNames": {
+      "zh-hans": "流星的样子",
+      "zh-hant": "流星的樣子",
+      "en": "Meteor Form",
+      "ja": "りゅうせいのすがた"
+    },
+    "types": [
+      "rock",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 60,
+      "def": 100,
+      "spa": 60,
+      "spd": 100,
+      "spe": 60
+    }
+  },
+  "10131": {
+    "resourceType": "pokemon",
+    "id": 10131,
+    "speciesId": 774,
+    "pokemonSlug": "minior-yellow-meteor",
+    "speciesSlug": "minior",
+    "calcSpeciesName": "Minior-Meteor Form",
+    "names": {
+      "zh-hans": "小陨星-流星的样子",
+      "zh-hant": "小隕星-流星的樣子",
+      "en": "Minior-Meteor Form",
+      "ja": "メテノ-りゅうせいのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "小陨星",
+      "zh-hant": "小隕星",
+      "en": "Minior",
+      "ja": "メテノ"
+    },
+    "formNames": {
+      "zh-hans": "流星的样子",
+      "zh-hant": "流星的樣子",
+      "en": "Meteor Form",
+      "ja": "りゅうせいのすがた"
+    },
+    "types": [
+      "rock",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 60,
+      "def": 100,
+      "spa": 60,
+      "spd": 100,
+      "spe": 60
+    }
+  },
+  "10132": {
+    "resourceType": "pokemon",
+    "id": 10132,
+    "speciesId": 774,
+    "pokemonSlug": "minior-green-meteor",
+    "speciesSlug": "minior",
+    "calcSpeciesName": "Minior-Meteor Form",
+    "names": {
+      "zh-hans": "小陨星-流星的样子",
+      "zh-hant": "小隕星-流星的樣子",
+      "en": "Minior-Meteor Form",
+      "ja": "メテノ-りゅうせいのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "小陨星",
+      "zh-hant": "小隕星",
+      "en": "Minior",
+      "ja": "メテノ"
+    },
+    "formNames": {
+      "zh-hans": "流星的样子",
+      "zh-hant": "流星的樣子",
+      "en": "Meteor Form",
+      "ja": "りゅうせいのすがた"
+    },
+    "types": [
+      "rock",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 60,
+      "def": 100,
+      "spa": 60,
+      "spd": 100,
+      "spe": 60
+    }
+  },
+  "10133": {
+    "resourceType": "pokemon",
+    "id": 10133,
+    "speciesId": 774,
+    "pokemonSlug": "minior-blue-meteor",
+    "speciesSlug": "minior",
+    "calcSpeciesName": "Minior-Meteor Form",
+    "names": {
+      "zh-hans": "小陨星-流星的样子",
+      "zh-hant": "小隕星-流星的樣子",
+      "en": "Minior-Meteor Form",
+      "ja": "メテノ-りゅうせいのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "小陨星",
+      "zh-hant": "小隕星",
+      "en": "Minior",
+      "ja": "メテノ"
+    },
+    "formNames": {
+      "zh-hans": "流星的样子",
+      "zh-hant": "流星的樣子",
+      "en": "Meteor Form",
+      "ja": "りゅうせいのすがた"
+    },
+    "types": [
+      "rock",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 60,
+      "def": 100,
+      "spa": 60,
+      "spd": 100,
+      "spe": 60
+    }
+  },
+  "10134": {
+    "resourceType": "pokemon",
+    "id": 10134,
+    "speciesId": 774,
+    "pokemonSlug": "minior-indigo-meteor",
+    "speciesSlug": "minior",
+    "calcSpeciesName": "Minior-Meteor Form",
+    "names": {
+      "zh-hans": "小陨星-流星的样子",
+      "zh-hant": "小隕星-流星的樣子",
+      "en": "Minior-Meteor Form",
+      "ja": "メテノ-りゅうせいのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "小陨星",
+      "zh-hant": "小隕星",
+      "en": "Minior",
+      "ja": "メテノ"
+    },
+    "formNames": {
+      "zh-hans": "流星的样子",
+      "zh-hant": "流星的樣子",
+      "en": "Meteor Form",
+      "ja": "りゅうせいのすがた"
+    },
+    "types": [
+      "rock",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 60,
+      "def": 100,
+      "spa": 60,
+      "spd": 100,
+      "spe": 60
+    }
+  },
+  "10135": {
+    "resourceType": "pokemon",
+    "id": 10135,
+    "speciesId": 774,
+    "pokemonSlug": "minior-violet-meteor",
+    "speciesSlug": "minior",
+    "calcSpeciesName": "Minior-Meteor Form",
+    "names": {
+      "zh-hans": "小陨星-流星的样子",
+      "zh-hant": "小隕星-流星的樣子",
+      "en": "Minior-Meteor Form",
+      "ja": "メテノ-りゅうせいのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "小陨星",
+      "zh-hant": "小隕星",
+      "en": "Minior",
+      "ja": "メテノ"
+    },
+    "formNames": {
+      "zh-hans": "流星的样子",
+      "zh-hant": "流星的樣子",
+      "en": "Meteor Form",
+      "ja": "りゅうせいのすがた"
+    },
+    "types": [
+      "rock",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 60,
+      "def": 100,
+      "spa": 60,
+      "spd": 100,
+      "spe": 60
+    }
+  },
+  "10136": {
+    "resourceType": "pokemon",
+    "id": 10136,
+    "speciesId": 774,
+    "pokemonSlug": "minior-red",
+    "speciesSlug": "minior",
+    "calcSpeciesName": "Minior-Red Core",
+    "names": {
+      "zh-hans": "小陨星-红色核心",
+      "zh-hant": "小隕星-紅色核心",
+      "en": "Minior-Red Core",
+      "ja": "メテノ-あかいろのコア"
+    },
+    "speciesNames": {
+      "zh-hans": "小陨星",
+      "zh-hant": "小隕星",
+      "en": "Minior",
+      "ja": "メテノ"
+    },
+    "formNames": {
+      "zh-hans": "红色核心",
+      "zh-hant": "紅色核心",
+      "en": "Red Core",
+      "ja": "あかいろのコア"
+    },
+    "types": [
+      "rock",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 100,
+      "def": 60,
+      "spa": 100,
+      "spd": 60,
+      "spe": 120
+    }
+  },
+  "10137": {
+    "resourceType": "pokemon",
+    "id": 10137,
+    "speciesId": 774,
+    "pokemonSlug": "minior-orange",
+    "speciesSlug": "minior",
+    "calcSpeciesName": "Minior-Orange Core",
+    "names": {
+      "zh-hans": "小陨星-橙色核心",
+      "zh-hant": "小隕星-橙色核心",
+      "en": "Minior-Orange Core",
+      "ja": "メテノ-だいだいいろのコア"
+    },
+    "speciesNames": {
+      "zh-hans": "小陨星",
+      "zh-hant": "小隕星",
+      "en": "Minior",
+      "ja": "メテノ"
+    },
+    "formNames": {
+      "zh-hans": "橙色核心",
+      "zh-hant": "橙色核心",
+      "en": "Orange Core",
+      "ja": "だいだいいろのコア"
+    },
+    "types": [
+      "rock",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 100,
+      "def": 60,
+      "spa": 100,
+      "spd": 60,
+      "spe": 120
+    }
+  },
+  "10138": {
+    "resourceType": "pokemon",
+    "id": 10138,
+    "speciesId": 774,
+    "pokemonSlug": "minior-yellow",
+    "speciesSlug": "minior",
+    "calcSpeciesName": "Minior-Yellow Core",
+    "names": {
+      "zh-hans": "小陨星-黄色核心",
+      "zh-hant": "小隕星-黃色核心",
+      "en": "Minior-Yellow Core",
+      "ja": "メテノ-きいろのコア"
+    },
+    "speciesNames": {
+      "zh-hans": "小陨星",
+      "zh-hant": "小隕星",
+      "en": "Minior",
+      "ja": "メテノ"
+    },
+    "formNames": {
+      "zh-hans": "黄色核心",
+      "zh-hant": "黃色核心",
+      "en": "Yellow Core",
+      "ja": "きいろのコア"
+    },
+    "types": [
+      "rock",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 100,
+      "def": 60,
+      "spa": 100,
+      "spd": 60,
+      "spe": 120
+    }
+  },
+  "10139": {
+    "resourceType": "pokemon",
+    "id": 10139,
+    "speciesId": 774,
+    "pokemonSlug": "minior-green",
+    "speciesSlug": "minior",
+    "calcSpeciesName": "Minior-Green Core",
+    "names": {
+      "zh-hans": "小陨星-绿色核心",
+      "zh-hant": "小隕星-綠色核心",
+      "en": "Minior-Green Core",
+      "ja": "メテノ-みどりいろのコア"
+    },
+    "speciesNames": {
+      "zh-hans": "小陨星",
+      "zh-hant": "小隕星",
+      "en": "Minior",
+      "ja": "メテノ"
+    },
+    "formNames": {
+      "zh-hans": "绿色核心",
+      "zh-hant": "綠色核心",
+      "en": "Green Core",
+      "ja": "みどりいろのコア"
+    },
+    "types": [
+      "rock",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 100,
+      "def": 60,
+      "spa": 100,
+      "spd": 60,
+      "spe": 120
+    }
+  },
+  "10140": {
+    "resourceType": "pokemon",
+    "id": 10140,
+    "speciesId": 774,
+    "pokemonSlug": "minior-blue",
+    "speciesSlug": "minior",
+    "calcSpeciesName": "Minior-Blue Core",
+    "names": {
+      "zh-hans": "小陨星-浅蓝色核心",
+      "zh-hant": "小隕星-淺藍色核心",
+      "en": "Minior-Blue Core",
+      "ja": "メテノ-みずいろのコア"
+    },
+    "speciesNames": {
+      "zh-hans": "小陨星",
+      "zh-hant": "小隕星",
+      "en": "Minior",
+      "ja": "メテノ"
+    },
+    "formNames": {
+      "zh-hans": "浅蓝色核心",
+      "zh-hant": "淺藍色核心",
+      "en": "Blue Core",
+      "ja": "みずいろのコア"
+    },
+    "types": [
+      "rock",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 100,
+      "def": 60,
+      "spa": 100,
+      "spd": 60,
+      "spe": 120
+    }
+  },
+  "10141": {
+    "resourceType": "pokemon",
+    "id": 10141,
+    "speciesId": 774,
+    "pokemonSlug": "minior-indigo",
+    "speciesSlug": "minior",
+    "calcSpeciesName": "Minior-Indigo Core",
+    "names": {
+      "zh-hans": "小陨星-蓝色核心",
+      "zh-hant": "小隕星-藍色核心",
+      "en": "Minior-Indigo Core",
+      "ja": "メテノ-あおいろのコア"
+    },
+    "speciesNames": {
+      "zh-hans": "小陨星",
+      "zh-hant": "小隕星",
+      "en": "Minior",
+      "ja": "メテノ"
+    },
+    "formNames": {
+      "zh-hans": "蓝色核心",
+      "zh-hant": "藍色核心",
+      "en": "Indigo Core",
+      "ja": "あおいろのコア"
+    },
+    "types": [
+      "rock",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 100,
+      "def": 60,
+      "spa": 100,
+      "spd": 60,
+      "spe": 120
+    }
+  },
+  "10142": {
+    "resourceType": "pokemon",
+    "id": 10142,
+    "speciesId": 774,
+    "pokemonSlug": "minior-violet",
+    "speciesSlug": "minior",
+    "calcSpeciesName": "Minior-Violet Core",
+    "names": {
+      "zh-hans": "小陨星-紫色核心",
+      "zh-hant": "小隕星-紫色核心",
+      "en": "Minior-Violet Core",
+      "ja": "メテノ-むらさきいろのコア"
+    },
+    "speciesNames": {
+      "zh-hans": "小陨星",
+      "zh-hant": "小隕星",
+      "en": "Minior",
+      "ja": "メテノ"
+    },
+    "formNames": {
+      "zh-hans": "紫色核心",
+      "zh-hant": "紫色核心",
+      "en": "Violet Core",
+      "ja": "むらさきいろのコア"
+    },
+    "types": [
+      "rock",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 100,
+      "def": 60,
+      "spa": 100,
+      "spd": 60,
+      "spe": 120
+    }
+  },
+  "10143": {
+    "resourceType": "pokemon",
+    "id": 10143,
+    "speciesId": 778,
+    "pokemonSlug": "mimikyu-busted",
+    "speciesSlug": "mimikyu",
+    "calcSpeciesName": "Mimikyu-Busted Form",
+    "names": {
+      "zh-hans": "谜拟丘-现形的样子",
+      "zh-hant": "謎擬Ｑ-現形的樣子",
+      "en": "Mimikyu-Busted Form",
+      "ja": "ミミッキュ-ばれたすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "谜拟丘",
+      "zh-hant": "謎擬Ｑ",
+      "en": "Mimikyu",
+      "ja": "ミミッキュ"
+    },
+    "formNames": {
+      "zh-hans": "现形的样子",
+      "zh-hant": "現形的樣子",
+      "en": "Busted Form",
+      "ja": "ばれたすがた"
+    },
+    "types": [
+      "ghost",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 90,
+      "def": 80,
+      "spa": 50,
+      "spd": 105,
+      "spe": 96
+    }
+  },
+  "10144": {
+    "resourceType": "pokemon",
+    "id": 10144,
+    "speciesId": 778,
+    "pokemonSlug": "mimikyu-totem-disguised",
+    "speciesSlug": "mimikyu",
+    "calcSpeciesName": "Mimikyu",
+    "names": {
+      "zh-hans": "谜拟丘",
+      "zh-hant": "謎擬Ｑ",
+      "en": "Mimikyu",
+      "ja": "ミミッキュ"
+    },
+    "speciesNames": {
+      "zh-hans": "谜拟丘",
+      "zh-hant": "謎擬Ｑ",
+      "en": "Mimikyu",
+      "ja": "ミミッキュ"
+    },
+    "formNames": {
+      "zh-hans": "",
+      "zh-hant": "",
+      "en": "",
+      "ja": ""
+    },
+    "types": [
+      "ghost",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 90,
+      "def": 80,
+      "spa": 50,
+      "spd": 105,
+      "spe": 96
+    }
+  },
+  "10145": {
+    "resourceType": "pokemon",
+    "id": 10145,
+    "speciesId": 778,
+    "pokemonSlug": "mimikyu-totem-busted",
+    "speciesSlug": "mimikyu",
+    "calcSpeciesName": "Mimikyu",
+    "names": {
+      "zh-hans": "谜拟丘",
+      "zh-hant": "謎擬Ｑ",
+      "en": "Mimikyu",
+      "ja": "ミミッキュ"
+    },
+    "speciesNames": {
+      "zh-hans": "谜拟丘",
+      "zh-hant": "謎擬Ｑ",
+      "en": "Mimikyu",
+      "ja": "ミミッキュ"
+    },
+    "formNames": {
+      "zh-hans": "",
+      "zh-hant": "",
+      "en": "",
+      "ja": ""
+    },
+    "types": [
+      "ghost",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 90,
+      "def": 80,
+      "spa": 50,
+      "spd": 105,
+      "spe": 96
+    }
+  },
+  "10146": {
+    "resourceType": "pokemon",
+    "id": 10146,
+    "speciesId": 784,
+    "pokemonSlug": "kommo-o-totem",
+    "speciesSlug": "kommo-o",
+    "calcSpeciesName": "Kommo-o",
+    "names": {
+      "zh-hans": "杖尾鳞甲龙",
+      "zh-hant": "杖尾鱗甲龍",
+      "en": "Kommo-o",
+      "ja": "ジャラランガ"
+    },
+    "speciesNames": {
+      "zh-hans": "杖尾鳞甲龙",
+      "zh-hant": "杖尾鱗甲龍",
+      "en": "Kommo-o",
+      "ja": "ジャラランガ"
+    },
+    "formNames": {
+      "zh-hans": "",
+      "zh-hant": "",
+      "en": "",
+      "ja": ""
+    },
+    "types": [
+      "dragon",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 110,
+      "def": 125,
+      "spa": 100,
+      "spd": 105,
+      "spe": 85
+    }
+  },
+  "10147": {
+    "resourceType": "pokemon",
+    "id": 10147,
+    "speciesId": 801,
+    "pokemonSlug": "magearna-original",
+    "speciesSlug": "magearna",
+    "calcSpeciesName": "Magearna-Original Color",
+    "names": {
+      "zh-hans": "玛机雅娜-５００年前的颜色",
+      "zh-hant": "瑪機雅娜-５００年前的顏色",
+      "en": "Magearna-Original Color",
+      "ja": "マギアナ-５００ねんまえのいろ"
+    },
+    "speciesNames": {
+      "zh-hans": "玛机雅娜",
+      "zh-hant": "瑪機雅娜",
+      "en": "Magearna",
+      "ja": "マギアナ"
+    },
+    "formNames": {
+      "zh-hans": "５００年前的颜色",
+      "zh-hant": "５００年前的顏色",
+      "en": "Original Color",
+      "ja": "５００ねんまえのいろ"
+    },
+    "types": [
+      "steel",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 95,
+      "def": 115,
+      "spa": 130,
+      "spd": 115,
+      "spe": 65
+    }
+  },
+  "10148": {
+    "resourceType": "pokemon",
+    "id": 10148,
+    "speciesId": 25,
+    "pokemonSlug": "pikachu-partner-cap",
+    "speciesSlug": "pikachu",
+    "calcSpeciesName": "Pikachu-Partner Cap",
+    "names": {
+      "zh-hans": "皮卡丘-就决定是你了之帽子",
+      "zh-hant": "皮卡丘-就決定是你了之帽子",
+      "en": "Pikachu-Partner Cap",
+      "ja": "ピカチュウ-キミにきめたキャップ"
+    },
+    "speciesNames": {
+      "zh-hans": "皮卡丘",
+      "zh-hant": "皮卡丘",
+      "en": "Pikachu",
+      "ja": "ピカチュウ"
+    },
+    "formNames": {
+      "zh-hans": "就决定是你了之帽子",
+      "zh-hant": "就決定是你了之帽子",
+      "en": "Partner Cap",
+      "ja": "キミにきめたキャップ"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 55,
+      "def": 40,
+      "spa": 50,
+      "spd": 50,
+      "spe": 90
+    }
+  },
+  "10149": {
+    "resourceType": "pokemon",
+    "id": 10149,
+    "speciesId": 105,
+    "pokemonSlug": "marowak-totem",
+    "speciesSlug": "marowak",
+    "calcSpeciesName": "Marowak",
+    "names": {
+      "zh-hans": "嘎啦嘎啦",
+      "zh-hant": "嘎啦嘎啦",
+      "en": "Marowak",
+      "ja": "ガラガラ"
+    },
+    "speciesNames": {
+      "zh-hans": "嘎啦嘎啦",
+      "zh-hant": "嘎啦嘎啦",
+      "en": "Marowak",
+      "ja": "ガラガラ"
+    },
+    "formNames": {
+      "zh-hans": "",
+      "zh-hant": "",
+      "en": "",
+      "ja": ""
+    },
+    "types": [
+      "fire",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 80,
+      "def": 110,
+      "spa": 50,
+      "spd": 80,
+      "spe": 45
+    }
+  },
+  "10150": {
+    "resourceType": "pokemon",
+    "id": 10150,
+    "speciesId": 743,
+    "pokemonSlug": "ribombee-totem",
+    "speciesSlug": "ribombee",
+    "calcSpeciesName": "Ribombee",
+    "names": {
+      "zh-hans": "蝶结萌虻",
+      "zh-hant": "蝶結萌虻",
+      "en": "Ribombee",
+      "ja": "アブリボン"
+    },
+    "speciesNames": {
+      "zh-hans": "蝶结萌虻",
+      "zh-hant": "蝶結萌虻",
+      "en": "Ribombee",
+      "ja": "アブリボン"
+    },
+    "formNames": {
+      "zh-hans": "",
+      "zh-hant": "",
+      "en": "",
+      "ja": ""
+    },
+    "types": [
+      "bug",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 55,
+      "def": 60,
+      "spa": 95,
+      "spd": 70,
+      "spe": 124
+    }
+  },
+  "10151": {
+    "resourceType": "pokemon",
+    "id": 10151,
+    "speciesId": 744,
+    "pokemonSlug": "rockruff-own-tempo",
+    "speciesSlug": "rockruff",
+    "calcSpeciesName": "Rockruff",
+    "names": {
+      "zh-hans": "岩狗狗",
+      "zh-hant": "岩狗狗",
+      "en": "Rockruff",
+      "ja": "イワンコ"
+    },
+    "speciesNames": {
+      "zh-hans": "岩狗狗",
+      "zh-hant": "岩狗狗",
+      "en": "Rockruff",
+      "ja": "イワンコ"
+    },
+    "formNames": {
+      "zh-hans": "",
+      "zh-hant": "",
+      "en": "",
+      "ja": ""
+    },
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 65,
+      "def": 40,
+      "spa": 30,
+      "spd": 40,
+      "spe": 60
+    }
+  },
+  "10152": {
+    "resourceType": "pokemon",
+    "id": 10152,
+    "speciesId": 745,
+    "pokemonSlug": "lycanroc-dusk",
+    "speciesSlug": "lycanroc",
+    "calcSpeciesName": "Lycanroc-Dusk Form",
+    "names": {
+      "zh-hans": "鬃岩狼人-黄昏的样子",
+      "zh-hant": "鬃岩狼人-黃昏的樣子",
+      "en": "Lycanroc-Dusk Form",
+      "ja": "ルガルガン-たそがれのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "鬃岩狼人",
+      "zh-hant": "鬃岩狼人",
+      "en": "Lycanroc",
+      "ja": "ルガルガン"
+    },
+    "formNames": {
+      "zh-hans": "黄昏的样子",
+      "zh-hant": "黃昏的樣子",
+      "en": "Dusk Form",
+      "ja": "たそがれのすがた"
+    },
+    "types": [
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 117,
+      "def": 65,
+      "spa": 55,
+      "spd": 65,
+      "spe": 110
+    }
+  },
+  "10153": {
+    "resourceType": "pokemon",
+    "id": 10153,
+    "speciesId": 752,
+    "pokemonSlug": "araquanid-totem",
+    "speciesSlug": "araquanid",
+    "calcSpeciesName": "Araquanid",
+    "names": {
+      "zh-hans": "滴蛛霸",
+      "zh-hant": "滴蛛霸",
+      "en": "Araquanid",
+      "ja": "オニシズクモ"
+    },
+    "speciesNames": {
+      "zh-hans": "滴蛛霸",
+      "zh-hant": "滴蛛霸",
+      "en": "Araquanid",
+      "ja": "オニシズクモ"
+    },
+    "formNames": {
+      "zh-hans": "",
+      "zh-hant": "",
+      "en": "",
+      "ja": ""
+    },
+    "types": [
+      "water",
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 70,
+      "def": 92,
+      "spa": 50,
+      "spd": 132,
+      "spe": 42
+    }
+  },
+  "10154": {
+    "resourceType": "pokemon",
+    "id": 10154,
+    "speciesId": 777,
+    "pokemonSlug": "togedemaru-totem",
+    "speciesSlug": "togedemaru",
+    "calcSpeciesName": "Togedemaru",
+    "names": {
+      "zh-hans": "托戈德玛尔",
+      "zh-hant": "托戈德瑪爾",
+      "en": "Togedemaru",
+      "ja": "トゲデマル"
+    },
+    "speciesNames": {
+      "zh-hans": "托戈德玛尔",
+      "zh-hant": "托戈德瑪爾",
+      "en": "Togedemaru",
+      "ja": "トゲデマル"
+    },
+    "formNames": {
+      "zh-hans": "",
+      "zh-hant": "",
+      "en": "",
+      "ja": ""
+    },
+    "types": [
+      "electric",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 98,
+      "def": 63,
+      "spa": 40,
+      "spd": 73,
+      "spe": 96
+    }
+  },
+  "10155": {
+    "resourceType": "pokemon",
+    "id": 10155,
+    "speciesId": 800,
+    "pokemonSlug": "necrozma-dusk",
+    "speciesSlug": "necrozma",
+    "calcSpeciesName": "Necrozma-Dusk Mane",
+    "names": {
+      "zh-hans": "奈克洛兹玛-黄昏之鬃",
+      "zh-hant": "奈克洛茲瑪-黃昏之鬃",
+      "en": "Necrozma-Dusk Mane",
+      "ja": "ネクロズマ-たそがれのたてがみ"
+    },
+    "speciesNames": {
+      "zh-hans": "奈克洛兹玛",
+      "zh-hant": "奈克洛茲瑪",
+      "en": "Necrozma",
+      "ja": "ネクロズマ"
+    },
+    "formNames": {
+      "zh-hans": "黄昏之鬃",
+      "zh-hant": "黃昏之鬃",
+      "en": "Dusk Mane",
+      "ja": "たそがれのたてがみ"
+    },
+    "types": [
+      "psychic",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 97,
+      "atk": 157,
+      "def": 127,
+      "spa": 113,
+      "spd": 109,
+      "spe": 77
+    }
+  },
+  "10156": {
+    "resourceType": "pokemon",
+    "id": 10156,
+    "speciesId": 800,
+    "pokemonSlug": "necrozma-dawn",
+    "speciesSlug": "necrozma",
+    "calcSpeciesName": "Necrozma-Dawn Wings",
+    "names": {
+      "zh-hans": "奈克洛兹玛-拂晓之翼",
+      "zh-hant": "奈克洛茲瑪-拂曉之翼",
+      "en": "Necrozma-Dawn Wings",
+      "ja": "ネクロズマ-あかつきのつばさ"
+    },
+    "speciesNames": {
+      "zh-hans": "奈克洛兹玛",
+      "zh-hant": "奈克洛茲瑪",
+      "en": "Necrozma",
+      "ja": "ネクロズマ"
+    },
+    "formNames": {
+      "zh-hans": "拂晓之翼",
+      "zh-hant": "拂曉之翼",
+      "en": "Dawn Wings",
+      "ja": "あかつきのつばさ"
+    },
+    "types": [
+      "psychic",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 97,
+      "atk": 113,
+      "def": 109,
+      "spa": 157,
+      "spd": 127,
+      "spe": 77
+    }
+  },
+  "10157": {
+    "resourceType": "pokemon",
+    "id": 10157,
+    "speciesId": 800,
+    "pokemonSlug": "necrozma-ultra",
+    "speciesSlug": "necrozma",
+    "calcSpeciesName": "Necrozma-Ultra Necrozma",
+    "names": {
+      "zh-hans": "奈克洛兹玛-究极奈克洛兹玛",
+      "zh-hant": "奈克洛茲瑪-究極奈克洛茲瑪",
+      "en": "Necrozma-Ultra Necrozma",
+      "ja": "ネクロズマ-ウルトラネクロズマ"
+    },
+    "speciesNames": {
+      "zh-hans": "奈克洛兹玛",
+      "zh-hant": "奈克洛茲瑪",
+      "en": "Necrozma",
+      "ja": "ネクロズマ"
+    },
+    "formNames": {
+      "zh-hans": "究极奈克洛兹玛",
+      "zh-hant": "究極奈克洛茲瑪",
+      "en": "Ultra Necrozma",
+      "ja": "ウルトラネクロズマ"
+    },
+    "types": [
+      "psychic",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 97,
+      "atk": 167,
+      "def": 97,
+      "spa": 167,
+      "spd": 97,
+      "spe": 129
+    }
+  },
+  "10158": {
+    "resourceType": "pokemon",
+    "id": 10158,
+    "speciesId": 25,
+    "pokemonSlug": "pikachu-starter",
+    "speciesSlug": "pikachu",
+    "calcSpeciesName": "Pikachu",
+    "names": {
+      "zh-hans": "皮卡丘",
+      "zh-hant": "皮卡丘",
+      "en": "Pikachu",
+      "ja": "ピカチュウ"
+    },
+    "speciesNames": {
+      "zh-hans": "皮卡丘",
+      "zh-hant": "皮卡丘",
+      "en": "Pikachu",
+      "ja": "ピカチュウ"
+    },
+    "formNames": {
+      "zh-hans": "",
+      "zh-hant": "",
+      "en": "",
+      "ja": ""
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 80,
+      "def": 50,
+      "spa": 75,
+      "spd": 60,
+      "spe": 120
+    }
+  },
+  "10159": {
+    "resourceType": "pokemon",
+    "id": 10159,
+    "speciesId": 133,
+    "pokemonSlug": "eevee-starter",
+    "speciesSlug": "eevee",
+    "calcSpeciesName": "Eevee",
+    "names": {
+      "zh-hans": "伊布",
+      "zh-hant": "伊布",
+      "en": "Eevee",
+      "ja": "イーブイ"
+    },
+    "speciesNames": {
+      "zh-hans": "伊布",
+      "zh-hant": "伊布",
+      "en": "Eevee",
+      "ja": "イーブイ"
+    },
+    "formNames": {
+      "zh-hans": "",
+      "zh-hant": "",
+      "en": "",
+      "ja": ""
+    },
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 75,
+      "def": 70,
+      "spa": 65,
+      "spd": 85,
+      "spe": 75
+    }
+  },
+  "10160": {
+    "resourceType": "pokemon",
+    "id": 10160,
+    "speciesId": 25,
+    "pokemonSlug": "pikachu-world-cap",
+    "speciesSlug": "pikachu",
+    "calcSpeciesName": "Pikachu-World Cap",
+    "names": {
+      "zh-hans": "皮卡丘-世界帽子",
+      "zh-hant": "皮卡丘-世界帽子",
+      "en": "Pikachu-World Cap",
+      "ja": "ピカチュウ-ワールドキャップ"
+    },
+    "speciesNames": {
+      "zh-hans": "皮卡丘",
+      "zh-hant": "皮卡丘",
+      "en": "Pikachu",
+      "ja": "ピカチュウ"
+    },
+    "formNames": {
+      "zh-hans": "世界帽子",
+      "zh-hant": "世界帽子",
+      "en": "World Cap",
+      "ja": "ワールドキャップ"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 55,
+      "def": 40,
+      "spa": 50,
+      "spd": 50,
+      "spe": 90
+    }
+  },
+  "10161": {
+    "resourceType": "pokemon",
+    "id": 10161,
+    "speciesId": 52,
+    "pokemonSlug": "meowth-galar",
+    "speciesSlug": "meowth",
+    "calcSpeciesName": "Meowth-Galarian Form",
+    "names": {
+      "zh-hans": "喵喵-伽勒尔的样子",
+      "zh-hant": "喵喵-伽勒爾的樣子",
+      "en": "Meowth-Galarian Form",
+      "ja": "ニャース-ガラルのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "喵喵",
+      "zh-hant": "喵喵",
+      "en": "Meowth",
+      "ja": "ニャース"
+    },
+    "formNames": {
+      "zh-hans": "伽勒尔的样子",
+      "zh-hant": "伽勒爾的樣子",
+      "en": "Galarian Form",
+      "ja": "ガラルのすがた"
+    },
+    "types": [
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 65,
+      "def": 55,
+      "spa": 40,
+      "spd": 40,
+      "spe": 40
+    }
+  },
+  "10162": {
+    "resourceType": "pokemon",
+    "id": 10162,
+    "speciesId": 77,
+    "pokemonSlug": "ponyta-galar",
+    "speciesSlug": "ponyta",
+    "calcSpeciesName": "Ponyta-Galarian Form",
+    "names": {
+      "zh-hans": "小火马-伽勒尔的样子",
+      "zh-hant": "小火馬-伽勒爾的樣子",
+      "en": "Ponyta-Galarian Form",
+      "ja": "ポニータ-ガラルのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "小火马",
+      "zh-hant": "小火馬",
+      "en": "Ponyta",
+      "ja": "ポニータ"
+    },
+    "formNames": {
+      "zh-hans": "伽勒尔的样子",
+      "zh-hant": "伽勒爾的樣子",
+      "en": "Galarian Form",
+      "ja": "ガラルのすがた"
+    },
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 85,
+      "def": 55,
+      "spa": 65,
+      "spd": 65,
+      "spe": 90
+    }
+  },
+  "10163": {
+    "resourceType": "pokemon",
+    "id": 10163,
+    "speciesId": 78,
+    "pokemonSlug": "rapidash-galar",
+    "speciesSlug": "rapidash",
+    "calcSpeciesName": "Rapidash-Galarian Form",
+    "names": {
+      "zh-hans": "烈焰马-伽勒尔的样子",
+      "zh-hant": "烈焰馬-伽勒爾的樣子",
+      "en": "Rapidash-Galarian Form",
+      "ja": "ギャロップ-ガラルのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "烈焰马",
+      "zh-hant": "烈焰馬",
+      "en": "Rapidash",
+      "ja": "ギャロップ"
+    },
+    "formNames": {
+      "zh-hans": "伽勒尔的样子",
+      "zh-hant": "伽勒爾的樣子",
+      "en": "Galarian Form",
+      "ja": "ガラルのすがた"
+    },
+    "types": [
+      "psychic",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 100,
+      "def": 70,
+      "spa": 80,
+      "spd": 80,
+      "spe": 105
+    }
+  },
+  "10164": {
+    "resourceType": "pokemon",
+    "id": 10164,
+    "speciesId": 79,
+    "pokemonSlug": "slowpoke-galar",
+    "speciesSlug": "slowpoke",
+    "calcSpeciesName": "Slowpoke-Galarian Form",
+    "names": {
+      "zh-hans": "呆呆兽-伽勒尔的样子",
+      "zh-hant": "呆呆獸-伽勒爾的樣子",
+      "en": "Slowpoke-Galarian Form",
+      "ja": "ヤドン-ガラルのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "呆呆兽",
+      "zh-hant": "呆呆獸",
+      "en": "Slowpoke",
+      "ja": "ヤドン"
+    },
+    "formNames": {
+      "zh-hans": "伽勒尔的样子",
+      "zh-hant": "伽勒爾的樣子",
+      "en": "Galarian Form",
+      "ja": "ガラルのすがた"
+    },
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 65,
+      "def": 65,
+      "spa": 40,
+      "spd": 40,
+      "spe": 15
+    }
+  },
+  "10165": {
+    "resourceType": "pokemon",
+    "id": 10165,
+    "speciesId": 80,
+    "pokemonSlug": "slowbro-galar",
+    "speciesSlug": "slowbro",
+    "calcSpeciesName": "Slowbro-Galarian Form",
+    "names": {
+      "zh-hans": "呆壳兽-伽勒尔的样子",
+      "zh-hant": "呆殼獸-伽勒爾的樣子",
+      "en": "Slowbro-Galarian Form",
+      "ja": "ヤドラン-ガラルのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "呆壳兽",
+      "zh-hant": "呆殼獸",
+      "en": "Slowbro",
+      "ja": "ヤドラン"
+    },
+    "formNames": {
+      "zh-hans": "伽勒尔的样子",
+      "zh-hant": "伽勒爾的樣子",
+      "en": "Galarian Form",
+      "ja": "ガラルのすがた"
+    },
+    "types": [
+      "poison",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 100,
+      "def": 95,
+      "spa": 100,
+      "spd": 70,
+      "spe": 30
+    }
+  },
+  "10166": {
+    "resourceType": "pokemon",
+    "id": 10166,
+    "speciesId": 83,
+    "pokemonSlug": "farfetchd-galar",
+    "speciesSlug": "farfetchd",
+    "calcSpeciesName": "Farfetch’d-Galarian Form",
+    "names": {
+      "zh-hans": "大葱鸭-伽勒尔的样子",
+      "zh-hant": "大蔥鴨-伽勒爾的樣子",
+      "en": "Farfetch’d-Galarian Form",
+      "ja": "カモネギ-ガラルのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "大葱鸭",
+      "zh-hant": "大蔥鴨",
+      "en": "Farfetch’d",
+      "ja": "カモネギ"
+    },
+    "formNames": {
+      "zh-hans": "伽勒尔的样子",
+      "zh-hant": "伽勒爾的樣子",
+      "en": "Galarian Form",
+      "ja": "ガラルのすがた"
+    },
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 52,
+      "atk": 95,
+      "def": 55,
+      "spa": 58,
+      "spd": 62,
+      "spe": 55
+    }
+  },
+  "10167": {
+    "resourceType": "pokemon",
+    "id": 10167,
+    "speciesId": 110,
+    "pokemonSlug": "weezing-galar",
+    "speciesSlug": "weezing",
+    "calcSpeciesName": "Weezing-Galarian Form",
+    "names": {
+      "zh-hans": "双弹瓦斯-伽勒尔的样子",
+      "zh-hant": "雙彈瓦斯-伽勒爾的樣子",
+      "en": "Weezing-Galarian Form",
+      "ja": "マタドガス-ガラルのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "双弹瓦斯",
+      "zh-hant": "雙彈瓦斯",
+      "en": "Weezing",
+      "ja": "マタドガス"
+    },
+    "formNames": {
+      "zh-hans": "伽勒尔的样子",
+      "zh-hant": "伽勒爾的樣子",
+      "en": "Galarian Form",
+      "ja": "ガラルのすがた"
+    },
+    "types": [
+      "poison",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 90,
+      "def": 120,
+      "spa": 85,
+      "spd": 70,
+      "spe": 60
+    }
+  },
+  "10168": {
+    "resourceType": "pokemon",
+    "id": 10168,
+    "speciesId": 122,
+    "pokemonSlug": "mr-mime-galar",
+    "speciesSlug": "mr-mime",
+    "calcSpeciesName": "Mr. Mime-Galarian Form",
+    "names": {
+      "zh-hans": "魔墙人偶-伽勒尔的样子",
+      "zh-hant": "魔牆人偶-伽勒爾的樣子",
+      "en": "Mr. Mime-Galarian Form",
+      "ja": "バリヤード-ガラルのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "魔墙人偶",
+      "zh-hant": "魔牆人偶",
+      "en": "Mr. Mime",
+      "ja": "バリヤード"
+    },
+    "formNames": {
+      "zh-hans": "伽勒尔的样子",
+      "zh-hant": "伽勒爾的樣子",
+      "en": "Galarian Form",
+      "ja": "ガラルのすがた"
+    },
+    "types": [
+      "ice",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 50,
+      "atk": 65,
+      "def": 65,
+      "spa": 90,
+      "spd": 90,
+      "spe": 100
+    }
+  },
+  "10169": {
+    "resourceType": "pokemon",
+    "id": 10169,
+    "speciesId": 144,
+    "pokemonSlug": "articuno-galar",
+    "speciesSlug": "articuno",
+    "calcSpeciesName": "Articuno-Galarian Form",
+    "names": {
+      "zh-hans": "急冻鸟-伽勒尔的样子",
+      "zh-hant": "急凍鳥-伽勒爾的樣子",
+      "en": "Articuno-Galarian Form",
+      "ja": "フリーザー-ガラルのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "急冻鸟",
+      "zh-hant": "急凍鳥",
+      "en": "Articuno",
+      "ja": "フリーザー"
+    },
+    "formNames": {
+      "zh-hans": "伽勒尔的样子",
+      "zh-hant": "伽勒爾的樣子",
+      "en": "Galarian Form",
+      "ja": "ガラルのすがた"
+    },
+    "types": [
+      "psychic",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 85,
+      "def": 85,
+      "spa": 125,
+      "spd": 100,
+      "spe": 95
+    }
+  },
+  "10170": {
+    "resourceType": "pokemon",
+    "id": 10170,
+    "speciesId": 145,
+    "pokemonSlug": "zapdos-galar",
+    "speciesSlug": "zapdos",
+    "calcSpeciesName": "Zapdos-Galarian Form",
+    "names": {
+      "zh-hans": "闪电鸟-伽勒尔的样子",
+      "zh-hant": "閃電鳥-伽勒爾的樣子",
+      "en": "Zapdos-Galarian Form",
+      "ja": "サンダー-ガラルのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "闪电鸟",
+      "zh-hant": "閃電鳥",
+      "en": "Zapdos",
+      "ja": "サンダー"
+    },
+    "formNames": {
+      "zh-hans": "伽勒尔的样子",
+      "zh-hant": "伽勒爾的樣子",
+      "en": "Galarian Form",
+      "ja": "ガラルのすがた"
+    },
+    "types": [
+      "fighting",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 125,
+      "def": 90,
+      "spa": 85,
+      "spd": 90,
+      "spe": 100
+    }
+  },
+  "10171": {
+    "resourceType": "pokemon",
+    "id": 10171,
+    "speciesId": 146,
+    "pokemonSlug": "moltres-galar",
+    "speciesSlug": "moltres",
+    "calcSpeciesName": "Moltres-Galarian Form",
+    "names": {
+      "zh-hans": "火焰鸟-伽勒尔的样子",
+      "zh-hant": "火焰鳥-伽勒爾的樣子",
+      "en": "Moltres-Galarian Form",
+      "ja": "ファイヤー-ガラルのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "火焰鸟",
+      "zh-hant": "火焰鳥",
+      "en": "Moltres",
+      "ja": "ファイヤー"
+    },
+    "formNames": {
+      "zh-hans": "伽勒尔的样子",
+      "zh-hant": "伽勒爾的樣子",
+      "en": "Galarian Form",
+      "ja": "ガラルのすがた"
+    },
+    "types": [
+      "dark",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 85,
+      "def": 90,
+      "spa": 100,
+      "spd": 125,
+      "spe": 90
+    }
+  },
+  "10172": {
+    "resourceType": "pokemon",
+    "id": 10172,
+    "speciesId": 199,
+    "pokemonSlug": "slowking-galar",
+    "speciesSlug": "slowking",
+    "calcSpeciesName": "Slowking-Galarian Form",
+    "names": {
+      "zh-hans": "呆呆王-伽勒尔的样子",
+      "zh-hant": "呆呆王-伽勒爾的樣子",
+      "en": "Slowking-Galarian Form",
+      "ja": "ヤドキング-ガラルのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "呆呆王",
+      "zh-hant": "呆呆王",
+      "en": "Slowking",
+      "ja": "ヤドキング"
+    },
+    "formNames": {
+      "zh-hans": "伽勒尔的样子",
+      "zh-hant": "伽勒爾的樣子",
+      "en": "Galarian Form",
+      "ja": "ガラルのすがた"
+    },
+    "types": [
+      "poison",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 65,
+      "def": 80,
+      "spa": 110,
+      "spd": 110,
+      "spe": 30
+    }
+  },
+  "10173": {
+    "resourceType": "pokemon",
+    "id": 10173,
+    "speciesId": 222,
+    "pokemonSlug": "corsola-galar",
+    "speciesSlug": "corsola",
+    "calcSpeciesName": "Corsola-Galarian Form",
+    "names": {
+      "zh-hans": "太阳珊瑚-伽勒尔的样子",
+      "zh-hant": "太陽珊瑚-伽勒爾的樣子",
+      "en": "Corsola-Galarian Form",
+      "ja": "サニーゴ-ガラルのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "太阳珊瑚",
+      "zh-hant": "太陽珊瑚",
+      "en": "Corsola",
+      "ja": "サニーゴ"
+    },
+    "formNames": {
+      "zh-hans": "伽勒尔的样子",
+      "zh-hant": "伽勒爾的樣子",
+      "en": "Galarian Form",
+      "ja": "ガラルのすがた"
+    },
+    "types": [
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 55,
+      "def": 100,
+      "spa": 65,
+      "spd": 100,
+      "spe": 30
+    }
+  },
+  "10174": {
+    "resourceType": "pokemon",
+    "id": 10174,
+    "speciesId": 263,
+    "pokemonSlug": "zigzagoon-galar",
+    "speciesSlug": "zigzagoon",
+    "calcSpeciesName": "Zigzagoon-Galarian Form",
+    "names": {
+      "zh-hans": "蛇纹熊-伽勒尔的样子",
+      "zh-hant": "蛇紋熊-伽勒爾的樣子",
+      "en": "Zigzagoon-Galarian Form",
+      "ja": "ジグザグマ-ガラルのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "蛇纹熊",
+      "zh-hant": "蛇紋熊",
+      "en": "Zigzagoon",
+      "ja": "ジグザグマ"
+    },
+    "formNames": {
+      "zh-hans": "伽勒尔的样子",
+      "zh-hant": "伽勒爾的樣子",
+      "en": "Galarian Form",
+      "ja": "ガラルのすがた"
+    },
+    "types": [
+      "dark",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 38,
+      "atk": 30,
+      "def": 41,
+      "spa": 30,
+      "spd": 41,
+      "spe": 60
+    }
+  },
+  "10175": {
+    "resourceType": "pokemon",
+    "id": 10175,
+    "speciesId": 264,
+    "pokemonSlug": "linoone-galar",
+    "speciesSlug": "linoone",
+    "calcSpeciesName": "Linoone-Galarian Form",
+    "names": {
+      "zh-hans": "直冲熊-伽勒尔的样子",
+      "zh-hant": "直衝熊-伽勒爾的樣子",
+      "en": "Linoone-Galarian Form",
+      "ja": "マッスグマ-ガラルのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "直冲熊",
+      "zh-hant": "直衝熊",
+      "en": "Linoone",
+      "ja": "マッスグマ"
+    },
+    "formNames": {
+      "zh-hans": "伽勒尔的样子",
+      "zh-hant": "伽勒爾的樣子",
+      "en": "Galarian Form",
+      "ja": "ガラルのすがた"
+    },
+    "types": [
+      "dark",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 78,
+      "atk": 70,
+      "def": 61,
+      "spa": 50,
+      "spd": 61,
+      "spe": 100
+    }
+  },
+  "10176": {
+    "resourceType": "pokemon",
+    "id": 10176,
+    "speciesId": 554,
+    "pokemonSlug": "darumaka-galar",
+    "speciesSlug": "darumaka",
+    "calcSpeciesName": "Darumaka-Galarian Form",
+    "names": {
+      "zh-hans": "火红不倒翁-伽勒尔的样子",
+      "zh-hant": "火紅不倒翁-伽勒爾的樣子",
+      "en": "Darumaka-Galarian Form",
+      "ja": "ダルマッカ-ガラルのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "火红不倒翁",
+      "zh-hant": "火紅不倒翁",
+      "en": "Darumaka",
+      "ja": "ダルマッカ"
+    },
+    "formNames": {
+      "zh-hans": "伽勒尔的样子",
+      "zh-hant": "伽勒爾的樣子",
+      "en": "Galarian Form",
+      "ja": "ガラルのすがた"
+    },
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 90,
+      "def": 45,
+      "spa": 15,
+      "spd": 45,
+      "spe": 50
+    }
+  },
+  "10177": {
+    "resourceType": "pokemon",
+    "id": 10177,
+    "speciesId": 555,
+    "pokemonSlug": "darmanitan-galar-standard",
+    "speciesSlug": "darmanitan",
+    "calcSpeciesName": "Darmanitan-Galarian Form",
+    "names": {
+      "zh-hans": "达摩狒狒-伽勒尔的样子",
+      "zh-hant": "達摩狒狒-伽勒爾的樣子",
+      "en": "Darmanitan-Galarian Form",
+      "ja": "ヒヒダルマ-ガラルのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "达摩狒狒",
+      "zh-hant": "達摩狒狒",
+      "en": "Darmanitan",
+      "ja": "ヒヒダルマ"
+    },
+    "formNames": {
+      "zh-hans": "伽勒尔的样子",
+      "zh-hant": "伽勒爾的樣子",
+      "en": "Galarian Form",
+      "ja": "ガラルのすがた"
+    },
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 105,
+      "atk": 140,
+      "def": 55,
+      "spa": 30,
+      "spd": 55,
+      "spe": 95
+    }
+  },
+  "10178": {
+    "resourceType": "pokemon",
+    "id": 10178,
+    "speciesId": 555,
+    "pokemonSlug": "darmanitan-galar-zen",
+    "speciesSlug": "darmanitan",
+    "calcSpeciesName": "Darmanitan-Zen Mode",
+    "names": {
+      "zh-hans": "达摩狒狒-达摩模式",
+      "zh-hant": "達摩狒狒-達摩模式",
+      "en": "Darmanitan-Zen Mode",
+      "ja": "ヒヒダルマ-ダルマモード"
+    },
+    "speciesNames": {
+      "zh-hans": "达摩狒狒",
+      "zh-hant": "達摩狒狒",
+      "en": "Darmanitan",
+      "ja": "ヒヒダルマ"
+    },
+    "formNames": {
+      "zh-hans": "达摩模式",
+      "zh-hant": "達摩模式",
+      "en": "Zen Mode",
+      "ja": "ダルマモード"
+    },
+    "types": [
+      "ice",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 105,
+      "atk": 160,
+      "def": 55,
+      "spa": 30,
+      "spd": 55,
+      "spe": 135
+    }
+  },
+  "10179": {
+    "resourceType": "pokemon",
+    "id": 10179,
+    "speciesId": 562,
+    "pokemonSlug": "yamask-galar",
+    "speciesSlug": "yamask",
+    "calcSpeciesName": "Yamask-Galarian Form",
+    "names": {
+      "zh-hans": "哭哭面具-伽勒尔的样子",
+      "zh-hant": "哭哭面具-伽勒爾的樣子",
+      "en": "Yamask-Galarian Form",
+      "ja": "デスマス-ガラルのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "哭哭面具",
+      "zh-hant": "哭哭面具",
+      "en": "Yamask",
+      "ja": "デスマス"
+    },
+    "formNames": {
+      "zh-hans": "伽勒尔的样子",
+      "zh-hant": "伽勒爾的樣子",
+      "en": "Galarian Form",
+      "ja": "ガラルのすがた"
+    },
+    "types": [
+      "ground",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 38,
+      "atk": 55,
+      "def": 85,
+      "spa": 30,
+      "spd": 65,
+      "spe": 30
+    }
+  },
+  "10180": {
+    "resourceType": "pokemon",
+    "id": 10180,
+    "speciesId": 618,
+    "pokemonSlug": "stunfisk-galar",
+    "speciesSlug": "stunfisk",
+    "calcSpeciesName": "Stunfisk-Galarian Form",
+    "names": {
+      "zh-hans": "泥巴鱼-伽勒尔的样子",
+      "zh-hant": "泥巴魚-伽勒爾的樣子",
+      "en": "Stunfisk-Galarian Form",
+      "ja": "マッギョ-ガラルのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "泥巴鱼",
+      "zh-hant": "泥巴魚",
+      "en": "Stunfisk",
+      "ja": "マッギョ"
+    },
+    "formNames": {
+      "zh-hans": "伽勒尔的样子",
+      "zh-hant": "伽勒爾的樣子",
+      "en": "Galarian Form",
+      "ja": "ガラルのすがた"
+    },
+    "types": [
+      "ground",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 109,
+      "atk": 81,
+      "def": 99,
+      "spa": 66,
+      "spd": 84,
+      "spe": 32
+    }
+  },
+  "10181": {
+    "resourceType": "pokemon",
+    "id": 10181,
+    "speciesId": 718,
+    "pokemonSlug": "zygarde-10",
+    "speciesSlug": "zygarde",
+    "calcSpeciesName": "Zygarde-10% Forme",
+    "names": {
+      "zh-hans": "基格尔德-１０％形态",
+      "zh-hant": "基格爾德-１０％形態",
+      "en": "Zygarde-10% Forme",
+      "ja": "ジガルデ-１０％フォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "基格尔德",
+      "zh-hant": "基格爾德",
+      "en": "Zygarde",
+      "ja": "ジガルデ"
+    },
+    "formNames": {
+      "zh-hans": "１０％形态",
+      "zh-hant": "１０％形態",
+      "en": "10% Forme",
+      "ja": "１０％フォルム"
+    },
+    "types": [
+      "dragon",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 54,
+      "atk": 100,
+      "def": 71,
+      "spa": 61,
+      "spd": 85,
+      "spe": 115
+    }
+  },
+  "10182": {
+    "resourceType": "pokemon",
+    "id": 10182,
+    "speciesId": 845,
+    "pokemonSlug": "cramorant-gulping",
+    "speciesSlug": "cramorant",
+    "calcSpeciesName": "Cramorant-Gulping Form",
+    "names": {
+      "zh-hans": "古月鸟-一口吞的样子",
+      "zh-hant": "古月鳥-一口吞的樣子",
+      "en": "Cramorant-Gulping Form",
+      "ja": "ウッウ-うのみのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "古月鸟",
+      "zh-hant": "古月鳥",
+      "en": "Cramorant",
+      "ja": "ウッウ"
+    },
+    "formNames": {
+      "zh-hans": "一口吞的样子",
+      "zh-hant": "一口吞的樣子",
+      "en": "Gulping Form",
+      "ja": "うのみのすがた"
+    },
+    "types": [
+      "flying",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 85,
+      "def": 55,
+      "spa": 85,
+      "spd": 95,
+      "spe": 85
+    }
+  },
+  "10183": {
+    "resourceType": "pokemon",
+    "id": 10183,
+    "speciesId": 845,
+    "pokemonSlug": "cramorant-gorging",
+    "speciesSlug": "cramorant",
+    "calcSpeciesName": "Cramorant-Gorging Form",
+    "names": {
+      "zh-hans": "古月鸟-大口吞的样子",
+      "zh-hant": "古月鳥-大口吞的樣子",
+      "en": "Cramorant-Gorging Form",
+      "ja": "ウッウ-まるのみのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "古月鸟",
+      "zh-hant": "古月鳥",
+      "en": "Cramorant",
+      "ja": "ウッウ"
+    },
+    "formNames": {
+      "zh-hans": "大口吞的样子",
+      "zh-hant": "大口吞的樣子",
+      "en": "Gorging Form",
+      "ja": "まるのみのすがた"
+    },
+    "types": [
+      "flying",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 85,
+      "def": 55,
+      "spa": 85,
+      "spd": 95,
+      "spe": 85
+    }
+  },
+  "10184": {
+    "resourceType": "pokemon",
+    "id": 10184,
+    "speciesId": 849,
+    "pokemonSlug": "toxtricity-low-key",
+    "speciesSlug": "toxtricity",
+    "calcSpeciesName": "Toxtricity-Low Key Form",
+    "names": {
+      "zh-hans": "颤弦蝾螈-低调的样子",
+      "zh-hant": "顫弦蠑螈-低調的樣子",
+      "en": "Toxtricity-Low Key Form",
+      "ja": "ストリンダー-ローなすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "颤弦蝾螈",
+      "zh-hant": "顫弦蠑螈",
+      "en": "Toxtricity",
+      "ja": "ストリンダー"
+    },
+    "formNames": {
+      "zh-hans": "低调的样子",
+      "zh-hant": "低調的樣子",
+      "en": "Low Key Form",
+      "ja": "ローなすがた"
+    },
+    "types": [
+      "electric",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 98,
+      "def": 70,
+      "spa": 114,
+      "spd": 70,
+      "spe": 75
+    }
+  },
+  "10185": {
+    "resourceType": "pokemon",
+    "id": 10185,
+    "speciesId": 875,
+    "pokemonSlug": "eiscue-noice",
+    "speciesSlug": "eiscue",
+    "calcSpeciesName": "Eiscue-Noice Face",
+    "names": {
+      "zh-hans": "冰砌鹅-解冻头",
+      "zh-hant": "冰砌鵝-解凍頭",
+      "en": "Eiscue-Noice Face",
+      "ja": "コオリッポ-ナイスフェイス"
+    },
+    "speciesNames": {
+      "zh-hans": "冰砌鹅",
+      "zh-hant": "冰砌鵝",
+      "en": "Eiscue",
+      "ja": "コオリッポ"
+    },
+    "formNames": {
+      "zh-hans": "解冻头",
+      "zh-hant": "解凍頭",
+      "en": "Noice Face",
+      "ja": "ナイスフェイス"
+    },
+    "types": [
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 80,
+      "def": 70,
+      "spa": 65,
+      "spd": 50,
+      "spe": 130
+    }
+  },
+  "10186": {
+    "resourceType": "pokemon",
+    "id": 10186,
+    "speciesId": 876,
+    "pokemonSlug": "indeedee-female",
+    "speciesSlug": "indeedee",
+    "calcSpeciesName": "Indeedee-Female",
+    "names": {
+      "zh-hans": "爱管侍-雌性的样子",
+      "zh-hant": "愛管侍-雌性的樣子",
+      "en": "Indeedee-Female",
+      "ja": "イエッサン-メスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "爱管侍",
+      "zh-hant": "愛管侍",
+      "en": "Indeedee",
+      "ja": "イエッサン"
+    },
+    "formNames": {
+      "zh-hans": "雌性的样子",
+      "zh-hant": "雌性的樣子",
+      "en": "Female",
+      "ja": "メスのすがた"
+    },
+    "types": [
+      "psychic",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 55,
+      "def": 65,
+      "spa": 95,
+      "spd": 105,
+      "spe": 85
+    }
+  },
+  "10187": {
+    "resourceType": "pokemon",
+    "id": 10187,
+    "speciesId": 877,
+    "pokemonSlug": "morpeko-hangry",
+    "speciesSlug": "morpeko",
+    "calcSpeciesName": "Morpeko-Hangry Mode",
+    "names": {
+      "zh-hans": "莫鲁贝可-空腹花纹",
+      "zh-hant": "莫魯貝可-空腹花紋",
+      "en": "Morpeko-Hangry Mode",
+      "ja": "モルペコ-はらぺこもよう"
+    },
+    "speciesNames": {
+      "zh-hans": "莫鲁贝可",
+      "zh-hant": "莫魯貝可",
+      "en": "Morpeko",
+      "ja": "モルペコ"
+    },
+    "formNames": {
+      "zh-hans": "空腹花纹",
+      "zh-hant": "空腹花紋",
+      "en": "Hangry Mode",
+      "ja": "はらぺこもよう"
+    },
+    "types": [
+      "electric",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 58,
+      "atk": 95,
+      "def": 58,
+      "spa": 70,
+      "spd": 58,
+      "spe": 97
+    }
+  },
+  "10188": {
+    "resourceType": "pokemon",
+    "id": 10188,
+    "speciesId": 888,
+    "pokemonSlug": "zacian-crowned",
+    "speciesSlug": "zacian",
+    "calcSpeciesName": "Zacian-Crowned Sword",
+    "names": {
+      "zh-hans": "苍响-剑之王",
+      "zh-hant": "蒼響-劍之王",
+      "en": "Zacian-Crowned Sword",
+      "ja": "ザシアン-けんのおう"
+    },
+    "speciesNames": {
+      "zh-hans": "苍响",
+      "zh-hant": "蒼響",
+      "en": "Zacian",
+      "ja": "ザシアン"
+    },
+    "formNames": {
+      "zh-hans": "剑之王",
+      "zh-hant": "劍之王",
+      "en": "Crowned Sword",
+      "ja": "けんのおう"
+    },
+    "types": [
+      "fairy",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 92,
+      "atk": 150,
+      "def": 115,
+      "spa": 80,
+      "spd": 115,
+      "spe": 148
+    }
+  },
+  "10189": {
+    "resourceType": "pokemon",
+    "id": 10189,
+    "speciesId": 889,
+    "pokemonSlug": "zamazenta-crowned",
+    "speciesSlug": "zamazenta",
+    "calcSpeciesName": "Zamazenta-Crowned Shield",
+    "names": {
+      "zh-hans": "藏玛然特-盾之王",
+      "zh-hant": "藏瑪然特-盾之王",
+      "en": "Zamazenta-Crowned Shield",
+      "ja": "ザマゼンタ-たてのおう"
+    },
+    "speciesNames": {
+      "zh-hans": "藏玛然特",
+      "zh-hant": "藏瑪然特",
+      "en": "Zamazenta",
+      "ja": "ザマゼンタ"
+    },
+    "formNames": {
+      "zh-hans": "盾之王",
+      "zh-hant": "盾之王",
+      "en": "Crowned Shield",
+      "ja": "たてのおう"
+    },
+    "types": [
+      "fighting",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 92,
+      "atk": 120,
+      "def": 140,
+      "spa": 80,
+      "spd": 140,
+      "spe": 128
+    }
+  },
+  "10190": {
+    "resourceType": "pokemon",
+    "id": 10190,
+    "speciesId": 890,
+    "pokemonSlug": "eternatus-eternamax",
+    "speciesSlug": "eternatus",
+    "calcSpeciesName": "Eternatus-Eternamax",
+    "names": {
+      "zh-hans": "无极汰那-无极巨化",
+      "zh-hant": "無極汰那-無極巨化",
+      "en": "Eternatus-Eternamax",
+      "ja": "ムゲンダイナ-ムゲンダイマックス"
+    },
+    "speciesNames": {
+      "zh-hans": "无极汰那",
+      "zh-hant": "無極汰那",
+      "en": "Eternatus",
+      "ja": "ムゲンダイナ"
+    },
+    "formNames": {
+      "zh-hans": "无极巨化",
+      "zh-hant": "無極巨化",
+      "en": "Eternamax",
+      "ja": "ムゲンダイマックス"
+    },
+    "types": [
+      "poison",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 255,
+      "atk": 115,
+      "def": 250,
+      "spa": 125,
+      "spd": 250,
+      "spe": 130
+    }
+  },
+  "10191": {
+    "resourceType": "pokemon",
+    "id": 10191,
+    "speciesId": 892,
+    "pokemonSlug": "urshifu-rapid-strike",
+    "speciesSlug": "urshifu",
+    "calcSpeciesName": "Urshifu-Rapid Strike Style",
+    "names": {
+      "zh-hans": "武道熊师-连击流",
+      "zh-hant": "武道熊師-連擊流",
+      "en": "Urshifu-Rapid Strike Style",
+      "ja": "ウーラオス-れんげきのかた"
+    },
+    "speciesNames": {
+      "zh-hans": "武道熊师",
+      "zh-hant": "武道熊師",
+      "en": "Urshifu",
+      "ja": "ウーラオス"
+    },
+    "formNames": {
+      "zh-hans": "连击流",
+      "zh-hant": "連擊流",
+      "en": "Rapid Strike Style",
+      "ja": "れんげきのかた"
+    },
+    "types": [
+      "fighting",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 130,
+      "def": 100,
+      "spa": 63,
+      "spd": 60,
+      "spe": 97
+    }
+  },
+  "10192": {
+    "resourceType": "pokemon",
+    "id": 10192,
+    "speciesId": 893,
+    "pokemonSlug": "zarude-dada",
+    "speciesSlug": "zarude",
+    "calcSpeciesName": "Zarude-Dada",
+    "names": {
+      "zh-hans": "萨戮德-阿爸",
+      "zh-hant": "薩戮德-阿爸",
+      "en": "Zarude-Dada",
+      "ja": "ザルード-とうちゃん"
+    },
+    "speciesNames": {
+      "zh-hans": "萨戮德",
+      "zh-hant": "薩戮德",
+      "en": "Zarude",
+      "ja": "ザルード"
+    },
+    "formNames": {
+      "zh-hans": "阿爸",
+      "zh-hant": "阿爸",
+      "en": "Dada",
+      "ja": "とうちゃん"
+    },
+    "types": [
+      "dark",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 105,
+      "atk": 120,
+      "def": 105,
+      "spa": 70,
+      "spd": 95,
+      "spe": 105
+    }
+  },
+  "10193": {
+    "resourceType": "pokemon",
+    "id": 10193,
+    "speciesId": 898,
+    "pokemonSlug": "calyrex-ice",
+    "speciesSlug": "calyrex",
+    "calcSpeciesName": "Calyrex-Ice Rider",
+    "names": {
+      "zh-hans": "蕾冠王-骑白马的样子",
+      "zh-hant": "蕾冠王-騎白馬的樣子",
+      "en": "Calyrex-Ice Rider",
+      "ja": "バドレックス-はくばじょうのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "蕾冠王",
+      "zh-hant": "蕾冠王",
+      "en": "Calyrex",
+      "ja": "バドレックス"
+    },
+    "formNames": {
+      "zh-hans": "骑白马的样子",
+      "zh-hant": "騎白馬的樣子",
+      "en": "Ice Rider",
+      "ja": "はくばじょうのすがた"
+    },
+    "types": [
+      "psychic",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 165,
+      "def": 150,
+      "spa": 85,
+      "spd": 130,
+      "spe": 50
+    }
+  },
+  "10194": {
+    "resourceType": "pokemon",
+    "id": 10194,
+    "speciesId": 898,
+    "pokemonSlug": "calyrex-shadow",
+    "speciesSlug": "calyrex",
+    "calcSpeciesName": "Calyrex-Shadow Rider",
+    "names": {
+      "zh-hans": "蕾冠王-骑黑马的样子",
+      "zh-hant": "蕾冠王-騎黑馬的樣子",
+      "en": "Calyrex-Shadow Rider",
+      "ja": "バドレックス-こくばじょうのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "蕾冠王",
+      "zh-hant": "蕾冠王",
+      "en": "Calyrex",
+      "ja": "バドレックス"
+    },
+    "formNames": {
+      "zh-hans": "骑黑马的样子",
+      "zh-hant": "騎黑馬的樣子",
+      "en": "Shadow Rider",
+      "ja": "こくばじょうのすがた"
+    },
+    "types": [
+      "psychic",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 85,
+      "def": 80,
+      "spa": 165,
+      "spd": 100,
+      "spe": 150
+    }
+  },
+  "10195": {
+    "resourceType": "pokemon",
+    "id": 10195,
+    "speciesId": 3,
+    "pokemonSlug": "venusaur-gmax",
+    "speciesSlug": "venusaur",
+    "calcSpeciesName": "Venusaur-Gigantamax Form",
+    "names": {
+      "zh-hans": "妙蛙花-Gigantamax Form",
+      "zh-hant": "妙蛙花-Gigantamax Form",
+      "en": "Venusaur-Gigantamax Form",
+      "ja": "フシギバナ-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "妙蛙花",
+      "zh-hant": "妙蛙花",
+      "en": "Venusaur",
+      "ja": "フシギバナ"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "grass",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 82,
+      "def": 83,
+      "spa": 100,
+      "spd": 100,
+      "spe": 80
+    }
+  },
+  "10196": {
+    "resourceType": "pokemon",
+    "id": 10196,
+    "speciesId": 6,
+    "pokemonSlug": "charizard-gmax",
+    "speciesSlug": "charizard",
+    "calcSpeciesName": "Charizard-Gigantamax Form",
+    "names": {
+      "zh-hans": "喷火龙-Gigantamax Form",
+      "zh-hant": "噴火龍-Gigantamax Form",
+      "en": "Charizard-Gigantamax Form",
+      "ja": "リザードン-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "喷火龙",
+      "zh-hant": "噴火龍",
+      "en": "Charizard",
+      "ja": "リザードン"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "fire",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 78,
+      "atk": 84,
+      "def": 78,
+      "spa": 109,
+      "spd": 85,
+      "spe": 100
+    }
+  },
+  "10197": {
+    "resourceType": "pokemon",
+    "id": 10197,
+    "speciesId": 9,
+    "pokemonSlug": "blastoise-gmax",
+    "speciesSlug": "blastoise",
+    "calcSpeciesName": "Blastoise-Gigantamax Form",
+    "names": {
+      "zh-hans": "水箭龟-Gigantamax Form",
+      "zh-hant": "水箭龜-Gigantamax Form",
+      "en": "Blastoise-Gigantamax Form",
+      "ja": "カメックス-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "水箭龟",
+      "zh-hant": "水箭龜",
+      "en": "Blastoise",
+      "ja": "カメックス"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 79,
+      "atk": 83,
+      "def": 100,
+      "spa": 85,
+      "spd": 105,
+      "spe": 78
+    }
+  },
+  "10198": {
+    "resourceType": "pokemon",
+    "id": 10198,
+    "speciesId": 12,
+    "pokemonSlug": "butterfree-gmax",
+    "speciesSlug": "butterfree",
+    "calcSpeciesName": "Butterfree-Gigantamax Form",
+    "names": {
+      "zh-hans": "巴大蝶-Gigantamax Form",
+      "zh-hant": "巴大蝶-Gigantamax Form",
+      "en": "Butterfree-Gigantamax Form",
+      "ja": "バタフリー-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "巴大蝶",
+      "zh-hant": "巴大蝶",
+      "en": "Butterfree",
+      "ja": "バタフリー"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "bug",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 45,
+      "def": 50,
+      "spa": 90,
+      "spd": 80,
+      "spe": 70
+    }
+  },
+  "10199": {
+    "resourceType": "pokemon",
+    "id": 10199,
+    "speciesId": 25,
+    "pokemonSlug": "pikachu-gmax",
+    "speciesSlug": "pikachu",
+    "calcSpeciesName": "Pikachu-Gigantamax Form",
+    "names": {
+      "zh-hans": "皮卡丘-Gigantamax Form",
+      "zh-hant": "皮卡丘-Gigantamax Form",
+      "en": "Pikachu-Gigantamax Form",
+      "ja": "ピカチュウ-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "皮卡丘",
+      "zh-hant": "皮卡丘",
+      "en": "Pikachu",
+      "ja": "ピカチュウ"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 55,
+      "def": 40,
+      "spa": 50,
+      "spd": 50,
+      "spe": 90
+    }
+  },
+  "10200": {
+    "resourceType": "pokemon",
+    "id": 10200,
+    "speciesId": 52,
+    "pokemonSlug": "meowth-gmax",
+    "speciesSlug": "meowth",
+    "calcSpeciesName": "Meowth-Gigantamax Form",
+    "names": {
+      "zh-hans": "喵喵-Gigantamax Form",
+      "zh-hant": "喵喵-Gigantamax Form",
+      "en": "Meowth-Gigantamax Form",
+      "ja": "ニャース-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "喵喵",
+      "zh-hant": "喵喵",
+      "en": "Meowth",
+      "ja": "ニャース"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 45,
+      "def": 35,
+      "spa": 40,
+      "spd": 40,
+      "spe": 90
+    }
+  },
+  "10201": {
+    "resourceType": "pokemon",
+    "id": 10201,
+    "speciesId": 68,
+    "pokemonSlug": "machamp-gmax",
+    "speciesSlug": "machamp",
+    "calcSpeciesName": "Machamp-Gigantamax Form",
+    "names": {
+      "zh-hans": "怪力-Gigantamax Form",
+      "zh-hant": "怪力-Gigantamax Form",
+      "en": "Machamp-Gigantamax Form",
+      "ja": "カイリキー-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "怪力",
+      "zh-hant": "怪力",
+      "en": "Machamp",
+      "ja": "カイリキー"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 130,
+      "def": 80,
+      "spa": 65,
+      "spd": 85,
+      "spe": 55
+    }
+  },
+  "10202": {
+    "resourceType": "pokemon",
+    "id": 10202,
+    "speciesId": 94,
+    "pokemonSlug": "gengar-gmax",
+    "speciesSlug": "gengar",
+    "calcSpeciesName": "Gengar-Gigantamax Form",
+    "names": {
+      "zh-hans": "耿鬼-Gigantamax Form",
+      "zh-hant": "耿鬼-Gigantamax Form",
+      "en": "Gengar-Gigantamax Form",
+      "ja": "ゲンガー-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "耿鬼",
+      "zh-hant": "耿鬼",
+      "en": "Gengar",
+      "ja": "ゲンガー"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "ghost",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 65,
+      "def": 60,
+      "spa": 130,
+      "spd": 75,
+      "spe": 110
+    }
+  },
+  "10203": {
+    "resourceType": "pokemon",
+    "id": 10203,
+    "speciesId": 99,
+    "pokemonSlug": "kingler-gmax",
+    "speciesSlug": "kingler",
+    "calcSpeciesName": "Kingler-Gigantamax Form",
+    "names": {
+      "zh-hans": "巨钳蟹-Gigantamax Form",
+      "zh-hant": "巨鉗蟹-Gigantamax Form",
+      "en": "Kingler-Gigantamax Form",
+      "ja": "キングラー-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "巨钳蟹",
+      "zh-hant": "巨鉗蟹",
+      "en": "Kingler",
+      "ja": "キングラー"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 130,
+      "def": 115,
+      "spa": 50,
+      "spd": 50,
+      "spe": 75
+    }
+  },
+  "10204": {
+    "resourceType": "pokemon",
+    "id": 10204,
+    "speciesId": 131,
+    "pokemonSlug": "lapras-gmax",
+    "speciesSlug": "lapras",
+    "calcSpeciesName": "Lapras-Gigantamax Form",
+    "names": {
+      "zh-hans": "拉普拉斯-Gigantamax Form",
+      "zh-hant": "拉普拉斯-Gigantamax Form",
+      "en": "Lapras-Gigantamax Form",
+      "ja": "ラプラス-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "拉普拉斯",
+      "zh-hant": "拉普拉斯",
+      "en": "Lapras",
+      "ja": "ラプラス"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "water",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 130,
+      "atk": 85,
+      "def": 80,
+      "spa": 85,
+      "spd": 95,
+      "spe": 60
+    }
+  },
+  "10205": {
+    "resourceType": "pokemon",
+    "id": 10205,
+    "speciesId": 133,
+    "pokemonSlug": "eevee-gmax",
+    "speciesSlug": "eevee",
+    "calcSpeciesName": "Eevee-Gigantamax Form",
+    "names": {
+      "zh-hans": "伊布-Gigantamax Form",
+      "zh-hant": "伊布-Gigantamax Form",
+      "en": "Eevee-Gigantamax Form",
+      "ja": "イーブイ-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "伊布",
+      "zh-hant": "伊布",
+      "en": "Eevee",
+      "ja": "イーブイ"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 55,
+      "def": 50,
+      "spa": 45,
+      "spd": 65,
+      "spe": 55
+    }
+  },
+  "10206": {
+    "resourceType": "pokemon",
+    "id": 10206,
+    "speciesId": 143,
+    "pokemonSlug": "snorlax-gmax",
+    "speciesSlug": "snorlax",
+    "calcSpeciesName": "Snorlax-Gigantamax Form",
+    "names": {
+      "zh-hans": "卡比兽-Gigantamax Form",
+      "zh-hant": "卡比獸-Gigantamax Form",
+      "en": "Snorlax-Gigantamax Form",
+      "ja": "カビゴン-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "卡比兽",
+      "zh-hant": "卡比獸",
+      "en": "Snorlax",
+      "ja": "カビゴン"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 160,
+      "atk": 110,
+      "def": 65,
+      "spa": 65,
+      "spd": 110,
+      "spe": 30
+    }
+  },
+  "10207": {
+    "resourceType": "pokemon",
+    "id": 10207,
+    "speciesId": 569,
+    "pokemonSlug": "garbodor-gmax",
+    "speciesSlug": "garbodor",
+    "calcSpeciesName": "Garbodor-Gigantamax Form",
+    "names": {
+      "zh-hans": "灰尘山-Gigantamax Form",
+      "zh-hant": "灰塵山-Gigantamax Form",
+      "en": "Garbodor-Gigantamax Form",
+      "ja": "ダストダス-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "灰尘山",
+      "zh-hant": "灰塵山",
+      "en": "Garbodor",
+      "ja": "ダストダス"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 95,
+      "def": 82,
+      "spa": 60,
+      "spd": 82,
+      "spe": 75
+    }
+  },
+  "10208": {
+    "resourceType": "pokemon",
+    "id": 10208,
+    "speciesId": 809,
+    "pokemonSlug": "melmetal-gmax",
+    "speciesSlug": "melmetal",
+    "calcSpeciesName": "Melmetal-Gigantamax Form",
+    "names": {
+      "zh-hans": "美录梅塔-Gigantamax Form",
+      "zh-hant": "美錄梅塔-Gigantamax Form",
+      "en": "Melmetal-Gigantamax Form",
+      "ja": "メルメタル-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "美录梅塔",
+      "zh-hant": "美錄梅塔",
+      "en": "Melmetal",
+      "ja": "メルメタル"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 135,
+      "atk": 143,
+      "def": 143,
+      "spa": 80,
+      "spd": 65,
+      "spe": 34
+    }
+  },
+  "10209": {
+    "resourceType": "pokemon",
+    "id": 10209,
+    "speciesId": 812,
+    "pokemonSlug": "rillaboom-gmax",
+    "speciesSlug": "rillaboom",
+    "calcSpeciesName": "Rillaboom-Gigantamax Form",
+    "names": {
+      "zh-hans": "轰擂金刚猩-Gigantamax Form",
+      "zh-hant": "轟擂金剛猩-Gigantamax Form",
+      "en": "Rillaboom-Gigantamax Form",
+      "ja": "ゴリランダー-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "轰擂金刚猩",
+      "zh-hant": "轟擂金剛猩",
+      "en": "Rillaboom",
+      "ja": "ゴリランダー"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 125,
+      "def": 90,
+      "spa": 60,
+      "spd": 70,
+      "spe": 85
+    }
+  },
+  "10210": {
+    "resourceType": "pokemon",
+    "id": 10210,
+    "speciesId": 815,
+    "pokemonSlug": "cinderace-gmax",
+    "speciesSlug": "cinderace",
+    "calcSpeciesName": "Cinderace-Gigantamax Form",
+    "names": {
+      "zh-hans": "闪焰王牌-Gigantamax Form",
+      "zh-hant": "閃焰王牌-Gigantamax Form",
+      "en": "Cinderace-Gigantamax Form",
+      "ja": "エースバーン-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "闪焰王牌",
+      "zh-hant": "閃焰王牌",
+      "en": "Cinderace",
+      "ja": "エースバーン"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 116,
+      "def": 75,
+      "spa": 65,
+      "spd": 75,
+      "spe": 119
+    }
+  },
+  "10211": {
+    "resourceType": "pokemon",
+    "id": 10211,
+    "speciesId": 818,
+    "pokemonSlug": "inteleon-gmax",
+    "speciesSlug": "inteleon",
+    "calcSpeciesName": "Inteleon-Gigantamax Form",
+    "names": {
+      "zh-hans": "千面避役-Gigantamax Form",
+      "zh-hant": "千面避役-Gigantamax Form",
+      "en": "Inteleon-Gigantamax Form",
+      "ja": "インテレオン-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "千面避役",
+      "zh-hant": "千面避役",
+      "en": "Inteleon",
+      "ja": "インテレオン"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 85,
+      "def": 65,
+      "spa": 125,
+      "spd": 65,
+      "spe": 120
+    }
+  },
+  "10212": {
+    "resourceType": "pokemon",
+    "id": 10212,
+    "speciesId": 823,
+    "pokemonSlug": "corviknight-gmax",
+    "speciesSlug": "corviknight",
+    "calcSpeciesName": "Corviknight-Gigantamax Form",
+    "names": {
+      "zh-hans": "钢铠鸦-Gigantamax Form",
+      "zh-hant": "鋼鎧鴉-Gigantamax Form",
+      "en": "Corviknight-Gigantamax Form",
+      "ja": "アーマーガア-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "钢铠鸦",
+      "zh-hant": "鋼鎧鴉",
+      "en": "Corviknight",
+      "ja": "アーマーガア"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "flying",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 98,
+      "atk": 87,
+      "def": 105,
+      "spa": 53,
+      "spd": 85,
+      "spe": 67
+    }
+  },
+  "10213": {
+    "resourceType": "pokemon",
+    "id": 10213,
+    "speciesId": 826,
+    "pokemonSlug": "orbeetle-gmax",
+    "speciesSlug": "orbeetle",
+    "calcSpeciesName": "Orbeetle-Gigantamax Form",
+    "names": {
+      "zh-hans": "以欧路普-Gigantamax Form",
+      "zh-hant": "以歐路普-Gigantamax Form",
+      "en": "Orbeetle-Gigantamax Form",
+      "ja": "イオルブ-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "以欧路普",
+      "zh-hant": "以歐路普",
+      "en": "Orbeetle",
+      "ja": "イオルブ"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "bug",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 45,
+      "def": 110,
+      "spa": 80,
+      "spd": 120,
+      "spe": 90
+    }
+  },
+  "10214": {
+    "resourceType": "pokemon",
+    "id": 10214,
+    "speciesId": 834,
+    "pokemonSlug": "drednaw-gmax",
+    "speciesSlug": "drednaw",
+    "calcSpeciesName": "Drednaw-Gigantamax Form",
+    "names": {
+      "zh-hans": "暴噬龟-Gigantamax Form",
+      "zh-hant": "暴噬龜-Gigantamax Form",
+      "en": "Drednaw-Gigantamax Form",
+      "ja": "カジリガメ-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "暴噬龟",
+      "zh-hant": "暴噬龜",
+      "en": "Drednaw",
+      "ja": "カジリガメ"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "water",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 115,
+      "def": 90,
+      "spa": 48,
+      "spd": 68,
+      "spe": 74
+    }
+  },
+  "10215": {
+    "resourceType": "pokemon",
+    "id": 10215,
+    "speciesId": 839,
+    "pokemonSlug": "coalossal-gmax",
+    "speciesSlug": "coalossal",
+    "calcSpeciesName": "Coalossal-Gigantamax Form",
+    "names": {
+      "zh-hans": "巨炭山-Gigantamax Form",
+      "zh-hant": "巨炭山-Gigantamax Form",
+      "en": "Coalossal-Gigantamax Form",
+      "ja": "セキタンザン-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "巨炭山",
+      "zh-hant": "巨炭山",
+      "en": "Coalossal",
+      "ja": "セキタンザン"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "rock",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 110,
+      "atk": 80,
+      "def": 120,
+      "spa": 80,
+      "spd": 90,
+      "spe": 30
+    }
+  },
+  "10216": {
+    "resourceType": "pokemon",
+    "id": 10216,
+    "speciesId": 841,
+    "pokemonSlug": "flapple-gmax",
+    "speciesSlug": "flapple",
+    "calcSpeciesName": "Flapple-Gigantamax Form",
+    "names": {
+      "zh-hans": "苹裹龙-Gigantamax Form",
+      "zh-hant": "蘋裹龍-Gigantamax Form",
+      "en": "Flapple-Gigantamax Form",
+      "ja": "アップリュー-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "苹裹龙",
+      "zh-hant": "蘋裹龍",
+      "en": "Flapple",
+      "ja": "アップリュー"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "grass",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 110,
+      "def": 80,
+      "spa": 95,
+      "spd": 60,
+      "spe": 70
+    }
+  },
+  "10217": {
+    "resourceType": "pokemon",
+    "id": 10217,
+    "speciesId": 842,
+    "pokemonSlug": "appletun-gmax",
+    "speciesSlug": "appletun",
+    "calcSpeciesName": "Appletun-Gigantamax Form",
+    "names": {
+      "zh-hans": "丰蜜龙-Gigantamax Form",
+      "zh-hant": "豐蜜龍-Gigantamax Form",
+      "en": "Appletun-Gigantamax Form",
+      "ja": "タルップル-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "丰蜜龙",
+      "zh-hant": "豐蜜龍",
+      "en": "Appletun",
+      "ja": "タルップル"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "grass",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 110,
+      "atk": 85,
+      "def": 80,
+      "spa": 100,
+      "spd": 80,
+      "spe": 30
+    }
+  },
+  "10218": {
+    "resourceType": "pokemon",
+    "id": 10218,
+    "speciesId": 844,
+    "pokemonSlug": "sandaconda-gmax",
+    "speciesSlug": "sandaconda",
+    "calcSpeciesName": "Sandaconda-Gigantamax Form",
+    "names": {
+      "zh-hans": "沙螺蟒-Gigantamax Form",
+      "zh-hant": "沙螺蟒-Gigantamax Form",
+      "en": "Sandaconda-Gigantamax Form",
+      "ja": "サダイジャ-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "沙螺蟒",
+      "zh-hant": "沙螺蟒",
+      "en": "Sandaconda",
+      "ja": "サダイジャ"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 72,
+      "atk": 107,
+      "def": 125,
+      "spa": 65,
+      "spd": 70,
+      "spe": 71
+    }
+  },
+  "10219": {
+    "resourceType": "pokemon",
+    "id": 10219,
+    "speciesId": 849,
+    "pokemonSlug": "toxtricity-amped-gmax",
+    "speciesSlug": "toxtricity",
+    "calcSpeciesName": "Toxtricity-Gigantamax Form",
+    "names": {
+      "zh-hans": "颤弦蝾螈-Gigantamax Form",
+      "zh-hant": "顫弦蠑螈-Gigantamax Form",
+      "en": "Toxtricity-Gigantamax Form",
+      "ja": "ストリンダー-ハイなすがた・キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "颤弦蝾螈",
+      "zh-hant": "顫弦蠑螈",
+      "en": "Toxtricity",
+      "ja": "ストリンダー"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "ハイなすがた・キョダイマックスのすがた"
+    },
+    "types": [
+      "electric",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 98,
+      "def": 70,
+      "spa": 114,
+      "spd": 70,
+      "spe": 75
+    }
+  },
+  "10220": {
+    "resourceType": "pokemon",
+    "id": 10220,
+    "speciesId": 851,
+    "pokemonSlug": "centiskorch-gmax",
+    "speciesSlug": "centiskorch",
+    "calcSpeciesName": "Centiskorch-Gigantamax Form",
+    "names": {
+      "zh-hans": "焚焰蚣-Gigantamax Form",
+      "zh-hant": "焚焰蚣-Gigantamax Form",
+      "en": "Centiskorch-Gigantamax Form",
+      "ja": "マルヤクデ-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "焚焰蚣",
+      "zh-hant": "焚焰蚣",
+      "en": "Centiskorch",
+      "ja": "マルヤクデ"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "fire",
+      "bug"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 115,
+      "def": 65,
+      "spa": 90,
+      "spd": 90,
+      "spe": 65
+    }
+  },
+  "10221": {
+    "resourceType": "pokemon",
+    "id": 10221,
+    "speciesId": 858,
+    "pokemonSlug": "hatterene-gmax",
+    "speciesSlug": "hatterene",
+    "calcSpeciesName": "Hatterene-Gigantamax Form",
+    "names": {
+      "zh-hans": "布莉姆温-Gigantamax Form",
+      "zh-hant": "布莉姆溫-Gigantamax Form",
+      "en": "Hatterene-Gigantamax Form",
+      "ja": "ブリムオン-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "布莉姆温",
+      "zh-hant": "布莉姆溫",
+      "en": "Hatterene",
+      "ja": "ブリムオン"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "psychic",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 57,
+      "atk": 90,
+      "def": 95,
+      "spa": 136,
+      "spd": 103,
+      "spe": 29
+    }
+  },
+  "10222": {
+    "resourceType": "pokemon",
+    "id": 10222,
+    "speciesId": 861,
+    "pokemonSlug": "grimmsnarl-gmax",
+    "speciesSlug": "grimmsnarl",
+    "calcSpeciesName": "Grimmsnarl-Gigantamax Form",
+    "names": {
+      "zh-hans": "长毛巨魔-Gigantamax Form",
+      "zh-hant": "長毛巨魔-Gigantamax Form",
+      "en": "Grimmsnarl-Gigantamax Form",
+      "ja": "オーロンゲ-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "长毛巨魔",
+      "zh-hant": "長毛巨魔",
+      "en": "Grimmsnarl",
+      "ja": "オーロンゲ"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "dark",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 120,
+      "def": 65,
+      "spa": 95,
+      "spd": 75,
+      "spe": 60
+    }
+  },
+  "10223": {
+    "resourceType": "pokemon",
+    "id": 10223,
+    "speciesId": 869,
+    "pokemonSlug": "alcremie-gmax",
+    "speciesSlug": "alcremie",
+    "calcSpeciesName": "Alcremie-Gigantamax Form",
+    "names": {
+      "zh-hans": "霜奶仙-Gigantamax Form",
+      "zh-hant": "霜奶仙-Gigantamax Form",
+      "en": "Alcremie-Gigantamax Form",
+      "ja": "マホイップ-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "霜奶仙",
+      "zh-hant": "霜奶仙",
+      "en": "Alcremie",
+      "ja": "マホイップ"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 60,
+      "def": 75,
+      "spa": 110,
+      "spd": 121,
+      "spe": 64
+    }
+  },
+  "10224": {
+    "resourceType": "pokemon",
+    "id": 10224,
+    "speciesId": 879,
+    "pokemonSlug": "copperajah-gmax",
+    "speciesSlug": "copperajah",
+    "calcSpeciesName": "Copperajah-Gigantamax Form",
+    "names": {
+      "zh-hans": "大王铜象-Gigantamax Form",
+      "zh-hant": "大王銅象-Gigantamax Form",
+      "en": "Copperajah-Gigantamax Form",
+      "ja": "ダイオウドウ-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "大王铜象",
+      "zh-hant": "大王銅象",
+      "en": "Copperajah",
+      "ja": "ダイオウドウ"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 122,
+      "atk": 130,
+      "def": 69,
+      "spa": 80,
+      "spd": 69,
+      "spe": 30
+    }
+  },
+  "10225": {
+    "resourceType": "pokemon",
+    "id": 10225,
+    "speciesId": 884,
+    "pokemonSlug": "duraludon-gmax",
+    "speciesSlug": "duraludon",
+    "calcSpeciesName": "Duraludon-Gigantamax Form",
+    "names": {
+      "zh-hans": "铝钢龙-Gigantamax Form",
+      "zh-hant": "鋁鋼龍-Gigantamax Form",
+      "en": "Duraludon-Gigantamax Form",
+      "ja": "ジュラルドン-キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "铝钢龙",
+      "zh-hant": "鋁鋼龍",
+      "en": "Duraludon",
+      "ja": "ジュラルドン"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "キョダイマックスのすがた"
+    },
+    "types": [
+      "steel",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 95,
+      "def": 115,
+      "spa": 120,
+      "spd": 50,
+      "spe": 85
+    }
+  },
+  "10226": {
+    "resourceType": "pokemon",
+    "id": 10226,
+    "speciesId": 892,
+    "pokemonSlug": "urshifu-single-strike-gmax",
+    "speciesSlug": "urshifu",
+    "calcSpeciesName": "Urshifu-Gigantamax Form",
+    "names": {
+      "zh-hans": "武道熊师-Gigantamax Form",
+      "zh-hant": "武道熊師-Gigantamax Form",
+      "en": "Urshifu-Gigantamax Form",
+      "ja": "ウーラオス-いちげきのかた・キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "武道熊师",
+      "zh-hant": "武道熊師",
+      "en": "Urshifu",
+      "ja": "ウーラオス"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "いちげきのかた・キョダイマックスのすがた"
+    },
+    "types": [
+      "fighting",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 130,
+      "def": 100,
+      "spa": 63,
+      "spd": 60,
+      "spe": 97
+    }
+  },
+  "10227": {
+    "resourceType": "pokemon",
+    "id": 10227,
+    "speciesId": 892,
+    "pokemonSlug": "urshifu-rapid-strike-gmax",
+    "speciesSlug": "urshifu",
+    "calcSpeciesName": "Urshifu-Gigantamax Form",
+    "names": {
+      "zh-hans": "武道熊师-Gigantamax Form",
+      "zh-hant": "武道熊師-Gigantamax Form",
+      "en": "Urshifu-Gigantamax Form",
+      "ja": "ウーラオス-れんげきのかた・キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "武道熊师",
+      "zh-hant": "武道熊師",
+      "en": "Urshifu",
+      "ja": "ウーラオス"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "れんげきのかた・キョダイマックスのすがた"
+    },
+    "types": [
+      "fighting",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 130,
+      "def": 100,
+      "spa": 63,
+      "spd": 60,
+      "spe": 97
+    }
+  },
+  "10228": {
+    "resourceType": "pokemon",
+    "id": 10228,
+    "speciesId": 849,
+    "pokemonSlug": "toxtricity-low-key-gmax",
+    "speciesSlug": "toxtricity",
+    "calcSpeciesName": "Toxtricity-Gigantamax Form",
+    "names": {
+      "zh-hans": "颤弦蝾螈-Gigantamax Form",
+      "zh-hant": "顫弦蠑螈-Gigantamax Form",
+      "en": "Toxtricity-Gigantamax Form",
+      "ja": "ストリンダー-ローなすがた・キョダイマックスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "颤弦蝾螈",
+      "zh-hant": "顫弦蠑螈",
+      "en": "Toxtricity",
+      "ja": "ストリンダー"
+    },
+    "formNames": {
+      "zh-hans": "Gigantamax Form",
+      "zh-hant": "Gigantamax Form",
+      "en": "Gigantamax Form",
+      "ja": "ローなすがた・キョダイマックスのすがた"
+    },
+    "types": [
+      "electric",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 98,
+      "def": 70,
+      "spa": 114,
+      "spd": 70,
+      "spe": 75
+    }
+  },
+  "10229": {
+    "resourceType": "pokemon",
+    "id": 10229,
+    "speciesId": 58,
+    "pokemonSlug": "growlithe-hisui",
+    "speciesSlug": "growlithe",
+    "calcSpeciesName": "Growlithe-Hisuian Form",
+    "names": {
+      "zh-hans": "卡蒂狗-Hisuian Form",
+      "zh-hant": "卡蒂狗-Hisuian Form",
+      "en": "Growlithe-Hisuian Form",
+      "ja": "ガーディ-ヒスイのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "卡蒂狗",
+      "zh-hant": "卡蒂狗",
+      "en": "Growlithe",
+      "ja": "ガーディ"
+    },
+    "formNames": {
+      "zh-hans": "Hisuian Form",
+      "zh-hant": "Hisuian Form",
+      "en": "Hisuian Form",
+      "ja": "ヒスイのすがた"
+    },
+    "types": [
+      "fire",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 75,
+      "def": 45,
+      "spa": 65,
+      "spd": 50,
+      "spe": 55
+    }
+  },
+  "10230": {
+    "resourceType": "pokemon",
+    "id": 10230,
+    "speciesId": 59,
+    "pokemonSlug": "arcanine-hisui",
+    "speciesSlug": "arcanine",
+    "calcSpeciesName": "Arcanine-Hisuian Form",
+    "names": {
+      "zh-hans": "风速狗-Hisuian Form",
+      "zh-hant": "風速狗-Hisuian Form",
+      "en": "Arcanine-Hisuian Form",
+      "ja": "ウインディ-ヒスイのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "风速狗",
+      "zh-hant": "風速狗",
+      "en": "Arcanine",
+      "ja": "ウインディ"
+    },
+    "formNames": {
+      "zh-hans": "Hisuian Form",
+      "zh-hant": "Hisuian Form",
+      "en": "Hisuian Form",
+      "ja": "ヒスイのすがた"
+    },
+    "types": [
+      "fire",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 115,
+      "def": 80,
+      "spa": 95,
+      "spd": 80,
+      "spe": 90
+    }
+  },
+  "10231": {
+    "resourceType": "pokemon",
+    "id": 10231,
+    "speciesId": 100,
+    "pokemonSlug": "voltorb-hisui",
+    "speciesSlug": "voltorb",
+    "calcSpeciesName": "Voltorb-Hisuian Form",
+    "names": {
+      "zh-hans": "霹雳电球-Hisuian Form",
+      "zh-hant": "霹靂電球-Hisuian Form",
+      "en": "Voltorb-Hisuian Form",
+      "ja": "ビリリダマ-ヒスイのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "霹雳电球",
+      "zh-hant": "霹靂電球",
+      "en": "Voltorb",
+      "ja": "ビリリダマ"
+    },
+    "formNames": {
+      "zh-hans": "Hisuian Form",
+      "zh-hant": "Hisuian Form",
+      "en": "Hisuian Form",
+      "ja": "ヒスイのすがた"
+    },
+    "types": [
+      "electric",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 40,
+      "atk": 30,
+      "def": 50,
+      "spa": 55,
+      "spd": 55,
+      "spe": 100
+    }
+  },
+  "10232": {
+    "resourceType": "pokemon",
+    "id": 10232,
+    "speciesId": 101,
+    "pokemonSlug": "electrode-hisui",
+    "speciesSlug": "electrode",
+    "calcSpeciesName": "Electrode-Hisuian Form",
+    "names": {
+      "zh-hans": "顽皮雷弹-Hisuian Form",
+      "zh-hant": "頑皮雷彈-Hisuian Form",
+      "en": "Electrode-Hisuian Form",
+      "ja": "マルマイン-ヒスイのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "顽皮雷弹",
+      "zh-hant": "頑皮雷彈",
+      "en": "Electrode",
+      "ja": "マルマイン"
+    },
+    "formNames": {
+      "zh-hans": "Hisuian Form",
+      "zh-hant": "Hisuian Form",
+      "en": "Hisuian Form",
+      "ja": "ヒスイのすがた"
+    },
+    "types": [
+      "electric",
+      "grass"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 50,
+      "def": 70,
+      "spa": 80,
+      "spd": 80,
+      "spe": 150
+    }
+  },
+  "10233": {
+    "resourceType": "pokemon",
+    "id": 10233,
+    "speciesId": 157,
+    "pokemonSlug": "typhlosion-hisui",
+    "speciesSlug": "typhlosion",
+    "calcSpeciesName": "Typhlosion-Hisuian Form",
+    "names": {
+      "zh-hans": "火暴兽-Hisuian Form",
+      "zh-hant": "火爆獸-Hisuian Form",
+      "en": "Typhlosion-Hisuian Form",
+      "ja": "バクフーン-ヒスイのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "火暴兽",
+      "zh-hant": "火爆獸",
+      "en": "Typhlosion",
+      "ja": "バクフーン"
+    },
+    "formNames": {
+      "zh-hans": "Hisuian Form",
+      "zh-hant": "Hisuian Form",
+      "en": "Hisuian Form",
+      "ja": "ヒスイのすがた"
+    },
+    "types": [
+      "fire",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 73,
+      "atk": 84,
+      "def": 78,
+      "spa": 119,
+      "spd": 85,
+      "spe": 95
+    }
+  },
+  "10234": {
+    "resourceType": "pokemon",
+    "id": 10234,
+    "speciesId": 211,
+    "pokemonSlug": "qwilfish-hisui",
+    "speciesSlug": "qwilfish",
+    "calcSpeciesName": "Qwilfish-Hisuian Form",
+    "names": {
+      "zh-hans": "千针鱼-Hisuian Form",
+      "zh-hant": "千針魚-Hisuian Form",
+      "en": "Qwilfish-Hisuian Form",
+      "ja": "ハリーセン-ヒスイのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "千针鱼",
+      "zh-hant": "千針魚",
+      "en": "Qwilfish",
+      "ja": "ハリーセン"
+    },
+    "formNames": {
+      "zh-hans": "Hisuian Form",
+      "zh-hant": "Hisuian Form",
+      "en": "Hisuian Form",
+      "ja": "ヒスイのすがた"
+    },
+    "types": [
+      "dark",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 95,
+      "def": 85,
+      "spa": 55,
+      "spd": 55,
+      "spe": 85
+    }
+  },
+  "10235": {
+    "resourceType": "pokemon",
+    "id": 10235,
+    "speciesId": 215,
+    "pokemonSlug": "sneasel-hisui",
+    "speciesSlug": "sneasel",
+    "calcSpeciesName": "Sneasel-Hisuian Form",
+    "names": {
+      "zh-hans": "狃拉-Hisuian Form",
+      "zh-hant": "狃拉-Hisuian Form",
+      "en": "Sneasel-Hisuian Form",
+      "ja": "ニューラ-ヒスイのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "狃拉",
+      "zh-hant": "狃拉",
+      "en": "Sneasel",
+      "ja": "ニューラ"
+    },
+    "formNames": {
+      "zh-hans": "Hisuian Form",
+      "zh-hant": "Hisuian Form",
+      "en": "Hisuian Form",
+      "ja": "ヒスイのすがた"
+    },
+    "types": [
+      "fighting",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 95,
+      "def": 55,
+      "spa": 35,
+      "spd": 75,
+      "spe": 115
+    }
+  },
+  "10236": {
+    "resourceType": "pokemon",
+    "id": 10236,
+    "speciesId": 503,
+    "pokemonSlug": "samurott-hisui",
+    "speciesSlug": "samurott",
+    "calcSpeciesName": "Samurott-Hisuian Form",
+    "names": {
+      "zh-hans": "大剑鬼-Hisuian Form",
+      "zh-hant": "大劍鬼-Hisuian Form",
+      "en": "Samurott-Hisuian Form",
+      "ja": "ダイケンキ-ヒスイのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "大剑鬼",
+      "zh-hant": "大劍鬼",
+      "en": "Samurott",
+      "ja": "ダイケンキ"
+    },
+    "formNames": {
+      "zh-hans": "Hisuian Form",
+      "zh-hant": "Hisuian Form",
+      "en": "Hisuian Form",
+      "ja": "ヒスイのすがた"
+    },
+    "types": [
+      "water",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 108,
+      "def": 80,
+      "spa": 100,
+      "spd": 65,
+      "spe": 85
+    }
+  },
+  "10237": {
+    "resourceType": "pokemon",
+    "id": 10237,
+    "speciesId": 549,
+    "pokemonSlug": "lilligant-hisui",
+    "speciesSlug": "lilligant",
+    "calcSpeciesName": "Lilligant-Hisuian Form",
+    "names": {
+      "zh-hans": "裙儿小姐-Hisuian Form",
+      "zh-hant": "裙兒小姐-Hisuian Form",
+      "en": "Lilligant-Hisuian Form",
+      "ja": "ドレディア-ヒスイのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "裙儿小姐",
+      "zh-hant": "裙兒小姐",
+      "en": "Lilligant",
+      "ja": "ドレディア"
+    },
+    "formNames": {
+      "zh-hans": "Hisuian Form",
+      "zh-hant": "Hisuian Form",
+      "en": "Hisuian Form",
+      "ja": "ヒスイのすがた"
+    },
+    "types": [
+      "grass",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 105,
+      "def": 75,
+      "spa": 50,
+      "spd": 75,
+      "spe": 105
+    }
+  },
+  "10238": {
+    "resourceType": "pokemon",
+    "id": 10238,
+    "speciesId": 570,
+    "pokemonSlug": "zorua-hisui",
+    "speciesSlug": "zorua",
+    "calcSpeciesName": "Zorua-Hisuian Form",
+    "names": {
+      "zh-hans": "索罗亚-Hisuian Form",
+      "zh-hant": "索羅亞-Hisuian Form",
+      "en": "Zorua-Hisuian Form",
+      "ja": "ゾロア-ヒスイのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "索罗亚",
+      "zh-hant": "索羅亞",
+      "en": "Zorua",
+      "ja": "ゾロア"
+    },
+    "formNames": {
+      "zh-hans": "Hisuian Form",
+      "zh-hant": "Hisuian Form",
+      "en": "Hisuian Form",
+      "ja": "ヒスイのすがた"
+    },
+    "types": [
+      "normal",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 35,
+      "atk": 60,
+      "def": 40,
+      "spa": 85,
+      "spd": 40,
+      "spe": 70
+    }
+  },
+  "10239": {
+    "resourceType": "pokemon",
+    "id": 10239,
+    "speciesId": 571,
+    "pokemonSlug": "zoroark-hisui",
+    "speciesSlug": "zoroark",
+    "calcSpeciesName": "Zoroark-Hisuian Form",
+    "names": {
+      "zh-hans": "索罗亚克-Hisuian Form",
+      "zh-hant": "索羅亞克-Hisuian Form",
+      "en": "Zoroark-Hisuian Form",
+      "ja": "ゾロアーク-ヒスイのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "索罗亚克",
+      "zh-hant": "索羅亞克",
+      "en": "Zoroark",
+      "ja": "ゾロアーク"
+    },
+    "formNames": {
+      "zh-hans": "Hisuian Form",
+      "zh-hant": "Hisuian Form",
+      "en": "Hisuian Form",
+      "ja": "ヒスイのすがた"
+    },
+    "types": [
+      "normal",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 100,
+      "def": 60,
+      "spa": 125,
+      "spd": 60,
+      "spe": 110
+    }
+  },
+  "10240": {
+    "resourceType": "pokemon",
+    "id": 10240,
+    "speciesId": 628,
+    "pokemonSlug": "braviary-hisui",
+    "speciesSlug": "braviary",
+    "calcSpeciesName": "Braviary-Hisuian Form",
+    "names": {
+      "zh-hans": "勇士雄鹰-Hisuian Form",
+      "zh-hant": "勇士雄鷹-Hisuian Form",
+      "en": "Braviary-Hisuian Form",
+      "ja": "ウォーグル-ヒスイのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "勇士雄鹰",
+      "zh-hant": "勇士雄鷹",
+      "en": "Braviary",
+      "ja": "ウォーグル"
+    },
+    "formNames": {
+      "zh-hans": "Hisuian Form",
+      "zh-hant": "Hisuian Form",
+      "en": "Hisuian Form",
+      "ja": "ヒスイのすがた"
+    },
+    "types": [
+      "psychic",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 110,
+      "atk": 83,
+      "def": 70,
+      "spa": 112,
+      "spd": 70,
+      "spe": 65
+    }
+  },
+  "10241": {
+    "resourceType": "pokemon",
+    "id": 10241,
+    "speciesId": 705,
+    "pokemonSlug": "sliggoo-hisui",
+    "speciesSlug": "sliggoo",
+    "calcSpeciesName": "Sliggoo-Hisuian Form",
+    "names": {
+      "zh-hans": "黏美儿-Hisuian Form",
+      "zh-hant": "黏美兒-Hisuian Form",
+      "en": "Sliggoo-Hisuian Form",
+      "ja": "ヌメイル-ヒスイのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "黏美儿",
+      "zh-hant": "黏美兒",
+      "en": "Sliggoo",
+      "ja": "ヌメイル"
+    },
+    "formNames": {
+      "zh-hans": "Hisuian Form",
+      "zh-hant": "Hisuian Form",
+      "en": "Hisuian Form",
+      "ja": "ヒスイのすがた"
+    },
+    "types": [
+      "steel",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 58,
+      "atk": 75,
+      "def": 83,
+      "spa": 83,
+      "spd": 113,
+      "spe": 40
+    }
+  },
+  "10242": {
+    "resourceType": "pokemon",
+    "id": 10242,
+    "speciesId": 706,
+    "pokemonSlug": "goodra-hisui",
+    "speciesSlug": "goodra",
+    "calcSpeciesName": "Goodra-Hisuian Form",
+    "names": {
+      "zh-hans": "黏美龙-Hisuian Form",
+      "zh-hant": "黏美龍-Hisuian Form",
+      "en": "Goodra-Hisuian Form",
+      "ja": "ヌメルゴン-ヒスイのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "黏美龙",
+      "zh-hant": "黏美龍",
+      "en": "Goodra",
+      "ja": "ヌメルゴン"
+    },
+    "formNames": {
+      "zh-hans": "Hisuian Form",
+      "zh-hant": "Hisuian Form",
+      "en": "Hisuian Form",
+      "ja": "ヒスイのすがた"
+    },
+    "types": [
+      "steel",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 100,
+      "def": 100,
+      "spa": 110,
+      "spd": 150,
+      "spe": 60
+    }
+  },
+  "10243": {
+    "resourceType": "pokemon",
+    "id": 10243,
+    "speciesId": 713,
+    "pokemonSlug": "avalugg-hisui",
+    "speciesSlug": "avalugg",
+    "calcSpeciesName": "Avalugg-Hisuian Form",
+    "names": {
+      "zh-hans": "冰岩怪-Hisuian Form",
+      "zh-hant": "冰岩怪-Hisuian Form",
+      "en": "Avalugg-Hisuian Form",
+      "ja": "クレベース-ヒスイのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "冰岩怪",
+      "zh-hant": "冰岩怪",
+      "en": "Avalugg",
+      "ja": "クレベース"
+    },
+    "formNames": {
+      "zh-hans": "Hisuian Form",
+      "zh-hant": "Hisuian Form",
+      "en": "Hisuian Form",
+      "ja": "ヒスイのすがた"
+    },
+    "types": [
+      "ice",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 127,
+      "def": 184,
+      "spa": 34,
+      "spd": 36,
+      "spe": 38
+    }
+  },
+  "10244": {
+    "resourceType": "pokemon",
+    "id": 10244,
+    "speciesId": 724,
+    "pokemonSlug": "decidueye-hisui",
+    "speciesSlug": "decidueye",
+    "calcSpeciesName": "Decidueye-Hisuian Form",
+    "names": {
+      "zh-hans": "狙射树枭-Hisuian Form",
+      "zh-hant": "狙射樹梟-Hisuian Form",
+      "en": "Decidueye-Hisuian Form",
+      "ja": "ジュナイパー-ヒスイのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "狙射树枭",
+      "zh-hant": "狙射樹梟",
+      "en": "Decidueye",
+      "ja": "ジュナイパー"
+    },
+    "formNames": {
+      "zh-hans": "Hisuian Form",
+      "zh-hant": "Hisuian Form",
+      "en": "Hisuian Form",
+      "ja": "ヒスイのすがた"
+    },
+    "types": [
+      "grass",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 88,
+      "atk": 112,
+      "def": 80,
+      "spa": 95,
+      "spd": 95,
+      "spe": 60
+    }
+  },
+  "10245": {
+    "resourceType": "pokemon",
+    "id": 10245,
+    "speciesId": 483,
+    "pokemonSlug": "dialga-origin",
+    "speciesSlug": "dialga",
+    "calcSpeciesName": "Dialga-Origin Forme",
+    "names": {
+      "zh-hans": "帝牙卢卡-Origin Forme",
+      "zh-hant": "帝牙盧卡-Origin Forme",
+      "en": "Dialga-Origin Forme",
+      "ja": "ディアルガ-オリジンフォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "帝牙卢卡",
+      "zh-hant": "帝牙盧卡",
+      "en": "Dialga",
+      "ja": "ディアルガ"
+    },
+    "formNames": {
+      "zh-hans": "Origin Forme",
+      "zh-hant": "Origin Forme",
+      "en": "Origin Forme",
+      "ja": "オリジンフォルム"
+    },
+    "types": [
+      "steel",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 100,
+      "def": 120,
+      "spa": 150,
+      "spd": 120,
+      "spe": 90
+    }
+  },
+  "10246": {
+    "resourceType": "pokemon",
+    "id": 10246,
+    "speciesId": 484,
+    "pokemonSlug": "palkia-origin",
+    "speciesSlug": "palkia",
+    "calcSpeciesName": "Palkia-Origin Forme",
+    "names": {
+      "zh-hans": "帕路奇亚-Origin Forme",
+      "zh-hant": "帕路奇亞-Origin Forme",
+      "en": "Palkia-Origin Forme",
+      "ja": "パルキア-オリジンフォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "帕路奇亚",
+      "zh-hant": "帕路奇亞",
+      "en": "Palkia",
+      "ja": "パルキア"
+    },
+    "formNames": {
+      "zh-hans": "Origin Forme",
+      "zh-hant": "Origin Forme",
+      "en": "Origin Forme",
+      "ja": "オリジンフォルム"
+    },
+    "types": [
+      "water",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 90,
+      "atk": 100,
+      "def": 100,
+      "spa": 150,
+      "spd": 120,
+      "spe": 120
+    }
+  },
+  "10247": {
+    "resourceType": "pokemon",
+    "id": 10247,
+    "speciesId": 550,
+    "pokemonSlug": "basculin-white-striped",
+    "speciesSlug": "basculin",
+    "calcSpeciesName": "Basculin-White-Striped Form",
+    "names": {
+      "zh-hans": "野蛮鲈鱼-White-Striped Form",
+      "zh-hant": "野蠻鱸魚-White-Striped Form",
+      "en": "Basculin-White-Striped Form",
+      "ja": "バスラオ-しろすじのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "野蛮鲈鱼",
+      "zh-hant": "野蠻鱸魚",
+      "en": "Basculin",
+      "ja": "バスラオ"
+    },
+    "formNames": {
+      "zh-hans": "White-Striped Form",
+      "zh-hant": "White-Striped Form",
+      "en": "White-Striped Form",
+      "ja": "しろすじのすがた"
+    },
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 92,
+      "def": 65,
+      "spa": 80,
+      "spd": 55,
+      "spe": 98
+    }
+  },
+  "10248": {
+    "resourceType": "pokemon",
+    "id": 10248,
+    "speciesId": 902,
+    "pokemonSlug": "basculegion-female",
+    "speciesSlug": "basculegion",
+    "calcSpeciesName": "Basculegion-Female",
+    "names": {
+      "zh-hans": "幽尾玄鱼-Female",
+      "zh-hant": "幽尾玄魚-Female",
+      "en": "Basculegion-Female",
+      "ja": "イダイトウ-メスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "幽尾玄鱼",
+      "zh-hant": "幽尾玄魚",
+      "en": "Basculegion",
+      "ja": "イダイトウ"
+    },
+    "formNames": {
+      "zh-hans": "Female",
+      "zh-hant": "Female",
+      "en": "Female",
+      "ja": "メスのすがた"
+    },
+    "types": [
+      "water",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 120,
+      "atk": 92,
+      "def": 65,
+      "spa": 100,
+      "spd": 75,
+      "spe": 78
+    }
+  },
+  "10249": {
+    "resourceType": "pokemon",
+    "id": 10249,
+    "speciesId": 905,
+    "pokemonSlug": "enamorus-therian",
+    "speciesSlug": "enamorus",
+    "calcSpeciesName": "Enamorus-Therian Forme",
+    "names": {
+      "zh-hans": "眷恋云-Therian Forme",
+      "zh-hant": "眷戀雲-Therian Forme",
+      "en": "Enamorus-Therian Forme",
+      "ja": "ラブトロス-れいじゅうフォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "眷恋云",
+      "zh-hant": "眷戀雲",
+      "en": "Enamorus",
+      "ja": "ラブトロス"
+    },
+    "formNames": {
+      "zh-hans": "Therian Forme",
+      "zh-hant": "Therian Forme",
+      "en": "Therian Forme",
+      "ja": "れいじゅうフォルム"
+    },
+    "types": [
+      "fairy",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 74,
+      "atk": 115,
+      "def": 110,
+      "spa": 135,
+      "spd": 100,
+      "spe": 46
+    }
+  },
+  "10250": {
+    "resourceType": "pokemon",
+    "id": 10250,
+    "speciesId": 128,
+    "pokemonSlug": "tauros-paldea-combat-breed",
+    "speciesSlug": "tauros",
+    "calcSpeciesName": "Tauros-Paldean Form (Combat Breed)",
+    "names": {
+      "zh-hans": "肯泰罗-Paldean Form (Combat Breed)",
+      "zh-hant": "肯泰羅-Paldean Form (Combat Breed)",
+      "en": "Tauros-Paldean Form (Combat Breed)",
+      "ja": "ケンタロス-パルデアのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "肯泰罗",
+      "zh-hant": "肯泰羅",
+      "en": "Tauros",
+      "ja": "ケンタロス"
+    },
+    "formNames": {
+      "zh-hans": "Paldean Form (Combat Breed)",
+      "zh-hant": "Paldean Form (Combat Breed)",
+      "en": "Paldean Form (Combat Breed)",
+      "ja": "パルデアのすがた"
+    },
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 110,
+      "def": 105,
+      "spa": 30,
+      "spd": 70,
+      "spe": 100
+    }
+  },
+  "10251": {
+    "resourceType": "pokemon",
+    "id": 10251,
+    "speciesId": 128,
+    "pokemonSlug": "tauros-paldea-blaze-breed",
+    "speciesSlug": "tauros",
+    "calcSpeciesName": "Tauros-Paldean Form (Blaze Breed)",
+    "names": {
+      "zh-hans": "肯泰罗-Paldean Form (Blaze Breed)",
+      "zh-hant": "肯泰羅-Paldean Form (Blaze Breed)",
+      "en": "Tauros-Paldean Form (Blaze Breed)",
+      "ja": "ケンタロス-パルデアのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "肯泰罗",
+      "zh-hant": "肯泰羅",
+      "en": "Tauros",
+      "ja": "ケンタロス"
+    },
+    "formNames": {
+      "zh-hans": "Paldean Form (Blaze Breed)",
+      "zh-hant": "Paldean Form (Blaze Breed)",
+      "en": "Paldean Form (Blaze Breed)",
+      "ja": "パルデアのすがた"
+    },
+    "types": [
+      "fighting",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 110,
+      "def": 105,
+      "spa": 30,
+      "spd": 70,
+      "spe": 100
+    }
+  },
+  "10252": {
+    "resourceType": "pokemon",
+    "id": 10252,
+    "speciesId": 128,
+    "pokemonSlug": "tauros-paldea-aqua-breed",
+    "speciesSlug": "tauros",
+    "calcSpeciesName": "Tauros-Paldean Form (Aqua Breed)",
+    "names": {
+      "zh-hans": "肯泰罗-Paldean Form (Aqua Breed)",
+      "zh-hant": "肯泰羅-Paldean Form (Aqua Breed)",
+      "en": "Tauros-Paldean Form (Aqua Breed)",
+      "ja": "ケンタロス-パルデアのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "肯泰罗",
+      "zh-hant": "肯泰羅",
+      "en": "Tauros",
+      "ja": "ケンタロス"
+    },
+    "formNames": {
+      "zh-hans": "Paldean Form (Aqua Breed)",
+      "zh-hant": "Paldean Form (Aqua Breed)",
+      "en": "Paldean Form (Aqua Breed)",
+      "ja": "パルデアのすがた"
+    },
+    "types": [
+      "fighting",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 110,
+      "def": 105,
+      "spa": 30,
+      "spd": 70,
+      "spe": 100
+    }
+  },
+  "10253": {
+    "resourceType": "pokemon",
+    "id": 10253,
+    "speciesId": 194,
+    "pokemonSlug": "wooper-paldea",
+    "speciesSlug": "wooper",
+    "calcSpeciesName": "Wooper-Paldean Form",
+    "names": {
+      "zh-hans": "乌波-Paldean Form",
+      "zh-hant": "烏波-Paldean Form",
+      "en": "Wooper-Paldean Form",
+      "ja": "ウパー-パルデアのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "乌波",
+      "zh-hant": "烏波",
+      "en": "Wooper",
+      "ja": "ウパー"
+    },
+    "formNames": {
+      "zh-hans": "Paldean Form",
+      "zh-hant": "Paldean Form",
+      "en": "Paldean Form",
+      "ja": "パルデアのすがた"
+    },
+    "types": [
+      "poison",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 55,
+      "atk": 45,
+      "def": 45,
+      "spa": 25,
+      "spd": 25,
+      "spe": 15
+    }
+  },
+  "10254": {
+    "resourceType": "pokemon",
+    "id": 10254,
+    "speciesId": 916,
+    "pokemonSlug": "oinkologne-female",
+    "speciesSlug": "oinkologne",
+    "calcSpeciesName": "Oinkologne-Female",
+    "names": {
+      "zh-hans": "飘香豚-Female",
+      "zh-hant": "飄香豚-Female",
+      "en": "Oinkologne-Female",
+      "ja": "パフュートン-メスのすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "飘香豚",
+      "zh-hant": "飄香豚",
+      "en": "Oinkologne",
+      "ja": "パフュートン"
+    },
+    "formNames": {
+      "zh-hans": "Female",
+      "zh-hant": "Female",
+      "en": "Female",
+      "ja": "メスのすがた"
+    },
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 115,
+      "atk": 90,
+      "def": 70,
+      "spa": 59,
+      "spd": 90,
+      "spe": 65
+    }
+  },
+  "10255": {
+    "resourceType": "pokemon",
+    "id": 10255,
+    "speciesId": 982,
+    "pokemonSlug": "dudunsparce-three-segment",
+    "speciesSlug": "dudunsparce",
+    "calcSpeciesName": "Dudunsparce-Three-Segment Form",
+    "names": {
+      "zh-hans": "土龙节节-Three-Segment Form",
+      "zh-hant": "土龍節節-Three-Segment Form",
+      "en": "Dudunsparce-Three-Segment Form",
+      "ja": "ノココッチ-みつふしフォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "土龙节节",
+      "zh-hant": "土龍節節",
+      "en": "Dudunsparce",
+      "ja": "ノココッチ"
+    },
+    "formNames": {
+      "zh-hans": "Three-Segment Form",
+      "zh-hant": "Three-Segment Form",
+      "en": "Three-Segment Form",
+      "ja": "みつふしフォルム"
+    },
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 125,
+      "atk": 100,
+      "def": 80,
+      "spa": 85,
+      "spd": 75,
+      "spe": 55
+    }
+  },
+  "10256": {
+    "resourceType": "pokemon",
+    "id": 10256,
+    "speciesId": 964,
+    "pokemonSlug": "palafin-hero",
+    "speciesSlug": "palafin",
+    "calcSpeciesName": "Palafin-Hero Form",
+    "names": {
+      "zh-hans": "海豚侠-Hero Form",
+      "zh-hant": "海豚俠-Hero Form",
+      "en": "Palafin-Hero Form",
+      "ja": "イルカマン-マイティフォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "海豚侠",
+      "zh-hant": "海豚俠",
+      "en": "Palafin",
+      "ja": "イルカマン"
+    },
+    "formNames": {
+      "zh-hans": "Hero Form",
+      "zh-hant": "Hero Form",
+      "en": "Hero Form",
+      "ja": "マイティフォルム"
+    },
+    "types": [
+      "water"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 160,
+      "def": 97,
+      "spa": 106,
+      "spd": 87,
+      "spe": 100
+    }
+  },
+  "10257": {
+    "resourceType": "pokemon",
+    "id": 10257,
+    "speciesId": 925,
+    "pokemonSlug": "maushold-family-of-three",
+    "speciesSlug": "maushold",
+    "calcSpeciesName": "Maushold-Family of Three",
+    "names": {
+      "zh-hans": "一家鼠-Family of Three",
+      "zh-hant": "一家鼠-Family of Three",
+      "en": "Maushold-Family of Three",
+      "ja": "イッカネズミ-３びきかぞく"
+    },
+    "speciesNames": {
+      "zh-hans": "一家鼠",
+      "zh-hant": "一家鼠",
+      "en": "Maushold",
+      "ja": "イッカネズミ"
+    },
+    "formNames": {
+      "zh-hans": "Family of Three",
+      "zh-hant": "Family of Three",
+      "en": "Family of Three",
+      "ja": "３びきかぞく"
+    },
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 74,
+      "atk": 75,
+      "def": 70,
+      "spa": 65,
+      "spd": 75,
+      "spe": 111
+    }
+  },
+  "10258": {
+    "resourceType": "pokemon",
+    "id": 10258,
+    "speciesId": 978,
+    "pokemonSlug": "tatsugiri-droopy",
+    "speciesSlug": "tatsugiri",
+    "calcSpeciesName": "Tatsugiri-Droopy Form",
+    "names": {
+      "zh-hans": "米立龙-Droopy Form",
+      "zh-hant": "米立龍-Droopy Form",
+      "en": "Tatsugiri-Droopy Form",
+      "ja": "シャリタツ-たれたすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "米立龙",
+      "zh-hant": "米立龍",
+      "en": "Tatsugiri",
+      "ja": "シャリタツ"
+    },
+    "formNames": {
+      "zh-hans": "Droopy Form",
+      "zh-hant": "Droopy Form",
+      "en": "Droopy Form",
+      "ja": "たれたすがた"
+    },
+    "types": [
+      "dragon",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 50,
+      "def": 60,
+      "spa": 120,
+      "spd": 95,
+      "spe": 82
+    }
+  },
+  "10259": {
+    "resourceType": "pokemon",
+    "id": 10259,
+    "speciesId": 978,
+    "pokemonSlug": "tatsugiri-stretchy",
+    "speciesSlug": "tatsugiri",
+    "calcSpeciesName": "Tatsugiri-Stretchy Form",
+    "names": {
+      "zh-hans": "米立龙-Stretchy Form",
+      "zh-hant": "米立龍-Stretchy Form",
+      "en": "Tatsugiri-Stretchy Form",
+      "ja": "シャリタツ-のびたすがた"
+    },
+    "speciesNames": {
+      "zh-hans": "米立龙",
+      "zh-hant": "米立龍",
+      "en": "Tatsugiri",
+      "ja": "シャリタツ"
+    },
+    "formNames": {
+      "zh-hans": "Stretchy Form",
+      "zh-hant": "Stretchy Form",
+      "en": "Stretchy Form",
+      "ja": "のびたすがた"
+    },
+    "types": [
+      "dragon",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 50,
+      "def": 60,
+      "spa": 120,
+      "spd": 95,
+      "spe": 82
+    }
+  },
+  "10260": {
+    "resourceType": "pokemon",
+    "id": 10260,
+    "speciesId": 931,
+    "pokemonSlug": "squawkabilly-blue-plumage",
+    "speciesSlug": "squawkabilly",
+    "calcSpeciesName": "Squawkabilly-Blue Plumage",
+    "names": {
+      "zh-hans": "怒鹦哥-Blue Plumage",
+      "zh-hant": "怒鸚哥-Blue Plumage",
+      "en": "Squawkabilly-Blue Plumage",
+      "ja": "イキリンコ-ブルーフェザー"
+    },
+    "speciesNames": {
+      "zh-hans": "怒鹦哥",
+      "zh-hant": "怒鸚哥",
+      "en": "Squawkabilly",
+      "ja": "イキリンコ"
+    },
+    "formNames": {
+      "zh-hans": "Blue Plumage",
+      "zh-hant": "Blue Plumage",
+      "en": "Blue Plumage",
+      "ja": "ブルーフェザー"
+    },
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 82,
+      "atk": 96,
+      "def": 51,
+      "spa": 45,
+      "spd": 51,
+      "spe": 92
+    }
+  },
+  "10261": {
+    "resourceType": "pokemon",
+    "id": 10261,
+    "speciesId": 931,
+    "pokemonSlug": "squawkabilly-yellow-plumage",
+    "speciesSlug": "squawkabilly",
+    "calcSpeciesName": "Squawkabilly-Yellow Plumage",
+    "names": {
+      "zh-hans": "怒鹦哥-Yellow Plumage",
+      "zh-hant": "怒鸚哥-Yellow Plumage",
+      "en": "Squawkabilly-Yellow Plumage",
+      "ja": "イキリンコ-イエローフェザー"
+    },
+    "speciesNames": {
+      "zh-hans": "怒鹦哥",
+      "zh-hant": "怒鸚哥",
+      "en": "Squawkabilly",
+      "ja": "イキリンコ"
+    },
+    "formNames": {
+      "zh-hans": "Yellow Plumage",
+      "zh-hant": "Yellow Plumage",
+      "en": "Yellow Plumage",
+      "ja": "イエローフェザー"
+    },
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 82,
+      "atk": 96,
+      "def": 51,
+      "spa": 45,
+      "spd": 51,
+      "spe": 92
+    }
+  },
+  "10262": {
+    "resourceType": "pokemon",
+    "id": 10262,
+    "speciesId": 931,
+    "pokemonSlug": "squawkabilly-white-plumage",
+    "speciesSlug": "squawkabilly",
+    "calcSpeciesName": "Squawkabilly-White Plumage",
+    "names": {
+      "zh-hans": "怒鹦哥-White Plumage",
+      "zh-hant": "怒鸚哥-White Plumage",
+      "en": "Squawkabilly-White Plumage",
+      "ja": "イキリンコ-ホワイトフェザー"
+    },
+    "speciesNames": {
+      "zh-hans": "怒鹦哥",
+      "zh-hant": "怒鸚哥",
+      "en": "Squawkabilly",
+      "ja": "イキリンコ"
+    },
+    "formNames": {
+      "zh-hans": "White Plumage",
+      "zh-hant": "White Plumage",
+      "en": "White Plumage",
+      "ja": "ホワイトフェザー"
+    },
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 82,
+      "atk": 96,
+      "def": 51,
+      "spa": 45,
+      "spd": 51,
+      "spe": 92
+    }
+  },
+  "10263": {
+    "resourceType": "pokemon",
+    "id": 10263,
+    "speciesId": 999,
+    "pokemonSlug": "gimmighoul-roaming",
+    "speciesSlug": "gimmighoul",
+    "calcSpeciesName": "Gimmighoul-Roaming Form",
+    "names": {
+      "zh-hans": "索财灵-Roaming Form",
+      "zh-hant": "索財靈-Roaming Form",
+      "en": "Gimmighoul-Roaming Form",
+      "ja": "コレクレー-とほフォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "索财灵",
+      "zh-hant": "索財靈",
+      "en": "Gimmighoul",
+      "ja": "コレクレー"
+    },
+    "formNames": {
+      "zh-hans": "Roaming Form",
+      "zh-hant": "Roaming Form",
+      "en": "Roaming Form",
+      "ja": "とほフォルム"
+    },
+    "types": [
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 45,
+      "atk": 30,
+      "def": 25,
+      "spa": 75,
+      "spd": 45,
+      "spe": 80
+    }
+  },
+  "10264": {
+    "resourceType": "pokemon",
+    "id": 10264,
+    "speciesId": 1007,
+    "pokemonSlug": "koraidon-limited-build",
+    "speciesSlug": "koraidon",
+    "calcSpeciesName": "Koraidon-Limited Build",
+    "names": {
+      "zh-hans": "故勒顿-Limited Build",
+      "zh-hant": "故勒頓-Limited Build",
+      "en": "Koraidon-Limited Build",
+      "ja": "コライドン-せいげんけいたい"
+    },
+    "speciesNames": {
+      "zh-hans": "故勒顿",
+      "zh-hant": "故勒頓",
+      "en": "Koraidon",
+      "ja": "コライドン"
+    },
+    "formNames": {
+      "zh-hans": "Limited Build",
+      "zh-hant": "Limited Build",
+      "en": "Limited Build",
+      "ja": "せいげんけいたい"
+    },
+    "types": [
+      "fighting",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 135,
+      "def": 115,
+      "spa": 85,
+      "spd": 100,
+      "spe": 135
+    }
+  },
+  "10265": {
+    "resourceType": "pokemon",
+    "id": 10265,
+    "speciesId": 1007,
+    "pokemonSlug": "koraidon-sprinting-build",
+    "speciesSlug": "koraidon",
+    "calcSpeciesName": "Koraidon-Sprinting Build",
+    "names": {
+      "zh-hans": "故勒顿-Sprinting Build",
+      "zh-hant": "故勒頓-Sprinting Build",
+      "en": "Koraidon-Sprinting Build",
+      "ja": "コライドン-しっそうけいたい"
+    },
+    "speciesNames": {
+      "zh-hans": "故勒顿",
+      "zh-hant": "故勒頓",
+      "en": "Koraidon",
+      "ja": "コライドン"
+    },
+    "formNames": {
+      "zh-hans": "Sprinting Build",
+      "zh-hant": "Sprinting Build",
+      "en": "Sprinting Build",
+      "ja": "しっそうけいたい"
+    },
+    "types": [
+      "fighting",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 135,
+      "def": 115,
+      "spa": 85,
+      "spd": 100,
+      "spe": 135
+    }
+  },
+  "10266": {
+    "resourceType": "pokemon",
+    "id": 10266,
+    "speciesId": 1007,
+    "pokemonSlug": "koraidon-swimming-build",
+    "speciesSlug": "koraidon",
+    "calcSpeciesName": "Koraidon-Swimming Build",
+    "names": {
+      "zh-hans": "故勒顿-Swimming Build",
+      "zh-hant": "故勒頓-Swimming Build",
+      "en": "Koraidon-Swimming Build",
+      "ja": "コライドン-ゆうえいけいたい"
+    },
+    "speciesNames": {
+      "zh-hans": "故勒顿",
+      "zh-hant": "故勒頓",
+      "en": "Koraidon",
+      "ja": "コライドン"
+    },
+    "formNames": {
+      "zh-hans": "Swimming Build",
+      "zh-hant": "Swimming Build",
+      "en": "Swimming Build",
+      "ja": "ゆうえいけいたい"
+    },
+    "types": [
+      "fighting",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 135,
+      "def": 115,
+      "spa": 85,
+      "spd": 100,
+      "spe": 135
+    }
+  },
+  "10267": {
+    "resourceType": "pokemon",
+    "id": 10267,
+    "speciesId": 1007,
+    "pokemonSlug": "koraidon-gliding-build",
+    "speciesSlug": "koraidon",
+    "calcSpeciesName": "Koraidon-Gliding Build",
+    "names": {
+      "zh-hans": "故勒顿-Gliding Build",
+      "zh-hant": "故勒頓-Gliding Build",
+      "en": "Koraidon-Gliding Build",
+      "ja": "コライドン-かっくうけいたい"
+    },
+    "speciesNames": {
+      "zh-hans": "故勒顿",
+      "zh-hant": "故勒頓",
+      "en": "Koraidon",
+      "ja": "コライドン"
+    },
+    "formNames": {
+      "zh-hans": "Gliding Build",
+      "zh-hant": "Gliding Build",
+      "en": "Gliding Build",
+      "ja": "かっくうけいたい"
+    },
+    "types": [
+      "fighting",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 135,
+      "def": 115,
+      "spa": 85,
+      "spd": 100,
+      "spe": 135
+    }
+  },
+  "10268": {
+    "resourceType": "pokemon",
+    "id": 10268,
+    "speciesId": 1008,
+    "pokemonSlug": "miraidon-low-power-mode",
+    "speciesSlug": "miraidon",
+    "calcSpeciesName": "Miraidon-Low-Power Mode",
+    "names": {
+      "zh-hans": "密勒顿-Low-Power Mode",
+      "zh-hant": "密勒頓-Low-Power Mode",
+      "en": "Miraidon-Low-Power Mode",
+      "ja": "ミライドン-リミテッドモード"
+    },
+    "speciesNames": {
+      "zh-hans": "密勒顿",
+      "zh-hant": "密勒頓",
+      "en": "Miraidon",
+      "ja": "ミライドン"
+    },
+    "formNames": {
+      "zh-hans": "Low-Power Mode",
+      "zh-hant": "Low-Power Mode",
+      "en": "Low-Power Mode",
+      "ja": "リミテッドモード"
+    },
+    "types": [
+      "electric",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 85,
+      "def": 100,
+      "spa": 135,
+      "spd": 115,
+      "spe": 135
+    }
+  },
+  "10269": {
+    "resourceType": "pokemon",
+    "id": 10269,
+    "speciesId": 1008,
+    "pokemonSlug": "miraidon-drive-mode",
+    "speciesSlug": "miraidon",
+    "calcSpeciesName": "Miraidon-Drive Mode",
+    "names": {
+      "zh-hans": "密勒顿-Drive Mode",
+      "zh-hant": "密勒頓-Drive Mode",
+      "en": "Miraidon-Drive Mode",
+      "ja": "ミライドン-ドライブモード"
+    },
+    "speciesNames": {
+      "zh-hans": "密勒顿",
+      "zh-hant": "密勒頓",
+      "en": "Miraidon",
+      "ja": "ミライドン"
+    },
+    "formNames": {
+      "zh-hans": "Drive Mode",
+      "zh-hant": "Drive Mode",
+      "en": "Drive Mode",
+      "ja": "ドライブモード"
+    },
+    "types": [
+      "electric",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 85,
+      "def": 100,
+      "spa": 135,
+      "spd": 115,
+      "spe": 135
+    }
+  },
+  "10270": {
+    "resourceType": "pokemon",
+    "id": 10270,
+    "speciesId": 1008,
+    "pokemonSlug": "miraidon-aquatic-mode",
+    "speciesSlug": "miraidon",
+    "calcSpeciesName": "Miraidon-Aquatic Mode",
+    "names": {
+      "zh-hans": "密勒顿-Aquatic Mode",
+      "zh-hant": "密勒頓-Aquatic Mode",
+      "en": "Miraidon-Aquatic Mode",
+      "ja": "ミライドン-フロートモード"
+    },
+    "speciesNames": {
+      "zh-hans": "密勒顿",
+      "zh-hant": "密勒頓",
+      "en": "Miraidon",
+      "ja": "ミライドン"
+    },
+    "formNames": {
+      "zh-hans": "Aquatic Mode",
+      "zh-hant": "Aquatic Mode",
+      "en": "Aquatic Mode",
+      "ja": "フロートモード"
+    },
+    "types": [
+      "electric",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 85,
+      "def": 100,
+      "spa": 135,
+      "spd": 115,
+      "spe": 135
+    }
+  },
+  "10271": {
+    "resourceType": "pokemon",
+    "id": 10271,
+    "speciesId": 1008,
+    "pokemonSlug": "miraidon-glide-mode",
+    "speciesSlug": "miraidon",
+    "calcSpeciesName": "Miraidon-Glide Mode",
+    "names": {
+      "zh-hans": "密勒顿-Glide Mode",
+      "zh-hant": "密勒頓-Glide Mode",
+      "en": "Miraidon-Glide Mode",
+      "ja": "ミライドン-グライドモード"
+    },
+    "speciesNames": {
+      "zh-hans": "密勒顿",
+      "zh-hant": "密勒頓",
+      "en": "Miraidon",
+      "ja": "ミライドン"
+    },
+    "formNames": {
+      "zh-hans": "Glide Mode",
+      "zh-hant": "Glide Mode",
+      "en": "Glide Mode",
+      "ja": "グライドモード"
+    },
+    "types": [
+      "electric",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 100,
+      "atk": 85,
+      "def": 100,
+      "spa": 135,
+      "spd": 115,
+      "spe": 135
+    }
+  },
+  "10272": {
+    "resourceType": "pokemon",
+    "id": 10272,
+    "speciesId": 901,
+    "pokemonSlug": "ursaluna-bloodmoon",
+    "speciesSlug": "ursaluna",
+    "calcSpeciesName": "Ursaluna-Bloodmoon",
+    "names": {
+      "zh-hans": "月月熊-赫月",
+      "zh-hant": "月月熊-赫月",
+      "en": "Ursaluna-Bloodmoon",
+      "ja": "ガチグマ-アカツキ"
+    },
+    "speciesNames": {
+      "zh-hans": "月月熊",
+      "zh-hant": "月月熊",
+      "en": "Ursaluna",
+      "ja": "ガチグマ"
+    },
+    "formNames": {
+      "zh-hans": "赫月",
+      "zh-hant": "赫月",
+      "en": "Bloodmoon",
+      "ja": "アカツキ"
+    },
+    "types": [
+      "ground",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 113,
+      "atk": 70,
+      "def": 120,
+      "spa": 135,
+      "spd": 65,
+      "spe": 52
+    }
+  },
+  "10273": {
+    "resourceType": "pokemon",
+    "id": 10273,
+    "speciesId": 1017,
+    "pokemonSlug": "ogerpon-wellspring-mask",
+    "speciesSlug": "ogerpon",
+    "calcSpeciesName": "Ogerpon-Wellspring Mask",
+    "names": {
+      "zh-hans": "厄诡椪-水井面具",
+      "zh-hant": "厄鬼椪-水井面具",
+      "en": "Ogerpon-Wellspring Mask",
+      "ja": "オーガポン-いどのめん"
+    },
+    "speciesNames": {
+      "zh-hans": "厄诡椪",
+      "zh-hant": "厄鬼椪",
+      "en": "Ogerpon",
+      "ja": "オーガポン"
+    },
+    "formNames": {
+      "zh-hans": "水井面具",
+      "zh-hant": "水井面具",
+      "en": "Wellspring Mask",
+      "ja": "いどのめん"
+    },
+    "types": [
+      "grass",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 120,
+      "def": 84,
+      "spa": 60,
+      "spd": 96,
+      "spe": 110
+    }
+  },
+  "10274": {
+    "resourceType": "pokemon",
+    "id": 10274,
+    "speciesId": 1017,
+    "pokemonSlug": "ogerpon-hearthflame-mask",
+    "speciesSlug": "ogerpon",
+    "calcSpeciesName": "Ogerpon-Hearthflame Mask",
+    "names": {
+      "zh-hans": "厄诡椪-火灶面具",
+      "zh-hant": "厄鬼椪-火灶面具",
+      "en": "Ogerpon-Hearthflame Mask",
+      "ja": "オーガポン-かまどのめん"
+    },
+    "speciesNames": {
+      "zh-hans": "厄诡椪",
+      "zh-hant": "厄鬼椪",
+      "en": "Ogerpon",
+      "ja": "オーガポン"
+    },
+    "formNames": {
+      "zh-hans": "火灶面具",
+      "zh-hant": "火灶面具",
+      "en": "Hearthflame Mask",
+      "ja": "かまどのめん"
+    },
+    "types": [
+      "grass",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 120,
+      "def": 84,
+      "spa": 60,
+      "spd": 96,
+      "spe": 110
+    }
+  },
+  "10275": {
+    "resourceType": "pokemon",
+    "id": 10275,
+    "speciesId": 1017,
+    "pokemonSlug": "ogerpon-cornerstone-mask",
+    "speciesSlug": "ogerpon",
+    "calcSpeciesName": "Ogerpon-Cornerstone Mask",
+    "names": {
+      "zh-hans": "厄诡椪-礎石面具",
+      "zh-hant": "厄鬼椪-礎石面具",
+      "en": "Ogerpon-Cornerstone Mask",
+      "ja": "オーガポン-いしずえのめん"
+    },
+    "speciesNames": {
+      "zh-hans": "厄诡椪",
+      "zh-hant": "厄鬼椪",
+      "en": "Ogerpon",
+      "ja": "オーガポン"
+    },
+    "formNames": {
+      "zh-hans": "礎石面具",
+      "zh-hant": "礎石面具",
+      "en": "Cornerstone Mask",
+      "ja": "いしずえのめん"
+    },
+    "types": [
+      "grass",
+      "rock"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 120,
+      "def": 84,
+      "spa": 60,
+      "spd": 96,
+      "spe": 110
+    }
+  },
+  "10276": {
+    "resourceType": "pokemon",
+    "id": 10276,
+    "speciesId": 1024,
+    "pokemonSlug": "terapagos-terastal",
+    "speciesSlug": "terapagos",
+    "calcSpeciesName": "Terapagos-Terastal Form",
+    "names": {
+      "zh-hans": "太乐巴戈斯-Terastal Form",
+      "zh-hant": "太樂巴戈斯-Terastal Form",
+      "en": "Terapagos-Terastal Form",
+      "ja": "テラパゴス-テラスタルフォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "太乐巴戈斯",
+      "zh-hant": "太樂巴戈斯",
+      "en": "Terapagos",
+      "ja": "テラパゴス"
+    },
+    "formNames": {
+      "zh-hans": "Terastal Form",
+      "zh-hant": "Terastal Form",
+      "en": "Terastal Form",
+      "ja": "テラスタルフォルム"
+    },
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 95,
+      "def": 110,
+      "spa": 105,
+      "spd": 110,
+      "spe": 85
+    }
+  },
+  "10277": {
+    "resourceType": "pokemon",
+    "id": 10277,
+    "speciesId": 1024,
+    "pokemonSlug": "terapagos-stellar",
+    "speciesSlug": "terapagos",
+    "calcSpeciesName": "Terapagos-Stellar Form",
+    "names": {
+      "zh-hans": "太乐巴戈斯-Stellar Form",
+      "zh-hant": "太樂巴戈斯-Stellar Form",
+      "en": "Terapagos-Stellar Form",
+      "ja": "テラパゴス-ステラフォルム"
+    },
+    "speciesNames": {
+      "zh-hans": "太乐巴戈斯",
+      "zh-hant": "太樂巴戈斯",
+      "en": "Terapagos",
+      "ja": "テラパゴス"
+    },
+    "formNames": {
+      "zh-hans": "Stellar Form",
+      "zh-hant": "Stellar Form",
+      "en": "Stellar Form",
+      "ja": "ステラフォルム"
+    },
+    "types": [
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 160,
+      "atk": 105,
+      "def": 110,
+      "spa": 130,
+      "spd": 110,
+      "spe": 85
+    }
+  },
+  "10278": {
+    "resourceType": "pokemon",
+    "id": 10278,
+    "speciesId": 36,
+    "pokemonSlug": "clefable-mega",
+    "speciesSlug": "clefable",
+    "calcSpeciesName": "Clefable-Mega Clefable",
+    "names": {
+      "zh-hans": "皮可西-Mega Clefable",
+      "zh-hant": "皮可西-Mega Clefable",
+      "en": "Clefable-Mega Clefable",
+      "ja": "ピクシー-メガピクシー"
+    },
+    "speciesNames": {
+      "zh-hans": "皮可西",
+      "zh-hant": "皮可西",
+      "en": "Clefable",
+      "ja": "ピクシー"
+    },
+    "formNames": {
+      "zh-hans": "Mega Clefable",
+      "zh-hant": "Mega Clefable",
+      "en": "Mega Clefable",
+      "ja": "メガピクシー"
+    },
+    "types": [
+      "fairy",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 95,
+      "atk": 80,
+      "def": 93,
+      "spa": 135,
+      "spd": 110,
+      "spe": 70
+    }
+  },
+  "10279": {
+    "resourceType": "pokemon",
+    "id": 10279,
+    "speciesId": 71,
+    "pokemonSlug": "victreebel-mega",
+    "speciesSlug": "victreebel",
+    "calcSpeciesName": "Victreebel-Mega Victreebel",
+    "names": {
+      "zh-hans": "大食花-Mega Victreebel",
+      "zh-hant": "大食花-Mega Victreebel",
+      "en": "Victreebel-Mega Victreebel",
+      "ja": "ウツボット-メガウツボット"
+    },
+    "speciesNames": {
+      "zh-hans": "大食花",
+      "zh-hant": "大食花",
+      "en": "Victreebel",
+      "ja": "ウツボット"
+    },
+    "formNames": {
+      "zh-hans": "Mega Victreebel",
+      "zh-hant": "Mega Victreebel",
+      "en": "Mega Victreebel",
+      "ja": "メガウツボット"
+    },
+    "types": [
+      "grass",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 125,
+      "def": 85,
+      "spa": 135,
+      "spd": 95,
+      "spe": 70
+    }
+  },
+  "10280": {
+    "resourceType": "pokemon",
+    "id": 10280,
+    "speciesId": 121,
+    "pokemonSlug": "starmie-mega",
+    "speciesSlug": "starmie",
+    "calcSpeciesName": "Starmie-Mega Starmie",
+    "names": {
+      "zh-hans": "宝石海星-Mega Starmie",
+      "zh-hant": "寶石海星-Mega Starmie",
+      "en": "Starmie-Mega Starmie",
+      "ja": "スターミー-メガスターミー"
+    },
+    "speciesNames": {
+      "zh-hans": "宝石海星",
+      "zh-hant": "寶石海星",
+      "en": "Starmie",
+      "ja": "スターミー"
+    },
+    "formNames": {
+      "zh-hans": "Mega Starmie",
+      "zh-hant": "Mega Starmie",
+      "en": "Mega Starmie",
+      "ja": "メガスターミー"
+    },
+    "types": [
+      "water",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 100,
+      "def": 105,
+      "spa": 130,
+      "spd": 105,
+      "spe": 120
+    }
+  },
+  "10281": {
+    "resourceType": "pokemon",
+    "id": 10281,
+    "speciesId": 149,
+    "pokemonSlug": "dragonite-mega",
+    "speciesSlug": "dragonite",
+    "calcSpeciesName": "Dragonite-Mega Dragonite",
+    "names": {
+      "zh-hans": "快龙-Mega Dragonite",
+      "zh-hant": "快龍-Mega Dragonite",
+      "en": "Dragonite-Mega Dragonite",
+      "ja": "カイリュー-メガカイリュー"
+    },
+    "speciesNames": {
+      "zh-hans": "快龙",
+      "zh-hant": "快龍",
+      "en": "Dragonite",
+      "ja": "カイリュー"
+    },
+    "formNames": {
+      "zh-hans": "Mega Dragonite",
+      "zh-hant": "Mega Dragonite",
+      "en": "Mega Dragonite",
+      "ja": "メガカイリュー"
+    },
+    "types": [
+      "dragon",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 91,
+      "atk": 124,
+      "def": 115,
+      "spa": 145,
+      "spd": 125,
+      "spe": 100
+    }
+  },
+  "10282": {
+    "resourceType": "pokemon",
+    "id": 10282,
+    "speciesId": 154,
+    "pokemonSlug": "meganium-mega",
+    "speciesSlug": "meganium",
+    "calcSpeciesName": "Meganium-Mega Meganium",
+    "names": {
+      "zh-hans": "大竺葵-Mega Meganium",
+      "zh-hant": "大竺葵-Mega Meganium",
+      "en": "Meganium-Mega Meganium",
+      "ja": "メガニウム-メガメガニウム"
+    },
+    "speciesNames": {
+      "zh-hans": "大竺葵",
+      "zh-hant": "大竺葵",
+      "en": "Meganium",
+      "ja": "メガニウム"
+    },
+    "formNames": {
+      "zh-hans": "Mega Meganium",
+      "zh-hant": "Mega Meganium",
+      "en": "Mega Meganium",
+      "ja": "メガメガニウム"
+    },
+    "types": [
+      "grass",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 92,
+      "def": 115,
+      "spa": 143,
+      "spd": 115,
+      "spe": 80
+    }
+  },
+  "10283": {
+    "resourceType": "pokemon",
+    "id": 10283,
+    "speciesId": 160,
+    "pokemonSlug": "feraligatr-mega",
+    "speciesSlug": "feraligatr",
+    "calcSpeciesName": "Feraligatr-Mega Feraligatr",
+    "names": {
+      "zh-hans": "大力鳄-Mega Feraligatr",
+      "zh-hant": "大力鱷-Mega Feraligatr",
+      "en": "Feraligatr-Mega Feraligatr",
+      "ja": "オーダイル-メガオーダイル"
+    },
+    "speciesNames": {
+      "zh-hans": "大力鳄",
+      "zh-hant": "大力鱷",
+      "en": "Feraligatr",
+      "ja": "オーダイル"
+    },
+    "formNames": {
+      "zh-hans": "Mega Feraligatr",
+      "zh-hant": "Mega Feraligatr",
+      "en": "Mega Feraligatr",
+      "ja": "メガオーダイル"
+    },
+    "types": [
+      "water",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 160,
+      "def": 125,
+      "spa": 89,
+      "spd": 93,
+      "spe": 78
+    }
+  },
+  "10284": {
+    "resourceType": "pokemon",
+    "id": 10284,
+    "speciesId": 227,
+    "pokemonSlug": "skarmory-mega",
+    "speciesSlug": "skarmory",
+    "calcSpeciesName": "Skarmory-Mega Skarmory",
+    "names": {
+      "zh-hans": "盔甲鸟-Mega Skarmory",
+      "zh-hant": "盔甲鳥-Mega Skarmory",
+      "en": "Skarmory-Mega Skarmory",
+      "ja": "エアームド-メガエアームド"
+    },
+    "speciesNames": {
+      "zh-hans": "盔甲鸟",
+      "zh-hant": "盔甲鳥",
+      "en": "Skarmory",
+      "ja": "エアームド"
+    },
+    "formNames": {
+      "zh-hans": "Mega Skarmory",
+      "zh-hant": "Mega Skarmory",
+      "en": "Mega Skarmory",
+      "ja": "メガエアームド"
+    },
+    "types": [
+      "steel",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 140,
+      "def": 110,
+      "spa": 40,
+      "spd": 100,
+      "spe": 110
+    }
+  },
+  "10285": {
+    "resourceType": "pokemon",
+    "id": 10285,
+    "speciesId": 478,
+    "pokemonSlug": "froslass-mega",
+    "speciesSlug": "froslass",
+    "calcSpeciesName": "Froslass-Mega Froslass",
+    "names": {
+      "zh-hans": "雪妖女-Mega Froslass",
+      "zh-hant": "雪妖女-Mega Froslass",
+      "en": "Froslass-Mega Froslass",
+      "ja": "ユキメノコ-メガユキメノコ"
+    },
+    "speciesNames": {
+      "zh-hans": "雪妖女",
+      "zh-hant": "雪妖女",
+      "en": "Froslass",
+      "ja": "ユキメノコ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Froslass",
+      "zh-hant": "Mega Froslass",
+      "en": "Mega Froslass",
+      "ja": "メガユキメノコ"
+    },
+    "types": [
+      "ice",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 80,
+      "def": 70,
+      "spa": 140,
+      "spd": 100,
+      "spe": 120
+    }
+  },
+  "10286": {
+    "resourceType": "pokemon",
+    "id": 10286,
+    "speciesId": 500,
+    "pokemonSlug": "emboar-mega",
+    "speciesSlug": "emboar",
+    "calcSpeciesName": "Emboar-Mega Emboar",
+    "names": {
+      "zh-hans": "炎武王-Mega Emboar",
+      "zh-hant": "炎武王-Mega Emboar",
+      "en": "Emboar-Mega Emboar",
+      "ja": "エンブオー-メガエンブオー"
+    },
+    "speciesNames": {
+      "zh-hans": "炎武王",
+      "zh-hant": "炎武王",
+      "en": "Emboar",
+      "ja": "エンブオー"
+    },
+    "formNames": {
+      "zh-hans": "Mega Emboar",
+      "zh-hant": "Mega Emboar",
+      "en": "Mega Emboar",
+      "ja": "メガエンブオー"
+    },
+    "types": [
+      "fire",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 110,
+      "atk": 148,
+      "def": 75,
+      "spa": 110,
+      "spd": 110,
+      "spe": 75
+    }
+  },
+  "10287": {
+    "resourceType": "pokemon",
+    "id": 10287,
+    "speciesId": 530,
+    "pokemonSlug": "excadrill-mega",
+    "speciesSlug": "excadrill",
+    "calcSpeciesName": "Excadrill-Mega Excadrill",
+    "names": {
+      "zh-hans": "龙头地鼠-Mega Excadrill",
+      "zh-hant": "龍頭地鼠-Mega Excadrill",
+      "en": "Excadrill-Mega Excadrill",
+      "ja": "ドリュウズ-メガドリュウズ"
+    },
+    "speciesNames": {
+      "zh-hans": "龙头地鼠",
+      "zh-hant": "龍頭地鼠",
+      "en": "Excadrill",
+      "ja": "ドリュウズ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Excadrill",
+      "zh-hant": "Mega Excadrill",
+      "en": "Mega Excadrill",
+      "ja": "メガドリュウズ"
+    },
+    "types": [
+      "ground",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 110,
+      "atk": 165,
+      "def": 100,
+      "spa": 65,
+      "spd": 65,
+      "spe": 103
+    }
+  },
+  "10288": {
+    "resourceType": "pokemon",
+    "id": 10288,
+    "speciesId": 545,
+    "pokemonSlug": "scolipede-mega",
+    "speciesSlug": "scolipede",
+    "calcSpeciesName": "Scolipede-Mega Scolipede",
+    "names": {
+      "zh-hans": "蜈蚣王-Mega Scolipede",
+      "zh-hant": "蜈蚣王-Mega Scolipede",
+      "en": "Scolipede-Mega Scolipede",
+      "ja": "ペンドラー-メガペンドラー"
+    },
+    "speciesNames": {
+      "zh-hans": "蜈蚣王",
+      "zh-hant": "蜈蚣王",
+      "en": "Scolipede",
+      "ja": "ペンドラー"
+    },
+    "formNames": {
+      "zh-hans": "Mega Scolipede",
+      "zh-hant": "Mega Scolipede",
+      "en": "Mega Scolipede",
+      "ja": "メガペンドラー"
+    },
+    "types": [
+      "bug",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 140,
+      "def": 149,
+      "spa": 75,
+      "spd": 99,
+      "spe": 62
+    }
+  },
+  "10289": {
+    "resourceType": "pokemon",
+    "id": 10289,
+    "speciesId": 560,
+    "pokemonSlug": "scrafty-mega",
+    "speciesSlug": "scrafty",
+    "calcSpeciesName": "Scrafty-Mega Scrafty",
+    "names": {
+      "zh-hans": "头巾混混-Mega Scrafty",
+      "zh-hant": "頭巾混混-Mega Scrafty",
+      "en": "Scrafty-Mega Scrafty",
+      "ja": "ズルズキン-メガズルズキン"
+    },
+    "speciesNames": {
+      "zh-hans": "头巾混混",
+      "zh-hant": "頭巾混混",
+      "en": "Scrafty",
+      "ja": "ズルズキン"
+    },
+    "formNames": {
+      "zh-hans": "Mega Scrafty",
+      "zh-hant": "Mega Scrafty",
+      "en": "Mega Scrafty",
+      "ja": "メガズルズキン"
+    },
+    "types": [
+      "dark",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 130,
+      "def": 135,
+      "spa": 55,
+      "spd": 135,
+      "spe": 68
+    }
+  },
+  "10290": {
+    "resourceType": "pokemon",
+    "id": 10290,
+    "speciesId": 604,
+    "pokemonSlug": "eelektross-mega",
+    "speciesSlug": "eelektross",
+    "calcSpeciesName": "Eelektross-Mega Eelektross",
+    "names": {
+      "zh-hans": "麻麻鳗鱼王-Mega Eelektross",
+      "zh-hant": "麻麻鰻魚王-Mega Eelektross",
+      "en": "Eelektross-Mega Eelektross",
+      "ja": "シビルドン-メガシビルドン"
+    },
+    "speciesNames": {
+      "zh-hans": "麻麻鳗鱼王",
+      "zh-hant": "麻麻鰻魚王",
+      "en": "Eelektross",
+      "ja": "シビルドン"
+    },
+    "formNames": {
+      "zh-hans": "Mega Eelektross",
+      "zh-hant": "Mega Eelektross",
+      "en": "Mega Eelektross",
+      "ja": "メガシビルドン"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 145,
+      "def": 80,
+      "spa": 135,
+      "spd": 90,
+      "spe": 80
+    }
+  },
+  "10291": {
+    "resourceType": "pokemon",
+    "id": 10291,
+    "speciesId": 609,
+    "pokemonSlug": "chandelure-mega",
+    "speciesSlug": "chandelure",
+    "calcSpeciesName": "Chandelure-Mega Chandelure",
+    "names": {
+      "zh-hans": "水晶灯火灵-Mega Chandelure",
+      "zh-hant": "水晶燈火靈-Mega Chandelure",
+      "en": "Chandelure-Mega Chandelure",
+      "ja": "シャンデラ-メガシャンデラ"
+    },
+    "speciesNames": {
+      "zh-hans": "水晶灯火灵",
+      "zh-hant": "水晶燈火靈",
+      "en": "Chandelure",
+      "ja": "シャンデラ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Chandelure",
+      "zh-hant": "Mega Chandelure",
+      "en": "Mega Chandelure",
+      "ja": "メガシャンデラ"
+    },
+    "types": [
+      "ghost",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 75,
+      "def": 110,
+      "spa": 175,
+      "spd": 110,
+      "spe": 90
+    }
+  },
+  "10292": {
+    "resourceType": "pokemon",
+    "id": 10292,
+    "speciesId": 652,
+    "pokemonSlug": "chesnaught-mega",
+    "speciesSlug": "chesnaught",
+    "calcSpeciesName": "Chesnaught-Mega Chesnaught",
+    "names": {
+      "zh-hans": "布里卡隆-Mega Chesnaught",
+      "zh-hant": "布里卡隆-Mega Chesnaught",
+      "en": "Chesnaught-Mega Chesnaught",
+      "ja": "ブリガロン-メガブリガロン"
+    },
+    "speciesNames": {
+      "zh-hans": "布里卡隆",
+      "zh-hant": "布里卡隆",
+      "en": "Chesnaught",
+      "ja": "ブリガロン"
+    },
+    "formNames": {
+      "zh-hans": "Mega Chesnaught",
+      "zh-hant": "Mega Chesnaught",
+      "en": "Mega Chesnaught",
+      "ja": "メガブリガロン"
+    },
+    "types": [
+      "grass",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 88,
+      "atk": 137,
+      "def": 172,
+      "spa": 74,
+      "spd": 115,
+      "spe": 44
+    }
+  },
+  "10293": {
+    "resourceType": "pokemon",
+    "id": 10293,
+    "speciesId": 655,
+    "pokemonSlug": "delphox-mega",
+    "speciesSlug": "delphox",
+    "calcSpeciesName": "Delphox-Mega Delphox",
+    "names": {
+      "zh-hans": "妖火红狐-Mega Delphox",
+      "zh-hant": "妖火紅狐-Mega Delphox",
+      "en": "Delphox-Mega Delphox",
+      "ja": "マフォクシー-メガマフォクシー"
+    },
+    "speciesNames": {
+      "zh-hans": "妖火红狐",
+      "zh-hant": "妖火紅狐",
+      "en": "Delphox",
+      "ja": "マフォクシー"
+    },
+    "formNames": {
+      "zh-hans": "Mega Delphox",
+      "zh-hant": "Mega Delphox",
+      "en": "Mega Delphox",
+      "ja": "メガマフォクシー"
+    },
+    "types": [
+      "fire",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 69,
+      "def": 72,
+      "spa": 159,
+      "spd": 125,
+      "spe": 134
+    }
+  },
+  "10294": {
+    "resourceType": "pokemon",
+    "id": 10294,
+    "speciesId": 658,
+    "pokemonSlug": "greninja-mega",
+    "speciesSlug": "greninja",
+    "calcSpeciesName": "Greninja-Mega Greninja",
+    "names": {
+      "zh-hans": "甲贺忍蛙-Mega Greninja",
+      "zh-hant": "甲賀忍蛙-Mega Greninja",
+      "en": "Greninja-Mega Greninja",
+      "ja": "ゲッコウガ-メガゲッコウガ"
+    },
+    "speciesNames": {
+      "zh-hans": "甲贺忍蛙",
+      "zh-hant": "甲賀忍蛙",
+      "en": "Greninja",
+      "ja": "ゲッコウガ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Greninja",
+      "zh-hant": "Mega Greninja",
+      "en": "Mega Greninja",
+      "ja": "メガゲッコウガ"
+    },
+    "types": [
+      "water",
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 72,
+      "atk": 125,
+      "def": 77,
+      "spa": 133,
+      "spd": 81,
+      "spe": 142
+    }
+  },
+  "10295": {
+    "resourceType": "pokemon",
+    "id": 10295,
+    "speciesId": 668,
+    "pokemonSlug": "pyroar-mega",
+    "speciesSlug": "pyroar",
+    "calcSpeciesName": "Pyroar-Mega Pyroar",
+    "names": {
+      "zh-hans": "火炎狮-Mega Pyroar",
+      "zh-hant": "火炎獅-Mega Pyroar",
+      "en": "Pyroar-Mega Pyroar",
+      "ja": "カエンジシ-メガカエンジシ"
+    },
+    "speciesNames": {
+      "zh-hans": "火炎狮",
+      "zh-hant": "火炎獅",
+      "en": "Pyroar",
+      "ja": "カエンジシ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Pyroar",
+      "zh-hant": "Mega Pyroar",
+      "en": "Mega Pyroar",
+      "ja": "メガカエンジシ"
+    },
+    "types": [
+      "fire",
+      "normal"
+    ],
+    "baseStats": {
+      "hp": 86,
+      "atk": 88,
+      "def": 92,
+      "spa": 129,
+      "spd": 86,
+      "spe": 126
+    }
+  },
+  "10296": {
+    "resourceType": "pokemon",
+    "id": 10296,
+    "speciesId": 670,
+    "pokemonSlug": "floette-mega",
+    "speciesSlug": "floette",
+    "calcSpeciesName": "Floette-Mega Floette",
+    "names": {
+      "zh-hans": "花叶蒂-Mega Floette",
+      "zh-hant": "花葉蒂-Mega Floette",
+      "en": "Floette-Mega Floette",
+      "ja": "フラエッテ-メガフラエッテ"
+    },
+    "speciesNames": {
+      "zh-hans": "花叶蒂",
+      "zh-hant": "花葉蒂",
+      "en": "Floette",
+      "ja": "フラエッテ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Floette",
+      "zh-hant": "Mega Floette",
+      "en": "Mega Floette",
+      "ja": "メガフラエッテ"
+    },
+    "types": [
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 74,
+      "atk": 85,
+      "def": 87,
+      "spa": 155,
+      "spd": 148,
+      "spe": 102
+    }
+  },
+  "10297": {
+    "resourceType": "pokemon",
+    "id": 10297,
+    "speciesId": 687,
+    "pokemonSlug": "malamar-mega",
+    "speciesSlug": "malamar",
+    "calcSpeciesName": "Malamar-Mega Malamar",
+    "names": {
+      "zh-hans": "乌贼王-Mega Malamar",
+      "zh-hant": "烏賊王-Mega Malamar",
+      "en": "Malamar-Mega Malamar",
+      "ja": "カラマネロ-メガカラマネロ"
+    },
+    "speciesNames": {
+      "zh-hans": "乌贼王",
+      "zh-hant": "烏賊王",
+      "en": "Malamar",
+      "ja": "カラマネロ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Malamar",
+      "zh-hant": "Mega Malamar",
+      "en": "Mega Malamar",
+      "ja": "メガカラマネロ"
+    },
+    "types": [
+      "dark",
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 86,
+      "atk": 102,
+      "def": 88,
+      "spa": 98,
+      "spd": 120,
+      "spe": 88
+    }
+  },
+  "10298": {
+    "resourceType": "pokemon",
+    "id": 10298,
+    "speciesId": 689,
+    "pokemonSlug": "barbaracle-mega",
+    "speciesSlug": "barbaracle",
+    "calcSpeciesName": "Barbaracle-Mega Barbaracle",
+    "names": {
+      "zh-hans": "龟足巨铠-Mega Barbaracle",
+      "zh-hant": "龜足巨鎧-Mega Barbaracle",
+      "en": "Barbaracle-Mega Barbaracle",
+      "ja": "ガメノデス-メガガメノデス"
+    },
+    "speciesNames": {
+      "zh-hans": "龟足巨铠",
+      "zh-hant": "龜足巨鎧",
+      "en": "Barbaracle",
+      "ja": "ガメノデス"
+    },
+    "formNames": {
+      "zh-hans": "Mega Barbaracle",
+      "zh-hant": "Mega Barbaracle",
+      "en": "Mega Barbaracle",
+      "ja": "メガガメノデス"
+    },
+    "types": [
+      "rock",
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 72,
+      "atk": 140,
+      "def": 130,
+      "spa": 64,
+      "spd": 106,
+      "spe": 88
+    }
+  },
+  "10299": {
+    "resourceType": "pokemon",
+    "id": 10299,
+    "speciesId": 691,
+    "pokemonSlug": "dragalge-mega",
+    "speciesSlug": "dragalge",
+    "calcSpeciesName": "Dragalge-Mega Dragalge",
+    "names": {
+      "zh-hans": "毒藻龙-Mega Dragalge",
+      "zh-hant": "毒藻龍-Mega Dragalge",
+      "en": "Dragalge-Mega Dragalge",
+      "ja": "ドラミドロ-メガドラミドロ"
+    },
+    "speciesNames": {
+      "zh-hans": "毒藻龙",
+      "zh-hant": "毒藻龍",
+      "en": "Dragalge",
+      "ja": "ドラミドロ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Dragalge",
+      "zh-hant": "Mega Dragalge",
+      "en": "Mega Dragalge",
+      "ja": "メガドラミドロ"
+    },
+    "types": [
+      "poison",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 85,
+      "def": 105,
+      "spa": 132,
+      "spd": 163,
+      "spe": 44
+    }
+  },
+  "10300": {
+    "resourceType": "pokemon",
+    "id": 10300,
+    "speciesId": 701,
+    "pokemonSlug": "hawlucha-mega",
+    "speciesSlug": "hawlucha",
+    "calcSpeciesName": "Hawlucha-Mega Hawlucha",
+    "names": {
+      "zh-hans": "摔角鹰人-Mega Hawlucha",
+      "zh-hant": "摔角鷹人-Mega Hawlucha",
+      "en": "Hawlucha-Mega Hawlucha",
+      "ja": "ルチャブル-メガルチャブル"
+    },
+    "speciesNames": {
+      "zh-hans": "摔角鹰人",
+      "zh-hant": "摔角鷹人",
+      "en": "Hawlucha",
+      "ja": "ルチャブル"
+    },
+    "formNames": {
+      "zh-hans": "Mega Hawlucha",
+      "zh-hant": "Mega Hawlucha",
+      "en": "Mega Hawlucha",
+      "ja": "メガルチャブル"
+    },
+    "types": [
+      "fighting",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 78,
+      "atk": 137,
+      "def": 100,
+      "spa": 74,
+      "spd": 93,
+      "spe": 118
+    }
+  },
+  "10301": {
+    "resourceType": "pokemon",
+    "id": 10301,
+    "speciesId": 718,
+    "pokemonSlug": "zygarde-mega",
+    "speciesSlug": "zygarde",
+    "calcSpeciesName": "Zygarde-Mega Zygarde",
+    "names": {
+      "zh-hans": "基格尔德-Mega Zygarde",
+      "zh-hant": "基格爾德-Mega Zygarde",
+      "en": "Zygarde-Mega Zygarde",
+      "ja": "ジガルデ-メガジガルデ"
+    },
+    "speciesNames": {
+      "zh-hans": "基格尔德",
+      "zh-hant": "基格爾德",
+      "en": "Zygarde",
+      "ja": "ジガルデ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Zygarde",
+      "zh-hant": "Mega Zygarde",
+      "en": "Mega Zygarde",
+      "ja": "メガジガルデ"
+    },
+    "types": [
+      "dragon",
+      "ground"
+    ],
+    "baseStats": {
+      "hp": 216,
+      "atk": 70,
+      "def": 91,
+      "spa": 216,
+      "spd": 85,
+      "spe": 100
+    }
+  },
+  "10302": {
+    "resourceType": "pokemon",
+    "id": 10302,
+    "speciesId": 780,
+    "pokemonSlug": "drampa-mega",
+    "speciesSlug": "drampa",
+    "calcSpeciesName": "Drampa-Mega Drampa",
+    "names": {
+      "zh-hans": "老翁龙-Mega Drampa",
+      "zh-hant": "老翁龍-Mega Drampa",
+      "en": "Drampa-Mega Drampa",
+      "ja": "ジジーロン-メガジジーロン"
+    },
+    "speciesNames": {
+      "zh-hans": "老翁龙",
+      "zh-hant": "老翁龍",
+      "en": "Drampa",
+      "ja": "ジジーロン"
+    },
+    "formNames": {
+      "zh-hans": "Mega Drampa",
+      "zh-hant": "Mega Drampa",
+      "en": "Mega Drampa",
+      "ja": "メガジジーロン"
+    },
+    "types": [
+      "normal",
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 78,
+      "atk": 85,
+      "def": 110,
+      "spa": 160,
+      "spd": 116,
+      "spe": 36
+    }
+  },
+  "10303": {
+    "resourceType": "pokemon",
+    "id": 10303,
+    "speciesId": 870,
+    "pokemonSlug": "falinks-mega",
+    "speciesSlug": "falinks",
+    "calcSpeciesName": "Falinks-Mega Falinks",
+    "names": {
+      "zh-hans": "列阵兵-Mega Falinks",
+      "zh-hant": "列陣兵-Mega Falinks",
+      "en": "Falinks-Mega Falinks",
+      "ja": "タイレーツ-メガタイレーツ"
+    },
+    "speciesNames": {
+      "zh-hans": "列阵兵",
+      "zh-hant": "列陣兵",
+      "en": "Falinks",
+      "ja": "タイレーツ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Falinks",
+      "zh-hant": "Mega Falinks",
+      "en": "Mega Falinks",
+      "ja": "メガタイレーツ"
+    },
+    "types": [
+      "fighting"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 135,
+      "def": 135,
+      "spa": 70,
+      "spd": 65,
+      "spe": 100
+    }
+  },
+  "10304": {
+    "resourceType": "pokemon",
+    "id": 10304,
+    "speciesId": 26,
+    "pokemonSlug": "raichu-mega-x",
+    "speciesSlug": "raichu",
+    "calcSpeciesName": "Raichu-Mega Raichu X",
+    "names": {
+      "zh-hans": "雷丘-Mega Raichu X",
+      "zh-hant": "雷丘-Mega Raichu X",
+      "en": "Raichu-Mega Raichu X",
+      "ja": "ライチュウ-メガライチュウX"
+    },
+    "speciesNames": {
+      "zh-hans": "雷丘",
+      "zh-hant": "雷丘",
+      "en": "Raichu",
+      "ja": "ライチュウ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Raichu X",
+      "zh-hant": "Mega Raichu X",
+      "en": "Mega Raichu X",
+      "ja": "メガライチュウX"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 135,
+      "def": 95,
+      "spa": 90,
+      "spd": 95,
+      "spe": 110
+    }
+  },
+  "10305": {
+    "resourceType": "pokemon",
+    "id": 10305,
+    "speciesId": 26,
+    "pokemonSlug": "raichu-mega-y",
+    "speciesSlug": "raichu",
+    "calcSpeciesName": "Raichu-Mega Raichu Y",
+    "names": {
+      "zh-hans": "雷丘-Mega Raichu Y",
+      "zh-hant": "雷丘-Mega Raichu Y",
+      "en": "Raichu-Mega Raichu Y",
+      "ja": "ライチュウ-メガライチュウY"
+    },
+    "speciesNames": {
+      "zh-hans": "雷丘",
+      "zh-hant": "雷丘",
+      "en": "Raichu",
+      "ja": "ライチュウ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Raichu Y",
+      "zh-hant": "Mega Raichu Y",
+      "en": "Mega Raichu Y",
+      "ja": "メガライチュウY"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 60,
+      "atk": 100,
+      "def": 55,
+      "spa": 160,
+      "spd": 80,
+      "spe": 130
+    }
+  },
+  "10306": {
+    "resourceType": "pokemon",
+    "id": 10306,
+    "speciesId": 358,
+    "pokemonSlug": "chimecho-mega",
+    "speciesSlug": "chimecho",
+    "calcSpeciesName": "Chimecho-Mega Chimecho",
+    "names": {
+      "zh-hans": "风铃铃-Mega Chimecho",
+      "zh-hant": "風鈴鈴-Mega Chimecho",
+      "en": "Chimecho-Mega Chimecho",
+      "ja": "チリーン-メガチリーン"
+    },
+    "speciesNames": {
+      "zh-hans": "风铃铃",
+      "zh-hant": "風鈴鈴",
+      "en": "Chimecho",
+      "ja": "チリーン"
+    },
+    "formNames": {
+      "zh-hans": "Mega Chimecho",
+      "zh-hant": "Mega Chimecho",
+      "en": "Mega Chimecho",
+      "ja": "メガチリーン"
+    },
+    "types": [
+      "psychic",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 50,
+      "def": 110,
+      "spa": 135,
+      "spd": 120,
+      "spe": 65
+    }
+  },
+  "10307": {
+    "resourceType": "pokemon",
+    "id": 10307,
+    "speciesId": 359,
+    "pokemonSlug": "absol-mega-z",
+    "speciesSlug": "absol",
+    "calcSpeciesName": "Absol-Mega Absol Z",
+    "names": {
+      "zh-hans": "阿勃梭鲁-Mega Absol Z",
+      "zh-hant": "阿勃梭魯-Mega Absol Z",
+      "en": "Absol-Mega Absol Z",
+      "ja": "アブソル-メガアブソルZ"
+    },
+    "speciesNames": {
+      "zh-hans": "阿勃梭鲁",
+      "zh-hant": "阿勃梭魯",
+      "en": "Absol",
+      "ja": "アブソル"
+    },
+    "formNames": {
+      "zh-hans": "Mega Absol Z",
+      "zh-hant": "Mega Absol Z",
+      "en": "Mega Absol Z",
+      "ja": "メガアブソルZ"
+    },
+    "types": [
+      "dark",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 154,
+      "def": 60,
+      "spa": 75,
+      "spd": 60,
+      "spe": 151
+    }
+  },
+  "10308": {
+    "resourceType": "pokemon",
+    "id": 10308,
+    "speciesId": 398,
+    "pokemonSlug": "staraptor-mega",
+    "speciesSlug": "staraptor",
+    "calcSpeciesName": "Staraptor-Mega Staraptor",
+    "names": {
+      "zh-hans": "姆克鹰-Mega Staraptor",
+      "zh-hant": "姆克鷹-Mega Staraptor",
+      "en": "Staraptor-Mega Staraptor",
+      "ja": "ムクホーク-メガムクホーク"
+    },
+    "speciesNames": {
+      "zh-hans": "姆克鹰",
+      "zh-hant": "姆克鷹",
+      "en": "Staraptor",
+      "ja": "ムクホーク"
+    },
+    "formNames": {
+      "zh-hans": "Mega Staraptor",
+      "zh-hant": "Mega Staraptor",
+      "en": "Mega Staraptor",
+      "ja": "メガムクホーク"
+    },
+    "types": [
+      "fighting",
+      "flying"
+    ],
+    "baseStats": {
+      "hp": 85,
+      "atk": 140,
+      "def": 100,
+      "spa": 60,
+      "spd": 90,
+      "spe": 110
+    }
+  },
+  "10309": {
+    "resourceType": "pokemon",
+    "id": 10309,
+    "speciesId": 445,
+    "pokemonSlug": "garchomp-mega-z",
+    "speciesSlug": "garchomp",
+    "calcSpeciesName": "Garchomp-Mega Garchomp Z",
+    "names": {
+      "zh-hans": "烈咬陆鲨-Mega Garchomp Z",
+      "zh-hant": "烈咬陸鯊-Mega Garchomp Z",
+      "en": "Garchomp-Mega Garchomp Z",
+      "ja": "ガブリアス-メガガブリアスZ"
+    },
+    "speciesNames": {
+      "zh-hans": "烈咬陆鲨",
+      "zh-hant": "烈咬陸鯊",
+      "en": "Garchomp",
+      "ja": "ガブリアス"
+    },
+    "formNames": {
+      "zh-hans": "Mega Garchomp Z",
+      "zh-hant": "Mega Garchomp Z",
+      "en": "Mega Garchomp Z",
+      "ja": "メガガブリアスZ"
+    },
+    "types": [
+      "dragon"
+    ],
+    "baseStats": {
+      "hp": 108,
+      "atk": 130,
+      "def": 85,
+      "spa": 141,
+      "spd": 85,
+      "spe": 151
+    }
+  },
+  "10310": {
+    "resourceType": "pokemon",
+    "id": 10310,
+    "speciesId": 448,
+    "pokemonSlug": "lucario-mega-z",
+    "speciesSlug": "lucario",
+    "calcSpeciesName": "Lucario-Mega Lucario Z",
+    "names": {
+      "zh-hans": "路卡利欧-Mega Lucario Z",
+      "zh-hant": "路卡利歐-Mega Lucario Z",
+      "en": "Lucario-Mega Lucario Z",
+      "ja": "ルカリオ-メガルカリオZ"
+    },
+    "speciesNames": {
+      "zh-hans": "路卡利欧",
+      "zh-hant": "路卡利歐",
+      "en": "Lucario",
+      "ja": "ルカリオ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Lucario Z",
+      "zh-hant": "Mega Lucario Z",
+      "en": "Mega Lucario Z",
+      "ja": "メガルカリオZ"
+    },
+    "types": [
+      "fighting",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 100,
+      "def": 70,
+      "spa": 164,
+      "spd": 70,
+      "spe": 151
+    }
+  },
+  "10311": {
+    "resourceType": "pokemon",
+    "id": 10311,
+    "speciesId": 485,
+    "pokemonSlug": "heatran-mega",
+    "speciesSlug": "heatran",
+    "calcSpeciesName": "Heatran-Mega Heatran",
+    "names": {
+      "zh-hans": "席多蓝恩-Mega Heatran",
+      "zh-hant": "席多藍恩-Mega Heatran",
+      "en": "Heatran-Mega Heatran",
+      "ja": "ヒードラン-メガヒードラン"
+    },
+    "speciesNames": {
+      "zh-hans": "席多蓝恩",
+      "zh-hant": "席多藍恩",
+      "en": "Heatran",
+      "ja": "ヒードラン"
+    },
+    "formNames": {
+      "zh-hans": "Mega Heatran",
+      "zh-hant": "Mega Heatran",
+      "en": "Mega Heatran",
+      "ja": "メガヒードラン"
+    },
+    "types": [
+      "fire",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 91,
+      "atk": 120,
+      "def": 106,
+      "spa": 175,
+      "spd": 141,
+      "spe": 67
+    }
+  },
+  "10312": {
+    "resourceType": "pokemon",
+    "id": 10312,
+    "speciesId": 491,
+    "pokemonSlug": "darkrai-mega",
+    "speciesSlug": "darkrai",
+    "calcSpeciesName": "Darkrai-Mega Darkrai",
+    "names": {
+      "zh-hans": "达克莱伊-Mega Darkrai",
+      "zh-hant": "達克萊伊-Mega Darkrai",
+      "en": "Darkrai-Mega Darkrai",
+      "ja": "ダークライ-メガダークライ"
+    },
+    "speciesNames": {
+      "zh-hans": "达克莱伊",
+      "zh-hant": "達克萊伊",
+      "en": "Darkrai",
+      "ja": "ダークライ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Darkrai",
+      "zh-hant": "Mega Darkrai",
+      "en": "Mega Darkrai",
+      "ja": "メガダークライ"
+    },
+    "types": [
+      "dark"
+    ],
+    "baseStats": {
+      "hp": 70,
+      "atk": 120,
+      "def": 130,
+      "spa": 165,
+      "spd": 130,
+      "spe": 85
+    }
+  },
+  "10313": {
+    "resourceType": "pokemon",
+    "id": 10313,
+    "speciesId": 623,
+    "pokemonSlug": "golurk-mega",
+    "speciesSlug": "golurk",
+    "calcSpeciesName": "Golurk-Mega Golurk",
+    "names": {
+      "zh-hans": "泥偶巨人-Mega Golurk",
+      "zh-hant": "泥偶巨人-Mega Golurk",
+      "en": "Golurk-Mega Golurk",
+      "ja": "ゴルーグ-メガゴルーグ"
+    },
+    "speciesNames": {
+      "zh-hans": "泥偶巨人",
+      "zh-hant": "泥偶巨人",
+      "en": "Golurk",
+      "ja": "ゴルーグ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Golurk",
+      "zh-hant": "Mega Golurk",
+      "en": "Mega Golurk",
+      "ja": "メガゴルーグ"
+    },
+    "types": [
+      "ground",
+      "ghost"
+    ],
+    "baseStats": {
+      "hp": 89,
+      "atk": 159,
+      "def": 105,
+      "spa": 70,
+      "spd": 105,
+      "spe": 55
+    }
+  },
+  "10314": {
+    "resourceType": "pokemon",
+    "id": 10314,
+    "speciesId": 678,
+    "pokemonSlug": "meowstic-male-mega",
+    "speciesSlug": "meowstic",
+    "calcSpeciesName": "Meowstic-Mega Meowstic",
+    "names": {
+      "zh-hans": "超能妙喵-Mega Meowstic",
+      "zh-hant": "超能妙喵-Mega Meowstic",
+      "en": "Meowstic-Mega Meowstic",
+      "ja": "ニャオニクス-メガニャオニクス"
+    },
+    "speciesNames": {
+      "zh-hans": "超能妙喵",
+      "zh-hant": "超能妙喵",
+      "en": "Meowstic",
+      "ja": "ニャオニクス"
+    },
+    "formNames": {
+      "zh-hans": "Mega Meowstic",
+      "zh-hant": "Mega Meowstic",
+      "en": "Mega Meowstic",
+      "ja": "メガニャオニクス"
+    },
+    "types": [
+      "psychic"
+    ],
+    "baseStats": {
+      "hp": 74,
+      "atk": 48,
+      "def": 76,
+      "spa": 143,
+      "spd": 101,
+      "spe": 124
+    }
+  },
+  "10315": {
+    "resourceType": "pokemon",
+    "id": 10315,
+    "speciesId": 740,
+    "pokemonSlug": "crabominable-mega",
+    "speciesSlug": "crabominable",
+    "calcSpeciesName": "Crabominable-Mega Crabominable",
+    "names": {
+      "zh-hans": "好胜毛蟹-Mega Crabominable",
+      "zh-hant": "好勝毛蟹-Mega Crabominable",
+      "en": "Crabominable-Mega Crabominable",
+      "ja": "ケケンカニ-メガケケンカニ"
+    },
+    "speciesNames": {
+      "zh-hans": "好胜毛蟹",
+      "zh-hant": "好勝毛蟹",
+      "en": "Crabominable",
+      "ja": "ケケンカニ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Crabominable",
+      "zh-hant": "Mega Crabominable",
+      "en": "Mega Crabominable",
+      "ja": "メガケケンカニ"
+    },
+    "types": [
+      "fighting",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 97,
+      "atk": 157,
+      "def": 122,
+      "spa": 62,
+      "spd": 107,
+      "spe": 33
+    }
+  },
+  "10316": {
+    "resourceType": "pokemon",
+    "id": 10316,
+    "speciesId": 768,
+    "pokemonSlug": "golisopod-mega",
+    "speciesSlug": "golisopod",
+    "calcSpeciesName": "Golisopod-Mega Golisopod",
+    "names": {
+      "zh-hans": "具甲武者-Mega Golisopod",
+      "zh-hant": "具甲武者-Mega Golisopod",
+      "en": "Golisopod-Mega Golisopod",
+      "ja": "グソクムシャ-メガグソクムシャ"
+    },
+    "speciesNames": {
+      "zh-hans": "具甲武者",
+      "zh-hant": "具甲武者",
+      "en": "Golisopod",
+      "ja": "グソクムシャ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Golisopod",
+      "zh-hant": "Mega Golisopod",
+      "en": "Mega Golisopod",
+      "ja": "メガグソクムシャ"
+    },
+    "types": [
+      "bug",
+      "steel"
+    ],
+    "baseStats": {
+      "hp": 75,
+      "atk": 150,
+      "def": 175,
+      "spa": 70,
+      "spd": 120,
+      "spe": 40
+    }
+  },
+  "10317": {
+    "resourceType": "pokemon",
+    "id": 10317,
+    "speciesId": 801,
+    "pokemonSlug": "magearna-mega",
+    "speciesSlug": "magearna",
+    "calcSpeciesName": "Magearna-Mega Magearna",
+    "names": {
+      "zh-hans": "玛机雅娜-Mega Magearna",
+      "zh-hant": "瑪機雅娜-Mega Magearna",
+      "en": "Magearna-Mega Magearna",
+      "ja": "マギアナ-メガマギアナ"
+    },
+    "speciesNames": {
+      "zh-hans": "玛机雅娜",
+      "zh-hant": "瑪機雅娜",
+      "en": "Magearna",
+      "ja": "マギアナ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Magearna",
+      "zh-hant": "Mega Magearna",
+      "en": "Mega Magearna",
+      "ja": "メガマギアナ"
+    },
+    "types": [
+      "steel",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 125,
+      "def": 115,
+      "spa": 170,
+      "spd": 115,
+      "spe": 95
+    }
+  },
+  "10318": {
+    "resourceType": "pokemon",
+    "id": 10318,
+    "speciesId": 801,
+    "pokemonSlug": "magearna-original-mega",
+    "speciesSlug": "magearna",
+    "calcSpeciesName": "Magearna-Mega Original Magearna",
+    "names": {
+      "zh-hans": "玛机雅娜-Mega Original Magearna",
+      "zh-hant": "瑪機雅娜-Mega Original Magearna",
+      "en": "Magearna-Mega Original Magearna",
+      "ja": "マギアナ-メガマギアナ"
+    },
+    "speciesNames": {
+      "zh-hans": "玛机雅娜",
+      "zh-hant": "瑪機雅娜",
+      "en": "Magearna",
+      "ja": "マギアナ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Original Magearna",
+      "zh-hant": "Mega Original Magearna",
+      "en": "Mega Original Magearna",
+      "ja": "メガマギアナ"
+    },
+    "types": [
+      "steel",
+      "fairy"
+    ],
+    "baseStats": {
+      "hp": 80,
+      "atk": 125,
+      "def": 115,
+      "spa": 170,
+      "spd": 115,
+      "spe": 95
+    }
+  },
+  "10319": {
+    "resourceType": "pokemon",
+    "id": 10319,
+    "speciesId": 807,
+    "pokemonSlug": "zeraora-mega",
+    "speciesSlug": "zeraora",
+    "calcSpeciesName": "Zeraora-Mega Zeraora",
+    "names": {
+      "zh-hans": "捷拉奥拉-Mega Zeraora",
+      "zh-hant": "捷拉奧拉-Mega Zeraora",
+      "en": "Zeraora-Mega Zeraora",
+      "ja": "ゼラオラ-メガゼラオラ"
+    },
+    "speciesNames": {
+      "zh-hans": "捷拉奥拉",
+      "zh-hant": "捷拉奧拉",
+      "en": "Zeraora",
+      "ja": "ゼラオラ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Zeraora",
+      "zh-hant": "Mega Zeraora",
+      "en": "Mega Zeraora",
+      "ja": "メガゼラオラ"
+    },
+    "types": [
+      "electric"
+    ],
+    "baseStats": {
+      "hp": 88,
+      "atk": 157,
+      "def": 75,
+      "spa": 147,
+      "spd": 80,
+      "spe": 153
+    }
+  },
+  "10320": {
+    "resourceType": "pokemon",
+    "id": 10320,
+    "speciesId": 952,
+    "pokemonSlug": "scovillain-mega",
+    "speciesSlug": "scovillain",
+    "calcSpeciesName": "Scovillain-Mega Scovillain",
+    "names": {
+      "zh-hans": "狠辣椒-Mega Scovillain",
+      "zh-hant": "狠辣椒-Mega Scovillain",
+      "en": "Scovillain-Mega Scovillain",
+      "ja": "スコヴィラン-メガスコヴィラン"
+    },
+    "speciesNames": {
+      "zh-hans": "狠辣椒",
+      "zh-hant": "狠辣椒",
+      "en": "Scovillain",
+      "ja": "スコヴィラン"
+    },
+    "formNames": {
+      "zh-hans": "Mega Scovillain",
+      "zh-hant": "Mega Scovillain",
+      "en": "Mega Scovillain",
+      "ja": "メガスコヴィラン"
+    },
+    "types": [
+      "grass",
+      "fire"
+    ],
+    "baseStats": {
+      "hp": 65,
+      "atk": 138,
+      "def": 85,
+      "spa": 138,
+      "spd": 85,
+      "spe": 75
+    }
+  },
+  "10321": {
+    "resourceType": "pokemon",
+    "id": 10321,
+    "speciesId": 970,
+    "pokemonSlug": "glimmora-mega",
+    "speciesSlug": "glimmora",
+    "calcSpeciesName": "Glimmora-Mega Glimmora",
+    "names": {
+      "zh-hans": "晶光花-Mega Glimmora",
+      "zh-hant": "晶光花-Mega Glimmora",
+      "en": "Glimmora-Mega Glimmora",
+      "ja": "キラフロル-メガキラフロル"
+    },
+    "speciesNames": {
+      "zh-hans": "晶光花",
+      "zh-hant": "晶光花",
+      "en": "Glimmora",
+      "ja": "キラフロル"
+    },
+    "formNames": {
+      "zh-hans": "Mega Glimmora",
+      "zh-hant": "Mega Glimmora",
+      "en": "Mega Glimmora",
+      "ja": "メガキラフロル"
+    },
+    "types": [
+      "rock",
+      "poison"
+    ],
+    "baseStats": {
+      "hp": 83,
+      "atk": 90,
+      "def": 105,
+      "spa": 150,
+      "spd": 96,
+      "spe": 101
+    }
+  },
+  "10322": {
+    "resourceType": "pokemon",
+    "id": 10322,
+    "speciesId": 978,
+    "pokemonSlug": "tatsugiri-curly-mega",
+    "speciesSlug": "tatsugiri",
+    "calcSpeciesName": "Tatsugiri-Mega Curly Tatsugiri",
+    "names": {
+      "zh-hans": "米立龙-Mega Curly Tatsugiri",
+      "zh-hant": "米立龍-Mega Curly Tatsugiri",
+      "en": "Tatsugiri-Mega Curly Tatsugiri",
+      "ja": "シャリタツ-メガシャリタツ"
+    },
+    "speciesNames": {
+      "zh-hans": "米立龙",
+      "zh-hant": "米立龍",
+      "en": "Tatsugiri",
+      "ja": "シャリタツ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Curly Tatsugiri",
+      "zh-hant": "Mega Curly Tatsugiri",
+      "en": "Mega Curly Tatsugiri",
+      "ja": "メガシャリタツ"
+    },
+    "types": [
+      "dragon",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 65,
+      "def": 90,
+      "spa": 135,
+      "spd": 125,
+      "spe": 92
+    }
+  },
+  "10323": {
+    "resourceType": "pokemon",
+    "id": 10323,
+    "speciesId": 978,
+    "pokemonSlug": "tatsugiri-droopy-mega",
+    "speciesSlug": "tatsugiri",
+    "calcSpeciesName": "Tatsugiri-Mega Droopy Tatsugiri",
+    "names": {
+      "zh-hans": "米立龙-Mega Droopy Tatsugiri",
+      "zh-hant": "米立龍-Mega Droopy Tatsugiri",
+      "en": "Tatsugiri-Mega Droopy Tatsugiri",
+      "ja": "シャリタツ-メガシャリタツ"
+    },
+    "speciesNames": {
+      "zh-hans": "米立龙",
+      "zh-hant": "米立龍",
+      "en": "Tatsugiri",
+      "ja": "シャリタツ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Droopy Tatsugiri",
+      "zh-hant": "Mega Droopy Tatsugiri",
+      "en": "Mega Droopy Tatsugiri",
+      "ja": "メガシャリタツ"
+    },
+    "types": [
+      "dragon",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 65,
+      "def": 90,
+      "spa": 135,
+      "spd": 125,
+      "spe": 92
+    }
+  },
+  "10324": {
+    "resourceType": "pokemon",
+    "id": 10324,
+    "speciesId": 978,
+    "pokemonSlug": "tatsugiri-stretchy-mega",
+    "speciesSlug": "tatsugiri",
+    "calcSpeciesName": "Tatsugiri-Mega Stretchy Tatsugiri",
+    "names": {
+      "zh-hans": "米立龙-Mega Stretchy Tatsugiri",
+      "zh-hant": "米立龍-Mega Stretchy Tatsugiri",
+      "en": "Tatsugiri-Mega Stretchy Tatsugiri",
+      "ja": "シャリタツ-メガシャリタツ"
+    },
+    "speciesNames": {
+      "zh-hans": "米立龙",
+      "zh-hant": "米立龍",
+      "en": "Tatsugiri",
+      "ja": "シャリタツ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Stretchy Tatsugiri",
+      "zh-hant": "Mega Stretchy Tatsugiri",
+      "en": "Mega Stretchy Tatsugiri",
+      "ja": "メガシャリタツ"
+    },
+    "types": [
+      "dragon",
+      "water"
+    ],
+    "baseStats": {
+      "hp": 68,
+      "atk": 65,
+      "def": 90,
+      "spa": 135,
+      "spd": 125,
+      "spe": 92
+    }
+  },
+  "10325": {
+    "resourceType": "pokemon",
+    "id": 10325,
+    "speciesId": 998,
+    "pokemonSlug": "baxcalibur-mega",
+    "speciesSlug": "baxcalibur",
+    "calcSpeciesName": "Baxcalibur-Mega Baxcalibur",
+    "names": {
+      "zh-hans": "戟脊龙-Mega Baxcalibur",
+      "zh-hant": "戟脊龍-Mega Baxcalibur",
+      "en": "Baxcalibur-Mega Baxcalibur",
+      "ja": "セグレイブ-メガセグレイブ"
+    },
+    "speciesNames": {
+      "zh-hans": "戟脊龙",
+      "zh-hant": "戟脊龍",
+      "en": "Baxcalibur",
+      "ja": "セグレイブ"
+    },
+    "formNames": {
+      "zh-hans": "Mega Baxcalibur",
+      "zh-hant": "Mega Baxcalibur",
+      "en": "Mega Baxcalibur",
+      "ja": "メガセグレイブ"
+    },
+    "types": [
+      "dragon",
+      "ice"
+    ],
+    "baseStats": {
+      "hp": 115,
+      "atk": 175,
+      "def": 117,
+      "spa": 105,
+      "spd": 101,
+      "spe": 87
+    }
+  }
+} as const satisfies Record<UpstreamResourceId, NormalizedBattlePokemon>

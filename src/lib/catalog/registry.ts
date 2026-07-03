@@ -1,8 +1,8 @@
 import { buildCoreCatalogOptions, buildTypeBoostCatalogOptions } from "@/lib/held-item"
+import { listChampionsMoveUsageRecords } from "@/lib/champions"
 import { localeMessages, type SupportedLocale } from "@/lib/i18n"
 import {
   getResource,
-  listChampionsMoveUsageRecords,
   listResources,
   type BattlePokemonId,
   type LocalizedMoveResource,
@@ -25,6 +25,32 @@ import type {
 type FixedPowerMoveResource = LocalizedMoveResource & {
   category: MoveCategory
   power: number
+  type: CatalogMoveOption["type"]
+}
+
+const STANDARD_TYPES = new Set([
+  "normal",
+  "fire",
+  "water",
+  "electric",
+  "grass",
+  "ice",
+  "fighting",
+  "poison",
+  "ground",
+  "flying",
+  "psychic",
+  "bug",
+  "rock",
+  "ghost",
+  "dragon",
+  "dark",
+  "steel",
+  "fairy",
+])
+
+function isStandardType(type: string): type is CatalogMoveOption["type"] {
+  return STANDARD_TYPES.has(type)
 }
 
 const DEFAULT_MOVE_CATEGORY_BY_ATTACKER: Partial<Record<BattlePokemonId, MoveCategory>> = {
@@ -40,6 +66,8 @@ const DEFAULT_MATCHUP = {
   attackerId: 445,
   defenderId: 727,
 } as const
+
+const MOVE_OPTIONS_BY_LOCALE_CATEGORY = new Map<string, CatalogMoveOption[]>()
 
 function statLabels(category: MoveCategory, locale: SupportedLocale) {
   const messages = localeMessages[locale]
@@ -126,7 +154,12 @@ function isFixedPowerMoveResource(
   moveResource: LocalizedMoveResource,
   category: MoveCategory,
 ): moveResource is FixedPowerMoveResource {
-  return moveResource.category === category && moveResource.power !== null && moveResource.power > 0
+  return (
+    moveResource.category === category &&
+    moveResource.power !== null &&
+    moveResource.power > 0 &&
+    isStandardType(moveResource.type)
+  )
 }
 
 function fixedPowerMoveOption(moveResource: FixedPowerMoveResource): CatalogMoveOption {
@@ -139,6 +172,7 @@ function fixedPowerMoveOption(moveResource: FixedPowerMoveResource): CatalogMove
     category: moveResource.category,
     power: moveResource.power,
     accuracy: moveResource.accuracy,
+    isSpread: moveResource.isSpread,
   }
 }
 
@@ -152,13 +186,29 @@ function compareMoveSearchOrder(a: CatalogMoveOption, b: CatalogMoveOption): num
   return a.id - b.id
 }
 
-function resolveDefaultMoveIds(
+async function fixedPowerMoveOptions(
+  locale: SupportedLocale,
+  category: MoveCategory,
+): Promise<CatalogMoveOption[]> {
+  const key = `${locale}:${category}`
+  const cached = MOVE_OPTIONS_BY_LOCALE_CATEGORY.get(key)
+  if (cached) return cached
+
+  const moves = (await listResources("move", locale))
+    .filter((moveResource) => isFixedPowerMoveResource(moveResource, category))
+    .map(fixedPowerMoveOption)
+    .sort(compareMoveSearchOrder)
+  MOVE_OPTIONS_BY_LOCALE_CATEGORY.set(key, moves)
+  return moves
+}
+
+async function resolveDefaultMoveIds(
   attackerId: BattlePokemonId,
   activeMoveCategory: MoveCategory,
   moves: CatalogMoveOption[],
-): UpstreamResourceId[] {
+): Promise<UpstreamResourceId[]> {
   const moveById = new Map(moves.map((move) => [move.id, move]))
-  const selected = listChampionsMoveUsageRecords(attackerId, "Doubles")
+  const selected = (await listChampionsMoveUsageRecords(attackerId))
     .toSorted((a, b) => {
       const byRank = a.rank - b.rank
       if (byRank !== 0) return byRank
@@ -171,11 +221,7 @@ function resolveDefaultMoveIds(
     .filter((record) => moveById.get(record.moveId)?.category === activeMoveCategory)
     .map((record) => record.moveId)
 
-  const fallback = moves
-    .map((move) => move.id)
-    .filter((moveId) => !selected.includes(moveId))
-
-  return [...selected, ...fallback].slice(0, 6)
+  return selected.slice(0, 6)
 }
 
 export async function getCatalog(
@@ -190,14 +236,10 @@ export async function getCatalog(
     getResource("pokemon", defenderId, locale),
   ])
 
-  const moveResources = await listResources("move", locale)
-  const moves = moveResources
-    .filter((moveResource) => isFixedPowerMoveResource(moveResource, activeMoveCategory))
-    .map(fixedPowerMoveOption)
-    .sort(compareMoveSearchOrder)
+  const moves = await fixedPowerMoveOptions(locale, activeMoveCategory)
 
   const labels = statLabels(activeMoveCategory, locale)
-  const defaultMoveIds = resolveDefaultMoveIds(attackerId, activeMoveCategory, moves)
+  const defaultMoveIds = await resolveDefaultMoveIds(attackerId, activeMoveCategory, moves)
 
   return {
     matchup: {

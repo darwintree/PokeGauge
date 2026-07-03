@@ -15,6 +15,7 @@ export type CatalogMoveOption = CatalogOption<UpstreamResourceId> & {
   category: MoveCategory
   power: number
   accuracy: number | null
+  isSpread: boolean
 }
 
 export type MatchupIdentity = {

@@ -1,13 +1,10 @@
 import type { SupportedLocale } from "@/lib/i18n"
 import {
-  CHAMPIONS_MOVE_USAGE,
   GENERATED_MOVES,
   GENERATED_POKEMON,
   RESOURCE_DIAGNOSTICS,
-} from "./generated/pokeapi"
+} from "./generated"
 import type {
-  ChampionsBattleFormat,
-  ChampionsMoveUsageRecord,
   GeneratedResourceDiagnostics,
   LocalizedMoveResource,
   LocalizedPokemonResource,
@@ -20,7 +17,6 @@ import type {
 
 const POKEMON_RESOURCES: Record<UpstreamResourceId, NormalizedBattlePokemon> = GENERATED_POKEMON
 const MOVE_RESOURCES: Record<UpstreamResourceId, NormalizedMove> = GENERATED_MOVES
-const CHAMPIONS_USAGE_RECORDS: readonly ChampionsMoveUsageRecord[] = CHAMPIONS_MOVE_USAGE
 
 export class ResourceLookupError extends Error {
   constructor(resourceType: ResourceType, id: UpstreamResourceId) {
@@ -57,6 +53,8 @@ export async function getResource<TType extends ResourceType>(
           power: resource.power,
           accuracy: resource.accuracy,
           damageKind: resource.damageKind,
+          target: resource.target,
+          isSpread: resource.isSpread,
         }),
   } as LocalizedResourceByType[TType]
 }
@@ -89,6 +87,8 @@ function localizeMove(resource: NormalizedMove, locale: SupportedLocale): Locali
     power: resource.power,
     accuracy: resource.accuracy,
     damageKind: resource.damageKind,
+    target: resource.target,
+    isSpread: resource.isSpread,
   }
 }
 
@@ -110,11 +110,29 @@ export function getResourceDiagnostics(): GeneratedResourceDiagnostics {
   return RESOURCE_DIAGNOSTICS
 }
 
-export function listChampionsMoveUsageRecords(
-  battlePokemonId: UpstreamResourceId,
-  format: ChampionsBattleFormat,
-): ChampionsMoveUsageRecord[] {
-  return CHAMPIONS_USAGE_RECORDS.filter(
-    (record) => record.battlePokemonId === battlePokemonId && record.format === format,
-  )
+export function getBattlePokemonByCalcName(name: string): NormalizedBattlePokemon | undefined {
+  return Object.values(POKEMON_RESOURCES).find((pokemon) => pokemon.calcSpeciesName === name)
+}
+
+export function getMoveByCalcName(name: string): NormalizedMove | undefined {
+  return Object.values(MOVE_RESOURCES).find((move) => move.calcMoveName === name)
+}
+
+function normalizeJoinName(name: string): string {
+  return name
+    .normalize("NFKD")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "")
+}
+
+const MOVE_ID_BY_JOIN_NAME = new Map<string, UpstreamResourceId>(
+  Object.values(MOVE_RESOURCES).flatMap((move) => [
+    [normalizeJoinName(move.slug), move.id] as const,
+    [normalizeJoinName(move.calcMoveName), move.id] as const,
+    ...Object.values(move.names).map((name) => [normalizeJoinName(name), move.id] as const),
+  ]),
+)
+
+export function getMoveIdByJoinName(name: string): UpstreamResourceId | undefined {
+  return MOVE_ID_BY_JOIN_NAME.get(normalizeJoinName(name))
 }

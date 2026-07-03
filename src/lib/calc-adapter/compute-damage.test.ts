@@ -1,4 +1,4 @@
-import { calculate, Move, Pokemon } from "@smogon/calc"
+import { calculate, Field, Move, Pokemon } from "@smogon/calc"
 import { describe, expect, it } from "vitest"
 
 import {
@@ -33,8 +33,9 @@ function directCalc(
   const move = new Move(CALC_GEN, moveName)
   const critMove = new Move(CALC_GEN, moveName, { isCrit: true })
   const hp = defenderMon.maxHP()
-  const normalRolls = calculate(CALC_GEN, attacker, defenderMon, move).damage as number[]
-  const critRolls = calculate(CALC_GEN, attacker, defenderMon, critMove).damage as number[]
+  const field = new Field({ gameType: "Doubles" })
+  const normalRolls = calculate(CALC_GEN, attacker, defenderMon, move, field).damage as number[]
+  const critRolls = calculate(CALC_GEN, attacker, defenderMon, critMove, field).damage as number[]
   const ohkoRolls = normalRolls.filter((d) => d >= hp).length
 
   return {
@@ -94,11 +95,40 @@ describe("calc adapter", () => {
       "Incineroar",
       "Earthquake",
       ATTACKER_STAT_SETUPS.extreme,
-      "Life Orb",
+      "life-orb",
       DEFENDER_SETUPS["min-bulk"],
     )
     expect(result.ohkoChance).toBeGreaterThan(0)
     expect(result.maxDamage).toBeGreaterThanOrEqual(result.defenderHp)
+  })
+
+  it.each([
+    ["none", undefined],
+    ["life-orb", "Life Orb"],
+    ["choice-band", "Choice Band"],
+    ["type-boost-dragon", "Dragon Fang"],
+  ])("matches @smogon/calc oracle for item effect %s", (adapterItem, smogonItem) => {
+    const adapter = computeDamage(
+      "Garchomp",
+      "Incineroar",
+      "Dragon Claw",
+      ATTACKER_STAT_SETUPS.extreme,
+      adapterItem,
+      DEFENDER_SETUPS["hp-32"],
+    )
+    const direct = directCalc(
+      "Garchomp",
+      "Incineroar",
+      "Dragon Claw",
+      ATTACKER_STAT_SETUPS.extreme,
+      smogonItem,
+      DEFENDER_SETUPS["hp-32"],
+    )
+
+    expect(adapter.minDamage).toBe(direct.minDamage)
+    expect(adapter.maxDamage).toBe(direct.maxDamage)
+    expect(adapter.critMinDamage).toBe(direct.critMinDamage)
+    expect(adapter.critMaxDamage).toBe(direct.critMaxDamage)
   })
 
   it("getAttackStatBounds includes three snap anchor values for Garchomp", () => {

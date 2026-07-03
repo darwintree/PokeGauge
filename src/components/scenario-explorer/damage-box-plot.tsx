@@ -171,7 +171,10 @@ export function DamageBoxPlot({
           <div className="flex items-center gap-1.5 px-3 py-1.5">
             <RowLabel>{intl.formatMessage({ id: "damage.row.move" })}</RowLabel>
             <TypeBadge type={move.type} />
-            <span className="text-xs">{move.label}</span>
+            <span className="text-xs">
+              {move.label}
+              {move.isSpread && <span className="text-muted-foreground ml-1">AoE</span>}
+            </span>
           </div>
         )}
         {showMove && <Separator />}

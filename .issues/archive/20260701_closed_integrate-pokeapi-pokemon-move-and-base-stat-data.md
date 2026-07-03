@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "b667bbec-bebf-4959-b0cd-66542a018c7a"
 title: "Integrate PokeAPI Pokemon, move, and base stat data"
-status: "open"
+status: "closed"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-01T12:22:00Z"
-updated_at: "2026-07-01T12:22:00Z"
+updated_at: "2026-07-03T08:34:00Z"
 ---
 ## Problem
 
@@ -22,10 +22,14 @@ The calculator currently needs first-party Pokemon, move, and base stat data bef
 
 ## Acceptance Criteria
 
-- Pokemon, move, and base stat data can be loaded by the app from a local or generated source derived from PokeAPI.
-- Remote response shapes are normalized before use by UI and calculation modules.
-- The data update process is documented and runnable by a developer.
-- Build passes after the integration.
+- [x] Pokemon, move, and base stat data can be loaded by the app from a local or generated source derived from PokeAPI.
+- [x] Remote response shapes are normalized before use by UI and calculation modules.
+- [x] The data update process is documented and runnable by a developer.
+- [x] Build passes after the integration.
+
+## Resolution
+
+Resolved by [[20260703_closed_integrate-full-pokeapi-and-champions-move-usage-with-local-damage-kernel|Integrate full PokeAPI and Champions move usage with local damage kernel]]. `pnpm generate:pokeapi` now reads normalized Pokemon, move, type, stat, name, target, and metadata records from the local `PokeAPI/pokeapi` submodule and emits app-facing generated TypeScript constants. `pnpm build` passes.
 
 ## Notes
 

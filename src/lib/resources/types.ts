@@ -39,11 +39,13 @@ export type NormalizedMove = {
   slug: string
   calcMoveName: string
   names: LocalizedNames
-  type: PokemonType
+  type: PokemonType | string
   category: MoveDamageClass
   power: number | null
   accuracy: number | null
   damageKind: DamageKind
+  target: string
+  isSpread: boolean
 }
 
 export type GeneratedResourceDiagnostics = {
@@ -61,28 +63,6 @@ export type GeneratedResourceDiagnostics = {
     id: UpstreamResourceId
     reason: string
   }>
-  champions: {
-    defaultSeason: string | null
-    format: ChampionsBattleFormat
-    mappedPokemon: Array<{
-      battlePokemonId: BattlePokemonId
-      championsName: string
-      championsSlug: string
-      championsBattleName: string
-      source: string | null
-    }>
-    unmatchedPokemon: Array<{
-      battlePokemonId: BattlePokemonId
-      pokemonName: string
-      reason: string
-    }>
-    unmatchedMoves: Array<{
-      battlePokemonId: BattlePokemonId
-      championsPokemonName: string
-      championsMoveName: string
-      reason: string
-    }>
-  }
 }
 
 export type ChampionsMoveUsageRecord = {
@@ -112,11 +92,13 @@ export type LocalizedPokemonResource = LocalizedResourceBase<"pokemon"> & {
 
 export type LocalizedMoveResource = LocalizedResourceBase<"move"> & {
   calcMoveName: string
-  type: PokemonType
+  type: PokemonType | string
   category: MoveDamageClass
   power: number | null
   accuracy: number | null
   damageKind: DamageKind
+  target: string
+  isSpread: boolean
 }
 
 export type LocalizedResourceByType = {

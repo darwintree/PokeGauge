@@ -12,7 +12,7 @@ updated_at: "2026-07-03T06:26:00Z"
 [[20260702_closed_wayfinder-pokeapi-and-champions-data-integration-route|Wayfinder: PokeAPI and Champions data integration route]] (`90b002f9-94ca-410b-b115-d0bc2aff4eb3`)
 
 ## Related Issue
-[[../20260701_open_integrate-pokeapi-pokemon-move-and-base-stat-data|Integrate PokeAPI Pokemon, move, and base stat data]] (`b667bbec-bebf-4959-b0cd-66542a018c7a`)
+[[20260701_closed_integrate-pokeapi-pokemon-move-and-base-stat-data|Integrate PokeAPI Pokemon, move, and base stat data]] (`b667bbec-bebf-4959-b0cd-66542a018c7a`)
 
 ## Task
 Replace the mock/hardcoded Pokemon and move resource boundary with generated local data derived from PokeAPI. Preserve the normalized contract decided by the research ticket: numeric `pokemon.id` / `move.id`, localized names for supported locales, battle-relevant Pokemon types/base stats, move type/category/power/accuracy/damageKind, and separate calc names for `@smogon/calc`.
