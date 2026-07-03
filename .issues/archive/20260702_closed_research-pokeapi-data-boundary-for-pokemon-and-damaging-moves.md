@@ -9,7 +9,7 @@ created_at: "2026-07-02T09:41:00Z"
 updated_at: "2026-07-03T05:12:00Z"
 ---
 ## Parent Map
-[[../20260702_open_wayfinder-pokeapi-and-champions-data-integration-route|Wayfinder: PokeAPI and Champions data integration route]] (`90b002f9-94ca-410b-b115-d0bc2aff4eb3`)
+[[20260702_closed_wayfinder-pokeapi-and-champions-data-integration-route|Wayfinder: PokeAPI and Champions data integration route]] (`90b002f9-94ca-410b-b115-d0bc2aff4eb3`)
 
 ## Question
 What normalized local data boundary should the app derive from PokeAPI for Pokemon search/filtering, battle Pokemon identity, base stats, and the global damaging-move pool, without exposing remote response shapes to UI or calculation code?

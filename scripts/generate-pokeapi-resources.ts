@@ -66,6 +66,40 @@ type MoveApi = {
   meta: { category: { name: string } | null } | null
 }
 
+type ChampionsIndexPokemon = {
+  name: string
+  slug: string
+  battleName: string
+  battleDataCsvs?: Array<{
+    season: string
+    format: ChampionsBattleFormat
+    path: string
+  }>
+}
+
+type ChampionsIndexApi = {
+  defaultSeason?: string
+  pokemon?: ChampionsIndexPokemon[]
+}
+
+type ChampionsBattleFormat = "Doubles" | "Singles"
+
+type ChampionsBattleRow = {
+  category: string
+  rank: number
+  name: string
+  percentage_value?: number | null
+}
+
+type ChampionsBattleApi = {
+  pokemon: string
+  format: ChampionsBattleFormat
+  season: string
+  source: string
+  data?: ChampionsBattleRow[]
+  rows?: ChampionsBattleRow[]
+}
+
 type DiagnosticMissingLocaleName = {
   resourceType: "pokemon" | "move" | "pokemon-species" | "pokemon-form"
   id: number
@@ -83,6 +117,11 @@ const POKEAPI_LANGUAGE_BY_LOCALE: Record<SupportedLocale, string[]> = {
 
 const POKEMON_IDS = [445, 591, 727, 812, 987, 10021] as const
 const MOVE_IDS = [85, 89, 157, 182, 247, 282, 337, 424, 444, 585, 605, 707] as const
+const CHAMPIONS_FORMAT: ChampionsBattleFormat = "Doubles"
+
+const CHAMPIONS_NAME_OVERRIDES: Partial<Record<number, string>> = {
+  10021: "Landorus Therian",
+}
 
 const CALC_SPECIES_NAME: Record<number, string> = {
   445: "Garchomp",
@@ -119,6 +158,17 @@ const STAT_KEY: Record<string, "hp" | "atk" | "def" | "spa" | "spd" | "spe"> = {
 
 const missingLocaleNames: DiagnosticMissingLocaleName[] = []
 const unsupportedBattleIdentities: Array<{ id: number; reason: string }> = []
+const unmatchedChampionsPokemon: Array<{
+  battlePokemonId: number
+  pokemonName: string
+  reason: string
+}> = []
+const unmatchedChampionsMoves: Array<{
+  battlePokemonId: number
+  championsPokemonName: string
+  championsMoveName: string
+  reason: string
+}> = []
 
 function idFromUrl(url: string): number {
   const match = url.match(/\/(\d+)\/?$/)
@@ -207,9 +257,11 @@ function stableJson(value: unknown): string {
 function generatedModule(contents: {
   pokemon: unknown
   moves: unknown
+  championsMoveUsage: unknown
   diagnostics: unknown
 }): string {
   return `import type {
+  ChampionsMoveUsageRecord,
   GeneratedResourceDiagnostics,
   NormalizedBattlePokemon,
   NormalizedMove,
@@ -220,8 +272,26 @@ export const GENERATED_POKEMON = ${stableJson(contents.pokemon)} as const satisf
 
 export const GENERATED_MOVES = ${stableJson(contents.moves)} as const satisfies Record<UpstreamResourceId, NormalizedMove>
 
+export const CHAMPIONS_MOVE_USAGE = ${stableJson(contents.championsMoveUsage)} as const satisfies readonly ChampionsMoveUsageRecord[]
+
 export const RESOURCE_DIAGNOSTICS = ${stableJson(contents.diagnostics)} as const satisfies GeneratedResourceDiagnostics
 `
+}
+
+function normalizeJoinName(name: string): string {
+  return name
+    .normalize("NFKD")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "")
+}
+
+function pokeapiSlug(name: string): string {
+  return name
+    .normalize("NFKD")
+    .toLowerCase()
+    .replace(/['’]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
 }
 
 async function normalizePokemon(id: number) {
@@ -276,21 +346,151 @@ async function normalizeMove(id: number) {
   ] as const
 }
 
+async function fetchChampionsBattleRows(
+  pokemon: ChampionsIndexPokemon,
+  defaultSeason: string,
+): Promise<ChampionsBattleApi | null> {
+  const season =
+    pokemon.battleDataCsvs?.find((entry) => entry.format === CHAMPIONS_FORMAT)?.season ??
+    defaultSeason
+  const url = `https://championsbattledata.com/api/battle/${CHAMPIONS_FORMAT}/${encodeURIComponent(pokemon.battleName || pokemon.name)}?season=${encodeURIComponent(season)}`
+  const response = await fetch(url)
+  if (!response.ok) return null
+  return response.json() as Promise<ChampionsBattleApi>
+}
+
+async function resolveMoveIdFromChampionsName(name: string): Promise<number | null> {
+  const response = await fetch(`https://pokeapi.co/api/v2/move/${pokeapiSlug(name)}`)
+  if (!response.ok) return null
+  const move = await response.json() as MoveApi
+  return move.id
+}
+
+async function generateChampionsMoveUsage(
+  pokemonEntries: Array<readonly [number, Awaited<ReturnType<typeof normalizePokemon>>[1]]>,
+) {
+  const index = await fetchJson<ChampionsIndexApi>("https://championsbattledata.com/api")
+  const defaultSeason = index.defaultSeason ?? "Current"
+  const championsByName = new Map(
+    (index.pokemon ?? []).flatMap((pokemon) => {
+      const keys = [pokemon.name, pokemon.battleName, pokemon.slug]
+        .filter(Boolean)
+        .map((name) => [normalizeJoinName(name), pokemon] as const)
+      return keys
+    }),
+  )
+  const moveIdByName = new Map<string, number>()
+  const mappedPokemon: Array<{
+    battlePokemonId: number
+    championsName: string
+    championsSlug: string
+    championsBattleName: string
+    source: string | null
+  }> = []
+  const records: Array<{
+    battlePokemonId: number
+    moveId: number
+    format: ChampionsBattleFormat
+    season: string
+    source: string
+    rank: number
+    percentage: number | null
+    championsMoveName: string
+  }> = []
+
+  for (const [, pokemon] of pokemonEntries) {
+    const preferredName = CHAMPIONS_NAME_OVERRIDES[pokemon.id] ?? pokemon.names.en
+    const championsPokemon = championsByName.get(normalizeJoinName(preferredName))
+    if (!championsPokemon) {
+      unmatchedChampionsPokemon.push({
+        battlePokemonId: pokemon.id,
+        pokemonName: preferredName,
+        reason: "No matching Champions index Pokemon",
+      })
+      continue
+    }
+
+    const battleData = await fetchChampionsBattleRows(championsPokemon, defaultSeason)
+    mappedPokemon.push({
+      battlePokemonId: pokemon.id,
+      championsName: championsPokemon.name,
+      championsSlug: championsPokemon.slug,
+      championsBattleName: championsPokemon.battleName,
+      source: battleData?.source ?? null,
+    })
+    if (!battleData) {
+      unmatchedChampionsPokemon.push({
+        battlePokemonId: pokemon.id,
+        pokemonName: preferredName,
+        reason: `No ${CHAMPIONS_FORMAT} battle rows available from Champions`,
+      })
+      continue
+    }
+
+    const rows = battleData.data ?? battleData.rows ?? []
+    for (const row of rows.filter((entry) => entry.category === "move")) {
+      const key = normalizeJoinName(row.name)
+      let moveId = moveIdByName.get(key)
+      if (moveId == null) {
+        moveId = await resolveMoveIdFromChampionsName(row.name) ?? undefined
+        if (moveId != null) moveIdByName.set(key, moveId)
+      }
+      if (moveId == null) {
+        unmatchedChampionsMoves.push({
+          battlePokemonId: pokemon.id,
+          championsPokemonName: championsPokemon.name,
+          championsMoveName: row.name,
+          reason: "No matching PokeAPI move",
+        })
+        continue
+      }
+
+      records.push({
+        battlePokemonId: pokemon.id,
+        moveId,
+        format: CHAMPIONS_FORMAT,
+        season: battleData.season,
+        source: battleData.source,
+        rank: row.rank,
+        percentage: row.percentage_value ?? null,
+        championsMoveName: row.name,
+      })
+    }
+  }
+
+  return {
+    defaultSeason,
+    mappedPokemon,
+    records,
+  }
+}
+
 async function main() {
   const pokemonEntries = await Promise.all(POKEMON_IDS.map(normalizePokemon))
-  const moveEntries = await Promise.all(MOVE_IDS.map(normalizeMove))
+  const champions = await generateChampionsMoveUsage(pokemonEntries)
+  const moveIds = [...new Set([...MOVE_IDS, ...champions.records.map((record) => record.moveId)])]
+    .toSorted((a, b) => a - b)
+  const moveEntries = await Promise.all(moveIds.map(normalizeMove))
   const generatedAt = new Date().toISOString()
 
   const output = generatedModule({
     pokemon: Object.fromEntries(pokemonEntries),
     moves: Object.fromEntries(moveEntries),
+    championsMoveUsage: champions.records,
     diagnostics: {
       generatedAt,
       source: "pokeapi",
       pokemonIds: [...POKEMON_IDS],
-      moveIds: [...MOVE_IDS],
+      moveIds,
       missingLocaleNames,
       unsupportedBattleIdentities,
+      champions: {
+        defaultSeason: champions.defaultSeason,
+        format: CHAMPIONS_FORMAT,
+        mappedPokemon: champions.mappedPokemon,
+        unmatchedPokemon: unmatchedChampionsPokemon,
+        unmatchedMoves: unmatchedChampionsMoves,
+      },
     },
   })
 
@@ -303,6 +503,9 @@ async function main() {
   )
   console.log(
     `Diagnostics: ${missingLocaleNames.length} missing locale names, ${unsupportedBattleIdentities.length} unsupported battle identities.`,
+  )
+  console.log(
+    `Champions: ${champions.records.length} joined move usage rows, ${unmatchedChampionsPokemon.length} unmatched Pokemon, ${unmatchedChampionsMoves.length} unmatched moves.`,
   )
 }
 

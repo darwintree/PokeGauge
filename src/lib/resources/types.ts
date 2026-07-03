@@ -6,6 +6,7 @@ export type UpstreamResourceId = number
 export type BattlePokemonId = UpstreamResourceId
 export type DamageKind = "damage" | "damage+ailment" | "damage+lower" | "damage+raise" | "ohko" | "unique" | string
 export type MoveDamageClass = "physical" | "special" | "status"
+export type ChampionsBattleFormat = "Doubles" | "Singles"
 
 export type LocalizedNames = Record<SupportedLocale, string>
 
@@ -60,6 +61,39 @@ export type GeneratedResourceDiagnostics = {
     id: UpstreamResourceId
     reason: string
   }>
+  champions: {
+    defaultSeason: string | null
+    format: ChampionsBattleFormat
+    mappedPokemon: Array<{
+      battlePokemonId: BattlePokemonId
+      championsName: string
+      championsSlug: string
+      championsBattleName: string
+      source: string | null
+    }>
+    unmatchedPokemon: Array<{
+      battlePokemonId: BattlePokemonId
+      pokemonName: string
+      reason: string
+    }>
+    unmatchedMoves: Array<{
+      battlePokemonId: BattlePokemonId
+      championsPokemonName: string
+      championsMoveName: string
+      reason: string
+    }>
+  }
+}
+
+export type ChampionsMoveUsageRecord = {
+  battlePokemonId: BattlePokemonId
+  moveId: UpstreamResourceId
+  format: ChampionsBattleFormat
+  season: string
+  source: string
+  rank: number
+  percentage: number | null
+  championsMoveName: string
 }
 
 export type LocalizedResourceBase<TType extends ResourceType> = {

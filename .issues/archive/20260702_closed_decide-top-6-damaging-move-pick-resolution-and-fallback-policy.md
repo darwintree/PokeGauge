@@ -9,7 +9,7 @@ created_at: "2026-07-02T09:41:00Z"
 updated_at: "2026-07-03T06:16:00Z"
 ---
 ## Parent Map
-[[../20260702_open_wayfinder-pokeapi-and-champions-data-integration-route|Wayfinder: PokeAPI and Champions data integration route]] (`90b002f9-94ca-410b-b115-d0bc2aff4eb3`)
+[[20260702_closed_wayfinder-pokeapi-and-champions-data-integration-route|Wayfinder: PokeAPI and Champions data integration route]] (`90b002f9-94ca-410b-b115-d0bc2aff4eb3`)
 
 ## Blocked By
 - [[20260702_closed_research-champions-move-usage-data-and-join-keys|Research Champions move usage data and join keys]] (`ddeb1f63-6177-4196-9fc1-caf630852bc8`)
@@ -49,4 +49,4 @@ The UI should not show Champions usage percentage in move search results or sele
 New implementation tickets surfaced by this decision:
 
 - [[20260703_closed_implement-generated-pokeapi-resource-boundary|Implement generated PokeAPI resource boundary]] (`d36f73d9-c5dc-42f3-9fb3-4c356bffa83d`)
-- [[../20260703_open_implement-champions-move-pick-usage-import-and-fallback-resolver|Implement Champions Move pick usage import and fallback resolver]] (`5e8060a4-774c-4ecc-bee1-60137ced7031`)
+- [[20260703_closed_implement-champions-move-pick-usage-import-and-fallback-resolver|Implement Champions Move pick usage import and fallback resolver]] (`5e8060a4-774c-4ecc-bee1-60137ced7031`)

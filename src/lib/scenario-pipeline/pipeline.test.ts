@@ -36,8 +36,19 @@ describe("catalog registry", () => {
       const state = defaultTrackState(catalog)
       expect(state.visibleMoveIds).toEqual(catalog.defaultMoveIds)
       expect(state.moveIds).toEqual(catalog.defaultMoveIds)
-      expect(catalog.moves.length).toBeGreaterThan(catalog.defaultMoveIds.length)
+      expect(catalog.moves.length).toBeGreaterThanOrEqual(catalog.defaultMoveIds.length)
     }
+  })
+
+  it("uses Champions rank order for default move picks before fallback", async () => {
+    const catalog = await getCatalog(445, 727, "en")
+    expect(catalog.defaultMoveIds).toEqual([337, 157, 89, 707, 398, 317])
+  })
+
+  it("falls back to global fixed-power move order without joined Champions rows", async () => {
+    const catalog = await getCatalog(987, 727, "en")
+    expect(catalog.moveCategory).toBe("special")
+    expect(catalog.defaultMoveIds).toEqual([585, 85, 605, 247, 555])
   })
 
   it("routes special attackers through template pipeline", async () => {
@@ -80,11 +91,11 @@ describe("matchup scenario pipeline", () => {
     catalog = await getCatalog(445, 727, LOCALE)
   })
 
-  it("returns 6 rows for default template selections (32 + ex × 32HP × none)", () => {
+  it("returns 12 rows for default template selections (top-6 moves × 32 + ex × 32HP × none)", () => {
     const state = defaultTrackState(catalog)
     const rows = runScenarioPipeline(catalog, state)
-    expect(rows).toHaveLength(6)
-    expect(expectedRowCount(state)).toBe(6)
+    expect(rows).toHaveLength(12)
+    expect(expectedRowCount(state)).toBe(12)
     expect(state.offenseTemplateIds).toEqual(
       expect.arrayContaining(["neutral-max", "extreme"]),
     )
@@ -113,7 +124,7 @@ describe("matchup scenario pipeline", () => {
     const state = defaultTrackState(catalog)
     state.offenseTemplateIds = ["extreme"]
     const rows = runScenarioPipeline(catalog, state)
-    expect(rows).toHaveLength(3)
+    expect(rows).toHaveLength(6)
     expect(rows.every((r) => r.attackerStatId === "extreme")).toBe(true)
   })
 
@@ -157,8 +168,8 @@ describe("matchup scenario pipeline - range mode", () => {
     const state = defaultTrackState(catalog)
     state.statMode = "range"
     const rows = runScenarioPipeline(catalog, state)
-    expect(rows).toHaveLength(3)
-    expect(expectedRowCount(state)).toBe(3)
+    expect(rows).toHaveLength(6)
+    expect(expectedRowCount(state)).toBe(6)
     expect(rows.every((r) => r.attackerStatId === RANGE_STAT_ID)).toBe(true)
     expect(rows.every((r) => r.statRange != null)).toBe(true)
   })
@@ -168,7 +179,7 @@ describe("matchup scenario pipeline - range mode", () => {
     state.statMode = "range"
     state.offenseTemplateIds = ["neutral-zero", "extreme"]
     const rows = runScenarioPipeline(catalog, state)
-    expect(rows).toHaveLength(3)
+    expect(rows).toHaveLength(6)
     expect(rows.every((r) => r.attackerStatId === RANGE_STAT_ID)).toBe(true)
   })
 
@@ -190,8 +201,8 @@ describe("matchup scenario pipeline - range mode", () => {
     const state = defaultTrackState(catalog)
     state.defenderMode = "range"
     const rows = runScenarioPipeline(catalog, state)
-    expect(rows).toHaveLength(6)
-    expect(expectedRowCount(state)).toBe(6)
+    expect(rows).toHaveLength(12)
+    expect(expectedRowCount(state)).toBe(12)
     expect(rows.every((r) => r.defenderId === RANGE_DEFENDER_ID)).toBe(true)
   })
 

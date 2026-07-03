@@ -9,7 +9,7 @@ created_at: "2026-07-03T06:29:00Z"
 updated_at: "2026-07-03T06:43:00Z"
 ---
 ## Parent Map
-[[../20260702_open_wayfinder-pokeapi-and-champions-data-integration-route|Wayfinder: PokeAPI and Champions data integration route]] (`90b002f9-94ca-410b-b115-d0bc2aff4eb3`)
+[[20260702_closed_wayfinder-pokeapi-and-champions-data-integration-route|Wayfinder: PokeAPI and Champions data integration route]] (`90b002f9-94ca-410b-b115-d0bc2aff4eb3`)
 
 ## Task
 Replace the mock/small-pool selectors with the **command sheet** pattern decided in the prototype grilling ticket: compact sidebar summary for matchup + move track, sheet overlay for Pokemon and move search at full generated-pool density.

@@ -9,7 +9,7 @@ created_at: "2026-07-02T09:41:00Z"
 updated_at: "2026-07-03T05:17:00Z"
 ---
 ## Parent Map
-[[../20260702_open_wayfinder-pokeapi-and-champions-data-integration-route|Wayfinder: PokeAPI and Champions data integration route]] (`90b002f9-94ca-410b-b115-d0bc2aff4eb3`)
+[[20260702_closed_wayfinder-pokeapi-and-champions-data-integration-route|Wayfinder: PokeAPI and Champions data integration route]] (`90b002f9-94ca-410b-b115-d0bc2aff4eb3`)
 
 ## Question
 What data does Champions Battle expose for move usage, how should usage records be joined to the app's normalized Pokemon and move identities, and what facts are required to support top-6 damaging **Move pick** defaults?
