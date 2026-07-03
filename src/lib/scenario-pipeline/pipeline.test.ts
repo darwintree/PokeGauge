@@ -12,18 +12,22 @@ import {
 const LOCALE = "zh-hans"
 
 describe("catalog registry", () => {
-  it("lists at least 3 attackers with distinct move picks", async () => {
+  it("lists generated battle Pokemon and seeds move picks for each", async () => {
     const attackers = await listAttackers(LOCALE)
     expect(attackers.length).toBeGreaterThanOrEqual(3)
     expect(attackers.every((a) => typeof a.id === "number")).toBe(true)
 
-    const moveSets = await Promise.all(
+    const defaultMoveSets = await Promise.all(
       attackers.map(async (a) => {
         const catalog = await getCatalog(a.id, 727, LOCALE)
-        return catalog.moves.map((m) => m.id).join(",")
+        expect(catalog.defaultMoveIds.length).toBeGreaterThan(0)
+        expect(catalog.defaultMoveIds.every((id) => catalog.moves.some((m) => m.id === id))).toBe(
+          true,
+        )
+        return catalog.defaultMoveIds.join(",")
       }),
     )
-    expect(new Set(moveSets).size).toBe(attackers.length)
+    expect(new Set(defaultMoveSets).size).toBeGreaterThan(1)
   })
 
   it("pre-selects default move pick only; extra moves stay in + pool", async () => {

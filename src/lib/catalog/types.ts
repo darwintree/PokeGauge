@@ -12,6 +12,9 @@ export type CatalogOption<TId extends string | number = string> = {
 export type CatalogMoveOption = CatalogOption<UpstreamResourceId> & {
   moveName: string
   type: PokemonType
+  category: MoveCategory
+  power: number
+  accuracy: number | null
 }
 
 export type MatchupIdentity = {

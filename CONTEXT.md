@@ -20,6 +20,14 @@ _Avoid_: Format selector, 赛制切换（首版不做）
 系统从进攻方技能池中按使用率自动选出的招式集合（top-N）。用户未声明招式时，结果按 move pick 展开。
 _Avoid_: Auto-move, 默认招式
 
+**Move side**:
+招式 track 当前工作的伤害分类侧：物理或特殊。首版一次 matchup 只展示一个 move side；切换 move side 会清空上一侧的可见/已选招式，并恢复新侧的 move pick。
+_Avoid_: Mixed moves, category mode
+
+**Fixed-power damaging move**:
+可进入首版全局招式搜索池的招式：分类为物理或特殊，且基础威力是正数固定值。不包含 status、OHKO、固定伤害、变量威力或 `power = null` 的招式。
+_Avoid_: Any damaging move, variable-power move
+
 **Scenario**:
 结果页的一行箱形图，对应各 **track** 选中项的一个组合（笛卡尔积的一项）。
 _Avoid_: Template（代码/UI 层可用，领域层统一称 Scenario）
@@ -99,6 +107,10 @@ _Avoid_: Localized label as id, slug as primary key, dual primary key
 **Supported locale**:
 首版产品明确支持的显示语言集合；当前为 **zh-hans、zh-hant、en、ja**，运行时直接从对应上游资源的本地化名称中取值。
 _Avoid_: Arbitrary locale support, fallback locale chain
+
+**Search**:
+用户用关键词和结构化筛选从宝可梦或招式候选池中找到目标的产品能力；目标是有广度的召回，可逐步包含别名、俗称、黑话等。当前最低可交付范围只承诺匹配当前 **Supported locale** 的本地化展示名。
+_Avoid_: Exact name lookup, upstream slug lookup
 
 **Held item**（携带道具）:
 攻击方 build configuration 在道具 track 上的一项取值；映射到伤害计算中的 `item` 修饰。道具 track 为 **multi-select track**（多选以对比多个配装方案）；**每一 scenario 行仅生效一件**（效果互斥，不可叠加）。含 explicit no-item。

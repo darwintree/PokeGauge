@@ -6,7 +6,7 @@ status: "open"
 priority: "medium"
 labels: ["WAYFINDER:MAP", "FEATURE-REQUEST"]
 created_at: "2026-07-02T09:41:00Z"
-updated_at: "2026-07-02T09:41:00Z"
+updated_at: "2026-07-03T06:44:00Z"
 ---
 ## Notes
 This map charts the route for integrating PokeAPI data and Champions Battle move usage data into Scenario Explorer. Every session should consult `CONTEXT.md` first, especially **Matchup**, **Ruleset**, **Battle format**, **Move pick**, **Battle Pokemon identity**, **Upstream resource identity**, **Supported locale**, and **Type**. Use `/grilling` and `/domain-modeling` for product/domain decisions; use research tickets for third-party API shape and update-path questions.
@@ -22,9 +22,14 @@ Standing product inputs from the kickoff:
 - Move information display includes at least power and accuracy.
 
 ## Decisions so far
+- [[archive/20260702_closed_research-pokeapi-data-boundary-for-pokemon-and-damaging-moves|Research PokeAPI data boundary for Pokemon and damaging moves]] — Normalize PokeAPI into local Pokemon and move records keyed by numeric `pokemon.id` / `move.id`; keep raw API shapes out of UI and calc code, and leave null-power special-case move policy to the move/top-6 tickets.
+- [[archive/20260702_closed_research-champions-move-usage-data-and-join-keys|Research Champions move usage data and join keys]] — Import Champions usage rows into generated records joined to normalized numeric Pokemon/move ids; top-6 damaging defaults use Doubles rank order filtered to positive-power physical/special moves.
+- [[archive/20260702_closed_decide-pokemon-add-and-search-product-contract|Decide Pokemon add and search product contract]] — Pokemon search selects localized, ruleset-filtered Battle Pokemon identities directly; type filters and broad keyword search combine with AND semantics.
+- [[archive/20260702_closed_decide-global-damaging-move-search-and-display-contract|Decide global damaging move search and display contract]] — Move search is scoped by a physical/special move side switch and only includes fixed-power damaging moves; results use type filter plus name matching, sort by power descending, and show name/type/power/accuracy without usage rate.
+- [[archive/20260702_closed_decide-top-6-damaging-move-pick-resolution-and-fallback-policy|Decide top-6 damaging Move pick resolution and fallback policy]] — Resolve **Move pick** from Champions Doubles rank order filtered to fixed-power damaging moves on the active move side; fill missing slots from the same-side global fixed-power pool.
+- [[archive/20260703_closed_implement-generated-pokeapi-resource-boundary|Implement generated PokeAPI resource boundary]] — Scenario Explorer now consumes generated normalized PokeAPI records for localized names, battle types/base stats, move metadata, calc names, and diagnostics without raw PokeAPI shapes leaking into UI/catalog code.
+- [[archive/20260703_closed_decide-whether-dense-pokemon-and-move-search-needs-a-ui-prototype|Decide whether dense Pokemon and move search needs a UI prototype]] — Prototype validated the need; adopt **command sheet** search (compact sidebar summary, sheet for keyword + type filter + dense rows) for both Pokemon and move add/search.
+- [[archive/20260703_closed_implement-command-sheet-pokemon-and-move-search-ui|Implement command sheet Pokemon and move search UI]] — Scenario Explorer now uses command sheets for generated-pool Pokemon and fixed-power move search, with compact sidebar summaries and move side reset behavior.
 
 ## Fog
-- After upstream data boundaries are known, decide the implementation slices that replace the current hardcoded catalog without regressing the Scenario Explorer.
-- After search contracts are settled, decide whether UI needs a prototype for dense Pokemon/move search and selection states.
-- After Champions data shape is known, revisit missing-data policy for Pokemon or moves absent from usage data.
-- Later implementation may need an explicit ADR if the project chooses a generated local dataset over runtime fetching or a hybrid update model.
+- Later implementation may need an explicit ADR if the generated local dataset/update path becomes surprising enough to future maintainers.
