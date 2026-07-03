@@ -13,12 +13,20 @@ _Avoid_: Battle, fight, 对战（作名词指代计算单元时）
 _Avoid_: Generation picker, 世代选择（产品层用 ruleset 表述；实现层可映射到 calc 世代号）
 
 **Battle format**:
-对战形式；当前固定为 **VGC 双打**（2v2）。影响 default spread、move pick 使用率语境与常见配置预设；不改变「进攻方 → 防守方」单次伤害计算单元。
+对战形式；当前固定为 **VGC 双打**（2v2）。影响 default spread、move pick 使用率语境、常见配置预设，以及 spread move 的默认伤害修正语境；单次伤害计算仍展示为「进攻方 → 防守方」。
 _Avoid_: Format selector, 赛制切换（首版不做）
+
+**Spread move modifier**:
+双打中招式命中多个目标时应用的伤害修正。由招式目标类型判断是否默认启用，属于公式输入；首版 UI 可以暂不暴露开关，但计算内核必须支持开关。
+_Avoid_: Always-on doubles penalty, UI-only display setting
 
 **Move pick**:
 系统从进攻方技能池中按使用率自动选出的招式集合（top-N）。用户未声明招式时，结果按 move pick 展开。
 _Avoid_: Auto-move, 默认招式
+
+**Champions move usage data**:
+用于生成 **Move pick** 的 Pokémon Champions 双打招式使用率数据。它表达「当前 usage 语境下常见招式排序」，不表达 ruleset 合法性，也不包含 ability、held item、teammate、stat points 等配装维度。
+_Avoid_: Champions ruleset data, legal pool, full build data
 
 **Move side**:
 招式 track 当前工作的伤害分类侧：物理或特殊。首版一次 matchup 只展示一个 move side；切换 move side 会清空上一侧的可见/已选招式，并恢复新侧的 move pick。

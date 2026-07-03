@@ -860,7 +860,7 @@ export const CHAMPIONS_MOVE_USAGE = [
 ] as const satisfies readonly ChampionsMoveUsageRecord[]
 
 export const RESOURCE_DIAGNOSTICS = {
-  "generatedAt": "2026-07-03T06:51:12.910Z",
+  "generatedAt": "2026-07-03T07:13:06.044Z",
   "source": "pokeapi",
   "pokemonIds": [
     445,
