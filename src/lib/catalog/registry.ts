@@ -67,6 +67,8 @@ const DEFAULT_MATCHUP = {
   defenderId: 727,
 } as const
 
+const DEFAULT_MOVE_PICK_TIMEOUT_MS = 5_000
+const POKEMON_OPTIONS_BY_LOCALE = new Map<SupportedLocale, Promise<SpeciesOption[]>>()
 const MOVE_OPTIONS_BY_LOCALE_CATEGORY = new Map<string, CatalogMoveOption[]>()
 
 function statLabels(category: MoveCategory, locale: SupportedLocale) {
@@ -124,22 +126,35 @@ function buildAttackerItems(category: MoveCategory) {
 }
 
 function localizedSpeciesOption(resource: LocalizedPokemonResource): SpeciesOption {
-  return {
+  return Object.freeze({
     id: resource.battlePokemonId,
     label: resource.name,
     species: resource.calcSpeciesName,
-    types: resource.types,
-  }
+    types: Object.freeze([...resource.types]) as SpeciesOption["types"],
+  })
+}
+
+async function listPokemonOptions(locale: SupportedLocale): Promise<SpeciesOption[]> {
+  const cached = POKEMON_OPTIONS_BY_LOCALE.get(locale)
+  if (cached) return cached
+
+  const options = listResources("pokemon", locale).then((pokemon) =>
+    Object.freeze(
+      pokemon
+        .map(localizedSpeciesOption)
+        .sort((a, b) => a.label.localeCompare(b.label)),
+    ) as SpeciesOption[],
+  )
+  POKEMON_OPTIONS_BY_LOCALE.set(locale, options)
+  return options
 }
 
 export async function listAttackers(locale: SupportedLocale): Promise<SpeciesOption[]> {
-  const pokemon = await listResources("pokemon", locale)
-  return pokemon.map(localizedSpeciesOption).sort((a, b) => a.label.localeCompare(b.label))
+  return listPokemonOptions(locale)
 }
 
 export async function listDefenders(locale: SupportedLocale): Promise<SpeciesOption[]> {
-  const pokemon = await listResources("pokemon", locale)
-  return pokemon.map(localizedSpeciesOption).sort((a, b) => a.label.localeCompare(b.label))
+  return listPokemonOptions(locale)
 }
 
 export function getDefaultMatchupIds() {
@@ -224,7 +239,40 @@ async function resolveDefaultMoveIds(
   return selected.slice(0, 6)
 }
 
-export async function getCatalog(
+function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
+  let timeout: ReturnType<typeof setTimeout> | undefined
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) => {
+      timeout = setTimeout(() => reject(new Error("Default Move pick timed out")), timeoutMs)
+    }),
+  ]).finally(() => {
+    if (timeout) clearTimeout(timeout)
+  })
+}
+
+async function resolveDefaultMovePick(
+  attackerId: BattlePokemonId,
+  activeMoveCategory: MoveCategory,
+  moves: CatalogMoveOption[],
+): Promise<Pick<MatchupCatalog, "defaultMoveIds" | "defaultMovePickStatus">> {
+  try {
+    return {
+      defaultMoveIds: await withTimeout(
+        resolveDefaultMoveIds(attackerId, activeMoveCategory, moves),
+        DEFAULT_MOVE_PICK_TIMEOUT_MS,
+      ),
+      defaultMovePickStatus: "ready",
+    }
+  } catch {
+    return {
+      defaultMoveIds: [],
+      defaultMovePickStatus: "unavailable",
+    }
+  }
+}
+
+export async function getCatalogShell(
   attackerId: BattlePokemonId,
   defenderId: BattlePokemonId,
   locale: SupportedLocale,
@@ -239,7 +287,6 @@ export async function getCatalog(
   const moves = await fixedPowerMoveOptions(locale, activeMoveCategory)
 
   const labels = statLabels(activeMoveCategory, locale)
-  const defaultMoveIds = await resolveDefaultMoveIds(attackerId, activeMoveCategory, moves)
 
   return {
     matchup: {
@@ -258,9 +305,35 @@ export async function getCatalog(
     attackerItems: buildAttackerItems(activeMoveCategory),
     defenderBulks: buildDefenderBulks(activeMoveCategory),
     /** Default selected set — Move pick only; remaining fixed-power moves addable via search. */
-    defaultMoveIds,
+    defaultMovePickStatus: "loading",
+    defaultMoveIds: [],
     defaultAttackerStatIds: ["neutral-max", "extreme"],
     defaultAttackerItemIds: ["none"],
     defaultDefenderIds: ["hp-32"],
   }
+}
+
+export async function resolveCatalogDefaultMovePick(
+  catalog: MatchupCatalog,
+): Promise<MatchupCatalog> {
+  const defaultMovePick = await resolveDefaultMovePick(
+    catalog.matchup.attackerId,
+    catalog.moveCategory,
+    catalog.moves,
+  )
+  return {
+    ...catalog,
+    ...defaultMovePick,
+  }
+}
+
+export async function getCatalog(
+  attackerId: BattlePokemonId,
+  defenderId: BattlePokemonId,
+  locale: SupportedLocale,
+  moveCategory?: MoveCategory,
+): Promise<MatchupCatalog> {
+  return resolveCatalogDefaultMovePick(
+    await getCatalogShell(attackerId, defenderId, locale, moveCategory),
+  )
 }

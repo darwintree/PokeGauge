@@ -1,7 +1,14 @@
-import { beforeAll, describe, expect, it } from "vitest"
+import { beforeAll, beforeEach, describe, expect, it } from "vitest"
 
 import { setChampionsMoveUsageFetcherForTest } from "@/lib/champions"
-import { getCatalog, listAttackers, type MatchupCatalog } from "@/lib/catalog"
+import {
+  getCatalog,
+  getCatalogShell,
+  listDefenders,
+  listAttackers,
+  resolveCatalogDefaultMovePick,
+  type MatchupCatalog,
+} from "@/lib/catalog"
 import {
   defaultTrackState,
   expectedRowCount,
@@ -12,7 +19,7 @@ import {
 
 const LOCALE = "zh-hans"
 
-beforeAll(() => {
+function installChampionsMoveUsageFixture() {
   setChampionsMoveUsageFetcherForTest(async (battlePokemonId) => {
     if (battlePokemonId !== 445) return []
     return [
@@ -25,9 +32,35 @@ beforeAll(() => {
       { battlePokemonId, moveId: 317, format: "Doubles", season: "test", source: "test", rank: 7, percentage: 8.6, championsMoveName: "Rock Tomb" },
     ]
   })
+}
+
+beforeAll(() => {
+  installChampionsMoveUsageFixture()
+})
+
+beforeEach(() => {
+  installChampionsMoveUsageFixture()
 })
 
 describe("catalog registry", () => {
+  it("shares localized Pokemon options per locale for attacker and defender lists", async () => {
+    const [zhAttackers, zhDefenders] = await Promise.all([
+      listAttackers("zh-hans"),
+      listDefenders("zh-hans"),
+    ])
+    const enAttackers = await listAttackers("en")
+
+    expect(zhAttackers).toBe(zhDefenders)
+    expect(zhAttackers.map((pokemon) => pokemon.id)).toEqual(
+      zhAttackers.toSorted((a, b) => a.label.localeCompare(b.label)).map((pokemon) => pokemon.id),
+    )
+    expect(zhAttackers.map((pokemon) => pokemon.id).toSorted((a, b) => a - b)).toEqual(
+      enAttackers.map((pokemon) => pokemon.id).toSorted((a, b) => a - b),
+    )
+    expect(zhAttackers.find((pokemon) => pokemon.id === 445)?.label).toBe("烈咬陆鲨")
+    expect(enAttackers.find((pokemon) => pokemon.id === 445)?.label).toBe("Garchomp")
+  })
+
   it("lists generated battle Pokemon and seeds move picks for each", async () => {
     const attackers = await listAttackers(LOCALE)
     expect(attackers.length).toBeGreaterThanOrEqual(3)
@@ -67,7 +100,40 @@ describe("catalog registry", () => {
 
   it("uses Champions rank order for default move picks before fallback", async () => {
     const catalog = await getCatalog(445, 727, "en")
+    expect(catalog.defaultMovePickStatus).toBe("ready")
     expect(catalog.defaultMoveIds).toEqual([337, 157, 89, 707, 398, 317])
+  })
+
+  it("builds the shell catalog without waiting for Champion move usage", async () => {
+    setChampionsMoveUsageFetcherForTest(() => new Promise(() => {}))
+
+    const verdict = await Promise.race([
+      getCatalogShell(445, 727, "en").then((catalog) => ({
+        status: catalog.defaultMovePickStatus,
+        defaultMoveIds: catalog.defaultMoveIds,
+        moves: catalog.moves.length,
+      })),
+      new Promise<"timeout">((resolve) => setTimeout(() => resolve("timeout"), 50)),
+    ])
+
+    expect(verdict).not.toBe("timeout")
+    expect(verdict).toMatchObject({
+      status: "loading",
+      defaultMoveIds: [],
+    })
+    expect(typeof verdict === "object" ? verdict.moves : 0).toBeGreaterThan(0)
+  })
+
+  it("marks default Move pick unavailable when Champion usage fails", async () => {
+    setChampionsMoveUsageFetcherForTest(async () => {
+      throw new Error("Champion API unavailable")
+    })
+
+    const catalog = await resolveCatalogDefaultMovePick(await getCatalogShell(445, 727, "en"))
+
+    expect(catalog.defaultMovePickStatus).toBe("unavailable")
+    expect(catalog.defaultMoveIds).toEqual([])
+    expect(catalog.moves.length).toBeGreaterThan(0)
   })
 
   it("does not preselect moves when Champions rows are unavailable", async () => {

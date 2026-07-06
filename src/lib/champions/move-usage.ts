@@ -80,11 +80,7 @@ async function fetchChampionsBattleRows(
     pokemon.battleDataCsvs?.find((entry) => entry.format === CHAMPIONS_FORMAT)?.season ??
     defaultSeason
   const url = `https://championsbattledata.com/api/battle/${CHAMPIONS_FORMAT}/${encodeURIComponent(pokemon.battleName || pokemon.name)}?season=${encodeURIComponent(season)}`
-  try {
-    return await fetchJson<ChampionsBattleApi>(url)
-  } catch {
-    return null
-  }
+  return fetchJson<ChampionsBattleApi>(url)
 }
 
 async function fetchChampionsMoveUsageOnline(
@@ -125,8 +121,13 @@ export async function listChampionsMoveUsageRecords(
 ): Promise<ChampionsMoveUsageRecord[]> {
   let promise = usageCache.get(battlePokemonId)
   if (!promise) {
-    promise = usageFetcher(battlePokemonId).catch(() => [])
+    promise = usageFetcher(battlePokemonId)
     usageCache.set(battlePokemonId, promise)
+    promise.catch(() => {
+      if (usageCache.get(battlePokemonId) === promise) {
+        usageCache.delete(battlePokemonId)
+      }
+    })
   }
   return promise
 }
