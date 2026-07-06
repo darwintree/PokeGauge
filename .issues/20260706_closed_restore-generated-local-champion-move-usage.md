@@ -10,7 +10,7 @@ updated_at: "2026-07-06T08:30:00Z"
 ---
 ## Parent map
 
-[[20260706_open_map-scenario-explorer-frontend-performance-recovery|Map Scenario Explorer frontend performance recovery]]
+[[archive/20260706_closed_map-scenario-explorer-frontend-performance-recovery|Map Scenario Explorer frontend performance recovery]]
 
 ## Question
 
@@ -18,7 +18,7 @@ How should Champion move usage be restored to a generated/local runtime boundary
 
 ## Starting evidence
 
-See [[20260706_open_record-frontend-performance-regressions-after-champion-api-and-full-resources|Record frontend performance regressions after Champion API and full resources]], especially findings 1 and 3.
+See [[archive/20260706_closed_record-frontend-performance-regressions-after-champion-api-and-full-resources|Record frontend performance regressions after Champion API and full resources]], especially findings 1 and 3.
 
 ## Resolution
 

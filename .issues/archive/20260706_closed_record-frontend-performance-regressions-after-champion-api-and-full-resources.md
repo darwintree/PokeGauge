@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "83f40b08-f775-4140-b89c-0c4058962c60"
 title: "Record frontend performance regressions after Champion API and full resources"
-status: "open"
+status: "closed"
 priority: "high"
 labels: ["TECH-DEBT", "READY-FOR-AGENT"]
 created_at: "2026-07-06T08:18:00Z"
-updated_at: "2026-07-06T08:23:00Z"
+updated_at: "2026-07-06T09:33:00Z"
 ---
 <!--
 This body is user-owned. Adjust the sections freely to fit the issue.
@@ -19,7 +19,7 @@ The Scenario Explorer has a serious frontend load delay after the Champion API /
 
 This issue records all performance findings from the 2026-07-06 diagnosis so follow-up work can fix them deliberately.
 
-Wayfinder map: [[20260706_open_map-scenario-explorer-frontend-performance-recovery|Map Scenario Explorer frontend performance recovery]].
+Wayfinder map: [[20260706_closed_map-scenario-explorer-frontend-performance-recovery|Map Scenario Explorer frontend performance recovery]].
 
 ## Issue Assessment
 
@@ -150,11 +150,31 @@ Measured same path with Champion fetcher replaced by an empty local function:
 
 - [x] Problem reproduced
 - [x] Root cause identified
-- [ ] Fix implemented
-- [ ] Tests added or updated
-- [ ] Fix verified
-- [ ] No regression found
+- [x] Fix implemented
+- [x] Tests added or updated
+- [x] Fix verified
+- [x] No regression found
 
 ## Progress Log
 
 - 2026-07-06: Diagnosed first-load latency. Primary blocker is runtime Champion API usage resolution; secondary issues are large main chunk from generated resources, duplicated Pokemon option work, and `pnpm build` verification friction.
+- 2026-07-06: Completed the recovery map. Default Move pick no longer blocks shell catalog rendering; localized Pokemon option lists are cached per locale; generated Pokemon/move/diagnostics resources are lazy chunks outside initial JS; pnpm build verification records the esbuild build-script approval in workspace config.
+
+## Resolution
+
+The recorded regressions were handled through [[20260706_closed_map-scenario-explorer-frontend-performance-recovery|Map Scenario Explorer frontend performance recovery]] and its archived child tickets.
+
+- Champion usage is no longer on the page-wide first-render blocking path; the catalog shell renders with `defaultMovePickStatus: "loading"` and resolves Move pick asynchronously.
+- Attacker and defender Pokemon option lists share one frozen locale-level cache.
+- Generated Pokemon, move, and diagnostics modules load through dynamic imports instead of the entry chunk.
+- `pnpm-workspace.yaml` now records `allowBuilds.esbuild: true`, making normal install/build verification reliable for future agents.
+
+Final verification on 2026-07-06:
+
+- `CI=true pnpm install --frozen-lockfile` passed.
+- `CI=true pnpm install --frozen-lockfile --modules-dir <tmp>` passed from an empty temporary modules directory and ran `esbuild@0.28.1` postinstall successfully.
+- `pnpm build` passed.
+- `pnpm exec tsc -b --pretty false` passed.
+- `pnpm test` passed: 11 files, 67 tests.
+- `pnpm lint` passed with existing warnings only.
+- `pnpm perf:scenario-explorer` passed with catalog initialization at 50ms and initial JS at 511,465 bytes raw / 158,368 bytes gzip.

@@ -1,5 +1,5 @@
 import { calculate, Field, Move, Pokemon } from "@smogon/calc"
-import { describe, expect, it } from "vitest"
+import { beforeAll, describe, expect, it } from "vitest"
 
 import {
   ATTACKER_STAT_SETUPS,
@@ -10,6 +10,7 @@ import {
   getAttackStatBounds,
   VGC_LEVEL,
 } from "@/lib/calc-adapter"
+import { listResources } from "@/lib/resources"
 
 function directCalc(
   attackerSpecies: string,
@@ -50,6 +51,13 @@ function directCalc(
 }
 
 describe("calc adapter", () => {
+  beforeAll(async () => {
+    await Promise.all([
+      listResources("pokemon", "en"),
+      listResources("move", "en"),
+    ])
+  })
+
   it("uses Level 50 VGC semantics", () => {
     const result = computeDamage(
       "Garchomp",

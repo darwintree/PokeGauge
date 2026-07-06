@@ -52,8 +52,8 @@ describe("localized resource access", () => {
     )
   })
 
-  it("exposes generation diagnostics for supported-locale and battle-identity checks", () => {
-    const diagnostics = getResourceDiagnostics()
+  it("exposes generation diagnostics for supported-locale and battle-identity checks", async () => {
+    const diagnostics = await getResourceDiagnostics()
 
     expect(diagnostics.source).toBe("pokeapi")
     expect(diagnostics.pokemonIds).toContain(445)
