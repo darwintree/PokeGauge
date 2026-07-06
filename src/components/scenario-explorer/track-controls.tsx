@@ -67,6 +67,16 @@ export function TrackControls({ catalog, state, onMoveCategoryChange }: TrackCon
         onToggle={state.toggleMove}
         onRemove={state.removeMoveFromTrack}
       />
+      {catalog.defaultMovePickStatus === "loading" && (
+        <p className="text-muted-foreground text-xs">
+          <FormattedMessage id="track.defaultMovePick.loading" />
+        </p>
+      )}
+      {catalog.defaultMovePickStatus === "unavailable" && (
+        <p className="text-muted-foreground text-xs">
+          <FormattedMessage id="track.defaultMovePick.unavailable" />
+        </p>
+      )}
 
       <Separator />
 

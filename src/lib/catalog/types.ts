@@ -39,6 +39,7 @@ export type MatchupCatalog = {
   attackerStats: CatalogOption[]
   attackerItems: CatalogOption[]
   defenderBulks: CatalogOption[]
+  defaultMovePickStatus: "loading" | "ready" | "unavailable"
   defaultMoveIds: UpstreamResourceId[]
   defaultAttackerStatIds: string[]
   defaultAttackerItemIds: string[]

@@ -51,6 +51,10 @@ function orderedMoveSelection(catalog: MatchupCatalog, ids: readonly number[]): 
   return orderedPoolSelection(catalog.moves.map((move) => move.id), ids)
 }
 
+function sameIds(a: readonly number[], b: readonly number[]): boolean {
+  return a.length === b.length && a.every((id, index) => id === b[index])
+}
+
 function cycleAllocationIndex(
   indices: Record<string, number>,
   id: string,
@@ -131,6 +135,8 @@ export function useScenarioState(catalog: MatchupCatalog) {
   const resetKeyRef = useRef<string>(
     `${catalog.matchup.attackerId}:${catalog.matchup.defenderId}:${catalog.moveCategory}`,
   )
+  const defaultMoveIdsRef = useRef<number[]>([...catalog.defaultMoveIds])
+  const movesTouchedRef = useRef(false)
 
   const setStatNameStrategy = useCallback((strategy: StatNameStrategy) => {
     saveStatNameStrategy(strategy)
@@ -141,10 +147,28 @@ export function useScenarioState(catalog: MatchupCatalog) {
     const resetKey = `${catalog.matchup.attackerId}:${catalog.matchup.defenderId}:${catalog.moveCategory}`
     if (resetKeyRef.current === resetKey) return
     resetKeyRef.current = resetKey
+    defaultMoveIdsRef.current = [...catalog.defaultMoveIds]
+    movesTouchedRef.current = false
     setTrackState(defaultTrackState(catalog))
     setAddingOffense(false)
     setAddingDefense(false)
   }, [catalog])
+
+  useEffect(() => {
+    const previousDefaultMoveIds = defaultMoveIdsRef.current
+    if (sameIds(previousDefaultMoveIds, catalog.defaultMoveIds)) return
+    defaultMoveIdsRef.current = [...catalog.defaultMoveIds]
+    setTrackState((s) => {
+      if (movesTouchedRef.current) return s
+      if (!sameIds(s.visibleMoveIds, previousDefaultMoveIds)) return s
+      if (!sameIds(s.moveIds, previousDefaultMoveIds)) return s
+      return {
+        ...s,
+        visibleMoveIds: [...catalog.defaultMoveIds],
+        moveIds: [...catalog.defaultMoveIds],
+      }
+    })
+  }, [catalog.defaultMoveIds])
 
   useEffect(() => {
     const id = window.setTimeout(() => {
@@ -362,6 +386,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
   }
 
   function addMoveToTrack(id: number) {
+    movesTouchedRef.current = true
     setTrackState((s) => ({
       ...s,
       visibleMoveIds: orderedMoveSelection(catalog, [...s.visibleMoveIds, id]),
@@ -369,6 +394,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
   }
 
   function toggleMove(id: number) {
+    movesTouchedRef.current = true
     setTrackState((s) => {
       const visibleMoveIds = s.visibleMoveIds.includes(id)
         ? s.visibleMoveIds
@@ -388,6 +414,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
   }
 
   function removeMoveFromTrack(id: number) {
+    movesTouchedRef.current = true
     setTrackState((s) => {
       const visibleMoveIds = orderedMoveSelection(
         catalog,

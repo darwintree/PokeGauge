@@ -3,11 +3,12 @@ import { FormattedMessage, useIntl } from "react-intl"
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import {
-  getCatalog,
+  getCatalogShell,
   getDefaultMatchupIds,
   getDefaultMoveCategory,
   listAttackers,
   listDefenders,
+  resolveCatalogDefaultMovePick,
   type MatchupCatalog,
   type MoveCategory,
   type SpeciesOption,
@@ -29,6 +30,19 @@ type LocalizedCatalogState = {
   attackers: SpeciesOption[]
   defenders: SpeciesOption[]
   catalog: MatchupCatalog
+}
+
+type LocalizedOptionsState = {
+  attackers: SpeciesOption[]
+  defenders: SpeciesOption[]
+}
+
+function catalogKey(catalog: MatchupCatalog): string {
+  return [
+    catalog.matchup.attackerId,
+    catalog.matchup.defenderId,
+    catalog.moveCategory,
+  ].join(":")
 }
 
 function ScenarioExplorerContent({
@@ -130,22 +144,46 @@ export function ScenarioExplorerPage({ locale, onLocaleChange }: ScenarioExplore
   const [moveCategory, setMoveCategory] = useState<MoveCategory>(() =>
     getDefaultMoveCategory(defaults.attackerId),
   )
-  const [localized, setLocalized] = useState<LocalizedCatalogState | null>(null)
+  const [localizedOptions, setLocalizedOptions] = useState<LocalizedOptionsState | null>(null)
+  const [catalog, setCatalog] = useState<MatchupCatalog | null>(null)
 
   useEffect(() => {
     let cancelled = false
-    Promise.all([
-      listAttackers(locale),
-      listDefenders(locale),
-      getCatalog(attackerId, defenderId, locale, moveCategory),
-    ]).then(([attackers, defenders, catalog]) => {
+    Promise.all([listAttackers(locale), listDefenders(locale)]).then(([attackers, defenders]) => {
       if (cancelled) return
-      setLocalized({ attackers, defenders, catalog })
+      setLocalizedOptions({ attackers, defenders })
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [locale])
+
+  useEffect(() => {
+    let cancelled = false
+    getCatalogShell(attackerId, defenderId, locale, moveCategory).then((nextCatalog) => {
+      if (cancelled) return
+      setCatalog(nextCatalog)
     })
     return () => {
       cancelled = true
     }
   }, [attackerId, defenderId, locale, moveCategory])
+
+  useEffect(() => {
+    if (!catalog || catalog.defaultMovePickStatus !== "loading") return
+    let cancelled = false
+    const expectedKey = catalogKey(catalog)
+    resolveCatalogDefaultMovePick(catalog).then((resolvedCatalog) => {
+      if (cancelled) return
+      setCatalog((current) => {
+        if (!current || catalogKey(current) !== expectedKey) return current
+        return resolvedCatalog
+      })
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [catalog])
 
   function changeAttacker(id: BattlePokemonId) {
     setAttackerId(id)
@@ -161,11 +199,13 @@ export function ScenarioExplorerPage({ locale, onLocaleChange }: ScenarioExplore
     [intl],
   )
 
-  if (!localized) return null
+  if (!localizedOptions || !catalog) return null
 
   return (
     <ScenarioExplorerContent
-      {...localized}
+      attackers={localizedOptions.attackers}
+      defenders={localizedOptions.defenders}
+      catalog={catalog}
       attackerId={attackerId}
       defenderId={defenderId}
       locale={locale}

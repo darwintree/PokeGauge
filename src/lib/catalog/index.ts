@@ -1,9 +1,11 @@
 export {
   getCatalog,
+  getCatalogShell,
   getDefaultMatchupIds,
   getDefaultMoveCategory,
   listAttackers,
   listDefenders,
+  resolveCatalogDefaultMovePick,
 } from "./registry"
 export {
   DEFENSE_PRESET_LABELS,

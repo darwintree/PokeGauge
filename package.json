@@ -9,6 +9,7 @@
     "build": "tsc -b && vite build",
     "generate:pokeapi": "tsx scripts/generate-pokeapi-resources.ts",
     "lint": "oxlint",
+    "perf:scenario-explorer": "tsx scripts/verify-scenario-explorer-performance.ts",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest"
