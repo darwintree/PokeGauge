@@ -1,9 +1,4 @@
 import type { SupportedLocale } from "@/lib/i18n"
-import {
-  GENERATED_MOVES,
-  GENERATED_POKEMON,
-  RESOURCE_DIAGNOSTICS,
-} from "./generated"
 import type {
   GeneratedResourceDiagnostics,
   LocalizedMoveResource,
@@ -15,8 +10,16 @@ import type {
   UpstreamResourceId,
 } from "./types"
 
-const POKEMON_RESOURCES: Record<UpstreamResourceId, NormalizedBattlePokemon> = GENERATED_POKEMON
-const MOVE_RESOURCES: Record<UpstreamResourceId, NormalizedMove> = GENERATED_MOVES
+let pokemonResources: Record<UpstreamResourceId, NormalizedBattlePokemon> | undefined
+let pokemonResourcesPromise:
+  | Promise<Record<UpstreamResourceId, NormalizedBattlePokemon>>
+  | undefined
+let moveResources: Record<UpstreamResourceId, NormalizedMove> | undefined
+let moveResourcesPromise:
+  | Promise<Record<UpstreamResourceId, NormalizedMove>>
+  | undefined
+let diagnosticsPromise: Promise<GeneratedResourceDiagnostics> | undefined
+let moveIdByJoinName: Map<string, UpstreamResourceId> | undefined
 
 export class ResourceLookupError extends Error {
   constructor(resourceType: ResourceType, id: UpstreamResourceId) {
@@ -25,12 +28,39 @@ export class ResourceLookupError extends Error {
   }
 }
 
+async function loadPokemonResources(): Promise<Record<UpstreamResourceId, NormalizedBattlePokemon>> {
+  if (pokemonResources) return pokemonResources
+  pokemonResourcesPromise ??= import("./generated/pokemon").then(({ GENERATED_POKEMON }) => {
+    pokemonResources = GENERATED_POKEMON
+    return GENERATED_POKEMON
+  })
+  return pokemonResourcesPromise
+}
+
+async function loadMoveResources(): Promise<Record<UpstreamResourceId, NormalizedMove>> {
+  if (moveResources) return moveResources
+  moveResourcesPromise ??= import("./generated/moves").then(({ GENERATED_MOVES }) => {
+    moveResources = GENERATED_MOVES
+    moveIdByJoinName = buildMoveIdByJoinName(GENERATED_MOVES)
+    return GENERATED_MOVES
+  })
+  return moveResourcesPromise
+}
+
+async function loadResourceDiagnostics(): Promise<GeneratedResourceDiagnostics> {
+  diagnosticsPromise ??= import("./generated/diagnostics").then(
+    ({ RESOURCE_DIAGNOSTICS }) => RESOURCE_DIAGNOSTICS,
+  )
+  return diagnosticsPromise
+}
+
 export async function getResource<TType extends ResourceType>(
   resourceType: TType,
   id: UpstreamResourceId,
   locale: SupportedLocale,
 ): Promise<LocalizedResourceByType[TType]> {
-  const resources = resourceType === "pokemon" ? POKEMON_RESOURCES : MOVE_RESOURCES
+  const resources =
+    resourceType === "pokemon" ? await loadPokemonResources() : await loadMoveResources()
   const resource = resources[id]
   if (!resource) throw new ResourceLookupError(resourceType, id)
 
@@ -96,7 +126,8 @@ export async function listResources<TType extends ResourceType>(
   resourceType: TType,
   locale: SupportedLocale,
 ): Promise<LocalizedResourceByType[TType][]> {
-  const resources = resourceType === "pokemon" ? POKEMON_RESOURCES : MOVE_RESOURCES
+  const resources =
+    resourceType === "pokemon" ? await loadPokemonResources() : await loadMoveResources()
   const localized = Object.values(resources).map((resource) =>
     resource.resourceType === "pokemon"
       ? localizePokemon(resource, locale)
@@ -106,16 +137,18 @@ export async function listResources<TType extends ResourceType>(
   return localized as LocalizedResourceByType[TType][]
 }
 
-export function getResourceDiagnostics(): GeneratedResourceDiagnostics {
-  return RESOURCE_DIAGNOSTICS
+export async function getResourceDiagnostics(): Promise<GeneratedResourceDiagnostics> {
+  return loadResourceDiagnostics()
 }
 
 export function getBattlePokemonByCalcName(name: string): NormalizedBattlePokemon | undefined {
-  return Object.values(POKEMON_RESOURCES).find((pokemon) => pokemon.calcSpeciesName === name)
+  if (!pokemonResources) return undefined
+  return Object.values(pokemonResources).find((pokemon) => pokemon.calcSpeciesName === name)
 }
 
 export function getMoveByCalcName(name: string): NormalizedMove | undefined {
-  return Object.values(MOVE_RESOURCES).find((move) => move.calcMoveName === name)
+  if (!moveResources) return undefined
+  return Object.values(moveResources).find((move) => move.calcMoveName === name)
 }
 
 function normalizeJoinName(name: string): string {
@@ -125,14 +158,18 @@ function normalizeJoinName(name: string): string {
     .replace(/[^a-z0-9]+/g, "")
 }
 
-const MOVE_ID_BY_JOIN_NAME = new Map<string, UpstreamResourceId>(
-  Object.values(MOVE_RESOURCES).flatMap((move) => [
-    [normalizeJoinName(move.slug), move.id] as const,
-    [normalizeJoinName(move.calcMoveName), move.id] as const,
-    ...Object.values(move.names).map((name) => [normalizeJoinName(name), move.id] as const),
-  ]),
-)
+function buildMoveIdByJoinName(
+  resources: Record<UpstreamResourceId, NormalizedMove>,
+): Map<string, UpstreamResourceId> {
+  return new Map(
+    Object.values(resources).flatMap((move) => [
+      [normalizeJoinName(move.slug), move.id] as const,
+      [normalizeJoinName(move.calcMoveName), move.id] as const,
+      ...Object.values(move.names).map((name) => [normalizeJoinName(name), move.id] as const),
+    ]),
+  )
+}
 
 export function getMoveIdByJoinName(name: string): UpstreamResourceId | undefined {
-  return MOVE_ID_BY_JOIN_NAME.get(normalizeJoinName(name))
+  return moveIdByJoinName?.get(normalizeJoinName(name))
 }

@@ -10,7 +10,7 @@ updated_at: "2026-07-06T08:57:00Z"
 ---
 ## Parent map
 
-[[../20260706_open_map-scenario-explorer-frontend-performance-recovery|Map Scenario Explorer frontend performance recovery]]
+[[20260706_closed_map-scenario-explorer-frontend-performance-recovery|Map Scenario Explorer frontend performance recovery]]
 
 ## Question
 

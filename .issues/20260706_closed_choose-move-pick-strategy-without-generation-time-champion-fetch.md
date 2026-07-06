@@ -10,7 +10,7 @@ updated_at: "2026-07-06T08:52:00Z"
 ---
 ## Parent map
 
-[[20260706_open_map-scenario-explorer-frontend-performance-recovery|Map Scenario Explorer frontend performance recovery]]
+[[archive/20260706_closed_map-scenario-explorer-frontend-performance-recovery|Map Scenario Explorer frontend performance recovery]]
 
 ## Question
 
@@ -29,7 +29,7 @@ Compare at least these routes:
 
 ## Starting evidence
 
-The rejected route is recorded in [[20260706_closed_restore-generated-local-champion-move-usage|Restore generated local Champion move usage]]. The current runtime Champion fetch is measured in [[20260706_open_record-frontend-performance-regressions-after-champion-api-and-full-resources|Record frontend performance regressions after Champion API and full resources]].
+The rejected route is recorded in [[20260706_closed_restore-generated-local-champion-move-usage|Restore generated local Champion move usage]]. The current runtime Champion fetch is measured in [[archive/20260706_closed_record-frontend-performance-regressions-after-champion-api-and-full-resources|Record frontend performance regressions after Champion API and full resources]].
 
 ## Current constraint
 

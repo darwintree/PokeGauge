@@ -10,7 +10,7 @@ updated_at: "2026-07-06T09:19:00Z"
 ---
 ## Parent map
 
-[[../20260706_open_map-scenario-explorer-frontend-performance-recovery|Map Scenario Explorer frontend performance recovery]]
+[[20260706_closed_map-scenario-explorer-frontend-performance-recovery|Map Scenario Explorer frontend performance recovery]]
 
 ## Question
 
@@ -18,7 +18,7 @@ Can attacker and defender option generation share a locale-level cached list so 
 
 ## Starting evidence
 
-See [[../20260706_open_record-frontend-performance-regressions-after-champion-api-and-full-resources|Record frontend performance regressions after Champion API and full resources]], finding 5.
+See [[20260706_closed_record-frontend-performance-regressions-after-champion-api-and-full-resources|Record frontend performance regressions after Champion API and full resources]], finding 5.
 
 ## Resolution
 
@@ -34,4 +34,4 @@ Implemented a locale-level Pokemon option cache in `src/lib/catalog/registry.ts`
 - `pnpm test src/lib/scenario-pipeline/pipeline.test.ts` passed: 21 tests, including coverage that attacker/defender lists share the same locale list and localized labels remain correct across `zh-hans` and `en`.
 - `pnpm test` passed: 11 files, 67 tests.
 - `pnpm lint` passed with existing warnings only.
-- `pnpm perf:scenario-explorer` reported catalog initialization at 4ms with 1350 attackers and 1350 defenders. It still fails only the initial JS raw/gzip budgets, which remains covered by [[../20260706_open_split-generated-resources-out-of-the-initial-chunk|Split generated resources out of the initial chunk]].
+- `pnpm perf:scenario-explorer` reported catalog initialization at 4ms with 1350 attackers and 1350 defenders. It still fails only the initial JS raw/gzip budgets, which remains covered by [[20260706_closed_split-generated-resources-out-of-the-initial-chunk|Split generated resources out of the initial chunk]].

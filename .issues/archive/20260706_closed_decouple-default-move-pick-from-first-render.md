@@ -10,7 +10,7 @@ updated_at: "2026-07-06T09:07:00Z"
 ---
 ## Parent map
 
-[[../20260706_open_map-scenario-explorer-frontend-performance-recovery|Map Scenario Explorer frontend performance recovery]]
+[[20260706_closed_map-scenario-explorer-frontend-performance-recovery|Map Scenario Explorer frontend performance recovery]]
 
 ## Question
 
@@ -18,7 +18,7 @@ What is the smallest UI/data-loading change that lets Scenario Explorer render a
 
 ## Starting evidence
 
-See [[../20260706_open_record-frontend-performance-regressions-after-champion-api-and-full-resources|Record frontend performance regressions after Champion API and full resources]], especially finding 2.
+See [[20260706_closed_record-frontend-performance-regressions-after-champion-api-and-full-resources|Record frontend performance regressions after Champion API and full resources]], especially finding 2.
 
 ## Decision input
 
@@ -48,4 +48,4 @@ The ticket question mentions deterministic local fallback, but the linked wayfin
 - `pnpm exec tsc -b --pretty false` passes.
 - `pnpm test` passes: 11 files, 66 tests.
 - `pnpm lint` passes with existing warnings only.
-- `pnpm perf:scenario-explorer` now reports single-digit catalog initialization, most recently 9ms, with `defaultMovePickStatus: "loading"` and `defaultMoveIds: []`; it still fails the initial JS size budgets, which is covered by [[../20260706_open_split-generated-resources-out-of-the-initial-chunk|Split generated resources out of the initial chunk]].
+- `pnpm perf:scenario-explorer` now reports single-digit catalog initialization, most recently 9ms, with `defaultMovePickStatus: "loading"` and `defaultMoveIds: []`; it still fails the initial JS size budgets, which is covered by [[20260706_closed_split-generated-resources-out-of-the-initial-chunk|Split generated resources out of the initial chunk]].
