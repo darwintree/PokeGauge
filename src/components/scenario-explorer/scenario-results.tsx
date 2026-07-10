@@ -6,6 +6,7 @@ import {
   EmptyDescription,
   EmptyHeader,
 } from "@/components/ui/empty"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import type { MatchupCatalog } from "@/lib/catalog"
 import {
   RANGE_DEFENDER_ID,
@@ -28,6 +29,7 @@ type ScenarioResultsProps = {
   statNameStrategy: StatNameStrategy
   showMoveOnRow: boolean
   onShowResultActualChange: (checked: boolean) => void
+  onProbabilityModeChange: (mode: TrackState["probabilityMode"]) => void
   compact?: boolean
 }
 
@@ -54,6 +56,7 @@ export function ScenarioResults({
   statNameStrategy,
   showMoveOnRow,
   onShowResultActualChange,
+  onProbabilityModeChange,
   compact = false,
 }: ScenarioResultsProps) {
   const rowLabelTemplates = useMemo(
@@ -78,7 +81,26 @@ export function ScenarioResults({
 
   return (
     <>
-      <div className="mb-2 flex justify-end">
+      <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+        <ToggleGroup
+          value={[trackState.probabilityMode]}
+          onValueChange={(value) => {
+            if (value[0] === "rolls" || value[0] === "actual") {
+              onProbabilityModeChange(value[0])
+            }
+          }}
+          variant="outline"
+          size="sm"
+          spacing={0}
+          aria-label="KO probability mode"
+        >
+          <ToggleGroupItem value="rolls">
+            <FormattedMessage id="probability.mode.rolls" />
+          </ToggleGroupItem>
+          <ToggleGroupItem value="actual">
+            <FormattedMessage id="probability.mode.actual" />
+          </ToggleGroupItem>
+        </ToggleGroup>
         <ShowActualValuesSwitch
           checked={trackState.showResultActual}
           onCheckedChange={onShowResultActualChange}

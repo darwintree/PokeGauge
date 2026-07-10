@@ -128,6 +128,7 @@ function ScenarioExplorerContent({
             statNameStrategy={state.statNameStrategy}
             showMoveOnRow={state.showMoveOnRow}
             onShowResultActualChange={state.setShowResultActual}
+            onProbabilityModeChange={state.setProbabilityMode}
             compact
           />
         </main>
