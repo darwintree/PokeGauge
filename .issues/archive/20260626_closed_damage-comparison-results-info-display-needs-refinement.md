@@ -34,7 +34,7 @@ Scenario Explorer 右侧伤害对比区（箱线图 + 结果摘要）的信息�
 - 删除结果行底部冗余摘要行（区间说明已在上方展示；道具改图标后该行只剩重复文字）
 - 「无加成」标注放在道具图标旁的行内小字，不需要 hover
 - OHKO 标记合并为单一标记，统一用百分比形式（`X% OHKO`），去掉静态「OHKO」徽章
-- 仅暴击可 OHKO（普通 roll < 100% 但暴击 roll ≥ 100%）时，v1 显示文字标签「仅暴击 OHKO」；综合命中+暴击的完整概率计算另见 [[../20260701_open_ohko-2hko-probability-should-combine-normal-and-crit-rolls|OHKO/2HKO combined probability]]
+- 仅暴击可 OHKO（普通 roll < 100% 但暴击 roll ≥ 100%）时，v1 显示文字标签「仅暴击 OHKO」；综合命中+暴击的完整概率计算另见 [[20260701_closed_decide-the-ko-probability-display-and-global-toggle-contract|OHKO/2HKO combined probability]]
 
 ## Acceptance criteria
 
@@ -56,4 +56,4 @@ Scenario Explorer 右侧伤害对比区（箱线图 + 结果摘要）的信息�
 
 - [[20260626_open_introduce-specific-held-item-controls-life-orb-plates-choice-series|Held-item controls]]
 - [[../20260629_open_merge-scenario-rows-when-item-has-no-damage-effect|Merge no-boost rows]]
-- [[../20260701_open_ohko-2hko-probability-should-combine-normal-and-crit-rolls|OHKO/2HKO combined probability]]
+- [[20260701_closed_decide-the-ko-probability-display-and-global-toggle-contract|OHKO/2HKO combined probability]]

@@ -471,6 +471,8 @@ export function useScenarioState(catalog: MatchupCatalog) {
       setTrackState((s) => ({ ...s, showDefenseActual })),
     setShowResultActual: (showResultActual: boolean) =>
       setTrackState((s) => ({ ...s, showResultActual })),
+    setProbabilityMode: (probabilityMode: TrackState["probabilityMode"]) =>
+      setTrackState((s) => ({ ...s, probabilityMode })),
     cycleDefenseAllocation,
     persistDefenseTemplate,
     deleteDefenseTemplate,

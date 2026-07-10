@@ -35,6 +35,7 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 50,
     "accuracy": 100,
+    "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -54,6 +55,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 15,
     "accuracy": 85,
+    "minHits": 2,
+    "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -73,6 +76,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 18,
     "accuracy": 85,
+    "minHits": 2,
+    "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -244,6 +249,7 @@ export const GENERATED_MOVES = {
     "category": "special",
     "power": 80,
     "accuracy": 100,
+    "critRate": 1,
     "damageKind": "damage",
     "target": "all-opponents",
     "isSpread": true
@@ -453,6 +459,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 30,
     "accuracy": 100,
+    "minHits": 2,
+    "maxHits": 2,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -586,6 +594,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 15,
     "accuracy": 85,
+    "minHits": 2,
+    "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -776,6 +786,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 25,
     "accuracy": 100,
+    "minHits": 2,
+    "maxHits": 2,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
     "isSpread": false
@@ -795,6 +807,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 25,
     "accuracy": 95,
+    "minHits": 2,
+    "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -1422,6 +1436,7 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 55,
     "accuracy": 95,
+    "critRate": 1,
     "damageKind": "damage",
     "target": "all-opponents",
     "isSpread": true
@@ -2486,6 +2501,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 20,
     "accuracy": 100,
+    "minHits": 2,
+    "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -2657,6 +2674,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 15,
     "accuracy": 85,
+    "minHits": 2,
+    "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -2714,6 +2733,7 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 140,
     "accuracy": 90,
+    "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -2885,6 +2905,7 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 100,
     "accuracy": 90,
+    "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -2923,6 +2944,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 18,
     "accuracy": 80,
+    "minHits": 2,
+    "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -2942,6 +2965,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 50,
     "accuracy": 90,
+    "minHits": 2,
+    "maxHits": 2,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -3094,6 +3119,7 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 70,
     "accuracy": 100,
+    "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -3170,6 +3196,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 10,
     "accuracy": 90,
+    "minHits": 3,
+    "maxHits": 3,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -3360,6 +3388,7 @@ export const GENERATED_MOVES = {
     "category": "special",
     "power": 100,
     "accuracy": 95,
+    "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -3759,6 +3788,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 25,
     "accuracy": 90,
+    "minHits": 2,
+    "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -4519,6 +4550,7 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 100,
     "accuracy": 80,
+    "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -4766,6 +4798,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": null,
     "accuracy": 100,
+    "minHits": 6,
+    "maxHits": 6,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -5545,6 +5579,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 15,
     "accuracy": 100,
+    "minHits": 2,
+    "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -5678,6 +5714,7 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 85,
     "accuracy": 90,
+    "critRate": 1,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
     "isSpread": false
@@ -5963,6 +6000,7 @@ export const GENERATED_MOVES = {
     "category": "special",
     "power": 60,
     "accuracy": 95,
+    "critRate": 1,
     "damageKind": "damage",
     "target": "all-opponents",
     "isSpread": true
@@ -6286,6 +6324,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 25,
     "accuracy": 100,
+    "minHits": 2,
+    "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -6324,6 +6364,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 25,
     "accuracy": 100,
+    "minHits": 2,
+    "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -6495,6 +6537,7 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 50,
     "accuracy": 100,
+    "critRate": 1,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
     "isSpread": false
@@ -6609,6 +6652,7 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 90,
     "accuracy": 100,
+    "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -6647,6 +6691,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 25,
     "accuracy": 90,
+    "minHits": 2,
+    "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -7597,6 +7643,7 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 70,
     "accuracy": 100,
+    "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -7996,6 +8043,7 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 70,
     "accuracy": 100,
+    "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -8110,6 +8158,7 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 70,
     "accuracy": 100,
+    "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -8357,6 +8406,7 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 70,
     "accuracy": 100,
+    "critRate": 1,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
     "isSpread": false
@@ -8433,6 +8483,7 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 100,
     "accuracy": 80,
+    "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -8623,6 +8674,7 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 90,
     "accuracy": 100,
+    "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -8699,6 +8751,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 35,
     "accuracy": 90,
+    "minHits": 2,
+    "maxHits": 2,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -8737,6 +8791,7 @@ export const GENERATED_MOVES = {
     "category": "special",
     "power": 100,
     "accuracy": 95,
+    "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -9117,6 +9172,7 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 60,
     "accuracy": 100,
+    "critRate": 6,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -9953,6 +10009,7 @@ export const GENERATED_MOVES = {
     "category": "special",
     "power": 60,
     "accuracy": 90,
+    "critRate": 6,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -10048,6 +10105,7 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 80,
     "accuracy": 95,
+    "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -10067,6 +10125,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 40,
     "accuracy": 90,
+    "minHits": 2,
+    "maxHits": 2,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -10276,6 +10336,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 25,
     "accuracy": 85,
+    "minHits": 2,
+    "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -10333,6 +10395,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 50,
     "accuracy": 85,
+    "minHits": 2,
+    "maxHits": 2,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -11283,6 +11347,8 @@ export const GENERATED_MOVES = {
     "category": "special",
     "power": 15,
     "accuracy": 100,
+    "minHits": 2,
+    "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -13658,6 +13724,7 @@ export const GENERATED_MOVES = {
     "category": "special",
     "power": 195,
     "accuracy": null,
+    "critRate": 2,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -14095,6 +14162,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 60,
     "accuracy": 100,
+    "minHits": 2,
+    "maxHits": 2,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -14152,6 +14221,7 @@ export const GENERATED_MOVES = {
     "category": "special",
     "power": 80,
     "accuracy": 100,
+    "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -14266,6 +14336,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 50,
     "accuracy": 100,
+    "minHits": 2,
+    "maxHits": 2,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -15178,6 +15250,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 25,
     "accuracy": 90,
+    "minHits": 2,
+    "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -15444,6 +15518,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 20,
     "accuracy": 90,
+    "minHits": 3,
+    "maxHits": 3,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -15463,6 +15539,8 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 40,
     "accuracy": 90,
+    "minHits": 2,
+    "maxHits": 2,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -15520,6 +15598,7 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 75,
     "accuracy": 100,
+    "critRate": 6,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
@@ -15539,6 +15618,9 @@ export const GENERATED_MOVES = {
     "category": "physical",
     "power": 25,
     "accuracy": 100,
+    "minHits": 3,
+    "maxHits": 3,
+    "critRate": 6,
     "damageKind": "damage",
     "target": "selected-pokemon",
     "isSpread": false
