@@ -1,4 +1,10 @@
 import type { MoveCategory } from "@/lib/catalog/types"
+import {
+  type AtomicDamageDistributionInput,
+  convolveDamageDistributions,
+  createAtomicDamageDistribution,
+  koProbability,
+} from "@/lib/damage-distribution"
 import { typeFromBoostId } from "@/lib/held-item"
 import { POKEMON_TYPES, type PokemonType } from "@/lib/pokemon/types"
 import { getBattlePokemonByCalcName, getMoveByCalcName } from "@/lib/resources"
@@ -16,9 +22,22 @@ import {
 import type {
   ComputedDamage,
   DefenderSetup,
+  KoProbabilities,
+  KoProbabilityRange,
+  ProbabilityMode,
   StatRange,
   StatSetup,
 } from "./types"
+
+type ProbabilityInput = Pick<
+  AtomicDamageDistributionInput,
+  "hitProbability" | "criticalHitProbability"
+>
+
+type FixedKoProbabilities = {
+  ohko: number
+  twoHit: number
+}
 
 export { CALC_GEN, VGC_LEVEL } from "./calc-constants"
 export {
@@ -52,10 +71,9 @@ function pct(damage: number, hp: number) {
 }
 
 function summarize(
-  normalRolls: number[],
-  critRolls: number[],
-  defenderHp: number,
+  result: ReturnType<typeof runLocalDamage>,
 ): ComputedDamage {
+  const { normalRolls, critRolls, defenderHp } = result
   const minDamage = Math.min(...normalRolls)
   const maxDamage = Math.max(...normalRolls)
   const avgDamage = normalRolls.reduce((a, b) => a + b, 0) / normalRolls.length
@@ -76,7 +94,29 @@ function summarize(
     critMinPercent: pct(critMinDamage, defenderHp),
     critMaxPercent: pct(critMaxDamage, defenderHp),
     ohkoChance: ohkoRolls > 0 ? (ohkoRolls / 16) * 100 : undefined,
+    koProbabilities: fixedKoProbabilities(result),
   }
+}
+
+function compileProbabilityInput(
+  move: NonNullable<ReturnType<typeof getMoveByCalcName>>,
+  mode: ProbabilityMode,
+): ProbabilityInput | undefined {
+  if (mode === "rolls") {
+    return { hitProbability: 1, criticalHitProbability: 0 }
+  }
+  if (
+    move.accuracy == null ||
+    !Number.isInteger(move.accuracy) ||
+    move.accuracy < 1 ||
+    move.accuracy > 100 ||
+    move.minHits != null ||
+    move.maxHits != null ||
+    move.critRate != null
+  ) {
+    return undefined
+  }
+  return { hitProbability: move.accuracy / 100, criticalHitProbability: 1 / 24 }
 }
 
 function compiledItemModifiers(
@@ -103,6 +143,7 @@ function runLocalDamage(
   attackerStat: StatSetup,
   itemId: string | undefined,
   defender: DefenderSetup,
+  probabilityMode: ProbabilityMode,
 ) {
   const attacker = getBattlePokemonByCalcName(attackerSpecies)
   const defenderPokemon = getBattlePokemonByCalcName(defenderSpecies)
@@ -116,20 +157,55 @@ function runLocalDamage(
 
   const defenderStats = defenderStatValues(defenderSpecies, move.category, defender)
   const itemModifiers = compiledItemModifiers(itemId, move.category, move.type)
-  return calculateDamageRolls({
-    attack: offenseStatValue(attackerSpecies, move.category, attackerStat),
-    defense: defenderStats.def,
-    defenderHp: defenderStats.hp,
-    attackerTypes: attacker.types,
-    defenderTypes: defenderPokemon.types,
-    moveType: move.type,
-    movePower: move.power,
-    category: move.category,
-    modifiers: {
-      ...itemModifiers,
-      spread: move.isSpread,
-    },
+  return {
+    ...calculateDamageRolls({
+      attack: offenseStatValue(attackerSpecies, move.category, attackerStat),
+      defense: defenderStats.def,
+      defenderHp: defenderStats.hp,
+      attackerTypes: attacker.types,
+      defenderTypes: defenderPokemon.types,
+      moveType: move.type,
+      movePower: move.power,
+      category: move.category,
+      modifiers: {
+        ...itemModifiers,
+        spread: move.isSpread,
+      },
+    }),
+    probabilityInput: compileProbabilityInput(move, probabilityMode),
+  }
+}
+
+function fixedKoProbabilities(
+  result: ReturnType<typeof runLocalDamage>,
+): FixedKoProbabilities | undefined {
+  if (!result.probabilityInput) return undefined
+  const atomic = createAtomicDamageDistribution({
+    ...result.probabilityInput,
+    normalDamageRolls: result.normalRolls,
+    criticalDamageRolls: result.critRolls,
   })
+  return {
+    ohko: koProbability(atomic, result.defenderHp),
+    twoHit: koProbability(convolveDamageDistributions([atomic, atomic]), result.defenderHp),
+  }
+}
+
+function probabilityRange(values: number[]): KoProbabilityRange {
+  return { min: Math.min(...values), max: Math.max(...values) }
+}
+
+function rangeKoProbabilities(
+  results: readonly ReturnType<typeof runLocalDamage>[],
+): KoProbabilities | undefined {
+  const endpoints = results.map(fixedKoProbabilities)
+  if (!endpoints.every((value): value is FixedKoProbabilities => value != null)) {
+    return undefined
+  }
+  return {
+    ohko: probabilityRange(endpoints.map((value) => value.ohko)),
+    twoHit: probabilityRange(endpoints.map((value) => value.twoHit)),
+  }
 }
 
 export function computeDamage(
@@ -139,21 +215,24 @@ export function computeDamage(
   attackerStat: StatSetup,
   itemId: string | undefined,
   defender: DefenderSetup,
+  probabilityMode: ProbabilityMode = "rolls",
 ): ComputedDamage {
-  const { defenderHp, normalRolls, critRolls } = runLocalDamage(
+  const result = runLocalDamage(
     attackerSpecies,
     defenderSpecies,
     moveName,
     attackerStat,
     itemId,
     defender,
+    probabilityMode,
   )
-  return summarize(normalRolls, critRolls, defenderHp)
+  return summarize(result)
 }
 
 function mergeRangeResults(
   lowResult: ReturnType<typeof runLocalDamage>,
   highResult: ReturnType<typeof runLocalDamage>,
+  probabilityEndpoints = [lowResult, highResult],
 ): ComputedDamage {
   const minDamage = Math.min(...lowResult.normalRolls)
   const maxDamage = Math.max(...highResult.normalRolls)
@@ -179,6 +258,7 @@ function mergeRangeResults(
     critMinPercent: pct(critMinDamage, hp),
     critMaxPercent: pct(critMaxDamage, hp),
     ohkoChance: ohkoHigh > 0 ? (ohkoHigh / 16) * 100 : undefined,
+    koProbabilities: rangeKoProbabilities(probabilityEndpoints),
   }
 }
 
@@ -190,13 +270,30 @@ export function computeDamageForStatRange(
   category: MoveCategory,
   itemId: string | undefined,
   defender: DefenderSetup,
+  probabilityMode: ProbabilityMode = "rolls",
 ): ComputedDamage {
   const low = statRange.min
   const high = Math.max(statRange.max, statRange.min)
   const lowSetup = closestOffenseSetupAtOrBelow(attackerSpecies, category, low)
   const highSetup = closestOffenseSetupAtOrAbove(attackerSpecies, category, high)
-  const lowResult = runLocalDamage(attackerSpecies, defenderSpecies, moveName, lowSetup, itemId, defender)
-  const highResult = runLocalDamage(attackerSpecies, defenderSpecies, moveName, highSetup, itemId, defender)
+  const lowResult = runLocalDamage(
+    attackerSpecies,
+    defenderSpecies,
+    moveName,
+    lowSetup,
+    itemId,
+    defender,
+    probabilityMode,
+  )
+  const highResult = runLocalDamage(
+    attackerSpecies,
+    defenderSpecies,
+    moveName,
+    highSetup,
+    itemId,
+    defender,
+    probabilityMode,
+  )
   return mergeRangeResults(lowResult, highResult)
 }
 
@@ -209,6 +306,7 @@ export function computeDamageForDefenderRange(
   itemId: string | undefined,
   hpRange: StatRange,
   defRange: StatRange,
+  probabilityMode: ProbabilityMode = "rolls",
 ): ComputedDamage {
   const lowSetup = closestDefenderSetupLow(defenderSpecies, category, hpRange.min, defRange.min)
   const highSetup = closestDefenderSetupHigh(
@@ -217,8 +315,24 @@ export function computeDamageForDefenderRange(
     Math.max(hpRange.max, hpRange.min),
     Math.max(defRange.max, defRange.min),
   )
-  const lowResult = runLocalDamage(attackerSpecies, defenderSpecies, moveName, attackerStat, itemId, lowSetup)
-  const highResult = runLocalDamage(attackerSpecies, defenderSpecies, moveName, attackerStat, itemId, highSetup)
+  const lowResult = runLocalDamage(
+    attackerSpecies,
+    defenderSpecies,
+    moveName,
+    attackerStat,
+    itemId,
+    lowSetup,
+    probabilityMode,
+  )
+  const highResult = runLocalDamage(
+    attackerSpecies,
+    defenderSpecies,
+    moveName,
+    attackerStat,
+    itemId,
+    highSetup,
+    probabilityMode,
+  )
   return mergeRangeResults(lowResult, highResult)
 }
 
@@ -231,6 +345,7 @@ export function computeDamageForCombinedRange(
   itemId: string | undefined,
   hpRange: StatRange,
   defRange: StatRange,
+  probabilityMode: ProbabilityMode = "rolls",
 ): ComputedDamage {
   const offLow = closestOffenseSetupAtOrBelow(attackerSpecies, category, statRange.min)
   const offHigh = closestOffenseSetupAtOrAbove(attackerSpecies, category, Math.max(statRange.max, statRange.min))
@@ -241,9 +356,46 @@ export function computeDamageForCombinedRange(
     Math.max(hpRange.max, hpRange.min),
     Math.max(defRange.max, defRange.min),
   )
-  const lowResult = runLocalDamage(attackerSpecies, defenderSpecies, moveName, offLow, itemId, defLow)
-  const highResult = runLocalDamage(attackerSpecies, defenderSpecies, moveName, offHigh, itemId, defHigh)
-  return mergeRangeResults(lowResult, highResult)
+  const lowResult = runLocalDamage(
+    attackerSpecies,
+    defenderSpecies,
+    moveName,
+    offLow,
+    itemId,
+    defLow,
+    probabilityMode,
+  )
+  const highResult = runLocalDamage(
+    attackerSpecies,
+    defenderSpecies,
+    moveName,
+    offHigh,
+    itemId,
+    defHigh,
+    probabilityMode,
+  )
+  const lowOffenseHighDefense = runLocalDamage(
+    attackerSpecies,
+    defenderSpecies,
+    moveName,
+    offLow,
+    itemId,
+    defHigh,
+    probabilityMode,
+  )
+  const highOffenseLowDefense = runLocalDamage(
+    attackerSpecies,
+    defenderSpecies,
+    moveName,
+    offHigh,
+    itemId,
+    defLow,
+    probabilityMode,
+  )
+  return mergeRangeResults(lowResult, highResult, [
+    lowOffenseHighDefense,
+    highOffenseLowDefense,
+  ])
 }
 
 /** @deprecated use getOffenseStat */

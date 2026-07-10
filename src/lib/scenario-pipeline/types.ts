@@ -1,3 +1,4 @@
+import type { KoProbabilities, ProbabilityMode } from "@/lib/calc-adapter"
 import type { StatValueTemplate } from "@/lib/stat-value-template"
 
 export type StatSelectMode = "preset" | "range"
@@ -37,6 +38,7 @@ export type TrackState = {
   showDefenseActual: boolean
   showResultActual: boolean
   defenseAllocationIndices: Record<string, number>
+  probabilityMode: ProbabilityMode
 }
 
 export type ScenarioRow = {
@@ -57,4 +59,5 @@ export type ScenarioRow = {
   critMinPercent: number
   critMaxPercent: number
   ohkoChance?: number
+  koProbabilities?: KoProbabilities
 }

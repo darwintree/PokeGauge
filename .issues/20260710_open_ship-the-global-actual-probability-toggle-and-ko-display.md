@@ -18,5 +18,5 @@ Implement the agreed global, default-off actual-probability Button and KO probab
 
 ## Blocked by
 
-- [[20260710_open_integrate-actual-ko-probabilities-into-the-scenario-pipeline|Integrate actual KO probabilities into the scenario pipeline]]
-- [[20260701_open_decide-the-ko-probability-display-and-global-toggle-contract|Decide the KO probability display and global toggle contract]]
+- [[archive/20260710_closed_integrate-actual-ko-probabilities-into-the-scenario-pipeline|Integrate actual KO probabilities into the scenario pipeline]]
+- [[archive/20260701_closed_decide-the-ko-probability-display-and-global-toggle-contract|Decide the KO probability display and global toggle contract]]

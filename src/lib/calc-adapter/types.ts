@@ -7,6 +7,20 @@ export type StatSetup = {
 
 export type DefenderSetup = StatSetup
 
+export type ProbabilityMode = "rolls" | "actual"
+
+export type KoProbabilityRange = {
+  min: number
+  max: number
+}
+
+export type KoProbabilityValue = number | KoProbabilityRange
+
+export type KoProbabilities = {
+  ohko: KoProbabilityValue
+  twoHit: KoProbabilityValue
+}
+
 export type ComputedDamage = {
   defenderHp: number
   minDamage: number
@@ -20,6 +34,7 @@ export type ComputedDamage = {
   critMinPercent: number
   critMaxPercent: number
   ohkoChance?: number
+  koProbabilities?: KoProbabilities
 }
 
 export type StatRange = {

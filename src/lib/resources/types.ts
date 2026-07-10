@@ -43,6 +43,9 @@ export type NormalizedMove = {
   category: MoveDamageClass
   power: number | null
   accuracy: number | null
+  minHits?: number
+  maxHits?: number
+  critRate?: number
   damageKind: DamageKind
   target: string
   isSpread: boolean

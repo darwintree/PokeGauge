@@ -6,7 +6,7 @@ status: "open"
 priority: "high"
 labels: ["WAYFINDER:MAP", "FEATURE-REQUEST"]
 created_at: "2026-07-10T02:36:00Z"
-updated_at: "2026-07-10T03:57:00Z"
+updated_at: "2026-07-10T05:44:00Z"
 ---
 ## Destination
 
@@ -25,10 +25,13 @@ Scenario Explorer can optionally compute and display OHKO and cumulative ≤2HKO
 
 - [[archive/20260710_closed_decide-the-stable-actual-damage-probability-module-contract|Decide the stable actual-damage probability module contract]] — Use an opaque DamageDistribution with ADD construction, array-based CDD convolution, and scalar KO queries; keep generic sparse convolution in an independent local module with no third-party math dependency or runtime validation.
 - [[archive/20260710_closed_implement-and-test-the-actual-damage-probability-core|Implement and test the actual-damage probability core]] — Implemented and verified the dependency-free sparse convolution and opaque ADD/CDD core, including mass, aggregation, and cumulative OHKO/2HKO/3HKO behavior.
+- [[archive/20260710_closed_research-champions-base-critical-hit-and-accuracy-semantics|Research Champions base critical-hit and accuracy semantics]] — Align ordinary moves to Gen 9's conditional 1/24 base crit and numeric accuracy/100; require explicit normalization or exclusion for null and exceptional move semantics.
+- [[archive/20260701_closed_decide-the-ko-probability-display-and-global-toggle-contract|Decide the KO probability display and global toggle contract]] — Use a default-16-roll/actual-probability segmented Button above results and aligned OHKO/≤2HKO columns beside each row, with endpoint ranges and explicit unsupported states.
+- [[archive/20260710_closed_integrate-actual-ko-probabilities-into-the-scenario-pipeline|Integrate actual KO probabilities into the scenario pipeline]] — Scenario rows now expose fixed or ordered Range-track OHKO/≤2HKO probabilities in rolls/actual modes while unsupported exceptional moves retain rows without probability values.
 
 ## Not yet specified
 
-- Reviewing the current KO display prototype may expose additional accessibility, localization, or information-density work whose exact ticket boundary is not yet visible.
+- None.
 
 ## Out of scope
 
