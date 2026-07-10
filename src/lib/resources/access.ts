@@ -19,7 +19,18 @@ let moveResourcesPromise:
   | Promise<Record<UpstreamResourceId, NormalizedMove>>
   | undefined
 let diagnosticsPromise: Promise<GeneratedResourceDiagnostics> | undefined
+let pokemonByCalcName: Map<string, NormalizedBattlePokemon> | undefined
+let moveByCalcName: Map<string, NormalizedMove> | undefined
 let moveIdByJoinName: Map<string, UpstreamResourceId> | undefined
+
+function buildFirstByName<T>(values: T[], getName: (value: T) => string): Map<string, T> {
+  const byName = new Map<string, T>()
+  for (const value of values) {
+    const name = getName(value)
+    if (!byName.has(name)) byName.set(name, value)
+  }
+  return byName
+}
 
 export class ResourceLookupError extends Error {
   constructor(resourceType: ResourceType, id: UpstreamResourceId) {
@@ -32,6 +43,10 @@ async function loadPokemonResources(): Promise<Record<UpstreamResourceId, Normal
   if (pokemonResources) return pokemonResources
   pokemonResourcesPromise ??= import("./generated/pokemon").then(({ GENERATED_POKEMON }) => {
     pokemonResources = GENERATED_POKEMON
+    pokemonByCalcName = buildFirstByName(
+      Object.values(GENERATED_POKEMON),
+      (pokemon) => pokemon.calcSpeciesName,
+    )
     return GENERATED_POKEMON
   })
   return pokemonResourcesPromise
@@ -41,6 +56,10 @@ async function loadMoveResources(): Promise<Record<UpstreamResourceId, Normalize
   if (moveResources) return moveResources
   moveResourcesPromise ??= import("./generated/moves").then(({ GENERATED_MOVES }) => {
     moveResources = GENERATED_MOVES
+    moveByCalcName = buildFirstByName(
+      Object.values(GENERATED_MOVES),
+      (move) => move.calcMoveName,
+    )
     moveIdByJoinName = buildMoveIdByJoinName(GENERATED_MOVES)
     return GENERATED_MOVES
   })
@@ -142,13 +161,11 @@ export async function getResourceDiagnostics(): Promise<GeneratedResourceDiagnos
 }
 
 export function getBattlePokemonByCalcName(name: string): NormalizedBattlePokemon | undefined {
-  if (!pokemonResources) return undefined
-  return Object.values(pokemonResources).find((pokemon) => pokemon.calcSpeciesName === name)
+  return pokemonByCalcName?.get(name)
 }
 
 export function getMoveByCalcName(name: string): NormalizedMove | undefined {
-  if (!moveResources) return undefined
-  return Object.values(moveResources).find((move) => move.calcMoveName === name)
+  return moveByCalcName?.get(name)
 }
 
 function normalizeJoinName(name: string): string {
