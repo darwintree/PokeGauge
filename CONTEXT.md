@@ -4,6 +4,8 @@
 
 ## Language
 
+### Matchup context
+
 **Matchup**:
 一次计算上下文：进攻方、防守方及隐含的 **ruleset + battle format**（当前：Champions · VGC 双打）。Default view 下招式由系统自动挑选，不视为用户输入。
 _Avoid_: Battle, fight, 对战（作名词指代计算单元时）
@@ -19,6 +21,8 @@ _Avoid_: Format selector, 赛制切换（首版不做）
 **Spread move modifier**:
 双打中招式命中多个目标时应用的伤害修正。由招式目标类型判断是否默认启用，属于公式输入；首版 UI 可以暂不暴露开关，但计算内核必须支持开关。
 _Avoid_: Always-on doubles penalty, UI-only display setting
+
+### Move selection
 
 **Move pick**:
 系统从进攻方技能池中按使用率自动选出的招式集合（top-N）。用户未声明招式时，结果按 move pick 展开。
@@ -36,6 +40,8 @@ _Avoid_: Mixed moves, category mode
 可进入首版全局招式搜索池的招式：分类为物理或特殊，且基础威力是正数固定值。不包含 status、OHKO、固定伤害、变量威力或 `power = null` 的招式。
 _Avoid_: Any damaging move, variable-power move
 
+### Scenario construction
+
 **Scenario**:
 结果页的一行箱形图，对应各 **track** 选中项的一个组合（笛卡尔积的一项）。
 _Avoid_: Template（代码/UI 层可用，领域层统一称 Scenario）
@@ -49,12 +55,14 @@ _Avoid_: Configuration axis, filter, dimension
 _Avoid_: Multi-select axis
 
 **Range track**:
-通过数轴选取一段合法数值的 track；视为选中 **1** 项；该行的伤害 envelope 合并区间端点与 16 roll。
+通过数轴选取一段合法数值的 track；视为选中 **1** 项；该行的伤害 envelope 合并区间端点与 16 roll。Range track 不视为随机变量；N-hit KO 结果由两个端点分别计算，展示为概率区间。
 _Avoid_: Slider axis, stat range filter
 
 **Row product rule**:
 展示行数 = 各 track 选中数的乘积（∏ nᵢ）。数值范围 track 的 n 恒为 1。
 _Avoid_: Cartesian product（领域层用 track 累乘表述）
+
+### Stat configuration
 
 **Build configuration**:
 一方宝可梦在某一 track 上的取值；性格+努力、道具等分属不同 track，不含能力阶数。
@@ -76,6 +84,8 @@ _Avoid_: One-shot view, 初始页
 用户在 default 选中集基础上调整各 track 选型以收紧结果；机制与 default view 相同（track 累乘），仅选中数减少。
 _Avoid_: Advanced mode, 专家模式
 
+### Damage and KO
+
 **Damage range**:
 通常 16 roll 下的最低 ~ 最高伤害值及其占防守方 HP 的百分比；在箱形图中以**箱体**表示。
 _Avoid_: Damage spread, 伤害波动
@@ -84,9 +94,35 @@ _Avoid_: Damage spread, 伤害波动
 暴击 roll 下的最低 ~ 最高伤害值；在箱形图中以**须须**及端点表示。
 _Avoid_: Critical spread, 会心范围
 
+**Damage distribution**（伤害分布）:
+以伤害值为随机变量的离散分布，与防御方的 HP 总量无关。
+_Avoid_: Damage range, KO probability
+
+**Atomic Damage Distribution**（ADD，原子伤害分布）:
+一次使用招式产生的无条件 **Damage distribution**；未命中记为 0 伤害，命中后按通常/暴击及各自 16 roll 的联合概率加权，并合并相同伤害值。
+_Avoid_: One-shot damage distribution, Actual damage distribution
+
+**Convolved Damage Distribution**（CDD，卷积伤害分布）:
+由一个或多个 **ADD** 卷积得到的总伤害分布；单个 ADD 是只含一个因子的 CDD。
+_Avoid_: Accumulated damages distribution, Total damage distribution
+
+**KO probability**（击倒概率）:
+一个确定的 **CDD** 中累计伤害值大于或等于一个确定 HP 值的概率。
+_Avoid_: Exact KO Rate, Kill chance, KO rate
+
+**KO probability range**（击倒概率范围）:
+Range track 两个端点分别产生的 **KO probability** 所形成的有序范围；Range track 本身不视为随机变量。
+_Avoid_: KO probability interval, Endpoint probability interval
+
 **OHKO probability**:
-16 roll 中有多少比例的伤害值 ≥ 防守方当前 HP（一击必杀概率）。
-_Avoid_: Kill chance, KO rate
+以单个 **ADD** 作为 CDD 计算出的 **KO probability**。
+_Avoid_: Normal-roll OHKO chance, Crit-only OHKO
+
+**N-hit KO probability**（N 次内击倒概率）:
+以 N 个 ADD 卷积所得的 CDD 计算出的 **KO probability**；包含少于 N 次就已击倒的结果。首版不计回合间回复、间接伤害、能力变化或不同招式组合。
+_Avoid_: Exact N-hit KO probability, 恰好第 N 次击倒概率
+
+### Stat controls
 
 **Snap point**:
 详细参数滑块的吸附预设：0、max、ex（对应无修正无努力 / 无修正满努力 / +修正满努力语义）。
@@ -99,6 +135,8 @@ _Avoid_: Defensive spread
 **Offense stat**:
 进攻方用于输出的 stat：物攻或特攻（取决于招式类别）。
 _Avoid_: Offensive spread
+
+### Identity and language
 
 **Type**:
 宝可梦或招式的属性（18 种标准属性）。用于识别展示（如 species typing badge），不单独表示克制倍率。
@@ -120,13 +158,11 @@ _Avoid_: Arbitrary locale support, fallback locale chain
 用户用关键词和结构化筛选从宝可梦或招式候选池中找到目标的产品能力；目标是有广度的召回，可逐步包含别名、俗称、黑话等。当前最低可交付范围只承诺匹配当前 **Supported locale** 的本地化展示名。
 _Avoid_: Exact name lookup, upstream slug lookup
 
-**Held item**（携带道具）:
-攻击方 build configuration 在道具 track 上的一项取值；映射到伤害计算中的 `item` 修饰。道具 track 为 **multi-select track**（多选以对比多个配装方案）；**每一 scenario 行仅生效一件**（效果互斥，不可叠加）。含 explicit no-item。
-_Avoid_: Item, 装备
+### Held items
 
-**Item effect exclusivity**（道具效果互斥）:
-单场对战/单次伤害计算仅应用一个携带道具 modifier；track 多选表示并列对比多个互斥方案，非组合叠加。
-_Avoid_: Item stacking, 道具叠加
+**Held item**（携带道具）:
+攻击方 build configuration 在道具 track 上的一项取值；道具 track 为 **multi-select track**，但每一 scenario 行仅应用一件道具的伤害修饰。含 explicit no-item。
+_Avoid_: Item, 装备
 
 **Explicit no-item**（显式无道具）:
 道具 track 中 id 为 `none` 的选项；表示刻意不带道具的配置，与「未选任何道具导致零行」区分。
