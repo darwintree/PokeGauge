@@ -246,6 +246,35 @@ describe("matchup scenario pipeline", () => {
     expect(sandRows).toHaveLength(1)
     expect(sandRows[0].maxDamage).toBeGreaterThan(noneRows[0].maxDamage)
   })
+
+  it("compiles 16-roll and actual fixed-build KO probabilities", () => {
+    const state = defaultTrackState(catalog)
+    state.moveIds = [667]
+    state.offenseTemplateIds = ["extreme"]
+    state.attackerItemIds = ["choice-band"]
+    state.defenseTemplateIds = ["min-bulk"]
+
+    const [rollRow] = runScenarioPipeline(catalog, state)
+    expect(rollRow.koProbabilities).toEqual({ ohko: 1, twoHit: 1 })
+
+    state.probabilityMode = "actual"
+    const [actualRow] = runScenarioPipeline(catalog, state)
+    expect(actualRow.koProbabilities?.ohko).toBeCloseTo(0.95)
+    expect(actualRow.koProbabilities?.twoHit).toBeCloseTo(0.9975)
+  })
+
+  it("retains rows but omits actual KO probabilities for exceptional moves", () => {
+    const state = defaultTrackState(catalog)
+    state.moveIds = [2]
+    state.offenseTemplateIds = ["extreme"]
+    state.attackerItemIds = ["none"]
+    state.defenseTemplateIds = ["min-bulk"]
+    state.probabilityMode = "actual"
+
+    const [row] = runScenarioPipeline(catalog, state)
+    expect(row).toBeDefined()
+    expect(row.koProbabilities).toBeUndefined()
+  })
 })
 
 describe("matchup scenario pipeline - range mode", () => {
@@ -307,5 +336,59 @@ describe("matchup scenario pipeline - range mode", () => {
     expect(rows).toHaveLength(1)
     expect(rows[0].attackerStatId).toBe(RANGE_STAT_ID)
     expect(rows[0].defenderId).toBe(RANGE_DEFENDER_ID)
+  })
+
+  it("exposes ordered endpoint KO probability ranges instead of averaging", () => {
+    const state = defaultTrackState(catalog)
+    state.moveIds = [89]
+    state.attackerItemIds = ["none"]
+    state.defenseTemplateIds = ["min-bulk"]
+    state.probabilityMode = "actual"
+
+    const endpointRows = ["neutral-zero", "extreme"].map((offenseTemplateId) => {
+      const [row] = runScenarioPipeline(catalog, {
+        ...state,
+        offenseTemplateIds: [offenseTemplateId],
+      })
+      return row.koProbabilities
+    })
+
+    state.statMode = "range"
+    const [rangeRow] = runScenarioPipeline(catalog, state)
+    const ohkoEndpoints = endpointRows.map((value) => value?.ohko as number)
+    const twoHitEndpoints = endpointRows.map((value) => value?.twoHit as number)
+
+    expect(rangeRow.koProbabilities).toEqual({
+      ohko: { min: Math.min(...ohkoEndpoints), max: Math.max(...ohkoEndpoints) },
+      twoHit: { min: Math.min(...twoHitEndpoints), max: Math.max(...twoHitEndpoints) },
+    })
+  })
+
+  it("uses only minimum-offense × maximum-defense and maximum-offense × minimum-defense endpoints", () => {
+    const state = defaultTrackState(catalog)
+    state.moveIds = [89]
+    state.attackerItemIds = ["none"]
+    state.probabilityMode = "actual"
+
+    const oppositeEndpoints = [
+      { offenseTemplateIds: ["neutral-zero"], defenseTemplateIds: ["standard-bulk"] },
+      { offenseTemplateIds: ["extreme"], defenseTemplateIds: ["min-bulk"] },
+    ].map((selection) => {
+      const [row] = runScenarioPipeline(catalog, { ...state, ...selection })
+      return row.koProbabilities
+    })
+
+    const [rangeRow] = runScenarioPipeline(catalog, {
+      ...state,
+      statMode: "range",
+      defenderMode: "range",
+    })
+    const ohkoEndpoints = oppositeEndpoints.map((value) => value?.ohko as number)
+    const twoHitEndpoints = oppositeEndpoints.map((value) => value?.twoHit as number)
+
+    expect(rangeRow.koProbabilities).toEqual({
+      ohko: { min: Math.min(...ohkoEndpoints), max: Math.max(...ohkoEndpoints) },
+      twoHit: { min: Math.min(...twoHitEndpoints), max: Math.max(...twoHitEndpoints) },
+    })
   })
 })
