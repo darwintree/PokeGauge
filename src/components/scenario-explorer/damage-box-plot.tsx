@@ -20,6 +20,8 @@ import {
 } from "@/lib/stat-tier-colors"
 import { cn } from "@/lib/utils"
 
+import { formatKoProbability } from "./format-ko-probability"
+
 // Non-linear axis: 0–100% linear over 72% of width, 100–200% sqrt-compressed
 // into the remaining 28%. Hard cap 200%.
 const LINEAR_MAX = 100
@@ -57,15 +59,6 @@ function lethalTone(row: ScenarioRow): Tone {
   if (peak >= 100) return "lethal"
   if (peak >= 75) return "warm"
   return "cool"
-}
-
-/** OHKO label: percent form when normal-roll chance is known, else a crit-only fallback. */
-function ohkoLabel(row: ScenarioRow, peak: number, critOnlyLabel: string): string | null {
-  if (row.ohkoChance != null) {
-    const pct = row.ohkoChance % 1 === 0 ? row.ohkoChance : row.ohkoChance.toFixed(1)
-    return `${pct}% OHKO`
-  }
-  return peak >= 100 ? critOnlyLabel : null
 }
 
 const TONE_CLASS = {
@@ -128,6 +121,32 @@ function RowLabel({ children }: RowLabelProps) {
   )
 }
 
+function KoProbabilityColumns({ row }: { row: ScenarioRow }) {
+  const intl = useIntl()
+  const unavailable = intl.formatMessage({ id: "damage.ko.unavailable" })
+
+  return (
+    <dl className="grid w-36 shrink-0 grid-cols-2 text-center text-xs tabular-nums">
+      <div>
+        <dt className="sr-only">OHKO</dt>
+        <dd>
+          {row.koProbabilities
+            ? formatKoProbability(row.koProbabilities.ohko, intl.locale)
+            : unavailable}
+        </dd>
+      </div>
+      <div>
+        <dt className="sr-only">≤2HKO</dt>
+        <dd>
+          {row.koProbabilities
+            ? formatKoProbability(row.koProbabilities.twoHit, intl.locale)
+            : unavailable}
+        </dd>
+      </div>
+    </dl>
+  )
+}
+
 type DamageBoxPlotProps = {
   move: CatalogMoveOption
   attackerStat: Pick<CatalogOption<string>, "id" | "label"> & { actual?: string | null }
@@ -151,12 +170,6 @@ export function DamageBoxPlot({
   const tone = lethalTone(row)
   const offenseTier = isRangeEnvelope ? null : offenseStatTier(attackerStat.id)
   const defenseTier = defenderBulkTier(defender.id)
-  const peak = Math.max(row.maxPercent, row.critMaxPercent)
-  const ohko = ohkoLabel(
-    row,
-    peak,
-    intl.formatMessage({ id: "damage.critOnlyOhko" }),
-  )
   const box = pctSpan(row.minPercent, row.maxPercent)
   const crit = pctSpan(row.critMinPercent, row.critMaxPercent)
   const bridge =
@@ -270,15 +283,12 @@ export function DamageBoxPlot({
           ))}
 
           <div
-            className="pointer-events-none absolute -bottom-6 flex flex-wrap items-baseline gap-x-3 text-xs"
+            className="pointer-events-none absolute -bottom-6 flex flex-wrap items-baseline text-xs"
             style={{ left: box.left, minWidth: "12rem" }}
           >
             <span className="font-medium tabular-nums">
               {row.minPercent.toFixed(1)}% ~ {row.maxPercent.toFixed(1)}%
             </span>
-            {ohko && (
-              <span className="font-semibold text-red-600 tabular-nums">{ohko}</span>
-            )}
           </div>
         </TooltipTrigger>
         <TooltipContent
@@ -303,14 +313,9 @@ export function DamageBoxPlot({
               {row.critMinPercent.toFixed(1)}% ~ {row.critMaxPercent.toFixed(1)}%
             </span>
           </HoverRow>
-          {ohko && (
-            <HoverRow marker={<span className="inline-block size-2 rounded-full bg-red-500" />}>
-              <HoverLabel>OHKO</HoverLabel>
-              <span className="font-semibold tabular-nums">{ohko}</span>
-            </HoverRow>
-          )}
         </TooltipContent>
       </Tooltip>
+      <KoProbabilityColumns row={row} />
     </div>
   )
 }
@@ -336,6 +341,7 @@ function HoverLabel({ children }: { children: React.ReactNode }) {
 }
 
 export function DamageAxis() {
+  const intl = useIntl()
   return (
     <div className="bg-background sticky top-0 z-10 mb-2 flex pl-[15.75rem]">
       <div className="relative h-6 min-w-0 flex-1">
@@ -356,6 +362,10 @@ export function DamageAxis() {
           style={{ left: pctToLeft(100) }}
           aria-hidden
         />
+      </div>
+      <div className="ml-3 grid w-36 shrink-0 grid-cols-2 text-center text-[10px] font-medium">
+        <span>{intl.formatMessage({ id: "damage.ko.ohko" })}</span>
+        <span>{intl.formatMessage({ id: "damage.ko.twoHit" })}</span>
       </div>
     </div>
   )

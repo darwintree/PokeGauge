@@ -10,7 +10,7 @@ updated_at: "2026-07-10T05:43:00Z"
 ---
 ## Parent map
 
-[[../20260710_open_wayfinder-actual-damage-distribution-and-ko-probability-rollout|Wayfinder: Actual damage distribution and KO probability rollout]]
+[[20260710_closed_wayfinder-actual-damage-distribution-and-ko-probability-rollout|Wayfinder: Actual damage distribution and KO probability rollout]]
 
 ## Question
 
