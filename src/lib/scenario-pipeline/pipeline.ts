@@ -76,6 +76,7 @@ function computePresetRow(
   defenseTemplateId: string,
   offenseTemplates: StatValueTemplate[],
   defenseTemplates: StatValueTemplate[],
+  probabilityMode: TrackState["probabilityMode"],
 ): ScenarioRow | null {
   const offenseTemplate = findTemplate(offenseTemplates, offenseTemplateId)
   const defenseTemplate = findTemplate(defenseTemplates, defenseTemplateId)
@@ -103,6 +104,7 @@ function computePresetRow(
     statSetup,
     attackerItemId,
     defSetup,
+    probabilityMode,
   )
 
   return {
@@ -121,6 +123,7 @@ function computePresetRow(
     critMinPercent: computed.critMinPercent,
     critMaxPercent: computed.critMaxPercent,
     ohkoChance: computed.ohkoChance,
+    koProbabilities: computed.koProbabilities,
   }
 }
 
@@ -131,6 +134,7 @@ function computeOffenseRangeRow(
   attackerItemId: string,
   defenseTemplateId: string,
   defenseTemplates: StatValueTemplate[],
+  probabilityMode: TrackState["probabilityMode"],
 ): ScenarioRow | null {
   const defenseTemplate = findTemplate(defenseTemplates, defenseTemplateId)
   const itemName = ATTACKER_ITEM_NAMES[attackerItemId]
@@ -152,6 +156,7 @@ function computeOffenseRangeRow(
     catalog.moveCategory,
     attackerItemId,
     defSetup,
+    probabilityMode,
   )
 
   return {
@@ -171,6 +176,7 @@ function computeOffenseRangeRow(
     critMinPercent: computed.critMinPercent,
     critMaxPercent: computed.critMaxPercent,
     ohkoChance: computed.ohkoChance,
+    koProbabilities: computed.koProbabilities,
   }
 }
 
@@ -181,6 +187,7 @@ function computeDefenderRangeRow(
   attackerItemId: string,
   defenderRanges: DefenderStatRanges,
   offenseTemplates: StatValueTemplate[],
+  probabilityMode: TrackState["probabilityMode"],
 ): ScenarioRow | null {
   const offenseTemplate = findTemplate(offenseTemplates, offenseTemplateId)
   const itemName = ATTACKER_ITEM_NAMES[attackerItemId]
@@ -203,6 +210,7 @@ function computeDefenderRangeRow(
     attackerItemId,
     defenderRanges.hp,
     defenderRanges.def,
+    probabilityMode,
   )
 
   return {
@@ -225,6 +233,7 @@ function computeDefenderRangeRow(
     critMinPercent: computed.critMinPercent,
     critMaxPercent: computed.critMaxPercent,
     ohkoChance: computed.ohkoChance,
+    koProbabilities: computed.koProbabilities,
   }
 }
 
@@ -234,6 +243,7 @@ function computeCombinedRangeRow(
   statRange: TrackState["statRange"],
   attackerItemId: string,
   defenderRanges: DefenderStatRanges,
+  probabilityMode: TrackState["probabilityMode"],
 ): ScenarioRow | null {
   const itemName = ATTACKER_ITEM_NAMES[attackerItemId]
   const moveName = resolveMoveName(catalog, moveId)
@@ -250,6 +260,7 @@ function computeCombinedRangeRow(
     attackerItemId,
     defenderRanges.hp,
     defenderRanges.def,
+    probabilityMode,
   )
 
   return {
@@ -273,6 +284,7 @@ function computeCombinedRangeRow(
     critMinPercent: computed.critMinPercent,
     critMaxPercent: computed.critMaxPercent,
     ohkoChance: computed.ohkoChance,
+    koProbabilities: computed.koProbabilities,
   }
 }
 
@@ -322,6 +334,7 @@ export function runScenarioPipeline(
           trackState.statRange,
           attackerItemId,
           trackState.defenderRanges,
+          trackState.probabilityMode,
         )
         if (row) rows.push(row)
         continue
@@ -336,6 +349,7 @@ export function runScenarioPipeline(
             attackerItemId,
             defenseTemplateId,
             defenseTemplates,
+            trackState.probabilityMode,
           )
           if (row) rows.push(row)
         }
@@ -351,6 +365,7 @@ export function runScenarioPipeline(
             attackerItemId,
             trackState.defenderRanges,
             offenseTemplates,
+            trackState.probabilityMode,
           )
           if (row) rows.push(row)
         }
@@ -367,6 +382,7 @@ export function runScenarioPipeline(
             defenseTemplateId,
             offenseTemplates,
             defenseTemplates,
+            trackState.probabilityMode,
           )
           if (row) rows.push(row)
         }
@@ -406,6 +422,7 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
     showDefenseActual: false,
     showResultActual: false,
     defenseAllocationIndices: {},
+    probabilityMode: "rolls",
   }
 }
 

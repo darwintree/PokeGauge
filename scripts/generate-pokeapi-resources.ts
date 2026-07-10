@@ -246,6 +246,10 @@ async function main() {
     const type = TYPE_BY_ID[move.type_id]
     const names = namesByLocale("move", id, moveNamesByMoveId.get(id) ?? [], "name")
     const target = moveTargetById.get(requiredNumber(move, "target_id"))?.identifier ?? "unknown"
+    const meta = moveMetaByMoveId.get(id)?.[0]
+    const minHits = nullableNumber(meta?.min_hits ?? "")
+    const maxHits = nullableNumber(meta?.max_hits ?? "")
+    const critRate = nullableNumber(meta?.crit_rate ?? "")
     return [[
       id,
       {
@@ -258,7 +262,10 @@ async function main() {
         category: DAMAGE_CLASS_BY_ID[move.damage_class_id] ?? "status",
         power: nullableNumber(move.power),
         accuracy: nullableNumber(move.accuracy),
-        damageKind: META_CATEGORY_BY_ID[moveMetaByMoveId.get(id)?.[0]?.meta_category_id ?? ""] ?? "unique",
+        ...(minHits === null ? {} : { minHits }),
+        ...(maxHits === null ? {} : { maxHits }),
+        ...(critRate !== null && critRate > 0 ? { critRate } : {}),
+        damageKind: META_CATEGORY_BY_ID[meta?.meta_category_id ?? ""] ?? "unique",
         target,
         isSpread: SPREAD_TARGETS.has(target),
       },
