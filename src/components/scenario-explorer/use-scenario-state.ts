@@ -15,6 +15,7 @@ import {
   warmDefenderSpreadCache,
 } from "@/lib/calc-adapter"
 import type { MatchupCatalog } from "@/lib/catalog"
+import { measureInteractionWork } from "@/lib/interaction-performance-monitor"
 import { orderedPoolSelection } from "@/lib/ordered-pool-selection"
 import {
   deleteUserDefenseTemplate,
@@ -188,7 +189,10 @@ export function useScenarioState(catalog: MatchupCatalog) {
   }, [catalog, trackState, userDefenseVersion])
 
   const rows = useMemo(
-    () => runScenarioPipeline(catalog, trackState),
+    () =>
+      measureInteractionWork("runScenarioPipeline", () =>
+        runScenarioPipeline(catalog, trackState),
+      ),
     [catalog, trackState],
   )
 

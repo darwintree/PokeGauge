@@ -30,6 +30,9 @@ export type TemplateDisplay = {
   tooltip: string | null
 }
 
+const offenseAllocationCache = new Map<string, EffortAllocation[]>()
+const defenseAllocationCache = new Map<string, EffortAllocation[]>()
+
 export function evToAbilityPoints(ev: number): number {
   return Math.floor((ev + 4) / 8)
 }
@@ -136,6 +139,10 @@ export function enumerateOffenseAllocations(
   targetStat: number,
   strategy: StatNameStrategy,
 ): EffortAllocation[] {
+  const cacheKey = `${species}\0${category}\0${targetStat}\0${strategy}`
+  const cached = offenseAllocationCache.get(cacheKey)
+  if (cached) return cached
+
   const statKey = offenseStatKey(category)
   const groups = new Map<string, EffortAllocation>()
 
@@ -150,10 +157,12 @@ export function enumerateOffenseAllocations(
     }
   }
 
-  return sortByNeutralFirst(
+  const allocations = sortByNeutralFirst(
     [...groups.values()],
     (setup) => offenseStatMod(setup.nature, category) === "",
   )
+  offenseAllocationCache.set(cacheKey, allocations)
+  return allocations
 }
 
 export function enumerateDefenseAllocations(
@@ -162,6 +171,10 @@ export function enumerateDefenseAllocations(
   target: DefenseTemplateValues,
   strategy: StatNameStrategy,
 ): EffortAllocation[] {
+  const cacheKey = `${species}\0${category}\0${target.hp}\0${target.def}\0${strategy}`
+  const cached = defenseAllocationCache.get(cacheKey)
+  if (cached) return cached
+
   const groups = new Map<string, EffortAllocation>()
 
   for (const entry of getDefenderSpreadGrid(species, category)) {
@@ -177,10 +190,12 @@ export function enumerateDefenseAllocations(
     }
   }
 
-  return sortByNeutralFirst(
+  const allocations = sortByNeutralFirst(
     [...groups.values()],
     (setup) => defenseStatMod(setup.nature, category) === "",
   )
+  defenseAllocationCache.set(cacheKey, allocations)
+  return allocations
 }
 
 export function formatOffenseActual(stat: number): string {

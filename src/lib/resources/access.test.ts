@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest"
 
-import { getResource, getResourceDiagnostics, ResourceLookupError } from "@/lib/resources"
+import {
+  getBattlePokemonByCalcName,
+  getMoveByCalcName,
+  getResource,
+  getResourceDiagnostics,
+  ResourceLookupError,
+} from "@/lib/resources"
 
 describe("localized resource access", () => {
   it("looks up Pokemon and move resources by numeric upstream id", async () => {
@@ -44,6 +50,13 @@ describe("localized resource access", () => {
     await expect(getResource("move", 89, "ja")).resolves.toMatchObject({
       name: "じしん",
     })
+  })
+
+  it("preserves the first generated resource for duplicate calculator names", async () => {
+    await Promise.all([getResource("pokemon", 20, "en"), getResource("move", 622, "en")])
+
+    expect(getBattlePokemonByCalcName("Raticate")?.id).toBe(20)
+    expect(getMoveByCalcName("Breakneck Blitz")?.id).toBe(622)
   })
 
   it("rejects unknown ids at the resource seam", async () => {
