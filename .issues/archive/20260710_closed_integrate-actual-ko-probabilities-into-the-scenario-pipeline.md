@@ -6,7 +6,7 @@ status: "closed"
 priority: "high"
 labels: ["WAYFINDER:TASK", "FEATURE-REQUEST"]
 created_at: "2026-07-10T02:36:00Z"
-updated_at: "2026-07-10T05:56:00Z"
+updated_at: "2026-07-10T05:58:00Z"
 ---
 ## Parent map
 
@@ -27,7 +27,7 @@ Use the compilation contract resolved by [[20260710_closed_research-champions-ba
 
 Scenario pipeline rows now expose `koProbabilities` with OHKO and cumulative ≤2HKO values. `rolls` mode compiles hit probability `1` and critical-hit probability `0`; `actual` mode compiles ordinary numeric accuracy as `accuracy / 100` and the conditional Gen 9 base critical-hit probability as `1 / 24`. Unsupported null/zero accuracy, multi-hit metadata, and elevated/guaranteed critical-hit metadata retain their scenario rows but omit `koProbabilities`.
 
-Fixed configurations expose scalar probabilities. A single Range track exposes an ordered range from its two endpoints. When both offense and defense Range tracks are active, the range uses only the two opposite endpoints confirmed during implementation: minimum offense × maximum defense, and maximum offense × minimum defense. Existing damage-range, crit-range, and prototype `ohkoChance` behavior remains unchanged for the following UI ticket to replace.
+Fixed configurations expose scalar probabilities. A single Range track exposes an ordered range from its two endpoints. When both offense and defense Range tracks are active, the range uses only the two opposite endpoints explicitly confirmed by the user: minimum offense × maximum defense, and maximum offense × minimum defense. Existing damage-range, crit-range, and prototype `ohkoChance` behavior remains unchanged for the following UI ticket to replace.
 
 The adapter reuses the opaque ADD/CDD core and keeps arbitrary positive N at that core boundary; this integration materializes only OHKO and cumulative ≤2HKO for the first UI rollout. PokeAPI generation now preserves `min_hits`, `max_hits`, and positive `crit_rate` metadata needed to exclude unsupported exceptional semantics.
 
