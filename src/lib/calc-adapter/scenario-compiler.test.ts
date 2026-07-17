@@ -46,6 +46,7 @@ function scenario(overrides: Partial<RawScenario> = {}): RawScenario {
     attackerStage: 0,
     defenderStage: 0,
     weather: "none",
+    screen: "none",
     probabilityMode: "rolls",
     lowOutcome: {
       offense: ATTACKER_STAT_SETUPS["neutral-max"],
@@ -114,6 +115,7 @@ describe("scenario compiler", () => {
       { track: "weather", optionId: "none", state: "neutral" },
       { track: "defender-stage", optionId: "0", state: "neutral" },
       { track: "defender-ability", optionId: "22", state: "unsupported" },
+      { track: "screen", optionId: "none", state: "neutral" },
     ])
   })
 
@@ -311,6 +313,7 @@ describe("scenario compiler", () => {
       { track: "weather", optionId: "none", state: "neutral" },
       { track: "defender-stage", optionId: "0", state: "neutral" },
       { track: "defender-ability", optionId: "22", state: "unsupported" },
+      { track: "screen", optionId: "none", state: "neutral" },
     ])
   })
 

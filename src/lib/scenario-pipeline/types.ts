@@ -1,6 +1,7 @@
 import type {
   KoProbabilities,
   ProbabilityMode,
+  Screen,
   ScenarioTrack,
   SourceState,
   StatStage,
@@ -51,6 +52,7 @@ export type TrackState = {
   defenseAllocationIndices: Record<string, number>
   defenderStages: StatStage[]
   defenderAbilityIds: number[]
+  screens: Screen[]
   probabilityMode: ProbabilityMode
 }
 

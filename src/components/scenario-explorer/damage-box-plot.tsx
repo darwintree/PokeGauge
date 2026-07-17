@@ -267,6 +267,34 @@ function FoldedWeatherChoices({ weather }: { weather?: ProvenanceOptionSets }) {
   )
 }
 
+function ScreenValues({ ids }: { ids: string[] }) {
+  const intl = useIntl()
+  return ids.filter((id) => id !== "none").map((id) => (
+    <span key={id} className="rounded border px-1 text-[10px]">
+      {intl.formatMessage({ id: `track.screen.${id}` })}
+    </span>
+  ))
+}
+
+function FoldedScreenChoices({ screens }: { screens?: ProvenanceOptionSets }) {
+  const intl = useIntl()
+  const inactive = screens?.inactive.filter((id) => id !== "none") ?? []
+
+  if (inactive.length === 0) return null
+
+  return (
+    <details className="text-muted-foreground mt-1 pl-10 text-[10px]">
+      <summary className="w-fit cursor-pointer select-none">
+        {intl.formatMessage({ id: "damage.screens.other" }, { count: inactive.length })}
+      </summary>
+      <div className="mt-1 flex items-center gap-1">
+        <span>{intl.formatMessage({ id: "damage.sources.inactive" })}</span>
+        <ScreenValues ids={inactive} />
+      </div>
+    </details>
+  )
+}
+
 function AbilityValues({
   ids,
   options,
@@ -378,6 +406,7 @@ export function DamageBoxPlot({
   const weatherProvenance = row.provenance.weather
   const attackerAbilityProvenance = row.provenance["attacker-ability"]
   const defenderAbilityProvenance = row.provenance["defender-ability"]
+  const screenProvenance = row.provenance.screen
   const box = pctSpan(row.minPercent, row.maxPercent)
   const crit = pctSpan(row.critMinPercent, row.critMaxPercent)
   const bridge =
@@ -450,12 +479,14 @@ export function DamageBoxPlot({
               ids={defenderAbilityProvenance?.effective ?? []}
               options={defenderAbilities}
             />
+            <ScreenValues ids={screenProvenance?.effective ?? []} />
           </div>
           <FoldedStageChoices stages={defenderStageProvenance} />
           <FoldedAbilityChoices
             abilities={defenderAbilityProvenance}
             options={defenderAbilities}
           />
+          <FoldedScreenChoices screens={screenProvenance} />
         </div>
       </div>
 

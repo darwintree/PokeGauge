@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils"
 
 import { AbilityTrack } from "./ability-track"
 import { MoveMultiSelect } from "./move-multi-select"
+import { ScreenTrack } from "./screen-track"
 import { HeldItemTrack } from "./held-item-track/held-item-track"
 import { StatRangeAxis } from "./stat-range-axis"
 import { StatStageTrack } from "./stat-stage-track"
@@ -255,6 +256,8 @@ export function TrackControls({ catalog, state, onMoveCategoryChange }: TrackCon
         onChange={state.setDefenderAbilityIds}
         onReset={state.resetDefenderAbilities}
       />
+
+      <ScreenTrack values={trackState.screens} onChange={state.setScreens} />
 
       <StatNameStrategySelect
         value={state.statNameStrategy}
