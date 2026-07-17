@@ -215,6 +215,31 @@
     }
 }
 
+@media (max-width: 1023px) {
+  [data-slot="button"],
+  [data-slot="toggle"],
+  [data-slot="toggle-group-item"],
+  [data-slot="tabs-trigger"],
+  select {
+    min-height: 2.5rem;
+  }
+
+  .track-option--text,
+  .track-option--add-text {
+    min-height: 2.5rem;
+  }
+
+  .track-option--add-text {
+    width: 2.5rem;
+  }
+
+  .track-option-action {
+    width: 2rem;
+    height: 2rem;
+    min-width: 2rem;
+  }
+}
+
 @layer components {
   .stat-tier-chip--0 {
     border-color: var(--stat-tier-0-border);

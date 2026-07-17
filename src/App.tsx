@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { IntlProvider } from "react-intl"
 
 import { ScenarioExplorerPage } from "@/components/scenario-explorer/scenario-explorer-page"
@@ -7,6 +7,19 @@ import { loadInitialLocale, localeMessages, saveLocale, type SupportedLocale } f
 
 function App() {
   const [locale, setLocaleState] = useState<SupportedLocale>(loadInitialLocale)
+
+  useEffect(() => {
+    document.documentElement.lang = locale
+  }, [locale])
+
+  useEffect(() => {
+    const colorScheme = window.matchMedia("(prefers-color-scheme: dark)")
+    const syncTheme = () => document.documentElement.classList.toggle("dark", colorScheme.matches)
+
+    syncTheme()
+    colorScheme.addEventListener("change", syncTheme)
+    return () => colorScheme.removeEventListener("change", syncTheme)
+  }, [])
 
   function setLocale(locale: SupportedLocale) {
     saveLocale(locale)
