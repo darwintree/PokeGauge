@@ -89,6 +89,8 @@ export type {
   StatSetup,
   StatStage,
 } from "./types"
+export { SCREENS } from "./screen"
+export type { Screen } from "./screen"
 export { STAT_STAGES } from "./types"
 export { WEATHERS } from "./weather"
 export type { Weather } from "./weather"

@@ -31,6 +31,7 @@ import {
   defenderStatValuesForPokemon,
   offenseStatValueForPokemon,
 } from "./local-stats"
+import { compileScreenEffect, type Screen } from "./screen"
 import type {
   DefenderSetup,
   ProbabilityMode,
@@ -54,6 +55,7 @@ export type RawScenario = {
   attackerStage: StatStage
   defenderStage: StatStage
   weather: Weather
+  screen: Screen
   probabilityMode: ProbabilityMode
   sourceOptionIds?: {
     attackerStat: string
@@ -83,6 +85,7 @@ export type ScenarioTrack =
   | "defender-stat"
   | "defender-stage"
   | "defender-ability"
+  | "screen"
 
 export type ScenarioSource = {
   track: ScenarioTrack
@@ -233,6 +236,7 @@ type BranchContext = {
   finalModifier: number
   spread: boolean
   weatherModifier: number
+  screenModifier: number
   stabModifier: number
   typeEffectivenessModifier: number
   attackerStage: StatStage
@@ -271,7 +275,10 @@ function compileBranch(
     criticalModifier: critical ? 6144 : NEUTRAL_MODIFIER,
     stabModifier: context.stabModifier,
     typeEffectivenessModifier: context.typeEffectivenessModifier,
-    finalModifier: context.finalModifier,
+    finalModifier: chainModifiers([
+      critical ? NEUTRAL_MODIFIER : context.screenModifier,
+      context.finalModifier,
+    ]),
   }
 }
 
@@ -294,6 +301,15 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     raw.probabilityMode,
   )
   const criticalOnly = raw.snapshot.criticalStage === 3
+  const breaksScreensBeforeDamage = Boolean(
+    move && moveBreaksScreensBeforeDamage(move.id),
+  )
+  const screen = compileScreenEffect(
+    raw.screen,
+    move && isMoveCategory(move.category) ? move.category : undefined,
+    criticalOnly,
+    breaksScreensBeforeDamage,
+  )
   const attackerStageState: SourceState = raw.attackerStage === 0
     ? "neutral"
     : criticalOnly && raw.attackerStage < 0
@@ -357,6 +373,11 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       optionId: String(raw.defenderAbilityId),
       state: defenderAbilityState,
     },
+    {
+      track: "screen",
+      optionId: raw.screen,
+      state: screen.state,
+    },
   ]
   const missingFields: Array<"power" | "accuracy"> = []
   if (power === 0) missingFields.push("power")
@@ -416,6 +437,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     attackerStage: raw.attackerStage,
     defenderStage: raw.defenderStage,
     weatherModifier: weather.damageModifier,
+    screenModifier: screen.modifier,
   }
 
   const compilePoint = (point: RawScenarioPoint) => {
@@ -438,7 +460,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     snapshotId: raw.snapshot.id,
     move: {
       type: moveType,
-      breaksScreensBeforeDamage: moveBreaksScreensBeforeDamage(move.id),
+      breaksScreensBeforeDamage,
     },
     calculation: {
       low: compilePoint(raw.lowOutcome),

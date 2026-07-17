@@ -73,6 +73,7 @@ function rawScenario(
     attackerStage: 0,
     defenderStage: 0,
     weather,
+    screen: "none",
     probabilityMode: "actual",
     lowOutcome: {
       offense: getAttackerStatSetups(category)["neutral-max"],

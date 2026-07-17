@@ -334,6 +334,12 @@ describe("matchup scenario pipeline", () => {
             unsupported: [],
             neutral: ["0"],
           },
+          screen: {
+            effective: [],
+            inactive: [],
+            unsupported: [],
+            neutral: ["none"],
+          },
         },
       }],
     })

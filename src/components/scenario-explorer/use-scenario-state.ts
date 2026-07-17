@@ -56,6 +56,10 @@ function sameIds(a: readonly number[], b: readonly number[]): boolean {
   return a.length === b.length && a.every((id, index) => id === b[index])
 }
 
+export function normalizeScreens(screens: TrackState["screens"]): TrackState["screens"] {
+  return screens.length > 0 ? screens : ["none"]
+}
+
 function snapshotsForMoveIds(
   catalog: MatchupCatalog,
   moveIds: readonly number[],
@@ -191,6 +195,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
     }
     setTrackState((state) => ({
       ...defaultTrackState(catalog),
+      screens: state.screens,
       ...(!attackerChanged && {
         attackerAbilityIds: state.attackerAbilityIds,
       }),
@@ -550,6 +555,11 @@ export function useScenarioState(catalog: MatchupCatalog) {
       setTrackState((s) => ({
         ...s,
         weathers: weathers.length > 0 ? weathers : ["none"],
+      })),
+    setScreens: (screens: TrackState["screens"]) =>
+      setTrackState((s) => ({
+        ...s,
+        screens: normalizeScreens(screens),
       })),
     setAttackerStages: (attackerStages: StatStage[]) =>
       setTrackState((s) => ({
