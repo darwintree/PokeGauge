@@ -18,6 +18,8 @@ export type CatalogMoveOption = CatalogOption<UpstreamResourceId> & {
   isSpread: boolean
 }
 
+export type CatalogAbilityOption = CatalogOption<UpstreamResourceId>
+
 export type MatchupIdentity = {
   attackerId: BattlePokemonId
   defenderId: BattlePokemonId
@@ -38,12 +40,17 @@ export type MatchupCatalog = {
   moves: CatalogMoveOption[]
   attackerStats: CatalogOption[]
   attackerItems: CatalogOption[]
+  attackerAbilities: CatalogAbilityOption[]
   defenderBulks: CatalogOption[]
+  defenderAbilities: CatalogAbilityOption[]
   defaultMovePickStatus: "loading" | "ready" | "unavailable"
+  defaultAbilityPickStatus: "loading" | "ready"
   defaultMoveIds: UpstreamResourceId[]
   defaultAttackerStatIds: string[]
   defaultAttackerItemIds: string[]
   defaultDefenderIds: string[]
+  defaultAttackerAbilityIds: UpstreamResourceId[]
+  defaultDefenderAbilityIds: UpstreamResourceId[]
 }
 
 export type SpeciesOption = {

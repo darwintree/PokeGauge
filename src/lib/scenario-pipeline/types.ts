@@ -39,6 +39,7 @@ export type TrackState = {
   offenseAllocationIndices: Record<string, number>
   attackerStages: StatStage[]
   attackerItemIds: string[]
+  attackerAbilityIds: number[]
   weathers: Weather[]
   defenderMode: StatSelectMode
   defenseTemplateIds: string[]
@@ -49,6 +50,7 @@ export type TrackState = {
   showResultActual: boolean
   defenseAllocationIndices: Record<string, number>
   defenderStages: StatStage[]
+  defenderAbilityIds: number[]
   probabilityMode: ProbabilityMode
 }
 

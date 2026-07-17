@@ -1,7 +1,6 @@
 import type { GeneratedResourceDiagnostics } from "../types"
 
 export const RESOURCE_DIAGNOSTICS = {
-  "generatedAt": "2026-07-03T08:44:10.507Z",
   "source": "pokeapi",
   "pokemonIds": [
     1,
@@ -1329,31 +1328,17 @@ export const RESOURCE_DIAGNOSTICS = {
     10298,
     10299,
     10300,
-    10301,
     10302,
     10303,
     10304,
     10305,
     10306,
-    10307,
     10308,
-    10309,
-    10310,
-    10311,
-    10312,
     10313,
     10314,
     10315,
-    10316,
-    10317,
-    10318,
-    10319,
     10320,
-    10321,
-    10322,
-    10323,
-    10324,
-    10325
+    10321
   ],
   "moveIds": [
     1,
@@ -2293,6 +2278,381 @@ export const RESOURCE_DIAGNOSTICS = {
     10016,
     10017,
     10018
+  ],
+  "abilityIds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119,
+    120,
+    121,
+    122,
+    123,
+    124,
+    125,
+    126,
+    127,
+    128,
+    129,
+    130,
+    131,
+    132,
+    133,
+    134,
+    135,
+    136,
+    137,
+    138,
+    139,
+    140,
+    141,
+    142,
+    143,
+    144,
+    145,
+    146,
+    147,
+    148,
+    149,
+    150,
+    151,
+    152,
+    153,
+    154,
+    155,
+    156,
+    157,
+    158,
+    159,
+    160,
+    161,
+    162,
+    163,
+    164,
+    165,
+    166,
+    167,
+    168,
+    169,
+    170,
+    171,
+    172,
+    173,
+    174,
+    175,
+    176,
+    177,
+    178,
+    179,
+    180,
+    181,
+    182,
+    183,
+    184,
+    185,
+    186,
+    187,
+    188,
+    189,
+    190,
+    191,
+    192,
+    193,
+    194,
+    195,
+    196,
+    197,
+    198,
+    199,
+    200,
+    201,
+    202,
+    203,
+    204,
+    205,
+    206,
+    207,
+    208,
+    209,
+    210,
+    211,
+    212,
+    213,
+    214,
+    215,
+    216,
+    217,
+    218,
+    219,
+    220,
+    221,
+    222,
+    223,
+    224,
+    225,
+    226,
+    227,
+    228,
+    229,
+    230,
+    231,
+    232,
+    233,
+    234,
+    235,
+    236,
+    237,
+    238,
+    239,
+    240,
+    241,
+    242,
+    243,
+    244,
+    245,
+    246,
+    247,
+    248,
+    249,
+    250,
+    251,
+    252,
+    253,
+    254,
+    255,
+    256,
+    257,
+    258,
+    259,
+    260,
+    261,
+    262,
+    263,
+    264,
+    265,
+    266,
+    267,
+    268,
+    269,
+    270,
+    271,
+    272,
+    273,
+    274,
+    275,
+    276,
+    277,
+    278,
+    279,
+    280,
+    281,
+    282,
+    283,
+    284,
+    285,
+    286,
+    287,
+    288,
+    289,
+    290,
+    291,
+    292,
+    293,
+    294,
+    295,
+    296,
+    297,
+    298,
+    299,
+    300,
+    301,
+    302,
+    303,
+    304,
+    305,
+    306,
+    307,
+    308,
+    309,
+    310,
+    311,
+    312,
+    313,
+    10001,
+    10002,
+    10003,
+    10004,
+    10005,
+    10006,
+    10007,
+    10008,
+    10009,
+    10010,
+    10011,
+    10012,
+    10013,
+    10014,
+    10015,
+    10016,
+    10017,
+    10018,
+    10019,
+    10020,
+    10021,
+    10022,
+    10023,
+    10024,
+    10025,
+    10026,
+    10027,
+    10028,
+    10029,
+    10030,
+    10031,
+    10032,
+    10033,
+    10034,
+    10035,
+    10036,
+    10037,
+    10038,
+    10039,
+    10040,
+    10041,
+    10042,
+    10043,
+    10044,
+    10045,
+    10046,
+    10047,
+    10048,
+    10049,
+    10050,
+    10051,
+    10052,
+    10053,
+    10054,
+    10055,
+    10056,
+    10057,
+    10058,
+    10059,
+    10060
   ],
   "missingLocaleNames": [
     {
@@ -5266,9 +5626,1181 @@ export const RESOURCE_DIAGNOSTICS = {
       "id": 10018,
       "locale": "zh-hant",
       "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 312,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 312,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 312,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 313,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 313,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 313,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10001,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10001,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10001,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10002,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10002,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10002,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10003,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10003,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10003,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10004,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10004,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10004,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10005,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10005,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10005,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10006,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10006,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10006,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10007,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10007,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10007,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10008,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10008,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10008,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10009,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10009,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10009,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10010,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10010,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10010,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10011,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10011,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10011,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10012,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10012,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10012,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10013,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10013,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10013,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10014,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10014,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10014,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10015,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10015,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10015,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10016,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10016,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10016,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10017,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10017,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10017,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10018,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10018,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10018,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10019,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10019,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10019,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10020,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10020,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10020,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10021,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10021,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10021,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10022,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10022,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10022,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10023,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10023,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10023,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10024,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10024,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10024,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10025,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10025,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10025,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10026,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10026,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10026,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10027,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10027,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10027,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10028,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10028,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10028,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10029,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10029,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10029,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10030,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10030,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10030,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10031,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10031,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10031,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10032,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10032,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10032,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10033,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10033,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10033,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10034,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10034,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10034,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10035,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10035,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10035,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10036,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10036,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10036,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10037,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10037,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10037,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10038,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10038,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10038,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10039,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10039,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10039,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10040,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10040,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10040,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10041,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10041,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10041,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10042,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10042,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10042,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10043,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10043,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10043,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10044,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10044,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10044,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10045,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10045,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10045,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10046,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10046,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10046,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10047,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10047,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10047,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10048,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10048,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10048,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10049,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10049,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10049,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10050,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10050,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10050,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10051,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10051,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10051,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10052,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10052,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10052,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10053,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10053,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10053,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10054,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10054,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10054,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10055,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10055,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10055,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10056,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10056,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10056,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10057,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10057,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10057,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10058,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10058,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10058,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10059,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10059,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10059,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10060,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10060,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 10060,
+      "locale": "ja",
+      "fallbackLocale": "en"
     }
   ],
   "unsupportedBattleIdentities": [
+    {
+      "id": 10301,
+      "reason": "pokemon/10301 has no current ability relation"
+    },
+    {
+      "id": 10307,
+      "reason": "pokemon/10307 has no current ability relation"
+    },
+    {
+      "id": 10309,
+      "reason": "pokemon/10309 has no current ability relation"
+    },
+    {
+      "id": 10310,
+      "reason": "pokemon/10310 has no current ability relation"
+    },
+    {
+      "id": 10311,
+      "reason": "pokemon/10311 has no current ability relation"
+    },
+    {
+      "id": 10312,
+      "reason": "pokemon/10312 has no current ability relation"
+    },
+    {
+      "id": 10316,
+      "reason": "pokemon/10316 has no current ability relation"
+    },
+    {
+      "id": 10317,
+      "reason": "pokemon/10317 has no current ability relation"
+    },
+    {
+      "id": 10318,
+      "reason": "pokemon/10318 has no current ability relation"
+    },
+    {
+      "id": 10319,
+      "reason": "pokemon/10319 has no current ability relation"
+    },
+    {
+      "id": 10322,
+      "reason": "pokemon/10322 has no current ability relation"
+    },
+    {
+      "id": 10323,
+      "reason": "pokemon/10323 has no current ability relation"
+    },
+    {
+      "id": 10324,
+      "reason": "pokemon/10324 has no current ability relation"
+    },
+    {
+      "id": 10325,
+      "reason": "pokemon/10325 has no current ability relation"
+    },
     {
       "id": 10326,
       "reason": "pokemon/10326 is missing base stat hp"
@@ -5292,6 +6824,10 @@ export const RESOURCE_DIAGNOSTICS = {
     {
       "id": 10326,
       "reason": "pokemon/10326 is missing base stat spe"
+    },
+    {
+      "id": 10326,
+      "reason": "pokemon/10326 has no current ability relation"
     }
   ]
 } as const satisfies GeneratedResourceDiagnostics

@@ -160,6 +160,8 @@ export function ScenarioResults({
             <li key={row.calculationIdentity}>
               <DamageBoxPlot
                 move={catalogOption(catalog.moves, row.moveId)}
+                attackerAbilities={catalog.attackerAbilities}
+                defenderAbilities={catalog.defenderAbilities}
                 attackerStat={{
                   id: row.attackerStatId,
                   label: labels.stat,

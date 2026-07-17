@@ -9,7 +9,11 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import type { CatalogMoveOption, CatalogOption } from "@/lib/catalog/types"
+import type {
+  CatalogAbilityOption,
+  CatalogMoveOption,
+  CatalogOption,
+} from "@/lib/catalog/types"
 import { itemAriaLabel, itemSprite } from "@/lib/held-item"
 import type { ProvenanceOptionSets, ScenarioRow } from "@/lib/scenario-pipeline"
 import {
@@ -263,6 +267,60 @@ function FoldedWeatherChoices({ weather }: { weather?: ProvenanceOptionSets }) {
   )
 }
 
+function AbilityValues({
+  ids,
+  options,
+}: {
+  ids: string[]
+  options: CatalogAbilityOption[]
+}) {
+  return ids.map((id) => {
+    const ability = options.find((option) => String(option.id) === id)
+    return (
+      <span key={id} className="rounded border px-1 text-[10px]">
+        {ability?.label ?? id}
+      </span>
+    )
+  })
+}
+
+function FoldedAbilityChoices({
+  abilities,
+  options,
+}: {
+  abilities?: ProvenanceOptionSets
+  options: CatalogAbilityOption[]
+}) {
+  const intl = useIntl()
+  const inactive = abilities?.inactive ?? []
+  const unsupported = abilities?.unsupported ?? []
+  const count = inactive.length + unsupported.length
+
+  if (count === 0) return null
+
+  return (
+    <details className="text-muted-foreground mt-1 pl-10 text-[10px]">
+      <summary className="w-fit cursor-pointer select-none">
+        {intl.formatMessage({ id: "damage.abilities.other" }, { count })}
+      </summary>
+      <div className="mt-1 space-y-1">
+        {inactive.length > 0 && (
+          <div className="flex items-center gap-1">
+            <span>{intl.formatMessage({ id: "damage.sources.inactive" })}</span>
+            <AbilityValues ids={inactive} options={options} />
+          </div>
+        )}
+        {unsupported.length > 0 && (
+          <div className="flex items-center gap-1">
+            <span>{intl.formatMessage({ id: "damage.sources.unsupported" })}</span>
+            <AbilityValues ids={unsupported} options={options} />
+          </div>
+        )}
+      </div>
+    </details>
+  )
+}
+
 function KoProbabilityColumns({ row }: { row: ScenarioRow }) {
   const intl = useIntl()
   const unavailable = intl.formatMessage({ id: "damage.ko.unavailable" })
@@ -291,6 +349,8 @@ function KoProbabilityColumns({ row }: { row: ScenarioRow }) {
 
 type DamageBoxPlotProps = {
   move: CatalogMoveOption
+  attackerAbilities?: CatalogAbilityOption[]
+  defenderAbilities?: CatalogAbilityOption[]
   attackerStat: Pick<CatalogOption<string>, "id" | "label"> & { actual?: string | null }
   defender: Pick<CatalogOption<string>, "id" | "label"> & { actual?: string | null }
   row: ScenarioRow
@@ -300,6 +360,8 @@ type DamageBoxPlotProps = {
 
 export function DamageBoxPlot({
   move,
+  attackerAbilities = [],
+  defenderAbilities = [],
   attackerStat,
   defender,
   row,
@@ -314,6 +376,8 @@ export function DamageBoxPlot({
   const attackerStageProvenance = row.provenance["attacker-stage"]
   const defenderStageProvenance = row.provenance["defender-stage"]
   const weatherProvenance = row.provenance.weather
+  const attackerAbilityProvenance = row.provenance["attacker-ability"]
+  const defenderAbilityProvenance = row.provenance["defender-ability"]
   const box = pctSpan(row.minPercent, row.maxPercent)
   const crit = pctSpan(row.critMinPercent, row.critMaxPercent)
   const bridge =
@@ -349,10 +413,18 @@ export function DamageBoxPlot({
             )}
             <StageValues ids={attackerStageProvenance?.effective ?? []} />
             <ItemIcons ids={itemProvenance?.effective ?? []} />
+            <AbilityValues
+              ids={attackerAbilityProvenance?.effective ?? []}
+              options={attackerAbilities}
+            />
             <WeatherValues ids={weatherProvenance?.effective ?? []} />
           </div>
           <FoldedStageChoices stages={attackerStageProvenance} />
           <FoldedItemChoices items={itemProvenance} />
+          <FoldedAbilityChoices
+            abilities={attackerAbilityProvenance}
+            options={attackerAbilities}
+          />
           <FoldedWeatherChoices weather={weatherProvenance} />
           {isRangeEnvelope && (
             <div className="text-muted-foreground mt-1 pl-10 text-[10px]">
@@ -374,8 +446,16 @@ export function DamageBoxPlot({
               </span>
             )}
             <StageValues ids={defenderStageProvenance?.effective ?? []} />
+            <AbilityValues
+              ids={defenderAbilityProvenance?.effective ?? []}
+              options={defenderAbilities}
+            />
           </div>
           <FoldedStageChoices stages={defenderStageProvenance} />
+          <FoldedAbilityChoices
+            abilities={defenderAbilityProvenance}
+            options={defenderAbilities}
+          />
         </div>
       </div>
 

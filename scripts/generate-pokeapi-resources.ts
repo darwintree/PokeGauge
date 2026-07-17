@@ -29,7 +29,7 @@ const STAT_KEY_BY_ID: Record<string, string> = {
 }
 
 const missingLocaleNames: Array<{
-  resourceType: "pokemon" | "move" | "pokemon-species" | "pokemon-form"
+  resourceType: "pokemon" | "move" | "ability" | "pokemon-species" | "pokemon-form"
   id: number
   locale: SupportedLocale
   fallbackLocale?: SupportedLocale
@@ -97,7 +97,7 @@ function groupByNumber(rows: CsvRow[], key: string): Map<number, CsvRow[]> {
 }
 
 function namesByLocale(
-  resourceType: "pokemon" | "move" | "pokemon-species" | "pokemon-form",
+  resourceType: "pokemon" | "move" | "ability" | "pokemon-species" | "pokemon-form",
   id: number,
   rows: CsvRow[],
   nameField: string,
@@ -159,6 +159,9 @@ async function main() {
     moveTargetRows,
     damageClassRows,
     metaCategoryRows,
+    abilityRows,
+    abilityNameRows,
+    pokemonAbilityRows,
   ] = await Promise.all([
     readCsv("pokemon"),
     readCsv("pokemon_species"),
@@ -174,6 +177,9 @@ async function main() {
     readCsv("move_targets"),
     readCsv("move_damage_classes"),
     readCsv("move_meta_categories"),
+    readCsv("abilities"),
+    readCsv("ability_names"),
+    readCsv("pokemon_abilities"),
   ])
 
   for (const row of typeRows) TYPE_BY_ID[row.id] = row.identifier
@@ -186,6 +192,7 @@ async function main() {
   const formNamesByFormId = groupByNumber(formNameRows, "pokemon_form_id")
   const pokemonTypesById = groupByNumber(pokemonTypeRows, "pokemon_id")
   const pokemonStatsById = groupByNumber(pokemonStatRows, "pokemon_id")
+  const pokemonAbilitiesById = groupByNumber(pokemonAbilityRows, "pokemon_id")
   const moveNamesByMoveId = groupByNumber(moveNameRows, "move_id")
   const moveMetaByMoveId = groupByNumber(moveMetaRows, "move_id")
   const moveTargetById = indexById(moveTargetRows)
@@ -209,6 +216,9 @@ async function main() {
       .toSorted((a, b) => Number(a.slot) - Number(b.slot))
       .map((entry) => TYPE_BY_ID[entry.type_id])
       .filter((type) => type && type !== "stellar")
+    const abilityIds = (pokemonAbilitiesById.get(id) ?? [])
+      .toSorted((a, b) => Number(a.slot) - Number(b.slot) || Number(a.ability_id) - Number(b.ability_id))
+      .map((entry) => requiredNumber(entry, "ability_id"))
     const stats = Object.fromEntries(
       (pokemonStatsById.get(id) ?? []).map((entry) => [STAT_KEY_BY_ID[entry.stat_id], Number(entry.base_stat)]),
     )
@@ -217,7 +227,13 @@ async function main() {
         unsupportedBattleIdentities.push({ id, reason: `pokemon/${id} is missing base stat ${key}` })
       }
     }
-    if (["hp", "atk", "def", "spa", "spd", "spe"].some((key) => typeof stats[key] !== "number")) {
+    if (abilityIds.length === 0) {
+      unsupportedBattleIdentities.push({ id, reason: `pokemon/${id} has no current ability relation` })
+    }
+    if (
+      abilityIds.length === 0 ||
+      ["hp", "atk", "def", "spa", "spd", "spe"].some((key) => typeof stats[key] !== "number")
+    ) {
       return []
     }
 
@@ -236,6 +252,7 @@ async function main() {
         speciesNames,
         formNames,
         types,
+        abilityIds,
         baseStats: stats,
       },
     ] as const]
@@ -272,11 +289,25 @@ async function main() {
     ] as const]
   })
 
+  const abilityNamesByAbilityId = groupByNumber(abilityNameRows, "ability_id")
+  const abilityEntries = abilityRows.map((ability) => {
+    const id = requiredNumber(ability, "id")
+    return [
+      id,
+      {
+        resourceType: "ability",
+        id,
+        slug: ability.identifier,
+        names: namesByLocale("ability", id, abilityNamesByAbilityId.get(id) ?? [], "name"),
+      },
+    ] as const
+  })
+
   const diagnostics = {
-    generatedAt: new Date().toISOString(),
     source: "pokeapi",
     pokemonIds: pokemonEntries.map(([id]) => id),
     moveIds: moveEntries.map(([id]) => id),
+    abilityIds: abilityEntries.map(([id]) => id),
     missingLocaleNames,
     unsupportedBattleIdentities,
   }
@@ -292,16 +323,20 @@ async function main() {
       moduleWithImport(["NormalizedMove", "UpstreamResourceId"], "GENERATED_MOVES", Object.fromEntries(moveEntries), "Record<UpstreamResourceId, NormalizedMove>"),
     ),
     writeFile(
+      path.join(OUT_DIR, "abilities.ts"),
+      moduleWithImport(["NormalizedAbility", "UpstreamResourceId"], "GENERATED_ABILITIES", Object.fromEntries(abilityEntries), "Record<UpstreamResourceId, NormalizedAbility>"),
+    ),
+    writeFile(
       path.join(OUT_DIR, "diagnostics.ts"),
       moduleWithImport(["GeneratedResourceDiagnostics"], "RESOURCE_DIAGNOSTICS", diagnostics, "GeneratedResourceDiagnostics"),
     ),
     writeFile(
       path.join(OUT_DIR, "index.ts"),
-      "export { RESOURCE_DIAGNOSTICS } from \"./diagnostics\"\nexport { GENERATED_MOVES } from \"./moves\"\nexport { GENERATED_POKEMON } from \"./pokemon\"\n",
+      "export { GENERATED_ABILITIES } from \"./abilities\"\nexport { RESOURCE_DIAGNOSTICS } from \"./diagnostics\"\nexport { GENERATED_MOVES } from \"./moves\"\nexport { GENERATED_POKEMON } from \"./pokemon\"\n",
     ),
   ])
 
-  console.log(`Generated ${pokemonEntries.length} Pokemon and ${moveEntries.length} moves from local PokeAPI CSV.`)
+  console.log(`Generated ${pokemonEntries.length} Pokemon, ${moveEntries.length} moves, and ${abilityEntries.length} abilities from local PokeAPI CSV.`)
 }
 
 main().catch((error) => {

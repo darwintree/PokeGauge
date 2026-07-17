@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 import {
   getBattlePokemonById,
   getBattlePokemonByCalcName,
+  getAbilityById,
   getMoveById,
   getMoveByCalcName,
   getResource,
@@ -14,10 +15,12 @@ describe("localized resource access", () => {
   it("exposes already-loaded normalized resources by numeric id", async () => {
     expect(getBattlePokemonById(445)).toBeUndefined()
     expect(getMoveById(89)).toBeUndefined()
+    expect(getAbilityById(91)).toBeUndefined()
 
     await Promise.all([
       getResource("pokemon", 445, "en"),
       getResource("move", 89, "en"),
+      getResource("ability", 91, "en"),
     ])
 
     expect(getBattlePokemonById(445)).toMatchObject({
@@ -33,8 +36,31 @@ describe("localized resource access", () => {
       category: "physical",
       power: 100,
     })
+    expect(getAbilityById(91)).toMatchObject({
+      resourceType: "ability",
+      id: 91,
+      slug: "adaptability",
+    })
     expect(getBattlePokemonById(999_999)).toBeUndefined()
     expect(getMoveById(999_999)).toBeUndefined()
+    expect(getAbilityById(999_999)).toBeUndefined()
+  })
+
+  it("exposes localized current abilities, including hidden but not historical relations", async () => {
+    const [adaptability, garchomp, gengar] = await Promise.all([
+      getResource("ability", 91, "zh-hant"),
+      getResource("pokemon", 445, "en"),
+      getResource("pokemon", 94, "en"),
+    ])
+
+    expect(adaptability).toEqual({
+      resourceType: "ability",
+      id: 91,
+      locale: "zh-hant",
+      name: "適應力",
+    })
+    expect(garchomp.abilityIds).toEqual([8, 24])
+    expect(gengar.abilityIds).not.toContain(26)
   })
 
   it("looks up Pokemon and move resources by numeric upstream id", async () => {
@@ -99,10 +125,15 @@ describe("localized resource access", () => {
     expect(diagnostics.source).toBe("pokeapi")
     expect(diagnostics.pokemonIds).toContain(445)
     expect(diagnostics.moveIds).toContain(89)
+    expect(diagnostics.abilityIds).toContain(91)
     expect(diagnostics.missingLocaleNames.length).toBeGreaterThan(0)
     expect(diagnostics.unsupportedBattleIdentities).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ id: 10326 }),
+        expect.objectContaining({
+          id: 10301,
+          reason: "pokemon/10301 has no current ability relation",
+        }),
       ]),
     )
   })

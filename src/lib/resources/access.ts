@@ -1,14 +1,18 @@
 import type { SupportedLocale } from "@/lib/i18n"
 import type {
   GeneratedResourceDiagnostics,
+  LocalizedAbilityResource,
   LocalizedMoveResource,
   LocalizedPokemonResource,
   LocalizedResourceByType,
+  NormalizedAbility,
   NormalizedBattlePokemon,
   NormalizedMove,
   ResourceType,
   UpstreamResourceId,
 } from "./types"
+
+type NormalizedResource = NormalizedBattlePokemon | NormalizedMove | NormalizedAbility
 
 let pokemonResources: Record<UpstreamResourceId, NormalizedBattlePokemon> | undefined
 let pokemonResourcesPromise:
@@ -18,10 +22,15 @@ let moveResources: Record<UpstreamResourceId, NormalizedMove> | undefined
 let moveResourcesPromise:
   | Promise<Record<UpstreamResourceId, NormalizedMove>>
   | undefined
+let abilityResources: Record<UpstreamResourceId, NormalizedAbility> | undefined
+let abilityResourcesPromise:
+  | Promise<Record<UpstreamResourceId, NormalizedAbility>>
+  | undefined
 let diagnosticsPromise: Promise<GeneratedResourceDiagnostics> | undefined
 let pokemonByCalcName: Map<string, NormalizedBattlePokemon> | undefined
 let moveByCalcName: Map<string, NormalizedMove> | undefined
 let moveIdByJoinName: Map<string, UpstreamResourceId> | undefined
+let abilityIdByJoinName: Map<string, UpstreamResourceId> | undefined
 
 function buildFirstByName<T>(values: T[], getName: (value: T) => string): Map<string, T> {
   const byName = new Map<string, T>()
@@ -66,6 +75,24 @@ async function loadMoveResources(): Promise<Record<UpstreamResourceId, Normalize
   return moveResourcesPromise
 }
 
+async function loadAbilityResources(): Promise<Record<UpstreamResourceId, NormalizedAbility>> {
+  if (abilityResources) return abilityResources
+  abilityResourcesPromise ??= import("./generated/abilities").then(({ GENERATED_ABILITIES }) => {
+    abilityResources = GENERATED_ABILITIES
+    abilityIdByJoinName = buildAbilityIdByJoinName(GENERATED_ABILITIES)
+    return GENERATED_ABILITIES
+  })
+  return abilityResourcesPromise
+}
+
+async function loadResources(
+  resourceType: ResourceType,
+): Promise<Record<UpstreamResourceId, NormalizedResource>> {
+  if (resourceType === "pokemon") return loadPokemonResources()
+  if (resourceType === "move") return loadMoveResources()
+  return loadAbilityResources()
+}
+
 async function loadResourceDiagnostics(): Promise<GeneratedResourceDiagnostics> {
   diagnosticsPromise ??= import("./generated/diagnostics").then(
     ({ RESOURCE_DIAGNOSTICS }) => RESOURCE_DIAGNOSTICS,
@@ -78,8 +105,7 @@ export async function getResource<TType extends ResourceType>(
   id: UpstreamResourceId,
   locale: SupportedLocale,
 ): Promise<LocalizedResourceByType[TType]> {
-  const resources =
-    resourceType === "pokemon" ? await loadPokemonResources() : await loadMoveResources()
+  const resources = await loadResources(resourceType)
   const resource = resources[id]
   if (!resource) throw new ResourceLookupError(resourceType, id)
 
@@ -93,9 +119,10 @@ export async function getResource<TType extends ResourceType>(
           battlePokemonId: resource.id,
           calcSpeciesName: resource.calcSpeciesName,
           types: resource.types,
+          abilityIds: resource.abilityIds,
           baseStats: resource.baseStats,
         }
-      : {
+      : resource.resourceType === "move" ? {
           calcMoveName: resource.calcMoveName,
           type: resource.type,
           category: resource.category,
@@ -104,7 +131,7 @@ export async function getResource<TType extends ResourceType>(
           damageKind: resource.damageKind,
           target: resource.target,
           isSpread: resource.isSpread,
-        }),
+        } : {}),
   } as LocalizedResourceByType[TType]
 }
 
@@ -120,7 +147,20 @@ function localizePokemon(
     battlePokemonId: resource.id,
     calcSpeciesName: resource.calcSpeciesName,
     types: resource.types,
+    abilityIds: resource.abilityIds,
     baseStats: resource.baseStats,
+  }
+}
+
+function localizeAbility(
+  resource: NormalizedAbility,
+  locale: SupportedLocale,
+): LocalizedAbilityResource {
+  return {
+    resourceType: "ability",
+    id: resource.id,
+    locale,
+    name: resource.names[locale],
   }
 }
 
@@ -145,13 +185,12 @@ export async function listResources<TType extends ResourceType>(
   resourceType: TType,
   locale: SupportedLocale,
 ): Promise<LocalizedResourceByType[TType][]> {
-  const resources =
-    resourceType === "pokemon" ? await loadPokemonResources() : await loadMoveResources()
-  const localized = Object.values(resources).map((resource) =>
-    resource.resourceType === "pokemon"
-      ? localizePokemon(resource, locale)
-      : localizeMove(resource, locale),
-  )
+  const resources = await loadResources(resourceType)
+  const localized = Object.values(resources).map((resource) => {
+    if (resource.resourceType === "pokemon") return localizePokemon(resource, locale)
+    if (resource.resourceType === "move") return localizeMove(resource, locale)
+    return localizeAbility(resource, locale)
+  })
 
   return localized as LocalizedResourceByType[TType][]
 }
@@ -168,6 +207,10 @@ export function getBattlePokemonById(
 
 export function getMoveById(id: UpstreamResourceId): NormalizedMove | undefined {
   return moveResources?.[id]
+}
+
+export function getAbilityById(id: UpstreamResourceId): NormalizedAbility | undefined {
+  return abilityResources?.[id]
 }
 
 export function getBattlePokemonByCalcName(name: string): NormalizedBattlePokemon | undefined {
@@ -197,6 +240,21 @@ function buildMoveIdByJoinName(
   )
 }
 
+function buildAbilityIdByJoinName(
+  resources: Record<UpstreamResourceId, NormalizedAbility>,
+): Map<string, UpstreamResourceId> {
+  return new Map(
+    Object.values(resources).flatMap((ability) => [
+      [normalizeJoinName(ability.slug), ability.id] as const,
+      ...Object.values(ability.names).map((name) => [normalizeJoinName(name), ability.id] as const),
+    ]),
+  )
+}
+
 export function getMoveIdByJoinName(name: string): UpstreamResourceId | undefined {
   return moveIdByJoinName?.get(normalizeJoinName(name))
+}
+
+export function getAbilityIdByJoinName(name: string): UpstreamResourceId | undefined {
+  return abilityIdByJoinName?.get(normalizeJoinName(name))
 }

@@ -68,6 +68,8 @@ function rawScenario(
     attackerId: ATTACKER[category].id,
     defenderId: DEFENDER.id,
     attackerItemId: "none",
+    attackerAbilityId: 1,
+    defenderAbilityId: 1,
     attackerStage: 0,
     defenderStage: 0,
     weather,
@@ -282,9 +284,16 @@ describe("reviewed weather compiler", () => {
 })
 
 describe("weather scenario product and provenance", () => {
+  function singleAbilityState(catalog: Awaited<ReturnType<typeof getCatalogShell>>) {
+    const state = defaultTrackState(catalog)
+    state.attackerAbilityIds = [catalog.attackerAbilities[0].id]
+    state.defenderAbilityIds = [catalog.defenderAbilities[0].id]
+    return state
+  }
+
   it("defaults to one explicit neutral weather and includes weather in the product", async () => {
     const catalog = await getCatalogShell(6, 143, "en", "special")
-    const state = defaultTrackState(catalog)
+    const state = singleAbilityState(catalog)
     state.moveSnapshots = [createMoveSnapshot(
       catalog.moves.find((move) => move.id === 53)!,
       "pipeline-fire",
@@ -302,7 +311,7 @@ describe("weather scenario product and provenance", () => {
 
   it("groups Weather Ball's four local failures once and still calculates none", async () => {
     const catalog = await getCatalogShell(6, 143, "en", "special")
-    const state = defaultTrackState(catalog)
+    const state = singleAbilityState(catalog)
     state.moveSnapshots = [createMoveSnapshot(
       catalog.moves.find((move) => move.id === 311)!,
       "pipeline-weather-ball",
@@ -340,7 +349,7 @@ describe("weather scenario product and provenance", () => {
 
   it("merges accuracy-only weather in rolls mode and retains none only as neutral", async () => {
     const catalog = await getCatalogShell(6, 143, "en", "special")
-    const state = defaultTrackState(catalog)
+    const state = singleAbilityState(catalog)
     state.moveSnapshots = [createMoveSnapshot(
       catalog.moves.find((move) => move.id === 87)!,
       "pipeline-thunder",
@@ -364,7 +373,7 @@ describe("weather scenario product and provenance", () => {
 
   it("keeps accuracy weather effective in actual mode even when edited accuracy merges", async () => {
     const catalog = await getCatalogShell(6, 143, "en", "special")
-    const state = defaultTrackState(catalog)
+    const state = singleAbilityState(catalog)
     const thunder = createMoveSnapshot(
       catalog.moves.find((move) => move.id === 87)!,
       "pipeline-thunder-edited",

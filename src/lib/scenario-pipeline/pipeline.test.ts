@@ -1,6 +1,9 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest"
 
-import { setChampionsMoveUsageFetcherForTest } from "@/lib/champions"
+import {
+  setChampionsAbilityUsageFetcherForTest,
+  setChampionsMoveUsageFetcherForTest,
+} from "@/lib/champions"
 import * as damageKernel from "@/lib/calc-adapter/damage-kernel"
 import {
   getCatalog,
@@ -54,12 +57,37 @@ function installChampionsMoveUsageFixture() {
   })
 }
 
+function installChampionsAbilityUsageFixture() {
+  const abilityByPokemon: Record<number, number> = {
+    1: 65,
+    445: 8,
+    591: 27,
+    727: 66,
+    987: 281,
+  }
+  setChampionsAbilityUsageFetcherForTest(async (battlePokemonId) => {
+    const abilityId = abilityByPokemon[battlePokemonId]
+    return abilityId === undefined ? [] : [{
+      battlePokemonId,
+      abilityId,
+      format: "Doubles",
+      season: "test",
+      source: "test",
+      rank: 1,
+      percentage: 100,
+      championsAbilityName: "fixture",
+    }]
+  })
+}
+
 beforeAll(() => {
   installChampionsMoveUsageFixture()
+  installChampionsAbilityUsageFixture()
 })
 
 beforeEach(() => {
   installChampionsMoveUsageFixture()
+  installChampionsAbilityUsageFixture()
   vi.restoreAllMocks()
 })
 
@@ -258,6 +286,12 @@ describe("matchup scenario pipeline", () => {
         reasons: ["unconfigured-move"],
         missingFields: ["power", "accuracy"],
         provenance: {
+          "attacker-ability": {
+            effective: [],
+            inactive: [],
+            unsupported: ["8"],
+            neutral: [],
+          },
           "attacker-stage": {
             effective: [],
             inactive: [],
@@ -286,6 +320,12 @@ describe("matchup scenario pipeline", () => {
             effective: ["hp-32"],
             inactive: [],
             unsupported: [],
+            neutral: [],
+          },
+          "defender-ability": {
+            effective: [],
+            inactive: [],
+            unsupported: ["66"],
             neutral: [],
           },
           "defender-stage": {

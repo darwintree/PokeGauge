@@ -205,7 +205,6 @@ export function ScenarioExplorerPage({ locale, onLocaleChange }: ScenarioExplore
 
   return (
     <ScenarioExplorerContent
-      key={`${catalog.matchup.attackerId}:${catalog.moveCategory}`}
       attackers={localizedOptions.attackers}
       defenders={localizedOptions.defenders}
       catalog={catalog}

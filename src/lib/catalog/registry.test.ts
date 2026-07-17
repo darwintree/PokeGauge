@@ -1,13 +1,22 @@
-import { afterEach, describe, expect, it } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import {
+  resetChampionsAbilityUsageFetcherForTest,
   resetChampionsMoveUsageFetcherForTest,
+  setChampionsAbilityUsageFetcherForTest,
   setChampionsMoveUsageFetcherForTest,
 } from "@/lib/champions"
 import { getCatalogShell, resolveCatalogDefaultMovePick } from "@/lib/catalog"
 
 afterEach(() => {
+  vi.useRealTimers()
+  resetChampionsAbilityUsageFetcherForTest()
   resetChampionsMoveUsageFetcherForTest()
+})
+
+beforeEach(() => {
+  setChampionsAbilityUsageFetcherForTest(async () => [])
+  setChampionsMoveUsageFetcherForTest(async () => [])
 })
 
 describe("catalog move candidate ordering", () => {
@@ -86,5 +95,74 @@ describe("catalog move candidate ordering", () => {
 
     expect(catalog.moves).toEqual(shell.moves)
     expect(catalog.defaultMoveIds).toEqual([])
+  })
+})
+
+describe("catalog ability candidates and defaults", () => {
+  it("lists localized current abilities in PokeAPI slot order, including hidden abilities", async () => {
+    const catalog = await getCatalogShell(445, 94, "en")
+
+    expect(catalog.attackerAbilities).toEqual([
+      { id: 8, label: "Sand Veil", summary: "" },
+      { id: 24, label: "Rough Skin", summary: "" },
+    ])
+    expect(catalog.defenderAbilities.map((ability) => ability.id)).not.toContain(26)
+    expect(catalog.defaultAttackerAbilityIds).toEqual([8, 24])
+    expect(catalog.defaultAbilityPickStatus).toBe("loading")
+  })
+
+  it("selects the first ranked legal Champions ability for each side", async () => {
+    setChampionsAbilityUsageFetcherForTest(async (battlePokemonId) =>
+      battlePokemonId === 445
+        ? [
+            { battlePokemonId, abilityId: 91, format: "Doubles", season: "test", source: "test", rank: 1, percentage: 80, championsAbilityName: "Adaptability" },
+            { battlePokemonId, abilityId: 24, format: "Doubles", season: "test", source: "test", rank: 2, percentage: 20, championsAbilityName: "Rough Skin" },
+          ]
+        : [
+            { battlePokemonId, abilityId: 22, format: "Doubles", season: "test", source: "test", rank: 1, percentage: 90, championsAbilityName: "Intimidate" },
+          ],
+    )
+
+    const catalog = await resolveCatalogDefaultMovePick(
+      await getCatalogShell(445, 727, "en"),
+    )
+
+    expect(catalog.defaultAbilityPickStatus).toBe("ready")
+    expect(catalog.defaultAttackerAbilityIds).toEqual([24])
+    expect(catalog.defaultDefenderAbilityIds).toEqual([22])
+  })
+
+  it("selects every legal ability when usage is unavailable or has no legal match", async () => {
+    setChampionsAbilityUsageFetcherForTest(async (battlePokemonId) => {
+      if (battlePokemonId === 445) throw new Error("unavailable")
+      return [{ battlePokemonId, abilityId: 91, format: "Doubles", season: "test", source: "test", rank: 1, percentage: 100, championsAbilityName: "Adaptability" }]
+    })
+
+    const catalog = await resolveCatalogDefaultMovePick(
+      await getCatalogShell(445, 727, "en"),
+    )
+
+    expect(catalog.defaultAttackerAbilityIds).toEqual(
+      catalog.attackerAbilities.map((ability) => ability.id),
+    )
+    expect(catalog.defaultDefenderAbilityIds).toEqual(
+      catalog.defenderAbilities.map((ability) => ability.id),
+    )
+  })
+
+  it("falls back to every legal ability when usage never responds", async () => {
+    vi.useFakeTimers()
+    setChampionsAbilityUsageFetcherForTest(() => new Promise(() => {}))
+
+    const result = resolveCatalogDefaultMovePick(await getCatalogShell(445, 727, "en"))
+    await vi.advanceTimersByTimeAsync(5_000)
+    const catalog = await result
+
+    expect(catalog.defaultAttackerAbilityIds).toEqual(
+      catalog.attackerAbilities.map((ability) => ability.id),
+    )
+    expect(catalog.defaultDefenderAbilityIds).toEqual(
+      catalog.defenderAbilities.map((ability) => ability.id),
+    )
   })
 })

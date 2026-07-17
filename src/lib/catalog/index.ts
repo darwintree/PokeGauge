@@ -13,6 +13,7 @@ export {
   OFFENSE_SNAP_PRESET_IDS,
 } from "./preset-labels"
 export type {
+  CatalogAbilityOption,
   CatalogMoveOption,
   CatalogOption,
   MatchupCatalog,

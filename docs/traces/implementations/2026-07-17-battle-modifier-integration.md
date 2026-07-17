@@ -38,18 +38,18 @@ Reason:
 Follow-up:
 扩展 reviewed move semantics 时按 numeric move id 增补同一结构化表。
 
-### 3. Snapshot ownership 由 React subtree key 强制
+### 3. Catalog identity 过渡时的同步保护
 
 Type: unresolved-implementation-decision
 
 Context:
-规格要求 attacker 或 Move side 变化时重建 snapshots，而 defender 变化时保留，但没有规定如何避免新 catalog 与旧 owner snapshots 在 effect 执行前短暂同屏。
+规格要求 attacker 或 Move side 变化时重建 snapshots、defender 变化时保留 snapshots；Ability 契约又要求更换任一方只重建该方 Ability Track，Move side 变化保留双方 Ability。规格没有规定如何避免新 catalog 与旧 owner state 在 effect 执行前短暂同屏。
 
 Decision:
-Scenario content subtree 以 attacker 与 Move side 为 key，明确排除 defender。新 owner 的 catalog 到达时 subtree 同步 remount；defender catalog 变化则保留 subtree，由 state hook 原样移植 snapshots。
+Scenario state hook 在 identity 变化时保持挂载。若本次 render 的 catalog identity 与 hook 已接收的 identity 不同，则暂不运行 scenario pipeline；随后 effect 按新 catalog 重建 owner 相关 state，并分别保留契约要求保留的 snapshots 与双方 Ability selections。
 
 Reason:
-仅靠 effect reset 会产生一个无效 render，使旧 snapshot 引用新 catalog 中不存在的 Move。Ownership key 直接表达生命周期，不需要第二套同步状态。
+仅靠 effect reset 会产生一个无效 render，使旧 snapshot 或 ability id 引用新 catalog；以 subtree key remount 又会无条件丢失双方 Ability selections。过渡 render 的计算保护让生命周期规则可以逐 Track 落实，同时不把无效组合送入 compiler。
 
 Follow-up:
 None.
@@ -85,3 +85,19 @@ Reason:
 
 Follow-up:
 None.
+
+### 6. 缺少当前特性关系的 Battle Pokémon identity
+
+Type: unresolved-implementation-decision
+
+Context:
+Ability Track 契约要求每个候选 Battle Pokémon identity 都列出 PokeAPI 当前特性关系中的全部真实特性，并始终至少选择一项。当前上游 CSV 中有少量新形态具备基础能力值，却没有 `pokemon_abilities.csv` 关系；规格没有定义这类不完整 identity 的降级方式。
+
+Decision:
+资源生成器把缺少当前特性关系的 identity 记入 diagnostics，并像缺少 battle stats 的 identity 一样暂不生成可选 Battle Pokémon 资源；不创建虚构特性、不借用其他形态的特性，也不读取历史特性关系兜底。
+
+Reason:
+只有排除不完整 identity 才能同时维持“候选来自当前 PokeAPI 关系”和“Track 至少一项真实选择”两个契约。其他降级方式都会伪造合法性，或把历史／其他形态关系错误归给当前 identity。
+
+Follow-up:
+上游补齐当前特性关系后，重新生成资源即可自动恢复这些 identity。
