@@ -18,4 +18,4 @@ Core battle mechanics 规格规定单个 Range 行使用 lowOutcome／highOutcom
 
 ## Source
 
-[[20260715_open_integrate-battle-modifier-ordering-and-specification-seams|Integrate battle modifier ordering and specification seams]]
+[[archive/20260715_closed_integrate-battle-modifier-ordering-and-specification-seams|Integrate battle modifier ordering and specification seams]]

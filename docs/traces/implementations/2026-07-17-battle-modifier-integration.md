@@ -1,7 +1,7 @@
 # Implementation Trace: Battle Modifier Integration
 
 Date: 2026-07-17
-Source: `.issues/20260715_open_integrate-battle-modifier-ordering-and-specification-seams.md`
+Source: `.issues/archive/20260715_closed_integrate-battle-modifier-ordering-and-specification-seams.md`
 Language: Chinese
 
 ## Entries

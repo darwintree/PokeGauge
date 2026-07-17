@@ -33,7 +33,7 @@ updated_at: "2026-07-17T03:45:00Z"
 - [[20260715_closed_research-weather-power-and-accuracy-support-matrix|Research weather power and accuracy support matrix]]
 - [[20260715_closed_define-ability-tracks-and-adaptability-only-support-contract|Define ability tracks and Adaptability-only support contract]]
 - [[20260715_closed_define-screen-track-and-critical-hit-interactions|Define Screen track and critical-hit interactions]]
-- [[../20260715_open_integrate-battle-modifier-ordering-and-specification-seams|Integrate battle modifier ordering and specification seams]]
+- [[20260715_closed_integrate-battle-modifier-ordering-and-specification-seams|Integrate battle modifier ordering and specification seams]]
 
 ## Decisions so far
 
@@ -43,7 +43,7 @@ updated_at: "2026-07-17T03:45:00Z"
 - [[20260715_closed_research-weather-power-and-accuracy-support-matrix|Research weather power and accuracy support matrix]] — 建立通用晴雨修正、9 个 move-id 例外与气象球暂不计算边界的可执行矩阵。
 - [[20260715_closed_define-ability-tracks-and-adaptability-only-support-contract|Define ability tracks and Adaptability-only support contract]] — 以 PokeAPI 当前合法特性构建双方 Track、Champions 最常用特性决定默认，并仅支持攻击方适应力的 `2× STAB` 与三态来源合并。
 - [[20260715_closed_define-screen-track-and-critical-hit-interactions|Define Screen track and critical-hit interactions]] — 锁定显式无墙默认项、双打墙修正、会心分支、破墙招式与效果等价来源契约。
-- [[../20260715_open_integrate-battle-modifier-ordering-and-specification-seams|Integrate battle modifier ordering and specification seams]] — 以 Scenario compiler 与 fixed-point kernel 两个深 seam 收口公式顺序、传播、合并、候选池、Range 与跨机制验收。
+- [[20260715_closed_integrate-battle-modifier-ordering-and-specification-seams|Integrate battle modifier ordering and specification seams]] — 以 Scenario compiler 与 fixed-point kernel 两个深 seam 收口公式顺序、传播、合并、候选池、Range 与跨机制验收。
 
 ## Out of scope
 
@@ -57,4 +57,4 @@ updated_at: "2026-07-17T03:45:00Z"
 
 ## Resolution
 
-Destination reached。全部直接子票均已关闭并归档；整合后的权威契约见 [[../20260715_open_integrate-battle-modifier-ordering-and-specification-seams|Integrate battle modifier ordering and specification seams]]。两个独立 follow-up 已明确移出本轮范围，本 map 未执行代码实现。
+Destination reached。全部直接子票均已关闭并归档；整合后的权威契约见 [[20260715_closed_integrate-battle-modifier-ordering-and-specification-seams|Integrate battle modifier ordering and specification seams]]。两个独立 follow-up 已明确移出本轮范围，本 map 未执行代码实现。

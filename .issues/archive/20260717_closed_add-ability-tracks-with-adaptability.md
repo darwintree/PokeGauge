@@ -9,7 +9,7 @@ updated_at: "2026-07-17T06:57:00Z"
 ---
 ## Parent
 
-[[../20260715_open_integrate-battle-modifier-ordering-and-specification-seams|Core battle mechanics integration specification]]
+[[20260715_closed_integrate-battle-modifier-ordering-and-specification-seams|Core battle mechanics integration specification]]
 
 ## What to build
 
