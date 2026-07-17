@@ -2,6 +2,11 @@ import { buildCoreCatalogOptions, buildTypeBoostCatalogOptions } from "@/lib/hel
 import { listChampionsMoveUsageRecords } from "@/lib/champions"
 import { localeMessages, type SupportedLocale } from "@/lib/i18n"
 import {
+  isMoveExplicitlyUnsupported,
+  resolveReviewedMoveType,
+  reviewedVariablePowerDefault,
+} from "@/lib/move-semantics"
+import {
   getResource,
   listResources,
   type BattlePokemonId,
@@ -21,12 +26,6 @@ import type {
   MoveCategory,
   SpeciesOption,
 } from "./types"
-
-type FixedPowerMoveResource = LocalizedMoveResource & {
-  category: MoveCategory
-  power: number
-  type: CatalogMoveOption["type"]
-}
 
 const STANDARD_TYPES = new Set([
   "normal",
@@ -165,27 +164,38 @@ export function getDefaultMoveCategory(attackerId: BattlePokemonId): MoveCategor
   return DEFAULT_MOVE_CATEGORY_BY_ATTACKER[attackerId] ?? "physical"
 }
 
-function isFixedPowerMoveResource(
+function snapshotTemplatePower(
   moveResource: LocalizedMoveResource,
   category: MoveCategory,
-): moveResource is FixedPowerMoveResource {
-  return (
-    moveResource.category === category &&
-    moveResource.power !== null &&
-    moveResource.power > 0 &&
-    isStandardType(moveResource.type)
-  )
+): number | undefined {
+  if (
+    moveResource.category !== category ||
+    !isStandardType(moveResource.type) ||
+    isMoveExplicitlyUnsupported(moveResource.id)
+  ) {
+    return undefined
+  }
+  const reviewedPower = reviewedVariablePowerDefault(moveResource.id)
+  if (reviewedPower !== undefined) return reviewedPower
+  if (moveResource.power !== null && moveResource.power > 0) return moveResource.power
+  return undefined
 }
 
-function fixedPowerMoveOption(moveResource: FixedPowerMoveResource): CatalogMoveOption {
+function snapshotCapableMoveOption(
+  moveResource: LocalizedMoveResource,
+  power: number,
+): CatalogMoveOption {
+  if (!isStandardType(moveResource.type) || moveResource.category === "status") {
+    throw new Error(`Unsupported Move candidate resource: ${moveResource.id}`)
+  }
   return {
     id: moveResource.id,
     label: moveResource.name,
-    summary: [moveResource.power, moveResource.accuracy ?? "-"].join(" / "),
+    summary: [power, moveResource.accuracy ?? "-"].join(" / "),
     moveName: moveResource.calcMoveName,
     type: moveResource.type,
     category: moveResource.category,
-    power: moveResource.power,
+    power,
     accuracy: moveResource.accuracy,
     isSpread: moveResource.isSpread,
   }
@@ -201,7 +211,7 @@ function compareMoveSearchOrder(a: CatalogMoveOption, b: CatalogMoveOption): num
   return a.id - b.id
 }
 
-async function fixedPowerMoveOptions(
+async function snapshotCapableMoveOptions(
   locale: SupportedLocale,
   category: MoveCategory,
 ): Promise<CatalogMoveOption[]> {
@@ -210,14 +220,16 @@ async function fixedPowerMoveOptions(
   if (cached) return cached
 
   const moves = (await listResources("move", locale))
-    .filter((moveResource) => isFixedPowerMoveResource(moveResource, category))
-    .map(fixedPowerMoveOption)
+    .flatMap((moveResource) => {
+      const power = snapshotTemplatePower(moveResource, category)
+      return power === undefined ? [] : [snapshotCapableMoveOption(moveResource, power)]
+    })
     .sort(compareMoveSearchOrder)
   MOVE_OPTIONS_BY_LOCALE_CATEGORY.set(key, moves)
   return moves
 }
 
-async function resolveDefaultMoveIds(
+async function resolveUsageMoveIds(
   attackerId: BattlePokemonId,
   activeMoveCategory: MoveCategory,
   moves: CatalogMoveOption[],
@@ -236,7 +248,7 @@ async function resolveDefaultMoveIds(
     .filter((record) => moveById.get(record.moveId)?.category === activeMoveCategory)
     .map((record) => record.moveId)
 
-  return selected.slice(0, 6)
+  return [...new Set(selected)]
 }
 
 function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
@@ -255,17 +267,26 @@ async function resolveDefaultMovePick(
   attackerId: BattlePokemonId,
   activeMoveCategory: MoveCategory,
   moves: CatalogMoveOption[],
-): Promise<Pick<MatchupCatalog, "defaultMoveIds" | "defaultMovePickStatus">> {
+): Promise<Pick<MatchupCatalog, "moves" | "defaultMoveIds" | "defaultMovePickStatus">> {
   try {
+    const usageMoveIds = await withTimeout(
+      resolveUsageMoveIds(attackerId, activeMoveCategory, moves),
+      DEFAULT_MOVE_PICK_TIMEOUT_MS,
+    )
+    const moveById = new Map(moves.map((move) => [move.id, move]))
+    const usageMoveIdSet = new Set(usageMoveIds)
+
     return {
-      defaultMoveIds: await withTimeout(
-        resolveDefaultMoveIds(attackerId, activeMoveCategory, moves),
-        DEFAULT_MOVE_PICK_TIMEOUT_MS,
-      ),
+      moves: [
+        ...usageMoveIds.map((moveId) => moveById.get(moveId)!),
+        ...moves.filter((move) => !usageMoveIdSet.has(move.id)),
+      ],
+      defaultMoveIds: usageMoveIds.slice(0, 6),
       defaultMovePickStatus: "ready",
     }
   } catch {
     return {
+      moves,
       defaultMoveIds: [],
       defaultMovePickStatus: "unavailable",
     }
@@ -284,7 +305,17 @@ export async function getCatalogShell(
     getResource("pokemon", defenderId, locale),
   ])
 
-  const moves = await fixedPowerMoveOptions(locale, activeMoveCategory)
+  const moves = (await snapshotCapableMoveOptions(locale, activeMoveCategory)).map(
+    (move) => ({
+      ...move,
+      type: resolveReviewedMoveType(
+        move.id,
+        attackerId,
+        move.type,
+        attackerResource.types,
+      ),
+    }),
+  )
 
   const labels = statLabels(activeMoveCategory, locale)
 

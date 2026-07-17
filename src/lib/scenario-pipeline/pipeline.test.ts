@@ -1,6 +1,7 @@
-import { beforeAll, beforeEach, describe, expect, it } from "vitest"
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest"
 
 import { setChampionsMoveUsageFetcherForTest } from "@/lib/champions"
+import * as damageKernel from "@/lib/calc-adapter/damage-kernel"
 import {
   getCatalog,
   getCatalogShell,
@@ -9,6 +10,7 @@ import {
   resolveCatalogDefaultMovePick,
   type MatchupCatalog,
 } from "@/lib/catalog"
+import { createMoveSnapshot } from "@/lib/move-snapshot"
 import {
   defaultTrackState,
   expectedRowCount,
@@ -18,6 +20,24 @@ import {
 } from "@/lib/scenario-pipeline"
 
 const LOCALE = "zh-hans"
+
+function selectMoves(
+  catalog: MatchupCatalog,
+  state: ReturnType<typeof defaultTrackState>,
+  moveIds: number[],
+) {
+  state.moveSnapshots = moveIds.flatMap((moveId, index) => {
+    const move = catalog.moves.find((candidate) => candidate.id === moveId)
+    return move ? [createMoveSnapshot(move, `test-${index}-${moveId}`)] : []
+  })
+}
+
+function scenarioRows(
+  catalog: MatchupCatalog,
+  state: ReturnType<typeof defaultTrackState>,
+) {
+  return runScenarioPipeline(catalog, state).rows
+}
 
 function installChampionsMoveUsageFixture() {
   setChampionsMoveUsageFetcherForTest(async (battlePokemonId) => {
@@ -40,6 +60,7 @@ beforeAll(() => {
 
 beforeEach(() => {
   installChampionsMoveUsageFixture()
+  vi.restoreAllMocks()
 })
 
 describe("catalog registry", () => {
@@ -92,8 +113,9 @@ describe("catalog registry", () => {
     for (const attacker of (await listAttackers(LOCALE)).slice(0, 24)) {
       const catalog = await getCatalog(attacker.id, 727, LOCALE)
       const state = defaultTrackState(catalog)
-      expect(state.visibleMoveIds).toEqual(catalog.defaultMoveIds)
-      expect(state.moveIds).toEqual(catalog.defaultMoveIds)
+      expect(state.moveSnapshots.map((snapshot) => snapshot.moveId)).toEqual(
+        catalog.defaultMoveIds,
+      )
       expect(catalog.moves.length).toBeGreaterThanOrEqual(catalog.defaultMoveIds.length)
     }
   })
@@ -147,7 +169,7 @@ describe("catalog registry", () => {
     expect(catalog.moveCategory).toBe("special")
 
     const state = defaultTrackState(catalog)
-    const rows = runScenarioPipeline(catalog, state)
+    const rows = scenarioRows(catalog, state)
     expect(rows.length).toBe(expectedRowCount(state))
     expect(rows.every((r) => r.minDamage > 0)).toBe(true)
   })
@@ -184,7 +206,7 @@ describe("matchup scenario pipeline", () => {
 
   it("returns 12 rows for default template selections (top-6 moves × 32 + ex × 32HP × none)", () => {
     const state = defaultTrackState(catalog)
-    const rows = runScenarioPipeline(catalog, state)
+    const rows = scenarioRows(catalog, state)
     expect(rows).toHaveLength(12)
     expect(expectedRowCount(state)).toBe(12)
     expect(state.offenseTemplateIds).toEqual(
@@ -195,26 +217,131 @@ describe("matchup scenario pipeline", () => {
 
   it("reduces row count when a move is deselected", () => {
     const state = defaultTrackState(catalog)
-    state.moveIds = [89]
-    const rows = runScenarioPipeline(catalog, state)
+    selectMoves(catalog, state, [89])
+    const rows = scenarioRows(catalog, state)
     expect(rows).toHaveLength(2)
     expect(rows.every((r) => r.moveId === 89)).toBe(true)
   })
 
-  it("does not compute rows for visible moves that are not selected", () => {
+  it("keeps duplicate snapshots of one template as separate result groups", () => {
     const state = defaultTrackState(catalog)
-    state.visibleMoveIds = [89, 707]
-    state.moveIds = [89]
-    const rows = runScenarioPipeline(catalog, state)
-    expect(rows).toHaveLength(2)
-    expect(expectedRowCount(state)).toBe(2)
+    selectMoves(catalog, state, [89, 89])
+    const rows = scenarioRows(catalog, state)
+    expect(rows).toHaveLength(4)
+    expect(expectedRowCount(state)).toBe(4)
     expect(rows.every((r) => r.moveId === 89)).toBe(true)
+    expect(new Set(rows.map((row) => row.snapshotId))).toEqual(
+      new Set(["test-0-89", "test-1-89"]),
+    )
+    expect(rows.map((row) => row.snapshotId)).toEqual([
+      "test-0-89",
+      "test-0-89",
+      "test-1-89",
+      "test-1-89",
+    ])
+    expect(new Set(rows.map((row) => row.calculationIdentity)).size).toBe(4)
+  })
+
+  it("groups an unconfigured snapshot once before kernel execution", () => {
+    const state = defaultTrackState(catalog)
+    selectMoves(catalog, state, [89])
+    state.moveSnapshots[0] = { ...state.moveSnapshots[0], power: 0, accuracy: 0 }
+    state.attackerItemIds = ["none", "type-boost-fire", "type-boost-ground"]
+    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+
+    expect(state.moveSnapshots).toHaveLength(1)
+    expect(runScenarioPipeline(catalog, state)).toEqual({
+      rows: [],
+      unavailable: [{
+        snapshotId: "test-0-89",
+        moveId: 89,
+        reasons: ["unconfigured-move"],
+        missingFields: ["power", "accuracy"],
+        provenance: {
+          "attacker-stat": {
+            effective: ["neutral-max", "extreme"],
+            inactive: [],
+            unsupported: [],
+            neutral: [],
+          },
+          "held-item": {
+            effective: ["type-boost-ground"],
+            inactive: ["type-boost-fire"],
+            unsupported: [],
+            neutral: ["none"],
+          },
+          "defender-stat": {
+            effective: ["hp-32"],
+            inactive: [],
+            unsupported: [],
+            neutral: [],
+          },
+        },
+      }],
+    })
+    expect(kernel).not.toHaveBeenCalled()
+  })
+
+  it("merges 12 raw held-item scenarios into 6 identities with provenance", () => {
+    const state = defaultTrackState(catalog)
+    selectMoves(catalog, state, [424, 127, 89])
+    state.offenseTemplateIds = ["extreme"]
+    state.defenseTemplateIds = ["hp-32"]
+    state.attackerItemIds = [
+      "none",
+      "type-boost-fire",
+      "type-boost-water",
+      "type-boost-ground",
+    ]
+    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+
+    const { rows, unavailable } = runScenarioPipeline(catalog, state)
+
+    expect(expectedRowCount(state)).toBe(12)
+    expect(rows).toHaveLength(6)
+    expect(unavailable).toEqual([])
+    expect(kernel).toHaveBeenCalledTimes(6)
+    expect(rows.map((row) => row.snapshotId)).toEqual([
+      "test-0-424",
+      "test-0-424",
+      "test-1-127",
+      "test-1-127",
+      "test-2-89",
+      "test-2-89",
+    ])
+
+    for (const [snapshotId, matchingItem] of [
+      ["test-0-424", "type-boost-fire"],
+      ["test-1-127", "type-boost-water"],
+      ["test-2-89", "type-boost-ground"],
+    ] as const) {
+      const snapshotRows = rows.filter((row) => row.snapshotId === snapshotId)
+      const effective = snapshotRows.find((row) =>
+        row.provenance["held-item"]?.effective.includes(matchingItem))
+      const neutral = snapshotRows.find((row) =>
+        row.provenance["held-item"]?.neutral.includes("none"))
+
+      expect(effective?.provenance["held-item"]).toEqual({
+        effective: [matchingItem],
+        inactive: [],
+        unsupported: [],
+        neutral: [],
+      })
+      expect(neutral?.provenance["held-item"]).toEqual({
+        effective: [],
+        inactive: state.attackerItemIds.filter(
+          (itemId) => itemId !== "none" && itemId !== matchingItem,
+        ),
+        unsupported: [],
+        neutral: ["none"],
+      })
+    }
   })
 
   it("filters preset rows when offense template is deselected", () => {
     const state = defaultTrackState(catalog)
     state.offenseTemplateIds = ["extreme"]
-    const rows = runScenarioPipeline(catalog, state)
+    const rows = scenarioRows(catalog, state)
     expect(rows).toHaveLength(6)
     expect(rows.every((r) => r.attackerStatId === "extreme")).toBe(true)
   })
@@ -222,22 +349,22 @@ describe("matchup scenario pipeline", () => {
   it("computes damage for alternate defender species", async () => {
     const amoonguss = await getCatalog(445, 591, LOCALE)
     const state = defaultTrackState(amoonguss)
-    const rows = runScenarioPipeline(amoonguss, state)
+    const rows = scenarioRows(amoonguss, state)
     expect(rows.length).toBe(expectedRowCount(state))
     expect(rows.every((r) => r.minDamage > 0)).toBe(true)
   })
 
   it("applies type-boost item modifier for matching move type", () => {
     const state = defaultTrackState(catalog)
-    state.moveIds = [89]
+    selectMoves(catalog, state, [89])
     state.offenseTemplateIds = ["extreme"]
     state.defenseTemplateIds = ["hp-32"]
 
-    const noneRows = runScenarioPipeline(catalog, {
+    const noneRows = scenarioRows(catalog, {
       ...state,
       attackerItemIds: ["none"],
     })
-    const sandRows = runScenarioPipeline(catalog, {
+    const sandRows = scenarioRows(catalog, {
       ...state,
       attackerItemIds: ["type-boost-ground"],
     })
@@ -249,31 +376,31 @@ describe("matchup scenario pipeline", () => {
 
   it("compiles 16-roll and actual fixed-build KO probabilities", () => {
     const state = defaultTrackState(catalog)
-    state.moveIds = [667]
+    selectMoves(catalog, state, [667])
     state.offenseTemplateIds = ["extreme"]
     state.attackerItemIds = ["choice-band"]
     state.defenseTemplateIds = ["min-bulk"]
 
-    const [rollRow] = runScenarioPipeline(catalog, state)
+    const [rollRow] = scenarioRows(catalog, state)
     expect(rollRow.koProbabilities).toEqual({ ohko: 1, twoHit: 1 })
 
     state.probabilityMode = "actual"
-    const [actualRow] = runScenarioPipeline(catalog, state)
+    const [actualRow] = scenarioRows(catalog, state)
     expect(actualRow.koProbabilities?.ohko).toBeCloseTo(0.95)
     expect(actualRow.koProbabilities?.twoHit).toBeCloseTo(0.9975)
   })
 
-  it("retains rows but omits actual KO probabilities for exceptional moves", () => {
+  it("compiles actual KO probabilities for fixed-power high-critical moves", () => {
     const state = defaultTrackState(catalog)
-    state.moveIds = [2]
+    selectMoves(catalog, state, [2])
     state.offenseTemplateIds = ["extreme"]
     state.attackerItemIds = ["none"]
     state.defenseTemplateIds = ["min-bulk"]
     state.probabilityMode = "actual"
 
-    const [row] = runScenarioPipeline(catalog, state)
+    const [row] = scenarioRows(catalog, state)
     expect(row).toBeDefined()
-    expect(row.koProbabilities).toBeUndefined()
+    expect(row.koProbabilities).toBeDefined()
   })
 })
 
@@ -287,7 +414,7 @@ describe("matchup scenario pipeline - range mode", () => {
   it("range mode: row count = moves × items × defenders (offense track = 1)", () => {
     const state = defaultTrackState(catalog)
     state.statMode = "range"
-    const rows = runScenarioPipeline(catalog, state)
+    const rows = scenarioRows(catalog, state)
     expect(rows).toHaveLength(6)
     expect(expectedRowCount(state)).toBe(6)
     expect(rows.every((r) => r.attackerStatId === RANGE_STAT_ID)).toBe(true)
@@ -298,7 +425,7 @@ describe("matchup scenario pipeline - range mode", () => {
     const state = defaultTrackState(catalog)
     state.statMode = "range"
     state.offenseTemplateIds = ["neutral-zero", "extreme"]
-    const rows = runScenarioPipeline(catalog, state)
+    const rows = scenarioRows(catalog, state)
     expect(rows).toHaveLength(6)
     expect(rows.every((r) => r.attackerStatId === RANGE_STAT_ID)).toBe(true)
   })
@@ -306,12 +433,12 @@ describe("matchup scenario pipeline - range mode", () => {
   it("range mode envelope spans low-end min to high-end max damage", () => {
     const state = defaultTrackState(catalog)
     state.statMode = "range"
-    state.moveIds = [89]
+    selectMoves(catalog, state, [89])
     state.attackerItemIds = ["none"]
     state.defenseTemplateIds = ["standard-bulk"]
     state.statRange = { min: 100, max: 200 }
 
-    const [row] = runScenarioPipeline(catalog, state)
+    const [row] = scenarioRows(catalog, state)
     expect(row).toBeDefined()
     expect(row.minDamage).toBeLessThan(row.maxDamage)
     expect(row.maxPercent).toBeGreaterThan(row.minPercent)
@@ -320,7 +447,7 @@ describe("matchup scenario pipeline - range mode", () => {
   it("defender range mode: row count = moves × stats × items (defender track = 1)", () => {
     const state = defaultTrackState(catalog)
     state.defenderMode = "range"
-    const rows = runScenarioPipeline(catalog, state)
+    const rows = scenarioRows(catalog, state)
     expect(rows).toHaveLength(12)
     expect(expectedRowCount(state)).toBe(12)
     expect(rows.every((r) => r.defenderId === RANGE_DEFENDER_ID)).toBe(true)
@@ -330,9 +457,9 @@ describe("matchup scenario pipeline - range mode", () => {
     const state = defaultTrackState(catalog)
     state.statMode = "range"
     state.defenderMode = "range"
-    state.moveIds = [89]
+    selectMoves(catalog, state, [89])
     state.attackerItemIds = ["none"]
-    const rows = runScenarioPipeline(catalog, state)
+    const rows = scenarioRows(catalog, state)
     expect(rows).toHaveLength(1)
     expect(rows[0].attackerStatId).toBe(RANGE_STAT_ID)
     expect(rows[0].defenderId).toBe(RANGE_DEFENDER_ID)
@@ -340,13 +467,13 @@ describe("matchup scenario pipeline - range mode", () => {
 
   it("exposes ordered endpoint KO probability ranges instead of averaging", () => {
     const state = defaultTrackState(catalog)
-    state.moveIds = [89]
+    selectMoves(catalog, state, [89])
     state.attackerItemIds = ["none"]
     state.defenseTemplateIds = ["min-bulk"]
     state.probabilityMode = "actual"
 
     const endpointRows = ["neutral-zero", "extreme"].map((offenseTemplateId) => {
-      const [row] = runScenarioPipeline(catalog, {
+      const [row] = scenarioRows(catalog, {
         ...state,
         offenseTemplateIds: [offenseTemplateId],
       })
@@ -354,7 +481,7 @@ describe("matchup scenario pipeline - range mode", () => {
     })
 
     state.statMode = "range"
-    const [rangeRow] = runScenarioPipeline(catalog, state)
+    const [rangeRow] = scenarioRows(catalog, state)
     const ohkoEndpoints = endpointRows.map((value) => value?.ohko as number)
     const twoHitEndpoints = endpointRows.map((value) => value?.twoHit as number)
 
@@ -366,7 +493,7 @@ describe("matchup scenario pipeline - range mode", () => {
 
   it("uses only minimum-offense × maximum-defense and maximum-offense × minimum-defense endpoints", () => {
     const state = defaultTrackState(catalog)
-    state.moveIds = [89]
+    selectMoves(catalog, state, [89])
     state.attackerItemIds = ["none"]
     state.probabilityMode = "actual"
 
@@ -374,18 +501,28 @@ describe("matchup scenario pipeline - range mode", () => {
       { offenseTemplateIds: ["neutral-zero"], defenseTemplateIds: ["standard-bulk"] },
       { offenseTemplateIds: ["extreme"], defenseTemplateIds: ["min-bulk"] },
     ].map((selection) => {
-      const [row] = runScenarioPipeline(catalog, { ...state, ...selection })
-      return row.koProbabilities
+      const [row] = scenarioRows(catalog, { ...state, ...selection })
+      return row
     })
 
-    const [rangeRow] = runScenarioPipeline(catalog, {
+    const [rangeRow] = scenarioRows(catalog, {
       ...state,
       statMode: "range",
       defenderMode: "range",
     })
-    const ohkoEndpoints = oppositeEndpoints.map((value) => value?.ohko as number)
-    const twoHitEndpoints = oppositeEndpoints.map((value) => value?.twoHit as number)
+    const ohkoEndpoints = oppositeEndpoints.map((row) => row.koProbabilities?.ohko as number)
+    const twoHitEndpoints = oppositeEndpoints.map((row) => row.koProbabilities?.twoHit as number)
 
+    expect(rangeRow).toMatchObject({
+      minDamage: oppositeEndpoints[0].minDamage,
+      minPercent: oppositeEndpoints[0].minPercent,
+      critMinDamage: oppositeEndpoints[0].critMinDamage,
+      critMinPercent: oppositeEndpoints[0].critMinPercent,
+      maxDamage: oppositeEndpoints[1].maxDamage,
+      maxPercent: oppositeEndpoints[1].maxPercent,
+      critMaxDamage: oppositeEndpoints[1].critMaxDamage,
+      critMaxPercent: oppositeEndpoints[1].critMaxPercent,
+    })
     expect(rangeRow.koProbabilities).toEqual({
       ohko: { min: Math.min(...ohkoEndpoints), max: Math.max(...ohkoEndpoints) },
       twoHit: { min: Math.min(...twoHitEndpoints), max: Math.max(...twoHitEndpoints) },

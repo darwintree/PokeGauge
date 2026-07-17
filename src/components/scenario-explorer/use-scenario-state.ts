@@ -16,7 +16,11 @@ import {
 } from "@/lib/calc-adapter"
 import type { MatchupCatalog } from "@/lib/catalog"
 import { measureInteractionWork } from "@/lib/interaction-performance-monitor"
-import { orderedPoolSelection } from "@/lib/ordered-pool-selection"
+import {
+  createMoveSnapshot,
+  editMoveSnapshot,
+  type MoveSnapshot,
+} from "@/lib/move-snapshot"
 import {
   deleteUserDefenseTemplate,
   deleteUserOffenseTemplate,
@@ -36,7 +40,6 @@ import {
 import {
   defenseTemplatesForState,
   defaultTrackState,
-  expectedRowCount,
   offenseTemplatesForState,
   runScenarioPipeline,
   type DefenderStatRanges,
@@ -48,12 +51,22 @@ function rangeEndpoints(min: number, max: number): number[] {
   return max === min ? [min] : [min, max]
 }
 
-function orderedMoveSelection(catalog: MatchupCatalog, ids: readonly number[]): number[] {
-  return orderedPoolSelection(catalog.moves.map((move) => move.id), ids)
-}
-
 function sameIds(a: readonly number[], b: readonly number[]): boolean {
   return a.length === b.length && a.every((id, index) => id === b[index])
+}
+
+function snapshotsForMoveIds(
+  catalog: MatchupCatalog,
+  moveIds: readonly number[],
+): MoveSnapshot[] {
+  return moveIds.flatMap((moveId) => {
+    const move = catalog.moves.find((candidate) => candidate.id === moveId)
+    return move ? [createMoveSnapshot(move)] : []
+  })
+}
+
+function snapshotMoveIds(snapshots: readonly MoveSnapshot[]): number[] {
+  return snapshots.map((snapshot) => snapshot.moveId)
 }
 
 function cycleAllocationIndex(
@@ -133,9 +146,10 @@ export function useScenarioState(catalog: MatchupCatalog) {
   const [addingOffense, setAddingOffense] = useState(false)
   const [addingDefense, setAddingDefense] = useState(false)
   const [statNameStrategy, setStatNameStrategyState] = useState<StatNameStrategy>(loadStatNameStrategy)
-  const resetKeyRef = useRef<string>(
-    `${catalog.matchup.attackerId}:${catalog.matchup.defenderId}:${catalog.moveCategory}`,
+  const attackerKeyRef = useRef(
+    `${catalog.matchup.attackerId}:${catalog.moveCategory}`,
   )
+  const defenderIdRef = useRef(catalog.matchup.defenderId)
   const defaultMoveIdsRef = useRef<number[]>([...catalog.defaultMoveIds])
   const movesTouchedRef = useRef(false)
 
@@ -145,31 +159,41 @@ export function useScenarioState(catalog: MatchupCatalog) {
   }, [])
 
   useEffect(() => {
-    const resetKey = `${catalog.matchup.attackerId}:${catalog.matchup.defenderId}:${catalog.moveCategory}`
-    if (resetKeyRef.current === resetKey) return
-    resetKeyRef.current = resetKey
+    const attackerKey = `${catalog.matchup.attackerId}:${catalog.moveCategory}`
+    const attackerChanged = attackerKeyRef.current !== attackerKey
+    const defenderChanged = defenderIdRef.current !== catalog.matchup.defenderId
+    if (!attackerChanged && !defenderChanged) return
+    attackerKeyRef.current = attackerKey
+    defenderIdRef.current = catalog.matchup.defenderId
     defaultMoveIdsRef.current = [...catalog.defaultMoveIds]
-    movesTouchedRef.current = false
-    setTrackState(defaultTrackState(catalog))
+    if (attackerChanged) {
+      movesTouchedRef.current = false
+      setTrackState(defaultTrackState(catalog))
+    } else {
+      setTrackState((state) => ({
+        ...defaultTrackState(catalog),
+        moveSnapshots: state.moveSnapshots,
+      }))
+    }
     setAddingOffense(false)
     setAddingDefense(false)
   }, [catalog])
 
   useEffect(() => {
+    if (catalog.defaultMovePickStatus !== "ready") return
     const previousDefaultMoveIds = defaultMoveIdsRef.current
     if (sameIds(previousDefaultMoveIds, catalog.defaultMoveIds)) return
     defaultMoveIdsRef.current = [...catalog.defaultMoveIds]
     setTrackState((s) => {
       if (movesTouchedRef.current) return s
-      if (!sameIds(s.visibleMoveIds, previousDefaultMoveIds)) return s
-      if (!sameIds(s.moveIds, previousDefaultMoveIds)) return s
+      if (sameIds(snapshotMoveIds(s.moveSnapshots), catalog.defaultMoveIds)) return s
+      if (!sameIds(snapshotMoveIds(s.moveSnapshots), previousDefaultMoveIds)) return s
       return {
         ...s,
-        visibleMoveIds: [...catalog.defaultMoveIds],
-        moveIds: [...catalog.defaultMoveIds],
+        moveSnapshots: snapshotsForMoveIds(catalog, catalog.defaultMoveIds),
       }
     })
-  }, [catalog.defaultMoveIds])
+  }, [catalog, catalog.defaultMoveIds])
 
   useEffect(() => {
     const id = window.setTimeout(() => {
@@ -188,16 +212,17 @@ export function useScenarioState(catalog: MatchupCatalog) {
     return defenseTemplatesForState(catalog, trackState)
   }, [catalog, trackState, userDefenseVersion])
 
-  const rows = useMemo(
+  const pipelineResult = useMemo(
     () =>
       measureInteractionWork("runScenarioPipeline", () =>
         runScenarioPipeline(catalog, trackState),
       ),
     [catalog, trackState],
   )
+  const { rows, unavailable } = pipelineResult
 
   const selectionSummary = {
-    moves: trackState.moveIds.length,
+    moves: trackState.moveSnapshots.length,
     stats:
       trackState.statMode === "preset"
         ? `${trackState.offenseTemplateIds.length} 预设`
@@ -207,7 +232,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
       trackState.defenderMode === "preset"
         ? `${trackState.defenseTemplateIds.length} 预设`
         : `数轴 HP ${trackState.defenderRanges.hp.min}–${trackState.defenderRanges.hp.max}`,
-    rows: expectedRowCount(trackState),
+    rows: rows.length,
   }
 
   function setStatMode(mode: StatSelectMode) {
@@ -389,67 +414,53 @@ export function useScenarioState(catalog: MatchupCatalog) {
     setAddingDefense(false)
   }
 
-  function addMoveToTrack(id: number) {
+  function addMoveSnapshot(moveId: number) {
+    const move = catalog.moves.find((candidate) => candidate.id === moveId)
+    if (!move) return
     movesTouchedRef.current = true
     setTrackState((s) => ({
       ...s,
-      visibleMoveIds: orderedMoveSelection(catalog, [...s.visibleMoveIds, id]),
+      moveSnapshots: [...s.moveSnapshots, createMoveSnapshot(move)],
     }))
   }
 
-  function toggleMove(id: number) {
+  function updateMoveSnapshot(
+    snapshotId: string,
+    patch: Parameters<typeof editMoveSnapshot>[1],
+  ) {
     movesTouchedRef.current = true
-    setTrackState((s) => {
-      const visibleMoveIds = s.visibleMoveIds.includes(id)
-        ? s.visibleMoveIds
-        : orderedMoveSelection(catalog, [...s.visibleMoveIds, id])
-      const moveIds = s.moveIds.includes(id)
-        ? s.moveIds.filter((moveId) => moveId !== id)
-        : [...s.moveIds, id]
-
-      return {
-        ...s,
-        visibleMoveIds,
-        moveIds: orderedMoveSelection(catalog, moveIds).filter((moveId) =>
-          visibleMoveIds.includes(moveId),
-        ),
-      }
-    })
+    setTrackState((s) => ({
+      ...s,
+      moveSnapshots: s.moveSnapshots.map((snapshot) =>
+        snapshot.id === snapshotId ? editMoveSnapshot(snapshot, patch) : snapshot,
+      ),
+    }))
   }
 
-  function removeMoveFromTrack(id: number) {
+  function removeMoveSnapshot(snapshotId: string) {
     movesTouchedRef.current = true
-    setTrackState((s) => {
-      const visibleMoveIds = orderedMoveSelection(
-        catalog,
-        s.visibleMoveIds.filter((moveId) => moveId !== id),
-      )
-      return {
-        ...s,
-        visibleMoveIds,
-        moveIds: orderedMoveSelection(
-          catalog,
-          s.moveIds.filter((moveId) => visibleMoveIds.includes(moveId)),
-        ),
-      }
-    })
+    setTrackState((s) => ({
+      ...s,
+      moveSnapshots: s.moveSnapshots.filter((snapshot) => snapshot.id !== snapshotId),
+    }))
   }
 
   return {
     trackState,
     rows,
+    unavailable,
     offenseTemplates,
     defenseTemplates,
-    showMoveOnRow: trackState.moveIds.length > 1,
+    showMoveOnRow: trackState.moveSnapshots.length > 1,
     selectionSummary,
     offenseBounds,
     defenderHpBounds,
     defenderDefBounds,
     addingOffense,
     addingDefense,
-    addMoveToTrack,
-    toggleMove,
-    removeMoveFromTrack,
+    addMoveSnapshot,
+    updateMoveSnapshot,
+    removeMoveSnapshot,
     setStatMode,
     toggleOffenseTemplate,
     setStatRange: (statRange: TrackState["statRange"]) =>

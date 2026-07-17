@@ -1,16 +1,4 @@
 export {
-  CALC_GEN,
-  VGC_LEVEL,
-  computeDamage,
-  computeDamageForCombinedRange,
-  computeDamageForDefenderRange,
-  computeDamageForStatRange,
-  defaultDefenderDefRange,
-  defaultDefenderHpRange,
-  defaultOffenseStatRange,
-  defaultStatRange,
-  getAttackStat,
-  getAttackStatBounds,
   getDefenderDefBounds,
   getDefenderDefStat,
   getDefenderHp,
@@ -22,13 +10,61 @@ export {
   snapToAchievableDefenseValues,
   snapToAchievableOffenseStat,
   warmDefenderSpreadCache,
+} from "./stat-bounds"
+export {
   defenderDefRangeFromPresets,
   defenderHpRangeFromPresets,
+  defaultDefenderDefRange,
+  defaultDefenderHpRange,
+  defaultOffenseStatRange,
+  defaultStatRange,
   offenseRangeFromPresets,
   clampStat,
   sameStatRange,
   snapToAnchors,
-} from "./compute-damage"
+} from "./stat-range"
+export { CALC_GEN, VGC_LEVEL } from "./calc-constants"
+export {
+  calculateDamageRolls,
+  NEUTRAL_MODIFIER,
+  typeEffectiveness,
+} from "./damage-kernel"
+export type {
+  CompiledDamageInput,
+  CompiledDamagePoint,
+  DamageFormulaBranch,
+  DamageKernelResult,
+  DamageRollPoint,
+} from "./damage-kernel"
+export {
+  calculationIdentity,
+  compileScenario,
+} from "./scenario-compiler"
+export type {
+  CalculableScenario,
+  CompilerOutcome,
+  KoInput,
+  ProbabilityInput,
+  RawScenario,
+  RawScenarioPoint,
+  ScenarioSource,
+  ScenarioTrack,
+  SourceState,
+  UnavailableReason,
+  UnavailableScenario,
+} from "./scenario-compiler"
+export {
+  createMoveSnapshot,
+  editMoveSnapshot,
+  normalizeSnapshotAccuracy,
+  normalizeSnapshotPower,
+  reviewedMoveDefaults,
+} from "@/lib/move-snapshot"
+export type {
+  CriticalStage,
+  MoveSnapshot,
+  MoveTemplateSnapshotDefaults,
+} from "@/lib/move-snapshot"
 export {
   defenseSetupForTemplate,
   defenderDefRangeFromTemplates,
@@ -41,7 +77,6 @@ export {
 } from "./template-range"
 export type {
   AttackStatBounds,
-  ComputedDamage,
   DefenderSetup,
   KoProbabilities,
   KoProbabilityRange,

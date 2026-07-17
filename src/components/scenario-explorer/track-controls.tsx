@@ -61,11 +61,10 @@ export function TrackControls({ catalog, state, onMoveCategoryChange }: TrackCon
       <MoveMultiSelect
         label={intl.formatMessage({ id: "track.moves" })}
         options={catalog.moves}
-        visibleIds={trackState.visibleMoveIds}
-        selectedIds={trackState.moveIds}
-        onAdd={state.addMoveToTrack}
-        onToggle={state.toggleMove}
-        onRemove={state.removeMoveFromTrack}
+        snapshots={trackState.moveSnapshots}
+        onAdd={state.addMoveSnapshot}
+        onChange={state.updateMoveSnapshot}
+        onRemove={state.removeMoveSnapshot}
       />
       {catalog.defaultMovePickStatus === "loading" && (
         <p className="text-muted-foreground text-xs">

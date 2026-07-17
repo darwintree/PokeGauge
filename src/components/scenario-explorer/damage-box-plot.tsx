@@ -10,8 +10,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import type { CatalogMoveOption, CatalogOption } from "@/lib/catalog/types"
-import { itemAriaLabel, itemHasNoBoostForMove, itemSprite } from "@/lib/held-item"
-import type { ScenarioRow } from "@/lib/scenario-pipeline"
+import { itemAriaLabel, itemSprite } from "@/lib/held-item"
+import type { ProvenanceOptionSets, ScenarioRow } from "@/lib/scenario-pipeline"
 import {
   defenderBulkTier,
   offenseStatTier,
@@ -121,6 +121,58 @@ function RowLabel({ children }: RowLabelProps) {
   )
 }
 
+function ItemIcons({ ids }: { ids: string[] }) {
+  return ids.filter((id) => id !== "none").map((id) => {
+    const label = itemAriaLabel(id)
+    const sprite = itemSprite(id)
+
+    return sprite ? (
+      <img
+        key={id}
+        src={`/items/${sprite}`}
+        alt={label}
+        title={label}
+        className="size-4 object-contain"
+      />
+    ) : (
+      <span key={id} title={label} className="rounded border px-1 text-[10px]">
+        {label}
+      </span>
+    )
+  })
+}
+
+function FoldedItemChoices({ items }: { items?: ProvenanceOptionSets }) {
+  const intl = useIntl()
+  const inactive = items?.inactive.filter((id) => id !== "none") ?? []
+  const unsupported = items?.unsupported.filter((id) => id !== "none") ?? []
+  const count = inactive.length + unsupported.length
+
+  if (count === 0) return null
+
+  return (
+    <details className="text-muted-foreground mt-1 pl-10 text-[10px]">
+      <summary className="w-fit cursor-pointer select-none">
+        {intl.formatMessage({ id: "damage.items.other" }, { count })}
+      </summary>
+      <div className="mt-1 space-y-1">
+        {inactive.length > 0 && (
+          <div className="flex items-center gap-1">
+            <span>{intl.formatMessage({ id: "damage.noBoost" })}</span>
+            <ItemIcons ids={inactive} />
+          </div>
+        )}
+        {unsupported.length > 0 && (
+          <div className="flex items-center gap-1">
+            <span>{intl.formatMessage({ id: "damage.items.unsupported" })}</span>
+            <ItemIcons ids={unsupported} />
+          </div>
+        )}
+      </div>
+    </details>
+  )
+}
+
 function KoProbabilityColumns({ row }: { row: ScenarioRow }) {
   const intl = useIntl()
   const unavailable = intl.formatMessage({ id: "damage.ko.unavailable" })
@@ -150,7 +202,6 @@ function KoProbabilityColumns({ row }: { row: ScenarioRow }) {
 type DamageBoxPlotProps = {
   move: CatalogMoveOption
   attackerStat: Pick<CatalogOption<string>, "id" | "label"> & { actual?: string | null }
-  attackerItem: Pick<CatalogOption<string>, "id">
   defender: Pick<CatalogOption<string>, "id" | "label"> & { actual?: string | null }
   row: ScenarioRow
   showMove?: boolean
@@ -160,7 +211,6 @@ type DamageBoxPlotProps = {
 export function DamageBoxPlot({
   move,
   attackerStat,
-  attackerItem,
   defender,
   row,
   showMove = true,
@@ -170,6 +220,7 @@ export function DamageBoxPlot({
   const tone = lethalTone(row)
   const offenseTier = isRangeEnvelope ? null : offenseStatTier(attackerStat.id)
   const defenseTier = defenderBulkTier(defender.id)
+  const itemProvenance = row.provenance["held-item"]
   const box = pctSpan(row.minPercent, row.maxPercent)
   const crit = pctSpan(row.critMinPercent, row.critMaxPercent)
   const bridge =
@@ -203,21 +254,9 @@ export function DamageBoxPlot({
                 <ResultStatLabel label={attackerStat.label} actual={attackerStat.actual} />
               </span>
             )}
-            {attackerItem.id !== "none" && (
-              <>
-                <img
-                  src={`/items/${itemSprite(attackerItem.id) ?? ""}`}
-                  alt={itemAriaLabel(attackerItem.id)}
-                  className="size-4 object-contain"
-                />
-                {itemHasNoBoostForMove(attackerItem.id, move.type) && (
-                  <span className="text-muted-foreground text-[10px]">
-                    {intl.formatMessage({ id: "damage.noBoost" })}
-                  </span>
-                )}
-              </>
-            )}
+            <ItemIcons ids={itemProvenance?.effective ?? []} />
           </div>
+          <FoldedItemChoices items={itemProvenance} />
           {isRangeEnvelope && (
             <div className="text-muted-foreground mt-1 pl-10 text-[10px]">
               {intl.formatMessage({ id: "damage.rangeEnvelope" })}

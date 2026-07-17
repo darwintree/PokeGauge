@@ -9,8 +9,8 @@ export type DamageDistribution = {
 export type AtomicDamageDistributionInput = {
   hitProbability: number
   criticalHitProbability: number
-  normalDamageRolls: readonly number[]
-  criticalDamageRolls: readonly number[]
+  normalDamageRolls?: readonly number[]
+  criticalDamageRolls?: readonly number[]
 }
 
 function addProbability(
@@ -28,17 +28,22 @@ export function createAtomicDamageDistribution({
   criticalDamageRolls,
 }: AtomicDamageDistributionInput): DamageDistribution {
   const distribution = new Map<number, number>()
-  const normalRollProbability =
-    (hitProbability * (1 - criticalHitProbability)) / normalDamageRolls.length
-  const criticalRollProbability =
-    (hitProbability * criticalHitProbability) / criticalDamageRolls.length
 
   addProbability(distribution, 0, 1 - hitProbability)
-  for (const damage of normalDamageRolls) {
-    addProbability(distribution, damage, normalRollProbability)
-  }
-  for (const damage of criticalDamageRolls) {
-    addProbability(distribution, damage, criticalRollProbability)
+
+  const branches = [
+    ["normal", normalDamageRolls, hitProbability * (1 - criticalHitProbability)],
+    ["critical", criticalDamageRolls, hitProbability * criticalHitProbability],
+  ] as const
+
+  for (const [name, rolls, probability] of branches) {
+    if (probability === 0) continue
+    if (!rolls?.length) {
+      throw new Error(`${name} damage rolls are required when the branch has probability`)
+    }
+    for (const damage of rolls) {
+      addProbability(distribution, damage, probability / rolls.length)
+    }
   }
 
   return { [probabilities]: distribution }

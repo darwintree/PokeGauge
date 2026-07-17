@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest"
 
 import {
+  getBattlePokemonById,
   getBattlePokemonByCalcName,
+  getMoveById,
   getMoveByCalcName,
   getResource,
   getResourceDiagnostics,
@@ -9,6 +11,32 @@ import {
 } from "@/lib/resources"
 
 describe("localized resource access", () => {
+  it("exposes already-loaded normalized resources by numeric id", async () => {
+    expect(getBattlePokemonById(445)).toBeUndefined()
+    expect(getMoveById(89)).toBeUndefined()
+
+    await Promise.all([
+      getResource("pokemon", 445, "en"),
+      getResource("move", 89, "en"),
+    ])
+
+    expect(getBattlePokemonById(445)).toMatchObject({
+      resourceType: "pokemon",
+      id: 445,
+      types: ["dragon", "ground"],
+      baseStats: { hp: 108, atk: 130 },
+    })
+    expect(getMoveById(89)).toMatchObject({
+      resourceType: "move",
+      id: 89,
+      type: "ground",
+      category: "physical",
+      power: 100,
+    })
+    expect(getBattlePokemonById(999_999)).toBeUndefined()
+    expect(getMoveById(999_999)).toBeUndefined()
+  })
+
   it("looks up Pokemon and move resources by numeric upstream id", async () => {
     const pokemon = await getResource("pokemon", 445, "en")
     const move = await getResource("move", 89, "en")

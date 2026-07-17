@@ -1,18 +1,39 @@
 import {
-  ATTACKER_ITEM_NAMES,
-  computeDamage,
-  computeDamageForCombinedRange,
-  computeDamageForDefenderRange,
-  computeDamageForStatRange,
+  type DefenderSetup,
+  type StatSetup,
   defaultDefenderDefRange,
   defaultDefenderHpRange,
   defaultOffenseStatRange,
 } from "@/lib/calc-adapter"
 import {
+  type DamageKernelResult,
+  calculateDamageRolls,
+} from "@/lib/calc-adapter/damage-kernel"
+import {
+  calculationIdentity,
+  type CalculableScenario,
+  type ProbabilityInput,
+  type RawScenarioPoint,
+  type ScenarioSource,
+  compileScenario,
+} from "@/lib/calc-adapter/scenario-compiler"
+import {
+  closestDefenderSetupHigh,
+  closestDefenderSetupLow,
+  closestOffenseSetupAtOrAbove,
+  closestOffenseSetupAtOrBelow,
+} from "@/lib/calc-adapter/stat-bounds"
+import {
   defenseSetupForTemplate,
   offenseSetupForTemplate,
 } from "@/lib/calc-adapter/template-range"
 import type { MatchupCatalog } from "@/lib/catalog/types"
+import {
+  convolveDamageDistributions,
+  createAtomicDamageDistribution,
+  koProbability,
+} from "@/lib/damage-distribution"
+import { createMoveSnapshot } from "@/lib/move-snapshot"
 import {
   buildSystemDefenseTemplates,
   buildSystemOffenseTemplates,
@@ -27,22 +48,15 @@ import {
   type StatValueTemplate,
 } from "@/lib/stat-value-template"
 
-import type { DefenderStatRanges, ScenarioRow, TrackState } from "./types"
+import type {
+  ProvenanceOptionSets,
+  ScenarioPipelineResult,
+  ScenarioProvenance,
+  ScenarioRow,
+  TrackState,
+  UnavailableScenarioGroup,
+} from "./types"
 import { RANGE_DEFENDER_ID, RANGE_STAT_ID } from "./types"
-
-function configOrder(options: { id: string | number }[]) {
-  return Object.fromEntries(options.map((o, i) => [o.id, i]))
-}
-
-function templateSortKey(templateId: string, order: Record<string, number>) {
-  return templateId === RANGE_STAT_ID || templateId === RANGE_DEFENDER_ID
-    ? 1000
-    : (order[templateId] ?? 999)
-}
-
-function resolveMoveName(catalog: MatchupCatalog, moveId: number): string | undefined {
-  return catalog.moves.find((m) => m.id === moveId)?.moveName
-}
 
 export function offenseTemplatesForState(
   catalog: MatchupCatalog,
@@ -68,329 +82,313 @@ function findTemplate(templates: StatValueTemplate[], id: string): StatValueTemp
   return templates.find((t) => t.id === id)
 }
 
-function computePresetRow(
-  catalog: MatchupCatalog,
-  moveId: number,
-  offenseTemplateId: string,
-  attackerItemId: string,
-  defenseTemplateId: string,
-  offenseTemplates: StatValueTemplate[],
-  defenseTemplates: StatValueTemplate[],
-  probabilityMode: TrackState["probabilityMode"],
-): ScenarioRow | null {
-  const offenseTemplate = findTemplate(offenseTemplates, offenseTemplateId)
-  const defenseTemplate = findTemplate(defenseTemplates, defenseTemplateId)
-  const itemName = ATTACKER_ITEM_NAMES[attackerItemId]
-  const moveName = resolveMoveName(catalog, moveId)
-  if (!offenseTemplate || !defenseTemplate || !moveName) return null
-  if (itemName === undefined && attackerItemId !== "none") return null
-
-  const { attackerSpecies, defenderSpecies } = catalog.matchup
-  const statSetup = offenseSetupForTemplate(
-    attackerSpecies,
-    catalog.moveCategory,
-    offenseTemplate,
-  )
-  const defSetup = defenseSetupForTemplate(
-    defenderSpecies,
-    catalog.moveCategory,
-    defenseTemplate,
-  )
-
-  const computed = computeDamage(
-    attackerSpecies,
-    defenderSpecies,
-    moveName,
-    statSetup,
-    attackerItemId,
-    defSetup,
-    probabilityMode,
-  )
-
-  return {
-    moveId,
-    attackerStatId: offenseTemplateId,
-    attackerItemId,
-    defenderId: defenseTemplateId,
-    minDamage: computed.minDamage,
-    maxDamage: computed.maxDamage,
-    avgDamage: computed.avgDamage,
-    minPercent: computed.minPercent,
-    maxPercent: computed.maxPercent,
-    avgPercent: computed.avgPercent,
-    critMinDamage: computed.critMinDamage,
-    critMaxDamage: computed.critMaxDamage,
-    critMinPercent: computed.critMinPercent,
-    critMaxPercent: computed.critMaxPercent,
-    ohkoChance: computed.ohkoChance,
-    koProbabilities: computed.koProbabilities,
-  }
+type PreparedStatChoice = {
+  id: string
+  low: StatSetup
+  high: StatSetup
 }
 
-function computeOffenseRangeRow(
-  catalog: MatchupCatalog,
-  moveId: number,
-  statRange: TrackState["statRange"],
-  attackerItemId: string,
-  defenseTemplateId: string,
-  defenseTemplates: StatValueTemplate[],
-  probabilityMode: TrackState["probabilityMode"],
-): ScenarioRow | null {
-  const defenseTemplate = findTemplate(defenseTemplates, defenseTemplateId)
-  const itemName = ATTACKER_ITEM_NAMES[attackerItemId]
-  const moveName = resolveMoveName(catalog, moveId)
-  if (!defenseTemplate || !moveName) return null
-  if (itemName === undefined && attackerItemId !== "none") return null
-
-  const { attackerSpecies, defenderSpecies } = catalog.matchup
-  const defSetup = defenseSetupForTemplate(
-    defenderSpecies,
-    catalog.moveCategory,
-    defenseTemplate,
-  )
-  const computed = computeDamageForStatRange(
-    attackerSpecies,
-    defenderSpecies,
-    moveName,
-    statRange,
-    catalog.moveCategory,
-    attackerItemId,
-    defSetup,
-    probabilityMode,
-  )
-
-  return {
-    moveId,
-    attackerStatId: RANGE_STAT_ID,
-    attackerItemId,
-    defenderId: defenseTemplateId,
-    statRange: { ...statRange },
-    minDamage: computed.minDamage,
-    maxDamage: computed.maxDamage,
-    avgDamage: computed.avgDamage,
-    minPercent: computed.minPercent,
-    maxPercent: computed.maxPercent,
-    avgPercent: computed.avgPercent,
-    critMinDamage: computed.critMinDamage,
-    critMaxDamage: computed.critMaxDamage,
-    critMinPercent: computed.critMinPercent,
-    critMaxPercent: computed.critMaxPercent,
-    ohkoChance: computed.ohkoChance,
-    koProbabilities: computed.koProbabilities,
-  }
+type PreparedDefenseChoice = {
+  id: string
+  low: DefenderSetup
+  high: DefenderSetup
 }
 
-function computeDefenderRangeRow(
-  catalog: MatchupCatalog,
-  moveId: number,
-  offenseTemplateId: string,
-  attackerItemId: string,
-  defenderRanges: DefenderStatRanges,
-  offenseTemplates: StatValueTemplate[],
-  probabilityMode: TrackState["probabilityMode"],
-): ScenarioRow | null {
-  const offenseTemplate = findTemplate(offenseTemplates, offenseTemplateId)
-  const itemName = ATTACKER_ITEM_NAMES[attackerItemId]
-  const moveName = resolveMoveName(catalog, moveId)
-  if (!offenseTemplate || !moveName) return null
-  if (itemName === undefined && attackerItemId !== "none") return null
-
-  const { attackerSpecies, defenderSpecies } = catalog.matchup
-  const statSetup = offenseSetupForTemplate(
-    attackerSpecies,
-    catalog.moveCategory,
-    offenseTemplate,
-  )
-  const computed = computeDamageForDefenderRange(
-    attackerSpecies,
-    defenderSpecies,
-    moveName,
-    statSetup,
-    catalog.moveCategory,
-    attackerItemId,
-    defenderRanges.hp,
-    defenderRanges.def,
-    probabilityMode,
-  )
-
-  return {
-    moveId,
-    attackerStatId: offenseTemplateId,
-    attackerItemId,
-    defenderId: RANGE_DEFENDER_ID,
-    defenderRanges: {
-      hp: { ...defenderRanges.hp },
-      def: { ...defenderRanges.def },
-    },
-    minDamage: computed.minDamage,
-    maxDamage: computed.maxDamage,
-    avgDamage: computed.avgDamage,
-    minPercent: computed.minPercent,
-    maxPercent: computed.maxPercent,
-    avgPercent: computed.avgPercent,
-    critMinDamage: computed.critMinDamage,
-    critMaxDamage: computed.critMaxDamage,
-    critMinPercent: computed.critMinPercent,
-    critMaxPercent: computed.critMaxPercent,
-    ohkoChance: computed.ohkoChance,
-    koProbabilities: computed.koProbabilities,
-  }
+function average(rolls: readonly number[]): number {
+  return rolls.reduce((sum, damage) => sum + damage, 0) / rolls.length
 }
 
-function computeCombinedRangeRow(
-  catalog: MatchupCatalog,
-  moveId: number,
-  statRange: TrackState["statRange"],
-  attackerItemId: string,
-  defenderRanges: DefenderStatRanges,
-  probabilityMode: TrackState["probabilityMode"],
-): ScenarioRow | null {
-  const itemName = ATTACKER_ITEM_NAMES[attackerItemId]
-  const moveName = resolveMoveName(catalog, moveId)
-  if (!moveName) return null
-  if (itemName === undefined && attackerItemId !== "none") return null
-
-  const { attackerSpecies, defenderSpecies } = catalog.matchup
-  const computed = computeDamageForCombinedRange(
-    attackerSpecies,
-    defenderSpecies,
-    moveName,
-    statRange,
-    catalog.moveCategory,
-    attackerItemId,
-    defenderRanges.hp,
-    defenderRanges.def,
-    probabilityMode,
-  )
-
-  return {
-    moveId,
-    attackerStatId: RANGE_STAT_ID,
-    attackerItemId,
-    defenderId: RANGE_DEFENDER_ID,
-    statRange: { ...statRange },
-    defenderRanges: {
-      hp: { ...defenderRanges.hp },
-      def: { ...defenderRanges.def },
-    },
-    minDamage: computed.minDamage,
-    maxDamage: computed.maxDamage,
-    avgDamage: computed.avgDamage,
-    minPercent: computed.minPercent,
-    maxPercent: computed.maxPercent,
-    avgPercent: computed.avgPercent,
-    critMinDamage: computed.critMinDamage,
-    critMaxDamage: computed.critMaxDamage,
-    critMinPercent: computed.critMinPercent,
-    critMaxPercent: computed.critMaxPercent,
-    ohkoChance: computed.ohkoChance,
-    koProbabilities: computed.koProbabilities,
-  }
+function mainRolls(point: DamageKernelResult["low"]): readonly number[] {
+  const rolls = point.normal ?? point.critical
+  if (!rolls) throw new Error("Compiled damage point has no damage branch")
+  return rolls
 }
 
-function sortRows(
-  rows: ScenarioRow[],
-  offenseTemplates: StatValueTemplate[],
-  defenseTemplates: StatValueTemplate[],
-  catalog: MatchupCatalog,
-): ScenarioRow[] {
-  const moveOrder = configOrder(catalog.moves)
-  const offenseOrder = configOrder(offenseTemplates)
-  const itemOrder = configOrder(catalog.attackerItems)
-  const defenseOrder = configOrder(defenseTemplates)
-
-  return rows.sort((a, b) => {
-    const byMove = moveOrder[a.moveId] - moveOrder[b.moveId]
-    if (byMove !== 0) return byMove
-    const byStat =
-      templateSortKey(a.attackerStatId, offenseOrder) -
-      templateSortKey(b.attackerStatId, offenseOrder)
-    if (byStat !== 0) return byStat
-    const byItem = itemOrder[a.attackerItemId] - itemOrder[b.attackerItemId]
-    if (byItem !== 0) return byItem
-    return (
-      templateSortKey(a.defenderId, defenseOrder) -
-      templateSortKey(b.defenderId, defenseOrder)
-    )
+function fixedKoProbabilities(
+  point: DamageKernelResult["low"],
+  probability: ProbabilityInput,
+) {
+  const atomic = createAtomicDamageDistribution({
+    ...probability,
+    normalDamageRolls: point.normal,
+    criticalDamageRolls: point.critical,
   })
+  return {
+    ohko: koProbability(atomic, point.defenderHp),
+    twoHit: koProbability(
+      convolveDamageDistributions([atomic, atomic]),
+      point.defenderHp,
+    ),
+  }
+}
+
+function summarizeDamage(
+  result: DamageKernelResult,
+  probability: ProbabilityInput,
+) {
+  const low = result.low
+  const high = result.high ?? low
+  const lowMain = mainRolls(low)
+  const highMain = mainRolls(high)
+  const lowCritical = low.critical ?? lowMain
+  const highCritical = high.critical ?? highMain
+  const lowAverage = average(lowMain)
+  const highAverage = average(highMain)
+  const lowKo = fixedKoProbabilities(low, probability)
+  const highKo = fixedKoProbabilities(high, probability)
+  const minDamage = Math.min(...lowMain)
+  const maxDamage = Math.max(...highMain)
+  const critMinDamage = Math.min(...lowCritical)
+  const critMaxDamage = Math.max(...highCritical)
+  const avgDamage = result.high ? (lowAverage + highAverage) / 2 : lowAverage
+  const highOhkoRolls = highMain.filter((damage) => damage >= high.defenderHp).length
+
+  return {
+    minDamage,
+    maxDamage,
+    avgDamage,
+    minPercent: (minDamage / low.defenderHp) * 100,
+    maxPercent: (maxDamage / high.defenderHp) * 100,
+    avgPercent: result.high
+      ? ((lowAverage / low.defenderHp) * 100 + (highAverage / high.defenderHp) * 100) / 2
+      : (avgDamage / low.defenderHp) * 100,
+    critMinDamage,
+    critMaxDamage,
+    critMinPercent: (critMinDamage / low.defenderHp) * 100,
+    critMaxPercent: (critMaxDamage / high.defenderHp) * 100,
+    ohkoChance: highOhkoRolls > 0 ? (highOhkoRolls / highMain.length) * 100 : undefined,
+    koProbabilities: result.high
+      ? {
+          ohko: {
+            min: Math.min(lowKo.ohko, highKo.ohko),
+            max: Math.max(lowKo.ohko, highKo.ohko),
+          },
+          twoHit: {
+            min: Math.min(lowKo.twoHit, highKo.twoHit),
+            max: Math.max(lowKo.twoHit, highKo.twoHit),
+          },
+        }
+      : lowKo,
+  }
+}
+
+function offenseChoices(
+  catalog: MatchupCatalog,
+  trackState: TrackState,
+  templates: StatValueTemplate[],
+): PreparedStatChoice[] {
+  const species = catalog.matchup.attackerSpecies
+  if (trackState.statMode === "range") {
+    return [{
+      id: RANGE_STAT_ID,
+      low: closestOffenseSetupAtOrBelow(
+        species,
+        catalog.moveCategory,
+        trackState.statRange.min,
+      ),
+      high: closestOffenseSetupAtOrAbove(
+        species,
+        catalog.moveCategory,
+        Math.max(trackState.statRange.min, trackState.statRange.max),
+      ),
+    }]
+  }
+
+  return trackState.offenseTemplateIds.flatMap((id) => {
+    const template = findTemplate(templates, id)
+    if (!template) return []
+    const setup = offenseSetupForTemplate(species, catalog.moveCategory, template)
+    return [{ id, low: setup, high: setup }]
+  })
+}
+
+function defenseChoices(
+  catalog: MatchupCatalog,
+  trackState: TrackState,
+  templates: StatValueTemplate[],
+): PreparedDefenseChoice[] {
+  const species = catalog.matchup.defenderSpecies
+  if (trackState.defenderMode === "range") {
+    return [{
+      id: RANGE_DEFENDER_ID,
+      low: closestDefenderSetupLow(
+        species,
+        catalog.moveCategory,
+        trackState.defenderRanges.hp.min,
+        trackState.defenderRanges.def.min,
+      ),
+      high: closestDefenderSetupHigh(
+        species,
+        catalog.moveCategory,
+        Math.max(trackState.defenderRanges.hp.min, trackState.defenderRanges.hp.max),
+        Math.max(trackState.defenderRanges.def.min, trackState.defenderRanges.def.max),
+      ),
+    }]
+  }
+
+  return trackState.defenseTemplateIds.flatMap((id) => {
+    const template = findTemplate(templates, id)
+    if (!template) return []
+    const setup = defenseSetupForTemplate(species, catalog.moveCategory, template)
+    return [{ id, low: setup, high: setup }]
+  })
+}
+
+function scenarioPoints(
+  offense: PreparedStatChoice,
+  defense: PreparedDefenseChoice,
+): { lowOutcome: RawScenarioPoint; highOutcome?: RawScenarioPoint } {
+  const lowOutcome = { offense: offense.low, defense: defense.high }
+  if (offense.low === offense.high && defense.low === defense.high) return { lowOutcome }
+  return {
+    lowOutcome,
+    highOutcome: { offense: offense.high, defense: defense.low },
+  }
+}
+
+function emptyOptionSets(): ProvenanceOptionSets {
+  return {
+    effective: [],
+    inactive: [],
+    unsupported: [],
+    neutral: [],
+  }
+}
+
+function addSources(
+  provenance: ScenarioProvenance,
+  sources: readonly ScenarioSource[],
+): void {
+  for (const source of sources) {
+    const optionSets = provenance[source.track] ?? emptyOptionSets()
+    provenance[source.track] = optionSets
+    if (!optionSets[source.state].includes(source.optionId)) {
+      optionSets[source.state].push(source.optionId)
+    }
+  }
+}
+
+type ScenarioRowContext = Pick<
+  ScenarioRow,
+  "snapshotId" | "moveId" | "attackerStatId" | "defenderId"
+> & Pick<ScenarioRow, "statRange" | "defenderRanges">
+
+type CalculableGroup = {
+  outcome: CalculableScenario
+  context: ScenarioRowContext
+  provenance: ScenarioProvenance
+}
+
+type UnavailableGroupBuilder = {
+  snapshotId: string
+  moveId: number
+  reasons: Set<UnavailableScenarioGroup["reasons"][number]>
+  missingFields: Set<UnavailableScenarioGroup["missingFields"][number]>
+  provenance: ScenarioProvenance
+}
+
+function unavailableGroup(
+  builder: UnavailableGroupBuilder,
+): UnavailableScenarioGroup {
+  return {
+    snapshotId: builder.snapshotId,
+    moveId: builder.moveId,
+    reasons: [...builder.reasons],
+    missingFields: [...builder.missingFields],
+    provenance: builder.provenance,
+  }
 }
 
 export function runScenarioPipeline(
   catalog: MatchupCatalog,
   trackState: TrackState,
-): ScenarioRow[] {
-  const rows: ScenarioRow[] = []
-  const offenseIsRange = trackState.statMode === "range"
-  const defenseIsRange = trackState.defenderMode === "range"
+): ScenarioPipelineResult {
+  const calculableGroups = new Map<string, CalculableGroup>()
+  const unavailableGroups = new Map<string, UnavailableGroupBuilder>()
   const offenseTemplates = offenseTemplatesForState(catalog, trackState)
   const defenseTemplates = defenseTemplatesForState(catalog, trackState)
+  const preparedOffense = offenseChoices(catalog, trackState, offenseTemplates)
+  const preparedDefense = defenseChoices(catalog, trackState, defenseTemplates)
 
-  for (const moveId of trackState.moveIds) {
+  for (const snapshot of trackState.moveSnapshots) {
     for (const attackerItemId of trackState.attackerItemIds) {
-      if (offenseIsRange && defenseIsRange) {
-        const row = computeCombinedRangeRow(
-          catalog,
-          moveId,
-          trackState.statRange,
-          attackerItemId,
-          trackState.defenderRanges,
-          trackState.probabilityMode,
-        )
-        if (row) rows.push(row)
-        continue
-      }
-
-      if (offenseIsRange) {
-        for (const defenseTemplateId of trackState.defenseTemplateIds) {
-          const row = computeOffenseRangeRow(
-            catalog,
-            moveId,
-            trackState.statRange,
+      for (const offense of preparedOffense) {
+        for (const defense of preparedDefense) {
+          const outcome = compileScenario({
+            snapshot,
+            attackerId: catalog.matchup.attackerId,
+            defenderId: catalog.matchup.defenderId,
             attackerItemId,
-            defenseTemplateId,
-            defenseTemplates,
-            trackState.probabilityMode,
-          )
-          if (row) rows.push(row)
-        }
-        continue
-      }
+            probabilityMode: trackState.probabilityMode,
+            sourceOptionIds: {
+              attackerStat: offense.id,
+              defenderStat: defense.id,
+            },
+            ...scenarioPoints(offense, defense),
+          })
+          if (outcome.kind === "unavailable") {
+            const group = unavailableGroups.get(snapshot.id) ?? {
+              snapshotId: snapshot.id,
+              moveId: snapshot.moveId,
+              reasons: new Set(),
+              missingFields: new Set(),
+              provenance: {},
+            }
+            group.reasons.add(outcome.reason)
+            for (const field of outcome.missingFields ?? []) {
+              group.missingFields.add(field)
+            }
+            addSources(group.provenance, outcome.sources)
+            unavailableGroups.set(snapshot.id, group)
+            continue
+          }
 
-      if (defenseIsRange) {
-        for (const offenseTemplateId of trackState.offenseTemplateIds) {
-          const row = computeDefenderRangeRow(
-            catalog,
-            moveId,
-            offenseTemplateId,
-            attackerItemId,
-            trackState.defenderRanges,
-            offenseTemplates,
-            trackState.probabilityMode,
-          )
-          if (row) rows.push(row)
-        }
-        continue
-      }
-
-      for (const offenseTemplateId of trackState.offenseTemplateIds) {
-        for (const defenseTemplateId of trackState.defenseTemplateIds) {
-          const row = computePresetRow(
-            catalog,
-            moveId,
-            offenseTemplateId,
-            attackerItemId,
-            defenseTemplateId,
-            offenseTemplates,
-            defenseTemplates,
-            trackState.probabilityMode,
-          )
-          if (row) rows.push(row)
+          const identity = calculationIdentity(outcome)
+          const group = calculableGroups.get(identity) ?? {
+            outcome,
+            context: {
+              snapshotId: snapshot.id,
+              moveId: snapshot.moveId,
+              attackerStatId: offense.id,
+              defenderId: defense.id,
+              ...(offense.id === RANGE_STAT_ID
+                ? { statRange: { ...trackState.statRange } }
+                : {}),
+              ...(defense.id === RANGE_DEFENDER_ID
+                ? {
+                    defenderRanges: {
+                      hp: { ...trackState.defenderRanges.hp },
+                      def: { ...trackState.defenderRanges.def },
+                    },
+                  }
+                : {}),
+            },
+            provenance: {},
+          }
+          addSources(group.provenance, outcome.sources)
+          calculableGroups.set(identity, group)
         }
       }
     }
   }
 
-  return sortRows(rows, offenseTemplates, defenseTemplates, catalog)
+  const rows = [...calculableGroups].map(([identity, group]) => {
+    const computed = summarizeDamage(
+      calculateDamageRolls(group.outcome.calculation),
+      group.outcome.probability,
+    )
+    return {
+      calculationIdentity: identity,
+      ...group.context,
+      provenance: group.provenance,
+      ...computed,
+    }
+  })
+
+  return {
+    rows,
+    unavailable: [...unavailableGroups.values()].map(unavailableGroup),
+  }
 }
 
 export function defaultTrackState(catalog: MatchupCatalog): TrackState {
@@ -401,8 +399,10 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
   const defenseUser = loadUserDefenseTemplates(String(catalog.matchup.defenderId))
 
   return {
-    visibleMoveIds: [...catalog.defaultMoveIds],
-    moveIds: [...catalog.defaultMoveIds],
+    moveSnapshots: catalog.defaultMoveIds.flatMap((moveId) => {
+      const move = catalog.moves.find((candidate) => candidate.id === moveId)
+      return move ? [createMoveSnapshot(move)] : []
+    }),
     statMode: "preset",
     offenseTemplateIds: defaultOffenseSelection(offenseSystem, offenseUser),
     offenseTemporaryTemplates: [],
@@ -441,7 +441,6 @@ export function rowLabels(
   move: string
   stat: string
   statActual: string | null
-  item: string
   defender: string
   defenderActual: string | null
 } {
@@ -500,7 +499,6 @@ export function rowLabels(
     move: String(findItem(catalog.moves, row.moveId)),
     stat: statLabel,
     statActual,
-    item: String(findItem(catalog.attackerItems, row.attackerItemId)),
     defender: defenderLabel,
     defenderActual,
   }
@@ -512,7 +510,7 @@ export function expectedRowCount(trackState: TrackState): number {
   const defenderCount =
     trackState.defenderMode === "range" ? 1 : trackState.defenseTemplateIds.length
   return (
-    trackState.moveIds.length *
+    trackState.moveSnapshots.length *
     offenseCount *
     trackState.attackerItemIds.length *
     defenderCount

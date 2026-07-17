@@ -21,22 +21,6 @@ export type KoProbabilities = {
   twoHit: KoProbabilityValue
 }
 
-export type ComputedDamage = {
-  defenderHp: number
-  minDamage: number
-  maxDamage: number
-  avgDamage: number
-  minPercent: number
-  maxPercent: number
-  avgPercent: number
-  critMinDamage: number
-  critMaxDamage: number
-  critMinPercent: number
-  critMaxPercent: number
-  ohkoChance?: number
-  koProbabilities?: KoProbabilities
-}
-
 export type StatRange = {
   min: number
   max: number

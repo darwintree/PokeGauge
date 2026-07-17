@@ -1,5 +1,8 @@
 import type { MoveCategory } from "@/lib/catalog/types"
-import { getBattlePokemonByCalcName } from "@/lib/resources"
+import {
+  getBattlePokemonByCalcName,
+  type NormalizedBattlePokemon,
+} from "@/lib/resources"
 
 import { VGC_LEVEL } from "./calc-constants"
 import { defenseStatKey, offenseStatKey } from "./presets"
@@ -19,10 +22,11 @@ const NATURE_MODS: Record<string, Partial<Record<StatKey, number>>> = {
   Timid: { spe: 1.1, atk: 0.9 },
 }
 
-export function statValue(species: string, stat: StatKey, setup: StatSetup): number {
-  const pokemon = getBattlePokemonByCalcName(species)
-  if (!pokemon) throw new Error(`Unknown generated Pokemon for stat calculation: ${species}`)
-
+function statValueForPokemon(
+  pokemon: NormalizedBattlePokemon,
+  stat: StatKey,
+  setup: StatSetup,
+): number {
   const base = pokemon.baseStats[stat]
   const ev = setup.evs[stat] ?? 0
   const common = Math.floor(((2 * base + 31 + Math.floor(ev / 4)) * VGC_LEVEL) / 100)
@@ -30,6 +34,31 @@ export function statValue(species: string, stat: StatKey, setup: StatSetup): num
 
   const nature = NATURE_MODS[setup.nature]?.[stat] ?? 1
   return Math.floor((common + 5) * nature)
+}
+
+export function statValue(species: string, stat: StatKey, setup: StatSetup): number {
+  const pokemon = getBattlePokemonByCalcName(species)
+  if (!pokemon) throw new Error(`Unknown generated Pokemon for stat calculation: ${species}`)
+  return statValueForPokemon(pokemon, stat, setup)
+}
+
+export function offenseStatValueForPokemon(
+  pokemon: NormalizedBattlePokemon,
+  category: MoveCategory,
+  setup: StatSetup,
+): number {
+  return statValueForPokemon(pokemon, offenseStatKey(category), setup)
+}
+
+export function defenderStatValuesForPokemon(
+  pokemon: NormalizedBattlePokemon,
+  category: MoveCategory,
+  setup: DefenderSetup,
+): { hp: number; def: number } {
+  return {
+    hp: statValueForPokemon(pokemon, "hp", setup),
+    def: statValueForPokemon(pokemon, defenseStatKey(category), setup),
+  }
 }
 
 export function offenseStatValue(
