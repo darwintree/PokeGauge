@@ -1,5 +1,8 @@
 import { buildCoreCatalogOptions, buildTypeBoostCatalogOptions } from "@/lib/held-item"
-import { listChampionsMoveUsageRecords } from "@/lib/champions"
+import {
+  listChampionsAbilityUsageRecords,
+  listChampionsMoveUsageRecords,
+} from "@/lib/champions"
 import { localeMessages, type SupportedLocale } from "@/lib/i18n"
 import {
   isMoveExplicitlyUnsupported,
@@ -21,6 +24,7 @@ import {
   type OffensePresetId,
 } from "./preset-labels"
 import type {
+  CatalogAbilityOption,
   CatalogMoveOption,
   MatchupCatalog,
   MoveCategory,
@@ -66,7 +70,7 @@ const DEFAULT_MATCHUP = {
   defenderId: 727,
 } as const
 
-const DEFAULT_MOVE_PICK_TIMEOUT_MS = 5_000
+const DEFAULT_USAGE_TIMEOUT_MS = 5_000
 const POKEMON_OPTIONS_BY_LOCALE = new Map<SupportedLocale, Promise<SpeciesOption[]>>()
 const MOVE_OPTIONS_BY_LOCALE_CATEGORY = new Map<string, CatalogMoveOption[]>()
 
@@ -122,6 +126,18 @@ function buildDefenderBulks(category: MoveCategory) {
 
 function buildAttackerItems(category: MoveCategory) {
   return [...buildCoreCatalogOptions(category), ...buildTypeBoostCatalogOptions()]
+}
+
+async function abilityOptions(
+  abilityIds: UpstreamResourceId[],
+  locale: SupportedLocale,
+): Promise<CatalogAbilityOption[]> {
+  return Promise.all(
+    abilityIds.map(async (id) => {
+      const ability = await getResource("ability", id, locale)
+      return { id, label: ability.name, summary: "" }
+    }),
+  )
 }
 
 function localizedSpeciesOption(resource: LocalizedPokemonResource): SpeciesOption {
@@ -271,7 +287,7 @@ async function resolveDefaultMovePick(
   try {
     const usageMoveIds = await withTimeout(
       resolveUsageMoveIds(attackerId, activeMoveCategory, moves),
-      DEFAULT_MOVE_PICK_TIMEOUT_MS,
+      DEFAULT_USAGE_TIMEOUT_MS,
     )
     const moveById = new Map(moves.map((move) => [move.id, move]))
     const usageMoveIdSet = new Set(usageMoveIds)
@@ -293,6 +309,30 @@ async function resolveDefaultMovePick(
   }
 }
 
+async function resolveDefaultAbilityIds(
+  battlePokemonId: BattlePokemonId,
+  abilities: CatalogAbilityOption[],
+): Promise<UpstreamResourceId[]> {
+  try {
+    const legalIds = new Set(abilities.map((ability) => ability.id))
+    const defaultId = (await withTimeout(
+      listChampionsAbilityUsageRecords(battlePokemonId),
+      DEFAULT_USAGE_TIMEOUT_MS,
+    ))
+      .toSorted((a, b) =>
+        a.rank - b.rank ||
+        (b.percentage ?? Number.NEGATIVE_INFINITY) -
+          (a.percentage ?? Number.NEGATIVE_INFINITY) ||
+        a.championsAbilityName.localeCompare(b.championsAbilityName) ||
+        a.abilityId - b.abilityId,
+      )
+      .find((record) => legalIds.has(record.abilityId))?.abilityId
+    return defaultId === undefined ? [...legalIds] : [defaultId]
+  } catch {
+    return abilities.map((ability) => ability.id)
+  }
+}
+
 export async function getCatalogShell(
   attackerId: BattlePokemonId,
   defenderId: BattlePokemonId,
@@ -303,6 +343,10 @@ export async function getCatalogShell(
   const [attackerResource, defenderResource] = await Promise.all([
     getResource("pokemon", attackerId, locale),
     getResource("pokemon", defenderId, locale),
+  ])
+  const [attackerAbilities, defenderAbilities] = await Promise.all([
+    abilityOptions(attackerResource.abilityIds, locale),
+    abilityOptions(defenderResource.abilityIds, locale),
   ])
 
   const moves = (await snapshotCapableMoveOptions(locale, activeMoveCategory)).map(
@@ -334,27 +378,40 @@ export async function getCatalogShell(
     moves,
     attackerStats: buildAttackerStats(activeMoveCategory),
     attackerItems: buildAttackerItems(activeMoveCategory),
+    attackerAbilities,
     defenderBulks: buildDefenderBulks(activeMoveCategory),
+    defenderAbilities,
     /** Default selected set — Move pick only; remaining fixed-power moves addable via search. */
     defaultMovePickStatus: "loading",
+    defaultAbilityPickStatus: "loading",
     defaultMoveIds: [],
     defaultAttackerStatIds: ["neutral-max", "extreme"],
     defaultAttackerItemIds: ["none"],
     defaultDefenderIds: ["hp-32"],
+    defaultAttackerAbilityIds: attackerAbilities.map((ability) => ability.id),
+    defaultDefenderAbilityIds: defenderAbilities.map((ability) => ability.id),
   }
 }
 
 export async function resolveCatalogDefaultMovePick(
   catalog: MatchupCatalog,
 ): Promise<MatchupCatalog> {
-  const defaultMovePick = await resolveDefaultMovePick(
-    catalog.matchup.attackerId,
-    catalog.moveCategory,
-    catalog.moves,
-  )
+  const [defaultMovePick, defaultAttackerAbilityIds, defaultDefenderAbilityIds] =
+    await Promise.all([
+      resolveDefaultMovePick(
+        catalog.matchup.attackerId,
+        catalog.moveCategory,
+        catalog.moves,
+      ),
+      resolveDefaultAbilityIds(catalog.matchup.attackerId, catalog.attackerAbilities),
+      resolveDefaultAbilityIds(catalog.matchup.defenderId, catalog.defenderAbilities),
+    ])
   return {
     ...catalog,
     ...defaultMovePick,
+    defaultAbilityPickStatus: "ready",
+    defaultAttackerAbilityIds,
+    defaultDefenderAbilityIds,
   }
 }
 

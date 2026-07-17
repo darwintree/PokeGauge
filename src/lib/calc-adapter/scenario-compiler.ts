@@ -19,6 +19,7 @@ import {
   type BattlePokemonId,
 } from "@/lib/resources"
 
+import { ADAPTABILITY_ABILITY_ID } from "./ability"
 import {
   type CompiledDamageInput,
   type DamageFormulaBranch,
@@ -48,6 +49,8 @@ export type RawScenario = {
   attackerId: BattlePokemonId
   defenderId: BattlePokemonId
   attackerItemId: string
+  attackerAbilityId: number
+  defenderAbilityId: number
   attackerStage: StatStage
   defenderStage: StatStage
   weather: Weather
@@ -75,9 +78,11 @@ export type ScenarioTrack =
   | "attacker-stat"
   | "attacker-stage"
   | "held-item"
+  | "attacker-ability"
   | "weather"
   | "defender-stat"
   | "defender-stage"
+  | "defender-ability"
 
 export type ScenarioSource = {
   track: ScenarioTrack
@@ -299,6 +304,18 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     : criticalOnly && raw.defenderStage > 0
       ? "inactive"
       : "effective"
+  const hasOriginalTypeStab = Boolean(
+    attacker && moveType && attacker.types.includes(moveType),
+  )
+  const attackerHasAdaptability =
+    raw.attackerAbilityId === ADAPTABILITY_ABILITY_ID
+  const attackerAbilityState: SourceState = attackerHasAdaptability
+    ? hasOriginalTypeStab ? "effective" : "inactive"
+    : "unsupported"
+  const defenderAbilityState: SourceState =
+    raw.defenderAbilityId === ADAPTABILITY_ABILITY_ID
+      ? "inactive"
+      : "unsupported"
   const sources: ScenarioSource[] = [
     ...(raw.sourceOptionIds
       ? [{
@@ -313,6 +330,11 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       state: attackerStageState,
     },
     item.source,
+    {
+      track: "attacker-ability",
+      optionId: String(raw.attackerAbilityId),
+      state: attackerAbilityState,
+    },
     {
       track: "weather",
       optionId: raw.weather,
@@ -329,6 +351,11 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       track: "defender-stage",
       optionId: String(raw.defenderStage),
       state: defenderStageState,
+    },
+    {
+      track: "defender-ability",
+      optionId: String(raw.defenderAbilityId),
+      state: defenderAbilityState,
     },
   ]
   const missingFields: Array<"power" | "accuracy"> = []
@@ -382,7 +409,9 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     attackModifier: item.attack,
     finalModifier: item.final,
     spread: move.isSpread && raw.snapshot.spreadEligible && raw.snapshot.spread,
-    stabModifier: attacker.types.includes(moveType) ? 6144 : NEUTRAL_MODIFIER,
+    stabModifier: hasOriginalTypeStab
+      ? attackerHasAdaptability ? 8192 : 6144
+      : NEUTRAL_MODIFIER,
     typeEffectivenessModifier: Math.round(effectiveness * NEUTRAL_MODIFIER),
     attackerStage: raw.attackerStage,
     defenderStage: raw.defenderStage,

@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from "vitest"
 
 import { getAttackerStatSetups, getDefenderSetups } from "@/lib/calc-adapter"
-import { getCatalog } from "@/lib/catalog"
+import { getCatalogShell } from "@/lib/catalog"
 import {
   buildSystemDefenseTemplates,
   buildSystemOffenseTemplates,
@@ -23,7 +23,7 @@ describe("SP label engine", () => {
   const strategy = "habcds" as const
 
   beforeAll(async () => {
-    const catalog = await getCatalog(445, 727, "zh-hans")
+    const catalog = await getCatalogShell(445, 727, "zh-hans")
     attackerSpecies = catalog.matchup.attackerSpecies
     defenderSpecies = catalog.matchup.defenderSpecies
     category = catalog.moveCategory

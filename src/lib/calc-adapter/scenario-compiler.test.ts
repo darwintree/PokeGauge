@@ -41,6 +41,8 @@ function scenario(overrides: Partial<RawScenario> = {}): RawScenario {
     attackerId: 445,
     defenderId: 727,
     attackerItemId: "none",
+    attackerAbilityId: 8,
+    defenderAbilityId: 22,
     attackerStage: 0,
     defenderStage: 0,
     weather: "none",
@@ -108,8 +110,10 @@ describe("scenario compiler", () => {
     expect(outcome.sources).toEqual([
       { track: "attacker-stage", optionId: "0", state: "neutral" },
       { track: "held-item", optionId: "choice-band", state: "effective" },
+      { track: "attacker-ability", optionId: "8", state: "unsupported" },
       { track: "weather", optionId: "none", state: "neutral" },
       { track: "defender-stage", optionId: "0", state: "neutral" },
+      { track: "defender-ability", optionId: "22", state: "unsupported" },
     ])
   })
 
@@ -303,8 +307,10 @@ describe("scenario compiler", () => {
     expect(outcome.sources).toEqual([
       { track: "attacker-stage", optionId: "0", state: "neutral" },
       { track: "held-item", optionId: "type-boost-fire", state: "inactive" },
+      { track: "attacker-ability", optionId: "8", state: "unsupported" },
       { track: "weather", optionId: "none", state: "neutral" },
       { track: "defender-stage", optionId: "0", state: "neutral" },
+      { track: "defender-ability", optionId: "22", state: "unsupported" },
     ])
   })
 

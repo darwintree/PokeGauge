@@ -1,7 +1,7 @@
 import type { SupportedLocale } from "@/lib/i18n"
 import type { PokemonType } from "@/lib/pokemon/types"
 
-export type ResourceType = "pokemon" | "move"
+export type ResourceType = "pokemon" | "move" | "ability"
 export type UpstreamResourceId = number
 export type BattlePokemonId = UpstreamResourceId
 export type DamageKind = "damage" | "damage+ailment" | "damage+lower" | "damage+raise" | "ohko" | "unique" | string
@@ -30,7 +30,15 @@ export type NormalizedBattlePokemon = {
   speciesNames: LocalizedNames
   formNames: Partial<LocalizedNames>
   types: PokemonType[]
+  abilityIds: UpstreamResourceId[]
   baseStats: BattleStats
+}
+
+export type NormalizedAbility = {
+  resourceType: "ability"
+  id: UpstreamResourceId
+  slug: string
+  names: LocalizedNames
 }
 
 export type NormalizedMove = {
@@ -52,10 +60,10 @@ export type NormalizedMove = {
 }
 
 export type GeneratedResourceDiagnostics = {
-  generatedAt: string
   source: "pokeapi"
   pokemonIds: BattlePokemonId[]
   moveIds: UpstreamResourceId[]
+  abilityIds: UpstreamResourceId[]
   missingLocaleNames: Array<{
     resourceType: ResourceType | "pokemon-species" | "pokemon-form"
     id: UpstreamResourceId
@@ -79,6 +87,17 @@ export type ChampionsMoveUsageRecord = {
   championsMoveName: string
 }
 
+export type ChampionsAbilityUsageRecord = {
+  battlePokemonId: BattlePokemonId
+  abilityId: UpstreamResourceId
+  format: ChampionsBattleFormat
+  season: string
+  source: string
+  rank: number
+  percentage: number | null
+  championsAbilityName: string
+}
+
 export type LocalizedResourceBase<TType extends ResourceType> = {
   resourceType: TType
   id: UpstreamResourceId
@@ -90,8 +109,11 @@ export type LocalizedPokemonResource = LocalizedResourceBase<"pokemon"> & {
   battlePokemonId: BattlePokemonId
   calcSpeciesName: string
   types: PokemonType[]
+  abilityIds: UpstreamResourceId[]
   baseStats: BattleStats
 }
+
+export type LocalizedAbilityResource = LocalizedResourceBase<"ability">
 
 export type LocalizedMoveResource = LocalizedResourceBase<"move"> & {
   calcMoveName: string
@@ -107,4 +129,5 @@ export type LocalizedMoveResource = LocalizedResourceBase<"move"> & {
 export type LocalizedResourceByType = {
   pokemon: LocalizedPokemonResource
   move: LocalizedMoveResource
+  ability: LocalizedAbilityResource
 }

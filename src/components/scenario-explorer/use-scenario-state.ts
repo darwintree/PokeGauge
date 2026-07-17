@@ -150,9 +150,22 @@ export function useScenarioState(catalog: MatchupCatalog) {
   const attackerKeyRef = useRef(
     `${catalog.matchup.attackerId}:${catalog.moveCategory}`,
   )
+  const attackerIdRef = useRef(catalog.matchup.attackerId)
   const defenderIdRef = useRef(catalog.matchup.defenderId)
   const defaultMoveIdsRef = useRef<number[]>([...catalog.defaultMoveIds])
+  const defaultAttackerAbilityIdsRef = useRef<number[]>([
+    ...catalog.defaultAttackerAbilityIds,
+  ])
+  const defaultDefenderAbilityIdsRef = useRef<number[]>([
+    ...catalog.defaultDefenderAbilityIds,
+  ])
   const movesTouchedRef = useRef(false)
+  const attackerAbilitiesTouchedRef = useRef(false)
+  const defenderAbilitiesTouchedRef = useRef(false)
+  const catalogTransitionPending =
+    attackerKeyRef.current !==
+      `${catalog.matchup.attackerId}:${catalog.moveCategory}` ||
+    defenderIdRef.current !== catalog.matchup.defenderId
 
   const setStatNameStrategy = useCallback((strategy: StatNameStrategy) => {
     saveStatNameStrategy(strategy)
@@ -161,21 +174,33 @@ export function useScenarioState(catalog: MatchupCatalog) {
 
   useEffect(() => {
     const attackerKey = `${catalog.matchup.attackerId}:${catalog.moveCategory}`
-    const attackerChanged = attackerKeyRef.current !== attackerKey
+    const attackerOwnerChanged = attackerKeyRef.current !== attackerKey
+    const attackerChanged = attackerIdRef.current !== catalog.matchup.attackerId
     const defenderChanged = defenderIdRef.current !== catalog.matchup.defenderId
-    if (!attackerChanged && !defenderChanged) return
+    if (!attackerOwnerChanged && !defenderChanged) return
     attackerKeyRef.current = attackerKey
+    attackerIdRef.current = catalog.matchup.attackerId
     defenderIdRef.current = catalog.matchup.defenderId
     defaultMoveIdsRef.current = [...catalog.defaultMoveIds]
-    if (attackerChanged) {
+    defaultAttackerAbilityIdsRef.current = [...catalog.defaultAttackerAbilityIds]
+    defaultDefenderAbilityIdsRef.current = [...catalog.defaultDefenderAbilityIds]
+    if (attackerChanged) attackerAbilitiesTouchedRef.current = false
+    if (defenderChanged) defenderAbilitiesTouchedRef.current = false
+    if (attackerOwnerChanged) {
       movesTouchedRef.current = false
-      setTrackState(defaultTrackState(catalog))
-    } else {
-      setTrackState((state) => ({
-        ...defaultTrackState(catalog),
-        moveSnapshots: state.moveSnapshots,
-      }))
     }
+    setTrackState((state) => ({
+      ...defaultTrackState(catalog),
+      ...(!attackerChanged && {
+        attackerAbilityIds: state.attackerAbilityIds,
+      }),
+      ...(!defenderChanged && {
+        defenderAbilityIds: state.defenderAbilityIds,
+      }),
+      ...(!attackerOwnerChanged && {
+        moveSnapshots: state.moveSnapshots,
+      }),
+    }))
     setAddingOffense(false)
     setAddingDefense(false)
   }, [catalog])
@@ -197,6 +222,38 @@ export function useScenarioState(catalog: MatchupCatalog) {
   }, [catalog, catalog.defaultMoveIds])
 
   useEffect(() => {
+    if (catalog.defaultAbilityPickStatus !== "ready") return
+    const previousAttackerIds = defaultAttackerAbilityIdsRef.current
+    const previousDefenderIds = defaultDefenderAbilityIdsRef.current
+    const attackerDefaultsChanged = !sameIds(
+      previousAttackerIds,
+      catalog.defaultAttackerAbilityIds,
+    )
+    const defenderDefaultsChanged = !sameIds(
+      previousDefenderIds,
+      catalog.defaultDefenderAbilityIds,
+    )
+    if (!attackerDefaultsChanged && !defenderDefaultsChanged) return
+    defaultAttackerAbilityIdsRef.current = [...catalog.defaultAttackerAbilityIds]
+    defaultDefenderAbilityIdsRef.current = [...catalog.defaultDefenderAbilityIds]
+    setTrackState((state) => ({
+      ...state,
+      attackerAbilityIds:
+        attackerDefaultsChanged &&
+        !attackerAbilitiesTouchedRef.current &&
+        sameIds(state.attackerAbilityIds, previousAttackerIds)
+          ? [...catalog.defaultAttackerAbilityIds]
+          : state.attackerAbilityIds,
+      defenderAbilityIds:
+        defenderDefaultsChanged &&
+        !defenderAbilitiesTouchedRef.current &&
+        sameIds(state.defenderAbilityIds, previousDefenderIds)
+          ? [...catalog.defaultDefenderAbilityIds]
+          : state.defenderAbilityIds,
+    }))
+  }, [catalog, catalog.defaultAttackerAbilityIds, catalog.defaultDefenderAbilityIds])
+
+  useEffect(() => {
     const id = window.setTimeout(() => {
       warmDefenderSpreadCache(defenderSpecies, catalog.moveCategory)
     }, 0)
@@ -215,10 +272,12 @@ export function useScenarioState(catalog: MatchupCatalog) {
 
   const pipelineResult = useMemo(
     () =>
-      measureInteractionWork("runScenarioPipeline", () =>
-        runScenarioPipeline(catalog, trackState),
-      ),
-    [catalog, trackState],
+      catalogTransitionPending
+        ? { rows: [], unavailable: [] }
+        : measureInteractionWork("runScenarioPipeline", () =>
+            runScenarioPipeline(catalog, trackState),
+          ),
+    [catalog, catalogTransitionPending, trackState],
   )
   const { rows, unavailable } = pipelineResult
 
@@ -475,6 +534,18 @@ export function useScenarioState(catalog: MatchupCatalog) {
     setAddingOffense,
     setAttackerItemIds: (ids: string[]) =>
       setTrackState((s) => ({ ...s, attackerItemIds: ids })),
+    setAttackerAbilityIds: (ids: number[]) => {
+      if (ids.length === 0) return
+      attackerAbilitiesTouchedRef.current = true
+      setTrackState((s) => ({ ...s, attackerAbilityIds: ids }))
+    },
+    resetAttackerAbilities: () => {
+      attackerAbilitiesTouchedRef.current = false
+      setTrackState((s) => ({
+        ...s,
+        attackerAbilityIds: [...catalog.defaultAttackerAbilityIds],
+      }))
+    },
     setWeathers: (weathers: TrackState["weathers"]) =>
       setTrackState((s) => ({
         ...s,
@@ -502,6 +573,18 @@ export function useScenarioState(catalog: MatchupCatalog) {
         ...s,
         defenderStages: defenderStages.length > 0 ? defenderStages : [0],
       })),
+    setDefenderAbilityIds: (ids: number[]) => {
+      if (ids.length === 0) return
+      defenderAbilitiesTouchedRef.current = true
+      setTrackState((s) => ({ ...s, defenderAbilityIds: ids }))
+    },
+    resetDefenderAbilities: () => {
+      defenderAbilitiesTouchedRef.current = false
+      setTrackState((s) => ({
+        ...s,
+        defenderAbilityIds: [...catalog.defaultDefenderAbilityIds],
+      }))
+    },
     setProbabilityMode: (probabilityMode: TrackState["probabilityMode"]) =>
       setTrackState((s) => ({ ...s, probabilityMode })),
     cycleDefenseAllocation,

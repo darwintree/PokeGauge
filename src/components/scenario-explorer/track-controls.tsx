@@ -9,6 +9,7 @@ import type { MatchupCatalog, MoveCategory } from "@/lib/catalog"
 import type { StatSelectMode } from "@/lib/scenario-pipeline"
 import { cn } from "@/lib/utils"
 
+import { AbilityTrack } from "./ability-track"
 import { MoveMultiSelect } from "./move-multi-select"
 import { HeldItemTrack } from "./held-item-track/held-item-track"
 import { StatRangeAxis } from "./stat-range-axis"
@@ -154,6 +155,14 @@ export function TrackControls({ catalog, state, onMoveCategoryChange }: TrackCon
         onChange={state.setAttackerItemIds}
       />
 
+      <AbilityTrack
+        labelId="track.attackerAbility"
+        options={catalog.attackerAbilities}
+        selectedIds={trackState.attackerAbilityIds}
+        onChange={state.setAttackerAbilityIds}
+        onReset={state.resetAttackerAbilities}
+      />
+
       <WeatherTrack
         values={trackState.weathers}
         onChange={state.setWeathers}
@@ -237,6 +246,14 @@ export function TrackControls({ catalog, state, onMoveCategoryChange }: TrackCon
         ariaLabel={intl.formatMessage({ id: "track.defenderStage" })}
         values={trackState.defenderStages}
         onChange={state.setDefenderStages}
+      />
+
+      <AbilityTrack
+        labelId="track.defenderAbility"
+        options={catalog.defenderAbilities}
+        selectedIds={trackState.defenderAbilityIds}
+        onChange={state.setDefenderAbilityIds}
+        onReset={state.resetDefenderAbilities}
       />
 
       <StatNameStrategySelect

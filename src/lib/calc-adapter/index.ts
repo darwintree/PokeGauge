@@ -23,6 +23,7 @@ export {
   sameStatRange,
   snapToAnchors,
 } from "./stat-range"
+export { ADAPTABILITY_ABILITY_ID } from "./ability"
 export { CALC_GEN, VGC_LEVEL } from "./calc-constants"
 export {
   calculateDamageRolls,

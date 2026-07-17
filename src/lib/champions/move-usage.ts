@@ -1,7 +1,10 @@
 import {
+  getAbilityIdByJoinName,
   getMoveIdByJoinName,
   getResource,
+  listResources,
   type BattlePokemonId,
+  type ChampionsAbilityUsageRecord,
   type ChampionsBattleFormat,
   type ChampionsMoveUsageRecord,
 } from "@/lib/resources"
@@ -48,6 +51,10 @@ const CHAMPIONS_NAME_OVERRIDES: Partial<Record<BattlePokemonId, string>> = {
 const usageCache = new Map<BattlePokemonId, Promise<ChampionsMoveUsageRecord[]>>()
 let usageFetcher: (battlePokemonId: BattlePokemonId) => Promise<ChampionsMoveUsageRecord[]> =
   fetchChampionsMoveUsageOnline
+const abilityUsageCache = new Map<BattlePokemonId, Promise<ChampionsAbilityUsageRecord[]>>()
+let abilityUsageFetcher: (
+  battlePokemonId: BattlePokemonId,
+) => Promise<ChampionsAbilityUsageRecord[]> = fetchChampionsAbilityUsageOnline
 
 function normalizeJoinName(name: string): string {
   return name
@@ -83,19 +90,24 @@ async function fetchChampionsBattleRows(
   return fetchJson<ChampionsBattleApi>(url)
 }
 
-async function fetchChampionsMoveUsageOnline(
+async function fetchChampionsBattleData(
   battlePokemonId: BattlePokemonId,
-): Promise<ChampionsMoveUsageRecord[]> {
+): Promise<ChampionsBattleApi | null> {
   const [pokemon, index] = await Promise.all([
     getResource("pokemon", battlePokemonId, "en"),
     fetchJson<ChampionsIndexApi>(CHAMPIONS_INDEX_URL),
   ])
-  const defaultSeason = index.defaultSeason ?? "Current"
   const preferredName = CHAMPIONS_NAME_OVERRIDES[battlePokemonId] ?? pokemon.name
   const championsPokemon = championsIndexByName(index).get(normalizeJoinName(preferredName))
-  if (!championsPokemon) return []
+  return championsPokemon
+    ? fetchChampionsBattleRows(championsPokemon, index.defaultSeason ?? "Current")
+    : null
+}
 
-  const battleData = await fetchChampionsBattleRows(championsPokemon, defaultSeason)
+async function fetchChampionsMoveUsageOnline(
+  battlePokemonId: BattlePokemonId,
+): Promise<ChampionsMoveUsageRecord[]> {
+  const battleData = await fetchChampionsBattleData(battlePokemonId)
   if (!battleData) return []
 
   return (battleData.data ?? battleData.rows ?? [])
@@ -112,6 +124,33 @@ async function fetchChampionsMoveUsageOnline(
         rank: row.rank,
         percentage: row.percentage_value ?? null,
         championsMoveName: row.name,
+      }]
+    })
+}
+
+async function fetchChampionsAbilityUsageOnline(
+  battlePokemonId: BattlePokemonId,
+): Promise<ChampionsAbilityUsageRecord[]> {
+  const [battleData] = await Promise.all([
+    fetchChampionsBattleData(battlePokemonId),
+    listResources("ability", "en"),
+  ])
+  if (!battleData) return []
+
+  return (battleData.data ?? battleData.rows ?? [])
+    .filter((row) => row.category === "ability")
+    .flatMap((row) => {
+      const abilityId = getAbilityIdByJoinName(row.name)
+      if (abilityId == null) return []
+      return [{
+        battlePokemonId,
+        abilityId,
+        format: CHAMPIONS_FORMAT,
+        season: battleData.season,
+        source: battleData.source,
+        rank: row.rank,
+        percentage: row.percentage_value ?? null,
+        championsAbilityName: row.name,
       }]
     })
 }
@@ -142,4 +181,32 @@ export function setChampionsMoveUsageFetcherForTest(
 export function resetChampionsMoveUsageFetcherForTest(): void {
   usageCache.clear()
   usageFetcher = fetchChampionsMoveUsageOnline
+}
+
+export async function listChampionsAbilityUsageRecords(
+  battlePokemonId: BattlePokemonId,
+): Promise<ChampionsAbilityUsageRecord[]> {
+  let promise = abilityUsageCache.get(battlePokemonId)
+  if (!promise) {
+    promise = abilityUsageFetcher(battlePokemonId)
+    abilityUsageCache.set(battlePokemonId, promise)
+    promise.catch(() => {
+      if (abilityUsageCache.get(battlePokemonId) === promise) {
+        abilityUsageCache.delete(battlePokemonId)
+      }
+    })
+  }
+  return promise
+}
+
+export function setChampionsAbilityUsageFetcherForTest(
+  fetcher: (battlePokemonId: BattlePokemonId) => Promise<ChampionsAbilityUsageRecord[]>,
+): void {
+  abilityUsageCache.clear()
+  abilityUsageFetcher = fetcher
+}
+
+export function resetChampionsAbilityUsageFetcherForTest(): void {
+  abilityUsageCache.clear()
+  abilityUsageFetcher = fetchChampionsAbilityUsageOnline
 }
