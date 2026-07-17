@@ -12,6 +12,7 @@ import {
   offenseRangeFromTemplates,
   snapToAchievableDefenseValues,
   snapToAchievableOffenseStat,
+  type StatStage,
   warmDefenderSpreadCache,
 } from "@/lib/calc-adapter"
 import type { MatchupCatalog } from "@/lib/catalog"
@@ -474,6 +475,11 @@ export function useScenarioState(catalog: MatchupCatalog) {
     setAddingOffense,
     setAttackerItemIds: (ids: string[]) =>
       setTrackState((s) => ({ ...s, attackerItemIds: ids })),
+    setAttackerStages: (attackerStages: StatStage[]) =>
+      setTrackState((s) => ({
+        ...s,
+        attackerStages: attackerStages.length > 0 ? attackerStages : [0],
+      })),
     setDefenderMode,
     toggleDefenseTemplate,
     setDefenderRanges: (defenderRanges: DefenderStatRanges) =>
@@ -486,6 +492,11 @@ export function useScenarioState(catalog: MatchupCatalog) {
       setTrackState((s) => ({ ...s, showDefenseActual })),
     setShowResultActual: (showResultActual: boolean) =>
       setTrackState((s) => ({ ...s, showResultActual })),
+    setDefenderStages: (defenderStages: StatStage[]) =>
+      setTrackState((s) => ({
+        ...s,
+        defenderStages: defenderStages.length > 0 ? defenderStages : [0],
+      })),
     setProbabilityMode: (probabilityMode: TrackState["probabilityMode"]) =>
       setTrackState((s) => ({ ...s, probabilityMode })),
     cycleDefenseAllocation,

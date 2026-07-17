@@ -29,7 +29,12 @@ import {
   defenderStatValuesForPokemon,
   offenseStatValueForPokemon,
 } from "./local-stats"
-import type { DefenderSetup, ProbabilityMode, StatSetup } from "./types"
+import type {
+  DefenderSetup,
+  ProbabilityMode,
+  StatSetup,
+  StatStage,
+} from "./types"
 
 export type RawScenarioPoint = {
   offense: StatSetup
@@ -41,6 +46,8 @@ export type RawScenario = {
   attackerId: BattlePokemonId
   defenderId: BattlePokemonId
   attackerItemId: string
+  attackerStage: StatStage
+  defenderStage: StatStage
   probabilityMode: ProbabilityMode
   sourceOptionIds?: {
     attackerStat: string
@@ -61,7 +68,12 @@ export type KoInput = {
 
 export type SourceState = "effective" | "inactive" | "unsupported" | "neutral"
 
-export type ScenarioTrack = "attacker-stat" | "held-item" | "defender-stat"
+export type ScenarioTrack =
+  | "attacker-stat"
+  | "attacker-stage"
+  | "held-item"
+  | "defender-stat"
+  | "defender-stage"
 
 export type ScenarioSource = {
   track: ScenarioTrack
@@ -203,6 +215,8 @@ type BranchContext = {
   spread: boolean
   stabModifier: number
   typeEffectivenessModifier: number
+  attackerStage: StatStage
+  defenderStage: StatStage
 }
 
 function compileBranch(
@@ -223,10 +237,14 @@ function compileBranch(
       context.category,
       point.offense,
     ),
-    attackStage: 0,
+    attackStage: critical
+      ? Math.max(context.attackerStage, 0)
+      : context.attackerStage,
     attackModifier: context.attackModifier,
     defense: defender.def,
-    defenseStage: 0,
+    defenseStage: critical
+      ? Math.min(context.defenderStage, 0)
+      : context.defenderStage,
     defenseModifier: NEUTRAL_MODIFIER,
     spreadModifier: context.spread ? 3072 : NEUTRAL_MODIFIER,
     weatherModifier: NEUTRAL_MODIFIER,
@@ -249,6 +267,17 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   const item = move && isMoveCategory(move.category) && moveType
     ? itemModifiers(raw.attackerItemId, move.category, moveType)
     : itemModifiers(raw.attackerItemId, "physical", "normal")
+  const criticalOnly = raw.snapshot.criticalStage === 3
+  const attackerStageState: SourceState = raw.attackerStage === 0
+    ? "neutral"
+    : criticalOnly && raw.attackerStage < 0
+      ? "inactive"
+      : "effective"
+  const defenderStageState: SourceState = raw.defenderStage === 0
+    ? "neutral"
+    : criticalOnly && raw.defenderStage > 0
+      ? "inactive"
+      : "effective"
   const sources: ScenarioSource[] = [
     ...(raw.sourceOptionIds
       ? [{
@@ -257,6 +286,11 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
           state: "effective" as const,
         }]
       : []),
+    {
+      track: "attacker-stage",
+      optionId: String(raw.attackerStage),
+      state: attackerStageState,
+    },
     item.source,
     ...(raw.sourceOptionIds
       ? [{
@@ -265,6 +299,11 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
           state: "effective" as const,
         }]
       : []),
+    {
+      track: "defender-stage",
+      optionId: String(raw.defenderStage),
+      state: defenderStageState,
+    },
   ]
   const missingFields: Array<"power" | "accuracy"> = []
   if (power === 0) missingFields.push("power")
@@ -308,6 +347,8 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     spread: move.isSpread && raw.snapshot.spreadEligible && raw.snapshot.spread,
     stabModifier: attacker.types.includes(moveType) ? 6144 : NEUTRAL_MODIFIER,
     typeEffectivenessModifier: Math.round(effectiveness * NEUTRAL_MODIFIER),
+    attackerStage: raw.attackerStage,
+    defenderStage: raw.defenderStage,
   }
 
   const compilePoint = (point: RawScenarioPoint) => {

@@ -3,6 +3,7 @@ import type {
   ProbabilityMode,
   ScenarioTrack,
   SourceState,
+  StatStage,
   UnavailableReason,
 } from "@/lib/calc-adapter"
 import type { MoveSnapshot } from "@/lib/move-snapshot"
@@ -35,6 +36,7 @@ export type TrackState = {
   statRangeTouched: boolean
   showOffenseActual: boolean
   offenseAllocationIndices: Record<string, number>
+  attackerStages: StatStage[]
   attackerItemIds: string[]
   defenderMode: StatSelectMode
   defenseTemplateIds: string[]
@@ -44,6 +46,7 @@ export type TrackState = {
   showDefenseActual: boolean
   showResultActual: boolean
   defenseAllocationIndices: Record<string, number>
+  defenderStages: StatStage[]
   probabilityMode: ProbabilityMode
 }
 
@@ -54,6 +57,7 @@ export type ScenarioRow = {
   attackerStatId: string
   defenderId: string
   provenance: ScenarioProvenance
+  criticalOnly: boolean
   statRange?: StatRange
   defenderRanges?: DefenderStatRanges
   minDamage: number

@@ -312,61 +312,67 @@ export function runScenarioPipeline(
 
   for (const snapshot of trackState.moveSnapshots) {
     for (const attackerItemId of trackState.attackerItemIds) {
-      for (const offense of preparedOffense) {
-        for (const defense of preparedDefense) {
-          const outcome = compileScenario({
-            snapshot,
-            attackerId: catalog.matchup.attackerId,
-            defenderId: catalog.matchup.defenderId,
-            attackerItemId,
-            probabilityMode: trackState.probabilityMode,
-            sourceOptionIds: {
-              attackerStat: offense.id,
-              defenderStat: defense.id,
-            },
-            ...scenarioPoints(offense, defense),
-          })
-          if (outcome.kind === "unavailable") {
-            const group = unavailableGroups.get(snapshot.id) ?? {
-              snapshotId: snapshot.id,
-              moveId: snapshot.moveId,
-              reasons: new Set(),
-              missingFields: new Set(),
-              provenance: {},
-            }
-            group.reasons.add(outcome.reason)
-            for (const field of outcome.missingFields ?? []) {
-              group.missingFields.add(field)
-            }
-            addSources(group.provenance, outcome.sources)
-            unavailableGroups.set(snapshot.id, group)
-            continue
-          }
+      for (const attackerStage of trackState.attackerStages) {
+        for (const defenderStage of trackState.defenderStages) {
+          for (const offense of preparedOffense) {
+            for (const defense of preparedDefense) {
+              const outcome = compileScenario({
+                snapshot,
+                attackerId: catalog.matchup.attackerId,
+                defenderId: catalog.matchup.defenderId,
+                attackerItemId,
+                attackerStage,
+                defenderStage,
+                probabilityMode: trackState.probabilityMode,
+                sourceOptionIds: {
+                  attackerStat: offense.id,
+                  defenderStat: defense.id,
+                },
+                ...scenarioPoints(offense, defense),
+              })
+              if (outcome.kind === "unavailable") {
+                const group = unavailableGroups.get(snapshot.id) ?? {
+                  snapshotId: snapshot.id,
+                  moveId: snapshot.moveId,
+                  reasons: new Set(),
+                  missingFields: new Set(),
+                  provenance: {},
+                }
+                group.reasons.add(outcome.reason)
+                for (const field of outcome.missingFields ?? []) {
+                  group.missingFields.add(field)
+                }
+                addSources(group.provenance, outcome.sources)
+                unavailableGroups.set(snapshot.id, group)
+                continue
+              }
 
-          const identity = calculationIdentity(outcome)
-          const group = calculableGroups.get(identity) ?? {
-            outcome,
-            context: {
-              snapshotId: snapshot.id,
-              moveId: snapshot.moveId,
-              attackerStatId: offense.id,
-              defenderId: defense.id,
-              ...(offense.id === RANGE_STAT_ID
-                ? { statRange: { ...trackState.statRange } }
-                : {}),
-              ...(defense.id === RANGE_DEFENDER_ID
-                ? {
-                    defenderRanges: {
-                      hp: { ...trackState.defenderRanges.hp },
-                      def: { ...trackState.defenderRanges.def },
-                    },
-                  }
-                : {}),
-            },
-            provenance: {},
+              const identity = calculationIdentity(outcome)
+              const group = calculableGroups.get(identity) ?? {
+                outcome,
+                context: {
+                  snapshotId: snapshot.id,
+                  moveId: snapshot.moveId,
+                  attackerStatId: offense.id,
+                  defenderId: defense.id,
+                  ...(offense.id === RANGE_STAT_ID
+                    ? { statRange: { ...trackState.statRange } }
+                    : {}),
+                  ...(defense.id === RANGE_DEFENDER_ID
+                    ? {
+                        defenderRanges: {
+                          hp: { ...trackState.defenderRanges.hp },
+                          def: { ...trackState.defenderRanges.def },
+                        },
+                      }
+                    : {}),
+                },
+                provenance: {},
+              }
+              addSources(group.provenance, outcome.sources)
+              calculableGroups.set(identity, group)
+            }
           }
-          addSources(group.provenance, outcome.sources)
-          calculableGroups.set(identity, group)
         }
       }
     }
@@ -381,6 +387,7 @@ export function runScenarioPipeline(
       calculationIdentity: identity,
       ...group.context,
       provenance: group.provenance,
+      criticalOnly: group.outcome.calculation.low.normal === undefined,
       ...computed,
     }
   })
@@ -410,6 +417,7 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
     statRangeTouched: false,
     showOffenseActual: false,
     offenseAllocationIndices: {},
+    attackerStages: [0],
     attackerItemIds: [...catalog.defaultAttackerItemIds],
     defenderMode: "preset",
     defenseTemplateIds: defaultDefenseSelection(defenseSystem, defenseUser),
@@ -422,6 +430,7 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
     showDefenseActual: false,
     showResultActual: false,
     defenseAllocationIndices: {},
+    defenderStages: [0],
     probabilityMode: "rolls",
   }
 }
@@ -512,7 +521,9 @@ export function expectedRowCount(trackState: TrackState): number {
   return (
     trackState.moveSnapshots.length *
     offenseCount *
+    trackState.attackerStages.length *
     trackState.attackerItemIds.length *
-    defenderCount
+    defenderCount *
+    trackState.defenderStages.length
   )
 }
