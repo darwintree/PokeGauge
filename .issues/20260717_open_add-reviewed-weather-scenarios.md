@@ -26,5 +26,5 @@ Add the Weather Track and compile its reviewed direct power, damage, and accurac
 
 ## Blocked by
 
-- [[20260717_open_support-reviewed-move-semantics-and-exclusions|Support reviewed move semantics and exclusions]]
-- [[20260717_open_merge-effect-equivalent-scenarios-with-provenance|Merge effect-equivalent Scenarios with provenance]]
+- [[archive/20260717_closed_support-reviewed-move-semantics-and-exclusions|Support reviewed move semantics and exclusions]]
+- [[archive/20260717_closed_merge-effect-equivalent-scenarios-with-provenance|Merge effect-equivalent Scenarios with provenance]]

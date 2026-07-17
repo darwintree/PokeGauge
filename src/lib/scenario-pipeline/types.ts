@@ -1,4 +1,11 @@
-import type { KoProbabilities, ProbabilityMode } from "@/lib/calc-adapter"
+import type {
+  KoProbabilities,
+  ProbabilityMode,
+  ScenarioTrack,
+  SourceState,
+  UnavailableReason,
+} from "@/lib/calc-adapter"
+import type { MoveSnapshot } from "@/lib/move-snapshot"
 import type { StatValueTemplate } from "@/lib/stat-value-template"
 
 export type StatSelectMode = "preset" | "range"
@@ -20,8 +27,7 @@ export type DefenderStatRanges = {
 }
 
 export type TrackState = {
-  visibleMoveIds: number[]
-  moveIds: number[]
+  moveSnapshots: MoveSnapshot[]
   statMode: StatSelectMode
   offenseTemplateIds: string[]
   offenseTemporaryTemplates: StatValueTemplate[]
@@ -42,10 +48,12 @@ export type TrackState = {
 }
 
 export type ScenarioRow = {
+  calculationIdentity: string
+  snapshotId: string
   moveId: number
   attackerStatId: string
-  attackerItemId: string
   defenderId: string
+  provenance: ScenarioProvenance
   statRange?: StatRange
   defenderRanges?: DefenderStatRanges
   minDamage: number
@@ -60,4 +68,23 @@ export type ScenarioRow = {
   critMaxPercent: number
   ohkoChance?: number
   koProbabilities?: KoProbabilities
+}
+
+export type ProvenanceOptionSets = Record<SourceState, string[]>
+
+export type ScenarioProvenance = Partial<
+  Record<ScenarioTrack, ProvenanceOptionSets>
+>
+
+export type UnavailableScenarioGroup = {
+  snapshotId: string
+  moveId: number
+  reasons: UnavailableReason[]
+  missingFields: Array<"power" | "accuracy">
+  provenance: ScenarioProvenance
+}
+
+export type ScenarioPipelineResult = {
+  rows: ScenarioRow[]
+  unavailable: UnavailableScenarioGroup[]
 }

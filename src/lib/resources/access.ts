@@ -160,6 +160,16 @@ export async function getResourceDiagnostics(): Promise<GeneratedResourceDiagnos
   return loadResourceDiagnostics()
 }
 
+export function getBattlePokemonById(
+  id: UpstreamResourceId,
+): NormalizedBattlePokemon | undefined {
+  return pokemonResources?.[id]
+}
+
+export function getMoveById(id: UpstreamResourceId): NormalizedMove | undefined {
+  return moveResources?.[id]
+}
+
 export function getBattlePokemonByCalcName(name: string): NormalizedBattlePokemon | undefined {
   return pokemonByCalcName?.get(name)
 }

@@ -1,31 +1,46 @@
-import type { MoveCategory } from "@/lib/catalog/types"
 import type { PokemonType } from "@/lib/pokemon/types"
 
 import { VGC_LEVEL } from "./calc-constants"
 
-export type DamageModifierInput = {
-  attackMultiplier?: number
-  powerMultiplier?: number
-  finalMultiplier?: number
-  spread?: boolean
+export const NEUTRAL_MODIFIER = 4096
+
+export type DamageFormulaBranch = {
+  power: number
+  basePowerModifier: number
+  attack: number
+  attackStage: number
+  attackModifier: number
+  defense: number
+  defenseStage: number
+  defenseModifier: number
+  spreadModifier: number
+  weatherModifier: number
+  criticalModifier: number
+  stabModifier: number
+  typeEffectivenessModifier: number
+  finalModifier: number
 }
 
-export type DamageKernelInput = {
-  attack: number
-  defense: number
+export type CompiledDamagePoint = {
   defenderHp: number
-  attackerTypes: PokemonType[]
-  defenderTypes: PokemonType[]
-  moveType: PokemonType
-  movePower: number
-  category: MoveCategory
-  modifiers?: DamageModifierInput
+  normal?: DamageFormulaBranch
+  critical?: DamageFormulaBranch
+}
+
+export type CompiledDamageInput = {
+  low: CompiledDamagePoint
+  high?: CompiledDamagePoint
+}
+
+export type DamageRollPoint = {
+  defenderHp: number
+  normal?: number[]
+  critical?: number[]
 }
 
 export type DamageKernelResult = {
-  defenderHp: number
-  normalRolls: number[]
-  critRolls: number[]
+  low: DamageRollPoint
+  high?: DamageRollPoint
 }
 
 const TYPE_CHART: Record<PokemonType, Partial<Record<PokemonType, number>>> = {
@@ -49,16 +64,54 @@ const TYPE_CHART: Record<PokemonType, Partial<Record<PokemonType, number>>> = {
   fairy: { fire: 0.5, fighting: 2, poison: 0.5, dragon: 2, dark: 2, steel: 0.5 },
 }
 
-function pokeRound(value: number): number {
-  return Math.floor(value + 0.5)
+export function chainModifiers(modifiers: readonly number[]): number {
+  return modifiers.reduce(
+    (chained, modifier) => Math.floor((chained * modifier + 2048) / NEUTRAL_MODIFIER),
+    NEUTRAL_MODIFIER,
+  )
 }
 
-function applyMod(value: number, multiplier: number): number {
-  return pokeRound(value * multiplier)
+function applyModifier(value: number, modifier: number): number {
+  return Math.floor((value * modifier + 2047) / NEUTRAL_MODIFIER)
 }
 
-function applyFinalMod(value: number, multiplier: number): number {
-  return Math.floor(value * multiplier)
+function applyStage(stat: number, stage: number): number {
+  return stage >= 0
+    ? Math.floor((stat * (2 + stage)) / 2)
+    : Math.floor((stat * 2) / (2 - stage))
+}
+
+function calculateBranchRolls(branch: DamageFormulaBranch): number[] {
+  if (branch.typeEffectivenessModifier === 0) return Array(16).fill(0)
+
+  const power = Math.max(1, applyModifier(branch.power, branch.basePowerModifier))
+  const attack = Math.max(
+    1,
+    applyModifier(applyStage(branch.attack, branch.attackStage), branch.attackModifier),
+  )
+  const defense = Math.max(
+    1,
+    applyModifier(applyStage(branch.defense, branch.defenseStage), branch.defenseModifier),
+  )
+  const levelFactor = Math.floor((2 * VGC_LEVEL) / 5) + 2
+  let damage = Math.floor(Math.floor((levelFactor * power * attack) / defense) / 50) + 2
+  damage = applyModifier(damage, branch.spreadModifier)
+  damage = applyModifier(damage, branch.weatherModifier)
+  damage = applyModifier(damage, branch.criticalModifier)
+
+  return Array.from({ length: 16 }, (_, index) => {
+    let roll = Math.floor((damage * (85 + index)) / 100)
+    roll = applyModifier(roll, branch.stabModifier)
+    roll = Math.floor((roll * branch.typeEffectivenessModifier) / NEUTRAL_MODIFIER)
+    return Math.max(1, applyModifier(roll, branch.finalModifier))
+  })
+}
+
+function calculatePoint(point: CompiledDamagePoint): DamageRollPoint {
+  const result: DamageRollPoint = { defenderHp: point.defenderHp }
+  if (point.normal) result.normal = calculateBranchRolls(point.normal)
+  if (point.critical) result.critical = calculateBranchRolls(point.critical)
+  return result
 }
 
 export function typeEffectiveness(moveType: PokemonType, defenderTypes: PokemonType[]): number {
@@ -67,36 +120,10 @@ export function typeEffectiveness(moveType: PokemonType, defenderTypes: PokemonT
   }, 1)
 }
 
-export function calculateDamageRolls(input: DamageKernelInput): DamageKernelResult {
-  const modifiers = input.modifiers ?? {}
-  const attack = applyMod(input.attack, modifiers.attackMultiplier ?? 1)
-  const defense = input.defense
-  const power = applyMod(input.movePower, modifiers.powerMultiplier ?? 1)
-  const base = Math.floor(
-    Math.floor(Math.floor(((2 * VGC_LEVEL) / 5 + 2) * power * attack) / defense) / 50,
-  ) + 2
-  const stab = input.attackerTypes.includes(input.moveType) ? 1.5 : 1
-  const effectiveness = typeEffectiveness(input.moveType, input.defenderTypes)
-  const finalMultiplier = modifiers.finalMultiplier ?? 1
-
-  function rolls(critical: boolean): number[] {
-    return Array.from({ length: 16 }, (_, index) => {
-      const random = 85 + index
-      let damage = base
-      if (modifiers.spread) damage = applyMod(damage, 0.75)
-      if (critical) damage = applyMod(damage, 1.5)
-      damage = Math.floor((damage * random) / 100)
-      damage = applyFinalMod(damage, stab)
-      damage = Math.floor(damage * effectiveness)
-      damage = applyMod(damage, finalMultiplier)
-      return Math.max(1, damage)
-    })
-  }
-
+export function calculateDamageRolls(input: CompiledDamageInput): DamageKernelResult {
   return {
-    defenderHp: input.defenderHp,
-    normalRolls: rolls(false),
-    critRolls: rolls(true),
+    low: calculatePoint(input.low),
+    ...(input.high ? { high: calculatePoint(input.high) } : {}),
   }
 }
 

@@ -26,4 +26,4 @@ Let users compare attacker and defender Stat stages as independent multi-select 
 
 ## Blocked by
 
-- [[20260717_open_merge-effect-equivalent-scenarios-with-provenance|Merge effect-equivalent Scenarios with provenance]]
+- [[archive/20260717_closed_merge-effect-equivalent-scenarios-with-provenance|Merge effect-equivalent Scenarios with provenance]]

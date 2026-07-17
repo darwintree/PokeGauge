@@ -39,16 +39,6 @@ function catalogOption<T extends { id: string | number }>(options: T[], id: stri
   return found
 }
 
-function rowKey(row: ScenarioRow) {
-  const offenseKey = row.statRange
-    ? `${row.statRange.min}-${row.statRange.max}`
-    : row.attackerStatId
-  const defenseKey = row.defenderRanges
-    ? `hp${row.defenderRanges.hp.min}-${row.defenderRanges.hp.max}-def${row.defenderRanges.def.min}-${row.defenderRanges.def.max}`
-    : row.defenderId
-  return `${row.moveId}:${offenseKey}:${row.attackerItemId}:${defenseKey}`
-}
-
 export function ScenarioResults({
   catalog,
   rows,
@@ -114,7 +104,7 @@ export function ScenarioResults({
             row.attackerStatId === RANGE_STAT_ID || row.defenderId === RANGE_DEFENDER_ID
 
           return (
-            <li key={rowKey(row)}>
+            <li key={row.calculationIdentity}>
               <DamageBoxPlot
                 move={catalogOption(catalog.moves, row.moveId)}
                 attackerStat={{
@@ -122,7 +112,6 @@ export function ScenarioResults({
                   label: labels.stat,
                   actual: labels.statActual,
                 }}
-                attackerItem={{ id: row.attackerItemId }}
                 defender={{
                   id: row.defenderId,
                   label: labels.defender,
