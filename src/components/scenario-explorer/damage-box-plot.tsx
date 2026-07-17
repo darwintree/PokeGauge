@@ -507,10 +507,13 @@ export function DamageBoxPlot({
             style={{ left: box.left, width: box.width }}
           />
 
-          <div
-            className="absolute top-1/2 z-10 w-0.5 -translate-y-1/2 rounded-full bg-foreground"
-            style={{ left: pctToLeft(row.avgPercent), height: "1.75rem" }}
-          />
+          {!isRangeEnvelope && (
+            <div
+              data-damage-average-marker
+              className="absolute top-1/2 z-10 w-0.5 -translate-y-1/2 rounded-full bg-foreground"
+              style={{ left: pctToLeft(row.avgPercent), height: "1.75rem" }}
+            />
+          )}
 
           {bridge && (
             <div
@@ -561,10 +564,12 @@ export function DamageBoxPlot({
               {row.minPercent.toFixed(1)}% ~ {row.maxPercent.toFixed(1)}%
             </span>
           </HoverRow>
-          <HoverRow marker={<span className="inline-block h-3 w-0.5 bg-foreground" />}>
-            <HoverLabel>{intl.formatMessage({ id: "damage.average" })}</HoverLabel>
-            <span className="tabular-nums">{row.avgPercent.toFixed(1)}%</span>
-          </HoverRow>
+          {!isRangeEnvelope && (
+            <HoverRow marker={<span className="inline-block h-3 w-0.5 bg-foreground" />}>
+              <HoverLabel>{intl.formatMessage({ id: "damage.average" })}</HoverLabel>
+              <span className="tabular-nums">{row.avgPercent.toFixed(1)}%</span>
+            </HoverRow>
+          )}
           {!row.criticalOnly && (
             <HoverRow marker={<span className="inline-block size-2 rounded-full border-2 border-violet-600 bg-transparent" />}>
               <HoverLabel>{intl.formatMessage({ id: "damage.critical" })}</HoverLabel>
@@ -631,7 +636,7 @@ export function DamageAxis() {
   )
 }
 
-export function BoxPlotLegend() {
+export function BoxPlotLegend({ showAverage = true }: { showAverage?: boolean }) {
   const intl = useIntl()
   return (
     <div className="text-muted-foreground mt-10 flex flex-wrap gap-4 text-xs">
@@ -646,10 +651,12 @@ export function BoxPlotLegend() {
         </span>
         {intl.formatMessage({ id: "damage.legend.critical" })}
       </span>
-      <span className="inline-flex items-center gap-1.5">
-        <span className="inline-block h-3 w-0.5 bg-foreground" />
-        {intl.formatMessage({ id: "damage.legend.average" })}
-      </span>
+      {showAverage && (
+        <span className="inline-flex items-center gap-1.5">
+          <span className="inline-block h-3 w-0.5 bg-foreground" />
+          {intl.formatMessage({ id: "damage.legend.average" })}
+        </span>
+      )}
     </div>
   )
 }

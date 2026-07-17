@@ -1,6 +1,13 @@
+import { createElement } from "react"
+import { renderToStaticMarkup } from "react-dom/server"
+import { IntlProvider } from "react-intl"
 import { describe, expect, it } from "vitest"
 
-import { pctToFraction } from "./damage-box-plot"
+import { TooltipProvider } from "@/components/ui/tooltip"
+import { localeMessages } from "@/lib/i18n"
+import type { ScenarioRow } from "@/lib/scenario-pipeline"
+
+import { BoxPlotLegend, DamageBoxPlot, pctToFraction } from "./damage-box-plot"
 import { formatKoProbability } from "./format-ko-probability"
 
 describe("damage-box-plot non-linear axis mapping", () => {
@@ -35,5 +42,80 @@ describe("formatKoProbability", () => {
 
   it("keeps range endpoints instead of averaging them", () => {
     expect(formatKoProbability({ min: 0.0625, max: 0.875 }, "en")).toBe("6.3%–87.5%")
+  })
+})
+
+describe("DamageBoxPlot range envelopes", () => {
+  const row: ScenarioRow = {
+    calculationIdentity: "range-envelope",
+    snapshotId: "range-envelope",
+    moveId: 33,
+    attackerStatId: "__range__",
+    defenderId: "standard-bulk",
+    provenance: {
+      "held-item": {
+        effective: [],
+        inactive: [],
+        unsupported: [],
+        neutral: ["none"],
+      },
+    },
+    criticalOnly: false,
+    minDamage: 20,
+    maxDamage: 40,
+    avgDamage: 30,
+    minPercent: 10,
+    maxPercent: 20,
+    avgPercent: 15,
+    critMinDamage: 30,
+    critMaxDamage: 60,
+    critMinPercent: 15,
+    critMaxPercent: 30,
+  }
+
+  function render(isRangeEnvelope: boolean): string {
+    return renderToStaticMarkup(createElement(
+      IntlProvider,
+      { locale: "en", messages: localeMessages.en },
+      createElement(
+        TooltipProvider,
+        null,
+        createElement(DamageBoxPlot, {
+          move: {
+            id: 33,
+            label: "Tackle",
+            summary: "40 / 100",
+            moveName: "Tackle",
+            type: "normal",
+            category: "physical",
+            power: 40,
+            accuracy: 100,
+            isSpread: false,
+          },
+          attackerStat: { id: "__range__", label: "Attack range" },
+          defender: { id: "standard-bulk", label: "Defense" },
+          row,
+          isRangeEnvelope,
+        }),
+      ),
+    ))
+  }
+
+  it("omits the synthetic average marker for a range envelope", () => {
+    const markup = render(true)
+
+    expect(markup).not.toContain("data-damage-average-marker")
+    expect(markup).not.toContain("无道具")
+    expect(render(false)).toContain("data-damage-average-marker")
+  })
+
+  it("omits the average legend when every displayed row is a range envelope", () => {
+    const markup = renderToStaticMarkup(createElement(
+      IntlProvider,
+      { locale: "en", messages: localeMessages.en },
+      createElement(BoxPlotLegend, { showAverage: false }),
+    ))
+
+    expect(markup).not.toContain("Average damage")
   })
 })

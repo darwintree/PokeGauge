@@ -31,6 +31,12 @@ function branch(overrides: Partial<DamageFormulaBranch> = {}): DamageFormulaBran
   }
 }
 
+function oracleRolls(damage: number | number[] | number[][]): number[] {
+  if (typeof damage === "number") return Array(16).fill(damage)
+  if (damage.some(Array.isArray)) throw new Error("Expected a single-hit oracle result")
+  return damage as number[]
+}
+
 describe("fixed-point damage kernel", () => {
   it("normalizes modifier chains before applying a phase", () => {
     expect(chainModifiers([])).toBe(N)
@@ -54,6 +60,49 @@ describe("fixed-point damage kernel", () => {
 
     expect(halfDown).toEqual(roundedToOne)
     expect(halfDown).not.toEqual(roundedToTwo)
+  })
+
+  it("matches all normal and critical rolls at an exact .5-down attack phase", () => {
+    const attacker = new Pokemon(CALC_GEN, "Eevee", {
+      level: VGC_LEVEL,
+      nature: "Adamant",
+      evs: { atk: 252 },
+      item: "Choice Band",
+    })
+    const defender = new Pokemon(CALC_GEN, "Snorlax", {
+      level: VGC_LEVEL,
+      nature: "Impish",
+      evs: { hp: 252, def: 252 },
+    })
+    const field = new Field()
+    const common = {
+      power: 40,
+      attack: attacker.rawStats.atk,
+      attackModifier: 6144,
+      defense: defender.rawStats.def,
+      stabModifier: 6144,
+    }
+    const result = calculateDamageRolls({
+      low: {
+        defenderHp: defender.maxHP(),
+        normal: branch(common),
+        critical: branch({ ...common, criticalModifier: 6144 }),
+      },
+    }).low
+
+    expect(attacker.rawStats.atk).toBe(117)
+    expect(result.normal).toEqual(oracleRolls(
+      calculate(CALC_GEN, attacker, defender, new Move(CALC_GEN, "Tackle"), field).damage,
+    ))
+    expect(result.critical).toEqual(oracleRolls(
+      calculate(
+        CALC_GEN,
+        attacker,
+        defender,
+        new Move(CALC_GEN, "Tackle", { isCrit: true }),
+        field,
+      ).damage,
+    ))
   })
 
   it("matches all physical normal and critical rolls after stage, Choice Band, spread, and Reflect", () => {
@@ -245,5 +294,46 @@ describe("fixed-point damage kernel", () => {
     expect(result.low.normal).toHaveLength(16)
     expect(result.low.critical).toBeUndefined()
     expect(result.high).toEqual({ defenderHp: 151, critical: Array(16).fill(0) })
+  })
+
+  it("matches all normal and critical rolls for type immunity", () => {
+    const attacker = new Pokemon(CALC_GEN, "Garchomp", {
+      level: VGC_LEVEL,
+      nature: "Adamant",
+      evs: { atk: 252 },
+    })
+    const defender = new Pokemon(CALC_GEN, "Charizard", {
+      level: VGC_LEVEL,
+      nature: "Bold",
+      evs: { hp: 252, def: 252 },
+    })
+    const field = new Field()
+    const common = {
+      power: 100,
+      attack: attacker.rawStats.atk,
+      defense: defender.rawStats.def,
+      stabModifier: 6144,
+      typeEffectivenessModifier: 0,
+    }
+    const result = calculateDamageRolls({
+      low: {
+        defenderHp: defender.maxHP(),
+        normal: branch(common),
+        critical: branch({ ...common, criticalModifier: 6144 }),
+      },
+    }).low
+
+    expect(result.normal).toEqual(oracleRolls(
+      calculate(CALC_GEN, attacker, defender, new Move(CALC_GEN, "Earthquake"), field).damage,
+    ))
+    expect(result.critical).toEqual(oracleRolls(
+      calculate(
+        CALC_GEN,
+        attacker,
+        defender,
+        new Move(CALC_GEN, "Earthquake", { isCrit: true }),
+        field,
+      ).damage,
+    ))
   })
 })

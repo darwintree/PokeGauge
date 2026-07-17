@@ -180,7 +180,13 @@ export function ScenarioResults({
           )
         })}
       </ul>
-      <BoxPlotLegend />
+      <BoxPlotLegend
+        showAverage={rows.some(
+          (row) =>
+            row.attackerStatId !== RANGE_STAT_ID &&
+            row.defenderId !== RANGE_DEFENDER_ID,
+        )}
+      />
     </>
   )
 }
