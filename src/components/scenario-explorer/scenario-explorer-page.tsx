@@ -18,9 +18,9 @@ import { SUPPORTED_LOCALES, type SupportedLocale } from "@/lib/i18n"
 import type { BattlePokemonId } from "@/lib/resources"
 import { cn } from "@/lib/utils"
 
-import { MatchupSelector } from "./matchup-selector"
+import { SidebarBriefHost } from "./brief-prototype"
 import { ScenarioResults } from "./scenario-results"
-import { SelectionSummary, TrackControls } from "./track-controls"
+import { SelectionSummary } from "./track-controls"
 import { useScenarioState } from "./use-scenario-state"
 
 type ScenarioExplorerPageProps = {
@@ -78,6 +78,18 @@ function ScenarioExplorerContent({
     window.scrollTo({ top: 0 })
   }
 
+  const briefCtx = {
+    catalog,
+    state,
+    attackers,
+    defenders,
+    attackerId,
+    defenderId,
+    onAttackerChange,
+    onDefenderChange,
+    onMoveCategoryChange,
+  }
+
   return (
     <div className="mx-auto min-h-svh max-w-7xl p-4 pb-12 sm:p-6">
       <a
@@ -114,29 +126,22 @@ function ScenarioExplorerContent({
         <aside
           id="scenario-setup"
           className={cn(
-            "lg:sticky lg:top-6 lg:block lg:max-h-[calc(100dvh-3rem)] lg:w-80 lg:shrink-0 lg:overflow-y-auto lg:[scrollbar-gutter:stable]",
+            "lg:w-[22rem] lg:sticky lg:top-6 lg:block lg:max-h-[calc(100dvh-3rem)] lg:shrink-0 lg:overflow-y-auto lg:[scrollbar-gutter:stable]",
             mobileView !== "setup" && "hidden",
           )}
         >
           <Card>
-            <CardHeader className="border-b [.border-b]:pb-4">
-              <MatchupSelector
-                attackerId={attackerId}
-                defenderId={defenderId}
-                attackers={attackers}
-                defenders={defenders}
-                onAttackerChange={onAttackerChange}
-                onDefenderChange={onDefenderChange}
-              />
-              <div className="space-y-2 pt-3">
-                <label className="text-muted-foreground text-xs" htmlFor="locale-select">
-                  <FormattedMessage id="locale.label" />
-                </label>
+            <CardHeader className="border-b [.border-b]:pb-3">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-sm font-medium tracking-tight">
+                  <FormattedMessage id="app.setup" />
+                </span>
                 <select
                   id="locale-select"
                   value={locale}
                   onChange={(event) => onLocaleChange(event.target.value as SupportedLocale)}
-                  className="border-input bg-background h-8 w-full rounded-md border px-2 text-xs"
+                  className="border-input bg-background h-7 rounded-md border px-2 text-[11px]"
+                  aria-label={intl.formatMessage({ id: "locale.label" })}
                 >
                   {localeOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -146,12 +151,8 @@ function ScenarioExplorerContent({
                 </select>
               </div>
             </CardHeader>
-            <CardContent>
-              <TrackControls
-                catalog={catalog}
-                state={state}
-                onMoveCategoryChange={onMoveCategoryChange}
-              />
+            <CardContent className="pt-4">
+              <SidebarBriefHost ctx={briefCtx} />
             </CardContent>
           </Card>
         </aside>
