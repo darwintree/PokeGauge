@@ -66,4 +66,4 @@ Move snapshot 采用现有 `18rem` 侧栏内的“列表 → 单项编辑页”�
 
 ## Superseded by integration
 
-[[20260715_closed_integrate-battle-modifier-ordering-and-specification-seams|Integrate battle modifier ordering and specification seams]] 将手动威力从“正数无上限”改为整数 `1～1000`；`0` 仍表示未配置，超过 `1000` 截断为 `1000`。
+[[../20260715_open_integrate-battle-modifier-ordering-and-specification-seams|Integrate battle modifier ordering and specification seams]] 将手动威力从“正数无上限”改为整数 `1～1000`；`0` 仍表示未配置，超过 `1000` 截断为 `1000`。

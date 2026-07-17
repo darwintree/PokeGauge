@@ -37,4 +37,4 @@ updated_at: "2026-07-17T02:17:00Z"
 - 以 PokeAPI numeric move id 维护 9 个已审核例外：暴风雪、日光束、打雷、暴风、日光刃、枯叶风暴、鸣雷风暴、热沙风暴与水蒸气；阳春风暴不是天气例外。
 - 气象球在任何非无天气状态下同时改变威力与属性；属性变化仍在范围外，因此这些 Scenario 暂不计算，无天气仍可计算。
 - PokeAPI 仅直接提供静态 id、属性、威力与命中；天气规则、必中语义和公式顺序由应用审核元数据与 Gen 9 adapter 编译，不能运行时解析本地化效果文本。
-- 已明确 move-specific base-power、通用天气伤害和命中覆盖的顺序、取整及验收检查。现有 [[20260715_closed_integrate-battle-modifier-ordering-and-specification-seams|Integrate battle modifier ordering and specification seams]] 足以承接最终天气规格，不新增天气子票。
+- 已明确 move-specific base-power、通用天气伤害和命中覆盖的顺序、取整及验收检查。现有 [[../20260715_open_integrate-battle-modifier-ordering-and-specification-seams|Integrate battle modifier ordering and specification seams]] 足以承接最终天气规格，不新增天气子票。

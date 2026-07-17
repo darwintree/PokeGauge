@@ -2,15 +2,15 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "2eae61ef-1cc0-4c76-8152-b807d8423d2a"
 title: "Integrate battle modifier ordering and specification seams"
-status: "closed"
+status: "open"
 priority: "high"
 labels: ["WAYFINDER:GRILLING", "FEATURE-REQUEST"]
 created_at: "2026-07-15T02:45:00Z"
-updated_at: "2026-07-17T03:44:00Z"
+updated_at: "2026-07-17T04:55:00Z"
 ---
 ## Parent map
 
-[[20260715_closed_wayfinder-core-battle-mechanics-specification|Wayfinder: Core battle mechanics specification]]
+[[archive/20260715_closed_wayfinder-core-battle-mechanics-specification|Wayfinder: Core battle mechanics specification]]
 
 ## Question
 
@@ -18,12 +18,12 @@ updated_at: "2026-07-17T03:44:00Z"
 
 ## Blocked by
 
-- [[20260629_closed_define-effect-equivalent-scenario-merging-and-provenance-display|Define effect-equivalent Scenario merging and provenance display]]
-- [[20260715_closed_define-move-snapshot-creation-and-editing-contract|Define Move snapshot creation and editing contract]]
-- [[20260715_closed_define-stat-stage-tracks-and-critical-hit-interactions|Define stat-stage tracks and critical-hit interactions]]
-- [[20260715_closed_research-weather-power-and-accuracy-support-matrix|Research weather power and accuracy support matrix]]
-- [[20260715_closed_define-ability-tracks-and-adaptability-only-support-contract|Define ability tracks and Adaptability-only support contract]]
-- [[20260715_closed_define-screen-track-and-critical-hit-interactions|Define Screen track and critical-hit interactions]]
+- [[archive/20260629_closed_define-effect-equivalent-scenario-merging-and-provenance-display|Define effect-equivalent Scenario merging and provenance display]]
+- [[archive/20260715_closed_define-move-snapshot-creation-and-editing-contract|Define Move snapshot creation and editing contract]]
+- [[archive/20260715_closed_define-stat-stage-tracks-and-critical-hit-interactions|Define stat-stage tracks and critical-hit interactions]]
+- [[archive/20260715_closed_research-weather-power-and-accuracy-support-matrix|Research weather power and accuracy support matrix]]
+- [[archive/20260715_closed_define-ability-tracks-and-adaptability-only-support-contract|Define ability tracks and Adaptability-only support contract]]
+- [[archive/20260715_closed_define-screen-track-and-critical-hit-interactions|Define Screen track and critical-hit interactions]]
 
 ## Skills
 
@@ -31,14 +31,14 @@ updated_at: "2026-07-17T03:44:00Z"
 
 ## Discussion trace
 
-[[../../docs/traces/discussion/2026-07-17-battle-modifier-integration|战斗修正顺序与规格 seam 整合讨论记录]]
+[[../docs/traces/discussion/2026-07-17-battle-modifier-integration|战斗修正顺序与规格 seam 整合讨论记录]]
 
 ## Resolution
 
 ### 权威边界
 
 - 本 Resolution 与所链接讨论记录是 core battle mechanics 的整合规格；各已关闭机制票继续作为其局部契约，除非本票明确覆盖。不开重复的 `docs/spec` 文档。
-- 保持 [[../../docs/adr/0001-local-damage-kernel-for-generated-resources|Local damage kernel for generated resources]]：运行时不依赖 Smogon 名称或本地化效果文本，`@smogon/calc` 只作支持范围的测试 oracle。
+- 保持 [[../docs/adr/0001-local-damage-kernel-for-generated-resources|Local damage kernel for generated resources]]：运行时不依赖 Smogon 名称或本地化效果文本，`@smogon/calc` 只作支持范围的测试 oracle。
 
 ### Deep seams 与 pipeline
 
@@ -69,7 +69,7 @@ updated_at: "2026-07-17T03:44:00Z"
 - 编辑后的威力／命中先替代模板标量，再应用审核规则。天气 Base Power 规则作用于编辑后威力，天气命中覆盖作用于编辑后命中；用户修改会移除模板自带的必中语义，但天气仍可重新产生必中。
 - `16 roll` 下 `+0～+2` 编译为 `hit=1, crit=0`，`+3` 为 `hit=1, crit=1`。Actual probability 使用天气覆盖后的命中与 `1/24、1/8、1/2、1` 会心概率。必中与数字 `100%` 在当前范围都编译为 `hit=1`。
 - `16 roll` 不消费命中概率，因此只改变命中的天气来源标记“未生效”并与无天气合并；Actual probability 下该来源生效。若最终概率相同仍可合并，但保留生效来源。
-- 天气通用修正、9 个 move-id 例外、气象球阻断及精确顺序以 [[../../docs/research/2026-07-17-champions-gen9-weather-power-and-accuracy-support-matrix|Weather support matrix]] 为准。
+- 天气通用修正、9 个 move-id 例外、气象球阻断及精确顺序以 [[../docs/research/2026-07-17-champions-gen9-weather-power-and-accuracy-support-matrix|Weather support matrix]] 为准。
 
 ### 招式支持与候选池
 

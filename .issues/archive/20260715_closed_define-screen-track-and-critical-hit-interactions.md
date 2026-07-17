@@ -55,4 +55,4 @@ updated_at: "2026-07-17T03:43:00Z"
 
 ## Superseded by integration
 
-[[20260715_closed_integrate-battle-modifier-ordering-and-specification-seams|Integrate battle modifier ordering and specification seams]] 将精神冲击列为暂不支持并排除出 Move 搜索，因此本票的精神冲击 Smogon oracle case 改由普通特殊招式验证光墙分类；其余 Screen 契约不变。
+[[../20260715_open_integrate-battle-modifier-ordering-and-specification-seams|Integrate battle modifier ordering and specification seams]] 将精神冲击列为暂不支持并排除出 Move 搜索，因此本票的精神冲击 Smogon oracle case 改由普通特殊招式验证光墙分类；其余 Screen 契约不变。
