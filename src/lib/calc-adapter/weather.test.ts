@@ -245,6 +245,7 @@ describe("reviewed weather compiler", () => {
     [53, "Flamethrower", "sun", "Sun"],
     [56, "Hydro Pump", "rain", "Rain"],
     [76, "Solar Beam", "rain", "Rain"],
+    [669, "Solar Blade", "rain", "Rain"],
     [876, "Hydro Steam", "sun", "Sun"],
   ] as const)(
     "matches all @smogon/calc normal and critical rolls for %s in %s",
