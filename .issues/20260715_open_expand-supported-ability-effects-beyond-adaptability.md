@@ -10,7 +10,7 @@ updated_at: "2026-07-15T02:47:00Z"
 ---
 ## Context
 
-从 [[20260715_open_wayfinder-core-battle-mechanics-specification|Wayfinder: Core battle mechanics specification]] 延后。当前 map 只把适应力规格化为具有计算效果的特性；其他合法特性可被选择，但使用明确的“效果暂未支持”状态。
+从 [[archive/20260715_closed_wayfinder-core-battle-mechanics-specification|Wayfinder: Core battle mechanics specification]] 延后。当前 map 只把适应力规格化为具有计算效果的特性；其他合法特性可被选择，但使用明确的“效果暂未支持”状态。
 
 ## Question
 

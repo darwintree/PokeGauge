@@ -35,7 +35,7 @@ updated_at: "2026-06-30T08:26:00Z"
 | 石板 Plates | 产品决定：不再需要 |
 | 讲究围巾 Choice Scarf | Grill §2 |
 | 结果行图标 / 「无加成」标注 | Grill §6 → [[20260626_closed_damage-comparison-results-info-display-needs-refinement]] |
-| 合并无加成重复行 | [[../20260629_open_define-effect-equivalent-scenario-merging-and-provenance-display]] |
+| 合并无加成重复行 | [[20260629_closed_define-effect-equivalent-scenario-merging-and-provenance-display]] |
 
 ## Acceptance criteria
 

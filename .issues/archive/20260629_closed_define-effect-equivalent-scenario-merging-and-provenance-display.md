@@ -2,15 +2,15 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "0b43d1d4-3010-4e3f-b7c7-38f5db9247f0"
 title: "Define effect-equivalent Scenario merging and provenance display"
-status: "open"
+status: "closed"
 priority: "high"
 labels: ["WAYFINDER:PROTOTYPE", "FEATURE-REQUEST"]
 created_at: "2026-06-29T14:47:00Z"
-updated_at: "2026-07-15T02:47:00Z"
+updated_at: "2026-07-16T09:01:00Z"
 ---
 ## Parent map
 
-[[20260715_open_wayfinder-core-battle-mechanics-specification|Wayfinder: Core battle mechanics specification]]
+[[20260715_closed_wayfinder-core-battle-mechanics-specification|Wayfinder: Core battle mechanics specification]]
 
 ## Question
 
@@ -28,3 +28,24 @@ updated_at: "2026-07-15T02:47:00Z"
 ## Skills
 
 使用 `prototype`、`grilling` 与 `domain-modeling`。
+
+## Resolution
+
+- 同一 Move snapshot 下，以实际送入伤害与概率计算的完整输入作为效果等价键；UI 文案、原始来源选择与最终展示数字不进入键。
+- 当前 map 范围内，合并来源按 Track 保存选项集合，不保存每个原始 Scenario 的完整组合列表。
+- 采用原型方向 A「行内来源」：每条结果行按 Track 直接展示生效要素，并在同一行提供默认折叠的其他已选项。
+- 展开区只展示折叠要素，不重复主行生效要素；已判断未生效与效果暂未支持使用不同状态标记。
+- 不规格化折叠入口的计数、分类摘要或全局展开行为；实现采用满足上述契约的最简单形态。
+- 验收矩阵保持既定结果：喷射火焰／地震 × 无道具／木炭／柔软沙子 × 沙暴／晴天的 12 个原始组合合并为 6 行。
+
+Prototype primary source:
+
+- Branch: `prototype/effect-equivalent-scenario-merge`
+- Commit: `a2f9bea`
+- Path: `docs/prototypes/effect-equivalent-scenario-merge.html`
+
+讨论记录：[[../../docs/traces/discussion/2026-07-16-effect-equivalent-scenario-provenance|效果等价 Scenario 来源展示讨论记录]]
+
+## Implementation handoff
+
+- [ ] 后续实现票逐条审计讨论记录中的决定均已落实。

@@ -10,7 +10,7 @@ updated_at: "2026-07-15T02:47:00Z"
 ---
 ## Context
 
-从 [[20260715_open_wayfinder-core-battle-mechanics-specification|Wayfinder: Core battle mechanics specification]] 延后。随机段数相对其他当前功能独立，不应阻塞能力阶级、天气、适应力、墙或 Move snapshot 的基础规格。
+从 [[archive/20260715_closed_wayfinder-core-battle-mechanics-specification|Wayfinder: Core battle mechanics specification]] 延后。随机段数相对其他当前功能独立，不应阻塞能力阶级、天气、适应力、墙或 Move snapshot 的基础规格。
 
 ## Question
 
