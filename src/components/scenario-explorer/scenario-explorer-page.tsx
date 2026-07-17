@@ -17,6 +17,7 @@ import { SUPPORTED_LOCALES, type SupportedLocale } from "@/lib/i18n"
 import type { BattlePokemonId } from "@/lib/resources"
 
 import { MatchupSelector } from "./matchup-selector"
+import { MoveSnapshotPrototype } from "./move-snapshot-prototype"
 import { ScenarioResults } from "./scenario-results"
 import { SelectionSummary, TrackControls } from "./track-controls"
 import { useScenarioState } from "./use-scenario-state"
@@ -68,6 +69,18 @@ function ScenarioExplorerContent({
   onMoveCategoryChange: (category: MoveCategory) => void
 }) {
   const state = useScenarioState(catalog)
+
+  if (
+    import.meta.env.DEV &&
+    new URLSearchParams(window.location.search).get("prototype") === "move-snapshot"
+  ) {
+    return (
+      <MoveSnapshotPrototype
+        attackerLabel={catalog.matchup.attackerLabel}
+        defenderLabel={catalog.matchup.defenderLabel}
+      />
+    )
+  }
 
   return (
     <div className="mx-auto min-h-svh max-w-6xl p-4 pb-12 sm:p-6">

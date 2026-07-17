@@ -32,6 +32,10 @@ _Avoid_: Auto-move, 默认招式
 用于生成 **Move pick** 的 Pokémon Champions 双打招式使用率数据。它表达「当前 usage 语境下常见招式排序」，不表达 ruleset 合法性，也不包含 ability、held item、teammate、stat points 等配装维度。
 _Avoid_: Champions ruleset data, legal pool, full build data
 
+**Move candidate pool**（招式候选池）:
+招式搜索使用的全局 PokeAPI **Snapshot-capable damaging move** 集合，不校验当前宝可梦 learnset 或 Champions 合法性；当前攻击方的 **Champions move usage data** 只影响置顶顺序与 **Move pick**。
+_Avoid_: Champions move pool, legal move pool, 合法招式池
+
 **Move side**:
 招式 track 当前工作的伤害分类侧：物理或特殊。首版一次 matchup 只展示一个 move side；切换 move side 会清空上一侧的可见/已选招式，并恢复新侧的 move pick。
 _Avoid_: Mixed moves, category mode
@@ -41,7 +45,7 @@ _Avoid_: Mixed moves, category mode
 _Avoid_: Selected move, Editable move, Shared move record
 
 **Move snapshot**（招式快照）:
-从 **Move template** 创建并加入 Move track 的可编辑选项；保存本次 matchup 采用的威力、命中、会心等级与 Spread move modifier 状态。一个模版可以创建多个独立快照；快照是用户刻意保留的比较单位，彼此不因效果等价而合并。
+从 **Move template** 创建并加入 Move track 的可编辑选项；保存当前进攻方与 **Move side** 下采用的威力、命中、会心等级与 Spread move modifier 状态。一个模版可以创建多个独立快照；快照是用户刻意保留的比较单位，彼此不因效果等价而合并。更换防守方时快照保留，更换进攻方或 Move side 时重建。
 _Avoid_: Move configuration, Move variant track, Power track, Accuracy track
 
 **Unconfigured move power**（未配置招式威力）:
@@ -53,8 +57,12 @@ Move snapshot 的命中为 `0` 的状态，表示上游命中为 `null` 且尚�
 _Avoid_: Zero-percent accuracy, Null-means-always-hit, Unsupported move
 
 **Fixed-power damaging move**:
-可进入首版全局招式搜索池的招式：分类为物理或特殊，且基础威力是正数固定值。不包含 status、OHKO、固定伤害、变量威力或 `power = null` 的招式。
+基础威力是正数固定值的物理或特殊招式；其 Move snapshot 直接复制上游威力。
 _Avoid_: Any damaging move, variable-power move
+
+**Snapshot-capable damaging move**:
+可进入招式搜索并以一个具体 Move snapshot 威力参与普通伤害公式的物理或特殊招式，包含固定威力与经审核的变量威力招式；不包含状态、固定伤害或一击必杀招式。变量威力资格来自结构化审核元数据，不能从上游 `power` 是否为空推断。
+_Avoid_: Any damaging move, All physical/special moves
 
 ### Scenario construction
 
@@ -63,7 +71,7 @@ _Avoid_: Any damaging move, variable-power move
 _Avoid_: Weather damage simulation, Full weather state
 
 **Screen**（墙）:
-表示防守方场上保护状态的 multi-select track，选项仅为无墙、反射壁与光墙。物理招式只受反射壁影响，特殊招式只受光墙影响；双墙不会为单个 Move snapshot 产生新的有效结果，因此不是选项。
+表示防守方场上保护状态的 multi-select track，选项仅为无墙、反射壁与光墙，默认只选无墙且至少保留一项。物理招式只受反射壁影响，特殊招式只受光墙影响；同时选择两种墙表示比较两个 Scenario，而不是双墙同时生效。
 _Avoid_: Dual screens option, Screen stack, 场地保护
 
 **Scenario**:
@@ -87,7 +95,7 @@ _Avoid_: Slider axis, stat range filter
 _Avoid_: Display row count rule, Cartesian product（领域层用 track 累乘表述）
 
 **Effect-equivalent scenario merge**（效果等价 Scenario 合并）:
-同一 **Move snapshot** 下，多个原始 scenario 组合的实际生效机制与计算输入相同时，合并为一个结果行；即使仍有其他机制生效，只要部分选择无效并且剩余效果相同也应合并。合并保留原始选择来源，且不能跨 Move snapshot 合并，也不能仅因取整后的伤害碰巧相同而判定等价。
+同一 **Move snapshot** 下，以实际送入伤害、概率与 KO 计算的完整输入为等价键；键相同的原始 scenario 合并为一个结果行，不能跨快照或按最终展示数字判定等价。合并来源按 Track 保留选项集合，并区分生效、未生效、效果暂未支持与中性选择；具体显示遵循各 Track 契约。
 _Avoid_: No-effect-only merge, Equal-damage merge, Deduplication
 
 ### Stat configuration
@@ -119,15 +127,15 @@ _Avoid_: Advanced mode, 专家模式
 ### Damage and KO
 
 **Critical stage**（会心等级）:
-决定招式会心概率的 `0`～`+3` 统一等级；招式、特性或其他机制只贡献等级修正，不另设“必定会心”类型。会心等级达到 `+3` 时即为必定会心；它不同于 `-6`～`+6` 的 **Stat stage**。
+决定招式会心概率的 `0`～`+3` 统一等级；当前 ruleset 下依次为 `1/24`、`1/8`、`1/2`、`1`，招式、特性或其他机制只贡献等级修正。`+3` 即必定会心，不另设独立类型；它不同于 `-6`～`+6` 的 **Stat stage**。
 _Avoid_: Guaranteed-crit move type, Critical profile, 必定会心标记
 
 **Damage range**:
-通常 16 roll 下的最低 ~ 最高伤害值及其占防守方 HP 的百分比；在箱形图中以**箱体**表示。
+结果行主伤害分支的 16-roll 最低 ~ 最高伤害值及其占防守方 HP 的百分比；通常使用普通伤害 rolls，必定会心时使用会心 rolls，并在箱形图中以**箱体**表示。
 _Avoid_: Damage spread, 伤害波动
 
 **Crit range**:
-暴击 roll 下的最低 ~ 最高伤害值；在箱形图中以**须须**及端点表示。
+会心不是必定事件时，会心 rolls 的最低 ~ 最高伤害值；在箱形图中以**须须**及端点表示。必定会心时它并入 **Damage range**，不再单独显示。
 _Avoid_: Critical spread, 会心范围
 
 **Damage distribution**（伤害分布）:
@@ -218,9 +226,17 @@ _Avoid_: Mismatched item, 错配道具
 
 ### Abilities
 
+**Champions ability usage data**:
+按 Champions 双打赛季与 **Battle Pokémon identity** 表达特性使用率排名的数据；它只决定 Ability Track 的默认选择，不决定特性合法性。无可用数据时不推断首选特性。
+_Avoid_: Official ability recommendation, Ability legality data
+
 **Ability selection**（特性选择）:
-攻击方或防御方 ability track 中的一项选择；选中后默认视为生效，不提供额外启用开关。双方默认选中当前宝可梦形态的全部合法特性，包括隐藏特性；本轮只有适应力具有已实现的计算效果。
+攻击方或防御方 Ability Track 中的一项当前合法特性选择；双方 Track 均为至少保留一项的多选，选中即视为启用，不提供额外开关。默认只选 **Champions ability usage data** 中最常用的合法特性，无可用数据时全选全部合法特性。
 _Avoid_: Ability activation toggle, Conditional ability simulation
+
+**Adaptability effect**（适应力效果）:
+攻击方持有适应力且招式属性属于其原始属性时，STAB 为 `2×`；攻击方使用非本系招式或防御方持有适应力时，该特性对本次伤害未生效。
+_Avoid_: Global 4/3 damage boost, Defensive Adaptability modifier
 
 **Unsupported ability effect**（未支持的特性效果）:
 真实特性可以被选择，但其计算规则尚未实现的状态；当前以中性修正参与计算与效果等价合并，同时必须明确标记“效果暂未支持”。它不同于已经判断为对当前 scenario 无效的特性。

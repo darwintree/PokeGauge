@@ -10,7 +10,7 @@ updated_at: "2026-07-15T02:47:00Z"
 ---
 ## Context
 
-从 [[20260715_open_wayfinder-core-battle-mechanics-specification|Wayfinder: Core battle mechanics specification]] 延后。场地的伤害效果依赖攻击方／防御方是否接地，而接地又与属性、道具、特性及其他战斗状态相交；当前用户明确暂不做此 feature。
+从 [[archive/20260715_closed_wayfinder-core-battle-mechanics-specification|Wayfinder: Core battle mechanics specification]] 延后。场地的伤害效果依赖攻击方／防御方是否接地，而接地又与属性、道具、特性及其他战斗状态相交；当前用户明确暂不做此 feature。
 
 ## Question
 

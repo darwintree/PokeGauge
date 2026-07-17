@@ -27,7 +27,7 @@ Scenario Explorer 右侧伤害对比区（箱线图 + 结果摘要）的信息�
 
 - 结果行携带道具改为 **图标**（与 sidebar 同源 `public/items/`）
 - **hover** 时 tooltip 补全道具名称
-- 属性强化对当前招式 **无加成** 时，结果行注明 **「无加成」**（v1 不合并重复行；合并方案 → [[../20260629_open_define-effect-equivalent-scenario-merging-and-provenance-display]]）
+- 属性强化对当前招式 **无加成** 时，结果行注明 **「无加成」**（v1 不合并重复行；合并方案 → [[20260629_closed_define-effect-equivalent-scenario-merging-and-provenance-display]]）
 
 ### Row cleanup（grill 2026-07-01，详见 trace）
 
@@ -55,5 +55,5 @@ Scenario Explorer 右侧伤害对比区（箱线图 + 结果摘要）的信息�
 ## Related
 
 - [[20260626_open_introduce-specific-held-item-controls-life-orb-plates-choice-series|Held-item controls]]
-- [[../20260629_open_define-effect-equivalent-scenario-merging-and-provenance-display|Merge no-boost rows]]
+- [[20260629_closed_define-effect-equivalent-scenario-merging-and-provenance-display|Merge no-boost rows]]
 - [[20260701_closed_decide-the-ko-probability-display-and-global-toggle-contract|OHKO/2HKO combined probability]]
