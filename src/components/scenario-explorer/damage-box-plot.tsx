@@ -31,7 +31,7 @@ import { formatKoProbability } from "./format-ko-probability"
 const LINEAR_MAX = 100
 const AXIS_MAX = 200
 const LINEAR_FRACTION = 0.72
-const TICKS = [0, 25, 50, 75, 100, 150, 200]
+const TICKS = [0, 25, 50, 75, 100, 200]
 
 function clampPct(pct: number): number {
   return Math.min(Math.max(pct, 0), AXIS_MAX)
@@ -121,7 +121,7 @@ type RowLabelProps = {
 
 function RowLabel({ children }: RowLabelProps) {
   return (
-    <span className="w-8 shrink-0 text-muted-foreground text-[10px]">{children}</span>
+    <span className="text-muted-foreground w-10 shrink-0 text-[11px]">{children}</span>
   )
 }
 
@@ -354,18 +354,18 @@ function KoProbabilityColumns({ row }: { row: ScenarioRow }) {
   const unavailable = intl.formatMessage({ id: "damage.ko.unavailable" })
 
   return (
-    <dl className="grid w-36 shrink-0 grid-cols-2 text-center text-xs tabular-nums">
-      <div>
-        <dt className="sr-only">OHKO</dt>
-        <dd>
+    <dl className="grid w-full grid-cols-2 gap-3 rounded-lg bg-muted/50 px-3 py-2 text-xs tabular-nums md:w-36 md:shrink-0 md:gap-0 md:rounded-none md:bg-transparent md:p-0 md:text-center">
+      <div className="grid grid-cols-[1fr_auto] items-center gap-2 md:block">
+        <dt className="text-muted-foreground text-[11px] md:sr-only">OHKO</dt>
+        <dd className="font-medium md:font-normal">
           {row.koProbabilities
             ? formatKoProbability(row.koProbabilities.ohko, intl.locale)
             : unavailable}
         </dd>
       </div>
-      <div>
-        <dt className="sr-only">≤2HKO</dt>
-        <dd>
+      <div className="grid grid-cols-[1fr_auto] items-center gap-2 md:block">
+        <dt className="text-muted-foreground text-[11px] md:sr-only">≤2HKO</dt>
+        <dd className="font-medium md:font-normal">
           {row.koProbabilities
             ? formatKoProbability(row.koProbabilities.twoHit, intl.locale)
             : unavailable}
@@ -415,8 +415,8 @@ export function DamageBoxPlot({
       : null
 
   return (
-    <div className="flex min-h-[4.5rem] items-center gap-3">
-      <div className="w-60 shrink-0 overflow-hidden rounded-md border">
+    <div className="grid min-h-[4.5rem] gap-3 md:grid-cols-[15rem_minmax(0,1fr)_9rem] md:items-center">
+      <div className="w-full overflow-hidden rounded-lg border bg-muted/20 md:w-60">
         {showMove && (
           <div className="flex items-center gap-1.5 px-3 py-1.5">
             <RowLabel>{intl.formatMessage({ id: "damage.row.move" })}</RowLabel>
@@ -492,7 +492,7 @@ export function DamageBoxPlot({
 
       <Tooltip>
         <TooltipTrigger
-          render={<div tabIndex={0} className="relative h-10 min-w-0 flex-1 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/40" />}
+          render={<div tabIndex={0} className="relative h-12 min-w-0 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/40 md:h-10" />}
         >
           <div
             className="absolute top-1/2 h-px w-full -translate-y-1/2 bg-border"
@@ -540,8 +540,8 @@ export function DamageBoxPlot({
           )}
 
           <div
-            className="pointer-events-none absolute -bottom-6 flex flex-wrap items-baseline text-xs"
-            style={{ left: box.left, minWidth: "12rem" }}
+            className="pointer-events-none absolute -bottom-5 flex w-full flex-wrap items-baseline justify-center text-xs max-md:!left-0 md:w-auto md:min-w-48 md:justify-start"
+            style={{ left: box.left }}
           >
             <span className="font-medium tabular-nums">
               {row.minPercent.toFixed(1)}% ~ {row.maxPercent.toFixed(1)}%
@@ -608,13 +608,17 @@ function HoverLabel({ children }: { children: React.ReactNode }) {
 export function DamageAxis() {
   const intl = useIntl()
   return (
-    <div className="bg-background sticky top-0 z-10 mb-2 flex pl-[15.75rem]">
+    <div className="bg-background sticky top-14 z-10 mb-3 flex py-1 md:pl-[15.75rem] lg:top-0">
       <div className="relative h-6 min-w-0 flex-1">
         {TICKS.map((tick) => (
           <div
             key={tick}
             className="absolute top-0 flex flex-col items-center"
-            style={{ left: pctToLeft(tick), transform: "translateX(-50%)" }}
+            style={{
+              left: pctToLeft(tick),
+              transform:
+                tick === 0 ? "none" : tick === AXIS_MAX ? "translateX(-100%)" : "translateX(-50%)",
+            }}
           >
             <div className="bg-border h-3 w-px" />
             <span className="text-muted-foreground mt-0.5 text-[10px] tabular-nums">
@@ -628,7 +632,7 @@ export function DamageAxis() {
           aria-hidden
         />
       </div>
-      <div className="ml-3 grid w-36 shrink-0 grid-cols-2 text-center text-[10px] font-medium">
+      <div className="ml-3 hidden w-36 shrink-0 grid-cols-2 text-center text-[11px] font-medium md:grid">
         <span>{intl.formatMessage({ id: "damage.ko.ohko" })}</span>
         <span>{intl.formatMessage({ id: "damage.ko.twoHit" })}</span>
       </div>

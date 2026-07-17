@@ -142,14 +142,18 @@ export function ScenarioResults({
         />
       </div>
       <DamageAxis />
-      <ul className={compact ? "space-y-8 pb-2" : "space-y-12 pb-2"}>
-        {rows.map((row) => {
+      <ul className={compact ? "space-y-4 pb-2" : "space-y-8 pb-2"}>
+        {rows.map((row, index) => {
           const labels = rowLabels(catalog, row, trackState, statNameStrategy, rowLabelTemplates)
           const isRangeEnvelope =
             row.attackerStatId === RANGE_STAT_ID || row.defenderId === RANGE_DEFENDER_ID
+          const startsMoveGroup = index === 0 || rows[index - 1].snapshotId !== row.snapshotId
 
           return (
-            <li key={row.calculationIdentity}>
+            <li
+              key={row.calculationIdentity}
+              className={index > 0 && startsMoveGroup ? "border-t pt-6" : undefined}
+            >
               <DamageBoxPlot
                 move={catalogOption(catalog.moves, row.moveId)}
                 attackerAbilities={catalog.attackerAbilities}
@@ -165,7 +169,7 @@ export function ScenarioResults({
                   actual: labels.defenderActual,
                 }}
                 row={row}
-                showMove={showMoveOnRow}
+                showMove={showMoveOnRow && startsMoveGroup}
                 isRangeEnvelope={isRangeEnvelope}
               />
             </li>
