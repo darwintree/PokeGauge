@@ -124,6 +124,7 @@ function ScenarioExplorerContent({
           <ScenarioResults
             catalog={catalog}
             rows={state.rows}
+            unavailable={state.unavailable}
             trackState={state.trackState}
             statNameStrategy={state.statNameStrategy}
             showMoveOnRow={state.showMoveOnRow}

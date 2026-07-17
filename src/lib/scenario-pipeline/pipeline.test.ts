@@ -276,6 +276,12 @@ describe("matchup scenario pipeline", () => {
             unsupported: [],
             neutral: ["none"],
           },
+          weather: {
+            effective: [],
+            inactive: [],
+            unsupported: [],
+            neutral: ["none"],
+          },
           "defender-stat": {
             effective: ["hp-32"],
             inactive: [],

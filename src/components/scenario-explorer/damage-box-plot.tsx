@@ -223,6 +223,46 @@ function FoldedStageChoices({ stages }: { stages?: ProvenanceOptionSets }) {
   )
 }
 
+function WeatherValues({ ids }: { ids: string[] }) {
+  const intl = useIntl()
+  return ids.filter((id) => id !== "none").map((id) => (
+    <span key={id} className="rounded border px-1 text-[10px]">
+      {intl.formatMessage({ id: `track.weather.${id}` })}
+    </span>
+  ))
+}
+
+function FoldedWeatherChoices({ weather }: { weather?: ProvenanceOptionSets }) {
+  const intl = useIntl()
+  const inactive = weather?.inactive.filter((id) => id !== "none") ?? []
+  const unsupported = weather?.unsupported.filter((id) => id !== "none") ?? []
+  const count = inactive.length + unsupported.length
+
+  if (count === 0) return null
+
+  return (
+    <details className="text-muted-foreground mt-1 pl-10 text-[10px]">
+      <summary className="w-fit cursor-pointer select-none">
+        {intl.formatMessage({ id: "damage.weather.other" }, { count })}
+      </summary>
+      <div className="mt-1 space-y-1">
+        {inactive.length > 0 && (
+          <div className="flex items-center gap-1">
+            <span>{intl.formatMessage({ id: "damage.sources.inactive" })}</span>
+            <WeatherValues ids={inactive} />
+          </div>
+        )}
+        {unsupported.length > 0 && (
+          <div className="flex items-center gap-1">
+            <span>{intl.formatMessage({ id: "damage.sources.unsupported" })}</span>
+            <WeatherValues ids={unsupported} />
+          </div>
+        )}
+      </div>
+    </details>
+  )
+}
+
 function KoProbabilityColumns({ row }: { row: ScenarioRow }) {
   const intl = useIntl()
   const unavailable = intl.formatMessage({ id: "damage.ko.unavailable" })
@@ -273,6 +313,7 @@ export function DamageBoxPlot({
   const itemProvenance = row.provenance["held-item"]
   const attackerStageProvenance = row.provenance["attacker-stage"]
   const defenderStageProvenance = row.provenance["defender-stage"]
+  const weatherProvenance = row.provenance.weather
   const box = pctSpan(row.minPercent, row.maxPercent)
   const crit = pctSpan(row.critMinPercent, row.critMaxPercent)
   const bridge =
@@ -308,9 +349,11 @@ export function DamageBoxPlot({
             )}
             <StageValues ids={attackerStageProvenance?.effective ?? []} />
             <ItemIcons ids={itemProvenance?.effective ?? []} />
+            <WeatherValues ids={weatherProvenance?.effective ?? []} />
           </div>
           <FoldedStageChoices stages={attackerStageProvenance} />
           <FoldedItemChoices items={itemProvenance} />
+          <FoldedWeatherChoices weather={weatherProvenance} />
           {isRangeEnvelope && (
             <div className="text-muted-foreground mt-1 pl-10 text-[10px]">
               {intl.formatMessage({ id: "damage.rangeEnvelope" })}

@@ -5,6 +5,7 @@ import type {
   SourceState,
   StatStage,
   UnavailableReason,
+  Weather,
 } from "@/lib/calc-adapter"
 import type { MoveSnapshot } from "@/lib/move-snapshot"
 import type { StatValueTemplate } from "@/lib/stat-value-template"
@@ -38,6 +39,7 @@ export type TrackState = {
   offenseAllocationIndices: Record<string, number>
   attackerStages: StatStage[]
   attackerItemIds: string[]
+  weathers: Weather[]
   defenderMode: StatSelectMode
   defenseTemplateIds: string[]
   defenseTemporaryTemplates: StatValueTemplate[]

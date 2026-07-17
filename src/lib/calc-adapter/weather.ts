@@ -1,0 +1,91 @@
+import type { PokemonType } from "@/lib/pokemon/types"
+
+import { NEUTRAL_MODIFIER } from "./damage-kernel"
+import type { ProbabilityMode } from "./types"
+
+export const WEATHERS = ["none", "sun", "rain", "sand", "snow"] as const
+
+export type Weather = (typeof WEATHERS)[number]
+
+type WeatherAccuracy = number | "always-hits"
+
+const WEATHER_ACCURACY: Partial<
+  Record<number, Partial<Record<Weather, WeatherAccuracy>>>
+> = {
+  59: { snow: "always-hits" },
+  87: { sun: 50, rain: "always-hits" },
+  542: { sun: 50, rain: "always-hits" },
+  846: { rain: "always-hits" },
+  847: { rain: "always-hits" },
+  848: { rain: "always-hits" },
+}
+
+type CompiledWeatherEffect = {
+  basePowerModifier: number
+  damageModifier: number
+  accuracy?: WeatherAccuracy
+  state: "effective" | "inactive" | "unsupported" | "neutral"
+  unavailable?: "weather-type-change"
+}
+
+function basePowerModifier(moveId: number, weather: Weather): number {
+  return (moveId === 76 || moveId === 669) &&
+    (weather === "rain" || weather === "sand" || weather === "snow")
+    ? 2048
+    : NEUTRAL_MODIFIER
+}
+
+function damageModifier(
+  moveId: number,
+  moveType: PokemonType | undefined,
+  weather: Weather,
+): number {
+  if (moveId === 876 && weather === "sun") return 6144
+  if (weather === "sun") {
+    if (moveType === "fire") return 6144
+    if (moveType === "water") return 2048
+  }
+  if (weather === "rain") {
+    if (moveType === "water") return 6144
+    if (moveType === "fire") return 2048
+  }
+  return NEUTRAL_MODIFIER
+}
+
+export function compileWeatherEffect(
+  moveId: number,
+  moveType: PokemonType | undefined,
+  weather: Weather,
+  probabilityMode: ProbabilityMode,
+): CompiledWeatherEffect {
+  if (weather === "none") {
+    return {
+      basePowerModifier: NEUTRAL_MODIFIER,
+      damageModifier: NEUTRAL_MODIFIER,
+      state: "neutral",
+    }
+  }
+  if (moveId === 311) {
+    return {
+      basePowerModifier: NEUTRAL_MODIFIER,
+      damageModifier: NEUTRAL_MODIFIER,
+      state: "unsupported",
+      unavailable: "weather-type-change",
+    }
+  }
+
+  const basePower = basePowerModifier(moveId, weather)
+  const damage = damageModifier(moveId, moveType, weather)
+  const accuracy = WEATHER_ACCURACY[moveId]?.[weather]
+  const effective =
+    basePower !== NEUTRAL_MODIFIER ||
+    damage !== NEUTRAL_MODIFIER ||
+    (probabilityMode === "actual" && accuracy !== undefined)
+
+  return {
+    basePowerModifier: basePower,
+    damageModifier: damage,
+    ...(accuracy === undefined ? {} : { accuracy }),
+    state: effective ? "effective" : "inactive",
+  }
+}
