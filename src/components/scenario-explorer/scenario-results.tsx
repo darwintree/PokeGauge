@@ -43,16 +43,17 @@ function UnavailableNotices({
   unavailable: UnavailableScenarioGroup[]
 }) {
   const intl = useIntl()
+  const notices = unavailable.flatMap((group) => {
+    const reasons = group.reasons.filter((reason) => reason !== "unconfigured-move")
+    return reasons.length > 0 ? [{ ...group, reasons }] : []
+  })
 
-  if (unavailable.length === 0) return null
+  if (notices.length === 0) return null
 
   return (
     <ul className="mb-3 space-y-2">
-      {unavailable.map((group) => {
+      {notices.map((group) => {
         const move = catalog.moves.find((candidate) => candidate.id === group.moveId)
-        const fields = group.missingFields
-          .map((field) => intl.formatMessage({ id: `damage.unavailable.field.${field}` }))
-          .join(", ")
         return (
           <li
             key={group.snapshotId}
@@ -63,15 +64,6 @@ function UnavailableNotices({
             {group.reasons.map((reason) =>
               intl.formatMessage({ id: `damage.unavailable.reason.${reason}` }),
             ).join("; ")}
-            {fields && (
-              <span className="text-muted-foreground">
-                {" · "}
-                {intl.formatMessage(
-                  { id: "damage.unavailable.missing" },
-                  { fields },
-                )}
-              </span>
-            )}
           </li>
         )
       })}
