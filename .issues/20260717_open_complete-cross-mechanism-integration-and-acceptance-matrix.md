@@ -27,6 +27,6 @@ Finish the feature as one coherent Scenario Explorer flow by verifying mechanism
 ## Blocked by
 
 - [[archive/20260717_closed_add-attacker-and-defender-stat-stage-tracks|Add attacker and defender Stat stage tracks]]
-- [[20260717_open_add-reviewed-weather-scenarios|Add reviewed Weather scenarios]]
+- [[archive/20260717_closed_add-reviewed-weather-scenarios|Add reviewed Weather scenarios]]
 - [[20260717_open_add-ability-tracks-with-adaptability|Add Ability tracks with Adaptability]]
 - [[20260717_open_add-screen-scenarios-and-breakers|Add Screen scenarios and breakers]]

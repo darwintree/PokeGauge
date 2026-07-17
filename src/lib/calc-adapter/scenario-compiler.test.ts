@@ -43,6 +43,7 @@ function scenario(overrides: Partial<RawScenario> = {}): RawScenario {
     attackerItemId: "none",
     attackerStage: 0,
     defenderStage: 0,
+    weather: "none",
     probabilityMode: "rolls",
     lowOutcome: {
       offense: ATTACKER_STAT_SETUPS["neutral-max"],
@@ -107,6 +108,7 @@ describe("scenario compiler", () => {
     expect(outcome.sources).toEqual([
       { track: "attacker-stage", optionId: "0", state: "neutral" },
       { track: "held-item", optionId: "choice-band", state: "effective" },
+      { track: "weather", optionId: "none", state: "neutral" },
       { track: "defender-stage", optionId: "0", state: "neutral" },
     ])
   })
@@ -301,6 +303,7 @@ describe("scenario compiler", () => {
     expect(outcome.sources).toEqual([
       { track: "attacker-stage", optionId: "0", state: "neutral" },
       { track: "held-item", optionId: "type-boost-fire", state: "inactive" },
+      { track: "weather", optionId: "none", state: "neutral" },
       { track: "defender-stage", optionId: "0", state: "neutral" },
     ])
   })

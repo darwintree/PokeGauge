@@ -475,6 +475,11 @@ export function useScenarioState(catalog: MatchupCatalog) {
     setAddingOffense,
     setAttackerItemIds: (ids: string[]) =>
       setTrackState((s) => ({ ...s, attackerItemIds: ids })),
+    setWeathers: (weathers: TrackState["weathers"]) =>
+      setTrackState((s) => ({
+        ...s,
+        weathers: weathers.length > 0 ? weathers : ["none"],
+      })),
     setAttackerStages: (attackerStages: StatStage[]) =>
       setTrackState((s) => ({
         ...s,

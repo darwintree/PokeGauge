@@ -89,6 +89,8 @@ export type {
   StatStage,
 } from "./types"
 export { STAT_STAGES } from "./types"
+export { WEATHERS } from "./weather"
+export type { Weather } from "./weather"
 
 export {
   ATTACKER_ITEM_NAMES,

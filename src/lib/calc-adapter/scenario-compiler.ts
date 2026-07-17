@@ -22,6 +22,7 @@ import {
 import {
   type CompiledDamageInput,
   type DamageFormulaBranch,
+  chainModifiers,
   NEUTRAL_MODIFIER,
   typeEffectiveness,
 } from "./damage-kernel"
@@ -35,6 +36,7 @@ import type {
   StatSetup,
   StatStage,
 } from "./types"
+import { compileWeatherEffect, type Weather } from "./weather"
 
 export type RawScenarioPoint = {
   offense: StatSetup
@@ -48,6 +50,7 @@ export type RawScenario = {
   attackerItemId: string
   attackerStage: StatStage
   defenderStage: StatStage
+  weather: Weather
   probabilityMode: ProbabilityMode
   sourceOptionIds?: {
     attackerStat: string
@@ -72,6 +75,7 @@ export type ScenarioTrack =
   | "attacker-stat"
   | "attacker-stage"
   | "held-item"
+  | "weather"
   | "defender-stat"
   | "defender-stage"
 
@@ -94,7 +98,10 @@ export type CalculableScenario = {
   sources: ScenarioSource[]
 }
 
-export type UnavailableReason = "unconfigured-move" | "unsupported-move"
+export type UnavailableReason =
+  | "unconfigured-move"
+  | "unsupported-move"
+  | "weather-type-change"
 
 export type UnavailableScenario = {
   kind: "unavailable"
@@ -191,6 +198,7 @@ function compileProbability(
   snapshot: MoveSnapshot,
   mode: ProbabilityMode,
   accuracy: number,
+  weatherAccuracy?: number | "always-hits",
 ): ProbabilityInput {
   if (mode === "rolls") {
     return {
@@ -199,7 +207,13 @@ function compileProbability(
     }
   }
   return {
-    hitProbability: snapshot.alwaysHits ? 1 : accuracy / 100,
+    hitProbability: weatherAccuracy === "always-hits"
+      ? 1
+      : weatherAccuracy !== undefined
+        ? weatherAccuracy / 100
+        : snapshot.alwaysHits
+          ? 1
+          : accuracy / 100,
     criticalHitProbability: criticalProbability(snapshot.criticalStage),
   }
 }
@@ -213,6 +227,7 @@ type BranchContext = {
   attackModifier: number
   finalModifier: number
   spread: boolean
+  weatherModifier: number
   stabModifier: number
   typeEffectivenessModifier: number
   attackerStage: StatStage
@@ -247,7 +262,7 @@ function compileBranch(
       : context.defenderStage,
     defenseModifier: NEUTRAL_MODIFIER,
     spreadModifier: context.spread ? 3072 : NEUTRAL_MODIFIER,
-    weatherModifier: NEUTRAL_MODIFIER,
+    weatherModifier: context.weatherModifier,
     criticalModifier: critical ? 6144 : NEUTRAL_MODIFIER,
     stabModifier: context.stabModifier,
     typeEffectivenessModifier: context.typeEffectivenessModifier,
@@ -267,6 +282,12 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   const item = move && isMoveCategory(move.category) && moveType
     ? itemModifiers(raw.attackerItemId, move.category, moveType)
     : itemModifiers(raw.attackerItemId, "physical", "normal")
+  const weather = compileWeatherEffect(
+    raw.snapshot.moveId,
+    moveType,
+    raw.weather,
+    raw.probabilityMode,
+  )
   const criticalOnly = raw.snapshot.criticalStage === 3
   const attackerStageState: SourceState = raw.attackerStage === 0
     ? "neutral"
@@ -292,6 +313,11 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       state: attackerStageState,
     },
     item.source,
+    {
+      track: "weather",
+      optionId: raw.weather,
+      state: weather.state,
+    },
     ...(raw.sourceOptionIds
       ? [{
           track: "defender-stat" as const,
@@ -314,6 +340,14 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       snapshotId: raw.snapshot.id,
       reason: "unconfigured-move",
       missingFields,
+      sources,
+    }
+  }
+  if (weather.unavailable) {
+    return {
+      kind: "unavailable",
+      snapshotId: raw.snapshot.id,
+      reason: weather.unavailable,
       sources,
     }
   }
@@ -341,7 +375,10 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     defender,
     category,
     power,
-    basePowerModifier: item.basePower,
+    basePowerModifier: chainModifiers([
+      item.basePower,
+      weather.basePowerModifier,
+    ]),
     attackModifier: item.attack,
     finalModifier: item.final,
     spread: move.isSpread && raw.snapshot.spreadEligible && raw.snapshot.spread,
@@ -349,6 +386,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     typeEffectivenessModifier: Math.round(effectiveness * NEUTRAL_MODIFIER),
     attackerStage: raw.attackerStage,
     defenderStage: raw.defenderStage,
+    weatherModifier: weather.damageModifier,
   }
 
   const compilePoint = (point: RawScenarioPoint) => {
@@ -377,7 +415,12 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       low: compilePoint(raw.lowOutcome),
       ...(raw.highOutcome ? { high: compilePoint(raw.highOutcome) } : {}),
     },
-    probability: compileProbability(raw.snapshot, raw.probabilityMode, accuracy),
+    probability: compileProbability(
+      raw.snapshot,
+      raw.probabilityMode,
+      accuracy,
+      weather.accuracy,
+    ),
     ko: { hitCounts: [1, 2] },
     sources,
   }

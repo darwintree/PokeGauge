@@ -21,6 +21,7 @@ import {
   StatValueTemplatePreset,
 } from "./stat-value-template-preset"
 import type { ScenarioState } from "./use-scenario-state"
+import { WeatherTrack } from "./weather-track"
 
 type TrackControlsProps = {
   catalog: MatchupCatalog
@@ -151,6 +152,11 @@ export function TrackControls({ catalog, state, onMoveCategoryChange }: TrackCon
         catalog={catalog}
         selectedIds={trackState.attackerItemIds}
         onChange={state.setAttackerItemIds}
+      />
+
+      <WeatherTrack
+        values={trackState.weathers}
+        onChange={state.setWeathers}
       />
 
       <Separator />
