@@ -1,3 +1,4 @@
+import { calculate, Field, Move, Pokemon } from "@smogon/calc"
 import { beforeAll, describe, expect, it } from "vitest"
 
 import { listResources } from "@/lib/resources"
@@ -8,13 +9,20 @@ import {
 } from "@/lib/move-snapshot"
 
 import { calculateDamageRolls, type DamageFormulaBranch } from "./damage-kernel"
-import { ATTACKER_STAT_SETUPS, DEFENDER_SETUPS } from "./presets"
+import { CALC_GEN, VGC_LEVEL } from "./calc-constants"
+import {
+  ATTACKER_STAT_SETUPS,
+  DEFENDER_SETUPS,
+  getAttackerStatSetups,
+  getDefenderSetups,
+} from "./presets"
 import {
   calculationIdentity,
   type CalculableScenario,
   type RawScenario,
   compileScenario,
 } from "./scenario-compiler"
+import { STAT_STAGES, type StatStage } from "./types"
 
 const snapshot: MoveSnapshot = {
   id: "earthquake-1",
@@ -33,6 +41,8 @@ function scenario(overrides: Partial<RawScenario> = {}): RawScenario {
     attackerId: 445,
     defenderId: 727,
     attackerItemId: "none",
+    attackerStage: 0,
+    defenderStage: 0,
     probabilityMode: "rolls",
     lowOutcome: {
       offense: ATTACKER_STAT_SETUPS["neutral-max"],
@@ -95,7 +105,9 @@ describe("scenario compiler", () => {
       finalModifier: 4096,
     })
     expect(outcome.sources).toEqual([
+      { track: "attacker-stage", optionId: "0", state: "neutral" },
       { track: "held-item", optionId: "choice-band", state: "effective" },
+      { track: "defender-stage", optionId: "0", state: "neutral" },
     ])
   })
 
@@ -133,6 +145,153 @@ describe("scenario compiler", () => {
     expect(outcome.probability.criticalHitProbability).toBe(probability)
   })
 
+  it("offers every stage from -6 through +6", () => {
+    expect(STAT_STAGES).toEqual([-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6])
+  })
+
+  it.each([
+    [-2, 2, 0, 0],
+    [-2, -2, 0, -2],
+    [2, 2, 2, 0],
+    [2, -2, 2, -2],
+  ] as const)(
+    "suppresses critical stages for attacker %i and defender %i",
+    (attackerStage, defenderStage, criticalAttackStage, criticalDefenseStage) => {
+      const outcome = calculableScenario({ attackerStage, defenderStage })
+
+      expect(outcome.calculation.low.normal).toMatchObject({
+        attackStage: attackerStage,
+        defenseStage: defenderStage,
+      })
+      expect(outcome.calculation.low.critical).toMatchObject({
+        attackStage: criticalAttackStage,
+        defenseStage: criticalDefenseStage,
+      })
+    },
+  )
+
+  it.each([
+    [0, 0],
+    [-6, 6],
+    [6, -6],
+  ] as const)("compiles stage endpoints %i/%i", (attackerStage, defenderStage) => {
+    const outcome = calculableScenario({ attackerStage, defenderStage })
+
+    expect(outcome.calculation.low.normal).toMatchObject({
+      attackStage: attackerStage,
+      defenseStage: defenderStage,
+    })
+  })
+
+  it.each([
+    ["rolls", 0, 0],
+    ["rolls", 1, 0],
+    ["rolls", 2, 0],
+    ["rolls", 3, 1],
+    ["actual", 0, 1 / 24],
+    ["actual", 1, 1 / 8],
+    ["actual", 2, 1 / 2],
+    ["actual", 3, 1],
+  ] as const)(
+    "compiles %s probability at critical stage +%i",
+    (probabilityMode, criticalStage, criticalHitProbability) => {
+      const outcome = calculableScenario({
+        probabilityMode,
+        snapshot: { ...snapshot, criticalStage },
+      })
+
+      expect(outcome.probability.criticalHitProbability).toBe(criticalHitProbability)
+      expect(outcome.calculation.low.normal === undefined).toBe(criticalStage === 3)
+      expect(outcome.calculation.low.critical).toBeDefined()
+    },
+  )
+
+  it.each([
+    {
+      label: "physical",
+      attackerId: 445,
+      attackerName: "Garchomp",
+      defenderName: "Incineroar",
+      moveId: 89,
+      moveName: "Earthquake",
+      power: 100,
+      spread: true,
+      attackerStage: -6,
+      defenderStage: 6,
+    },
+    {
+      label: "special",
+      attackerId: 987,
+      attackerName: "Flutter Mane",
+      defenderName: "Incineroar",
+      moveId: 585,
+      moveName: "Moonblast",
+      power: 95,
+      spread: false,
+      attackerStage: 6,
+      defenderStage: -6,
+    },
+  ] as const)("matches @smogon/calc $label staged rolls", (testCase) => {
+    const category = testCase.label
+    const offense = getAttackerStatSetups(category)["neutral-max"]
+    const defense = getDefenderSetups(category)["standard-bulk"]
+    const compiled = compileScenario(scenario({
+      attackerId: testCase.attackerId,
+      attackerStage: testCase.attackerStage as StatStage,
+      defenderStage: testCase.defenderStage as StatStage,
+      snapshot: {
+        ...snapshot,
+        id: `${testCase.label}-stage-oracle`,
+        moveId: testCase.moveId,
+        power: testCase.power,
+        spreadEligible: testCase.spread,
+        spread: testCase.spread,
+      },
+      lowOutcome: { offense, defense },
+    }))
+    if (compiled.kind !== "calculable") {
+      throw new Error(`Expected calculable, got ${compiled.reason}`)
+    }
+
+    const attacker = new Pokemon(CALC_GEN, testCase.attackerName, {
+      level: VGC_LEVEL,
+      nature: offense.nature,
+      evs: offense.evs,
+      boosts: {
+        [category === "physical" ? "atk" : "spa"]: testCase.attackerStage,
+      },
+    })
+    const defender = new Pokemon(CALC_GEN, testCase.defenderName, {
+      level: VGC_LEVEL,
+      nature: defense.nature,
+      evs: defense.evs,
+      boosts: {
+        [category === "physical" ? "def" : "spd"]: testCase.defenderStage,
+      },
+    })
+    const field = new Field({ gameType: "Doubles" })
+    const result = calculateDamageRolls(compiled.calculation).low
+
+    expect(result.normal).toEqual(
+      calculate(
+        CALC_GEN,
+        attacker,
+        defender,
+        new Move(CALC_GEN, testCase.moveName),
+        field,
+      ).damage,
+    )
+    expect(result.critical).toEqual(
+      calculate(
+        CALC_GEN,
+        attacker,
+        defender,
+        new Move(CALC_GEN, testCase.moveName, { isCrit: true }),
+        field,
+      ).damage,
+    )
+  })
+
   it("keeps ineffective type-boost provenance while compiling a neutral phase", () => {
     const outcome = compileScenario(scenario({ attackerItemId: "type-boost-fire" }))
     expect(outcome.kind).toBe("calculable")
@@ -140,7 +299,9 @@ describe("scenario compiler", () => {
 
     expect(outcome.calculation.low.normal?.basePowerModifier).toBe(4096)
     expect(outcome.sources).toEqual([
+      { track: "attacker-stage", optionId: "0", state: "neutral" },
       { track: "held-item", optionId: "type-boost-fire", state: "inactive" },
+      { track: "defender-stage", optionId: "0", state: "neutral" },
     ])
   })
 

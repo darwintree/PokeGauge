@@ -9,6 +9,12 @@ export type DefenderSetup = StatSetup
 
 export type ProbabilityMode = "rolls" | "actual"
 
+export const STAT_STAGES = [
+  -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6,
+] as const
+
+export type StatStage = (typeof STAT_STAGES)[number]
+
 export type KoProbabilityRange = {
   min: number
   max: number

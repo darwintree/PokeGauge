@@ -86,7 +86,9 @@ export type {
   StatAxisSnapPoint,
   StatRange,
   StatSetup,
+  StatStage,
 } from "./types"
+export { STAT_STAGES } from "./types"
 
 export {
   ATTACKER_ITEM_NAMES,

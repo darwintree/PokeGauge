@@ -258,6 +258,12 @@ describe("matchup scenario pipeline", () => {
         reasons: ["unconfigured-move"],
         missingFields: ["power", "accuracy"],
         provenance: {
+          "attacker-stage": {
+            effective: [],
+            inactive: [],
+            unsupported: [],
+            neutral: ["0"],
+          },
           "attacker-stat": {
             effective: ["neutral-max", "extreme"],
             inactive: [],
@@ -275,6 +281,12 @@ describe("matchup scenario pipeline", () => {
             inactive: [],
             unsupported: [],
             neutral: [],
+          },
+          "defender-stage": {
+            effective: [],
+            inactive: [],
+            unsupported: [],
+            neutral: ["0"],
           },
         },
       }],
@@ -336,6 +348,77 @@ describe("matchup scenario pipeline", () => {
         neutral: ["none"],
       })
     }
+  })
+
+  it("defaults both stage tracks to zero and includes them in the row product", () => {
+    const state = defaultTrackState(catalog)
+    expect(state.attackerStages).toEqual([0])
+    expect(state.defenderStages).toEqual([0])
+
+    selectMoves(catalog, state, [89])
+    state.offenseTemplateIds = ["extreme"]
+    state.attackerItemIds = ["none"]
+    state.defenseTemplateIds = ["hp-32"]
+    state.attackerStages = [-6, 0, 6]
+    state.defenderStages = [-6, 0, 6]
+
+    expect(expectedRowCount(state)).toBe(9)
+    expect(scenarioRows(catalog, state)).toHaveLength(9)
+  })
+
+  it("merges critical-only ignored stages and retains inactive provenance", () => {
+    const state = defaultTrackState(catalog)
+    selectMoves(catalog, state, [89])
+    state.moveSnapshots[0] = { ...state.moveSnapshots[0], criticalStage: 3 }
+    state.offenseTemplateIds = ["extreme"]
+    state.attackerItemIds = ["none"]
+    state.defenseTemplateIds = ["hp-32"]
+    state.attackerStages = [-6, -1, 0]
+    state.defenderStages = [0, 1, 6]
+    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+
+    const { rows } = runScenarioPipeline(catalog, state)
+
+    expect(expectedRowCount(state)).toBe(9)
+    expect(rows).toHaveLength(1)
+    expect(kernel).toHaveBeenCalledTimes(1)
+    expect(rows[0].criticalOnly).toBe(true)
+    expect(rows[0].provenance["attacker-stage"]).toEqual({
+      effective: [],
+      inactive: ["-6", "-1"],
+      unsupported: [],
+      neutral: ["0"],
+    })
+    expect(rows[0].provenance["defender-stage"]).toEqual({
+      effective: [],
+      inactive: ["1", "6"],
+      unsupported: [],
+      neutral: ["0"],
+    })
+  })
+
+  it("keeps lower-critical stage choices distinct and effective", () => {
+    const state = defaultTrackState(catalog)
+    selectMoves(catalog, state, [89])
+    state.moveSnapshots[0] = { ...state.moveSnapshots[0], criticalStage: 2 }
+    state.offenseTemplateIds = ["extreme"]
+    state.attackerItemIds = ["none"]
+    state.defenseTemplateIds = ["hp-32"]
+    state.attackerStages = [-1, 0]
+    state.defenderStages = [0, 1]
+
+    const rows = scenarioRows(catalog, state)
+
+    expect(rows).toHaveLength(4)
+    expect(rows.every((row) => !row.criticalOnly)).toBe(true)
+    expect(rows.some((row) =>
+      row.provenance["attacker-stage"]?.effective.includes("-1") &&
+      row.provenance["defender-stage"]?.effective.includes("1")
+    )).toBe(true)
+    expect(rows.some((row) =>
+      row.provenance["attacker-stage"]?.neutral.includes("0") &&
+      row.provenance["defender-stage"]?.neutral.includes("0")
+    )).toBe(true)
   })
 
   it("filters preset rows when offense template is deselected", () => {

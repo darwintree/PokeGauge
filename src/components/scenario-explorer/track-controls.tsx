@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils"
 import { MoveMultiSelect } from "./move-multi-select"
 import { HeldItemTrack } from "./held-item-track/held-item-track"
 import { StatRangeAxis } from "./stat-range-axis"
+import { StatStageTrack } from "./stat-stage-track"
 import {
   AddDefenseTemplatePanel,
   AddOffenseTemplatePanel,
@@ -139,6 +140,13 @@ export function TrackControls({ catalog, state, onMoveCategoryChange }: TrackCon
         </TabsContent>
       </Tabs>
 
+      <StatStageTrack
+        label={<FormattedMessage id="track.attackerStage" />}
+        ariaLabel={intl.formatMessage({ id: "track.attackerStage" })}
+        values={trackState.attackerStages}
+        onChange={state.setAttackerStages}
+      />
+
       <HeldItemTrack
         catalog={catalog}
         selectedIds={trackState.attackerItemIds}
@@ -217,6 +225,13 @@ export function TrackControls({ catalog, state, onMoveCategoryChange }: TrackCon
           />
         </TabsContent>
       </Tabs>
+
+      <StatStageTrack
+        label={<FormattedMessage id="track.defenderStage" />}
+        ariaLabel={intl.formatMessage({ id: "track.defenderStage" })}
+        values={trackState.defenderStages}
+        onChange={state.setDefenderStages}
+      />
 
       <StatNameStrategySelect
         value={state.statNameStrategy}

@@ -1,4 +1,4 @@
-/** Box = normal 16 rolls; whiskers = crit range (PRD visualization contract) */
+/** Box = main 16 rolls; whiskers = critical range when a normal branch exists. */
 
 import { useIntl } from "react-intl"
 
@@ -173,6 +173,56 @@ function FoldedItemChoices({ items }: { items?: ProvenanceOptionSets }) {
   )
 }
 
+function formatStage(value: string): string {
+  const stage = Number(value)
+  return stage > 0 ? `+${stage}` : value
+}
+
+function StageValues({ ids }: { ids: string[] }) {
+  return ids.map((id) => (
+    <span key={id} className="rounded border px-1 text-[10px] tabular-nums">
+      {formatStage(id)}
+    </span>
+  ))
+}
+
+function FoldedStageChoices({ stages }: { stages?: ProvenanceOptionSets }) {
+  const intl = useIntl()
+  const neutral = stages?.neutral ?? []
+  const inactive = stages?.inactive ?? []
+  const unsupported = stages?.unsupported ?? []
+  const count = neutral.length + inactive.length + unsupported.length
+
+  if (count === 0) return null
+
+  return (
+    <details className="text-muted-foreground mt-1 pl-10 text-[10px]">
+      <summary className="w-fit cursor-pointer select-none">
+        {intl.formatMessage({ id: "damage.stages.other" }, { count })}
+      </summary>
+      <div className="mt-1 space-y-1">
+        {neutral.length > 0 && (
+          <div className="flex items-center gap-1">
+            <StageValues ids={neutral} />
+          </div>
+        )}
+        {inactive.length > 0 && (
+          <div className="flex items-center gap-1">
+            <span>{intl.formatMessage({ id: "damage.sources.inactive" })}</span>
+            <StageValues ids={inactive} />
+          </div>
+        )}
+        {unsupported.length > 0 && (
+          <div className="flex items-center gap-1">
+            <span>{intl.formatMessage({ id: "damage.sources.unsupported" })}</span>
+            <StageValues ids={unsupported} />
+          </div>
+        )}
+      </div>
+    </details>
+  )
+}
+
 function KoProbabilityColumns({ row }: { row: ScenarioRow }) {
   const intl = useIntl()
   const unavailable = intl.formatMessage({ id: "damage.ko.unavailable" })
@@ -221,10 +271,12 @@ export function DamageBoxPlot({
   const offenseTier = isRangeEnvelope ? null : offenseStatTier(attackerStat.id)
   const defenseTier = defenderBulkTier(defender.id)
   const itemProvenance = row.provenance["held-item"]
+  const attackerStageProvenance = row.provenance["attacker-stage"]
+  const defenderStageProvenance = row.provenance["defender-stage"]
   const box = pctSpan(row.minPercent, row.maxPercent)
   const crit = pctSpan(row.critMinPercent, row.critMaxPercent)
   const bridge =
-    row.critMinPercent > row.maxPercent
+    !row.criticalOnly && row.critMinPercent > row.maxPercent
       ? pctSpan(row.maxPercent, row.critMinPercent)
       : null
 
@@ -254,8 +306,10 @@ export function DamageBoxPlot({
                 <ResultStatLabel label={attackerStat.label} actual={attackerStat.actual} />
               </span>
             )}
+            <StageValues ids={attackerStageProvenance?.effective ?? []} />
             <ItemIcons ids={itemProvenance?.effective ?? []} />
           </div>
+          <FoldedStageChoices stages={attackerStageProvenance} />
           <FoldedItemChoices items={itemProvenance} />
           {isRangeEnvelope && (
             <div className="text-muted-foreground mt-1 pl-10 text-[10px]">
@@ -264,17 +318,21 @@ export function DamageBoxPlot({
           )}
         </div>
         <Separator />
-        <div className="flex items-center gap-1.5 px-3 py-1.5">
-          <RowLabel>{intl.formatMessage({ id: "damage.row.defense" })}</RowLabel>
-          {defenseTier ? (
-            <ResultTierChip tier={defenseTier} className="text-xs leading-snug">
-              <ResultStatLabel label={defender.label} actual={defender.actual} />
-            </ResultTierChip>
-          ) : (
-            <span className="text-muted-foreground text-xs leading-snug">
-              <ResultStatLabel label={defender.label} actual={defender.actual} />
-            </span>
-          )}
+        <div className="px-3 py-1.5">
+          <div className="flex items-center gap-1.5">
+            <RowLabel>{intl.formatMessage({ id: "damage.row.defense" })}</RowLabel>
+            {defenseTier ? (
+              <ResultTierChip tier={defenseTier} className="text-xs leading-snug">
+                <ResultStatLabel label={defender.label} actual={defender.actual} />
+              </ResultTierChip>
+            ) : (
+              <span className="text-muted-foreground text-xs leading-snug">
+                <ResultStatLabel label={defender.label} actual={defender.actual} />
+              </span>
+            )}
+            <StageValues ids={defenderStageProvenance?.effective ?? []} />
+          </div>
+          <FoldedStageChoices stages={defenderStageProvenance} />
         </div>
       </div>
 
@@ -308,18 +366,21 @@ export function DamageBoxPlot({
             />
           )}
 
-          <div
-            className="absolute top-1/2 h-px -translate-y-1/2 bg-violet-600/70"
-            style={{ left: crit.left, width: crit.width }}
-          />
-
-          {[row.critMinPercent, row.critMaxPercent].map((p, i) => (
-            <div
-              key={i}
-              className="absolute top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-violet-600 bg-background"
-              style={{ left: pctToLeft(p) }}
-            />
-          ))}
+          {!row.criticalOnly && (
+            <>
+              <div
+                className="absolute top-1/2 h-px -translate-y-1/2 bg-violet-600/70"
+                style={{ left: crit.left, width: crit.width }}
+              />
+              {[row.critMinPercent, row.critMaxPercent].map((p, i) => (
+                <div
+                  key={i}
+                  className="absolute top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-violet-600 bg-background"
+                  style={{ left: pctToLeft(p) }}
+                />
+              ))}
+            </>
+          )}
 
           <div
             className="pointer-events-none absolute -bottom-6 flex flex-wrap items-baseline text-xs"
@@ -337,7 +398,11 @@ export function DamageBoxPlot({
           className="flex-col items-stretch gap-1.5 max-w-[18rem] px-3 py-2"
         >
           <HoverRow marker={<span className={cn("inline-block size-2 rounded-sm", TONE_DOT_CLASS[tone])} />}>
-            <HoverLabel>{intl.formatMessage({ id: "damage.normal" })}</HoverLabel>
+            <HoverLabel>
+              {intl.formatMessage({
+                id: row.criticalOnly ? "damage.critical" : "damage.normal",
+              })}
+            </HoverLabel>
             <span className="tabular-nums">
               {row.minPercent.toFixed(1)}% ~ {row.maxPercent.toFixed(1)}%
             </span>
@@ -346,12 +411,14 @@ export function DamageBoxPlot({
             <HoverLabel>{intl.formatMessage({ id: "damage.average" })}</HoverLabel>
             <span className="tabular-nums">{row.avgPercent.toFixed(1)}%</span>
           </HoverRow>
-          <HoverRow marker={<span className="inline-block size-2 rounded-full border-2 border-violet-600 bg-transparent" />}>
-            <HoverLabel>{intl.formatMessage({ id: "damage.critical" })}</HoverLabel>
-            <span className="tabular-nums">
-              {row.critMinPercent.toFixed(1)}% ~ {row.critMaxPercent.toFixed(1)}%
-            </span>
-          </HoverRow>
+          {!row.criticalOnly && (
+            <HoverRow marker={<span className="inline-block size-2 rounded-full border-2 border-violet-600 bg-transparent" />}>
+              <HoverLabel>{intl.formatMessage({ id: "damage.critical" })}</HoverLabel>
+              <span className="tabular-nums">
+                {row.critMinPercent.toFixed(1)}% ~ {row.critMaxPercent.toFixed(1)}%
+              </span>
+            </HoverRow>
+          )}
         </TooltipContent>
       </Tooltip>
       <KoProbabilityColumns row={row} />
