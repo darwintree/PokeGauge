@@ -1,10 +1,11 @@
+import { ChevronsUpDown } from "lucide-react"
 import { FormattedMessage } from "react-intl"
 
 import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
 import { STAT_STAGES, type StatStage } from "@/lib/calc-adapter"
 
 import { TrackOption, TrackOptionGroup } from "./track-option"
+import { TrackCard } from "./track-card"
 
 function stageLabel(stage: StatStage): string {
   return stage > 0 ? `+${stage}` : String(stage)
@@ -15,6 +16,8 @@ type StatStageTrackProps = {
   ariaLabel: string
   values: StatStage[]
   onChange: (values: StatStage[]) => void
+  expanded?: boolean
+  onToggle?: () => void
 }
 
 export function StatStageTrack({
@@ -22,6 +25,8 @@ export function StatStageTrack({
   ariaLabel,
   values,
   onChange,
+  expanded = true,
+  onToggle = () => {},
 }: StatStageTrackProps) {
   const selected = new Set(values)
 
@@ -34,9 +39,15 @@ export function StatStageTrack({
   }
 
   return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between gap-2">
-        <Label className="text-muted-foreground text-xs">{label}</Label>
+    <TrackCard
+      icon={ChevronsUpDown}
+      label={label}
+      summary={values.length > 0 ? values.map(stageLabel).join(", ") : "0"}
+      expanded={expanded}
+      onToggle={onToggle}
+    >
+      <div className="space-y-2">
+        <div className="flex justify-end">
         <Button
           type="button"
           variant="ghost"
@@ -64,6 +75,7 @@ export function StatStageTrack({
           )
         })}
       </TrackOptionGroup>
-    </div>
+      </div>
+    </TrackCard>
   )
 }
