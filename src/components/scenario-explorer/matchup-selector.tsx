@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react"
+import { Search } from "lucide-react"
+import { useId, useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { TypeBadge, TypeBadgeRow } from "@/components/pokemon/type-badge"
@@ -47,6 +48,7 @@ export function SpeciesSelect({
   spriteSide = "front",
 }: SpeciesSelectProps) {
   const intl = useIntl()
+  const searchId = useId()
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState("")
   const [typeFilters, setTypeFilters] = useState<PokemonType[]>([])
@@ -89,17 +91,28 @@ export function SpeciesSelect({
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="bottom-0 top-auto left-0 max-w-none translate-x-0 translate-y-0 rounded-b-none sm:top-1/2 sm:left-1/2 sm:max-w-xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl">
-          <DialogHeader>
+        <DialogContent className="bottom-0 top-auto left-0 h-[min(44rem,calc(100svh-1rem))] max-w-none grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden translate-x-0 translate-y-0 rounded-b-none p-0 sm:top-1/2 sm:left-1/2 sm:h-[min(44rem,calc(100svh-2rem))] sm:max-w-xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl">
+          <DialogHeader className="border-b px-4 py-3 pr-12">
             <DialogTitle>{label}</DialogTitle>
           </DialogHeader>
-          <div className="space-y-3">
-            <Input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder={intl.formatMessage({ id: "matchup.placeholder" })}
-            />
-            <div className="flex max-h-20 flex-wrap gap-1 overflow-y-auto">
+          <div className="flex min-h-0 flex-col gap-3 p-4">
+            <div className="relative shrink-0">
+              <Label htmlFor={searchId} className="sr-only">
+                <FormattedMessage id="matchup.search" />
+              </Label>
+              <Search
+                className="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2"
+                aria-hidden
+              />
+              <Input
+                id={searchId}
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder={intl.formatMessage({ id: "matchup.search" })}
+                className="pl-8"
+              />
+            </div>
+            <div className="flex shrink-0 flex-wrap gap-1">
               {POKEMON_TYPES.map((type) => {
                 const pressed = typeFilters.includes(type)
                 return (
@@ -118,7 +131,7 @@ export function SpeciesSelect({
                 )
               })}
             </div>
-            <div className="max-h-[55svh] overflow-y-auto rounded-lg border">
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain rounded-lg border">
               {filteredOptions.length === 0 ? (
                 <div className="text-muted-foreground p-6 text-center text-sm">
                   <FormattedMessage id="matchup.noMatches" />
@@ -128,7 +141,8 @@ export function SpeciesSelect({
                   <button
                     key={option.id}
                     type="button"
-                    className="hover:bg-muted flex w-full items-center justify-between gap-3 border-b px-3 py-2 text-left last:border-b-0"
+                    aria-current={option.id === value ? "true" : undefined}
+                    className="hover:bg-muted aria-current:bg-muted/70 flex w-full items-center justify-between gap-3 border-b px-3 py-2 text-left last:border-b-0"
                     onClick={() => select(option.id)}
                   >
                     <span className="min-w-0">
