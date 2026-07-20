@@ -1,6 +1,6 @@
 import { Crosshair, Plus, Search, Trash2 } from "lucide-react"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { useIntl } from "react-intl"
+import { FormattedMessage, useIntl } from "react-intl"
 
 import { TypeBadge } from "@/components/pokemon/type-badge"
 import { Button } from "@/components/ui/button"
@@ -50,8 +50,12 @@ function moveMatches(option: CatalogMoveOption, query: string, typeFilter: Pokem
 
 function MoveMeta({ option }: { option: CatalogMoveOption }) {
   return (
-    <span className="text-muted-foreground flex shrink-0 items-center gap-2 text-xs tabular-nums">
-      {option.isSpread && <span className="rounded-sm border px-1 text-[10px]">AoE</span>}
+    <span className="text-muted-foreground grid w-28 shrink-0 grid-cols-[1fr_2.25rem_2.25rem] items-center text-right text-xs tabular-nums">
+      {option.isSpread ? (
+        <span className="rounded-sm border px-1 text-[10px]">AoE</span>
+      ) : (
+        <span />
+      )}
       <span>{option.power}</span>
       <span>{option.accuracy ?? "-"}</span>
     </span>
@@ -331,21 +335,28 @@ export function MoveMultiSelect({
         )}
 
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogContent className="bottom-0 top-auto left-0 max-w-none translate-x-0 translate-y-0 rounded-b-none sm:top-1/2 sm:left-1/2 sm:max-w-xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl">
-            <DialogHeader>
+          <DialogContent className="bottom-0 top-auto left-0 h-[min(44rem,calc(100svh-1rem))] max-w-none grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden translate-x-0 translate-y-0 rounded-b-none p-0 sm:top-1/2 sm:left-1/2 sm:h-[min(44rem,calc(100svh-2rem))] sm:max-w-xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl">
+            <DialogHeader className="border-b px-4 py-3 pr-12">
               <DialogTitle>{label}</DialogTitle>
             </DialogHeader>
-            <div className="space-y-3">
-              <Label htmlFor="move-search">
-                {intl.formatMessage({ id: "track.move.search" })}
-              </Label>
-              <Input
-                id="move-search"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder={intl.formatMessage({ id: "track.addMove" })}
-              />
-              <div className="flex max-h-20 flex-wrap gap-1 overflow-y-auto">
+            <div className="flex min-h-0 flex-col gap-3 p-4">
+              <div className="relative shrink-0">
+                <Label htmlFor="move-search" className="sr-only">
+                  {intl.formatMessage({ id: "track.move.search" })}
+                </Label>
+                <Search
+                  className="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2"
+                  aria-hidden
+                />
+                <Input
+                  id="move-search"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder={intl.formatMessage({ id: "track.move.search" })}
+                  className="pl-8"
+                />
+              </div>
+              <div className="flex shrink-0 flex-wrap gap-1">
                 {POKEMON_TYPES.map((type) => {
                   const pressed = typeFilter === type
                   return (
@@ -365,25 +376,38 @@ export function MoveMultiSelect({
                   )
                 })}
               </div>
-              <div className="max-h-[55svh] overflow-y-auto rounded-lg border">
-                {filteredOptions.map((option) => (
-                  <button
-                    key={option.id}
-                    type="button"
-                    className="hover:bg-muted flex w-full items-center gap-3 border-b px-3 py-2 text-left last:border-b-0"
-                    onClick={() => add(option.id)}
-                  >
-                    <TypeBadge type={option.type} />
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate text-sm font-medium">{option.label}</span>
-                      <span className="text-muted-foreground block truncate text-xs">
-                        {option.moveName}
+              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain rounded-lg border">
+                <div className="bg-muted/90 text-muted-foreground sticky top-0 z-10 flex items-center gap-3 border-b px-3 py-1.5 text-[10px] backdrop-blur-sm">
+                  <span className="flex-1" />
+                  <span className="grid w-28 shrink-0 grid-cols-[1fr_2.25rem_2.25rem] text-right">
+                    <span />
+                    <span>{intl.formatMessage({ id: "track.move.power" })}</span>
+                    <span>{intl.formatMessage({ id: "track.move.accuracy" })}</span>
+                  </span>
+                </div>
+                {filteredOptions.length === 0 ? (
+                  <div className="text-muted-foreground p-6 text-center text-sm">
+                    <FormattedMessage id="matchup.noMatches" />
+                  </div>
+                ) : (
+                  filteredOptions.map((option) => (
+                    <button
+                      key={option.id}
+                      type="button"
+                      className="hover:bg-muted flex w-full items-center gap-3 border-b px-3 py-2 text-left last:border-b-0"
+                      onClick={() => add(option.id)}
+                    >
+                      <TypeBadge type={option.type} />
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-sm font-medium">{option.label}</span>
+                        <span className="text-muted-foreground block truncate text-xs">
+                          {option.moveName}
+                        </span>
                       </span>
-                    </span>
-                    <MoveMeta option={option} />
-                    <Search className="text-muted-foreground size-3.5" />
-                  </button>
-                ))}
+                      <MoveMeta option={option} />
+                    </button>
+                  ))
+                )}
               </div>
             </div>
           </DialogContent>
