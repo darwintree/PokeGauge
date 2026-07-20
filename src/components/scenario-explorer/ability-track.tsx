@@ -1,11 +1,12 @@
+import { Sparkles } from "lucide-react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
 import { ADAPTABILITY_ABILITY_ID } from "@/lib/calc-adapter"
 import type { CatalogAbilityOption } from "@/lib/catalog"
 
 import { TrackOption, TrackOptionGroup } from "./track-option"
+import { TrackCard } from "./track-card"
 
 type AbilityTrackProps = {
   labelId: "track.attackerAbility" | "track.defenderAbility"
@@ -13,6 +14,8 @@ type AbilityTrackProps = {
   selectedIds: number[]
   onChange: (ids: number[]) => void
   onReset: () => void
+  expanded?: boolean
+  onToggle?: () => void
 }
 
 export function AbilityTrack({
@@ -21,6 +24,8 @@ export function AbilityTrack({
   selectedIds,
   onChange,
   onReset,
+  expanded = true,
+  onToggle = () => {},
 }: AbilityTrackProps) {
   const intl = useIntl()
   const selected = new Set(selectedIds)
@@ -34,12 +39,24 @@ export function AbilityTrack({
     )
   }
 
+  const orderedOptions = [...options].sort(
+    (a, b) => Number(selected.has(b.id)) - Number(selected.has(a.id)),
+  )
+  const summary = options
+    .filter((option) => selected.has(option.id))
+    .map((option) => option.label)
+    .join(", ")
+
   return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between gap-2">
-        <Label className="text-muted-foreground text-xs">
-          <FormattedMessage id={labelId} />
-        </Label>
+    <TrackCard
+      icon={Sparkles}
+      label={<FormattedMessage id={labelId} />}
+      summary={summary || "—"}
+      expanded={expanded}
+      onToggle={onToggle}
+    >
+      <div className="space-y-2">
+        <div className="flex justify-end">
         <Button
           type="button"
           variant="ghost"
@@ -51,7 +68,7 @@ export function AbilityTrack({
         </Button>
       </div>
       <TrackOptionGroup aria-label={intl.formatMessage({ id: labelId })}>
-        {options.map((option) => (
+        {orderedOptions.map((option) => (
           <TrackOption
             key={option.id}
             layout="text"
@@ -70,6 +87,7 @@ export function AbilityTrack({
           </TrackOption>
         ))}
       </TrackOptionGroup>
-    </div>
+      </div>
+    </TrackCard>
   )
 }

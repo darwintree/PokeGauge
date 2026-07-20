@@ -173,7 +173,7 @@ export function StatValueTemplatePreset({
 }: TemplatePresetProps) {
   const intl = useIntl()
   return (
-    <TrackOptionGroup className="w-72 overflow-visible">
+    <TrackOptionGroup className="w-full overflow-visible">
       {templates.map((template) => {
         const selected = selectedIds.includes(template.id)
         const allocIndex = allocationIndices[template.id] ?? 0

@@ -1,4 +1,3 @@
-import { Search } from "lucide-react"
 import { useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
@@ -22,6 +21,7 @@ type SpeciesSelectProps = {
   options: SpeciesOption[]
   value: BattlePokemonId
   onChange: (id: BattlePokemonId) => void
+  spriteSide?: "front" | "back"
 }
 
 function speciesMatches(option: SpeciesOption, query: string, typeFilters: PokemonType[]) {
@@ -39,7 +39,13 @@ function toggleType(filters: PokemonType[], type: PokemonType): PokemonType[] {
   return filters.includes(type) ? filters.filter((t) => t !== type) : [...filters, type]
 }
 
-export function SpeciesSelect({ label, options, value, onChange }: SpeciesSelectProps) {
+export function SpeciesSelect({
+  label,
+  options,
+  value,
+  onChange,
+  spriteSide = "front",
+}: SpeciesSelectProps) {
   const intl = useIntl()
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState("")
@@ -58,28 +64,27 @@ export function SpeciesSelect({ label, options, value, onChange }: SpeciesSelect
     setOpen(false)
   }
 
+  const spriteFile = spriteSide === "back" ? `back/${value}.png` : `${value}.png`
+
   return (
-    <div className="space-y-2">
-      <Label className="text-muted-foreground text-xs">{label}</Label>
+    <div>
       <Button
         type="button"
         variant="outline"
-        className="h-auto min-h-11 w-full justify-between gap-3 px-3 py-2 text-left"
+        className="h-auto min-h-32 w-full flex-col items-stretch justify-start gap-1 bg-gradient-to-b from-muted/50 to-background p-2 text-left"
         onClick={() => setOpen(true)}
       >
-        <span className="min-w-0">
-          <span className="block truncate text-sm font-medium">
+        <img
+          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${spriteFile}`}
+          alt=""
+          className="mx-auto size-20 object-contain [image-rendering:pixelated]"
+        />
+        <span className="text-muted-foreground text-[10px] font-normal">{label}</span>
+        <span className="flex min-w-0 items-center justify-between gap-2">
+          <span className="truncate text-sm font-semibold tracking-tight">
             {selected?.label ?? intl.formatMessage({ id: "matchup.placeholder" })}
           </span>
-          {selected && (
-            <span className="text-muted-foreground block truncate text-xs">
-              {selected.species}
-            </span>
-          )}
-        </span>
-        <span className="flex shrink-0 items-center gap-2">
           {selected && <TypeBadgeRow types={selected.types} />}
-          <Search className="text-muted-foreground size-3.5" />
         </span>
       </Button>
 

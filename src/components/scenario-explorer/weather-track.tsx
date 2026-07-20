@@ -1,17 +1,20 @@
+import { CloudSun } from "lucide-react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
 import { WEATHERS, type Weather } from "@/lib/calc-adapter"
 
 import { TrackOption, TrackOptionGroup } from "./track-option"
+import { TrackCard } from "./track-card"
 
 type WeatherTrackProps = {
   values: Weather[]
   onChange: (values: Weather[]) => void
+  expanded?: boolean
+  onToggle?: () => void
 }
 
-export function WeatherTrack({ values, onChange }: WeatherTrackProps) {
+export function WeatherTrack({ values, onChange, expanded = true, onToggle = () => {} }: WeatherTrackProps) {
   const intl = useIntl()
   const selected = new Set(values)
 
@@ -24,11 +27,15 @@ export function WeatherTrack({ values, onChange }: WeatherTrackProps) {
   }
 
   return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between gap-2">
-        <Label className="text-muted-foreground text-xs">
-          <FormattedMessage id="track.weather" />
-        </Label>
+    <TrackCard
+      icon={CloudSun}
+      label={<FormattedMessage id="track.weather" />}
+      summary={values.map((weather) => intl.formatMessage({ id: `track.weather.${weather}` })).join(", ")}
+      expanded={expanded}
+      onToggle={onToggle}
+    >
+      <div className="space-y-2">
+        <div className="flex justify-end">
         <Button
           type="button"
           variant="ghost"
@@ -56,6 +63,7 @@ export function WeatherTrack({ values, onChange }: WeatherTrackProps) {
           )
         })}
       </TrackOptionGroup>
-    </div>
+      </div>
+    </TrackCard>
   )
 }

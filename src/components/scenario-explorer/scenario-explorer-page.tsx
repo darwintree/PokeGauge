@@ -18,8 +18,8 @@ import { SUPPORTED_LOCALES, type SupportedLocale } from "@/lib/i18n"
 import type { BattlePokemonId } from "@/lib/resources"
 import { cn } from "@/lib/utils"
 
-import { SidebarBriefHost } from "./brief-prototype"
 import { ScenarioResults } from "./scenario-results"
+import { ScenarioSidebar } from "./scenario-sidebar"
 import { SelectionSummary } from "./track-controls"
 import { useScenarioState } from "./use-scenario-state"
 
@@ -76,18 +76,6 @@ function ScenarioExplorerContent({
   function changeMobileView(view: "setup" | "results") {
     setMobileView(view)
     window.scrollTo({ top: 0 })
-  }
-
-  const briefCtx = {
-    catalog,
-    state,
-    attackers,
-    defenders,
-    attackerId,
-    defenderId,
-    onAttackerChange,
-    onDefenderChange,
-    onMoveCategoryChange,
   }
 
   return (
@@ -152,7 +140,17 @@ function ScenarioExplorerContent({
               </div>
             </CardHeader>
             <CardContent className="pt-4">
-              <SidebarBriefHost ctx={briefCtx} />
+              <ScenarioSidebar
+                catalog={catalog}
+                state={state}
+                attackers={attackers}
+                defenders={defenders}
+                attackerId={attackerId}
+                defenderId={defenderId}
+                onAttackerChange={onAttackerChange}
+                onDefenderChange={onDefenderChange}
+                onMoveCategoryChange={onMoveCategoryChange}
+              />
             </CardContent>
           </Card>
         </aside>

@@ -1,14 +1,17 @@
+import { Fence } from "lucide-react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
 import { SCREENS, type Screen } from "@/lib/calc-adapter"
 
 import { TrackOption, TrackOptionGroup } from "./track-option"
+import { TrackCard } from "./track-card"
 
 type ScreenTrackProps = {
   values: Screen[]
   onChange: (values: Screen[]) => void
+  expanded?: boolean
+  onToggle?: () => void
 }
 
 function toggleScreen(values: Screen[], screen: Screen): Screen[] {
@@ -19,16 +22,20 @@ function toggleScreen(values: Screen[], screen: Screen): Screen[] {
   return next.length > 0 ? next : ["none"]
 }
 
-export function ScreenTrack({ values, onChange }: ScreenTrackProps) {
+export function ScreenTrack({ values, onChange, expanded = true, onToggle = () => {} }: ScreenTrackProps) {
   const intl = useIntl()
   const selected = new Set(values)
 
   return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between gap-2">
-        <Label className="text-muted-foreground text-xs">
-          <FormattedMessage id="track.screen" />
-        </Label>
+    <TrackCard
+      icon={Fence}
+      label={<FormattedMessage id="track.screen" />}
+      summary={values.map((screen) => intl.formatMessage({ id: `track.screen.${screen}` })).join(", ")}
+      expanded={expanded}
+      onToggle={onToggle}
+    >
+      <div className="space-y-2">
+        <div className="flex justify-end">
         <Button
           type="button"
           variant="ghost"
@@ -56,6 +63,7 @@ export function ScreenTrack({ values, onChange }: ScreenTrackProps) {
           )
         })}
       </TrackOptionGroup>
-    </div>
+      </div>
+    </TrackCard>
   )
 }
