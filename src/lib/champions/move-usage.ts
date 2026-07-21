@@ -16,11 +16,23 @@ type ChampionsIndexPokemon = {
   name: string
   slug: string
   battleName: string
+  showdownId?: string
+  showdownName?: string
   battleDataCsvs?: Array<{
     season: string
     format: ChampionsBattleFormat
     path: string
   }>
+  summary?: {
+    battleSummary?: Record<
+      string,
+      Partial<
+        Record<ChampionsBattleFormat, {
+          top?: { move?: { position?: number; column_position?: number } }
+        }>
+      >
+    >
+  }
 }
 
 type ChampionsIndexApi = {
@@ -48,6 +60,13 @@ const CHAMPIONS_NAME_OVERRIDES: Partial<Record<BattlePokemonId, string>> = {
   10021: "Landorus Therian",
 }
 
+const CHAMPIONS_POKEMON_ID_OVERRIDES: Record<string, BattlePokemonId> = {
+  taurospaldeaaqua: 10252,
+  taurospaldeablaze: 10251,
+  taurospaldeacombat: 10250,
+  vivillonfancy: 666,
+}
+
 const usageCache = new Map<BattlePokemonId, Promise<ChampionsMoveUsageRecord[]>>()
 let usageFetcher: (battlePokemonId: BattlePokemonId) => Promise<ChampionsMoveUsageRecord[]> =
   fetchChampionsMoveUsageOnline
@@ -55,6 +74,8 @@ const abilityUsageCache = new Map<BattlePokemonId, Promise<ChampionsAbilityUsage
 let abilityUsageFetcher: (
   battlePokemonId: BattlePokemonId,
 ) => Promise<ChampionsAbilityUsageRecord[]> = fetchChampionsAbilityUsageOnline
+let pokemonUsagePromise: Promise<BattlePokemonId[]> | undefined
+let pokemonUsageFetcher: () => Promise<BattlePokemonId[]> = fetchChampionsPokemonUsageOnline
 
 function normalizeJoinName(name: string): string {
   return name
@@ -77,6 +98,46 @@ function championsIndexByName(index: ChampionsIndexApi): Map<string, ChampionsIn
         .map((name) => [normalizeJoinName(name), pokemon] as const),
     ),
   )
+}
+
+async function fetchChampionsPokemonUsageOnline(): Promise<BattlePokemonId[]> {
+  const [pokemon, index] = await Promise.all([
+    listResources("pokemon", "en"),
+    fetchJson<ChampionsIndexApi>(CHAMPIONS_INDEX_URL),
+  ])
+  const pokemonByName = new Map(
+    pokemon.flatMap((resource) =>
+      [resource.name, resource.pokemonSlug, resource.calcSpeciesName].map(
+        (name) => [normalizeJoinName(name), resource.battlePokemonId] as const,
+      ),
+    ),
+  )
+  const season = index.defaultSeason ?? "Current"
+  const ranked = (index.pokemon ?? [])
+    .flatMap((entry) => {
+      const row = entry.summary?.battleSummary?.[season]?.[CHAMPIONS_FORMAT]?.top?.move
+      const rank = row?.position ?? row?.column_position
+      const aliases = [
+        entry.showdownId,
+        entry.showdownName,
+        entry.name,
+        entry.battleName,
+        entry.slug,
+      ]
+      const id = aliases.reduce<BattlePokemonId | undefined>(
+        (match, name) =>
+          match ??
+          (name
+            ? CHAMPIONS_POKEMON_ID_OVERRIDES[normalizeJoinName(name)] ??
+              pokemonByName.get(normalizeJoinName(name))
+            : undefined),
+        undefined,
+      )
+      return rank === undefined || id === undefined ? [] : [{ id, rank }]
+    })
+    .sort((a, b) => a.rank - b.rank)
+
+  return [...new Set(ranked.map(({ id }) => id))]
 }
 
 async function fetchChampionsBattleRows(
@@ -209,4 +270,21 @@ export function setChampionsAbilityUsageFetcherForTest(
 export function resetChampionsAbilityUsageFetcherForTest(): void {
   abilityUsageCache.clear()
   abilityUsageFetcher = fetchChampionsAbilityUsageOnline
+}
+
+export function listChampionsPokemonUsageIds(): Promise<BattlePokemonId[]> {
+  pokemonUsagePromise ??= pokemonUsageFetcher()
+  return pokemonUsagePromise
+}
+
+export function setChampionsPokemonUsageFetcherForTest(
+  fetcher: () => Promise<BattlePokemonId[]>,
+): void {
+  pokemonUsagePromise = undefined
+  pokemonUsageFetcher = fetcher
+}
+
+export function resetChampionsPokemonUsageFetcherForTest(): void {
+  pokemonUsagePromise = undefined
+  pokemonUsageFetcher = fetchChampionsPokemonUsageOnline
 }

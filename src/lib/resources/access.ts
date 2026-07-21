@@ -117,6 +117,7 @@ export async function getResource<TType extends ResourceType>(
     ...(resource.resourceType === "pokemon"
       ? {
           battlePokemonId: resource.id,
+          pokemonSlug: resource.pokemonSlug,
           calcSpeciesName: resource.calcSpeciesName,
           types: resource.types,
           abilityIds: resource.abilityIds,
@@ -145,6 +146,7 @@ function localizePokemon(
     locale,
     name: resource.names[locale],
     battlePokemonId: resource.id,
+    pokemonSlug: resource.pokemonSlug,
     calcSpeciesName: resource.calcSpeciesName,
     types: resource.types,
     abilityIds: resource.abilityIds,
