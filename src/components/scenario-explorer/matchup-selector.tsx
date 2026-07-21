@@ -1,5 +1,5 @@
 import { Search } from "lucide-react"
-import { useId, useMemo, useState } from "react"
+import { useId, useMemo, useRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { TypeBadge, TypeBadgeRow } from "@/components/pokemon/type-badge"
@@ -52,14 +52,21 @@ export function SpeciesSelect({
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState("")
   const [typeFilters, setTypeFilters] = useState<PokemonType[]>([])
+  const optionsAtOpen = useRef(options)
+  const visibleOptions = open ? optionsAtOpen.current : options
   const selected = useMemo(
     () => options.find((option) => option.id === value) ?? null,
     [options, value],
   )
   const filteredOptions = useMemo(
-    () => options.filter((option) => speciesMatches(option, query, typeFilters)),
-    [options, query, typeFilters],
+    () => visibleOptions.filter((option) => speciesMatches(option, query, typeFilters)),
+    [visibleOptions, query, typeFilters],
   )
+
+  function changeOpen(nextOpen: boolean) {
+    if (nextOpen) optionsAtOpen.current = options
+    setOpen(nextOpen)
+  }
 
   function select(id: BattlePokemonId) {
     onChange(id)
@@ -74,7 +81,7 @@ export function SpeciesSelect({
         type="button"
         variant="outline"
         className="h-auto min-h-32 w-full flex-col items-stretch justify-start gap-1 bg-gradient-to-b from-muted/50 to-background p-2 text-left"
-        onClick={() => setOpen(true)}
+        onClick={() => changeOpen(true)}
       >
         <img
           src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${spriteFile}`}
@@ -90,7 +97,7 @@ export function SpeciesSelect({
         </span>
       </Button>
 
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={changeOpen}>
         <DialogContent className="bottom-0 top-auto left-0 h-[min(44rem,calc(100svh-1rem))] max-w-none grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden translate-x-0 translate-y-0 rounded-b-none p-0 sm:top-1/2 sm:left-1/2 sm:h-[min(44rem,calc(100svh-2rem))] sm:max-w-xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl">
           <DialogHeader className="border-b px-4 py-3 pr-12">
             <DialogTitle>{label}</DialogTitle>

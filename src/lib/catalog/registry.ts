@@ -155,22 +155,32 @@ async function listPokemonOptions(locale: SupportedLocale): Promise<SpeciesOptio
   const cached = POKEMON_OPTIONS_BY_LOCALE.get(locale)
   if (cached) return cached
 
-  const options = Promise.all([
-    listResources("pokemon", locale),
-    withTimeout(listChampionsPokemonUsageIds(), DEFAULT_USAGE_TIMEOUT_MS).catch(() => []),
-  ]).then(([pokemon, usageIds]) => {
-    const alphabetical = pokemon
-      .map(localizedSpeciesOption)
-      .sort((a, b) => a.label.localeCompare(b.label))
-    const byId = new Map(alphabetical.map((option) => [option.id, option]))
-    const usageIdSet = new Set(usageIds)
-    return Object.freeze([
-      ...usageIds.flatMap((id) => byId.get(id) ?? []),
-      ...alphabetical.filter((option) => !usageIdSet.has(option.id)),
-    ]) as SpeciesOption[]
-  })
+  const options = listResources("pokemon", locale).then((pokemon) =>
+    Object.freeze(
+      pokemon
+        .map(localizedSpeciesOption)
+        .sort((a, b) => a.label.localeCompare(b.label)),
+    ) as SpeciesOption[],
+  )
   POKEMON_OPTIONS_BY_LOCALE.set(locale, options)
   return options
+}
+
+export async function rankPokemonOptionsByChampionsUsage(
+  options: SpeciesOption[],
+): Promise<SpeciesOption[]> {
+  const usageIds = await withTimeout(
+    listChampionsPokemonUsageIds(),
+    DEFAULT_USAGE_TIMEOUT_MS,
+  ).catch(() => [])
+  if (usageIds.length === 0) return options
+
+  const byId = new Map(options.map((option) => [option.id, option]))
+  const usageIdSet = new Set(usageIds)
+  return [
+    ...usageIds.flatMap((id) => byId.get(id) ?? []),
+    ...options.filter((option) => !usageIdSet.has(option.id)),
+  ]
 }
 
 export async function listAttackers(locale: SupportedLocale): Promise<SpeciesOption[]> {
