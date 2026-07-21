@@ -196,6 +196,7 @@ describe("ability scenario product and provenance", () => {
       revelationDance,
       "pipeline-revelation-dance",
     )]
+    state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
     state.offenseTemplateIds = ["neutral-max"]
     state.attackerStages = [0]
     state.attackerItemIds = ["none"]
@@ -266,6 +267,7 @@ describe("ability scenario product and provenance", () => {
     if (!waterGun) throw new Error("Expected Water Gun catalog option")
     const state = defaultTrackState(catalog)
     state.moveSnapshots = [createMoveSnapshot(waterGun, "pipeline-water-gun")]
+    state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
     state.offenseTemplateIds = ["neutral-max"]
     state.attackerStages = [0]
     state.attackerItemIds = ["none"]

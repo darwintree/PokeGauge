@@ -75,9 +75,11 @@ export function ScenarioSidebar({
         label={intl.formatMessage({ id: "track.moves" })}
         options={catalog.moves}
         snapshots={trackState.moveSnapshots}
+        selectedSnapshotIds={trackState.selectedMoveSnapshotIds}
         onAdd={state.addMoveSnapshot}
         onChange={state.updateMoveSnapshot}
         onRemove={state.removeMoveSnapshot}
+        onSelectionChange={state.setSelectedMoveSnapshotIds}
         expanded={activeId === "moves"}
         onToggle={() => toggle("moves")}
         category={catalog.moveCategory}
