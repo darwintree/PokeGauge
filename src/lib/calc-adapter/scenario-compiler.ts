@@ -23,6 +23,7 @@ import { ADAPTABILITY_ABILITY_ID } from "./ability"
 import {
   type CompiledDamageInput,
   type DamageFormulaBranch,
+  applyModifier,
   chainModifiers,
   NEUTRAL_MODIFIER,
   typeEffectiveness,
@@ -102,8 +103,23 @@ export type CalculableScenario = {
   }
   calculation: CompiledDamageInput
   probability: ProbabilityInput
+  moveMechanics: MoveMechanics
   ko: KoInput
   sources: ScenarioSource[]
+}
+
+export type MoveMechanics = {
+  basePower: number
+  effectivePower: number
+  accuracy: number | "always-hits"
+  modifiers: {
+    item: number
+    weather: number
+    spread: number
+    stab: number
+    typeEffectiveness: number
+    screen: number
+  }
 }
 
 export type UnavailableReason =
@@ -205,8 +221,7 @@ function criticalProbability(stage: CriticalStage): number {
 function compileProbability(
   snapshot: MoveSnapshot,
   mode: ProbabilityMode,
-  accuracy: number,
-  weatherAccuracy?: number | "always-hits",
+  accuracy: MoveMechanics["accuracy"],
 ): ProbabilityInput {
   if (mode === "rolls") {
     return {
@@ -215,13 +230,7 @@ function compileProbability(
     }
   }
   return {
-    hitProbability: weatherAccuracy === "always-hits"
-      ? 1
-      : weatherAccuracy !== undefined
-        ? weatherAccuracy / 100
-        : snapshot.alwaysHits
-          ? 1
-          : accuracy / 100,
+    hitProbability: accuracy === "always-hits" ? 1 : accuracy / 100,
     criticalHitProbability: criticalProbability(snapshot.criticalStage),
   }
 }
@@ -439,6 +448,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     weatherModifier: weather.damageModifier,
     screenModifier: screen.modifier,
   }
+  const moveAccuracy = weather.accuracy ?? (raw.snapshot.alwaysHits ? "always-hits" : accuracy)
 
   const compilePoint = (point: RawScenarioPoint) => {
     const defenderStats = defenderStatValuesForPokemon(
@@ -469,9 +479,24 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     probability: compileProbability(
       raw.snapshot,
       raw.probabilityMode,
-      accuracy,
-      weather.accuracy,
+      moveAccuracy,
     ),
+    moveMechanics: {
+      basePower: power,
+      effectivePower: Math.max(1, applyModifier(power, context.basePowerModifier)),
+      accuracy: moveAccuracy,
+      modifiers: {
+        item: chainModifiers([item.basePower, item.attack, item.final]),
+        weather: chainModifiers([
+          weather.basePowerModifier,
+          weather.damageModifier,
+        ]),
+        spread: context.spread ? 3072 : NEUTRAL_MODIFIER,
+        stab: context.stabModifier,
+        typeEffectiveness: context.typeEffectivenessModifier,
+        screen: context.screenModifier,
+      },
+    },
     ko: { hitCounts: [1, 2] },
     sources,
   }

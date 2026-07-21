@@ -27,6 +27,7 @@ export { ADAPTABILITY_ABILITY_ID } from "./ability"
 export { CALC_GEN, VGC_LEVEL } from "./calc-constants"
 export {
   calculateDamageRolls,
+  applyModifier,
   NEUTRAL_MODIFIER,
   typeEffectiveness,
 } from "./damage-kernel"
@@ -45,6 +46,7 @@ export type {
   CalculableScenario,
   CompilerOutcome,
   KoInput,
+  MoveMechanics,
   ProbabilityInput,
   RawScenario,
   RawScenarioPoint,

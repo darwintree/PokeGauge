@@ -177,7 +177,6 @@ function ScenarioExplorerContent({
             unavailable={state.unavailable}
             trackState={state.trackState}
             statNameStrategy={state.statNameStrategy}
-            showMoveOnRow={state.showMoveOnRow}
             onShowResultActualChange={state.setShowResultActual}
             onProbabilityModeChange={state.setProbabilityMode}
             compact

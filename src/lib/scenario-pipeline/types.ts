@@ -1,5 +1,6 @@
 import type {
   KoProbabilities,
+  MoveMechanics,
   ProbabilityMode,
   Screen,
   ScenarioTrack,
@@ -64,6 +65,7 @@ export type ScenarioRow = {
   defenderId: string
   provenance: ScenarioProvenance
   criticalOnly: boolean
+  moveMechanics: MoveMechanics
   statRange?: StatRange
   defenderRanges?: DefenderStatRanges
   minDamage: number

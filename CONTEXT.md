@@ -78,6 +78,10 @@ _Avoid_: Dual screens option, Screen stack, 场地保护
 结果页的一行箱形图，对应各 **track** 选中项的一个组合（笛卡尔积的一项）。
 _Avoid_: Template（代码/UI 层可用，领域层统一称 Scenario）
 
+**Damage Conditions Card**（伤害条件卡）:
+伤害结果行中标识计算条件的卡片；对应合并后的一条伤害结果，包含招式、生效的攻守条件及折叠的其他条件来源。
+_Avoid_: 场景摘要区, 行标识卡片
+
 **Track**:
 结果页上的一个配置维度；每个 track 独立选型，类型为**多选**或**数值范围**。
 _Avoid_: Configuration axis, filter, dimension

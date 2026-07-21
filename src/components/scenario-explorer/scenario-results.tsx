@@ -29,7 +29,6 @@ type ScenarioResultsProps = {
   unavailable: UnavailableScenarioGroup[]
   trackState: TrackState
   statNameStrategy: StatNameStrategy
-  showMoveOnRow: boolean
   onShowResultActualChange: (checked: boolean) => void
   onProbabilityModeChange: (mode: TrackState["probabilityMode"]) => void
   compact?: boolean
@@ -83,7 +82,6 @@ export function ScenarioResults({
   unavailable,
   trackState,
   statNameStrategy,
-  showMoveOnRow,
   onShowResultActualChange,
   onProbabilityModeChange,
   compact = false,
@@ -169,8 +167,8 @@ export function ScenarioResults({
                   actual: labels.defenderActual,
                 }}
                 row={row}
-                showMove={showMoveOnRow && startsMoveGroup}
                 isRangeEnvelope={isRangeEnvelope}
+                showAccuracy={trackState.probabilityMode === "actual"}
               />
             </li>
           )

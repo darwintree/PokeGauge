@@ -53,6 +53,12 @@ it("renders effective abilities inline and folds inactive and unsupported states
       },
     },
     criticalOnly: false,
+    moveMechanics: {
+      basePower: 40,
+      effectivePower: 40,
+      accuracy: 100,
+      modifiers: { item: 4096, weather: 4096, spread: 4096, stab: 4096, typeEffectiveness: 4096, screen: 4096 },
+    },
     minDamage: 20,
     maxDamage: 24,
     avgDamage: 22,
@@ -96,7 +102,7 @@ it("renders effective abilities inline and folds inactive and unsupported states
   ))
 
   expect(markup).toContain("Adaptability")
-  expect(markup).toContain("Other abilities (2)")
+  expect(markup).toContain("Other conditions (2)")
   expect(markup).toContain("Inactive")
   expect(markup).toContain("Unsupported")
   expect(markup).toContain("Run Away")

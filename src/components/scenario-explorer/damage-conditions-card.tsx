@@ -1,0 +1,183 @@
+import { Info } from "lucide-react"
+import { useIntl } from "react-intl"
+
+import { TypeBadge } from "@/components/pokemon/type-badge"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import { NEUTRAL_MODIFIER, type ScenarioTrack } from "@/lib/calc-adapter"
+import type { CatalogAbilityOption, CatalogMoveOption } from "@/lib/catalog"
+import { itemAriaLabel, itemSprite } from "@/lib/held-item"
+import type { ScenarioRow } from "@/lib/scenario-pipeline"
+
+type DamageConditionsCardProps = {
+  move: CatalogMoveOption
+  row: ScenarioRow
+  attackerStat: { label: string; actual?: string | null }
+  defender: { label: string; actual?: string | null }
+  attackerAbilities: CatalogAbilityOption[]
+  defenderAbilities: CatalogAbilityOption[]
+  isRangeEnvelope: boolean
+  showAccuracy: boolean
+}
+
+function modifierLabel(value: number): string {
+  return `${Number((value / NEUTRAL_MODIFIER).toFixed(2))}×`
+}
+
+function sourceLabel(
+  track: ScenarioTrack,
+  id: string,
+  props: DamageConditionsCardProps,
+  intl: ReturnType<typeof useIntl>,
+): string {
+  if (track === "held-item") return itemAriaLabel(id)
+  if (track === "attacker-ability" || track === "defender-ability") {
+    const options = track === "attacker-ability"
+      ? props.attackerAbilities
+      : props.defenderAbilities
+    return options.find((option) => String(option.id) === id)?.label ?? id
+  }
+  if (track === "weather") return intl.formatMessage({ id: `track.weather.${id}` })
+  if (track === "screen") return intl.formatMessage({ id: `track.screen.${id}` })
+  if (track === "attacker-stage" || track === "defender-stage") {
+    return Number(id) > 0 ? `+${id}` : id
+  }
+  return id
+}
+
+function ActiveTokens({
+  side,
+  ...props
+}: DamageConditionsCardProps & { side: "attack" | "defense" }) {
+  const intl = useIntl()
+  const tracks: ScenarioTrack[] = side === "attack"
+    ? ["attacker-stage", "held-item", "attacker-ability", "weather"]
+    : ["defender-stage", "defender-ability", "screen"]
+  const values = tracks.flatMap((track) =>
+    (props.row.provenance[track]?.effective ?? [])
+      .filter((id) => id !== "none" && id !== "0")
+      .map((id) => ({ track, id })),
+  )
+
+  return values.map(({ track, id }) => {
+    const sprite = track === "held-item" ? itemSprite(id) : undefined
+    return sprite ? (
+      <img
+        key={`${track}:${id}`}
+        src={`/items/${sprite}`}
+        alt={itemAriaLabel(id)}
+        className="size-4 object-contain"
+      />
+    ) : (
+      <span key={`${track}:${id}`} className="rounded border px-1 text-[9px] leading-4">
+        {sourceLabel(track, id, props, intl)}
+      </span>
+    )
+  })
+}
+
+function OtherConditions(props: DamageConditionsCardProps) {
+  const intl = useIntl()
+  const entries = (Object.entries(props.row.provenance) as Array<[
+    ScenarioTrack,
+    ScenarioRow["provenance"][ScenarioTrack],
+  ]>).flatMap(([track, sets]) =>
+    (["inactive", "unsupported", "neutral"] as const).flatMap((state) =>
+      (sets?.[state] ?? [])
+        .filter((id) => id !== "none" && id !== "0")
+        .map((id) => ({ track, state, id })),
+    ),
+  )
+  const count = entries.length + Number(props.isRangeEnvelope)
+
+  if (count === 0) return null
+
+  return (
+    <details className="relative text-[10px] text-muted-foreground">
+      <summary
+        aria-label={intl.formatMessage({ id: "damage.conditions.other" }, { count })}
+        className="cursor-pointer list-none rounded border bg-background px-1 font-medium leading-4 hover:text-foreground"
+      >
+        +{count}
+      </summary>
+      <div className="absolute top-full right-0 z-30 mt-1 w-40 space-y-1 rounded-md border bg-popover p-2 text-popover-foreground shadow-md">
+        {props.isRangeEnvelope && <p>{intl.formatMessage({ id: "damage.rangeEnvelope" })}</p>}
+        {entries.map(({ track, state, id }) => (
+          <p key={`${track}:${state}:${id}`}>
+            {intl.formatMessage({ id: `damage.sources.${state}` })}
+            {" · "}
+            {sourceLabel(track, id, props, intl)}
+          </p>
+        ))}
+      </div>
+    </details>
+  )
+}
+
+function FormulaTip(props: DamageConditionsCardProps) {
+  const intl = useIntl()
+  const mechanics = props.row.moveMechanics
+  const items = props.row.provenance["held-item"]?.effective.filter((id) => id !== "none") ?? []
+  const weather = props.row.provenance.weather?.effective.filter((id) => id !== "none") ?? []
+  const accuracy = mechanics.accuracy === "always-hits"
+    ? intl.formatMessage({ id: "damage.conditions.alwaysHits" })
+    : `${mechanics.accuracy}%`
+
+  return (
+    <Tooltip>
+      <TooltipTrigger
+        render={<button type="button" aria-label={intl.formatMessage({ id: "damage.conditions.details" })} className="rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring" />}
+      >
+        <Info className="size-3 text-muted-foreground" />
+      </TooltipTrigger>
+      <TooltipContent side="right" align="start" className="w-64 flex-col items-stretch gap-1.5 p-3">
+        <TipRow label={intl.formatMessage({ id: "damage.conditions.basePower" })} value={mechanics.basePower} />
+        <TipRow label="STAB" value={modifierLabel(mechanics.modifiers.stab)} />
+        <TipRow label={intl.formatMessage({ id: "damage.conditions.effectiveness" })} value={modifierLabel(mechanics.modifiers.typeEffectiveness)} />
+        <TipRow label={intl.formatMessage({ id: "track.item" })} value={`${items.length ? items.map(itemAriaLabel).join(" / ") : intl.formatMessage({ id: "damage.noBoost" })} · ${modifierLabel(mechanics.modifiers.item)}`} />
+        <TipRow label={intl.formatMessage({ id: "track.weather" })} value={`${weather.length ? weather.map((id) => intl.formatMessage({ id: `track.weather.${id}` })).join(" / ") : intl.formatMessage({ id: "track.weather.none" })} · ${modifierLabel(mechanics.modifiers.weather)}`} />
+        <TipRow label={intl.formatMessage({ id: "damage.conditions.spread" })} value={modifierLabel(mechanics.modifiers.spread)} />
+        <div className="mt-1 flex justify-between border-t pt-1.5 font-medium">
+          <span>{intl.formatMessage({ id: "damage.conditions.effectivePower" })}{props.showAccuracy && ` / ${intl.formatMessage({ id: "damage.conditions.accuracy" })}`}</span>
+          <span className="tabular-nums">{mechanics.effectivePower}{props.showAccuracy && ` / ${accuracy}`}</span>
+        </div>
+      </TooltipContent>
+    </Tooltip>
+  )
+}
+
+function TipRow({ label, value }: { label: string; value: string | number }) {
+  return <div className="flex items-start justify-between gap-4 text-xs"><span className="text-muted-foreground">{label}</span><span className="text-right tabular-nums">{value}</span></div>
+}
+
+function IdentityLine({ label, value, actual, children }: { label: string; value: string; actual?: string | null; children?: React.ReactNode }) {
+  return (
+    <div className="flex min-w-0 items-center gap-1.5 text-[11px]">
+      <span className="w-7 shrink-0 text-[9px] text-muted-foreground">{label}</span>
+      <span className="truncate font-medium">{value}</span>
+      {actual && <span className="text-[9px] text-muted-foreground tabular-nums">{actual}</span>}
+      <span className="ml-auto flex shrink-0 items-center gap-1">{children}</span>
+    </div>
+  )
+}
+
+export function DamageConditionsCard(props: DamageConditionsCardProps) {
+  const intl = useIntl()
+  const accuracy = props.row.moveMechanics.accuracy === "always-hits"
+    ? intl.formatMessage({ id: "damage.conditions.alwaysHits" })
+    : `${props.row.moveMechanics.accuracy}%`
+
+  return (
+    <article className="relative w-full rounded-md border bg-muted/15 md:w-60">
+      <div className="flex items-center gap-1 border-b px-2 py-1">
+        <span className="flex min-w-0 items-center gap-1"><TypeBadge type={props.move.type} /><span className="truncate text-xs font-semibold">{props.move.label}</span></span>
+        <strong title={intl.formatMessage({ id: "damage.conditions.effectivePower" })} className="ml-auto text-sm leading-4 tabular-nums">{props.row.moveMechanics.effectivePower}</strong>
+        {props.showAccuracy && <><span aria-hidden className="text-[10px] text-muted-foreground">·</span><span title={intl.formatMessage({ id: "damage.conditions.accuracy" })} className="text-[10px] tabular-nums">{accuracy}</span></>}
+        <FormulaTip {...props} />
+      </div>
+      <div className="space-y-0.5 px-2 py-1">
+        <IdentityLine label={intl.formatMessage({ id: "damage.row.attack" })} value={props.attackerStat.label} actual={props.attackerStat.actual}><ActiveTokens {...props} side="attack" /></IdentityLine>
+        <IdentityLine label={intl.formatMessage({ id: "damage.row.defense" })} value={props.defender.label} actual={props.defender.actual}><ActiveTokens {...props} side="defense" /><OtherConditions {...props} /></IdentityLine>
+      </div>
+    </article>
+  )
+}

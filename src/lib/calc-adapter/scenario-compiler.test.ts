@@ -108,6 +108,12 @@ describe("scenario compiler", () => {
       typeEffectivenessModifier: 8192,
       finalModifier: 4096,
     })
+    expect(outcome.moveMechanics).toMatchObject({
+      basePower: 100,
+      effectivePower: 100,
+      accuracy: 100,
+      modifiers: { item: 6144, spread: 3072, stab: 6144 },
+    })
     expect(outcome.sources).toEqual([
       { track: "attacker-stage", optionId: "0", state: "neutral" },
       { track: "held-item", optionId: "choice-band", state: "effective" },
@@ -117,6 +123,25 @@ describe("scenario compiler", () => {
       { track: "defender-ability", optionId: "22", state: "unsupported" },
       { track: "screen", optionId: "none", state: "neutral" },
     ])
+  })
+
+  it("shares weather accuracy between mechanics and actual probability", () => {
+    const rain = calculableScenario({
+      probabilityMode: "actual",
+      weather: "rain",
+      snapshot: {
+        ...snapshot,
+        id: "thunder-rain",
+        moveId: 87,
+        power: 110,
+        accuracy: 70,
+        spreadEligible: false,
+        spread: false,
+      },
+    })
+
+    expect(rain.moveMechanics.accuracy).toBe("always-hits")
+    expect(rain.probability.hitProbability).toBe(1)
   })
 
   it("compiles +3 as a critical-only branch in both probability modes", () => {

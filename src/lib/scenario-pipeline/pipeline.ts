@@ -400,6 +400,7 @@ export function runScenarioPipeline(
       ...group.context,
       provenance: group.provenance,
       criticalOnly: group.outcome.calculation.low.normal === undefined,
+      moveMechanics: group.outcome.moveMechanics,
       ...computed,
     }
   })

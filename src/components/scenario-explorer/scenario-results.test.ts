@@ -44,7 +44,6 @@ describe("unavailable Scenario display", () => {
       unavailable,
       trackState,
       statNameStrategy: "english",
-      showMoveOnRow: true,
       onShowResultActualChange: () => {},
       onProbabilityModeChange: () => {},
     }))
@@ -82,7 +81,6 @@ describe("unavailable Scenario display", () => {
       }],
       trackState,
       statNameStrategy: "english",
-      showMoveOnRow: true,
       onShowResultActualChange: () => {},
       onProbabilityModeChange: () => {},
     }))
