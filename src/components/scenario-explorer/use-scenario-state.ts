@@ -204,6 +204,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
       }),
       ...(!attackerOwnerChanged && {
         moveSnapshots: state.moveSnapshots,
+        selectedMoveSnapshotIds: state.selectedMoveSnapshotIds,
       }),
     }))
     setAddingOffense(false)
@@ -219,9 +220,11 @@ export function useScenarioState(catalog: MatchupCatalog) {
       if (movesTouchedRef.current) return s
       if (sameIds(snapshotMoveIds(s.moveSnapshots), catalog.defaultMoveIds)) return s
       if (!sameIds(snapshotMoveIds(s.moveSnapshots), previousDefaultMoveIds)) return s
+      const moveSnapshots = snapshotsForMoveIds(catalog, catalog.defaultMoveIds)
       return {
         ...s,
-        moveSnapshots: snapshotsForMoveIds(catalog, catalog.defaultMoveIds),
+        moveSnapshots,
+        selectedMoveSnapshotIds: moveSnapshots.map((snapshot) => snapshot.id),
       }
     })
   }, [catalog, catalog.defaultMoveIds])
@@ -287,7 +290,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
   const { rows, unavailable } = pipelineResult
 
   const selectionSummary = {
-    moves: trackState.moveSnapshots.length,
+    moves: trackState.selectedMoveSnapshotIds.length,
     stats:
       trackState.statMode === "preset"
         ? `${trackState.offenseTemplateIds.length} 预设`
@@ -483,10 +486,13 @@ export function useScenarioState(catalog: MatchupCatalog) {
     const move = catalog.moves.find((candidate) => candidate.id === moveId)
     if (!move) return
     movesTouchedRef.current = true
+    const snapshot = createMoveSnapshot(move)
     setTrackState((s) => ({
       ...s,
-      moveSnapshots: [...s.moveSnapshots, createMoveSnapshot(move)],
+      moveSnapshots: [...s.moveSnapshots, snapshot],
+      selectedMoveSnapshotIds: [...s.selectedMoveSnapshotIds, snapshot.id],
     }))
+    return snapshot.id
   }
 
   function updateMoveSnapshot(
@@ -507,6 +513,18 @@ export function useScenarioState(catalog: MatchupCatalog) {
     setTrackState((s) => ({
       ...s,
       moveSnapshots: s.moveSnapshots.filter((snapshot) => snapshot.id !== snapshotId),
+      selectedMoveSnapshotIds: s.selectedMoveSnapshotIds.filter((id) => id !== snapshotId),
+    }))
+  }
+
+  function setSelectedMoveSnapshotIds(ids: string[]) {
+    movesTouchedRef.current = true
+    const selected = new Set(ids)
+    setTrackState((s) => ({
+      ...s,
+      selectedMoveSnapshotIds: s.moveSnapshots
+        .map((snapshot) => snapshot.id)
+        .filter((id) => selected.has(id)),
     }))
   }
 
@@ -525,6 +543,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
     addMoveSnapshot,
     updateMoveSnapshot,
     removeMoveSnapshot,
+    setSelectedMoveSnapshotIds,
     setStatMode,
     toggleOffenseTemplate,
     setStatRange: (statRange: TrackState["statRange"]) =>

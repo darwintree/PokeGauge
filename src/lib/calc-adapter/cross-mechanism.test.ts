@@ -44,6 +44,7 @@ describe("cross-mechanism acceptance", () => {
       criticalStage: 0,
       spread: false,
     }]
+    state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
     state.offenseTemplateIds = ["neutral-max"]
     state.attackerStages = [1]
     state.attackerItemIds = ["choice-band"]
@@ -163,6 +164,7 @@ describe("cross-mechanism acceptance", () => {
       criticalStage: 3,
       spread: false,
     }]
+    state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
     state.offenseTemplateIds = ["neutral-max"]
     state.attackerStages = [-1, 0]
     state.attackerItemIds = ["none", "type-boost-fire"]

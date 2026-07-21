@@ -309,8 +309,10 @@ export function runScenarioPipeline(
   const defenseTemplates = defenseTemplatesForState(catalog, trackState)
   const preparedOffense = offenseChoices(catalog, trackState, offenseTemplates)
   const preparedDefense = defenseChoices(catalog, trackState, defenseTemplates)
+  const selectedMoveSnapshotIds = new Set(trackState.selectedMoveSnapshotIds)
 
   for (const snapshot of trackState.moveSnapshots) {
+    if (!selectedMoveSnapshotIds.has(snapshot.id)) continue
     for (const attackerItemId of trackState.attackerItemIds) {
       for (const attackerAbilityId of trackState.attackerAbilityIds) {
         for (const weather of trackState.weathers) {
@@ -417,12 +419,14 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
   const defenseSystem = buildSystemDefenseTemplates(defenderSpecies, catalog.moveCategory)
   const offenseUser = loadUserOffenseTemplates(String(catalog.matchup.attackerId))
   const defenseUser = loadUserDefenseTemplates(String(catalog.matchup.defenderId))
+  const moveSnapshots = catalog.defaultMoveIds.flatMap((moveId) => {
+    const move = catalog.moves.find((candidate) => candidate.id === moveId)
+    return move ? [createMoveSnapshot(move)] : []
+  })
 
   return {
-    moveSnapshots: catalog.defaultMoveIds.flatMap((moveId) => {
-      const move = catalog.moves.find((candidate) => candidate.id === moveId)
-      return move ? [createMoveSnapshot(move)] : []
-    }),
+    moveSnapshots,
+    selectedMoveSnapshotIds: moveSnapshots.map((snapshot) => snapshot.id),
     statMode: "preset",
     offenseTemplateIds: defaultOffenseSelection(offenseSystem, offenseUser),
     offenseTemporaryTemplates: [],
@@ -536,7 +540,7 @@ export function expectedRowCount(trackState: TrackState): number {
   const defenderCount =
     trackState.defenderMode === "range" ? 1 : trackState.defenseTemplateIds.length
   return (
-    trackState.moveSnapshots.length *
+    trackState.selectedMoveSnapshotIds.length *
     offenseCount *
     trackState.attackerStages.length *
     trackState.attackerItemIds.length *

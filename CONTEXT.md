@@ -34,6 +34,7 @@ _Avoid_: Champions ruleset data, legal pool, full build data
 
 **Move candidate pool**（招式候选池）:
 招式搜索使用的全局 PokeAPI **Snapshot-capable damaging move** 集合，不校验当前宝可梦 learnset 或 Champions 合法性；当前攻击方的 **Champions move usage data** 只影响置顶顺序与 **Move pick**。
+从池中添加会创建一项默认已选的 **Move snapshot**；取消选择只会将快照移至备选，不会把它删除或退回候选池。
 _Avoid_: Champions move pool, legal move pool, 合法招式池
 
 **Move side**:
@@ -46,6 +47,7 @@ _Avoid_: Selected move, Editable move, Shared move record
 
 **Move snapshot**（招式快照）:
 从 **Move template** 创建并加入 Move track 的可编辑选项；保存当前进攻方与 **Move side** 下采用的威力、命中、会心等级与 Spread move modifier 状态。一个模版可以创建多个独立快照；快照是用户刻意保留的比较单位，彼此不因效果等价而合并。更换防守方时快照保留，更换进攻方或 Move side 时重建。
+快照在 Move track 中分为已选与备选；只有已选快照参与 **Row product rule**，备选快照保留配置但不产生结果行。
 _Avoid_: Move configuration, Move variant track, Power track, Accuracy track
 
 **Unconfigured move power**（未配置招式威力）:

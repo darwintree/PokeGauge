@@ -32,6 +32,7 @@ export type DefenderStatRanges = {
 
 export type TrackState = {
   moveSnapshots: MoveSnapshot[]
+  selectedMoveSnapshotIds: string[]
   statMode: StatSelectMode
   offenseTemplateIds: string[]
   offenseTemporaryTemplates: StatValueTemplate[]

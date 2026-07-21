@@ -51,9 +51,11 @@ describe("unavailable Scenario display", () => {
       label: "Moves",
       options: catalog.moves,
       snapshots: [snapshot],
-      onAdd: () => {},
+      selectedSnapshotIds: [snapshot.id],
+      onAdd: () => undefined,
       onChange: () => {},
       onRemove: () => {},
+      onSelectionChange: () => {},
     }))
 
     expect(resultsMarkup).not.toContain("Move setup is incomplete")

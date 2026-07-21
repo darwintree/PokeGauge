@@ -34,6 +34,7 @@ function selectMoves(
     const move = catalog.moves.find((candidate) => candidate.id === moveId)
     return move ? [createMoveSnapshot(move, `test-${index}-${moveId}`)] : []
   })
+  state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
 }
 
 function scenarioRows(
@@ -251,8 +252,10 @@ describe("matchup scenario pipeline", () => {
 
   it("reduces row count when a move is deselected", () => {
     const state = defaultTrackState(catalog)
-    selectMoves(catalog, state, [89])
+    selectMoves(catalog, state, [89, 337])
+    state.selectedMoveSnapshotIds = [state.moveSnapshots[0].id]
     const rows = scenarioRows(catalog, state)
+    expect(state.moveSnapshots).toHaveLength(2)
     expect(rows).toHaveLength(2)
     expect(rows.every((r) => r.moveId === 89)).toBe(true)
   })

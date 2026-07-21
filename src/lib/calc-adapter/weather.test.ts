@@ -300,6 +300,7 @@ describe("weather scenario product and provenance", () => {
       catalog.moves.find((move) => move.id === 53)!,
       "pipeline-fire",
     )]
+    state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
     state.offenseTemplateIds = ["neutral-max"]
     state.attackerItemIds = ["none"]
     state.defenseTemplateIds = ["standard-bulk"]
@@ -318,6 +319,7 @@ describe("weather scenario product and provenance", () => {
       catalog.moves.find((move) => move.id === 311)!,
       "pipeline-weather-ball",
     )]
+    state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
     state.offenseTemplateIds = ["neutral-max"]
     state.attackerItemIds = ["none"]
     state.defenseTemplateIds = ["standard-bulk"]
@@ -356,6 +358,7 @@ describe("weather scenario product and provenance", () => {
       catalog.moves.find((move) => move.id === 87)!,
       "pipeline-thunder",
     )]
+    state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
     state.offenseTemplateIds = ["neutral-max"]
     state.attackerItemIds = ["none"]
     state.defenseTemplateIds = ["standard-bulk"]
@@ -381,6 +384,7 @@ describe("weather scenario product and provenance", () => {
       "pipeline-thunder-edited",
     )
     state.moveSnapshots = [{ ...thunder, accuracy: 100 }]
+    state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
     state.offenseTemplateIds = ["neutral-max"]
     state.attackerItemIds = ["none"]
     state.defenseTemplateIds = ["standard-bulk"]

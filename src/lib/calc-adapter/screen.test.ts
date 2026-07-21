@@ -218,6 +218,7 @@ describe("screen scenario product and provenance", () => {
       criticalStage,
       spread: false,
     }]
+    state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
     state.offenseTemplateIds = ["neutral-max"]
     state.attackerStages = [0]
     state.attackerItemIds = ["none"]
@@ -290,6 +291,7 @@ describe("screen scenario product and provenance", () => {
       if (!move) throw new Error(`Expected screen breaker ${moveId}`)
       const state = defaultTrackState(catalog)
       state.moveSnapshots = [createMoveSnapshot(move, `pipeline-breaker-${moveId}`)]
+      state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
       state.offenseTemplateIds = ["neutral-max"]
       state.attackerStages = [0]
       state.attackerItemIds = ["none"]

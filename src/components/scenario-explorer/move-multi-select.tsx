@@ -1,5 +1,5 @@
-import { Crosshair, Plus, Search, Trash2 } from "lucide-react"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { Check, ChevronDown, Plus, Search, Trash2 } from "lucide-react"
+import { useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { TypeBadge } from "@/components/pokemon/type-badge"
@@ -15,10 +15,7 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import type { CatalogMoveOption, MoveCategory } from "@/lib/catalog/types"
 import type { MoveSnapshot } from "@/lib/move-snapshot"
-import { POKEMON_TYPES, type PokemonType } from "@/lib/pokemon/types"
 import { cn } from "@/lib/utils"
-
-import { TrackCard } from "./track-card"
 
 type MoveSnapshotPatch = Partial<
   Pick<MoveSnapshot, "power" | "accuracy" | "criticalStage" | "spread">
@@ -28,71 +25,104 @@ type MoveMultiSelectProps = {
   label: string
   options: CatalogMoveOption[]
   snapshots: MoveSnapshot[]
-  onAdd: (moveId: number) => void
+  selectedSnapshotIds: string[]
+  onAdd: (moveId: number) => string | undefined
   onChange: (snapshotId: string, patch: MoveSnapshotPatch) => void
   onRemove: (snapshotId: string) => void
+  onSelectionChange: (snapshotIds: string[]) => void
   expanded?: boolean
   onToggle?: () => void
   category?: MoveCategory
   onCategoryChange?: (category: MoveCategory) => void
 }
 
-function moveMatches(option: CatalogMoveOption, query: string, typeFilter: PokemonType | null) {
+function moveMatches(option: CatalogMoveOption, query: string) {
   const q = query.trim().toLowerCase()
   return (
-    (!q ||
-      option.label.toLowerCase().includes(q) ||
-      option.moveName.toLowerCase().includes(q) ||
-      String(option.id).includes(q)) &&
-    (!typeFilter || option.type === typeFilter)
+    !q ||
+    option.label.toLowerCase().includes(q) ||
+    option.moveName.toLowerCase().includes(q) ||
+    String(option.id).includes(q)
   )
 }
 
-function MoveMeta({ option }: { option: CatalogMoveOption }) {
-  return (
-    <span className="text-muted-foreground grid w-28 shrink-0 grid-cols-[1fr_2.25rem_2.25rem] items-center text-right text-xs tabular-nums">
-      {option.isSpread ? (
-        <span className="rounded-sm border px-1 text-[10px]">AoE</span>
-      ) : (
-        <span />
-      )}
-      <span>{option.power}</span>
-      <span>{option.accuracy ?? "-"}</span>
-    </span>
-  )
-}
-
-function SnapshotSummary({
-  snapshot,
-  option,
+function CategoryControl({
+  category,
+  onChange,
 }: {
-  snapshot: MoveSnapshot
-  option: CatalogMoveOption
+  category: MoveCategory
+  onChange: (category: MoveCategory) => void
 }) {
   const intl = useIntl()
 
   return (
-    <div className="space-y-1.5">
-      <p className="text-muted-foreground text-xs tabular-nums">
-        {intl.formatMessage({ id: "track.move.power" })} {snapshot.power || "—"} ·{" "}
-        {intl.formatMessage({ id: "track.move.accuracy" })} {snapshot.accuracy || "—"}%
-        {snapshot.alwaysHits ? ` · ${intl.formatMessage({ id: "track.move.alwaysHits" })}` : ""}
-      </p>
-      <p className="text-muted-foreground text-[10px]">
-        {intl.formatMessage({ id: `track.moveSide.${option.category}` })}
-      </p>
+    <div
+      role="group"
+      aria-label={intl.formatMessage({ id: "track.moveSide" })}
+      className="grid w-[5.5rem] grid-cols-2 gap-px rounded-md bg-muted p-0.5"
+    >
+      {(["physical", "special"] as const).map((value) => (
+        <button
+          key={value}
+          type="button"
+          aria-pressed={category === value}
+          className={cn(
+            "h-6 rounded-[4px] px-1.5 text-[10px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-ring",
+            category === value
+              ? "bg-background text-foreground shadow-sm"
+              : "text-muted-foreground hover:text-foreground",
+          )}
+          onClick={() => onChange(value)}
+        >
+          {intl.formatMessage({ id: `track.moveSide.${value}` })}
+        </button>
+      ))}
     </div>
+  )
+}
+
+function SelectionToggle({
+  option,
+  selected,
+  onToggle,
+}: {
+  option: CatalogMoveOption
+  selected: boolean
+  onToggle: () => void
+}) {
+  const intl = useIntl()
+
+  return (
+    <button
+      type="button"
+      aria-label={intl.formatMessage(
+        { id: selected ? "track.move.moveToCandidates" : "track.move.select" },
+        { move: option.label },
+      )}
+      aria-pressed={selected}
+      className="group grid size-7 place-items-center rounded-md focus-visible:outline-2 focus-visible:outline-ring"
+      onClick={onToggle}
+    >
+      <span
+        className={cn(
+          "grid size-[18px] place-items-center rounded-[4px] border transition-colors",
+          selected
+            ? "border-foreground bg-foreground text-background"
+            : "bg-background text-muted-foreground group-hover:border-foreground/50",
+        )}
+      >
+        {selected ? <Check className="size-3" strokeWidth={2.5} /> : null}
+      </span>
+    </button>
   )
 }
 
 function SnapshotEditor({
   snapshot,
-  option,
   onChange,
   onRemove,
 }: {
   snapshot: MoveSnapshot
-  option: CatalogMoveOption
   onChange: (patch: MoveSnapshotPatch) => void
   onRemove: () => void
 }) {
@@ -102,95 +132,102 @@ function SnapshotEditor({
   const accuracyErrorId = `${snapshot.id}-accuracy-error`
 
   return (
-    <div className="space-y-3">
-      <SnapshotSummary snapshot={snapshot} option={option} />
-      <div className="grid grid-cols-2 gap-3 border-t pt-3">
-        <label className="space-y-1">
-          <span className="text-muted-foreground text-xs">
-            {intl.formatMessage({ id: "track.move.power" })}
+    <div className="grid grid-cols-2 gap-2 bg-muted/40 p-2.5">
+      <label className="space-y-1">
+        <span className="text-[10px] text-muted-foreground">
+          {intl.formatMessage({ id: "track.move.power" })}
+        </span>
+        <Input
+          type="number"
+          min={0}
+          max={1000}
+          step={1}
+          value={snapshot.power}
+          aria-invalid={snapshot.power === 0}
+          aria-describedby={snapshot.power === 0 ? powerErrorId : undefined}
+          className="h-7 text-xs tabular-nums"
+          onChange={(event) => onChange({ power: Number(event.target.value) })}
+        />
+        {snapshot.power === 0 ? (
+          <span id={powerErrorId} className="block text-xs text-destructive">
+            {intl.formatMessage({ id: "track.move.powerRequired" })}
           </span>
-          <Input
-            type="number"
-            min={0}
-            max={1000}
-            step={1}
-            value={snapshot.power}
-            aria-invalid={snapshot.power === 0}
-            aria-describedby={snapshot.power === 0 ? powerErrorId : undefined}
-            onChange={(event) => onChange({ power: Number(event.target.value) })}
-          />
-          {snapshot.power === 0 && (
-            <span id={powerErrorId} className="text-destructive block text-xs">
-              {intl.formatMessage({ id: "track.move.powerRequired" })}
+        ) : null}
+      </label>
+      <label className="space-y-1">
+        <span className="text-[10px] text-muted-foreground">
+          {intl.formatMessage({ id: "track.move.accuracy" })}
+        </span>
+        <Input
+          type="number"
+          min={0}
+          max={100}
+          step={1}
+          value={snapshot.accuracy}
+          aria-invalid={snapshot.accuracy === 0}
+          aria-describedby={snapshot.accuracy === 0 ? accuracyErrorId : undefined}
+          className="h-7 text-xs tabular-nums"
+          onChange={(event) => onChange({ accuracy: Number(event.target.value) })}
+        />
+        {snapshot.accuracy === 0 ? (
+          <span id={accuracyErrorId} className="block text-xs text-destructive">
+            {intl.formatMessage({ id: "track.move.accuracyRequired" })}
+          </span>
+        ) : null}
+      </label>
+      <label className="space-y-1">
+        <span className="text-[10px] text-muted-foreground">
+          {intl.formatMessage({ id: "track.move.criticalStage" })}
+        </span>
+        <select
+          value={snapshot.criticalStage}
+          className="h-7 w-full rounded-md border border-input bg-background px-2 text-xs"
+          onChange={(event) =>
+            onChange({
+              criticalStage: Number(event.target.value) as MoveSnapshot["criticalStage"],
+            })
+          }
+        >
+          {[0, 1, 2, 3].map((stage) => (
+            <option key={stage} value={stage}>
+              +{stage}
+            </option>
+          ))}
+        </select>
+      </label>
+      {snapshot.spreadEligible ? (
+        <div className="space-y-1">
+          <Label htmlFor={`${snapshot.id}-spread`} className="text-[10px] text-muted-foreground">
+            {intl.formatMessage({ id: "track.move.spread" })}
+          </Label>
+          <div className="flex h-7 items-center gap-2">
+            <Switch
+              id={`${snapshot.id}-spread`}
+              checked={snapshot.spread}
+              onCheckedChange={(spread) => onChange({ spread })}
+            />
+            <span className="text-xs">
+              {intl.formatMessage({
+                id: snapshot.spread ? "track.move.spread.on" : "track.move.spread.off",
+              })}
             </span>
-          )}
-        </label>
-        <label className="space-y-1">
-          <span className="text-muted-foreground text-xs">
-            {intl.formatMessage({ id: "track.move.accuracy" })}
-          </span>
-          <Input
-            type="number"
-            min={0}
-            max={100}
-            step={1}
-            value={snapshot.accuracy}
-            aria-invalid={snapshot.accuracy === 0}
-            aria-describedby={snapshot.accuracy === 0 ? accuracyErrorId : undefined}
-            onChange={(event) => onChange({ accuracy: Number(event.target.value) })}
-          />
-          {snapshot.accuracy === 0 && (
-            <span id={accuracyErrorId} className="text-destructive block text-xs">
-              {intl.formatMessage({ id: "track.move.accuracyRequired" })}
-            </span>
-          )}
-        </label>
-        <label className="space-y-1">
-          <span className="text-muted-foreground text-xs">
-            {intl.formatMessage({ id: "track.move.criticalStage" })}
-          </span>
-          <select
-            value={snapshot.criticalStage}
-            onChange={(event) =>
-              onChange({
-                criticalStage: Number(event.target.value) as MoveSnapshot["criticalStage"],
-              })
-            }
-            className="border-input bg-background h-8 w-full rounded-lg border px-2 text-sm"
-          >
-            {[0, 1, 2, 3].map((stage) => (
-              <option key={stage} value={stage}>
-                +{stage}
-              </option>
-            ))}
-          </select>
-        </label>
-        {snapshot.spreadEligible && (
-          <div className="space-y-1">
-            <Label htmlFor={`${snapshot.id}-spread`} className="text-muted-foreground text-xs">
-              {intl.formatMessage({ id: "track.move.spread" })}
-            </Label>
-            <div className="flex h-8 items-center gap-2">
-              <Switch
-                id={`${snapshot.id}-spread`}
-                checked={snapshot.spread}
-                onCheckedChange={(spread) => onChange({ spread })}
-              />
-              <span className="text-xs">
-                {intl.formatMessage({
-                  id: snapshot.spread ? "track.move.spread.on" : "track.move.spread.off",
-                })}
-              </span>
-            </div>
           </div>
+        </div>
+      ) : null}
+      <div
+        className={cn(
+          "flex items-end gap-1",
+          snapshot.spreadEligible ? "col-span-2" : "",
         )}
-      </div>
-      <div className="grid grid-cols-2 gap-1">
+      >
         <Button
           type="button"
           size="xs"
-          variant="destructive"
-          className={confirmingRemove ? "" : "col-span-2"}
+          variant={confirmingRemove ? "destructive" : "ghost"}
+          className={cn(
+            confirmingRemove ? "flex-1" : "w-full",
+            !confirmingRemove ? "text-destructive hover:text-destructive" : "",
+          )}
           onClick={() => (confirmingRemove ? onRemove() : setConfirmingRemove(true))}
         >
           <Trash2 />
@@ -198,7 +235,7 @@ function SnapshotEditor({
             id: confirmingRemove ? "track.move.confirmRemove" : "track.move.remove",
           })}
         </Button>
-        {confirmingRemove && (
+        {confirmingRemove ? (
           <Button
             type="button"
             size="xs"
@@ -207,8 +244,87 @@ function SnapshotEditor({
           >
             {intl.formatMessage({ id: "template.cancel" })}
           </Button>
-        )}
+        ) : null}
       </div>
+    </div>
+  )
+}
+
+function MoveRow({
+  snapshot,
+  option,
+  selected,
+  editing,
+  onToggle,
+  onEdit,
+  onChange,
+  onRemove,
+}: {
+  snapshot: MoveSnapshot
+  option: CatalogMoveOption
+  selected: boolean
+  editing: boolean
+  onToggle: () => void
+  onEdit: () => void
+  onChange: (patch: MoveSnapshotPatch) => void
+  onRemove: () => void
+}) {
+  const intl = useIntl()
+
+  return (
+    <div className="border-t first:border-t-0">
+      <div className="grid h-8 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-2.5">
+        <TypeBadge type={option.type} />
+        <button
+          type="button"
+          aria-expanded={editing}
+          aria-label={intl.formatMessage({ id: "track.move.edit" }, { move: option.label })}
+          className="grid min-w-0 grid-cols-[minmax(0,1fr)_2rem_2rem_auto] items-center gap-2 text-left focus-visible:outline-2 focus-visible:outline-ring"
+          onClick={onEdit}
+        >
+          <span className="truncate text-xs font-medium">{option.label}</span>
+          <span
+            className={cn(
+              "text-right text-[10px] tabular-nums",
+              snapshot.power === 0 ? "text-destructive" : "text-muted-foreground",
+            )}
+          >
+            {snapshot.power || "-"}
+            {snapshot.power === 0 ? (
+              <span className="sr-only">
+                {intl.formatMessage({ id: "track.move.powerRequired" })}
+              </span>
+            ) : null}
+          </span>
+          <span
+            className={cn(
+              "text-right text-[10px] tabular-nums",
+              snapshot.accuracy === 0 ? "text-destructive" : "text-muted-foreground",
+            )}
+          >
+            {snapshot.accuracy || "-"}
+            {snapshot.accuracy === 0 ? (
+              <span className="sr-only">
+                {intl.formatMessage({ id: "track.move.accuracyRequired" })}
+              </span>
+            ) : null}
+          </span>
+          <ChevronDown
+            className={cn(
+              "size-3 text-muted-foreground transition-transform",
+              editing ? "rotate-180" : "",
+            )}
+          />
+        </button>
+        <SelectionToggle
+          option={option}
+          selected={selected}
+          onToggle={onToggle}
+        />
+      </div>
+      {editing ? (
+        <SnapshotEditor snapshot={snapshot} onChange={onChange} onRemove={onRemove} />
+      ) : null}
     </div>
   )
 }
@@ -217,9 +333,11 @@ export function MoveMultiSelect({
   label,
   options,
   snapshots,
+  selectedSnapshotIds,
   onAdd,
   onChange,
   onRemove,
+  onSelectionChange,
   expanded = true,
   onToggle = () => {},
   category = options[0]?.category ?? "physical",
@@ -229,190 +347,187 @@ export function MoveMultiSelect({
   const [open, setOpen] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [query, setQuery] = useState("")
-  const [typeFilter, setTypeFilter] = useState<PokemonType | null>(null)
-  const previousSnapshotIds = useRef(new Set(snapshots.map((snapshot) => snapshot.id)))
   const optionById = useMemo(
     () => new Map(options.map((option) => [option.id, option])),
     [options],
   )
+  const selectedIds = useMemo(() => new Set(selectedSnapshotIds), [selectedSnapshotIds])
+  const selectedSnapshots = snapshots.filter((snapshot) => selectedIds.has(snapshot.id))
   const filteredOptions = useMemo(
-    () => options.filter((option) => moveMatches(option, query, typeFilter)),
-    [options, query, typeFilter],
+    () => options.filter((option) => moveMatches(option, query)),
+    [options, query],
   )
-  const editingSnapshot =
-    snapshots.find((snapshot) => snapshot.id === editingId) ?? snapshots[0]
-  const editingOption = editingSnapshot && optionById.get(editingSnapshot.moveId)
-
-  useEffect(() => {
-    const added = snapshots.find((snapshot) => !previousSnapshotIds.current.has(snapshot.id))
-    if (added) setEditingId(added.id)
-    previousSnapshotIds.current = new Set(snapshots.map((snapshot) => snapshot.id))
-  }, [snapshots])
 
   function add(moveId: number) {
-    onAdd(moveId)
+    const snapshotId = onAdd(moveId)
+    if (snapshotId) setEditingId(snapshotId)
+    if (!expanded) onToggle()
     setOpen(false)
   }
 
-  function selectSnapshot(id: string) {
-    setEditingId(id)
+  function toggleSelection(snapshot: MoveSnapshot) {
+    onSelectionChange(
+      selectedIds.has(snapshot.id)
+        ? selectedSnapshotIds.filter((id) => id !== snapshot.id)
+        : [...selectedSnapshotIds, snapshot.id],
+    )
+  }
+
+  function selectSnapshot(snapshotId: string) {
+    setEditingId(snapshotId)
     if (!expanded) onToggle()
   }
 
-  function removeEditingSnapshot() {
-    if (!editingSnapshot) return
-    const index = snapshots.findIndex((snapshot) => snapshot.id === editingSnapshot.id)
+  function removeSnapshot(snapshotId: string) {
+    const index = snapshots.findIndex((snapshot) => snapshot.id === snapshotId)
     const next = snapshots[index + 1] ?? snapshots[index - 1]
-    onRemove(editingSnapshot.id)
+    onRemove(snapshotId)
     setEditingId(next?.id ?? null)
   }
 
   return (
-    <TrackCard
-      icon={Crosshair}
-      label={label}
-      summary={`${snapshots.length}`}
-      expanded={expanded}
-      onToggle={onToggle}
-      preview={
-        <div className="grid grid-cols-2 gap-1.5">
+    <section className="overflow-hidden rounded-lg border bg-background">
+      <div className="flex h-10 items-center gap-2 px-2">
+        <span className="pl-0.5 text-xs font-semibold">{label}</span>
+        <CategoryControl category={category} onChange={onCategoryChange} />
+        <button
+          type="button"
+          aria-expanded={expanded}
+          aria-label={intl.formatMessage({
+            id: expanded ? "track.move.collapse" : "track.move.expand",
+          })}
+          className="ml-auto grid size-7 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+          onClick={onToggle}
+        >
+          <ChevronDown
+            className={cn(
+              "size-3.5 transition-transform",
+              expanded ? "rotate-180" : "",
+            )}
+          />
+        </button>
+      </div>
+
+      {!expanded ? (
+        <div className="border-t">
+          <div className="grid grid-cols-2 gap-x-3 px-2.5">
+            {selectedSnapshots.length === 0 ? (
+              <div className="col-span-2 flex h-9 items-center text-[11px] text-muted-foreground">
+                {intl.formatMessage({ id: "track.move.noneSelected" })}
+              </div>
+            ) : (
+              selectedSnapshots.map((snapshot) => {
+                const option = optionById.get(snapshot.moveId)
+                if (!option) return null
+                return (
+                  <button
+                    key={snapshot.id}
+                    type="button"
+                    className="flex h-9 min-w-0 items-center gap-1.5 rounded-md text-left transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring"
+                    onClick={() => selectSnapshot(snapshot.id)}
+                  >
+                    <TypeBadge type={option.type} />
+                    <span className="truncate text-[11px] font-medium">{option.label}</span>
+                  </button>
+                )
+              })
+            )}
+          </div>
+        </div>
+      ) : (
+        <div className="border-t">
           {snapshots.map((snapshot) => {
             const option = optionById.get(snapshot.moveId)
             if (!option) return null
             return (
-              <button
+              <MoveRow
                 key={snapshot.id}
-                type="button"
-                aria-pressed={expanded && editingSnapshot?.id === snapshot.id}
-                className="hover:bg-muted aria-pressed:bg-muted flex min-w-0 items-center gap-1.5 rounded-md border px-2 py-1.5 text-left"
-                onClick={() => selectSnapshot(snapshot.id)}
-              >
-                <TypeBadge type={option.type} />
-                <span className="truncate text-xs font-medium">{option.label}</span>
-              </button>
+                snapshot={snapshot}
+                option={option}
+                selected={selectedIds.has(snapshot.id)}
+                editing={editingId === snapshot.id}
+                onToggle={() => toggleSelection(snapshot)}
+                onEdit={() =>
+                  setEditingId((current) =>
+                    current === snapshot.id ? null : snapshot.id,
+                  )
+                }
+                onChange={(patch) => onChange(snapshot.id, patch)}
+                onRemove={() => removeSnapshot(snapshot.id)}
+              />
             )
           })}
-        </div>
-      }
-    >
-      <div className="space-y-3">
-        <div className="flex items-center justify-between gap-2">
-          <div className="grid grid-cols-2 rounded-lg border bg-background p-0.5">
-            {(["physical", "special"] as const).map((nextCategory) => (
-              <Button
-                key={nextCategory}
-                type="button"
-                variant="ghost"
-                size="sm"
-                aria-pressed={category === nextCategory}
-                className={cn("h-7 rounded-md px-2 text-xs", category === nextCategory && "bg-muted")}
-                onClick={() => onCategoryChange(nextCategory)}
-              >
-                {intl.formatMessage({ id: `track.moveSide.${nextCategory}` })}
-              </Button>
-            ))}
+          <div className="border-t p-2">
+            <button
+              type="button"
+              aria-label={intl.formatMessage({ id: "track.addMove" })}
+              className="grid h-8 w-full place-items-center rounded-md border border-dashed border-muted-foreground/35 text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-muted/60 hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+              onClick={() => setOpen(true)}
+            >
+              <Plus className="size-3.5" />
+            </button>
           </div>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            className="h-8"
-            onClick={() => setOpen(true)}
-          >
-            <Plus />
-            {intl.formatMessage({ id: "track.addMove" })}
-          </Button>
         </div>
+      )}
 
-        {editingSnapshot && editingOption && (
-          <SnapshotEditor
-            key={editingSnapshot.id}
-            snapshot={editingSnapshot}
-            option={editingOption}
-            onChange={(patch) => onChange(editingSnapshot.id, patch)}
-            onRemove={removeEditingSnapshot}
-          />
-        )}
-
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogContent className="bottom-0 top-auto left-0 h-[min(44rem,calc(100svh-1rem))] max-w-none grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden translate-x-0 translate-y-0 rounded-b-none p-0 sm:top-1/2 sm:left-1/2 sm:h-[min(44rem,calc(100svh-2rem))] sm:max-w-xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl">
-            <DialogHeader className="border-b px-4 py-3 pr-12">
-              <DialogTitle>{label}</DialogTitle>
-            </DialogHeader>
-            <div className="flex min-h-0 flex-col gap-3 p-4">
-              <div className="relative shrink-0">
-                <Label htmlFor="move-search" className="sr-only">
-                  {intl.formatMessage({ id: "track.move.search" })}
-                </Label>
-                <Search
-                  className="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2"
-                  aria-hidden
-                />
-                <Input
-                  id="move-search"
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder={intl.formatMessage({ id: "track.move.search" })}
-                  className="pl-8"
-                />
-              </div>
-              <div className="flex shrink-0 flex-wrap gap-1">
-                {POKEMON_TYPES.map((type) => {
-                  const pressed = typeFilter === type
-                  return (
-                    <button
-                      key={type}
-                      type="button"
-                      aria-pressed={pressed}
-                      aria-label={intl.formatMessage({ id: `type.${type}` })}
-                      className={cn(
-                        "rounded border border-input bg-background px-1.5 py-1 transition-colors hover:bg-muted",
-                        pressed && "border-foreground bg-muted",
-                      )}
-                      onClick={() => setTypeFilter(pressed ? null : type)}
-                    >
-                      <TypeBadge type={type} />
-                    </button>
-                  )
-                })}
-              </div>
-              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain rounded-lg border">
-                <div className="bg-muted/90 text-muted-foreground sticky top-0 z-10 flex items-center gap-3 border-b px-3 py-1.5 text-[10px] backdrop-blur-sm">
-                  <span className="flex-1" />
-                  <span className="grid w-28 shrink-0 grid-cols-[1fr_2.25rem_2.25rem] text-right">
-                    <span />
-                    <span>{intl.formatMessage({ id: "track.move.power" })}</span>
-                    <span>{intl.formatMessage({ id: "track.move.accuracy" })}</span>
-                  </span>
-                </div>
-                {filteredOptions.length === 0 ? (
-                  <div className="text-muted-foreground p-6 text-center text-sm">
-                    <FormattedMessage id="matchup.noMatches" />
-                  </div>
-                ) : (
-                  filteredOptions.map((option) => (
-                    <button
-                      key={option.id}
-                      type="button"
-                      className="hover:bg-muted flex w-full items-center gap-3 border-b px-3 py-2 text-left last:border-b-0"
-                      onClick={() => add(option.id)}
-                    >
-                      <TypeBadge type={option.type} />
-                      <span className="min-w-0 flex-1">
-                        <span className="block truncate text-sm font-medium">{option.label}</span>
-                        <span className="text-muted-foreground block truncate text-xs">
-                          {option.moveName}
-                        </span>
-                      </span>
-                      <MoveMeta option={option} />
-                    </button>
-                  ))
-                )}
-              </div>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="bottom-0 top-auto left-0 h-[min(44rem,calc(100svh-1rem))] max-w-none grid-rows-[auto_auto_minmax(0,1fr)] gap-0 overflow-hidden translate-x-0 translate-y-0 rounded-b-none p-0 sm:top-1/2 sm:left-1/2 sm:h-[min(44rem,calc(100svh-2rem))] sm:max-w-xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl">
+          <DialogHeader className="border-b px-4 py-3 pr-12">
+            <DialogTitle>{intl.formatMessage({ id: "track.addMove" })}</DialogTitle>
+          </DialogHeader>
+          <div className="relative m-3 mb-2">
+            <Label htmlFor="move-search" className="sr-only">
+              {intl.formatMessage({ id: "track.move.search" })}
+            </Label>
+            <Search
+              className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground"
+              aria-hidden
+            />
+            <Input
+              id="move-search"
+              value={query}
+              placeholder={intl.formatMessage({ id: "track.move.search" })}
+              className="pl-8"
+              onChange={(event) => setQuery(event.target.value)}
+            />
+          </div>
+          <div className="min-h-0 overflow-y-auto p-3 pt-1">
+            <div className="sticky top-0 z-10 grid grid-cols-[auto_1fr_auto] items-center gap-3 border-b bg-background/95 px-1 py-1.5 text-[10px] text-muted-foreground backdrop-blur-sm">
+              <span />
+              <span>{label}</span>
+              <span className="tabular-nums">
+                {intl.formatMessage({ id: "track.move.power" })} /{" "}
+                {intl.formatMessage({ id: "track.move.accuracy" })}
+              </span>
             </div>
-          </DialogContent>
-        </Dialog>
-      </div>
-    </TrackCard>
+            {filteredOptions.length === 0 ? (
+              <div className="p-6 text-center text-sm text-muted-foreground">
+                <FormattedMessage id="matchup.noMatches" />
+              </div>
+            ) : (
+              filteredOptions.map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-3 border-b px-1 py-2.5 text-left last:border-b-0 hover:bg-muted/60 focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-ring"
+                  onClick={() => add(option.id)}
+                >
+                  <TypeBadge type={option.type} />
+                  <span className="min-w-0">
+                    <span className="block truncate text-sm font-medium">{option.label}</span>
+                    <span className="block truncate text-xs text-muted-foreground">
+                      {option.moveName}
+                    </span>
+                  </span>
+                  <span className="text-xs tabular-nums text-muted-foreground">
+                    {option.power || "-"} / {option.accuracy ?? "-"}
+                  </span>
+                </button>
+              ))
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+    </section>
   )
 }
