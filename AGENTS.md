@@ -42,6 +42,12 @@ Package manager: **pnpm** (`packageManager` in [`package.json`](package.json)).
 
 ## Agent workflow
 
+### Frontend design review
+
+For frontend implementation, UI redesign, or interactive prototype work, use the **design-taste-frontend** skill to review the completed result before finishing the task, then apply any corrections identified by that review. This review-and-correct pass is a completion requirement, not an optional report.
+
+When using **design-taste-frontend** in this repository, ignore its statements that exclude dashboards, dense product UI, or similar application surfaces. Apply its relevant design and pre-flight rules to those surfaces as well.
+
 ### Issue tracker
 
 Issues live in `.issues/` and are managed with the **dot-issues** skill. See `docs/agents/issue-tracker.md`.
