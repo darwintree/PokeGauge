@@ -2,6 +2,7 @@ import { buildCoreCatalogOptions, buildTypeBoostCatalogOptions } from "@/lib/hel
 import {
   listChampionsAbilityUsageRecords,
   listChampionsMoveUsageRecords,
+  listChampionsPokemonUsageIds,
 } from "@/lib/champions"
 import { localeMessages, type SupportedLocale } from "@/lib/i18n"
 import {
@@ -153,13 +154,20 @@ async function listPokemonOptions(locale: SupportedLocale): Promise<SpeciesOptio
   const cached = POKEMON_OPTIONS_BY_LOCALE.get(locale)
   if (cached) return cached
 
-  const options = listResources("pokemon", locale).then((pokemon) =>
-    Object.freeze(
-      pokemon
-        .map(localizedSpeciesOption)
-        .sort((a, b) => a.label.localeCompare(b.label)),
-    ) as SpeciesOption[],
-  )
+  const options = Promise.all([
+    listResources("pokemon", locale),
+    withTimeout(listChampionsPokemonUsageIds(), DEFAULT_USAGE_TIMEOUT_MS).catch(() => []),
+  ]).then(([pokemon, usageIds]) => {
+    const alphabetical = pokemon
+      .map(localizedSpeciesOption)
+      .sort((a, b) => a.label.localeCompare(b.label))
+    const byId = new Map(alphabetical.map((option) => [option.id, option]))
+    const usageIdSet = new Set(usageIds)
+    return Object.freeze([
+      ...usageIds.flatMap((id) => byId.get(id) ?? []),
+      ...alphabetical.filter((option) => !usageIdSet.has(option.id)),
+    ]) as SpeciesOption[]
+  })
   POKEMON_OPTIONS_BY_LOCALE.set(locale, options)
   return options
 }

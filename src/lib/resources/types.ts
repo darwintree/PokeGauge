@@ -107,6 +107,7 @@ export type LocalizedResourceBase<TType extends ResourceType> = {
 
 export type LocalizedPokemonResource = LocalizedResourceBase<"pokemon"> & {
   battlePokemonId: BattlePokemonId
+  pokemonSlug: string
   calcSpeciesName: string
   types: PokemonType[]
   abilityIds: UpstreamResourceId[]

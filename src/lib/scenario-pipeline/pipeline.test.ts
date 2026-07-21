@@ -1,6 +1,7 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest"
 
 import {
+  setChampionsPokemonUsageFetcherForTest,
   setChampionsAbilityUsageFetcherForTest,
   setChampionsMoveUsageFetcherForTest,
 } from "@/lib/champions"
@@ -81,6 +82,7 @@ function installChampionsAbilityUsageFixture() {
 }
 
 beforeAll(() => {
+  setChampionsPokemonUsageFetcherForTest(async () => [445, 727])
   installChampionsMoveUsageFixture()
   installChampionsAbilityUsageFixture()
 })
@@ -100,8 +102,12 @@ describe("catalog registry", () => {
     const enAttackers = await listAttackers("en")
 
     expect(zhAttackers).toBe(zhDefenders)
-    expect(zhAttackers.map((pokemon) => pokemon.id)).toEqual(
-      zhAttackers.toSorted((a, b) => a.label.localeCompare(b.label)).map((pokemon) => pokemon.id),
+    expect(zhAttackers.slice(0, 2).map((pokemon) => pokemon.id)).toEqual([445, 727])
+    expect(zhAttackers.slice(2).map((pokemon) => pokemon.id)).toEqual(
+      zhAttackers
+        .slice(2)
+        .toSorted((a, b) => a.label.localeCompare(b.label))
+        .map((pokemon) => pokemon.id),
     )
     expect(zhAttackers.map((pokemon) => pokemon.id).toSorted((a, b) => a - b)).toEqual(
       enAttackers.map((pokemon) => pokemon.id).toSorted((a, b) => a - b),
