@@ -43,6 +43,12 @@ describe("Screen Track", () => {
         },
       },
       criticalOnly: false,
+      moveMechanics: {
+        basePower: 40,
+        effectivePower: 40,
+        accuracy: 100,
+        modifiers: { item: 4096, weather: 4096, spread: 4096, stab: 4096, typeEffectiveness: 4096, screen: 4096 },
+      },
       minDamage: 20,
       maxDamage: 24,
       avgDamage: 22,
@@ -80,7 +86,7 @@ describe("Screen Track", () => {
     ))
 
     expect(markup).toContain("Reflect")
-    expect(markup).toContain("Other screens (1)")
+    expect(markup).toContain("Other conditions (1)")
     expect(markup).toContain("Inactive")
     expect(markup).toContain("Light Screen")
     expect(markup).not.toContain("No screen")

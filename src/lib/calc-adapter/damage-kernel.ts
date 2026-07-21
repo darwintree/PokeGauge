@@ -71,7 +71,7 @@ export function chainModifiers(modifiers: readonly number[]): number {
   )
 }
 
-function applyModifier(value: number, modifier: number): number {
+export function applyModifier(value: number, modifier: number): number {
   return Math.floor((value * modifier + 2047) / NEUTRAL_MODIFIER)
 }
 

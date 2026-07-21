@@ -516,7 +516,6 @@ export function useScenarioState(catalog: MatchupCatalog) {
     unavailable,
     offenseTemplates,
     defenseTemplates,
-    showMoveOnRow: trackState.moveSnapshots.length > 1,
     selectionSummary,
     offenseBounds,
     defenderHpBounds,

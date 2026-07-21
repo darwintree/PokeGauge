@@ -2,8 +2,6 @@
 
 import { useIntl } from "react-intl"
 
-import { TypeBadge } from "@/components/pokemon/type-badge"
-import { Separator } from "@/components/ui/separator"
 import {
   Tooltip,
   TooltipContent,
@@ -14,17 +12,11 @@ import type {
   CatalogMoveOption,
   CatalogOption,
 } from "@/lib/catalog/types"
-import { itemAriaLabel, itemSprite } from "@/lib/held-item"
-import type { ProvenanceOptionSets, ScenarioRow } from "@/lib/scenario-pipeline"
-import {
-  defenderBulkTier,
-  offenseStatTier,
-  statTierChipClasses,
-  type StatTierTokenSet,
-} from "@/lib/stat-tier-colors"
+import type { ScenarioRow } from "@/lib/scenario-pipeline"
 import { cn } from "@/lib/utils"
 
 import { formatKoProbability } from "./format-ko-probability"
+import { DamageConditionsCard } from "./damage-conditions-card"
 
 // Non-linear axis: 0–100% linear over 72% of width, 100–200% sqrt-compressed
 // into the remaining 28%. Hard cap 200%.
@@ -77,278 +69,6 @@ const TONE_DOT_CLASS = {
   lethal: "bg-red-600",
 } as const
 
-type ResultTierChipProps = {
-  tier: StatTierTokenSet
-  className: string
-  children: React.ReactNode
-}
-
-function ResultTierChip({ tier, className, children }: ResultTierChipProps) {
-  return (
-    <span
-      className={cn(
-        "inline-block rounded-md border px-1.5 py-0.5",
-        className,
-        statTierChipClasses(tier),
-      )}
-    >
-      {children}
-    </span>
-  )
-}
-
-type ResultStatLabelProps = {
-  label: string
-  actual?: string | null
-}
-
-function ResultStatLabel({ label, actual }: ResultStatLabelProps) {
-  return (
-    <span className="inline-flex items-center gap-1">
-      <span>{label}</span>
-      {actual && (
-        <span className="text-muted-foreground text-[10px] font-normal opacity-75 tabular-nums">
-          {actual}
-        </span>
-      )}
-    </span>
-  )
-}
-
-type RowLabelProps = {
-  children: React.ReactNode
-}
-
-function RowLabel({ children }: RowLabelProps) {
-  return (
-    <span className="text-muted-foreground w-10 shrink-0 text-[11px]">{children}</span>
-  )
-}
-
-function ItemIcons({ ids }: { ids: string[] }) {
-  return ids.filter((id) => id !== "none").map((id) => {
-    const label = itemAriaLabel(id)
-    const sprite = itemSprite(id)
-
-    return sprite ? (
-      <img
-        key={id}
-        src={`/items/${sprite}`}
-        alt={label}
-        title={label}
-        className="size-4 object-contain"
-      />
-    ) : (
-      <span key={id} title={label} className="rounded border px-1 text-[10px]">
-        {label}
-      </span>
-    )
-  })
-}
-
-function FoldedItemChoices({ items }: { items?: ProvenanceOptionSets }) {
-  const intl = useIntl()
-  const inactive = items?.inactive.filter((id) => id !== "none") ?? []
-  const unsupported = items?.unsupported.filter((id) => id !== "none") ?? []
-  const count = inactive.length + unsupported.length
-
-  if (count === 0) return null
-
-  return (
-    <details className="text-muted-foreground mt-1 pl-10 text-[10px]">
-      <summary className="w-fit cursor-pointer select-none">
-        {intl.formatMessage({ id: "damage.items.other" }, { count })}
-      </summary>
-      <div className="mt-1 space-y-1">
-        {inactive.length > 0 && (
-          <div className="flex items-center gap-1">
-            <span>{intl.formatMessage({ id: "damage.noBoost" })}</span>
-            <ItemIcons ids={inactive} />
-          </div>
-        )}
-        {unsupported.length > 0 && (
-          <div className="flex items-center gap-1">
-            <span>{intl.formatMessage({ id: "damage.items.unsupported" })}</span>
-            <ItemIcons ids={unsupported} />
-          </div>
-        )}
-      </div>
-    </details>
-  )
-}
-
-function formatStage(value: string): string {
-  const stage = Number(value)
-  return stage > 0 ? `+${stage}` : value
-}
-
-function StageValues({ ids }: { ids: string[] }) {
-  return ids.map((id) => (
-    <span key={id} className="rounded border px-1 text-[10px] tabular-nums">
-      {formatStage(id)}
-    </span>
-  ))
-}
-
-function FoldedStageChoices({ stages }: { stages?: ProvenanceOptionSets }) {
-  const intl = useIntl()
-  const neutral = stages?.neutral ?? []
-  const inactive = stages?.inactive ?? []
-  const unsupported = stages?.unsupported ?? []
-  const count = neutral.length + inactive.length + unsupported.length
-
-  if (count === 0) return null
-
-  return (
-    <details className="text-muted-foreground mt-1 pl-10 text-[10px]">
-      <summary className="w-fit cursor-pointer select-none">
-        {intl.formatMessage({ id: "damage.stages.other" }, { count })}
-      </summary>
-      <div className="mt-1 space-y-1">
-        {neutral.length > 0 && (
-          <div className="flex items-center gap-1">
-            <StageValues ids={neutral} />
-          </div>
-        )}
-        {inactive.length > 0 && (
-          <div className="flex items-center gap-1">
-            <span>{intl.formatMessage({ id: "damage.sources.inactive" })}</span>
-            <StageValues ids={inactive} />
-          </div>
-        )}
-        {unsupported.length > 0 && (
-          <div className="flex items-center gap-1">
-            <span>{intl.formatMessage({ id: "damage.sources.unsupported" })}</span>
-            <StageValues ids={unsupported} />
-          </div>
-        )}
-      </div>
-    </details>
-  )
-}
-
-function WeatherValues({ ids }: { ids: string[] }) {
-  const intl = useIntl()
-  return ids.filter((id) => id !== "none").map((id) => (
-    <span key={id} className="rounded border px-1 text-[10px]">
-      {intl.formatMessage({ id: `track.weather.${id}` })}
-    </span>
-  ))
-}
-
-function FoldedWeatherChoices({ weather }: { weather?: ProvenanceOptionSets }) {
-  const intl = useIntl()
-  const inactive = weather?.inactive.filter((id) => id !== "none") ?? []
-  const unsupported = weather?.unsupported.filter((id) => id !== "none") ?? []
-  const count = inactive.length + unsupported.length
-
-  if (count === 0) return null
-
-  return (
-    <details className="text-muted-foreground mt-1 pl-10 text-[10px]">
-      <summary className="w-fit cursor-pointer select-none">
-        {intl.formatMessage({ id: "damage.weather.other" }, { count })}
-      </summary>
-      <div className="mt-1 space-y-1">
-        {inactive.length > 0 && (
-          <div className="flex items-center gap-1">
-            <span>{intl.formatMessage({ id: "damage.sources.inactive" })}</span>
-            <WeatherValues ids={inactive} />
-          </div>
-        )}
-        {unsupported.length > 0 && (
-          <div className="flex items-center gap-1">
-            <span>{intl.formatMessage({ id: "damage.sources.unsupported" })}</span>
-            <WeatherValues ids={unsupported} />
-          </div>
-        )}
-      </div>
-    </details>
-  )
-}
-
-function ScreenValues({ ids }: { ids: string[] }) {
-  const intl = useIntl()
-  return ids.filter((id) => id !== "none").map((id) => (
-    <span key={id} className="rounded border px-1 text-[10px]">
-      {intl.formatMessage({ id: `track.screen.${id}` })}
-    </span>
-  ))
-}
-
-function FoldedScreenChoices({ screens }: { screens?: ProvenanceOptionSets }) {
-  const intl = useIntl()
-  const inactive = screens?.inactive.filter((id) => id !== "none") ?? []
-
-  if (inactive.length === 0) return null
-
-  return (
-    <details className="text-muted-foreground mt-1 pl-10 text-[10px]">
-      <summary className="w-fit cursor-pointer select-none">
-        {intl.formatMessage({ id: "damage.screens.other" }, { count: inactive.length })}
-      </summary>
-      <div className="mt-1 flex items-center gap-1">
-        <span>{intl.formatMessage({ id: "damage.sources.inactive" })}</span>
-        <ScreenValues ids={inactive} />
-      </div>
-    </details>
-  )
-}
-
-function AbilityValues({
-  ids,
-  options,
-}: {
-  ids: string[]
-  options: CatalogAbilityOption[]
-}) {
-  return ids.map((id) => {
-    const ability = options.find((option) => String(option.id) === id)
-    return (
-      <span key={id} className="rounded border px-1 text-[10px]">
-        {ability?.label ?? id}
-      </span>
-    )
-  })
-}
-
-function FoldedAbilityChoices({
-  abilities,
-  options,
-}: {
-  abilities?: ProvenanceOptionSets
-  options: CatalogAbilityOption[]
-}) {
-  const intl = useIntl()
-  const inactive = abilities?.inactive ?? []
-  const unsupported = abilities?.unsupported ?? []
-  const count = inactive.length + unsupported.length
-
-  if (count === 0) return null
-
-  return (
-    <details className="text-muted-foreground mt-1 pl-10 text-[10px]">
-      <summary className="w-fit cursor-pointer select-none">
-        {intl.formatMessage({ id: "damage.abilities.other" }, { count })}
-      </summary>
-      <div className="mt-1 space-y-1">
-        {inactive.length > 0 && (
-          <div className="flex items-center gap-1">
-            <span>{intl.formatMessage({ id: "damage.sources.inactive" })}</span>
-            <AbilityValues ids={inactive} options={options} />
-          </div>
-        )}
-        {unsupported.length > 0 && (
-          <div className="flex items-center gap-1">
-            <span>{intl.formatMessage({ id: "damage.sources.unsupported" })}</span>
-            <AbilityValues ids={unsupported} options={options} />
-          </div>
-        )}
-      </div>
-    </details>
-  )
-}
-
 function KoProbabilityColumns({ row }: { row: ScenarioRow }) {
   const intl = useIntl()
   const unavailable = intl.formatMessage({ id: "damage.ko.unavailable" })
@@ -382,8 +102,8 @@ type DamageBoxPlotProps = {
   attackerStat: Pick<CatalogOption<string>, "id" | "label"> & { actual?: string | null }
   defender: Pick<CatalogOption<string>, "id" | "label"> & { actual?: string | null }
   row: ScenarioRow
-  showMove?: boolean
   isRangeEnvelope?: boolean
+  showAccuracy?: boolean
 }
 
 export function DamageBoxPlot({
@@ -393,20 +113,11 @@ export function DamageBoxPlot({
   attackerStat,
   defender,
   row,
-  showMove = true,
   isRangeEnvelope = false,
+  showAccuracy = false,
 }: DamageBoxPlotProps) {
   const intl = useIntl()
   const tone = lethalTone(row)
-  const offenseTier = isRangeEnvelope ? null : offenseStatTier(attackerStat.id)
-  const defenseTier = defenderBulkTier(defender.id)
-  const itemProvenance = row.provenance["held-item"]
-  const attackerStageProvenance = row.provenance["attacker-stage"]
-  const defenderStageProvenance = row.provenance["defender-stage"]
-  const weatherProvenance = row.provenance.weather
-  const attackerAbilityProvenance = row.provenance["attacker-ability"]
-  const defenderAbilityProvenance = row.provenance["defender-ability"]
-  const screenProvenance = row.provenance.screen
   const box = pctSpan(row.minPercent, row.maxPercent)
   const crit = pctSpan(row.critMinPercent, row.critMaxPercent)
   const bridge =
@@ -416,79 +127,16 @@ export function DamageBoxPlot({
 
   return (
     <div className="grid min-h-[4.5rem] gap-3 md:grid-cols-[15rem_minmax(0,1fr)_9rem] md:items-center">
-      <div className="w-full overflow-hidden rounded-lg border bg-muted/20 md:w-60">
-        {showMove && (
-          <div className="flex items-center gap-1.5 px-3 py-1.5">
-            <RowLabel>{intl.formatMessage({ id: "damage.row.move" })}</RowLabel>
-            <TypeBadge type={move.type} />
-            <span className="text-xs">
-              {move.label}
-              {move.isSpread && <span className="text-muted-foreground ml-1">AoE</span>}
-            </span>
-          </div>
-        )}
-        {showMove && <Separator />}
-        <div className="px-3 py-1.5">
-          <div className="flex items-center gap-1.5">
-            <RowLabel>{intl.formatMessage({ id: "damage.row.attack" })}</RowLabel>
-            {offenseTier ? (
-              <ResultTierChip tier={offenseTier} className="text-xs font-medium leading-snug">
-                <ResultStatLabel label={attackerStat.label} actual={attackerStat.actual} />
-              </ResultTierChip>
-            ) : (
-              <span className="text-sm font-medium">
-                <ResultStatLabel label={attackerStat.label} actual={attackerStat.actual} />
-              </span>
-            )}
-            <StageValues ids={attackerStageProvenance?.effective ?? []} />
-            <ItemIcons ids={itemProvenance?.effective ?? []} />
-            <AbilityValues
-              ids={attackerAbilityProvenance?.effective ?? []}
-              options={attackerAbilities}
-            />
-            <WeatherValues ids={weatherProvenance?.effective ?? []} />
-          </div>
-          <FoldedStageChoices stages={attackerStageProvenance} />
-          <FoldedItemChoices items={itemProvenance} />
-          <FoldedAbilityChoices
-            abilities={attackerAbilityProvenance}
-            options={attackerAbilities}
-          />
-          <FoldedWeatherChoices weather={weatherProvenance} />
-          {isRangeEnvelope && (
-            <div className="text-muted-foreground mt-1 pl-10 text-[10px]">
-              {intl.formatMessage({ id: "damage.rangeEnvelope" })}
-            </div>
-          )}
-        </div>
-        <Separator />
-        <div className="px-3 py-1.5">
-          <div className="flex items-center gap-1.5">
-            <RowLabel>{intl.formatMessage({ id: "damage.row.defense" })}</RowLabel>
-            {defenseTier ? (
-              <ResultTierChip tier={defenseTier} className="text-xs leading-snug">
-                <ResultStatLabel label={defender.label} actual={defender.actual} />
-              </ResultTierChip>
-            ) : (
-              <span className="text-muted-foreground text-xs leading-snug">
-                <ResultStatLabel label={defender.label} actual={defender.actual} />
-              </span>
-            )}
-            <StageValues ids={defenderStageProvenance?.effective ?? []} />
-            <AbilityValues
-              ids={defenderAbilityProvenance?.effective ?? []}
-              options={defenderAbilities}
-            />
-            <ScreenValues ids={screenProvenance?.effective ?? []} />
-          </div>
-          <FoldedStageChoices stages={defenderStageProvenance} />
-          <FoldedAbilityChoices
-            abilities={defenderAbilityProvenance}
-            options={defenderAbilities}
-          />
-          <FoldedScreenChoices screens={screenProvenance} />
-        </div>
-      </div>
+      <DamageConditionsCard
+        move={move}
+        row={row}
+        attackerStat={attackerStat}
+        defender={defender}
+        attackerAbilities={attackerAbilities}
+        defenderAbilities={defenderAbilities}
+        isRangeEnvelope={isRangeEnvelope}
+        showAccuracy={showAccuracy}
+      />
 
       <Tooltip>
         <TooltipTrigger

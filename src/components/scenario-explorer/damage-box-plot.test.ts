@@ -61,6 +61,12 @@ describe("DamageBoxPlot range envelopes", () => {
       },
     },
     criticalOnly: false,
+    moveMechanics: {
+      basePower: 40,
+      effectivePower: 40,
+      accuracy: 100,
+      modifiers: { item: 4096, weather: 4096, spread: 4096, stab: 4096, typeEffectiveness: 4096, screen: 4096 },
+    },
     minDamage: 20,
     maxDamage: 40,
     avgDamage: 30,
@@ -73,7 +79,7 @@ describe("DamageBoxPlot range envelopes", () => {
     critMaxPercent: 30,
   }
 
-  function render(isRangeEnvelope: boolean): string {
+  function render(isRangeEnvelope: boolean, showAccuracy = false): string {
     return renderToStaticMarkup(createElement(
       IntlProvider,
       { locale: "en", messages: localeMessages.en },
@@ -96,6 +102,7 @@ describe("DamageBoxPlot range envelopes", () => {
           defender: { id: "standard-bulk", label: "Defense" },
           row,
           isRangeEnvelope,
+          showAccuracy,
         }),
       ),
     ))
@@ -117,5 +124,12 @@ describe("DamageBoxPlot range envelopes", () => {
     ))
 
     expect(markup).not.toContain("Average damage")
+  })
+
+  it("shows accuracy only in actual probability mode", () => {
+    row.moveMechanics.accuracy = 85
+
+    expect(render(false)).not.toContain("85%")
+    expect(render(false, true)).toContain("85%")
   })
 })
