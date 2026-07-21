@@ -25,7 +25,7 @@ _Avoid_: Always-on doubles penalty, UI-only display setting
 ### Move selection
 
 **Move pick**:
-系统从进攻方技能池中按使用率自动选出的招式集合（top-N）。用户未声明招式时，结果按 move pick 展开。
+系统从进攻方 Champions 使用率数据中自动选出的招式集合。Champions 使用率前 10 的原始招式中，当前 Move side 的 Snapshot-capable damaging move 进入 Move track；使用率严格高于 50% 或对当前防守方效果绝佳的快照默认选中，其余作为备选。用户未声明招式时，结果按选中的 move pick 展开。
 _Avoid_: Auto-move, 默认招式
 
 **Champions move usage data**:

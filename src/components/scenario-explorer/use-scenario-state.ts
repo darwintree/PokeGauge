@@ -74,6 +74,16 @@ function snapshotMoveIds(snapshots: readonly MoveSnapshot[]): number[] {
   return snapshots.map((snapshot) => snapshot.moveId)
 }
 
+function selectedSnapshotMoveIds(
+  snapshots: readonly MoveSnapshot[],
+  selectedSnapshotIds: readonly string[],
+): number[] {
+  const selected = new Set(selectedSnapshotIds)
+  return snapshots
+    .filter((snapshot) => selected.has(snapshot.id))
+    .map((snapshot) => snapshot.moveId)
+}
+
 function cycleAllocationIndex(
   indices: Record<string, number>,
   id: string,
@@ -156,6 +166,7 @@ export function useScenarioState(catalog: MatchupCatalog) {
   )
   const attackerIdRef = useRef(catalog.matchup.attackerId)
   const defenderIdRef = useRef(catalog.matchup.defenderId)
+  const defaultMovePoolIdsRef = useRef<number[]>([...catalog.defaultMovePoolIds])
   const defaultMoveIdsRef = useRef<number[]>([...catalog.defaultMoveIds])
   const defaultAttackerAbilityIdsRef = useRef<number[]>([
     ...catalog.defaultAttackerAbilityIds,
@@ -185,7 +196,10 @@ export function useScenarioState(catalog: MatchupCatalog) {
     attackerKeyRef.current = attackerKey
     attackerIdRef.current = catalog.matchup.attackerId
     defenderIdRef.current = catalog.matchup.defenderId
-    defaultMoveIdsRef.current = [...catalog.defaultMoveIds]
+    if (attackerOwnerChanged) {
+      defaultMovePoolIdsRef.current = [...catalog.defaultMovePoolIds]
+      defaultMoveIdsRef.current = [...catalog.defaultMoveIds]
+    }
     defaultAttackerAbilityIdsRef.current = [...catalog.defaultAttackerAbilityIds]
     defaultDefenderAbilityIdsRef.current = [...catalog.defaultDefenderAbilityIds]
     if (attackerChanged) attackerAbilitiesTouchedRef.current = false
@@ -213,21 +227,34 @@ export function useScenarioState(catalog: MatchupCatalog) {
 
   useEffect(() => {
     if (catalog.defaultMovePickStatus !== "ready") return
+    const previousDefaultMovePoolIds = defaultMovePoolIdsRef.current
     const previousDefaultMoveIds = defaultMoveIdsRef.current
-    if (sameIds(previousDefaultMoveIds, catalog.defaultMoveIds)) return
+    if (
+      sameIds(previousDefaultMovePoolIds, catalog.defaultMovePoolIds) &&
+      sameIds(previousDefaultMoveIds, catalog.defaultMoveIds)
+    ) return
+    defaultMovePoolIdsRef.current = [...catalog.defaultMovePoolIds]
     defaultMoveIdsRef.current = [...catalog.defaultMoveIds]
     setTrackState((s) => {
       if (movesTouchedRef.current) return s
-      if (sameIds(snapshotMoveIds(s.moveSnapshots), catalog.defaultMoveIds)) return s
-      if (!sameIds(snapshotMoveIds(s.moveSnapshots), previousDefaultMoveIds)) return s
-      const moveSnapshots = snapshotsForMoveIds(catalog, catalog.defaultMoveIds)
+      if (!sameIds(snapshotMoveIds(s.moveSnapshots), previousDefaultMovePoolIds)) return s
+      if (!sameIds(
+        selectedSnapshotMoveIds(s.moveSnapshots, s.selectedMoveSnapshotIds),
+        previousDefaultMoveIds,
+      )) return s
+      const moveSnapshots = sameIds(previousDefaultMovePoolIds, catalog.defaultMovePoolIds)
+        ? s.moveSnapshots
+        : snapshotsForMoveIds(catalog, catalog.defaultMovePoolIds)
+      const selectedMoveIds = new Set(catalog.defaultMoveIds)
       return {
         ...s,
         moveSnapshots,
-        selectedMoveSnapshotIds: moveSnapshots.map((snapshot) => snapshot.id),
+        selectedMoveSnapshotIds: moveSnapshots
+          .filter((snapshot) => selectedMoveIds.has(snapshot.moveId))
+          .map((snapshot) => snapshot.id),
       }
     })
-  }, [catalog, catalog.defaultMoveIds])
+  }, [catalog, catalog.defaultMovePoolIds, catalog.defaultMoveIds])
 
   useEffect(() => {
     if (catalog.defaultAbilityPickStatus !== "ready") return
