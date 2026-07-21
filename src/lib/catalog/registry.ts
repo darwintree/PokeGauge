@@ -1,3 +1,4 @@
+import { typeEffectiveness } from "@/lib/calc-adapter/damage-kernel"
 import { buildCoreCatalogOptions, buildTypeBoostCatalogOptions } from "@/lib/held-item"
 import {
   listChampionsAbilityUsageRecords,
@@ -253,13 +254,13 @@ async function snapshotCapableMoveOptions(
   return moves
 }
 
-async function resolveUsageMoveIds(
+async function resolveUsageMoves(
   attackerId: BattlePokemonId,
   activeMoveCategory: MoveCategory,
   moves: CatalogMoveOption[],
-): Promise<UpstreamResourceId[]> {
+): Promise<Array<{ moveId: UpstreamResourceId; percentage: number | null }>> {
   const moveById = new Map(moves.map((move) => [move.id, move]))
-  const selected = (await listChampionsMoveUsageRecords(attackerId))
+  const ranked = (await listChampionsMoveUsageRecords(attackerId))
     .toSorted((a, b) => {
       const byRank = a.rank - b.rank
       if (byRank !== 0) return byRank
@@ -269,10 +270,14 @@ async function resolveUsageMoveIds(
       if (byMoveName !== 0) return byMoveName
       return a.moveId - b.moveId
     })
+    .slice(0, 10)
     .filter((record) => moveById.get(record.moveId)?.category === activeMoveCategory)
-    .map((record) => record.moveId)
 
-  return [...new Set(selected)]
+  return [
+    ...new Map(
+      ranked.map(({ moveId, percentage }) => [moveId, { moveId, percentage }]),
+    ).values(),
+  ]
 }
 
 function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
@@ -291,12 +296,19 @@ async function resolveDefaultMovePick(
   attackerId: BattlePokemonId,
   activeMoveCategory: MoveCategory,
   moves: CatalogMoveOption[],
-): Promise<Pick<MatchupCatalog, "moves" | "defaultMoveIds" | "defaultMovePickStatus">> {
+  defenderTypes: MatchupCatalog["defenderTypes"],
+): Promise<
+  Pick<
+    MatchupCatalog,
+    "moves" | "defaultMovePoolIds" | "defaultMoveIds" | "defaultMovePickStatus"
+  >
+> {
   try {
-    const usageMoveIds = await withTimeout(
-      resolveUsageMoveIds(attackerId, activeMoveCategory, moves),
+    const usageMoves = await withTimeout(
+      resolveUsageMoves(attackerId, activeMoveCategory, moves),
       DEFAULT_USAGE_TIMEOUT_MS,
     )
+    const usageMoveIds = usageMoves.map(({ moveId }) => moveId)
     const moveById = new Map(moves.map((move) => [move.id, move]))
     const usageMoveIdSet = new Set(usageMoveIds)
 
@@ -305,12 +317,19 @@ async function resolveDefaultMovePick(
         ...usageMoveIds.map((moveId) => moveById.get(moveId)!),
         ...moves.filter((move) => !usageMoveIdSet.has(move.id)),
       ],
-      defaultMoveIds: usageMoveIds.slice(0, 6),
+      defaultMovePoolIds: usageMoveIds,
+      defaultMoveIds: usageMoves
+        .filter(({ moveId, percentage }) =>
+          (percentage ?? Number.NEGATIVE_INFINITY) > 50 ||
+          typeEffectiveness(moveById.get(moveId)!.type, defenderTypes) > 1,
+        )
+        .map(({ moveId }) => moveId),
       defaultMovePickStatus: "ready",
     }
   } catch {
     return {
       moves,
+      defaultMovePoolIds: [],
       defaultMoveIds: [],
       defaultMovePickStatus: "unavailable",
     }
@@ -381,6 +400,7 @@ export async function getCatalogShell(
       defenderSpecies: defenderResource.calcSpeciesName,
     },
     attackerTypes: attackerResource.types,
+    defenderTypes: defenderResource.types,
     moveCategory: activeMoveCategory,
     ...labels,
     moves,
@@ -389,9 +409,10 @@ export async function getCatalogShell(
     attackerAbilities,
     defenderBulks: buildDefenderBulks(activeMoveCategory),
     defenderAbilities,
-    /** Default selected set — Move pick only; remaining fixed-power moves addable via search. */
+    /** Champions defaults load asynchronously; global snapshot-capable moves remain searchable. */
     defaultMovePickStatus: "loading",
     defaultAbilityPickStatus: "loading",
+    defaultMovePoolIds: [],
     defaultMoveIds: [],
     defaultAttackerStatIds: ["neutral-max", "extreme"],
     defaultAttackerItemIds: ["none"],
@@ -410,6 +431,7 @@ export async function resolveCatalogDefaultMovePick(
         catalog.matchup.attackerId,
         catalog.moveCategory,
         catalog.moves,
+        catalog.defenderTypes,
       ),
       resolveDefaultAbilityIds(catalog.matchup.attackerId, catalog.attackerAbilities),
       resolveDefaultAbilityIds(catalog.matchup.defenderId, catalog.defenderAbilities),

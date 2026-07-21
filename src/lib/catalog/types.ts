@@ -33,6 +33,7 @@ export type MatchupCatalog = {
   matchup: MatchupIdentity
   /** Attacker typing — drives default visible type-boost items in UI */
   attackerTypes: PokemonType[]
+  defenderTypes: PokemonType[]
   /** All moves in pick share this category — v1 single-category attackers only */
   moveCategory: MoveCategory
   offenseStatLabel: string
@@ -45,6 +46,7 @@ export type MatchupCatalog = {
   defenderAbilities: CatalogAbilityOption[]
   defaultMovePickStatus: "loading" | "ready" | "unavailable"
   defaultAbilityPickStatus: "loading" | "ready"
+  defaultMovePoolIds: UpstreamResourceId[]
   defaultMoveIds: UpstreamResourceId[]
   defaultAttackerStatIds: string[]
   defaultAttackerItemIds: string[]

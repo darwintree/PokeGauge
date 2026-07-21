@@ -60,7 +60,7 @@ describe("catalog move candidate ordering", () => {
     expect(physical.moves.some((move) => move.id === 68)).toBe(false)
   })
 
-  it("puts same-side usage moves first without changing candidate eligibility or fallback order", async () => {
+  it("seeds every same-side usage move and selects usage above 50% or super-effective moves", async () => {
     setChampionsMoveUsageFetcherForTest(async (battlePokemonId) => [
       { battlePokemonId, moveId: 182, format: "Doubles", season: "test", source: "test", rank: 1, percentage: 90, championsMoveName: "Protect" },
       { battlePokemonId, moveId: 317, format: "Doubles", season: "test", source: "test", rank: 2, percentage: 80, championsMoveName: "Rock Tomb" },
@@ -71,14 +71,17 @@ describe("catalog move candidate ordering", () => {
       { battlePokemonId, moveId: 707, format: "Doubles", season: "test", source: "test", rank: 7, percentage: 30, championsMoveName: "Stomping Tantrum" },
       { battlePokemonId, moveId: 398, format: "Doubles", season: "test", source: "test", rank: 8, percentage: 20, championsMoveName: "Poison Jab" },
       { battlePokemonId, moveId: 200, format: "Doubles", season: "test", source: "test", rank: 9, percentage: 10, championsMoveName: "Outrage" },
+      { battlePokemonId, moveId: 242, format: "Doubles", season: "test", source: "test", rank: 10, percentage: 5, championsMoveName: "Crunch" },
+      { battlePokemonId, moveId: 444, format: "Doubles", season: "test", source: "test", rank: 11, percentage: 4, championsMoveName: "Stone Edge" },
     ])
 
     const shell = await getCatalogShell(445, 727, "en", "physical")
     const catalog = await resolveCatalogDefaultMovePick(shell)
-    const usageIds = [317, 89, 337, 157, 707, 398, 200]
+    const usageIds = [317, 89, 337, 157, 707, 398, 200, 242]
 
     expect(catalog.moves.slice(0, usageIds.length).map((move) => move.id)).toEqual(usageIds)
-    expect(catalog.defaultMoveIds).toEqual(usageIds.slice(0, 6))
+    expect(catalog.defaultMovePoolIds).toEqual(usageIds)
+    expect(catalog.defaultMoveIds).toEqual([317, 89, 157, 707])
     expect(catalog.moves.slice(usageIds.length).map((move) => move.id)).toEqual(
       shell.moves.filter((move) => !usageIds.includes(move.id)).map((move) => move.id),
     )
@@ -94,6 +97,7 @@ describe("catalog move candidate ordering", () => {
     const catalog = await resolveCatalogDefaultMovePick(shell)
 
     expect(catalog.moves).toEqual(shell.moves)
+    expect(catalog.defaultMovePoolIds).toEqual([])
     expect(catalog.defaultMoveIds).toEqual([])
   })
 })

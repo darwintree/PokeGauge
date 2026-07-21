@@ -137,6 +137,9 @@ describe("catalog registry", () => {
         expect(catalog.defaultMoveIds.every((id) => catalog.moves.some((m) => m.id === id))).toBe(
           true,
         )
+        expect(catalog.defaultMovePoolIds.every((id) => catalog.moves.some((m) => m.id === id))).toBe(
+          true,
+        )
         expect(catalog.moves.length).toBeGreaterThan(0)
         return catalog.defaultMoveIds.join(",")
       }),
@@ -144,21 +147,25 @@ describe("catalog registry", () => {
     expect(new Set(defaultMoveSets).size).toBeGreaterThan(1)
   })
 
-  it("pre-selects default move pick only; extra moves stay in + pool", async () => {
+  it("loads every Champions damaging move into the track and selects the default subset", async () => {
     for (const attacker of (await listAttackers(LOCALE)).slice(0, 24)) {
       const catalog = await getCatalog(attacker.id, 727, LOCALE)
       const state = defaultTrackState(catalog)
       expect(state.moveSnapshots.map((snapshot) => snapshot.moveId)).toEqual(
-        catalog.defaultMoveIds,
+        catalog.defaultMovePoolIds,
       )
-      expect(catalog.moves.length).toBeGreaterThanOrEqual(catalog.defaultMoveIds.length)
+      expect(state.moveSnapshots
+        .filter((snapshot) => state.selectedMoveSnapshotIds.includes(snapshot.id))
+        .map((snapshot) => snapshot.moveId)).toEqual(catalog.defaultMoveIds)
+      expect(catalog.moves.length).toBeGreaterThanOrEqual(catalog.defaultMovePoolIds.length)
     }
   })
 
-  it("uses Champions rank order for default move picks before fallback", async () => {
+  it("uses Champions rank order for the pool and selects high-usage or super-effective moves", async () => {
     const catalog = await getCatalog(445, 727, "en")
     expect(catalog.defaultMovePickStatus).toBe("ready")
-    expect(catalog.defaultMoveIds).toEqual([337, 157, 89, 707, 398, 317])
+    expect(catalog.defaultMovePoolIds).toEqual([337, 157, 89, 707, 398, 317])
+    expect(catalog.defaultMoveIds).toEqual([337, 157, 89, 707, 317])
   })
 
   it("builds the shell catalog without waiting for Champion move usage", async () => {
@@ -167,6 +174,7 @@ describe("catalog registry", () => {
     const verdict = await Promise.race([
       getCatalogShell(445, 727, "en").then((catalog) => ({
         status: catalog.defaultMovePickStatus,
+        defaultMovePoolIds: catalog.defaultMovePoolIds,
         defaultMoveIds: catalog.defaultMoveIds,
         moves: catalog.moves.length,
       })),
@@ -176,6 +184,7 @@ describe("catalog registry", () => {
     expect(verdict).not.toBe("timeout")
     expect(verdict).toMatchObject({
       status: "loading",
+      defaultMovePoolIds: [],
       defaultMoveIds: [],
     })
     expect(typeof verdict === "object" ? verdict.moves : 0).toBeGreaterThan(0)
@@ -189,12 +198,14 @@ describe("catalog registry", () => {
     const catalog = await resolveCatalogDefaultMovePick(await getCatalogShell(445, 727, "en"))
 
     expect(catalog.defaultMovePickStatus).toBe("unavailable")
+    expect(catalog.defaultMovePoolIds).toEqual([])
     expect(catalog.defaultMoveIds).toEqual([])
     expect(catalog.moves.length).toBeGreaterThan(0)
   })
 
   it("does not preselect moves when Champions rows are unavailable", async () => {
     const catalog = await getCatalog(1, 727, "en")
+    expect(catalog.defaultMovePoolIds).toEqual([])
     expect(catalog.defaultMoveIds).toEqual([])
     expect(catalog.moves.length).toBeGreaterThan(0)
   })
@@ -239,11 +250,11 @@ describe("matchup scenario pipeline", () => {
     catalog = await getCatalog(445, 727, LOCALE)
   })
 
-  it("returns 12 rows for default template selections (top-6 moves × 32 + ex × 32HP × none)", () => {
+  it("returns 10 rows for the default selected moves", () => {
     const state = defaultTrackState(catalog)
     const rows = scenarioRows(catalog, state)
-    expect(rows).toHaveLength(12)
-    expect(expectedRowCount(state)).toBe(12)
+    expect(rows).toHaveLength(10)
+    expect(expectedRowCount(state)).toBe(10)
     expect(state.offenseTemplateIds).toEqual(
       expect.arrayContaining(["neutral-max", "extreme"]),
     )
@@ -486,7 +497,7 @@ describe("matchup scenario pipeline", () => {
     const state = defaultTrackState(catalog)
     state.offenseTemplateIds = ["extreme"]
     const rows = scenarioRows(catalog, state)
-    expect(rows).toHaveLength(6)
+    expect(rows).toHaveLength(5)
     expect(rows.every((r) => r.attackerStatId === "extreme")).toBe(true)
   })
 
@@ -559,8 +570,8 @@ describe("matchup scenario pipeline - range mode", () => {
     const state = defaultTrackState(catalog)
     state.statMode = "range"
     const rows = scenarioRows(catalog, state)
-    expect(rows).toHaveLength(6)
-    expect(expectedRowCount(state)).toBe(6)
+    expect(rows).toHaveLength(5)
+    expect(expectedRowCount(state)).toBe(5)
     expect(rows.every((r) => r.attackerStatId === RANGE_STAT_ID)).toBe(true)
     expect(rows.every((r) => r.statRange != null)).toBe(true)
   })
@@ -570,7 +581,7 @@ describe("matchup scenario pipeline - range mode", () => {
     state.statMode = "range"
     state.offenseTemplateIds = ["neutral-zero", "extreme"]
     const rows = scenarioRows(catalog, state)
-    expect(rows).toHaveLength(6)
+    expect(rows).toHaveLength(5)
     expect(rows.every((r) => r.attackerStatId === RANGE_STAT_ID)).toBe(true)
   })
 
@@ -592,8 +603,8 @@ describe("matchup scenario pipeline - range mode", () => {
     const state = defaultTrackState(catalog)
     state.defenderMode = "range"
     const rows = scenarioRows(catalog, state)
-    expect(rows).toHaveLength(12)
-    expect(expectedRowCount(state)).toBe(12)
+    expect(rows).toHaveLength(10)
+    expect(expectedRowCount(state)).toBe(10)
     expect(rows.every((r) => r.defenderId === RANGE_DEFENDER_ID)).toBe(true)
   })
 

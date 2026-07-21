@@ -419,14 +419,16 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
   const defenseSystem = buildSystemDefenseTemplates(defenderSpecies, catalog.moveCategory)
   const offenseUser = loadUserOffenseTemplates(String(catalog.matchup.attackerId))
   const defenseUser = loadUserDefenseTemplates(String(catalog.matchup.defenderId))
-  const moveSnapshots = catalog.defaultMoveIds.flatMap((moveId) => {
+  const moveSnapshots = catalog.defaultMovePoolIds.flatMap((moveId) => {
     const move = catalog.moves.find((candidate) => candidate.id === moveId)
     return move ? [createMoveSnapshot(move)] : []
   })
 
   return {
     moveSnapshots,
-    selectedMoveSnapshotIds: moveSnapshots.map((snapshot) => snapshot.id),
+    selectedMoveSnapshotIds: moveSnapshots
+      .filter((snapshot) => catalog.defaultMoveIds.includes(snapshot.moveId))
+      .map((snapshot) => snapshot.id),
     statMode: "preset",
     offenseTemplateIds: defaultOffenseSelection(offenseSystem, offenseUser),
     offenseTemporaryTemplates: [],
