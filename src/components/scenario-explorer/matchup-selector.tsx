@@ -1,4 +1,4 @@
-import { Search } from "lucide-react"
+import { Plus, Search } from "lucide-react"
 import { useId, useMemo, useRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
@@ -20,9 +20,14 @@ import { cn } from "@/lib/utils"
 type SpeciesSelectProps = {
   label: string
   options: SpeciesOption[]
-  value: BattlePokemonId
+  value: BattlePokemonId | null
   onChange: (id: BattlePokemonId) => void
   spriteSide?: "front" | "back"
+  /** default = sidebar; rail = home-screen instrument control */
+  presentation?: "default" | "rail"
+  disabled?: boolean
+  className?: string
+  awaiting?: boolean
 }
 
 function speciesMatches(option: SpeciesOption, query: string, typeFilters: PokemonType[]) {
@@ -46,6 +51,10 @@ export function SpeciesSelect({
   value,
   onChange,
   spriteSide = "front",
+  presentation = "default",
+  disabled = false,
+  className,
+  awaiting = false,
 }: SpeciesSelectProps) {
   const intl = useIntl()
   const searchId = useId()
@@ -55,7 +64,7 @@ export function SpeciesSelect({
   const optionsAtOpen = useRef(options)
   const visibleOptions = open ? optionsAtOpen.current : options
   const selected = useMemo(
-    () => options.find((option) => option.id === value) ?? null,
+    () => (value == null ? null : (options.find((option) => option.id === value) ?? null)),
     [options, value],
   )
   const filteredOptions = useMemo(
@@ -64,6 +73,7 @@ export function SpeciesSelect({
   )
 
   function changeOpen(nextOpen: boolean) {
+    if (disabled) return
     if (nextOpen) optionsAtOpen.current = options
     setOpen(nextOpen)
   }
@@ -73,28 +83,91 @@ export function SpeciesSelect({
     setOpen(false)
   }
 
-  const spriteFile = spriteSide === "back" ? `back/${value}.png` : `${value}.png`
+  const spriteFile =
+    value == null ? null : spriteSide === "back" ? `back/${value}.png` : `${value}.png`
+  const isRail = presentation === "rail"
+  const placeholder =
+    selected?.label ?? intl.formatMessage({ id: "matchup.placeholder" })
 
   return (
-    <div>
+    <div className={cn(disabled && "pointer-events-none opacity-40", className)}>
       <Button
         type="button"
-        variant="outline"
-        className="h-auto min-h-32 w-full flex-col items-stretch justify-start gap-1 bg-gradient-to-b from-muted/50 to-background p-2 text-left"
+        variant={isRail ? "ghost" : "outline"}
+        disabled={disabled}
+        aria-disabled={disabled || undefined}
+        data-awaiting={awaiting || undefined}
+        className={cn(
+          "whitespace-normal transition-[transform,background-color,border-color,opacity] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.99]",
+          presentation === "default" &&
+            "h-auto min-h-32 w-full flex-col items-stretch justify-start gap-1 rounded-lg bg-gradient-to-b from-muted/50 to-background p-2 text-left",
+          isRail &&
+            "h-14 w-full flex-row items-center justify-start gap-3 rounded-md border border-border/80 bg-background/90 px-3 shadow-none hover:bg-muted/50",
+          awaiting && isRail && "border-foreground/50",
+        )}
         onClick={() => changeOpen(true)}
       >
-        <img
-          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${spriteFile}`}
-          alt=""
-          className="mx-auto size-20 object-contain [image-rendering:pixelated]"
-        />
-        <span className="text-muted-foreground text-[10px] font-normal">{label}</span>
-        <span className="flex min-w-0 items-center justify-between gap-2">
-          <span className="truncate text-sm font-semibold tracking-tight">
-            {selected?.label ?? intl.formatMessage({ id: "matchup.placeholder" })}
-          </span>
-          {selected && <TypeBadgeRow types={selected.types} />}
-        </span>
+        {isRail ? (
+          <>
+            {spriteFile ? (
+              <img
+                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${spriteFile}`}
+                alt=""
+                className="size-10 shrink-0 object-contain [image-rendering:pixelated]"
+              />
+            ) : (
+              <span
+                aria-hidden
+                className="bg-muted text-muted-foreground grid size-10 shrink-0 place-items-center rounded-full"
+              >
+                <Plus className="size-4 stroke-[1.5]" />
+              </span>
+            )}
+            <span className="min-w-0 flex-1 text-left">
+              <span className="text-muted-foreground block text-[10px] leading-none">{label}</span>
+              <span
+                className={cn(
+                  "mt-1 block truncate text-sm font-semibold tracking-tight",
+                  !selected && "text-muted-foreground font-medium",
+                )}
+              >
+                {placeholder}
+              </span>
+            </span>
+            {selected && <TypeBadgeRow types={selected.types} />}
+          </>
+        ) : (
+          <>
+            {spriteFile ? (
+              <img
+                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${spriteFile}`}
+                alt=""
+                className="mx-auto size-20 object-contain [image-rendering:pixelated]"
+              />
+            ) : (
+              <span
+                aria-hidden
+                className="mx-auto grid size-20 place-items-center rounded-full border border-dashed border-border/80 bg-muted/30"
+              >
+                <span className="bg-foreground/12 size-2 rounded-full" />
+              </span>
+            )}
+            <span className="text-muted-foreground text-[10px] font-normal tracking-wide">
+              {label}
+            </span>
+            <span className="flex min-w-0 items-center justify-between gap-2">
+              <span
+                className={cn(
+                  "truncate text-sm font-semibold tracking-tight",
+                  !selected && "text-muted-foreground font-medium",
+                )}
+              >
+                {placeholder}
+              </span>
+              {selected && <TypeBadgeRow types={selected.types} />}
+            </span>
+          </>
+        )}
       </Button>
 
       <Dialog open={open} onOpenChange={changeOpen}>
