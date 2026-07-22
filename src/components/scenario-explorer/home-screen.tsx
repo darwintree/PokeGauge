@@ -2,7 +2,6 @@ import { FormattedMessage, useIntl } from "react-intl"
 
 import { SpeciesSelect } from "@/components/scenario-explorer/matchup-selector"
 import type { SpeciesOption } from "@/lib/catalog"
-import type { SupportedLocale } from "@/lib/i18n"
 import type { BattlePokemonId } from "@/lib/resources"
 
 function homeHintId(
@@ -19,11 +18,8 @@ type HomeScreenProps = {
   defenders: SpeciesOption[]
   attackerId: BattlePokemonId | null
   defenderId: BattlePokemonId | null
-  locale: SupportedLocale
-  localeOptions: Array<{ value: SupportedLocale; label: string }>
   onAttackerChange: (id: BattlePokemonId) => void
   onDefenderChange: (id: BattlePokemonId) => void
-  onLocaleChange: (locale: SupportedLocale) => void
 }
 
 /** Empty-matchup home: typographic hero + bottom instrument rail. */
@@ -32,40 +28,18 @@ export function HomeScreen({
   defenders,
   attackerId,
   defenderId,
-  locale,
-  localeOptions,
   onAttackerChange,
   onDefenderChange,
-  onLocaleChange,
 }: HomeScreenProps) {
   const intl = useIntl()
   const hint = homeHintId(attackerId, defenderId)
 
   return (
-    <div className="relative isolate flex min-h-[100dvh] flex-col">
+    <div className="relative isolate flex min-h-[calc(100dvh-3.5rem)] flex-col">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,color-mix(in_oklch,var(--muted)_70%,transparent),transparent_45%)]"
       />
-
-      <header className="relative flex items-center justify-between px-4 pt-4 sm:px-6">
-        <p className="text-muted-foreground text-[11px] tracking-wide">
-          <FormattedMessage id="matchup.context" />
-        </p>
-        <select
-          id="home-locale"
-          value={locale}
-          onChange={(event) => onLocaleChange(event.target.value as SupportedLocale)}
-          className="border-input bg-background h-8 rounded-md border px-2 text-[11px]"
-          aria-label={intl.formatMessage({ id: "locale.label" })}
-        >
-          {localeOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </header>
 
       <div className="relative flex flex-1 flex-col justify-center px-4 pb-36 sm:px-6">
         <div className="mx-auto w-full max-w-3xl">

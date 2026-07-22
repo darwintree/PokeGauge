@@ -321,12 +321,12 @@ export function useScenarioState(catalog: MatchupCatalog) {
     stats:
       trackState.statMode === "preset"
         ? `${trackState.offenseTemplateIds.length} 预设`
-        : `数轴 ${trackState.statRange.min}–${trackState.statRange.max}`,
+        : `数轴 ${trackState.statRange.min}-${trackState.statRange.max}`,
     items: trackState.attackerItemIds.length,
     defenders:
       trackState.defenderMode === "preset"
         ? `${trackState.defenseTemplateIds.length} 预设`
-        : `数轴 HP ${trackState.defenderRanges.hp.min}–${trackState.defenderRanges.hp.max}`,
+        : `数轴 HP ${trackState.defenderRanges.hp.min}-${trackState.defenderRanges.hp.max}`,
     rows: rows.length,
   }
 

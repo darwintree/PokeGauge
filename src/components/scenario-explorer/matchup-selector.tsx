@@ -281,9 +281,6 @@ export function MatchupSelector({
           onChange={onDefenderChange}
         />
       </div>
-      <p className="text-muted-foreground text-[10px]">
-        <FormattedMessage id="matchup.context" />
-      </p>
     </div>
   )
 }

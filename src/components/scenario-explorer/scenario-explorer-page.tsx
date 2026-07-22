@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { HomeScreen } from "@/components/scenario-explorer/home-screen"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import {
   getCatalogShell,
   getDefaultMoveCategory,
@@ -15,7 +15,7 @@ import {
   type MoveCategory,
   type SpeciesOption,
 } from "@/lib/catalog"
-import { SUPPORTED_LOCALES, type SupportedLocale } from "@/lib/i18n"
+import type { SupportedLocale } from "@/lib/i18n"
 import type { BattlePokemonId } from "@/lib/resources"
 import { cn } from "@/lib/utils"
 
@@ -26,7 +26,6 @@ import { useScenarioState } from "./use-scenario-state"
 
 type ScenarioExplorerPageProps = {
   locale: SupportedLocale
-  onLocaleChange: (locale: SupportedLocale) => void
 }
 
 type LocalizedCatalogState = {
@@ -54,20 +53,14 @@ export function ScenarioExplorerContent({
   defenders,
   attackerId,
   defenderId,
-  locale,
-  localeOptions,
   onAttackerChange,
   onDefenderChange,
-  onLocaleChange,
   onMoveCategoryChange,
 }: LocalizedCatalogState & {
   attackerId: BattlePokemonId
   defenderId: BattlePokemonId
-  locale: SupportedLocale
-  localeOptions: Array<{ value: SupportedLocale; label: string }>
   onAttackerChange: (id: BattlePokemonId) => void
   onDefenderChange: (id: BattlePokemonId) => void
-  onLocaleChange: (locale: SupportedLocale) => void
   onMoveCategoryChange: (category: MoveCategory) => void
 }) {
   const intl = useIntl()
@@ -80,22 +73,27 @@ export function ScenarioExplorerContent({
   }
 
   return (
-    <div className="mx-auto min-h-svh max-w-7xl p-4 pb-12 sm:p-6">
+    <div className="mx-auto min-h-[calc(100dvh-3.5rem)] max-w-7xl p-4 pb-12 sm:p-6">
       <a
         href="#damage-results"
         onClick={() => setMobileView("results")}
-        className="bg-background focus-visible:ring-ring fixed top-2 left-2 z-30 -translate-y-20 rounded-md px-3 py-2 text-sm font-medium shadow-sm focus-visible:translate-y-0 focus-visible:ring-2 focus-visible:outline-none"
+        className="bg-background focus-visible:ring-ring fixed top-[6.5rem] left-2 z-50 -translate-y-40 rounded-md px-3 py-2 text-sm font-medium shadow-sm focus-visible:translate-y-0 focus-visible:ring-2 focus-visible:outline-none lg:top-16"
       >
         <FormattedMessage id="app.skipToResults" />
       </a>
       <nav
         aria-label={intl.formatMessage({ id: "app.title" })}
-        className="bg-background/95 sticky top-0 z-20 -mx-1 mb-4 grid grid-cols-2 gap-1 rounded-lg border p-1 shadow-sm backdrop-blur lg:hidden"
+        className="bg-background/95 sticky top-14 z-20 -mx-4 -mt-4 mb-4 grid grid-cols-2 border-b px-4 backdrop-blur sm:-mx-6 sm:-mt-6 sm:px-6 lg:hidden"
       >
         <Button
           type="button"
-          variant={mobileView === "setup" ? "secondary" : "ghost"}
-          className="h-10"
+          variant="ghost"
+          className={cn(
+            "h-11 rounded-none border-b-2 px-3",
+            mobileView === "setup"
+              ? "border-b-foreground text-foreground"
+              : "border-b-transparent text-muted-foreground",
+          )}
           aria-pressed={mobileView === "setup"}
           onClick={() => changeMobileView("setup")}
         >
@@ -103,8 +101,13 @@ export function ScenarioExplorerContent({
         </Button>
         <Button
           type="button"
-          variant={mobileView === "results" ? "secondary" : "ghost"}
-          className="h-10"
+          variant="ghost"
+          className={cn(
+            "h-11 rounded-none border-b-2 px-3",
+            mobileView === "results"
+              ? "border-b-foreground text-foreground"
+              : "border-b-transparent text-muted-foreground",
+          )}
           aria-pressed={mobileView === "results"}
           onClick={() => changeMobileView("results")}
         >
@@ -115,32 +118,12 @@ export function ScenarioExplorerContent({
         <aside
           id="scenario-setup"
           className={cn(
-            "lg:w-[22rem] lg:sticky lg:top-6 lg:block lg:max-h-[calc(100dvh-3rem)] lg:shrink-0 lg:overflow-y-auto lg:[scrollbar-gutter:stable]",
+            "lg:w-[22rem] lg:sticky lg:top-20 lg:block lg:max-h-[calc(100dvh-6rem)] lg:shrink-0 lg:overflow-y-auto lg:[scrollbar-gutter:stable]",
             mobileView !== "setup" && "hidden",
           )}
         >
           <Card>
-            <CardHeader className="border-b [.border-b]:pb-3">
-              <div className="flex items-center justify-between gap-2">
-                <span className="text-sm font-medium tracking-tight">
-                  <FormattedMessage id="app.setup" />
-                </span>
-                <select
-                  id="locale-select"
-                  value={locale}
-                  onChange={(event) => onLocaleChange(event.target.value as SupportedLocale)}
-                  className="border-input bg-background h-7 rounded-md border px-2 text-[11px]"
-                  aria-label={intl.formatMessage({ id: "locale.label" })}
-                >
-                  {localeOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </CardHeader>
-            <CardContent className="pt-4">
+            <CardContent>
               <ScenarioSidebar
                 catalog={catalog}
                 state={state}
@@ -164,12 +147,9 @@ export function ScenarioExplorerContent({
           )}
         >
           <header className="space-y-2">
-            <h1 className="text-2xl font-semibold tracking-tight">
-              <FormattedMessage id="app.title" />
-            </h1>
-            <p className="text-muted-foreground text-sm">
+            <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">
               {catalog.matchup.attackerLabel} → {catalog.matchup.defenderLabel}
-            </p>
+            </h1>
             <SelectionSummary state={state} />
           </header>
           <ScenarioResults
@@ -188,7 +168,7 @@ export function ScenarioExplorerContent({
   )
 }
 
-export function ScenarioExplorerPage({ locale, onLocaleChange }: ScenarioExplorerPageProps) {
+export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
   const intl = useIntl()
   const [attackerId, setAttackerId] = useState<BattlePokemonId | null>(null)
   const [defenderId, setDefenderId] = useState<BattlePokemonId | null>(null)
@@ -290,18 +270,9 @@ export function ScenarioExplorerPage({ locale, onLocaleChange }: ScenarioExplore
     setMoveCategory(getDefaultMoveCategory(id))
   }
 
-  const localeOptions = useMemo(
-    () =>
-      SUPPORTED_LOCALES.map((value) => ({
-        value,
-        label: intl.formatMessage({ id: `locale.${value}` }),
-      })),
-    [intl],
-  )
-
   if (loadError) {
     return (
-      <main className="grid min-h-svh place-items-center p-6">
+      <main className="grid min-h-[calc(100dvh-3.5rem)] place-items-center p-6">
         <div className="max-w-sm space-y-4 rounded-xl border bg-card p-6 text-center">
           <h1 className="text-xl font-semibold tracking-tight">
             <FormattedMessage id="app.loadError" />
@@ -322,7 +293,7 @@ export function ScenarioExplorerPage({ locale, onLocaleChange }: ScenarioExplore
       <main
         aria-busy="true"
         aria-label={intl.formatMessage({ id: "app.loading" })}
-        className="grid min-h-[100dvh] place-items-center p-6"
+        className="grid min-h-[calc(100dvh-3.5rem)] place-items-center p-6"
       >
         <div className="h-10 w-48 animate-pulse rounded-md bg-muted motion-reduce:animate-none" />
       </main>
@@ -342,11 +313,8 @@ export function ScenarioExplorerPage({ locale, onLocaleChange }: ScenarioExplore
           defenders={localizedOptions.defenders}
           attackerId={attackerId}
           defenderId={defenderId}
-          locale={locale}
-          localeOptions={localeOptions}
           onAttackerChange={changeAttacker}
           onDefenderChange={setDefenderId}
-          onLocaleChange={onLocaleChange}
         />
       </div>
     )
@@ -360,11 +328,8 @@ export function ScenarioExplorerPage({ locale, onLocaleChange }: ScenarioExplore
         catalog={catalog}
         attackerId={attackerId}
         defenderId={defenderId}
-        locale={locale}
-        localeOptions={localeOptions}
         onAttackerChange={changeAttacker}
         onDefenderChange={setDefenderId}
-        onLocaleChange={onLocaleChange}
         onMoveCategoryChange={setMoveCategory}
       />
     </div>

@@ -51,7 +51,7 @@ export function AbilityTrack({
     <TrackCard
       icon={Sparkles}
       label={<FormattedMessage id={labelId} />}
-      summary={summary || "—"}
+      summary={summary || "-"}
       expanded={expanded}
       onToggle={onToggle}
     >

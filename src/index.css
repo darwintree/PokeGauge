@@ -49,6 +49,8 @@
 }
 
 :root {
+    color-scheme: light;
+
     /* Geist primitives — design.md */
     --geist-background-100: #ffffff;
     --geist-background-200: #fafafa;
@@ -138,6 +140,8 @@
 }
 
 .dark {
+    color-scheme: dark;
+
     /* Geist primitives — design.dark.md */
     --geist-background-100: #000000;
     --geist-background-200: #000000;

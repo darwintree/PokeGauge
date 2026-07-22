@@ -256,7 +256,7 @@ function HoverLabel({ children }: { children: React.ReactNode }) {
 export function DamageAxis() {
   const intl = useIntl()
   return (
-    <div className="bg-background sticky top-14 z-10 mb-3 flex py-1 md:pl-[15.75rem] lg:top-0">
+    <div className="bg-background sticky top-[6.25rem] z-10 mb-3 flex py-1 md:pl-[15.75rem] lg:top-14">
       <div className="relative h-6 min-w-0 flex-1">
         {TICKS.map((tick) => (
           <div
