@@ -41,7 +41,7 @@ describe("formatKoProbability", () => {
   })
 
   it("keeps range endpoints instead of averaging them", () => {
-    expect(formatKoProbability({ min: 0.0625, max: 0.875 }, "en")).toBe("6.3%–87.5%")
+    expect(formatKoProbability({ min: 0.0625, max: 0.875 }, "en")).toBe("6.3%-87.5%")
   })
 })
 

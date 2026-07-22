@@ -5,10 +5,16 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Compare Pokémon battle damage across moves, stats, items, abilities, weather, and screens." />
-    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#171717" media="(prefers-color-scheme: dark)" />
+    <meta id="theme-color" name="theme-color" content="#fafafa" />
     <script>
-      document.documentElement.classList.toggle("dark", matchMedia("(prefers-color-scheme: dark)").matches)
+      {
+        const savedTheme = localStorage.getItem("pokemon-damage-calc.theme")
+        const isDark = savedTheme === "dark" || (
+          savedTheme !== "light" && matchMedia("(prefers-color-scheme: dark)").matches
+        )
+        document.documentElement.classList.toggle("dark", isDark)
+        document.querySelector("#theme-color").content = isDark ? "#171717" : "#fafafa"
+      }
     </script>
     <title>Pokémon Damage Calculator</title>
   </head>
