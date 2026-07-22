@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
+import { HomeScreen } from "@/components/scenario-explorer/home-screen"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import {
   getCatalogShell,
-  getDefaultMatchupIds,
   getDefaultMoveCategory,
   listAttackers,
   listDefenders,
@@ -48,7 +48,7 @@ function catalogKey(catalog: MatchupCatalog): string {
   ].join(":")
 }
 
-function ScenarioExplorerContent({
+export function ScenarioExplorerContent({
   catalog,
   attackers,
   defenders,
@@ -190,15 +190,16 @@ function ScenarioExplorerContent({
 
 export function ScenarioExplorerPage({ locale, onLocaleChange }: ScenarioExplorerPageProps) {
   const intl = useIntl()
-  const defaults = getDefaultMatchupIds()
-  const [attackerId, setAttackerId] = useState<BattlePokemonId>(defaults.attackerId)
-  const [defenderId, setDefenderId] = useState<BattlePokemonId>(defaults.defenderId)
-  const [moveCategory, setMoveCategory] = useState<MoveCategory>(() =>
-    getDefaultMoveCategory(defaults.attackerId),
-  )
+  const [attackerId, setAttackerId] = useState<BattlePokemonId | null>(null)
+  const [defenderId, setDefenderId] = useState<BattlePokemonId | null>(null)
+  const [moveCategory, setMoveCategory] = useState<MoveCategory>("physical")
   const [localizedOptions, setLocalizedOptions] = useState<LocalizedOptionsState | null>(null)
   const [catalog, setCatalog] = useState<MatchupCatalog | null>(null)
   const [loadError, setLoadError] = useState(false)
+  const [showExplorer, setShowExplorer] = useState(false)
+  const [leavingHome, setLeavingHome] = useState(false)
+
+  const bothSelected = attackerId != null && defenderId != null
 
   useEffect(() => {
     let cancelled = false
@@ -226,12 +227,15 @@ export function ScenarioExplorerPage({ locale, onLocaleChange }: ScenarioExplore
   }, [locale])
 
   useEffect(() => {
+    if (attackerId == null || defenderId == null) {
+      setCatalog(null)
+      return
+    }
     let cancelled = false
     setLoadError(false)
     getCatalogShell(attackerId, defenderId, locale, moveCategory)
       .then((nextCatalog) => {
-        if (cancelled) return
-        setCatalog(nextCatalog)
+        if (!cancelled) setCatalog(nextCatalog)
       })
       .catch(() => {
         if (!cancelled) setLoadError(true)
@@ -265,6 +269,22 @@ export function ScenarioExplorerPage({ locale, onLocaleChange }: ScenarioExplore
     }
   }, [catalog])
 
+  useEffect(() => {
+    if (!bothSelected || !catalog) {
+      setLeavingHome(false)
+      setShowExplorer(false)
+      return
+    }
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (reduce) {
+      setShowExplorer(true)
+      return
+    }
+    setLeavingHome(true)
+    const timer = window.setTimeout(() => setShowExplorer(true), 420)
+    return () => window.clearTimeout(timer)
+  }, [bothSelected, catalog])
+
   function changeAttacker(id: BattlePokemonId) {
     setAttackerId(id)
     setMoveCategory(getDefaultMoveCategory(id))
@@ -297,37 +317,56 @@ export function ScenarioExplorerPage({ locale, onLocaleChange }: ScenarioExplore
     )
   }
 
-  if (!localizedOptions || !catalog) {
+  if (!localizedOptions) {
     return (
       <main
         aria-busy="true"
         aria-label={intl.formatMessage({ id: "app.loading" })}
-        className="mx-auto grid min-h-svh max-w-7xl gap-6 p-4 motion-reduce:animate-none sm:p-6 lg:grid-cols-[20rem_1fr]"
+        className="grid min-h-[100dvh] place-items-center p-6"
       >
-        <div className="hidden h-[42rem] animate-pulse rounded-xl bg-muted motion-reduce:animate-none lg:block" />
-        <div className="space-y-5 pt-2">
-          <div className="h-8 w-56 animate-pulse rounded-md bg-muted motion-reduce:animate-none" />
-          <div className="h-5 w-80 max-w-full animate-pulse rounded-md bg-muted motion-reduce:animate-none" />
-          <div className="h-36 animate-pulse rounded-xl bg-muted motion-reduce:animate-none" />
-          <div className="h-36 animate-pulse rounded-xl bg-muted motion-reduce:animate-none" />
-        </div>
+        <div className="h-10 w-48 animate-pulse rounded-md bg-muted motion-reduce:animate-none" />
       </main>
     )
   }
 
+  if (!showExplorer || !catalog || attackerId == null || defenderId == null) {
+    return (
+      <div
+        className={cn(
+          "transition-[opacity,transform] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]",
+          leavingHome && "translate-y-2 opacity-0",
+        )}
+      >
+        <HomeScreen
+          attackers={localizedOptions.attackers}
+          defenders={localizedOptions.defenders}
+          attackerId={attackerId}
+          defenderId={defenderId}
+          locale={locale}
+          localeOptions={localeOptions}
+          onAttackerChange={changeAttacker}
+          onDefenderChange={setDefenderId}
+          onLocaleChange={onLocaleChange}
+        />
+      </div>
+    )
+  }
+
   return (
-    <ScenarioExplorerContent
-      attackers={localizedOptions.attackers}
-      defenders={localizedOptions.defenders}
-      catalog={catalog}
-      attackerId={attackerId}
-      defenderId={defenderId}
-      locale={locale}
-      localeOptions={localeOptions}
-      onAttackerChange={changeAttacker}
-      onDefenderChange={setDefenderId}
-      onLocaleChange={onLocaleChange}
-      onMoveCategoryChange={setMoveCategory}
-    />
+    <div className="motion-safe:animate-[home-rise_500ms_cubic-bezier(0.16,1,0.3,1)_both]">
+      <ScenarioExplorerContent
+        attackers={localizedOptions.attackers}
+        defenders={localizedOptions.defenders}
+        catalog={catalog}
+        attackerId={attackerId}
+        defenderId={defenderId}
+        locale={locale}
+        localeOptions={localeOptions}
+        onAttackerChange={changeAttacker}
+        onDefenderChange={setDefenderId}
+        onLocaleChange={onLocaleChange}
+        onMoveCategoryChange={setMoveCategory}
+      />
+    </div>
   )
 }
