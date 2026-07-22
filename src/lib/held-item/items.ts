@@ -32,7 +32,7 @@ export const TYPE_BOOST_CALC_NAME = Object.fromEntries(
 ) as Record<PokemonType, string>
 
 const CORE_ITEM_SUMMARY: Record<string, string> = {
-  none: "—",
+  none: "-",
   "life-orb": "1.3× 伤害",
   "choice-band": "1.5× 物攻",
   "choice-specs": "1.5× 特攻",

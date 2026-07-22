@@ -486,7 +486,7 @@ export function rowLabels(
   let statLabel: string
   let statActual: string | null = null
   if (row.attackerStatId === RANGE_STAT_ID && row.statRange) {
-    statLabel = `${catalog.offenseStatLabel} ${row.statRange.min}–${row.statRange.max}`
+    statLabel = `${catalog.offenseStatLabel} ${row.statRange.min}-${row.statRange.max}`
   } else {
     const template = offenseTemplates.find((t) => t.id === row.attackerStatId)
     if (template) {
@@ -508,7 +508,7 @@ export function rowLabels(
   let defenderLabel: string
   let defenderActual: string | null = null
   if (row.defenderId === RANGE_DEFENDER_ID && row.defenderRanges) {
-    defenderLabel = `HP ${row.defenderRanges.hp.min}–${row.defenderRanges.hp.max} · ${defStatLabel} ${row.defenderRanges.def.min}–${row.defenderRanges.def.max}`
+    defenderLabel = `HP ${row.defenderRanges.hp.min}-${row.defenderRanges.hp.max} · ${defStatLabel} ${row.defenderRanges.def.min}-${row.defenderRanges.def.max}`
   } else {
     const template = defenseTemplates.find((t) => t.id === row.defenderId)
     if (template) {
