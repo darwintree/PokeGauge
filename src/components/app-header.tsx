@@ -215,6 +215,14 @@ export function AppHeader({
     <header className="border-border/80 bg-background/90 sticky top-0 z-40 h-14 border-b backdrop-blur-md">
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-1 px-4 sm:gap-3 sm:px-6">
         <div className="flex min-w-0 items-center gap-3">
+          <img
+            src="/favicon-32x32.png"
+            srcSet="/pokelens-icon-64.png 2x, /pokelens-icon-96.png 3x"
+            alt=""
+            width={32}
+            height={32}
+            className="size-8 shrink-0"
+          />
           <span className="truncate text-sm font-semibold tracking-tight">
             <FormattedMessage id="app.name" />
           </span>

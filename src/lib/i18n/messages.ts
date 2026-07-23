@@ -2,7 +2,7 @@ import type { SupportedLocale } from "./locales"
 
 export const localeMessages: Record<SupportedLocale, Record<string, string>> = {
   "zh-hans": {
-    "app.name": "Pokémon Damage Calc",
+    "app.name": "PokeLens",
     "app.title": "伤害对比",
     "app.empty": "请至少各选一维配置以展示伤害对比",
     "app.setup": "参数",
@@ -176,7 +176,7 @@ export const localeMessages: Record<SupportedLocale, Record<string, string>> = {
     "damage.legend.average": "平均伤害",
   },
   "zh-hant": {
-    "app.name": "Pokémon Damage Calc",
+    "app.name": "PokeLens",
     "app.title": "傷害對比",
     "app.empty": "請至少各選一維配置以展示傷害對比",
     "app.setup": "參數",
@@ -350,7 +350,7 @@ export const localeMessages: Record<SupportedLocale, Record<string, string>> = {
     "damage.legend.average": "平均傷害",
   },
   en: {
-    "app.name": "Pokémon Damage Calc",
+    "app.name": "PokeLens",
     "app.title": "Damage comparison",
     "app.empty": "Select at least one option in each dimension to show damage rows",
     "app.setup": "Setup",
@@ -524,7 +524,7 @@ export const localeMessages: Record<SupportedLocale, Record<string, string>> = {
     "damage.legend.average": "Average damage",
   },
   ja: {
-    "app.name": "Pokémon Damage Calc",
+    "app.name": "PokeLens",
     "app.title": "ダメージ比較",
     "app.empty": "各項目を少なくとも1つ選ぶとダメージ行を表示します",
     "app.setup": "設定",

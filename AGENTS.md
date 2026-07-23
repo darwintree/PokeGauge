@@ -1,4 +1,4 @@
-# Pokemon Damage Calc
+# PokeLens
 
 Pokémon battle damage calculator.
 
