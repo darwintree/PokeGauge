@@ -1,4 +1,4 @@
-# Pokémon Damage Calc
+# PokeLens
 
 宝可梦对战伤害计算器。用户以最小输入获得一次 matchup 的充分伤害信息，并可选择收紧参数以缩小结果范围。
 
