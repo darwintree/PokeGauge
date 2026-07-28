@@ -157,7 +157,6 @@ export function ScenarioExplorerContent({
             statNameStrategy={state.statNameStrategy}
             onShowResultActualChange={state.setShowResultActual}
             onProbabilityModeChange={state.setProbabilityMode}
-            compact
           />
         </main>
       </div>
