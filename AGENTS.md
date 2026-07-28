@@ -13,13 +13,11 @@ Pokémon battle damage calculator.
 | UI primitives | [`src/components/ui/`](src/components/ui/) |
 | Utilities | [`src/lib/`](src/lib/) |
 | i18n | UI messages and locale selection live in [`src/lib/i18n/`](src/lib/i18n/); Pokémon and move names resolve through [`src/lib/resources/`](src/lib/resources/) with the current `SupportedLocale`. |
-| Design spec (light) | [`design.md`](design.md) |
-| Design spec (dark) | [`design.dark.md`](design.dark.md) |
+| Design spec | [`design.md`](design.md) — game HUD system, light-only (dark mode is dropped); direction: [`docs/adr/0002`](docs/adr/0002-game-hud-design-direction.md) |
 | Agent issue tracker | [`docs/agents/issue-tracker.md`](docs/agents/issue-tracker.md) |
 | Agent triage labels | [`docs/agents/triage-labels.md`](docs/agents/triage-labels.md) |
 | Domain docs | [`CONTEXT.md`](CONTEXT.md) · [`docs/adr/`](docs/adr/) · [`docs/agents/domain.md`](docs/agents/domain.md) |
 | shadcn docs | https://ui.shadcn.com/docs |
-| Geist upstream | https://vercel.com/design.md · https://vercel.com/design.dark.md |
 
 ## Commands
 
@@ -33,10 +31,10 @@ Package manager: **pnpm** (`packageManager` in [`package.json`](package.json)).
 
 ## Implementation rules
 
-- UI follows **Geist** via `design.md` / `design.dark.md`; shadcn tokens in `src/index.css` are the runtime layer, so align theme changes with the specs.
+- UI follows the **game HUD** system in [`design.md`](design.md) (direction: [`docs/adr/0002-game-hud-design-direction.md`](docs/adr/0002-game-hud-design-direction.md)); shadcn tokens in `src/index.css` are the runtime layer, so align theme changes with the spec. The information-hierarchy invariants in `design.md` are a product contract — do not add, remove, merge, or reorder result-surface information without an explicit request.
 - Product UI is **shadcn-first**: use or extend primitives in `src/components/ui/`; install missing primitives with the command above.
 - shadcn's `ui` alias is `@/components/ui`, and `@` resolves to `src`; generated primitives should land in `src/components/ui/`.
-- Keep Pokémon domain tokens separate from Geist/shadcn semantics: types, effectiveness, stat tiers, HP, and damage visuals are domain UI.
+- Keep Pokémon domain tokens separate from HUD/shadcn semantics: types, effectiveness, stat tiers, HP, and damage visuals are domain UI.
 - Keep custom domain visualization custom when no shadcn primitive matches, especially damage plots, axes, legends, type colors, effectiveness colors, and HP/status displays.
 - When editing existing controls, extend the shadcn primitive through variants, `className`, or composition before introducing parallel handcrafted markup.
 

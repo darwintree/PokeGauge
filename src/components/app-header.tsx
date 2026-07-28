@@ -2,8 +2,6 @@ import {
   ExternalLinkIcon,
   InfoIcon,
   MessageSquareWarningIcon,
-  MoonIcon,
-  SunIcon,
   XIcon,
 } from "lucide-react"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -47,10 +45,7 @@ type LocaleControlProps = {
   onLocaleChange: (locale: SupportedLocale) => void
 }
 
-type AppHeaderProps = LocaleControlProps & {
-  isDark: boolean
-  onThemeToggle: () => void
-}
+type AppHeaderProps = LocaleControlProps
 
 function LocaleSelect({
   id,
@@ -205,9 +200,7 @@ function ProjectDialog({ locale, onLocaleChange }: LocaleControlProps) {
 
 export function AppHeader({
   locale,
-  isDark,
   onLocaleChange,
-  onThemeToggle,
 }: AppHeaderProps) {
   const intl = useIntl()
 
@@ -257,20 +250,6 @@ export function AppHeader({
           </Button>
 
           <ProjectDialog locale={locale} onLocaleChange={onLocaleChange} />
-
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className="size-11 sm:size-10 lg:size-8"
-            onClick={onThemeToggle}
-            aria-label={intl.formatMessage({
-              id: isDark ? "theme.switchToLight" : "theme.switchToDark",
-            })}
-            aria-pressed={isDark}
-          >
-            {isDark ? <SunIcon aria-hidden /> : <MoonIcon aria-hidden />}
-          </Button>
 
           <LocaleSelect
             id="header-locale"
