@@ -100,10 +100,10 @@ export function SpeciesSelect({
         className={cn(
           "whitespace-normal transition-[transform,background-color,border-color,opacity] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.99]",
           presentation === "default" &&
-            "h-auto min-h-32 w-full flex-col items-stretch justify-start gap-1 rounded-lg bg-gradient-to-b from-muted/50 to-background p-2 text-left",
+            "h-auto min-h-32 w-full flex-col items-stretch justify-start gap-1 rounded-[10px] border-2 border-ink bg-paper p-2 text-left shadow-hud-chip hover:bg-token-bg/50",
           isRail &&
-            "h-14 w-full flex-row items-center justify-start gap-3 rounded-md border border-border/80 bg-background/90 px-3 shadow-none hover:bg-muted/50",
-          awaiting && isRail && "border-foreground/50",
+            "h-14 w-full flex-row items-center justify-start gap-3 rounded-[10px] border border-card-border bg-paper px-3 shadow-none hover:bg-token-bg/50",
+          awaiting && isRail && "border-ink border-dashed",
         )}
         onClick={() => changeOpen(true)}
       >
@@ -127,7 +127,7 @@ export function SpeciesSelect({
               <span className="text-muted-foreground block text-[10px] leading-none">{label}</span>
               <span
                 className={cn(
-                  "mt-1 block truncate text-sm font-semibold tracking-tight",
+                  "mt-1 block truncate text-sm font-extrabold tracking-tight",
                   !selected && "text-muted-foreground font-medium",
                 )}
               >
@@ -158,7 +158,7 @@ export function SpeciesSelect({
             <span className="flex min-w-0 items-center justify-between gap-2">
               <span
                 className={cn(
-                  "truncate text-sm font-semibold tracking-tight",
+                  "truncate text-sm font-extrabold tracking-tight",
                   !selected && "text-muted-foreground font-medium",
                 )}
               >
@@ -171,7 +171,7 @@ export function SpeciesSelect({
       </Button>
 
       <Dialog open={open} onOpenChange={changeOpen}>
-        <DialogContent className="bottom-0 top-auto left-0 h-[min(44rem,calc(100svh-1rem))] max-w-none grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden translate-x-0 translate-y-0 rounded-b-none p-0 sm:top-1/2 sm:left-1/2 sm:h-[min(44rem,calc(100svh-2rem))] sm:max-w-xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl">
+        <DialogContent className="bottom-0 top-auto left-0 h-[min(44rem,calc(100svh-1rem))] max-w-none grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden translate-x-0 translate-y-0 rounded-b-none border-2 border-ink bg-paper p-0 shadow-hud-panel sm:top-1/2 sm:left-1/2 sm:h-[min(44rem,calc(100svh-2rem))] sm:max-w-xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl">
           <DialogHeader className="border-b px-4 py-3 pr-12">
             <DialogTitle>{label}</DialogTitle>
           </DialogHeader>
@@ -201,8 +201,8 @@ export function SpeciesSelect({
                     type="button"
                     aria-pressed={pressed}
                     className={cn(
-                      "rounded border border-input bg-background px-1.5 py-1 transition-colors hover:bg-muted",
-                      pressed && "border-foreground bg-muted",
+                      "rounded-[9px] border-2 border-card-border bg-paper px-1.5 py-1 transition-colors hover:bg-token-bg/60",
+                      pressed && "border-ink bg-signal-yellow shadow-hud-chip",
                     )}
                     onClick={() => setTypeFilters((filters) => toggleType(filters, type))}
                   >

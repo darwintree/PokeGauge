@@ -18,7 +18,7 @@ export function TypeBadge({ type }: TypeBadgeProps) {
   const intl = useIntl()
   return (
     <span
-      className="inline-flex items-center rounded px-1 py-px text-[10px] font-medium leading-none"
+      className="inline-flex items-center rounded-[5px] border border-ink px-1 py-px text-[9px] font-extrabold leading-[14px]"
       style={{
         backgroundColor: typeCssVar(type),
         color: typeTextColor(type),

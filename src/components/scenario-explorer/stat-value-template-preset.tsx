@@ -229,8 +229,14 @@ export function ShowActualValuesSwitch({
   const intl = useIntl()
   return (
     <div className="flex items-center gap-2">
-      <Switch id={id} size="sm" checked={checked} onCheckedChange={onCheckedChange} />
-      <Label htmlFor={id} className="cursor-pointer text-[11px] font-normal">
+      <Switch
+        id={id}
+        size="sm"
+        checked={checked}
+        onCheckedChange={onCheckedChange}
+        className="border-2 border-ink data-checked:bg-signal-yellow data-unchecked:bg-paper [&_[data-slot=switch-thumb]]:size-2.5 [&_[data-slot=switch-thumb]]:bg-ink"
+      />
+      <Label htmlFor={id} className="cursor-pointer text-[10.5px] font-bold">
         {label ?? intl.formatMessage({ id: "stat.showActual" })}
       </Label>
     </div>

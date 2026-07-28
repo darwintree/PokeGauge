@@ -61,14 +61,18 @@ function ActiveTokens({
   return values.map(({ track, id }) => {
     const sprite = track === "held-item" ? itemSprite(id) : undefined
     return sprite ? (
-      <img
+      <span
         key={`${track}:${id}`}
-        src={`/items/${sprite}`}
-        alt={itemAriaLabel(id)}
-        className="size-4 object-contain"
-      />
+        className="grid size-[14px] place-items-center rounded-[4px] border border-ink bg-paper"
+      >
+        <img
+          src={`/items/${sprite}`}
+          alt={itemAriaLabel(id)}
+          className="size-3 object-contain"
+        />
+      </span>
     ) : (
-      <span key={`${track}:${id}`} className="rounded border px-1 text-[9px] leading-4">
+      <span key={`${track}:${id}`} className="rounded-[5px] bg-token-bg px-1 text-[9px] font-extrabold leading-4 text-ink">
         {sourceLabel(track, id, props, intl)}
       </span>
     )
@@ -95,11 +99,11 @@ function OtherConditions(props: DamageConditionsCardProps) {
     <details className="relative text-[10px] text-muted-foreground">
       <summary
         aria-label={intl.formatMessage({ id: "damage.conditions.other" }, { count })}
-        className="cursor-pointer list-none rounded border bg-background px-1 font-medium leading-4 hover:text-foreground"
+        className="cursor-pointer list-none rounded-[5px] border border-dashed border-hud-muted px-1 text-[9px] font-bold leading-4 text-hud-muted hover:border-ink hover:text-ink"
       >
         +{count}
       </summary>
-      <div className="absolute top-full right-0 z-30 mt-1 w-40 space-y-1 rounded-md border bg-popover p-2 text-popover-foreground shadow-md">
+      <div className="absolute top-full right-0 z-30 mt-1 w-40 space-y-1 rounded-xl border-2 border-ink bg-paper p-2 text-popover-foreground shadow-hud-panel">
         {props.isRangeEnvelope && <p>{intl.formatMessage({ id: "damage.rangeEnvelope" })}</p>}
         {entries.map(({ track, state, id }) => (
           <p key={`${track}:${state}:${id}`}>
@@ -129,7 +133,7 @@ function FormulaTip(props: DamageConditionsCardProps) {
       >
         <Info className="size-3 text-muted-foreground" />
       </TooltipTrigger>
-      <TooltipContent side="right" align="start" className="w-64 flex-col items-stretch gap-1.5 p-3">
+      <TooltipContent side="right" align="start" className="w-64 flex-col items-stretch gap-1.5 rounded-xl border-2 border-ink bg-paper p-3 shadow-hud-panel">
         <TipRow label={intl.formatMessage({ id: "damage.conditions.basePower" })} value={mechanics.basePower} />
         <TipRow label="STAB" value={modifierLabel(mechanics.modifiers.stab)} />
         <TipRow label={intl.formatMessage({ id: "damage.conditions.effectiveness" })} value={modifierLabel(mechanics.modifiers.typeEffectiveness)} />
@@ -151,9 +155,9 @@ function TipRow({ label, value }: { label: string; value: string | number }) {
 
 function IdentityLine({ label, value, actual, children }: { label: string; value: string; actual?: string | null; children?: React.ReactNode }) {
   return (
-    <div className="flex min-w-0 items-center gap-1.5 text-[11px]">
-      <span className="w-7 shrink-0 text-[9px] text-muted-foreground">{label}</span>
-      <span className="truncate font-medium">{value}</span>
+    <div className="flex min-w-0 items-center gap-1.5 text-[10.5px]">
+      <span className="w-[26px] shrink-0 text-[8.5px] text-muted-foreground">{label}</span>
+      <span className="truncate font-bold">{value}</span>
       {actual && <span className="text-[9px] text-muted-foreground tabular-nums">{actual}</span>}
       <span className="ml-auto flex shrink-0 items-center gap-1">{children}</span>
     </div>
@@ -167,11 +171,11 @@ export function DamageConditionsCard(props: DamageConditionsCardProps) {
     : `${props.row.moveMechanics.accuracy}%`
 
   return (
-    <article className="relative w-full rounded-md border bg-muted/15 md:w-60">
-      <div className="flex items-center gap-1 border-b px-2 py-1">
-        <span className="flex min-w-0 items-center gap-1"><TypeBadge type={props.move.type} /><span className="truncate text-xs font-semibold">{props.move.label}</span></span>
-        <strong title={intl.formatMessage({ id: "damage.conditions.effectivePower" })} className="ml-auto text-sm leading-4 tabular-nums">{props.row.moveMechanics.effectivePower}</strong>
-        {props.showAccuracy && <><span aria-hidden className="text-[10px] text-muted-foreground">·</span><span title={intl.formatMessage({ id: "damage.conditions.accuracy" })} className="text-[10px] tabular-nums">{accuracy}</span></>}
+    <article className="relative w-full rounded-[10px] border border-card-border bg-muted/60 md:w-[14.75rem]">
+      <div className="flex items-center gap-1 border-b border-card-border px-2 py-1">
+        <span className="flex min-w-0 items-center gap-1"><TypeBadge type={props.move.type} /><span className="truncate text-[12px] font-extrabold">{props.move.label}</span></span>
+        <strong title={intl.formatMessage({ id: "damage.conditions.effectivePower" })} className="ml-auto text-[13px] font-extrabold leading-4 tabular-nums">{props.row.moveMechanics.effectivePower}</strong>
+        {props.showAccuracy && <><span aria-hidden className="text-[10.5px] text-muted-foreground">·</span><span title={intl.formatMessage({ id: "damage.conditions.accuracy" })} className="text-[10.5px] tabular-nums">{accuracy}</span></>}
         <FormulaTip {...props} />
       </div>
       <div className="space-y-0.5 px-2 py-1">

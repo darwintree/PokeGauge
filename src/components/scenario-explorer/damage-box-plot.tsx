@@ -7,6 +7,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import type { KoProbabilityValue } from "@/lib/calc-adapter"
 import type {
   CatalogAbilityOption,
   CatalogMoveOption,
@@ -58,37 +59,58 @@ function lethalTone(row: ScenarioRow): Tone {
 }
 
 const TONE_CLASS = {
-  cool: "bg-amber-300/80 border-amber-400/60",
-  warm: "bg-orange-400/80 border-orange-500/60",
-  lethal: "bg-red-500/75 border-red-600/70",
+  cool: "damage-tone--cool",
+  warm: "damage-tone--warm",
+  lethal: "damage-tone--lethal",
 } as const
 
 const TONE_DOT_CLASS = {
-  cool: "bg-amber-400",
-  warm: "bg-orange-500",
-  lethal: "bg-red-600",
+  cool: "bg-[#f5b73f]",
+  warm: "bg-[#f58023]",
+  lethal: "bg-[#e0352f]",
 } as const
+
+/** Peak of a KO probability value (number or range), for zero/hot states. */
+function koPeak(value: KoProbabilityValue): number {
+  return typeof value === "number" ? value : value.max
+}
 
 function KoProbabilityColumns({ row }: { row: ScenarioRow }) {
   const intl = useIntl()
   const unavailable = intl.formatMessage({ id: "damage.ko.unavailable" })
+  const ohkoHot = row.koProbabilities != null && koPeak(row.koProbabilities.ohko) > 0
 
   return (
-    <dl className="grid w-full grid-cols-2 gap-3 rounded-lg bg-muted/50 px-3 py-2 text-xs tabular-nums md:w-36 md:shrink-0 md:gap-0 md:rounded-none md:bg-transparent md:p-0 md:text-center">
+    <dl className="grid w-full grid-cols-2 gap-3 rounded-[10px] bg-token-bg px-3 py-2 text-xs tabular-nums md:w-36 md:shrink-0 md:gap-0 md:rounded-none md:bg-transparent md:p-0 md:text-center">
       <div className="grid grid-cols-[1fr_auto] items-center gap-2 md:block">
         <dt className="text-muted-foreground text-[11px] md:sr-only">OHKO</dt>
-        <dd className="font-medium md:font-normal">
-          {row.koProbabilities
-            ? formatKoProbability(row.koProbabilities.ohko, intl.locale)
-            : unavailable}
+        <dd className="text-[12px] font-extrabold">
+          {row.koProbabilities ? (
+            ohkoHot ? (
+              /* Badge as signal: yellow only flags a real OHKO chance (design.md § KO columns) */
+              <span className="inline-block rounded-[8px] border-2 border-ink bg-signal-yellow px-1.5 py-px shadow-hud-chip">
+                {formatKoProbability(row.koProbabilities.ohko, intl.locale)}
+              </span>
+            ) : (
+              <span className={koPeak(row.koProbabilities.ohko) === 0 ? "text-hud-muted" : undefined}>
+                {formatKoProbability(row.koProbabilities.ohko, intl.locale)}
+              </span>
+            )
+          ) : (
+            <span className="text-hud-muted">{unavailable}</span>
+          )}
         </dd>
       </div>
       <div className="grid grid-cols-[1fr_auto] items-center gap-2 md:block">
         <dt className="text-muted-foreground text-[11px] md:sr-only">≤2HKO</dt>
-        <dd className="font-medium md:font-normal">
-          {row.koProbabilities
-            ? formatKoProbability(row.koProbabilities.twoHit, intl.locale)
-            : unavailable}
+        <dd className="text-[12px] font-extrabold">
+          {row.koProbabilities ? (
+            <span className={koPeak(row.koProbabilities.twoHit) === 0 ? "text-hud-muted" : undefined}>
+              {formatKoProbability(row.koProbabilities.twoHit, intl.locale)}
+            </span>
+          ) : (
+            <span className="text-hud-muted">{unavailable}</span>
+          )}
         </dd>
       </div>
     </dl>
@@ -126,7 +148,7 @@ export function DamageBoxPlot({
       : null
 
   return (
-    <div className="grid min-h-[4.5rem] gap-3 md:grid-cols-[15rem_minmax(0,1fr)_9rem] md:items-center">
+    <div className="grid min-h-[4.5rem] gap-3 md:grid-cols-[14.75rem_minmax(0,1fr)_9rem] md:items-center">
       <DamageConditionsCard
         move={move}
         row={row}
@@ -143,13 +165,14 @@ export function DamageBoxPlot({
           render={<div tabIndex={0} className="relative h-12 min-w-0 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/40 md:h-10" />}
         >
           <div
-            className="absolute top-1/2 h-px w-full -translate-y-1/2 bg-border"
+            className="absolute top-1/2 h-px w-full -translate-y-1/2 bg-hairline"
             aria-hidden
           />
 
+          {/* Data ink: pill box, ink frame, lethality gradient (design.md § Damage plot) */}
           <div
             className={cn(
-              "absolute top-1/2 h-7 -translate-y-1/2 rounded-sm border",
+              "absolute top-1/2 h-7 -translate-y-1/2 rounded-full border border-ink",
               TONE_CLASS[tone],
             )}
             style={{ left: box.left, width: box.width }}
@@ -158,14 +181,14 @@ export function DamageBoxPlot({
           {!isRangeEnvelope && (
             <div
               data-damage-average-marker
-              className="absolute top-1/2 z-10 w-0.5 -translate-y-1/2 rounded-full bg-foreground"
-              style={{ left: pctToLeft(row.avgPercent), height: "1.75rem" }}
+              className="absolute top-1/2 z-10 w-[3px] -translate-y-1/2 rounded-full bg-ink"
+              style={{ left: pctToLeft(row.avgPercent), height: "2.25rem" }}
             />
           )}
 
           {bridge && (
             <div
-              className="absolute top-1/2 h-px -translate-y-1/2 border-t border-dashed border-foreground/25"
+              className="absolute top-1/2 h-px -translate-y-1/2 border-t border-dashed border-ink/25"
               style={{ left: bridge.left, width: bridge.width }}
               aria-hidden
             />
@@ -174,13 +197,13 @@ export function DamageBoxPlot({
           {!row.criticalOnly && (
             <>
               <div
-                className="absolute top-1/2 h-px -translate-y-1/2 bg-violet-600/70"
+                className="absolute top-1/2 h-[2px] -translate-y-1/2 bg-crit-violet"
                 style={{ left: crit.left, width: crit.width }}
               />
               {[row.critMinPercent, row.critMaxPercent].map((p, i) => (
                 <div
                   key={i}
-                  className="absolute top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-violet-600 bg-background"
+                  className="absolute top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-crit-violet bg-paper"
                   style={{ left: pctToLeft(p) }}
                 />
               ))}
@@ -188,10 +211,10 @@ export function DamageBoxPlot({
           )}
 
           <div
-            className="pointer-events-none absolute -bottom-5 flex w-full flex-wrap items-baseline justify-center text-xs max-md:!left-0 md:w-auto md:min-w-48 md:justify-start"
+            className="pointer-events-none absolute -bottom-5 flex w-full flex-wrap items-baseline justify-center max-md:!left-0 md:w-auto md:min-w-48 md:justify-start"
             style={{ left: box.left }}
           >
-            <span className="font-medium tabular-nums">
+            <span className="text-[9.5px] font-extrabold tabular-nums">
               {row.minPercent.toFixed(1)}% ~ {row.maxPercent.toFixed(1)}%
             </span>
           </div>
@@ -200,7 +223,7 @@ export function DamageBoxPlot({
           side="top"
           sideOffset={8}
           align="center"
-          className="flex-col items-stretch gap-1.5 max-w-[18rem] px-3 py-2"
+          className="flex-col items-stretch gap-1.5 max-w-[18rem] rounded-xl border-2 border-ink bg-paper px-3 py-2 shadow-hud-panel"
         >
           <HoverRow marker={<span className={cn("inline-block size-2 rounded-sm", TONE_DOT_CLASS[tone])} />}>
             <HoverLabel>
@@ -213,13 +236,13 @@ export function DamageBoxPlot({
             </span>
           </HoverRow>
           {!isRangeEnvelope && (
-            <HoverRow marker={<span className="inline-block h-3 w-0.5 bg-foreground" />}>
+            <HoverRow marker={<span className="inline-block h-3.5 w-[3px] rounded-full bg-ink" />}>
               <HoverLabel>{intl.formatMessage({ id: "damage.average" })}</HoverLabel>
               <span className="tabular-nums">{row.avgPercent.toFixed(1)}%</span>
             </HoverRow>
           )}
           {!row.criticalOnly && (
-            <HoverRow marker={<span className="inline-block size-2 rounded-full border-2 border-violet-600 bg-transparent" />}>
+            <HoverRow marker={<span className="inline-block size-2 rounded-full border-2 border-crit-violet bg-paper" />}>
               <HoverLabel>{intl.formatMessage({ id: "damage.critical" })}</HoverLabel>
               <span className="tabular-nums">
                 {row.critMinPercent.toFixed(1)}% ~ {row.critMaxPercent.toFixed(1)}%
@@ -256,7 +279,7 @@ function HoverLabel({ children }: { children: React.ReactNode }) {
 export function DamageAxis() {
   const intl = useIntl()
   return (
-    <div className="bg-background sticky top-[6.25rem] z-10 mb-3 flex py-1 md:pl-[15.75rem] lg:top-14">
+    <div className="sticky top-[6.25rem] z-10 mb-2 flex rounded-t-[14px] border-b border-hairline bg-paper px-3 py-1.5 sm:px-4 md:pl-[16.5rem] lg:top-14">
       <div className="relative h-6 min-w-0 flex-1">
         {TICKS.map((tick) => (
           <div
@@ -268,19 +291,19 @@ export function DamageAxis() {
                 tick === 0 ? "none" : tick === AXIS_MAX ? "translateX(-100%)" : "translateX(-50%)",
             }}
           >
-            <div className="bg-border h-3 w-px" />
-            <span className="text-muted-foreground mt-0.5 text-[10px] tabular-nums">
+            <div className="bg-hud-muted h-2.5 w-px" />
+            <span className="text-hud-muted mt-0.5 text-[9px] tabular-nums">
               {tick}%
             </span>
           </div>
         ))}
         <div
-          className="absolute top-0 h-full border-l border-dashed border-foreground/30"
+          className="absolute top-0 h-full border-l border-dashed border-ink/35"
           style={{ left: pctToLeft(100) }}
           aria-hidden
         />
       </div>
-      <div className="ml-3 hidden w-36 shrink-0 grid-cols-2 text-center text-[11px] font-medium md:grid">
+      <div className="ml-3 hidden w-36 shrink-0 grid-cols-2 text-center text-[11px] font-bold md:grid">
         <span>{intl.formatMessage({ id: "damage.ko.ohko" })}</span>
         <span>{intl.formatMessage({ id: "damage.ko.twoHit" })}</span>
       </div>
@@ -291,21 +314,21 @@ export function DamageAxis() {
 export function BoxPlotLegend({ showAverage = true }: { showAverage?: boolean }) {
   const intl = useIntl()
   return (
-    <div className="text-muted-foreground mt-10 flex flex-wrap gap-4 text-xs">
+    <div className="mt-2 flex flex-wrap gap-4 border-t border-hairline px-3 py-3 text-[10.5px] font-extrabold text-hud-muted sm:px-4">
       <span className="inline-flex items-center gap-1.5">
-        <span className="inline-block h-3 w-6 rounded-sm border border-orange-400/60 bg-orange-400/50" />
+        <span className="damage-tone--warm inline-block h-3 w-6 rounded-full border border-ink" />
         {intl.formatMessage({ id: "damage.legend.normal" })}
       </span>
       <span className="inline-flex items-center gap-1.5">
         <span className="inline-flex items-center gap-0.5">
-          <span className="inline-block h-px w-4 bg-violet-600/70" />
-          <span className="inline-block size-2 rounded-full border-2 border-violet-600 bg-background" />
+          <span className="inline-block h-[2px] w-4 bg-crit-violet" />
+          <span className="inline-block size-2 rounded-full border-2 border-crit-violet bg-paper" />
         </span>
         {intl.formatMessage({ id: "damage.legend.critical" })}
       </span>
       {showAverage && (
         <span className="inline-flex items-center gap-1.5">
-          <span className="inline-block h-3 w-0.5 bg-foreground" />
+          <span className="inline-block h-3.5 w-[3px] rounded-full bg-ink" />
           {intl.formatMessage({ id: "damage.legend.average" })}
         </span>
       )}

@@ -68,24 +68,29 @@ export function AbilityTrack({
         </Button>
       </div>
       <TrackOptionGroup aria-label={intl.formatMessage({ id: labelId })}>
-        {orderedOptions.map((option) => (
-          <TrackOption
-            key={option.id}
-            layout="text"
-            pressed={selected.has(option.id)}
-            onToggle={() => toggle(option.id)}
-            ariaLabel={option.label}
-            tooltip={option.summary || null}
-            className="px-2"
-          >
-            <span>{option.label}</span>
-            {option.id !== ADAPTABILITY_ABILITY_ID && (
-              <span className="text-muted-foreground text-[10px] font-normal">
-                <FormattedMessage id="track.ability.unsupported" />
-              </span>
-            )}
-          </TrackOption>
-        ))}
+        {orderedOptions.map((option) => {
+          // Only Adaptability's effect is implemented; everything else carries the red dot
+          const unsupported = option.id !== ADAPTABILITY_ABILITY_ID
+          const unsupportedLabel = intl.formatMessage({ id: "track.ability.unsupported" })
+          return (
+            <TrackOption
+              key={option.id}
+              layout="text"
+              pressed={selected.has(option.id)}
+              onToggle={() => toggle(option.id)}
+              ariaLabel={unsupported ? `${option.label} · ${unsupportedLabel}` : option.label}
+              tooltip={[option.summary, unsupported ? unsupportedLabel : null].filter(Boolean).join("\n") || null}
+              className="px-2"
+            >
+              <span>{option.label}</span>
+              {unsupported && (
+                /* Red dot = effect unsupported (design.md § Sidebar panels and chips);
+                   state also lives in the accessible name, never color alone */
+                <span aria-hidden className="size-2 rounded-full border border-ink bg-destructive" />
+              )}
+            </TrackOption>
+          )
+        })}
       </TrackOptionGroup>
       </div>
     </TrackCard>

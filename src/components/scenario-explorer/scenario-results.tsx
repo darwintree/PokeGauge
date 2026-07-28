@@ -1,3 +1,4 @@
+import { TriangleAlert } from "lucide-react"
 import { useMemo } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
@@ -19,6 +20,7 @@ import {
   type UnavailableScenarioGroup,
 } from "@/lib/scenario-pipeline"
 import type { StatNameStrategy } from "@/lib/stat-value-template"
+import { cn } from "@/lib/utils"
 
 import { BoxPlotLegend, DamageAxis, DamageBoxPlot } from "./damage-box-plot"
 import { ShowActualValuesSwitch } from "./stat-value-template-preset"
@@ -56,13 +58,18 @@ function UnavailableNotices({
         return (
           <li
             key={group.snapshotId}
-            className="rounded-md border border-amber-500/30 bg-amber-500/5 px-3 py-2 text-xs"
+            className="flex items-center gap-2.5 rounded-[10px] border-2 border-ink bg-notice-bg py-2 pr-3 pl-4 text-[11px] font-bold shadow-[inset_8px_0_0_0_var(--signal-yellow)]"
           >
-            <span className="font-medium">{move?.label ?? group.moveId}</span>
-            {": "}
-            {group.reasons.map((reason) =>
-              intl.formatMessage({ id: `damage.unavailable.reason.${reason}` }),
-            ).join("; ")}
+            <span aria-hidden className="grid size-5 shrink-0 place-items-center rounded-full bg-signal-yellow">
+              <TriangleAlert className="size-3 text-ink" strokeWidth={2.5} />
+            </span>
+            <span>
+              <span className="font-extrabold">{move?.label ?? group.moveId}</span>
+              {": "}
+              {group.reasons.map((reason) =>
+                intl.formatMessage({ id: `damage.unavailable.reason.${reason}` }),
+              ).join("; ")}
+            </span>
           </li>
         )
       })}
@@ -99,7 +106,7 @@ export function ScenarioResults({
       <>
         <UnavailableNotices catalog={catalog} unavailable={unavailable} />
         {unavailable.length === 0 && (
-          <Empty className="border">
+          <Empty className="rounded-2xl border-2 border-ink bg-paper shadow-hud-board">
             <EmptyHeader>
               <EmptyDescription>
                 <FormattedMessage id="app.empty" />
@@ -114,7 +121,7 @@ export function ScenarioResults({
   return (
     <>
       <UnavailableNotices catalog={catalog} unavailable={unavailable} />
-      <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <ToggleGroup
           value={[trackState.probabilityMode]}
           onValueChange={(value) => {
@@ -122,15 +129,22 @@ export function ScenarioResults({
               onProbabilityModeChange(value[0])
             }
           }}
-          variant="outline"
+          variant="default"
           size="sm"
           spacing={0}
           aria-label="KO probability mode"
+          className="gap-0 rounded-[10px] border-2 border-ink bg-paper p-0.5 shadow-hud-chip"
         >
-          <ToggleGroupItem value="rolls">
+          <ToggleGroupItem
+            value="rolls"
+            className="rounded-[7px] px-2.5 text-[11px] font-extrabold text-ink hover:bg-token-bg aria-pressed:bg-signal-yellow aria-pressed:text-ink aria-pressed:shadow-none"
+          >
             <FormattedMessage id="probability.mode.rolls" />
           </ToggleGroupItem>
-          <ToggleGroupItem value="actual">
+          <ToggleGroupItem
+            value="actual"
+            className="rounded-[7px] px-2.5 text-[11px] font-extrabold text-ink hover:bg-token-bg aria-pressed:bg-signal-yellow aria-pressed:text-ink aria-pressed:shadow-none"
+          >
             <FormattedMessage id="probability.mode.actual" />
           </ToggleGroupItem>
         </ToggleGroup>
@@ -139,48 +153,61 @@ export function ScenarioResults({
           onCheckedChange={onShowResultActualChange}
         />
       </div>
-      <DamageAxis />
-      <ul className={compact ? "space-y-4 pb-2" : "space-y-8 pb-2"}>
-        {rows.map((row, index) => {
-          const labels = rowLabels(catalog, row, trackState, statNameStrategy, rowLabelTemplates)
-          const isRangeEnvelope =
-            row.attackerStatId === RANGE_STAT_ID || row.defenderId === RANGE_DEFENDER_ID
-          const startsMoveGroup = index === 0 || rows[index - 1].snapshotId !== row.snapshotId
+      {/* The board: the only chunky container in the results area (design.md § Board) */}
+      <div className="rounded-[16px] border-2 border-ink bg-paper shadow-hud-board">
+        <DamageAxis />
+        <ul className={compact ? "pb-2" : "space-y-4 pb-2"}>
+          {rows.map((row, index) => {
+            const labels = rowLabels(catalog, row, trackState, statNameStrategy, rowLabelTemplates)
+            const isRangeEnvelope =
+              row.attackerStatId === RANGE_STAT_ID || row.defenderId === RANGE_DEFENDER_ID
+            const startsMoveGroup = index === 0 || rows[index - 1].snapshotId !== row.snapshotId
 
-          return (
-            <li
-              key={row.calculationIdentity}
-              className={index > 0 && startsMoveGroup ? "border-t pt-6" : undefined}
-            >
-              <DamageBoxPlot
-                move={catalogOption(catalog.moves, row.moveId)}
-                attackerAbilities={catalog.attackerAbilities}
-                defenderAbilities={catalog.defenderAbilities}
-                attackerStat={{
-                  id: row.attackerStatId,
-                  label: labels.stat,
-                  actual: labels.statActual,
-                }}
-                defender={{
-                  id: row.defenderId,
-                  label: labels.defender,
-                  actual: labels.defenderActual,
-                }}
-                row={row}
-                isRangeEnvelope={isRangeEnvelope}
-                showAccuracy={trackState.probabilityMode === "actual"}
-              />
-            </li>
-          )
-        })}
-      </ul>
-      <BoxPlotLegend
-        showAverage={rows.some(
-          (row) =>
-            row.attackerStatId !== RANGE_STAT_ID &&
-            row.defenderId !== RANGE_DEFENDER_ID,
-        )}
-      />
+            return (
+              <li
+                key={row.calculationIdentity}
+                className={cn(
+                  "px-3 sm:px-4",
+                  /* Hover lift: inset ink frame + hard shadow appear, rest stays flat
+                     (design.md § Result row). Inset ring avoids layout shift and any
+                     conflict with the hairline separators. */
+                  "hover:rounded-[10px] hover:shadow-[inset_0_0_0_2px_var(--ink),2px_2px_0_0_rgb(31_36_48/0.25)]",
+                  index > 0 &&
+                    (startsMoveGroup
+                      ? "mt-3 border-t-2 border-dashed border-ink/35 pt-3"
+                      : "border-t border-hairline"),
+                )}
+              >
+                <DamageBoxPlot
+                  move={catalogOption(catalog.moves, row.moveId)}
+                  attackerAbilities={catalog.attackerAbilities}
+                  defenderAbilities={catalog.defenderAbilities}
+                  attackerStat={{
+                    id: row.attackerStatId,
+                    label: labels.stat,
+                    actual: labels.statActual,
+                  }}
+                  defender={{
+                    id: row.defenderId,
+                    label: labels.defender,
+                    actual: labels.defenderActual,
+                  }}
+                  row={row}
+                  isRangeEnvelope={isRangeEnvelope}
+                  showAccuracy={trackState.probabilityMode === "actual"}
+                />
+              </li>
+            )
+          })}
+        </ul>
+        <BoxPlotLegend
+          showAverage={rows.some(
+            (row) =>
+              row.attackerStatId !== RANGE_STAT_ID &&
+              row.defenderId !== RANGE_DEFENDER_ID,
+          )}
+        />
+      </div>
     </>
   )
 }
