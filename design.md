@@ -1,9 +1,15 @@
 ---
 version: alpha
 name: PokeLens Game HUD
-description: PokeLens game HUD design system, Light theme, the product's only theme. Direction decision: docs/adr/0002-game-hud-design-direction.md. Dark mode is dropped — the HUD language is light-only by product decision.
+description: "PokeLens game HUD design system, Light theme, the product's only theme. Direction decision: docs/adr/0002-game-hud-design-direction.md. Dark mode is dropped — the HUD language is light-only by product decision."
+omitted:
+  - section: spacing
+    reason: "4px scale with a three-step rhythm (tight inside a group, looser between groups, loosest between sections); concrete values live in src/index.css"
+  - section: rounded
+    reason: "Radius scales with surface size, pill reserved for data marks; concrete values live in src/index.css"
 colors:
   ink: "#1f2430"
+  primary: "{colors.ink}"
   paper: "#ffffff"
   bg-app: "#e8ecfa"
   bg-sidebar: "#eef1fb"
@@ -14,11 +20,62 @@ colors:
   signal-yellow: "#ffd23f"
   crit-violet: "#8b5cf6"
   notice-bg: "#fff8e0"
-  appbar: "#3b4a7a → #2b3a63"
+  appbar-from: "#3b4a7a"
+  appbar-to: "#2b3a63"
   destructive: "#e0352f"
+typography:
+  data:
+    fontFamily: &hud-stack '"Baloo 2 Variable", "Yuanti SC", "PingFang SC", "Hiragino Maru Gothic ProN", "Microsoft YaHei", sans-serif'
+    fontWeight: 800
+    fontFeature: '"tnum"'
+  emphasis:
+    fontFamily: *hud-stack
+    fontWeight: 700
+    fontFeature: '"tnum"'
+  control:
+    fontFamily: *hud-stack
+    fontWeight: 500
+    fontFeature: '"tnum"'
+  note:
+    fontFamily: *hud-stack
+    fontWeight: 400
+    fontFeature: '"tnum"'
+components:
+  ko-badge-hot:
+    backgroundColor: "{colors.signal-yellow}"
+    textColor: "{colors.ink}"
+  muted-on-paper:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.hud-muted}"
+  muted-on-token-bg:
+    backgroundColor: "{colors.token-bg}"
+    textColor: "{colors.hud-muted}"
+  app-canvas:
+    backgroundColor: "{colors.bg-app}"
+  sidebar:
+    backgroundColor: "{colors.bg-sidebar}"
+  app-bar:
+    backgroundColor: "{colors.appbar-from}"
+    textColor: "{colors.paper}"
+  app-bar-gradient-end:
+    backgroundColor: "{colors.appbar-to}"
+    textColor: "{colors.paper}"
+  divider:
+    backgroundColor: "{colors.hairline}"
+  card-outline:
+    backgroundColor: "{colors.card-border}"
+  crit-whisker:
+    backgroundColor: "{colors.crit-violet}"
+  notice:
+    backgroundColor: "{colors.notice-bg}"
+    textColor: "{colors.ink}"
+  unsupported-dot:
+    backgroundColor: "{colors.destructive}"
 ---
 
 # PokeLens Game HUD (Light)
+
+## Overview
 
 A game HUD / retro battle UI: chunky ink frames, hard offset shadows, rounded type, and toy-like controls wrapped around a dense, quiet data surface. Prioritize readability and information density; color, weight, and shadow signal state and hierarchy, never decoration.
 
@@ -32,7 +89,7 @@ This document is the design baseline for all product UI: it records principles, 
 4. **Toy language lives in the data ink.** The playful treatment (ink borders, pill shapes, gradients) is allowed on the elements that carry data: the damage box, crit whiskers, item sprites, type badges, KO chips. Structure around them (baselines, separators, alignment) stays hairline-quiet.
 5. **The information hierarchy is an invariant.** What is shown, collapsed, or hidden on the results surface is a product decision recorded below. Restyling must not add, remove, merge, or reorder information; changing the hierarchy requires an explicit product request.
 
-## Color
+## Colors
 
 Tokens are role-based: color signals state or hierarchy, never decoration.
 
@@ -51,7 +108,8 @@ Tokens are role-based: color signals state or hierarchy, never decoration.
 | `signal-yellow` | `#ffd23f` | Hot KO badge, selected chips/toggles, notice accents |
 | `crit-violet` | `#8b5cf6` | Critical-range whisker and endpoint dots |
 | `notice-bg` | `#fff8e0` | Unavailable/amber notice background |
-| `appbar` | `#3b4a7a → #2b3a63` | App bar gradient (vertical) |
+| `appbar-from` | `#3b4a7a` | App bar gradient start (top) |
+| `appbar-to` | `#2b3a63` | App bar gradient end (bottom) |
 | `destructive` | `#e0352f` | Remove-affordance hover, invalid rings, unsupported-option dot. Shared with the red lethality tone. |
 
 ### Lethality tones (damage box)
@@ -89,11 +147,14 @@ Pokémon type colors, effectiveness colors, and stat-tier colors are domain toke
 
 The horizontal damage axis maps HP percent to position non-linearly: 0–100% is linear; 100–200% is square-root compressed into the remainder; values cap at 200%. A dashed vertical reference line at 100% is always present. The exact mapping lives in `damage-box-plot.tsx`.
 
-## Shape and depth
+## Elevation & Depth
+
+- **Shadows are hard offsets only**, stepping up with elevation from chips to panels to the board. Blur shadows are not part of the language. What may cast one at all is principle 3.
+
+## Shapes
 
 - **Borders carry three roles.** Thick (2px) `ink` for chrome and pressable affordances; thin (1px) `ink` for data ink — the elements that carry data; `hairline` / `card-border` for quiet separators and inner cards. Inner cards never get ink borders or shadows. (Thin ink was once spec'd as 1.5px, but Blink floors fractional border widths, so 1px is the deterministic render.)
 - **Radius scales with surface size**, from small badges up to the results board; the full pill radius is reserved for data marks (damage box, pill tracks). Do not mix ad-hoc radii outside the scale.
-- **Shadows are hard offsets only**, stepping up with elevation from chips to panels to the board. Blur shadows are not part of the language. What may cast one at all is principle 3.
 
 ## Motion
 
@@ -105,7 +166,7 @@ Every interactive element shows a visible hover affordance and a `:focus-visible
 
 ### App bar
 
-Dark gradient bar (`appbar`) with ink bottom border: logo (white, yellow accent), locale selector, info, GitHub as pill controls. No theme toggle — the product is light-only.
+Dark gradient bar (`appbar-from` → `appbar-to`, vertical) with ink bottom border: logo (white, yellow accent), locale selector, info, GitHub as pill controls. No theme toggle — the product is light-only.
 
 ### Sidebar panels and chips
 
