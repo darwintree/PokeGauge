@@ -33,18 +33,18 @@ export function SelectionSummary({ state }: { state: ScenarioState }) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-2">
       <div className="flex flex-wrap gap-1.5">
-        <Badge variant="secondary">
+        <Badge variant="secondary" className="text-[10.5px] font-bold">
           {intl.formatMessage({ id: "summary.moves" }, { count: s.moves })}
         </Badge>
-        <Badge variant="secondary">{stats}</Badge>
-        <Badge variant="secondary">
+        <Badge variant="secondary" className="text-[10.5px] font-bold">{stats}</Badge>
+        <Badge variant="secondary" className="text-[10.5px] font-bold">
           {intl.formatMessage({ id: "summary.items" }, { count: s.items })}
         </Badge>
-        <Badge variant="secondary">
+        <Badge variant="secondary" className="text-[10.5px] font-bold">
           {intl.formatMessage({ id: "summary.defenders" }, { value: defenders })}
         </Badge>
       </div>
-      <Badge variant="outline" className="tabular-nums">
+      <Badge variant="outline" className="border-card-border text-[10.5px] font-bold tabular-nums">
         {intl.formatMessage({ id: "summary.rows" }, { count: s.rows })}
       </Badge>
     </div>

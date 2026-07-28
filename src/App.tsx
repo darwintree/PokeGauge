@@ -21,8 +21,12 @@ function App() {
   return (
     <IntlProvider locale={locale} messages={localeMessages[locale]}>
       <TooltipProvider delay={0}>
-        <AppHeader locale={locale} onLocaleChange={setLocale} />
-        <ScenarioExplorerPage locale={locale} />
+        <div className="min-h-dvh bg-bg-app">
+          <AppHeader locale={locale} onLocaleChange={setLocale} />
+          <div className="mx-auto max-w-7xl">
+            <ScenarioExplorerPage locale={locale} />
+          </div>
+        </div>
       </TooltipProvider>
     </IntlProvider>
   )

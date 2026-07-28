@@ -28,8 +28,7 @@ export function TrackCard({
   return (
     <section
       className={cn(
-        "overflow-hidden rounded-lg border bg-background transition-colors",
-        expanded && "border-foreground/25 shadow-sm",
+        "overflow-hidden rounded-[14px] border-2 border-ink bg-paper shadow-hud-panel transition-colors",
         className,
       )}
     >
@@ -37,14 +36,14 @@ export function TrackCard({
         type="button"
         aria-expanded={expanded}
         onClick={onToggle}
-        className="hover:bg-muted/50 focus-visible:ring-ring flex w-full min-w-0 items-center gap-2 px-2.5 py-2 text-left focus-visible:ring-2 focus-visible:outline-none"
+        className="hover:bg-token-bg/60 focus-visible:ring-ring flex w-full min-w-0 items-center gap-2 px-2.5 py-2 text-left focus-visible:ring-2 focus-visible:outline-none"
       >
         <Icon className="text-muted-foreground size-3.5 shrink-0" strokeWidth={1.75} />
         <span className="min-w-0 flex-1">
           <span className="text-muted-foreground block truncate text-[10px] leading-3">
             {label}
           </span>
-          <span className="mt-0.5 block min-h-4 truncate text-xs leading-4 font-medium">
+          <span className="mt-0.5 block min-h-4 truncate text-xs leading-4 font-extrabold">
             {summary}
           </span>
         </span>

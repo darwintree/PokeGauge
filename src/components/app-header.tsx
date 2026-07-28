@@ -61,7 +61,7 @@ function LocaleSelect({
       value={locale}
       onChange={(event) => onLocaleChange(event.target.value as SupportedLocale)}
       className={cn(
-        "border-input bg-background h-9 rounded-md border px-2 text-xs",
+        "h-9 rounded-full border-2 border-ink bg-paper px-2 text-xs font-bold text-ink shadow-hud-chip",
         className,
       )}
       aria-label={intl.formatMessage({ id: "locale.label" })}
@@ -86,7 +86,7 @@ function ProjectDialog({ locale, onLocaleChange }: LocaleControlProps) {
             type="button"
             variant="ghost"
             size="sm"
-            className="size-11 px-0 sm:size-10 md:w-auto md:px-2.5 lg:h-8"
+            className="size-11 rounded-full border-2 border-ink bg-paper px-0 text-ink shadow-hud-chip hover:bg-signal-yellow hover:text-ink sm:size-10 md:w-auto md:px-2.5 lg:h-8"
             aria-label={intl.formatMessage({ id: "header.projectInfo" })}
           />
         }
@@ -96,7 +96,7 @@ function ProjectDialog({ locale, onLocaleChange }: LocaleControlProps) {
           <FormattedMessage id="header.projectInfo" />
         </span>
       </DialogTrigger>
-      <DialogContent showCloseButton={false} className="gap-5 sm:max-w-md">
+      <DialogContent showCloseButton={false} className="gap-5 border-2 border-ink bg-paper shadow-hud-panel sm:max-w-md">
         <DialogClose
           render={
             <Button
@@ -205,7 +205,7 @@ export function AppHeader({
   const intl = useIntl()
 
   return (
-    <header className="border-border/80 bg-background/90 sticky top-0 z-40 h-14 border-b backdrop-blur-md">
+    <header className="sticky top-0 z-40 h-14 border-b-2 border-ink bg-[linear-gradient(180deg,var(--appbar-from),var(--appbar-to))] text-paper">
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-1 px-4 sm:gap-3 sm:px-6">
         <div className="flex min-w-0 items-center gap-3">
           <img
@@ -216,11 +216,12 @@ export function AppHeader({
             height={32}
             className="size-8 shrink-0"
           />
-          <span className="truncate text-sm font-semibold tracking-tight">
+          <span className="truncate text-[15px] font-extrabold tracking-tight text-paper">
             <FormattedMessage id="app.name" />
+            <span aria-hidden className="text-signal-yellow">.</span>
           </span>
-          <span aria-hidden className="hidden h-4 w-px bg-border lg:block" />
-          <span className="text-muted-foreground hidden truncate text-xs lg:block">
+          <span aria-hidden className="hidden h-4 w-px bg-paper/30 lg:block" />
+          <span className="hidden truncate text-xs text-paper/75 lg:block">
             <FormattedMessage id="matchup.context" />
           </span>
         </div>
@@ -241,7 +242,7 @@ export function AppHeader({
             }
             variant="ghost"
             size="sm"
-            className="size-11 px-0 sm:size-10 md:w-auto md:px-2.5 lg:h-8"
+            className="size-11 rounded-full border-2 border-ink bg-paper px-0 text-ink shadow-hud-chip hover:bg-signal-yellow hover:text-ink sm:size-10 md:w-auto md:px-2.5 lg:h-8"
           >
             <MessageSquareWarningIcon aria-hidden />
             <span className="hidden md:inline">

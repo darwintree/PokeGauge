@@ -3,7 +3,6 @@ import { FormattedMessage, useIntl } from "react-intl"
 
 import { HomeScreen } from "@/components/scenario-explorer/home-screen"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import {
   getCatalogShell,
   getDefaultMoveCategory,
@@ -73,17 +72,17 @@ export function ScenarioExplorerContent({
   }
 
   return (
-    <div className="mx-auto min-h-[calc(100dvh-3.5rem)] max-w-7xl p-4 pb-12 sm:p-6">
+    <div className="p-4 pb-12 sm:p-6">
       <a
         href="#damage-results"
         onClick={() => setMobileView("results")}
-        className="bg-background focus-visible:ring-ring fixed top-[6.5rem] left-2 z-50 -translate-y-40 rounded-md px-3 py-2 text-sm font-medium shadow-sm focus-visible:translate-y-0 focus-visible:ring-2 focus-visible:outline-none lg:top-16"
+        className="focus-visible:ring-ring fixed top-[6.5rem] left-2 z-50 -translate-y-40 rounded-md border-2 border-ink bg-paper px-3 py-2 text-sm font-bold shadow-hud-chip focus-visible:translate-y-0 focus-visible:ring-2 focus-visible:outline-none lg:top-16"
       >
         <FormattedMessage id="app.skipToResults" />
       </a>
       <nav
         aria-label={intl.formatMessage({ id: "app.title" })}
-        className="bg-background/95 sticky top-14 z-20 -mx-4 -mt-4 mb-4 grid grid-cols-2 border-b px-4 backdrop-blur sm:-mx-6 sm:-mt-6 sm:px-6 lg:hidden"
+        className="sticky top-14 z-20 -mx-4 -mt-4 mb-4 grid grid-cols-2 border-b border-hairline bg-bg-app/95 px-4 backdrop-blur sm:-mx-6 sm:-mt-6 sm:px-6 lg:hidden"
       >
         <Button
           type="button"
@@ -91,7 +90,7 @@ export function ScenarioExplorerContent({
           className={cn(
             "h-11 rounded-none border-b-2 px-3",
             mobileView === "setup"
-              ? "border-b-foreground text-foreground"
+              ? "border-b-ink text-ink"
               : "border-b-transparent text-muted-foreground",
           )}
           aria-pressed={mobileView === "setup"}
@@ -105,7 +104,7 @@ export function ScenarioExplorerContent({
           className={cn(
             "h-11 rounded-none border-b-2 px-3",
             mobileView === "results"
-              ? "border-b-foreground text-foreground"
+              ? "border-b-ink text-ink"
               : "border-b-transparent text-muted-foreground",
           )}
           aria-pressed={mobileView === "results"}
@@ -118,25 +117,23 @@ export function ScenarioExplorerContent({
         <aside
           id="scenario-setup"
           className={cn(
-            "lg:w-[22rem] lg:sticky lg:top-20 lg:block lg:max-h-[calc(100dvh-6rem)] lg:shrink-0 lg:overflow-y-auto lg:[scrollbar-gutter:stable]",
+            "lg:w-[300px] lg:sticky lg:top-16 lg:block lg:max-h-[calc(100dvh-5rem)] lg:shrink-0 lg:overflow-y-auto lg:[scrollbar-gutter:stable]",
             mobileView !== "setup" && "hidden",
           )}
         >
-          <Card>
-            <CardContent>
-              <ScenarioSidebar
-                catalog={catalog}
-                state={state}
-                attackers={attackers}
-                defenders={defenders}
-                attackerId={attackerId}
-                defenderId={defenderId}
-                onAttackerChange={onAttackerChange}
-                onDefenderChange={onDefenderChange}
-                onMoveCategoryChange={onMoveCategoryChange}
-              />
-            </CardContent>
-          </Card>
+          <div className="rounded-[14px] bg-bg-sidebar p-2.5">
+            <ScenarioSidebar
+              catalog={catalog}
+              state={state}
+              attackers={attackers}
+              defenders={defenders}
+              attackerId={attackerId}
+              defenderId={defenderId}
+              onAttackerChange={onAttackerChange}
+              onDefenderChange={onDefenderChange}
+              onMoveCategoryChange={onMoveCategoryChange}
+            />
+          </div>
         </aside>
 
         <main
@@ -147,7 +144,7 @@ export function ScenarioExplorerContent({
           )}
         >
           <header className="space-y-2">
-            <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <h1 className="text-[19px] font-extrabold tracking-tight [text-shadow:1px_1px_0_#fff]">
               {catalog.matchup.attackerLabel} → {catalog.matchup.defenderLabel}
             </h1>
             <SelectionSummary state={state} />
@@ -273,8 +270,8 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
   if (loadError) {
     return (
       <main className="grid min-h-[calc(100dvh-3.5rem)] place-items-center p-6">
-        <div className="max-w-sm space-y-4 rounded-xl border bg-card p-6 text-center">
-          <h1 className="text-xl font-semibold tracking-tight">
+        <div className="max-w-sm space-y-4 rounded-2xl border-2 border-ink bg-paper p-6 text-center shadow-hud-board">
+          <h1 className="text-xl font-extrabold tracking-tight">
             <FormattedMessage id="app.loadError" />
           </h1>
           <p className="text-muted-foreground text-sm">
