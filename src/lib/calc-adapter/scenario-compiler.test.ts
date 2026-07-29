@@ -110,7 +110,7 @@ describe("scenario compiler", () => {
     })
     expect(outcome.moveMechanics).toMatchObject({
       basePower: 100,
-      effectivePower: 100,
+      effectivePower: 337,
       accuracy: 100,
       modifiers: { item: 6144, spread: 3072, stab: 6144 },
     })
@@ -123,6 +123,10 @@ describe("scenario compiler", () => {
       { track: "defender-ability", optionId: "22", state: "unsupported" },
       { track: "screen", optionId: "none", state: "neutral" },
     ])
+  })
+
+  it("reports zero final power against a type immunity", () => {
+    expect(calculableScenario({ defenderId: 6 }).moveMechanics.effectivePower).toBe(0)
   })
 
   it("shares weather accuracy between mechanics and actual probability", () => {

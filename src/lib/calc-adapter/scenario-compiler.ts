@@ -449,6 +449,17 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     screenModifier: screen.modifier,
   }
   const moveAccuracy = weather.accuracy ?? (raw.snapshot.alwaysHits ? "always-hits" : accuracy)
+  const mechanicsModifiers = {
+    item: chainModifiers([item.basePower, item.attack, item.final]),
+    weather: chainModifiers([
+      weather.basePowerModifier,
+      weather.damageModifier,
+    ]),
+    spread: context.spread ? 3072 : NEUTRAL_MODIFIER,
+    stab: context.stabModifier,
+    typeEffectiveness: context.typeEffectivenessModifier,
+    screen: context.screenModifier,
+  }
 
   const compilePoint = (point: RawScenarioPoint) => {
     const defenderStats = defenderStatValuesForPokemon(
@@ -483,19 +494,17 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     ),
     moveMechanics: {
       basePower: power,
-      effectivePower: Math.max(1, applyModifier(power, context.basePowerModifier)),
+      effectivePower: mechanicsModifiers.typeEffectiveness === 0
+        ? 0
+        : Math.max(1, applyModifier(power, chainModifiers([
+            mechanicsModifiers.item,
+            mechanicsModifiers.weather,
+            mechanicsModifiers.spread,
+            mechanicsModifiers.stab,
+            mechanicsModifiers.typeEffectiveness,
+          ]))),
       accuracy: moveAccuracy,
-      modifiers: {
-        item: chainModifiers([item.basePower, item.attack, item.final]),
-        weather: chainModifiers([
-          weather.basePowerModifier,
-          weather.damageModifier,
-        ]),
-        spread: context.spread ? 3072 : NEUTRAL_MODIFIER,
-        stab: context.stabModifier,
-        typeEffectiveness: context.typeEffectivenessModifier,
-        screen: context.screenModifier,
-      },
+      modifiers: mechanicsModifiers,
     },
     ko: { hitCounts: [1, 2] },
     sources,
