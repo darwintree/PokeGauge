@@ -67,7 +67,7 @@ function CategoryControl({
           type="button"
           aria-pressed={category === value}
           className={cn(
-            "h-6 rounded-[4px] px-1.5 text-[10px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-ring",
+            "h-8 rounded-[4px] px-1.5 text-[10px] font-medium transition-colors active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-ring sm:h-6",
             category === value
               ? "bg-background text-foreground shadow-sm"
               : "text-muted-foreground hover:text-foreground",
@@ -100,7 +100,7 @@ function SelectionToggle({
         { move: option.label },
       )}
       aria-pressed={selected}
-      className="group grid size-7 place-items-center rounded-md focus-visible:outline-2 focus-visible:outline-ring"
+      className="group grid size-10 place-items-center rounded-md active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-ring sm:size-7"
       onClick={onToggle}
     >
       <span
@@ -273,15 +273,15 @@ function MoveRow({
 
   return (
     <div className="border-t first:border-t-0">
-      <div className="grid h-8 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-2.5">
-        <TypeBadge type={option.type} />
+      <div className="grid min-h-11 grid-cols-[minmax(0,1fr)_auto] items-center sm:min-h-8">
         <button
           type="button"
           aria-expanded={editing}
           aria-label={intl.formatMessage({ id: "track.move.edit" }, { move: option.label })}
-          className="grid min-w-0 grid-cols-[minmax(0,1fr)_2rem_2rem_auto] items-center gap-2 text-left focus-visible:outline-2 focus-visible:outline-ring"
+          className="grid h-full min-h-11 min-w-0 grid-cols-[auto_minmax(0,1fr)_2rem_2rem_auto] items-center gap-2 px-2.5 text-left hover:bg-muted/60 active:bg-muted/80 focus-visible:outline-2 focus-visible:outline-ring sm:min-h-8"
           onClick={onEdit}
         >
+          <TypeBadge type={option.type} />
           <span className="truncate text-xs font-medium">{option.label}</span>
           <span
             className={cn(
@@ -386,33 +386,48 @@ export function MoveMultiSelect({
   }
 
   return (
-    <section className="overflow-hidden rounded-lg border bg-background">
-      <div className="flex h-10 items-center gap-2 px-2">
-        <span className="pl-0.5 text-xs font-semibold">{label}</span>
-        <CategoryControl category={category} onChange={onCategoryChange} />
+    <section className="overflow-hidden rounded-[14px] border-2 border-ink bg-paper shadow-hud-panel transition-colors">
+      <div className="group relative flex h-11 items-center gap-2 px-2.5 sm:h-10">
         <button
           type="button"
           aria-expanded={expanded}
           aria-label={intl.formatMessage({
             id: expanded ? "track.move.collapse" : "track.move.expand",
           })}
-          className="ml-auto grid size-7 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+          className="absolute inset-0 hover:bg-token-bg/60 active:bg-token-bg/80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
           onClick={onToggle}
-        >
+        />
+        <span className="pointer-events-none relative text-xs font-extrabold">{label}</span>
+        <div className="relative z-10 ml-auto">
+          <CategoryControl
+            category={category}
+            onChange={(nextCategory) => {
+              onCategoryChange(nextCategory)
+              if (!expanded) onToggle()
+            }}
+          />
+        </div>
+        <span className="pointer-events-none relative grid size-7 place-items-center text-muted-foreground transition-colors group-hover:text-foreground">
           <ChevronDown
             className={cn(
               "size-3.5 transition-transform",
               expanded ? "rotate-180" : "",
             )}
           />
-        </button>
+        </span>
       </div>
 
       {!expanded ? (
-        <div className="border-t">
-          <div className="grid grid-cols-2 gap-x-3 px-2.5">
+        <div className="relative border-t">
+          <button
+            type="button"
+            aria-label={intl.formatMessage({ id: "track.move.expand" })}
+            className="absolute inset-0 hover:bg-token-bg/60 active:bg-token-bg/80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+            onClick={onToggle}
+          />
+          <div className="pointer-events-none relative grid grid-cols-2 gap-x-3 px-2.5">
             {selectedSnapshots.length === 0 ? (
-              <div className="col-span-2 flex h-9 items-center text-[11px] text-muted-foreground">
+              <div className="col-span-2 flex h-11 items-center text-[11px] text-muted-foreground sm:h-9">
                 {intl.formatMessage({ id: "track.move.noneSelected" })}
               </div>
             ) : (
@@ -423,7 +438,7 @@ export function MoveMultiSelect({
                   <button
                     key={snapshot.id}
                     type="button"
-                    className="flex h-9 min-w-0 items-center gap-1.5 rounded-md text-left transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring"
+                    className="pointer-events-auto relative flex h-11 min-w-0 items-center gap-1.5 rounded-md text-left transition-colors hover:bg-muted active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-ring sm:h-9"
                     onClick={() => selectSnapshot(snapshot.id)}
                   >
                     <TypeBadge type={option.type} />
@@ -461,7 +476,7 @@ export function MoveMultiSelect({
             <button
               type="button"
               aria-label={intl.formatMessage({ id: "track.addMove" })}
-              className="grid h-8 w-full place-items-center rounded-md border border-dashed border-muted-foreground/35 text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-muted/60 hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+              className="grid h-10 w-full place-items-center rounded-md border border-dashed border-muted-foreground/35 text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-muted/60 hover:text-foreground active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-ring sm:h-8"
               onClick={() => setOpen(true)}
             >
               <Plus className="size-3.5" />
