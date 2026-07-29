@@ -168,11 +168,9 @@ export function ScenarioResults({
                   /* Rest rhythm: pt/pb give the hairline separators air on both
                      sides and contain the percent labels hanging below the plot. */
                   "rounded-[10px] px-3 pt-2.5 pb-3 sm:px-4",
-                  /* Hover lift (design.md § Result row): the row becomes a solid
-                     card — paper bg, ink frame, hard shadow — with zero layout
-                     shift (inset ring, radius always on). The row's own separator
-                     is hidden on hover so the frame reads as one clean ink line. */
-                  "hover:border-transparent hover:bg-paper hover:shadow-[inset_0_0_0_2px_var(--ink),2px_2px_0_0_rgb(31_36_48/0.25)]",
+                  /* Keep the row flat and separators visible; hover adds only a
+                     quiet token wash so dense comparisons remain one board. */
+                  "hover:bg-token-bg/55",
                   index > 0 &&
                     (startsMoveGroup
                       ? "mt-3 border-t-2 border-dashed border-ink/35 pt-3"
