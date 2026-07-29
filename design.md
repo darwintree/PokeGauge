@@ -184,10 +184,6 @@ Unavailable-move notices sit above the board, tinted `notice-bg` with a yellow a
 
 The board is the results area's only chunky container. Its top row is the sticky axis header: tick labels over the plot column, the dashed 100% reference line, and the `OHKO` / `≤2HKO` column headers over the KO columns.
 
-### Result row
-
-Flat at rest; hairline separator below. On hover a row lifts into a card (ink frame + hard shadow appear, without layout shift); at rest it must stay flat.
-
 ### Conditions card
 
 Quiet inner card — muted-tinted, thin quiet border, no shadow.
