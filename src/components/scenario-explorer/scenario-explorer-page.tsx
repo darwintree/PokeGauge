@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { HomeScreen } from "@/components/scenario-explorer/home-screen"
@@ -16,6 +16,12 @@ import {
 } from "@/lib/catalog"
 import type { SupportedLocale } from "@/lib/i18n"
 import type { BattlePokemonId } from "@/lib/resources"
+import {
+  discardScenarioSnapshot,
+  loadScenarioSnapshot,
+  scenarioSnapshotMatchesCatalog,
+  type ScenarioSnapshot,
+} from "@/lib/scenario-storage"
 import { cn } from "@/lib/utils"
 
 import { ScenarioResults } from "./scenario-results"
@@ -52,18 +58,20 @@ export function ScenarioExplorerContent({
   defenders,
   attackerId,
   defenderId,
+  restoredScenario,
   onAttackerChange,
   onDefenderChange,
   onMoveCategoryChange,
 }: LocalizedCatalogState & {
   attackerId: BattlePokemonId
   defenderId: BattlePokemonId
+  restoredScenario: ScenarioSnapshot | null
   onAttackerChange: (id: BattlePokemonId) => void
   onDefenderChange: (id: BattlePokemonId) => void
   onMoveCategoryChange: (category: MoveCategory) => void
 }) {
   const intl = useIntl()
-  const state = useScenarioState(catalog)
+  const state = useScenarioState(catalog, restoredScenario?.trackState)
   const [mobileView, setMobileView] = useState<"setup" | "results">("results")
 
   function changeMobileView(view: "setup" | "results") {
@@ -166,16 +174,47 @@ export function ScenarioExplorerContent({
 
 export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
   const intl = useIntl()
-  const [attackerId, setAttackerId] = useState<BattlePokemonId | null>(null)
-  const [defenderId, setDefenderId] = useState<BattlePokemonId | null>(null)
-  const [moveCategory, setMoveCategory] = useState<MoveCategory>("physical")
+  const [initialRestoredScenario] = useState(loadScenarioSnapshot)
+  const restoredScenarioRef = useRef(initialRestoredScenario)
+  const restorePendingRef = useRef(initialRestoredScenario !== null)
+  const availableMatchupIdsRef = useRef<{
+    attackers: Set<BattlePokemonId>
+    defenders: Set<BattlePokemonId>
+  } | null>(null)
+  const [attackerId, setAttackerId] = useState<BattlePokemonId | null>(
+    restoredScenarioRef.current?.attackerId ?? null,
+  )
+  const [defenderId, setDefenderId] = useState<BattlePokemonId | null>(
+    restoredScenarioRef.current?.defenderId ?? null,
+  )
+  const [moveCategory, setMoveCategory] = useState<MoveCategory>(
+    restoredScenarioRef.current?.moveCategory ?? "physical",
+  )
   const [localizedOptions, setLocalizedOptions] = useState<LocalizedOptionsState | null>(null)
   const [catalog, setCatalog] = useState<MatchupCatalog | null>(null)
   const [loadError, setLoadError] = useState(false)
-  const [showExplorer, setShowExplorer] = useState(false)
+  const [showExplorer, setShowExplorer] = useState(
+    restoredScenarioRef.current !== null,
+  )
+  const [restoring, setRestoring] = useState(
+    restoredScenarioRef.current !== null,
+  )
   const [leavingHome, setLeavingHome] = useState(false)
 
   const bothSelected = attackerId != null && defenderId != null
+  const optionsReady = localizedOptions !== null
+
+  function discardRestore() {
+    discardScenarioSnapshot()
+    restorePendingRef.current = false
+    restoredScenarioRef.current = null
+    setAttackerId(null)
+    setDefenderId(null)
+    setMoveCategory("physical")
+    setCatalog(null)
+    setShowExplorer(false)
+    setRestoring(false)
+  }
 
   useEffect(() => {
     let cancelled = false
@@ -183,6 +222,10 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
     Promise.all([listAttackers(locale), listDefenders(locale)])
       .then(([attackers, defenders]) => {
         if (cancelled) return
+        availableMatchupIdsRef.current = {
+          attackers: new Set(attackers.map((option) => option.id)),
+          defenders: new Set(defenders.map((option) => option.id)),
+        }
         setLocalizedOptions({ attackers, defenders })
         return Promise.all([
           rankPokemonOptionsByChampionsUsage(attackers),
@@ -203,23 +246,52 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
   }, [locale])
 
   useEffect(() => {
-    if (attackerId == null || defenderId == null) {
+    if (!optionsReady || attackerId == null || defenderId == null) {
       setCatalog(null)
+      return
+    }
+    const restoredScenario = restoredScenarioRef.current
+    const restoringSnapshot =
+      restorePendingRef.current && restoredScenario !== null
+    const availableMatchupIds = availableMatchupIdsRef.current
+    if (
+      restoringSnapshot &&
+      (!availableMatchupIds?.attackers.has(attackerId) ||
+        !availableMatchupIds.defenders.has(defenderId))
+    ) {
+      discardRestore()
       return
     }
     let cancelled = false
     setLoadError(false)
     getCatalogShell(attackerId, defenderId, locale, moveCategory)
       .then((nextCatalog) => {
-        if (!cancelled) setCatalog(nextCatalog)
+        if (cancelled) return
+        if (
+          restoringSnapshot &&
+          !scenarioSnapshotMatchesCatalog(restoredScenario, nextCatalog)
+        ) {
+          discardRestore()
+          return
+        }
+        setCatalog(nextCatalog)
+        if (restoringSnapshot) {
+          restorePendingRef.current = false
+          setRestoring(false)
+        }
       })
       .catch(() => {
-        if (!cancelled) setLoadError(true)
+        if (cancelled) return
+        if (restoringSnapshot) {
+          discardRestore()
+          return
+        }
+        setLoadError(true)
       })
     return () => {
       cancelled = true
     }
-  }, [attackerId, defenderId, locale, moveCategory])
+  }, [attackerId, defenderId, locale, moveCategory, optionsReady])
 
   useEffect(() => {
     if (!catalog || catalog.defaultMovePickStatus !== "loading") return
@@ -246,9 +318,15 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
   }, [catalog])
 
   useEffect(() => {
-    if (!bothSelected || !catalog) {
+    if (!bothSelected) {
       setLeavingHome(false)
       setShowExplorer(false)
+      return
+    }
+    if (!catalog) return
+    if (restoredScenarioRef.current) {
+      setLeavingHome(false)
+      setShowExplorer(true)
       return
     }
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -284,7 +362,7 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
     )
   }
 
-  if (!localizedOptions) {
+  if (!localizedOptions || restoring) {
     return (
       <main
         aria-busy="true"
@@ -324,6 +402,7 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
         catalog={catalog}
         attackerId={attackerId}
         defenderId={defenderId}
+        restoredScenario={restoredScenarioRef.current}
         onAttackerChange={changeAttacker}
         onDefenderChange={setDefenderId}
         onMoveCategoryChange={setMoveCategory}
