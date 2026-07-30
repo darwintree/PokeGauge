@@ -46,7 +46,7 @@
     --color-foreground: var(--foreground);
     --color-background: var(--background);
 
-    /* HUD tokens — design.md § Color / § Shape and depth */
+    /* HUD tokens: design.md § Color / § Shape / § Elevation and depth */
     --color-ink: var(--ink);
     --color-paper: var(--paper);
     --color-bg-app: var(--bg-app);
@@ -56,7 +56,7 @@
     --color-card-border: var(--card-border);
     --color-token-bg: var(--token-bg);
     --color-signal-yellow: var(--signal-yellow);
-    --color-crit-violet: var(--crit-violet);
+    --color-damage-critical: var(--damage-critical);
     --color-notice-bg: var(--notice-bg);
     --shadow-hud-chip: 2px 2px 0 0 rgb(31 36 48 / 0.25);
     --shadow-hud-panel: 3px 3px 0 0 rgb(31 36 48 / 0.18);
@@ -74,7 +74,7 @@
 :root {
     color-scheme: light;
 
-    /* HUD primitives — design.md § Core palette */
+    /* HUD primitives: design.md § Color */
     --ink: #1f2430;
     --paper: #ffffff;
     --bg-app: #e8ecfa;
@@ -84,7 +84,6 @@
     --card-border: #c9cede;
     --token-bg: #e8ebf6;
     --signal-yellow: #ffd23f;
-    --crit-violet: #8b5cf6;
     --notice-bg: #fff8e0;
     --appbar-from: #3b4a7a;
     --appbar-to: #2b3a63;
@@ -142,24 +141,51 @@
     --pokemon-type-dark: #705848;
     --pokemon-type-steel: #B8B8D0;
     --pokemon-type-fairy: #EE99AC;
+    --pokemon-type-normal-foreground: #171717;
+    --pokemon-type-fire-foreground: #171717;
+    --pokemon-type-water-foreground: #171717;
+    --pokemon-type-electric-foreground: #171717;
+    --pokemon-type-grass-foreground: #171717;
+    --pokemon-type-ice-foreground: #171717;
+    --pokemon-type-fighting-foreground: #ffffff;
+    --pokemon-type-poison-foreground: #ffffff;
+    --pokemon-type-ground-foreground: #171717;
+    --pokemon-type-flying-foreground: #171717;
+    --pokemon-type-psychic-foreground: #171717;
+    --pokemon-type-bug-foreground: #171717;
+    --pokemon-type-rock-foreground: #171717;
+    --pokemon-type-ghost-foreground: #ffffff;
+    --pokemon-type-dragon-foreground: #ffffff;
+    --pokemon-type-dark-foreground: #ffffff;
+    --pokemon-type-steel-foreground: #171717;
+    --pokemon-type-fairy-foreground: #171717;
 
     /* Stat tier domain tokens — gray / blue / purple (domain, not chrome) */
     --stat-tier-0-fg: #4d4d4d;
     --stat-tier-0-bg: #f2f2f2;
     --stat-tier-0-border: #ebebeb;
-    --stat-tier-0-muted: #8f8f8f;
-    --stat-offense-max-fg: #006bff;
+    --stat-tier-0-muted: #636363;
+    --stat-offense-max-fg: #005fc7;
     --stat-offense-max-bg: #f0f7ff;
     --stat-offense-max-border: #cae7ff;
-    --stat-offense-max-muted: #48aeff;
-    --stat-bulk-mid-fg: #006bff;
+    --stat-offense-max-muted: #22639e;
+    --stat-bulk-mid-fg: #005fc7;
     --stat-bulk-mid-bg: #e9f4ff;
     --stat-bulk-mid-border: #dfefff;
-    --stat-bulk-mid-muted: #48aeff;
-    --stat-tier-ex-fg: #a000f8;
+    --stat-bulk-mid-muted: #22639e;
+    --stat-tier-ex-fg: #9800ec;
     --stat-tier-ex-bg: #faf0ff;
     --stat-tier-ex-border: #f2d9ff;
-    --stat-tier-ex-muted: #c979ff;
+    --stat-tier-ex-muted: #793b9e;
+
+    /* Damage domain tokens */
+    --damage-cool-start: #ffd98a;
+    --damage-cool-end: #f5b73f;
+    --damage-warm-start: #ffb066;
+    --damage-warm-end: #f58023;
+    --damage-lethal-start: #ff7a6e;
+    --damage-lethal-end: #e0352f;
+    --damage-critical: #8b5cf6;
 }
 @layer base {
   * {
@@ -167,7 +193,7 @@
     }
   body {
     @apply text-foreground;
-    /* App canvas — no outer frame, one background for the whole page (design.md § Layout) */
+    /* App canvas: one background for the whole page (design.md § Layout and spacing) */
     background-color: var(--bg-app);
     /* design.md: all numerals use tabular figures */
     font-variant-numeric: tabular-nums;
@@ -203,17 +229,29 @@
 }
 
 @layer components {
-  /* Lethality tones — design.md § Lethality tones (damage box gradients) */
+  /* Damage-domain gradients and matching tooltip markers */
   .damage-tone--cool {
-    background: linear-gradient(180deg, #ffd98a, #f5b73f);
+    background: linear-gradient(180deg, var(--damage-cool-start), var(--damage-cool-end));
   }
 
   .damage-tone--warm {
-    background: linear-gradient(180deg, #ffb066, #f58023);
+    background: linear-gradient(180deg, var(--damage-warm-start), var(--damage-warm-end));
   }
 
   .damage-tone--lethal {
-    background: linear-gradient(180deg, #ff7a6e, #e0352f);
+    background: linear-gradient(180deg, var(--damage-lethal-start), var(--damage-lethal-end));
+  }
+
+  .damage-tone-marker--cool {
+    background-color: var(--damage-cool-end);
+  }
+
+  .damage-tone-marker--warm {
+    background-color: var(--damage-warm-end);
+  }
+
+  .damage-tone-marker--lethal {
+    background-color: var(--damage-lethal-end);
   }
 
   .stat-tier-chip--0 {
@@ -477,7 +515,7 @@
     color: var(--destructive);
   }
 
-  /* On state — signal yellow + ink frame + hard shadow (design.md § Sidebar panels and chips) */
+  /* On state: signal yellow, ink frame, and hard shadow */
   .track-option[aria-pressed="true"] {
     border-color: var(--ink);
     background: var(--signal-yellow);

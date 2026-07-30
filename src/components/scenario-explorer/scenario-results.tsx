@@ -151,7 +151,7 @@ export function ScenarioResults({
           onCheckedChange={onShowResultActualChange}
         />
       </div>
-      {/* The board: the only chunky container in the results area (design.md § Board) */}
+      {/* The board is the only chunky container in the results area. */}
       <div className="rounded-[16px] border-2 border-ink bg-paper shadow-hud-board">
         <DamageAxis />
         <ul className="pb-2">

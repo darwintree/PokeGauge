@@ -6,13 +6,13 @@ status: "closed"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-06-26T14:23:00Z"
-updated_at: "2026-06-26T14:56:00Z"
+updated_at: "2026-07-30T05:43:00Z"
 ---
 ## Context
 
 按 [[AGENTS.md]]，Pokémon 领域 token（属性、克制、HP 等）与 Geist/shadcn 语义分离。
 
-与 [[../20260626_open_domain-color-tokens-for-damage-visualization|Domain color tokens for damage visualization]] 互补。
+与 [[20260626_closed_audit-and-align-domain-color-systems|Audit and align domain color systems]] 互补。
 
 ## Design verdict (grill + prototype)
 
