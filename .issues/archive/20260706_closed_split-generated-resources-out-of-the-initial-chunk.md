@@ -18,7 +18,7 @@ After Champion runtime fetch is removed from the critical path, which generated 
 
 ## Blocked by
 
-- [[../20260706_closed_restore-generated-local-champion-move-usage|Restore generated local Champion move usage]]
+- [[20260706_closed_restore-generated-local-champion-move-usage|Restore generated local Champion move usage]]
 
 ## Starting evidence
 

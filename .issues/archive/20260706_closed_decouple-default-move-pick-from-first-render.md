@@ -22,7 +22,7 @@ See [[20260706_closed_record-frontend-performance-regressions-after-champion-api
 
 ## Decision input
 
-[[../20260706_closed_choose-move-pick-strategy-without-generation-time-champion-fetch|Choose Move pick strategy without generation-time Champion fetch]] keeps online Champion API usage, but removes it from the page-wide blocking catalog path:
+[[20260706_closed_choose-move-pick-strategy-without-generation-time-champion-fetch|Choose Move pick strategy without generation-time Champion fetch]] keeps online Champion API usage, but removes it from the page-wide blocking catalog path:
 
 - Champions `/api` index should be startup/global setup work and cached for the session.
 - Champion battle rows should be requested only after an attacker is selected; the initial default attacker counts as selected.
