@@ -27,14 +27,14 @@ Restore Scenario Explorer to a fast, deterministic first-load path after the Cha
 - Archived — [[20260706_closed_cache-localized-pokemon-option-lists-per-locale|Cache localized Pokemon option lists per locale]] (`WAYFINDER:TASK`, medium)
 - Archived — [[20260706_closed_split-generated-resources-out-of-the-initial-chunk|Split generated resources out of the initial chunk]] (`WAYFINDER:TASK`, medium)
 - Archived — [[20260706_closed_fix-pnpm-build-verification-friction|Fix pnpm build verification friction]] (`WAYFINDER:TASK`, medium)
-- Closed — [[../20260706_closed_restore-generated-local-champion-move-usage|Restore generated local Champion move usage]] (`WAYFINDER:TASK`, high)
-- Closed — [[../20260706_closed_choose-move-pick-strategy-without-generation-time-champion-fetch|Choose Move pick strategy without generation-time Champion fetch]] (`WAYFINDER:GRILLING`, high)
+- Closed — [[20260706_closed_restore-generated-local-champion-move-usage|Restore generated local Champion move usage]] (`WAYFINDER:TASK`, high)
+- Closed — [[20260706_closed_choose-move-pick-strategy-without-generation-time-champion-fetch|Choose Move pick strategy without generation-time Champion fetch]] (`WAYFINDER:GRILLING`, high)
 - Archived — [[20260706_closed_add-repeatable-scenario-explorer-performance-verification|Add repeatable Scenario Explorer performance verification]] (`WAYFINDER:TASK`, high)
 
 ## Decisions so far
 
-- [[../20260706_closed_restore-generated-local-champion-move-usage|Restore generated local Champion move usage]] — Do not fix the regression by making `generate:pokeapi` automatically fetch Champion API data; the side effect is too large for the resource-generation boundary.
-- [[../20260706_closed_choose-move-pick-strategy-without-generation-time-champion-fetch|Choose Move pick strategy without generation-time Champion fetch]] — Keep online Champion API usage, but split it from the page-wide blocking path: startup-prefetch/cache the index, fetch battle rows once per selected attacker, show a Move-pick-local loading state, and fail after 5s into manual move selection.
+- [[20260706_closed_restore-generated-local-champion-move-usage|Restore generated local Champion move usage]] — Do not fix the regression by making `generate:pokeapi` automatically fetch Champion API data; the side effect is too large for the resource-generation boundary.
+- [[20260706_closed_choose-move-pick-strategy-without-generation-time-champion-fetch|Choose Move pick strategy without generation-time Champion fetch]] — Keep online Champion API usage, but split it from the page-wide blocking path: startup-prefetch/cache the index, fetch battle rows once per selected attacker, show a Move-pick-local loading state, and fail after 5s into manual move selection.
 - [[20260706_closed_add-repeatable-scenario-explorer-performance-verification|Add repeatable Scenario Explorer performance verification]] — Use `pnpm perf:scenario-explorer` as the red-capable recovery gate for catalog initialization and production initial-JS budgets.
 - [[20260706_closed_decouple-default-move-pick-from-first-render|Decouple default Move pick from first render]] — Split first-load catalog shell from online Champion Move pick so shell catalog initializes in single-digit milliseconds, then applies Move pick asynchronously or leaves manual move selection available.
 - [[20260706_closed_cache-localized-pokemon-option-lists-per-locale|Cache localized Pokemon option lists per locale]] — Share one frozen locale-level Pokemon option list between attacker and defender selectors, including concurrent first-render calls, while preserving localized labels per locale.
