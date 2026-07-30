@@ -1,4 +1,5 @@
 import { useId, useState } from "react"
+import { CircleAlert } from "lucide-react"
 import { useIntl } from "react-intl"
 
 import { Button } from "@/components/ui/button"
@@ -128,13 +129,22 @@ function TemplateCard({
   tier,
 }: TemplateCardProps) {
   const intl = useIntl()
+  const hasNoSpAllocation = allocationCount === 0
+  const noSpAllocationMessage = intl.formatMessage({ id: "template.noSpAllocation" })
+  let ariaLabel = `${label} 模版`
+  if (hasNoSpAllocation) {
+    ariaLabel = `${label} ${noSpAllocationMessage}`
+  } else if (showActual) {
+    ariaLabel = `${label} ${actualText} 模版`
+  }
+
   return (
     <TrackOption
       layout="text"
       pressed={selected}
-      ariaLabel={showActual ? `${label} ${actualText} 模版` : `${label} 模版`}
+      ariaLabel={ariaLabel}
       modifier={templateModifier(template, tier)}
-      tooltip={tooltip}
+      tooltip={hasNoSpAllocation ? noSpAllocationMessage : tooltip}
       actions={templateActions({
         template,
         allocationCount,
@@ -149,8 +159,15 @@ function TemplateCard({
       })}
       onToggle={onToggle}
     >
-      {label}
-      {showActual && <TrackOptionSummary>{actualText}</TrackOptionSummary>}
+      <span className="inline-flex items-center gap-1">
+        {label}
+        {hasNoSpAllocation ? (
+          <CircleAlert aria-hidden="true" className="text-hud-muted size-3" />
+        ) : null}
+      </span>
+      {showActual && !hasNoSpAllocation ? (
+        <TrackOptionSummary>{actualText}</TrackOptionSummary>
+      ) : null}
     </TrackOption>
   )
 }

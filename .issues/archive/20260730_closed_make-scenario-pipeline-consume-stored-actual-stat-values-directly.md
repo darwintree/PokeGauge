@@ -44,7 +44,7 @@ For reachable values this usually round-trips to the same number and hides the p
 
 ## Related
 
-- [[../20260629_open_skip-unreachable-stat-values-on-offense-defense-axes|Skip unreachable stat values on offense/defense axes]]
+- [[20260629_closed_retain-actual-stat-values-without-matching-sp-allocations|Skip unreachable stat values on offense/defense axes]]
 - [[docs/traces/2026-06-28-stat-value-template-grill|Stat value template decisions]]
 - [[docs/domain/stat-value-template-display-labels|Stat value template display labels]]
 

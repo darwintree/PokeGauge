@@ -1,9 +1,5 @@
 import { getOffenseStat } from "@/lib/calc-adapter"
-import {
-  getDefenderSpreadGrid,
-  nearestDefenderSetupForValues,
-  nearestOffenseSetupForStat,
-} from "@/lib/calc-adapter/stat-bounds"
+import { getDefenderSpreadGrid } from "@/lib/calc-adapter/stat-bounds"
 import type { DefenderSetup, StatSetup } from "@/lib/calc-adapter/types"
 import {
   defenseStatKey,
@@ -233,19 +229,13 @@ export function resolveTemplateDisplay(
       ? enumerateOffenseAllocations(species, category, values.stat, strategy)
       : enumerateDefenseAllocations(species, category, values, strategy)
 
-  let spLabel: string
-  if (allocations.length > 0) {
-    spLabel = allocations[allocationIndex % allocations.length].cardLabel
-  } else if (values.kind === "offense") {
-    const setup = nearestOffenseSetupForStat(species, category, values.stat)
-    spLabel = offenseSpreadLabel(setup, category, strategy)
-  } else {
-    const setup = nearestDefenderSetupForValues(species, category, values.hp, values.def)
-    spLabel = defenseSpreadLabel(setup, category, strategy)
-  }
+  const primary =
+    allocations.length > 0
+      ? allocations[allocationIndex % allocations.length].cardLabel
+      : formatTemplateActual(template)
 
   return {
-    primary: spLabel,
+    primary,
     allocations,
     tooltip: buildAllocationTooltip(template, allocations),
   }
