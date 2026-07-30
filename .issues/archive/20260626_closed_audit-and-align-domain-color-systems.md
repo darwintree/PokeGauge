@@ -72,7 +72,7 @@ PokeLens 已实现三套领域颜色：
 
 ## Related work
 
-- HUD 中性表面、边界、app bar 与其他 chrome 色的收敛由 [[../20260730_open_simplify-hud-color-palette-and-semantic-roles|HUD palette simplification]] 处理。
+- HUD 中性表面、边界、app bar 与其他 chrome 色的收敛由 [[20260730_closed_simplify-hud-color-palette-and-semantic-roles|HUD palette simplification]] 处理。
 - 两个 issue 可以独立实现，但最终需要共同核对 `design.md` 与 `src/index.css` 的分层描述。
 
 ## Out of scope

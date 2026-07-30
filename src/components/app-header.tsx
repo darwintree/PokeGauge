@@ -205,7 +205,7 @@ export function AppHeader({
   const intl = useIntl()
 
   return (
-    <header className="sticky top-0 z-40 h-14 border-b-2 border-ink bg-[linear-gradient(180deg,var(--appbar-from),var(--appbar-to))] text-paper">
+    <header className="sticky top-0 z-40 h-14 border-b-2 border-ink bg-[var(--appbar)] text-paper">
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-1 px-4 sm:gap-3 sm:px-6">
         <div className="flex min-w-0 items-center gap-3">
           <img

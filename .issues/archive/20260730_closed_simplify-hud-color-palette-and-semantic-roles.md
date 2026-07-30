@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "c31be287-8cdf-459a-bbb0-898ec1185b5c"
 title: "Simplify HUD color palette and semantic roles"
-status: "open"
+status: "closed"
 priority: "medium"
 labels: ["TECH-DEBT", "NEEDS-TRIAGE"]
 created_at: "2026-07-30T05:41:00Z"
-updated_at: "2026-07-30T05:41:00Z"
+updated_at: "2026-07-30T08:15:00Z"
 ---
 ## Problem
 
@@ -56,7 +56,7 @@ PokeLens 的 HUD 色板包含多组视觉上接近的中性颜色：
   - 无道具图标 `#94a3b8`
   - 标题阴影 `#fff`
   - shadow 中重复的 ink RGB
-- 将 `crit-violet` 移交给 [[archive/20260626_closed_audit-and-align-domain-color-systems|domain color issue]]，不保留为 HUD token。
+- 将 `crit-violet` 移交给 [[20260626_closed_audit-and-align-domain-color-systems|domain color issue]]，不保留为 HUD token。
 
 ## Constraints
 
@@ -78,14 +78,24 @@ PokeLens 的 HUD 色板包含多组视觉上接近的中性颜色：
 
 ## Acceptance criteria
 
-- [ ] 每个保留的 HUD 颜色都有不同且可复用的语义角色
-- [ ] 无法说明独立角色的相近颜色已经合并
-- [ ] `design.md` 与 `src/index.css` 对最终 HUD palette 的描述一致
-- [ ] shadcn semantic tokens 映射到最小必要的 HUD palette
-- [ ] 未使用的 chart token 已删除
-- [ ] app bar 颜色的语义与是否保留渐变已经明确
-- [ ] HUD shadow 从共享 token 派生，不重复编码 ink RGB
-- [ ] 产品组件中不存在可由已有 HUD token 表达的单次硬编码颜色
-- [ ] 关键表面、文字、边界和交互状态通过视觉回归检查
-- [ ] 所有文字颜色在实际背景上满足 WCAG AA
-- [ ] `pnpm build` 通过
+- [x] 每个保留的 HUD 颜色都有不同且可复用的语义角色
+- [x] 无法说明独立角色的相近颜色已经合并
+- [x] `design.md` 与 `src/index.css` 对最终 HUD palette 的描述一致
+- [x] shadcn semantic tokens 映射到最小必要的 HUD palette
+- [x] 未使用的 chart token 已删除
+- [x] app bar 颜色的语义与是否保留渐变已经明确
+- [x] HUD shadow 从共享 token 派生，不重复编码 ink RGB
+- [x] 产品组件中不存在可由已有 HUD token 表达的单次硬编码颜色
+- [x] 关键表面、文字、边界和交互状态通过视觉回归检查
+- [x] 所有文字颜色在实际背景上满足 WCAG AA
+- [x] `pnpm build` 通过
+
+## Resolution
+
+- `bg-sidebar` 已并入 `token-bg`，sidebar 与 shadcn muted/sidebar 语义统一使用中性填充。
+- `hairline` 与 `card-border` 保留，分别用于非交互分隔与可感知的交互边界。
+- `notice-bg` 保留为通知表面语义。
+- app bar 已拍平为单色 `appbar: #33426e`。
+- 无消费者的 chart tokens 已删除。
+- HUD shadows 已由 `ink` 派生；无道具图标与标题阴影已改用 `hud-muted` / `paper` 派生或引用。
+- `pnpm lint`、`pnpm test`（260 tests）与 `pnpm build` 均通过；浏览器视觉回归确认关键颜色计算值符合规范。
