@@ -155,16 +155,20 @@ export function SpeciesSelect({
             <span className="text-muted-foreground text-[10px] font-normal tracking-wide">
               {label}
             </span>
-            <span className="flex min-w-0 items-center justify-between gap-2">
+            <span className="flex min-w-0 flex-col items-stretch gap-1">
               <span
                 className={cn(
-                  "truncate text-sm font-extrabold tracking-tight",
+                  "line-clamp-2 w-full text-center text-sm font-extrabold tracking-tight whitespace-normal",
                   !selected && "text-muted-foreground font-medium",
                 )}
               >
                 {placeholder}
               </span>
-              {selected && <TypeBadgeRow types={selected.types} />}
+              {selected && (
+                <span className="flex justify-center">
+                  <TypeBadgeRow types={selected.types} />
+                </span>
+              )}
             </span>
           </>
         )}
