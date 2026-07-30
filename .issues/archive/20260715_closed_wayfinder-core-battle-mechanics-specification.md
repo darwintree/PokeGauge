@@ -49,7 +49,7 @@ updated_at: "2026-07-17T03:45:00Z"
 
 - [[../20260715_open_specify-random-multi-hit-and-accuracy-mechanics|Specify random multi-hit and accuracy mechanics]] — 随机段数、整招命中与逐段命中相对独立，延后到单独 effort。
 - [[20260715_closed_specify-terrain-track-and-grounded-eligibility|Specify terrain track and grounded eligibility]] — 场地与接地判定暂不进入本轮规格。
-- [[../20260715_open_expand-supported-ability-effects-beyond-adaptability|Expand supported ability effects beyond Adaptability]] — 适应力之外的真实特性效果延后；当前只定义未支持状态。
+- [[../20260715_open_implement-pokemon-ability-effects|Expand supported ability effects beyond Adaptability]] — 适应力之外的真实特性效果延后；当前只定义未支持状态。
 - [[../20260717_open_define-ruleset-aware-move-candidate-pool-and-learnset-validation|Define ruleset-aware Move candidate pool and learnset validation]] — 当前保留全局候选池，不在本 map 校验 ruleset 合法性或 identity learnset。
 - [[../20260717_open_define-range-endpoint-identity-and-merge-semantics|Define Range endpoint identity and merge semantics]] — 不同 Range 选段吸附到相同端点后的合并语义不影响当前单选段结果，延后独立处理。
 - 天气的回合末伤害、防御能力修正、回复、状态免疫与招式属性变化。
