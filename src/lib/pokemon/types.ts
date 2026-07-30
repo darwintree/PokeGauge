@@ -44,40 +44,10 @@ export const TYPE_LABEL_ZH: Record<PokemonType, string> = {
   fairy: "妖精",
 }
 
-/** Showdown canonical — mirrored in CSS vars for contrast helper */
-export const TYPE_COLOR_HEX: Record<PokemonType, string> = {
-  normal: "#A8A878",
-  fire: "#F08030",
-  water: "#6890F0",
-  electric: "#F8D030",
-  grass: "#78C850",
-  ice: "#98D8D8",
-  fighting: "#C03028",
-  poison: "#A040A0",
-  ground: "#E0C068",
-  flying: "#A890F0",
-  psychic: "#F85888",
-  bug: "#A8B820",
-  rock: "#B8A038",
-  ghost: "#705898",
-  dragon: "#7038F8",
-  dark: "#705848",
-  steel: "#B8B8D0",
-  fairy: "#EE99AC",
-}
-
-function luminance(hex: string): number {
-  const n = parseInt(hex.slice(1), 16)
-  const r = ((n >> 16) & 255) / 255
-  const g = ((n >> 8) & 255) / 255
-  const b = (n & 255) / 255
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b
-}
-
-export function typeTextColor(type: PokemonType): string {
-  return luminance(TYPE_COLOR_HEX[type]) > 0.55 ? "#171717" : "#ffffff"
-}
-
 export function typeCssVar(type: PokemonType): string {
   return `var(--pokemon-type-${type})`
+}
+
+export function typeForegroundCssVar(type: PokemonType): string {
+  return `var(--pokemon-type-${type}-foreground)`
 }

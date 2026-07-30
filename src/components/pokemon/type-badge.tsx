@@ -3,7 +3,7 @@ import { useIntl } from "react-intl"
 import {
   type PokemonType,
   typeCssVar,
-  typeTextColor,
+  typeForegroundCssVar,
 } from "@/lib/pokemon/types"
 
 type TypeBadgeProps = {
@@ -21,7 +21,7 @@ export function TypeBadge({ type }: TypeBadgeProps) {
       className="inline-flex items-center rounded-[5px] border border-ink px-1 py-px text-[9px] font-extrabold leading-[14px]"
       style={{
         backgroundColor: typeCssVar(type),
-        color: typeTextColor(type),
+        color: typeForegroundCssVar(type),
       }}
     >
       {intl.formatMessage({ id: `type.${type}` })}

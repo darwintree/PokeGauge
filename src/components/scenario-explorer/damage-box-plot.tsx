@@ -65,9 +65,9 @@ const TONE_CLASS = {
 } as const
 
 const TONE_DOT_CLASS = {
-  cool: "bg-[#f5b73f]",
-  warm: "bg-[#f58023]",
-  lethal: "bg-[#e0352f]",
+  cool: "damage-tone-marker--cool",
+  warm: "damage-tone-marker--warm",
+  lethal: "damage-tone-marker--lethal",
 } as const
 
 /** Peak of a KO probability value (number or range), for zero/hot states. */
@@ -87,7 +87,7 @@ function KoProbabilityColumns({ row }: { row: ScenarioRow }) {
         <dd className="text-[12px] font-extrabold">
           {row.koProbabilities ? (
             ohkoHot ? (
-              /* Badge as signal: yellow only flags a real OHKO chance (design.md § KO columns) */
+              /* Yellow is reserved for a real OHKO chance. */
               <span className="inline-block rounded-[8px] border-2 border-ink bg-signal-yellow px-1.5 py-px shadow-hud-chip">
                 {formatKoProbability(row.koProbabilities.ohko, intl.locale)}
               </span>
@@ -169,7 +169,7 @@ export function DamageBoxPlot({
             aria-hidden
           />
 
-          {/* Data ink: pill box, ink frame, lethality gradient (design.md § Damage plot) */}
+          {/* Data ink: pill box, ink frame, and damage-domain gradient. */}
           <div
             className={cn(
               "absolute top-1/2 h-7 -translate-y-1/2 rounded-full border border-ink",
@@ -197,13 +197,13 @@ export function DamageBoxPlot({
           {!row.criticalOnly && (
             <>
               <div
-                className="absolute top-1/2 h-[2px] -translate-y-1/2 bg-crit-violet"
+                className="absolute top-1/2 h-[2px] -translate-y-1/2 bg-damage-critical"
                 style={{ left: crit.left, width: crit.width }}
               />
               {[row.critMinPercent, row.critMaxPercent].map((p, i) => (
                 <div
                   key={i}
-                  className="absolute top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-crit-violet bg-paper"
+                  className="absolute top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-damage-critical bg-paper"
                   style={{ left: pctToLeft(p) }}
                 />
               ))}
@@ -242,7 +242,7 @@ export function DamageBoxPlot({
             </HoverRow>
           )}
           {!row.criticalOnly && (
-            <HoverRow marker={<span className="inline-block size-2 rounded-full border-2 border-crit-violet bg-paper" />}>
+            <HoverRow marker={<span className="inline-block size-2 rounded-full border-2 border-damage-critical bg-paper" />}>
               <HoverLabel>{intl.formatMessage({ id: "damage.critical" })}</HoverLabel>
               <span className="tabular-nums">
                 {row.critMinPercent.toFixed(1)}% ~ {row.critMaxPercent.toFixed(1)}%
@@ -321,8 +321,8 @@ export function BoxPlotLegend({ showAverage = true }: { showAverage?: boolean })
       </span>
       <span className="inline-flex items-center gap-1.5">
         <span className="inline-flex items-center gap-0.5">
-          <span className="inline-block h-[2px] w-4 bg-crit-violet" />
-          <span className="inline-block size-2 rounded-full border-2 border-crit-violet bg-paper" />
+          <span className="inline-block h-[2px] w-4 bg-damage-critical" />
+          <span className="inline-block size-2 rounded-full border-2 border-damage-critical bg-paper" />
         </span>
         {intl.formatMessage({ id: "damage.legend.critical" })}
       </span>

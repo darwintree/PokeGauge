@@ -84,8 +84,7 @@ export function AbilityTrack({
             >
               <span>{option.label}</span>
               {unsupported && (
-                /* Red dot = effect unsupported (design.md § Sidebar panels and chips);
-                   state also lives in the accessible name, never color alone */
+                /* State also lives in the accessible name, never color alone. */
                 <span aria-hidden className="size-2 rounded-full border border-ink bg-destructive" />
               )}
             </TrackOption>
