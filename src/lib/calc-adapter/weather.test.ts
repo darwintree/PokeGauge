@@ -18,6 +18,7 @@ import {
 
 import { CALC_GEN, VGC_LEVEL } from "./calc-constants"
 import * as damageKernel from "./damage-kernel"
+import { defenderStatValues, offenseStatValue } from "./local-stats"
 import { getAttackerStatSetups, getDefenderSetups } from "./presets"
 import {
   compileScenario,
@@ -63,6 +64,8 @@ function rawScenario(
     throw new Error(`Move ${moveId} cannot make a weather test scenario`)
   }
   const category = move.category
+  const offense = getAttackerStatSetups(category)["neutral-max"]
+  const defense = getDefenderSetups(category)["standard-bulk"]
   return {
     snapshot: moveSnapshot(moveId),
     attackerId: ATTACKER[category].id,
@@ -76,8 +79,8 @@ function rawScenario(
     screen: "none",
     probabilityMode: "actual",
     lowOutcome: {
-      offense: getAttackerStatSetups(category)["neutral-max"],
-      defense: getDefenderSetups(category)["standard-bulk"],
+      offense: offenseStatValue(ATTACKER[category].name, category, offense),
+      defense: defenderStatValues(DEFENDER.name, category, defense),
     },
     ...overrides,
   }

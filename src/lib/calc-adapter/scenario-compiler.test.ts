@@ -1,6 +1,7 @@
 import { calculate, Field, Move, Pokemon } from "@smogon/calc"
 import { beforeAll, describe, expect, it } from "vitest"
 
+import type { MoveCategory } from "@/lib/catalog/types"
 import { listResources } from "@/lib/resources"
 import {
   type MoveSnapshot,
@@ -10,6 +11,7 @@ import {
 
 import { calculateDamageRolls, type DamageFormulaBranch } from "./damage-kernel"
 import { CALC_GEN, VGC_LEVEL } from "./calc-constants"
+import { defenderStatValues, offenseStatValue } from "./local-stats"
 import {
   ATTACKER_STAT_SETUPS,
   DEFENDER_SETUPS,
@@ -20,9 +22,15 @@ import {
   calculationIdentity,
   type CalculableScenario,
   type RawScenario,
+  type RawScenarioPoint,
   compileScenario,
 } from "./scenario-compiler"
-import { STAT_STAGES, type StatStage } from "./types"
+import {
+  type DefenderSetup,
+  STAT_STAGES,
+  type StatSetup,
+  type StatStage,
+} from "./types"
 
 const snapshot: MoveSnapshot = {
   id: "earthquake-1",
@@ -33,6 +41,19 @@ const snapshot: MoveSnapshot = {
   criticalStage: 0,
   spreadEligible: true,
   spread: true,
+}
+
+function exactPoint(
+  attackerSpecies: string,
+  defenderSpecies: string,
+  category: MoveCategory,
+  offense: StatSetup = getAttackerStatSetups(category)["neutral-max"],
+  defense: DefenderSetup = getDefenderSetups(category)["standard-bulk"],
+): RawScenarioPoint {
+  return {
+    offense: offenseStatValue(attackerSpecies, category, offense),
+    defense: defenderStatValues(defenderSpecies, category, defense),
+  }
 }
 
 function scenario(overrides: Partial<RawScenario> = {}): RawScenario {
@@ -48,10 +69,7 @@ function scenario(overrides: Partial<RawScenario> = {}): RawScenario {
     weather: "none",
     screen: "none",
     probabilityMode: "rolls",
-    lowOutcome: {
-      offense: ATTACKER_STAT_SETUPS["neutral-max"],
-      defense: DEFENDER_SETUPS["standard-bulk"],
-    },
+    lowOutcome: exactPoint("Garchomp", "Incineroar", "physical"),
     ...overrides,
   }
 }
@@ -123,6 +141,21 @@ describe("scenario compiler", () => {
       { track: "defender-ability", optionId: "22", state: "unsupported" },
       { track: "screen", optionId: "none", state: "neutral" },
     ])
+  })
+
+  it("compiles exact actual stat values without deriving a setup", () => {
+    const outcome = calculableScenario({
+      lowOutcome: {
+        offense: 186,
+        defense: { hp: 170, def: 153 },
+      },
+    })
+
+    expect(outcome.calculation.low).toMatchObject({
+      defenderHp: 170,
+      normal: { attack: 186, defense: 153 },
+      critical: { attack: 186, defense: 153 },
+    })
   })
 
   it("reports zero final power against a type immunity", () => {
@@ -284,7 +317,13 @@ describe("scenario compiler", () => {
         spreadEligible: testCase.spread,
         spread: testCase.spread,
       },
-      lowOutcome: { offense, defense },
+      lowOutcome: exactPoint(
+        testCase.attackerName,
+        "Incineroar",
+        category,
+        offense,
+        defense,
+      ),
     }))
     if (compiled.kind !== "calculable") {
       throw new Error(`Expected calculable, got ${compiled.reason}`)
@@ -452,8 +491,16 @@ describe("scenario compiler", () => {
     it("includes the actual low and high Range endpoint inputs", () => {
       const outcome = calculableScenario({
         highOutcome: {
-          offense: ATTACKER_STAT_SETUPS.extreme,
-          defense: DEFENDER_SETUPS["min-bulk"],
+          offense: offenseStatValue(
+            "Garchomp",
+            "physical",
+            ATTACKER_STAT_SETUPS.extreme,
+          ),
+          defense: defenderStatValues(
+            "Incineroar",
+            "physical",
+            DEFENDER_SETUPS["min-bulk"],
+          ),
         },
       })
       const identity = calculationIdentity(outcome)

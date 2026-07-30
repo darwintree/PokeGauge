@@ -1,7 +1,7 @@
 import { calculate, Field, Move, Pokemon } from "@smogon/calc"
 import { beforeAll, describe, expect, it, vi } from "vitest"
 
-import { getCatalogShell } from "@/lib/catalog"
+import { getCatalogShell, type MoveCategory } from "@/lib/catalog"
 import { createMoveSnapshot, type MoveSnapshot } from "@/lib/move-snapshot"
 import { listResources } from "@/lib/resources"
 import {
@@ -13,6 +13,7 @@ import {
 import { ADAPTABILITY_ABILITY_ID } from "./ability"
 import { CALC_GEN, VGC_LEVEL } from "./calc-constants"
 import * as damageKernel from "./damage-kernel"
+import { defenderStatValues, offenseStatValue } from "./local-stats"
 import { getAttackerStatSetups, getDefenderSetups } from "./presets"
 import {
   compileScenario,
@@ -31,6 +32,21 @@ const TACKLE: MoveSnapshot = {
   spread: false,
 }
 
+function exactPoint(category: MoveCategory): RawScenario["lowOutcome"] {
+  return {
+    offense: offenseStatValue(
+      "Eevee",
+      category,
+      getAttackerStatSetups(category)["neutral-max"],
+    ),
+    defense: defenderStatValues(
+      "Snorlax",
+      category,
+      getDefenderSetups(category)["standard-bulk"],
+    ),
+  }
+}
+
 function rawScenario(overrides: Partial<RawScenario> = {}): RawScenario {
   return {
     snapshot: TACKLE,
@@ -44,10 +60,7 @@ function rawScenario(overrides: Partial<RawScenario> = {}): RawScenario {
     weather: "none",
     screen: "none",
     probabilityMode: "rolls",
-    lowOutcome: {
-      offense: getAttackerStatSetups("physical")["neutral-max"],
-      defense: getDefenderSetups("physical")["standard-bulk"],
-    },
+    lowOutcome: exactPoint("physical"),
     ...overrides,
   }
 }
@@ -100,10 +113,7 @@ describe("ability compiler", () => {
         moveId: 55,
         power: 40,
       },
-      lowOutcome: {
-        offense: getAttackerStatSetups("special")["neutral-max"],
-        defense: getDefenderSetups("special")["standard-bulk"],
-      },
+      lowOutcome: exactPoint("special"),
     })
 
     expect(normalBranch(offType).stabModifier).toBe(4096)
@@ -130,10 +140,7 @@ describe("ability compiler", () => {
         moveId: 686,
         power: 90,
       },
-      lowOutcome: {
-        offense: getAttackerStatSetups("special")["neutral-max"],
-        defense: getDefenderSetups("special")["standard-bulk"],
-      },
+      lowOutcome: exactPoint("special"),
     })
 
     expect(outcome.move.type).toBe("normal")
@@ -155,7 +162,7 @@ describe("ability compiler", () => {
     const defense = getDefenderSetups("physical")["standard-bulk"]
     const outcome = calculable({
       attackerAbilityId: ADAPTABILITY_ABILITY_ID,
-      lowOutcome: { offense, defense },
+      lowOutcome: exactPoint("physical"),
     })
     const rolls = damageKernel.calculateDamageRolls(outcome.calculation).low
     const attacker = new Pokemon(CALC_GEN, "Eevee", {

@@ -15,8 +15,10 @@ import {
 } from "@/lib/catalog"
 import { createMoveSnapshot } from "@/lib/move-snapshot"
 import {
+  defenseTemplatesForState,
   defaultTrackState,
   expectedRowCount,
+  offenseTemplatesForState,
   RANGE_DEFENDER_ID,
   RANGE_STAT_ID,
   runScenarioPipeline,
@@ -497,6 +499,67 @@ describe("matchup scenario pipeline", () => {
     expect(rows.every((r) => r.attackerStatId === "extreme")).toBe(true)
   })
 
+  it("uses stored preset values unchanged and ignores allocation label indices", () => {
+    const state = defaultTrackState(catalog)
+    selectMoves(catalog, state, [89])
+    state.attackerItemIds = ["none"]
+    state.offenseTemplateIds = ["off-grid-offense"]
+    state.offenseTemporaryTemplates = [{
+      id: "off-grid-offense",
+      kind: "temporary",
+      values: { kind: "offense", stat: 186 },
+    }]
+    state.defenseTemplateIds = ["off-grid-defense"]
+    state.defenseTemporaryTemplates = [{
+      id: "off-grid-defense",
+      kind: "temporary",
+      values: { kind: "defense", hp: 170, def: 153 },
+    }]
+    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+
+    const first = runScenarioPipeline(catalog, state)
+
+    expect(kernel.mock.calls[0][0]).toMatchObject({
+      low: {
+        defenderHp: 170,
+        normal: { attack: 186, defense: 153 },
+        critical: { attack: 186, defense: 153 },
+      },
+    })
+    expect(kernel.mock.calls[0][0].high).toBeUndefined()
+
+    state.offenseAllocationIndices["off-grid-offense"] = 7
+    state.defenseAllocationIndices["off-grid-defense"] = 9
+
+    expect(runScenarioPipeline(catalog, state)).toEqual(first)
+  })
+
+  it("keeps reachable system preset values unchanged", () => {
+    const state = defaultTrackState(catalog)
+    selectMoves(catalog, state, [89])
+    state.attackerItemIds = ["none"]
+    state.offenseTemplateIds = ["neutral-max"]
+    state.defenseTemplateIds = ["hp-32"]
+    const offense = offenseTemplatesForState(catalog, state)
+      .find((template) => template.id === "neutral-max")
+    const defense = defenseTemplatesForState(catalog, state)
+      .find((template) => template.id === "hp-32")
+    if (offense?.values.kind !== "offense" || defense?.values.kind !== "defense") {
+      throw new Error("Expected reachable system stat value templates")
+    }
+    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+
+    runScenarioPipeline(catalog, state)
+
+    expect(kernel.mock.calls[0][0].low).toMatchObject({
+      defenderHp: defense.values.hp,
+      normal: {
+        attack: offense.values.stat,
+        defense: defense.values.def,
+      },
+    })
+  })
+
   it("computes damage for alternate defender species", async () => {
     const amoonguss = await getCatalog(445, 591, LOCALE)
     const state = defaultTrackState(amoonguss)
@@ -593,6 +656,33 @@ describe("matchup scenario pipeline - range mode", () => {
     expect(row).toBeDefined()
     expect(row.minDamage).toBeLessThan(row.maxDamage)
     expect(row.maxPercent).toBeGreaterThan(row.minPercent)
+  })
+
+  it("passes the exact selected offense and defense endpoints to the compiler", () => {
+    const state = defaultTrackState(catalog)
+    selectMoves(catalog, state, [89])
+    state.attackerItemIds = ["none"]
+    state.statMode = "range"
+    state.statRange = { min: 186, max: 188 }
+    state.defenderMode = "range"
+    state.defenderRanges = {
+      hp: { min: 170, max: 171 },
+      def: { min: 153, max: 155 },
+    }
+    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+
+    runScenarioPipeline(catalog, state)
+
+    expect(kernel.mock.calls[0][0]).toMatchObject({
+      low: {
+        defenderHp: 171,
+        normal: { attack: 186, defense: 155 },
+      },
+      high: {
+        defenderHp: 170,
+        normal: { attack: 188, defense: 153 },
+      },
+    })
   })
 
   it("defender range mode: row count = moves × stats × items (defender track = 1)", () => {

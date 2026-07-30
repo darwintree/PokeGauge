@@ -6,8 +6,6 @@ export type {
   TemplateKind,
 } from "./types"
 export {
-  defaultDefenseSetup,
-  defaultOffenseSetup,
   enumerateDefenseAllocations,
   enumerateOffenseAllocations,
   evToAbilityPoints,

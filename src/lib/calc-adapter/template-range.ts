@@ -1,10 +1,4 @@
-import type { MoveCategory } from "@/lib/catalog/types"
-import {
-  defaultDefenseSetup,
-  defaultOffenseSetup,
-  offenseValueOf,
-  defenseValuesOf,
-} from "@/lib/stat-value-template"
+import { defenseValuesOf, offenseValueOf } from "@/lib/stat-value-template"
 import type { StatValueTemplate } from "@/lib/stat-value-template"
 
 import { envelopeRange } from "./stat-range"
@@ -56,32 +50,3 @@ export function defenderDefRangeFromTemplates(
 }
 
 export { envelopeRange }
-
-/** Resolve spread for pipeline — uses stored stat values only. */
-export function offenseSetupForTemplate(
-  species: string,
-  category: MoveCategory,
-  template: StatValueTemplate,
-) {
-  return defaultOffenseSetup(species, category, template)
-}
-
-export function defenseSetupForTemplate(
-  species: string,
-  category: MoveCategory,
-  template: StatValueTemplate,
-) {
-  return defaultDefenseSetup(species, category, template)
-}
-
-export function offenseStatForTemplate(template: StatValueTemplate): number {
-  return offenseValueOf(template)
-}
-
-export function defenderStatsForTemplate(template: StatValueTemplate): {
-  hp: number
-  def: number
-} {
-  const v = defenseValuesOf(template)
-  return { hp: v.hp, def: v.def }
-}

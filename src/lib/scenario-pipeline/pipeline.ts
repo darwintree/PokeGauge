@@ -1,6 +1,4 @@
 import {
-  type DefenderSetup,
-  type StatSetup,
   defaultDefenderDefRange,
   defaultDefenderHpRange,
   defaultOffenseStatRange,
@@ -17,16 +15,6 @@ import {
   type ScenarioSource,
   compileScenario,
 } from "@/lib/calc-adapter/scenario-compiler"
-import {
-  closestDefenderSetupHigh,
-  closestDefenderSetupLow,
-  closestOffenseSetupAtOrAbove,
-  closestOffenseSetupAtOrBelow,
-} from "@/lib/calc-adapter/stat-bounds"
-import {
-  defenseSetupForTemplate,
-  offenseSetupForTemplate,
-} from "@/lib/calc-adapter/template-range"
 import type { MatchupCatalog } from "@/lib/catalog/types"
 import {
   convolveDamageDistributions,
@@ -39,10 +27,12 @@ import {
   buildSystemOffenseTemplates,
   defaultDefenseSelection,
   defaultOffenseSelection,
+  defenseValuesOf,
   formatTemplateActual,
   loadUserDefenseTemplates,
   loadUserOffenseTemplates,
   mergeTemplates,
+  offenseValueOf,
   templateCardLabel,
   type StatNameStrategy,
   type StatValueTemplate,
@@ -84,14 +74,14 @@ function findTemplate(templates: StatValueTemplate[], id: string): StatValueTemp
 
 type PreparedStatChoice = {
   id: string
-  low: StatSetup
-  high: StatSetup
+  low: number
+  high: number
 }
 
 type PreparedDefenseChoice = {
   id: string
-  low: DefenderSetup
-  high: DefenderSetup
+  low: RawScenarioPoint["defense"]
+  high: RawScenarioPoint["defense"]
 }
 
 function average(rolls: readonly number[]): number {
@@ -173,64 +163,54 @@ function summarizeDamage(
 }
 
 function offenseChoices(
-  catalog: MatchupCatalog,
   trackState: TrackState,
   templates: StatValueTemplate[],
 ): PreparedStatChoice[] {
-  const species = catalog.matchup.attackerSpecies
   if (trackState.statMode === "range") {
     return [{
       id: RANGE_STAT_ID,
-      low: closestOffenseSetupAtOrBelow(
-        species,
-        catalog.moveCategory,
-        trackState.statRange.min,
-      ),
-      high: closestOffenseSetupAtOrAbove(
-        species,
-        catalog.moveCategory,
-        Math.max(trackState.statRange.min, trackState.statRange.max),
-      ),
+      low: trackState.statRange.min,
+      high: Math.max(trackState.statRange.min, trackState.statRange.max),
     }]
   }
 
   return trackState.offenseTemplateIds.flatMap((id) => {
     const template = findTemplate(templates, id)
     if (!template) return []
-    const setup = offenseSetupForTemplate(species, catalog.moveCategory, template)
-    return [{ id, low: setup, high: setup }]
+    const value = offenseValueOf(template)
+    return [{ id, low: value, high: value }]
   })
 }
 
 function defenseChoices(
-  catalog: MatchupCatalog,
   trackState: TrackState,
   templates: StatValueTemplate[],
 ): PreparedDefenseChoice[] {
-  const species = catalog.matchup.defenderSpecies
   if (trackState.defenderMode === "range") {
     return [{
       id: RANGE_DEFENDER_ID,
-      low: closestDefenderSetupLow(
-        species,
-        catalog.moveCategory,
-        trackState.defenderRanges.hp.min,
-        trackState.defenderRanges.def.min,
-      ),
-      high: closestDefenderSetupHigh(
-        species,
-        catalog.moveCategory,
-        Math.max(trackState.defenderRanges.hp.min, trackState.defenderRanges.hp.max),
-        Math.max(trackState.defenderRanges.def.min, trackState.defenderRanges.def.max),
-      ),
+      low: {
+        hp: trackState.defenderRanges.hp.min,
+        def: trackState.defenderRanges.def.min,
+      },
+      high: {
+        hp: Math.max(
+          trackState.defenderRanges.hp.min,
+          trackState.defenderRanges.hp.max,
+        ),
+        def: Math.max(
+          trackState.defenderRanges.def.min,
+          trackState.defenderRanges.def.max,
+        ),
+      },
     }]
   }
 
   return trackState.defenseTemplateIds.flatMap((id) => {
     const template = findTemplate(templates, id)
     if (!template) return []
-    const setup = defenseSetupForTemplate(species, catalog.moveCategory, template)
-    return [{ id, low: setup, high: setup }]
+    const values = defenseValuesOf(template)
+    return [{ id, low: values, high: values }]
   })
 }
 
@@ -239,7 +219,13 @@ function scenarioPoints(
   defense: PreparedDefenseChoice,
 ): { lowOutcome: RawScenarioPoint; highOutcome?: RawScenarioPoint } {
   const lowOutcome = { offense: offense.low, defense: defense.high }
-  if (offense.low === offense.high && defense.low === defense.high) return { lowOutcome }
+  if (
+    offense.low === offense.high &&
+    defense.low.hp === defense.high.hp &&
+    defense.low.def === defense.high.def
+  ) {
+    return { lowOutcome }
+  }
   return {
     lowOutcome,
     highOutcome: { offense: offense.high, defense: defense.low },
@@ -307,8 +293,8 @@ export function runScenarioPipeline(
   const unavailableGroups = new Map<string, UnavailableGroupBuilder>()
   const offenseTemplates = offenseTemplatesForState(catalog, trackState)
   const defenseTemplates = defenseTemplatesForState(catalog, trackState)
-  const preparedOffense = offenseChoices(catalog, trackState, offenseTemplates)
-  const preparedDefense = defenseChoices(catalog, trackState, defenseTemplates)
+  const preparedOffense = offenseChoices(trackState, offenseTemplates)
+  const preparedDefense = defenseChoices(trackState, defenseTemplates)
   const selectedMoveSnapshotIds = new Set(trackState.selectedMoveSnapshotIds)
 
   for (const snapshot of trackState.moveSnapshots) {
