@@ -1,0 +1,427 @@
+---
+# This section is managed by the CLI. Do not edit manually.
+id: "bf92fd6c-9711-4f66-b026-ab634e594252"
+title: "Implement Pokémon held-item effects"
+status: "open"
+priority: "medium"
+labels: ["FEATURE-REQUEST"]
+created_at: "2026-07-30T09:28:00Z"
+updated_at: "2026-07-30T09:48:00Z"
+---
+## Goal
+
+逐步实现 Pokémon Showdown 中具有独立竞技携带效果的道具，并让后续实现可追踪、可验证。
+
+调研、Champions 可用道具、直接伤害分类与使用率优先级见 [Champions item inventory and priority](../docs/research/2026-07-30-champions-item-inventory-and-priority.md)。
+
+## Tracking
+
+- 这是长期 issue，按需逐步实现，不预设固定实现顺序。
+- 今后的道具实现使用子 issue 跟踪，并在子 issue 的 `## Parent issue` 中链接本 issue。
+- 子 issue 同时追加到下面的 `## Child issues`，仅用于关联，不表示优先级。
+- 共享同一机制的多个道具可以合并在一个子 issue 中。
+- 实现完成并验证后，勾选本页对应道具。
+- checkbox 表示该道具在本计算器中的处置已完成。
+- 使用率只决定优先级，不决定是否纳入；未上榜但具有独立携带效果的道具仍保留。
+
+## Child issues
+
+<!-- Add implementation child issues here as they are created. -->
+
+## Implementation-relevant item checklist (375)
+
+### Current Champions usage: non-Mega items (73)
+
+- [ ] Aspear Berry
+- [ ] Babiri Berry
+- [ ] Big Root
+- [x] Black Belt — implemented
+- [x] Black Glasses — implemented
+- [ ] Bright Powder
+- [x] Charcoal — implemented
+- [ ] Charti Berry
+- [ ] Cheri Berry
+- [ ] Chesto Berry
+- [ ] Chilan Berry
+- [ ] Choice Scarf
+- [ ] Chople Berry
+- [ ] Coba Berry
+- [ ] Colbur Berry
+- [ ] Damp Rock
+- [x] Dragon Fang — implemented
+- [ ] Expert Belt
+- [x] Fairy Feather — implemented
+- [ ] Focus Band
+- [ ] Focus Sash
+- [ ] Haban Berry
+- [x] Hard Stone — implemented
+- [ ] Heat Rock
+- [ ] Icy Rock
+- [ ] Iron Ball
+- [ ] Kasib Berry
+- [ ] Kebia Berry
+- [ ] King's Rock
+- [ ] Leftovers
+- [ ] Leppa Berry
+- [x] Life Orb — implemented
+- [ ] Light Ball
+- [ ] Light Clay
+- [ ] Lum Berry
+- [x] Magnet — implemented
+- [ ] Mental Herb
+- [x] Metal Coat — implemented
+- [ ] Metronome
+- [x] Miracle Seed — implemented
+- [ ] Muscle Band
+- [x] Mystic Water — implemented
+- [x] Never-Melt Ice — implemented
+- [ ] Occa Berry
+- [ ] Oran Berry
+- [ ] Passho Berry
+- [ ] Payapa Berry
+- [ ] Pecha Berry
+- [ ] Persim Berry
+- [x] Poison Barb — implemented
+- [ ] Quick Claw
+- [ ] Rawst Berry
+- [ ] Rindo Berry
+- [ ] Roseli Berry
+- [ ] Scope Lens
+- [x] Sharp Beak — implemented
+- [ ] Shed Shell
+- [ ] Shell Bell
+- [ ] Shuca Berry
+- [x] Silk Scarf — implemented
+- [x] Silver Powder — implemented
+- [ ] Sitrus Berry
+- [ ] Smooth Rock
+- [x] Soft Sand — implemented
+- [x] Spell Tag — implemented
+- [ ] Tanga Berry
+- [x] Twisted Spoon — implemented
+- [ ] Wacan Berry
+- [ ] White Herb
+- [ ] Wide Lens
+- [ ] Wise Glasses
+- [ ] Yache Berry
+- [ ] Zoom Lens
+
+### Current Champions usage: Mega Stones (75)
+
+- [ ] Abomasite
+- [ ] Absolite
+- [ ] Aerodactylite
+- [ ] Aggronite
+- [ ] Alakazite
+- [ ] Altarianite
+- [ ] Ampharosite
+- [ ] Audinite
+- [ ] Banettite
+- [ ] Barbaracite
+- [ ] Beedrillite
+- [ ] Blastoisinite
+- [ ] Blazikenite
+- [ ] Cameruptite
+- [ ] Chandelurite
+- [ ] Charizardite X
+- [ ] Charizardite Y
+- [ ] Chesnaughtite
+- [ ] Chimechite
+- [ ] Clefablite
+- [ ] Crabominite
+- [ ] Delphoxite
+- [ ] Dragalgite
+- [ ] Dragoninite
+- [ ] Drampanite
+- [ ] Eelektrossite
+- [ ] Emboarite
+- [ ] Excadrite
+- [ ] Falinksite
+- [ ] Feraligite
+- [ ] Floettite
+- [ ] Froslassite
+- [ ] Galladite
+- [ ] Garchompite
+- [ ] Gardevoirite
+- [ ] Gengarite
+- [ ] Glalitite
+- [ ] Glimmoranite
+- [ ] Golurkite
+- [ ] Greninjite
+- [ ] Gyaradosite
+- [ ] Hawluchanite
+- [ ] Heracronite
+- [ ] Houndoominite
+- [ ] Kangaskhanite
+- [ ] Lopunnite
+- [ ] Lucarionite
+- [ ] Malamarite
+- [ ] Manectite
+- [ ] Mawilite
+- [ ] Medichamite
+- [ ] Meganiumite
+- [ ] Meowsticite
+- [ ] Metagrossite
+- [ ] Pidgeotite
+- [ ] Pinsirite
+- [ ] Pyroarite
+- [ ] Raichunite X
+- [ ] Raichunite Y
+- [ ] Sablenite
+- [ ] Sceptilite
+- [ ] Scizorite
+- [ ] Scolipite
+- [ ] Scovillainite
+- [ ] Scraftinite
+- [ ] Sharpedonite
+- [ ] Skarmorite
+- [ ] Slowbronite
+- [ ] Staraptite
+- [ ] Starminite
+- [ ] Steelixite
+- [ ] Swampertite
+- [ ] Tyranitarite
+- [ ] Venusaurite
+- [ ] Victreebelite
+
+### Useful but absent from current usage (227)
+
+- [ ] Ability Shield
+- [ ] Absolite Z
+- [ ] Absorb Bulb
+- [ ] Adamant Crystal
+- [ ] Adamant Orb
+- [ ] Adrenaline Orb
+- [ ] Aguav Berry
+- [ ] Air Balloon
+- [ ] Aloraichium Z
+- [ ] Apicot Berry
+- [ ] Assault Vest
+- [ ] Baxcalibrite
+- [ ] Berry
+- [ ] Berry Juice
+- [ ] Berserk Gene
+- [ ] Binding Band
+- [ ] Bitter Berry
+- [ ] Black Sludge
+- [ ] Blue Orb
+- [ ] Blunder Policy
+- [ ] Booster Energy
+- [ ] Bug Gem
+- [ ] Bug Memory
+- [ ] Buginium Z
+- [ ] Burn Drive
+- [ ] Burnt Berry
+- [ ] Cell Battery
+- [ ] Chill Drive
+- [x] Choice Band — implemented
+- [x] Choice Specs — implemented
+- [ ] Clear Amulet
+- [ ] Cornerstone Mask
+- [ ] Covert Cloak
+- [ ] Crucibellite
+- [ ] Custap Berry
+- [ ] Dark Gem
+- [ ] Dark Memory
+- [ ] Darkinium Z
+- [ ] Darkranite
+- [ ] Decidium Z
+- [ ] Deep Sea Scale
+- [ ] Deep Sea Tooth
+- [ ] Destiny Knot
+- [ ] Diancite
+- [ ] Douse Drive
+- [ ] Draco Plate
+- [ ] Dragon Gem
+- [ ] Dragon Memory
+- [ ] Dragonium Z
+- [ ] Dread Plate
+- [ ] Earth Plate
+- [ ] Eevium Z
+- [ ] Eject Button
+- [ ] Eject Pack
+- [ ] Electric Gem
+- [ ] Electric Memory
+- [ ] Electric Seed
+- [ ] Electrium Z
+- [ ] Enigma Berry
+- [ ] Eviolite
+- [ ] Fairium Z
+- [ ] Fairy Gem
+- [ ] Fairy Memory
+- [ ] Fighting Gem
+- [ ] Fighting Memory
+- [ ] Fightinium Z
+- [ ] Figy Berry
+- [ ] Fire Gem
+- [ ] Fire Memory
+- [ ] Firium Z
+- [ ] Fist Plate
+- [ ] Flame Orb
+- [ ] Flame Plate
+- [ ] Float Stone
+- [ ] Flying Gem
+- [ ] Flying Memory
+- [ ] Flyinium Z
+- [ ] Full Incense
+- [ ] Ganlon Berry
+- [ ] Garchompite Z
+- [ ] Ghost Gem
+- [ ] Ghost Memory
+- [ ] Ghostium Z
+- [ ] Gold Berry
+- [ ] Golisopite
+- [ ] Grass Gem
+- [ ] Grass Memory
+- [ ] Grassium Z
+- [ ] Grassy Seed
+- [ ] Grip Claw
+- [ ] Griseous Core
+- [ ] Griseous Orb
+- [ ] Ground Gem
+- [ ] Ground Memory
+- [ ] Groundium Z
+- [ ] Hearthflame Mask
+- [ ] Heatranite
+- [ ] Heavy-Duty Boots
+- [ ] Iapapa Berry
+- [ ] Ice Berry
+- [ ] Ice Gem
+- [ ] Ice Memory
+- [ ] Icicle Plate
+- [ ] Icium Z
+- [ ] Incinium Z
+- [ ] Insect Plate
+- [ ] Iron Plate
+- [ ] Jaboca Berry
+- [ ] Kee Berry
+- [ ] Kommonium Z
+- [ ] Lagging Tail
+- [ ] Lansat Berry
+- [ ] Latiasite
+- [ ] Latiosite
+- [ ] Lax Incense
+- [ ] Leek
+- [ ] Liechi Berry
+- [ ] Loaded Dice
+- [ ] Lucarionite Z
+- [ ] Lucky Punch
+- [ ] Luminous Moss
+- [ ] Lunalium Z
+- [ ] Lustrous Globe
+- [ ] Lustrous Orb
+- [ ] Lycanium Z
+- [ ] Macho Brace
+- [ ] Magearnite
+- [ ] Mago Berry
+- [ ] Mail
+- [ ] Maranga Berry
+- [ ] Marshadium Z
+- [ ] Meadow Plate
+- [ ] Metal Powder
+- [ ] Mewnium Z
+- [ ] Mewtwonite X
+- [ ] Mewtwonite Y
+- [ ] Micle Berry
+- [ ] Mimikium Z
+- [ ] Mind Plate
+- [ ] Mint Berry
+- [ ] Miracle Berry
+- [ ] Mirror Herb
+- [ ] Misty Seed
+- [ ] Mystery Berry
+- [ ] Normal Gem
+- [ ] Normalium Z
+- [ ] Odd Incense
+- [ ] PRZ Cure Berry
+- [ ] PSN Cure Berry
+- [ ] Petaya Berry
+- [ ] Pikanium Z
+- [ ] Pikashunium Z
+- [ ] Pink Bow
+- [ ] Pixie Plate
+- [ ] Poison Gem
+- [ ] Poison Memory
+- [ ] Poisonium Z
+- [ ] Polkadot Bow
+- [ ] Power Anklet
+- [ ] Power Band
+- [ ] Power Belt
+- [ ] Power Bracer
+- [ ] Power Herb
+- [ ] Power Lens
+- [ ] Power Weight
+- [ ] Primarium Z
+- [ ] Protective Pads
+- [ ] Psychic Gem
+- [ ] Psychic Memory
+- [ ] Psychic Seed
+- [ ] Psychium Z
+- [ ] Punching Glove
+- [ ] Quick Powder
+- [ ] Razor Claw
+- [ ] Razor Fang
+- [ ] Red Card
+- [ ] Red Orb
+- [ ] Ring Target
+- [ ] Rock Gem
+- [ ] Rock Incense
+- [ ] Rock Memory
+- [ ] Rockium Z
+- [ ] Rocky Helmet
+- [ ] Room Service
+- [ ] Rose Incense
+- [ ] Rowap Berry
+- [ ] Rusted Shield
+- [ ] Rusted Sword
+- [ ] Safety Goggles
+- [ ] Salac Berry
+- [ ] Salamencite
+- [ ] Sea Incense
+- [ ] Shock Drive
+- [ ] Sky Plate
+- [ ] Snorlium Z
+- [ ] Snowball
+- [ ] Solganium Z
+- [ ] Soul Dew
+- [ ] Splash Plate
+- [ ] Spooky Plate
+- [ ] Starf Berry
+- [ ] Steel Gem
+- [ ] Steel Memory
+- [ ] Steelium Z
+- [ ] Stick
+- [ ] Sticky Barb
+- [ ] Stone Plate
+- [ ] Tapunium Z
+- [ ] Tatsugirinite
+- [ ] Terrain Extender
+- [ ] Thick Club
+- [ ] Throat Spray
+- [ ] Toxic Orb
+- [ ] Toxic Plate
+- [ ] Ultranecrozium Z
+- [ ] Utility Umbrella
+- [ ] Vile Vial
+- [ ] Water Gem
+- [ ] Water Memory
+- [ ] Waterium Z
+- [ ] Wave Incense
+- [ ] Weakness Policy
+- [ ] Wellspring Mask
+- [ ] Wiki Berry
+- [ ] Zap Plate
+- [ ] Zeraorite
+- [ ] Zygardite
+
+## Constraints
+
+- 不把计算器扩张为完整战斗模拟器；需要额外回合或战斗历史的道具必须先定义最小输入契约。
+- 未实现道具不得被标记为已判断无效。
+- Mega Stone 应通过 Mega 形态的种族值、属性与特性建模；是否需要在 Held item track 中显式选择，留给对应子 issue 决定。
+- 仅有通用 Fling / Natural Gift 载荷意义的物品不为每个 identity 单独实现。
+
+## Current state
+
+- 当前已实现 Life Orb、Choice Band、Choice Specs，以及 18 个属性强化道具，共 21 项。
+- 其余 354 项待处置。
