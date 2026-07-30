@@ -4,9 +4,11 @@ import {
   getOffenseStatBounds,
   SCREENS,
   STAT_STAGES,
+  TERRAINS,
   WEATHERS,
 } from "@/lib/calc-adapter"
 import type { MatchupCatalog, MoveCategory } from "@/lib/catalog"
+import { moveCanBecomeSpread } from "@/lib/move-semantics"
 import {
   defenseTemplatesForState,
   offenseTemplatesForState,
@@ -15,7 +17,7 @@ import {
 
 export const SCENARIO_STORAGE_KEY = "pokemon-damage-calc:scenario"
 
-const SCENARIO_STORAGE_VERSION = 1
+const SCENARIO_STORAGE_VERSION = 2
 const MOVE_CATEGORIES = ["physical", "special"] as const
 const STAT_MODES = ["preset", "range"] as const
 const PROBABILITY_MODES = ["rolls", "actual"] as const
@@ -139,6 +141,9 @@ function isTrackState(value: unknown): value is TrackState {
     isArrayOf(value.weathers, (weather): weather is TrackState["weathers"][number] =>
       isOneOf(weather, WEATHERS),
     ) &&
+    isArrayOf(value.terrains, (terrain): terrain is TrackState["terrains"][number] =>
+      isOneOf(terrain, TERRAINS),
+    ) &&
     isOneOf(value.defenderMode, STAT_MODES) &&
     isArrayOf(value.defenseTemplateIds, isString) &&
     Array.isArray(value.defenseTemporaryTemplates) &&
@@ -244,6 +249,7 @@ export function scenarioSnapshotMatchesCatalog(
     state.attackerItemIds.length === 0 ||
     state.attackerAbilityIds.length === 0 ||
     state.weathers.length === 0 ||
+    state.terrains.length === 0 ||
     state.defenderStages.length === 0 ||
     state.defenderAbilityIds.length === 0 ||
     state.screens.length === 0 ||
@@ -280,7 +286,8 @@ export function scenarioSnapshotMatchesCatalog(
       const move = movesById.get(moveSnapshot.moveId)
       return (
         !move ||
-        moveSnapshot.spreadEligible !== move.isSpread ||
+        moveSnapshot.spreadEligible !==
+          (move.isSpread || moveCanBecomeSpread(move.id)) ||
         (!moveSnapshot.spreadEligible && moveSnapshot.spread)
       )
     }) ||
@@ -309,6 +316,7 @@ export function scenarioSnapshotMatchesCatalog(
     hasUniqueValues(state.attackerItemIds) &&
     hasUniqueValues(state.attackerAbilityIds) &&
     hasUniqueValues(state.weathers) &&
+    hasUniqueValues(state.terrains) &&
     hasUniqueValues(state.defenseTemplateIds) &&
     hasUniqueValues(state.defenderStages) &&
     hasUniqueValues(state.defenderAbilityIds) &&

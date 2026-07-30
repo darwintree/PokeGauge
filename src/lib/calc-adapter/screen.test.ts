@@ -81,6 +81,7 @@ function rawScenario(
     attackerStage: 0,
     defenderStage: 0,
     weather: "none",
+    terrain: "none",
     screen: testCase.screen,
     probabilityMode: "rolls",
     lowOutcome: {

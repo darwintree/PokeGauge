@@ -6,6 +6,7 @@ import type {
   ScenarioTrack,
   SourceState,
   StatStage,
+  Terrain,
   UnavailableReason,
   Weather,
 } from "@/lib/calc-adapter"
@@ -44,6 +45,7 @@ export type TrackState = {
   attackerItemIds: string[]
   attackerAbilityIds: number[]
   weathers: Weather[]
+  terrains: Terrain[]
   defenderMode: StatSelectMode
   defenseTemplateIds: string[]
   defenseTemporaryTemplates: StatValueTemplate[]

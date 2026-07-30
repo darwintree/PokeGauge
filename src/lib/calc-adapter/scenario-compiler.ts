@@ -29,6 +29,11 @@ import {
   typeEffectiveness,
 } from "./damage-kernel"
 import { compileScreenEffect, type Screen } from "./screen"
+import {
+  compileTerrainEffect,
+  isGrounded,
+  type Terrain,
+} from "./terrain"
 import type { ProbabilityMode, StatStage } from "./types"
 import { compileWeatherEffect, type Weather } from "./weather"
 
@@ -50,6 +55,7 @@ export type RawScenario = {
   attackerStage: StatStage
   defenderStage: StatStage
   weather: Weather
+  terrain: Terrain
   screen: Screen
   probabilityMode: ProbabilityMode
   sourceOptionIds?: {
@@ -77,6 +83,7 @@ export type ScenarioTrack =
   | "held-item"
   | "attacker-ability"
   | "weather"
+  | "terrain"
   | "defender-stat"
   | "defender-stage"
   | "defender-ability"
@@ -109,6 +116,7 @@ export type MoveMechanics = {
   modifiers: {
     item: number
     weather: number
+    terrain: number
     spread: number
     stab: number
     typeEffectiveness: number
@@ -120,6 +128,8 @@ export type UnavailableReason =
   | "unconfigured-move"
   | "unsupported-move"
   | "weather-type-change"
+  | "terrain-required"
+  | "terrain-type-change"
 
 export type UnavailableScenario = {
   kind: "unavailable"
@@ -291,6 +301,13 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     raw.weather,
     raw.probabilityMode,
   )
+  const terrain = compileTerrainEffect(
+    raw.snapshot.moveId,
+    moveType,
+    raw.terrain,
+    isGrounded(attacker?.types ?? [], raw.attackerAbilityId),
+    isGrounded(defender?.types ?? [], raw.defenderAbilityId),
+  )
   const criticalOnly = raw.snapshot.criticalStage === 3
   const breaksScreensBeforeDamage = Boolean(
     move && moveBreaksScreensBeforeDamage(move.id),
@@ -347,6 +364,11 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       optionId: raw.weather,
       state: weather.state,
     },
+    {
+      track: "terrain",
+      optionId: raw.terrain,
+      state: terrain.state,
+    },
     ...(raw.sourceOptionIds
       ? [{
           track: "defender-stat" as const,
@@ -390,6 +412,14 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       sources,
     }
   }
+  if (terrain.unavailable) {
+    return {
+      kind: "unavailable",
+      snapshotId: raw.snapshot.id,
+      reason: terrain.unavailable,
+      sources,
+    }
+  }
   if (
     !attacker ||
     !defender ||
@@ -413,10 +443,14 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     basePowerModifier: chainModifiers([
       item.basePower,
       weather.basePowerModifier,
+      terrain.basePowerModifier,
     ]),
     attackModifier: item.attack,
     finalModifier: item.final,
-    spread: move.isSpread && raw.snapshot.spreadEligible && raw.snapshot.spread,
+    spread:
+      (move.isSpread || terrain.makesSpread) &&
+      raw.snapshot.spreadEligible &&
+      raw.snapshot.spread,
     stabModifier: hasOriginalTypeStab
       ? attackerHasAdaptability ? 8192 : 6144
       : NEUTRAL_MODIFIER,
@@ -433,6 +467,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       weather.basePowerModifier,
       weather.damageModifier,
     ]),
+    terrain: terrain.basePowerModifier,
     spread: context.spread ? 3072 : NEUTRAL_MODIFIER,
     stab: context.stabModifier,
     typeEffectiveness: context.typeEffectivenessModifier,

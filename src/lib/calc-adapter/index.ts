@@ -86,6 +86,8 @@ export type {
 export { SCREENS } from "./screen"
 export type { Screen } from "./screen"
 export { STAT_STAGES } from "./types"
+export { TERRAINS } from "./terrain"
+export type { Terrain } from "./terrain"
 export { WEATHERS } from "./weather"
 export type { Weather } from "./weather"
 

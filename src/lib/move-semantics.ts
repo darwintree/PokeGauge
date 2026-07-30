@@ -109,3 +109,7 @@ export function resolveReviewedMoveType(
 export function moveBreaksScreensBeforeDamage(moveId: UpstreamResourceId): boolean {
   return moveId === 280 || moveId === 706 || moveId === 873
 }
+
+export function moveCanBecomeSpread(moveId: UpstreamResourceId): boolean {
+  return moveId === 797
+}

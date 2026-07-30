@@ -37,6 +37,7 @@ function sourceLabel(
     return options.find((option) => String(option.id) === id)?.label ?? id
   }
   if (track === "weather") return intl.formatMessage({ id: `track.weather.${id}` })
+  if (track === "terrain") return intl.formatMessage({ id: `track.terrain.${id}` })
   if (track === "screen") return intl.formatMessage({ id: `track.screen.${id}` })
   if (track === "attacker-stage" || track === "defender-stage") {
     return Number(id) > 0 ? `+${id}` : id
@@ -50,7 +51,7 @@ function ActiveTokens({
 }: DamageConditionsCardProps & { side: "attack" | "defense" }) {
   const intl = useIntl()
   const tracks: ScenarioTrack[] = side === "attack"
-    ? ["attacker-stage", "held-item", "attacker-ability", "weather"]
+    ? ["attacker-stage", "held-item", "attacker-ability", "weather", "terrain"]
     : ["defender-stage", "defender-ability", "screen"]
   const values = tracks.flatMap((track) =>
     (props.row.provenance[track]?.effective ?? [])
@@ -122,6 +123,7 @@ function FormulaTip(props: DamageConditionsCardProps) {
   const mechanics = props.row.moveMechanics
   const items = props.row.provenance["held-item"]?.effective.filter((id) => id !== "none") ?? []
   const weather = props.row.provenance.weather?.effective.filter((id) => id !== "none") ?? []
+  const terrain = props.row.provenance.terrain?.effective.filter((id) => id !== "none") ?? []
   const accuracy = mechanics.accuracy === "always-hits"
     ? intl.formatMessage({ id: "damage.conditions.alwaysHits" })
     : `${mechanics.accuracy}%`
@@ -139,6 +141,7 @@ function FormulaTip(props: DamageConditionsCardProps) {
         <TipRow label={intl.formatMessage({ id: "damage.conditions.effectiveness" })} value={modifierLabel(mechanics.modifiers.typeEffectiveness)} />
         <TipRow label={intl.formatMessage({ id: "track.item" })} value={`${items.length ? items.map(itemAriaLabel).join(" / ") : intl.formatMessage({ id: "damage.noBoost" })} · ${modifierLabel(mechanics.modifiers.item)}`} />
         <TipRow label={intl.formatMessage({ id: "track.weather" })} value={`${weather.length ? weather.map((id) => intl.formatMessage({ id: `track.weather.${id}` })).join(" / ") : intl.formatMessage({ id: "track.weather.none" })} · ${modifierLabel(mechanics.modifiers.weather)}`} />
+        <TipRow label={intl.formatMessage({ id: "track.terrain" })} value={`${terrain.length ? terrain.map((id) => intl.formatMessage({ id: `track.terrain.${id}` })).join(" / ") : intl.formatMessage({ id: "track.terrain.none" })} · ${modifierLabel(mechanics.modifiers.terrain)}`} />
         <TipRow label={intl.formatMessage({ id: "damage.conditions.spread" })} value={modifierLabel(mechanics.modifiers.spread)} />
         <div className="mt-1 flex justify-between border-t pt-1.5 font-medium">
           <span>{intl.formatMessage({ id: "damage.conditions.effectivePower" })}{props.showAccuracy && ` / ${intl.formatMessage({ id: "damage.conditions.accuracy" })}`}</span>

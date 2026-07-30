@@ -644,6 +644,11 @@ export function useScenarioState(
         ...s,
         weathers: weathers.length > 0 ? weathers : ["none"],
       })),
+    setTerrains: (terrains: TrackState["terrains"]) =>
+      setTrackState((s) => ({
+        ...s,
+        terrains: terrains.length > 0 ? terrains : ["none"],
+      })),
     setScreens: (screens: TrackState["screens"]) =>
       setTrackState((s) => ({
         ...s,

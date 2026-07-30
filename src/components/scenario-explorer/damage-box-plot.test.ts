@@ -65,7 +65,7 @@ describe("DamageBoxPlot range envelopes", () => {
       basePower: 40,
       effectivePower: 40,
       accuracy: 100,
-      modifiers: { item: 4096, weather: 4096, spread: 4096, stab: 4096, typeEffectiveness: 4096, screen: 4096 },
+      modifiers: { item: 4096, weather: 4096, terrain: 4096, spread: 4096, stab: 4096, typeEffectiveness: 4096, screen: 4096 },
     },
     minDamage: 20,
     maxDamage: 40,

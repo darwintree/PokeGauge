@@ -38,6 +38,7 @@ function scenario(): ScenarioSnapshotInput {
       attackerItemIds: ["none"],
       attackerAbilityIds: [8],
       weathers: ["none"],
+      terrains: ["none"],
       defenderMode: "preset",
       defenseTemplateIds: [],
       defenseTemporaryTemplates: [],
@@ -67,7 +68,7 @@ async function compatibleScenario() {
   return {
     currentCatalog,
     snapshot: {
-      version: 1,
+      version: 2,
       attackerId: 445,
       defenderId: 727,
       moveCategory: "physical",
@@ -100,13 +101,13 @@ describe("scenario storage", () => {
     const input = scenario()
     saveScenarioSnapshot(input)
 
-    expect(loadScenarioSnapshot()).toEqual({ version: 1, ...input })
+    expect(loadScenarioSnapshot()).toEqual({ version: 2, ...input })
   })
 
   it.each([
     ["broken JSON", "{"],
-    ["unsupported version", JSON.stringify({ version: 2 })],
-    ["incomplete state", JSON.stringify({ version: 1, attackerId: 445 })],
+    ["unsupported version", JSON.stringify({ version: 1 })],
+    ["incomplete state", JSON.stringify({ version: 2, attackerId: 445 })],
   ])("discards %s", (_label, raw) => {
     data[SCENARIO_STORAGE_KEY] = raw
 
