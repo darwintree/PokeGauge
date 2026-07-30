@@ -275,54 +275,6 @@ export function snapToAchievableDefenseValues(
   return { hp: entry.hp, def: entry.def }
 }
 
-function pickDefenderCorner(
-  species: string,
-  category: MoveCategory,
-  hpTarget: number,
-  defTarget: number,
-  corner: "low" | "high",
-): DefenderSetup {
-  const setups = getDefenderSetups(category)
-  const fallback = corner === "low" ? setups["min-bulk"] : setups["standard-bulk"]
-  let best: DefenderSpreadEntry | null = null
-
-  for (const entry of getDefenderSpreadGrid(species, category)) {
-    const inBounds =
-      corner === "low"
-        ? entry.hp <= hpTarget && entry.def <= defTarget
-        : entry.hp >= hpTarget && entry.def >= defTarget
-    if (!inBounds) continue
-
-    if (corner === "low") {
-      if (!best || entry.hp > best.hp || (entry.hp === best.hp && entry.def > best.def)) {
-        best = entry
-      }
-    } else if (!best || entry.hp < best.hp || (entry.hp === best.hp && entry.def < best.def)) {
-      best = entry
-    }
-  }
-
-  return best?.setup ?? fallback
-}
-
-export function closestDefenderSetupLow(
-  species: string,
-  category: MoveCategory,
-  hpTarget: number,
-  defTarget: number,
-): DefenderSetup {
-  return pickDefenderCorner(species, category, hpTarget, defTarget, "low")
-}
-
-export function closestDefenderSetupHigh(
-  species: string,
-  category: MoveCategory,
-  hpTarget: number,
-  defTarget: number,
-): DefenderSetup {
-  return pickDefenderCorner(species, category, hpTarget, defTarget, "high")
-}
-
 /** ponytail: ~37k spreads/species; warm once so range-mode clicks stay responsive */
 export function warmDefenderSpreadCache(
   species: string,

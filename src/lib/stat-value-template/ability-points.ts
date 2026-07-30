@@ -7,8 +7,6 @@ import {
 import type { DefenderSetup, StatSetup } from "@/lib/calc-adapter/types"
 import {
   defenseStatKey,
-  getAttackerStatSetups,
-  getDefenderSetups,
   offenseStatKey,
 } from "@/lib/calc-adapter/presets"
 import type { MoveCategory } from "@/lib/catalog/types"
@@ -281,34 +279,4 @@ export function defenseValuesOf(template: StatValueTemplate): DefenseTemplateVal
     throw new Error("Not a defense template")
   }
   return template.values
-}
-
-export function defaultOffenseSetup(
-  species: string,
-  category: MoveCategory,
-  template: StatValueTemplate,
-): StatSetup {
-  const allocs = enumerateOffenseAllocations(
-    species,
-    category,
-    offenseValueOf(template),
-    "habcds",
-  )
-  if (allocs.length > 0) return allocs[0].setup
-  return getAttackerStatSetups(category)["neutral-zero"]
-}
-
-export function defaultDefenseSetup(
-  species: string,
-  category: MoveCategory,
-  template: StatValueTemplate,
-): DefenderSetup {
-  const allocs = enumerateDefenseAllocations(
-    species,
-    category,
-    defenseValuesOf(template),
-    "habcds",
-  )
-  if (allocs.length > 0) return allocs[0].setup as DefenderSetup
-  return getDefenderSetups(category)["min-bulk"]
 }

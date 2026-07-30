@@ -69,14 +69,10 @@ export type {
   MoveTemplateSnapshotDefaults,
 } from "@/lib/move-snapshot"
 export {
-  defenseSetupForTemplate,
   defenderDefRangeFromTemplates,
   defenderHpRangeFromTemplates,
-  defenderStatsForTemplate,
   envelopeRange,
   offenseRangeFromTemplates,
-  offenseSetupForTemplate,
-  offenseStatForTemplate,
 } from "./template-range"
 export type {
   AttackStatBounds,

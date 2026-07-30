@@ -7,7 +7,11 @@ import {
   type CriticalStage,
   type MoveSnapshot,
 } from "@/lib/move-snapshot"
-import { getMoveById, listResources } from "@/lib/resources"
+import {
+  getBattlePokemonById,
+  getMoveById,
+  listResources,
+} from "@/lib/resources"
 import {
   defaultTrackState,
   expectedRowCount,
@@ -16,6 +20,10 @@ import {
 
 import { CALC_GEN, VGC_LEVEL } from "./calc-constants"
 import * as damageKernel from "./damage-kernel"
+import {
+  defenderStatValuesForPokemon,
+  offenseStatValueForPokemon,
+} from "./local-stats"
 import { getAttackerStatSetups, getDefenderSetups } from "./presets"
 import { SCREENS, type Screen } from "./screen"
 import {
@@ -58,6 +66,11 @@ function rawScenario(
   if (!move || move.category === "status") {
     throw new Error(`Move ${testCase.moveId} cannot make a screen test scenario`)
   }
+  const attacker = getBattlePokemonById(testCase.attackerId)
+  const defender = getBattlePokemonById(DEFENDER.id)
+  if (!attacker || !defender) throw new Error("Expected screen test Pokémon")
+  const offense = getAttackerStatSetups(move.category)["neutral-max"]
+  const defense = getDefenderSetups(move.category)["standard-bulk"]
   return {
     snapshot: snapshot(testCase.moveId),
     attackerId: testCase.attackerId,
@@ -71,8 +84,16 @@ function rawScenario(
     screen: testCase.screen,
     probabilityMode: "rolls",
     lowOutcome: {
-      offense: getAttackerStatSetups(move.category)["neutral-max"],
-      defense: getDefenderSetups(move.category)["standard-bulk"],
+      offense: offenseStatValueForPokemon(
+        attacker,
+        move.category,
+        offense,
+      ),
+      defense: defenderStatValuesForPokemon(
+        defender,
+        move.category,
+        defense,
+      ),
     },
     ...overrides,
   }

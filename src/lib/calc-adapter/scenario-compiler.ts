@@ -28,22 +28,16 @@ import {
   NEUTRAL_MODIFIER,
   typeEffectiveness,
 } from "./damage-kernel"
-import {
-  defenderStatValuesForPokemon,
-  offenseStatValueForPokemon,
-} from "./local-stats"
 import { compileScreenEffect, type Screen } from "./screen"
-import type {
-  DefenderSetup,
-  ProbabilityMode,
-  StatSetup,
-  StatStage,
-} from "./types"
+import type { ProbabilityMode, StatStage } from "./types"
 import { compileWeatherEffect, type Weather } from "./weather"
 
 export type RawScenarioPoint = {
-  offense: StatSetup
-  defense: DefenderSetup
+  offense: number
+  defense: {
+    hp: number
+    def: number
+  }
 }
 
 export type RawScenario = {
@@ -236,9 +230,6 @@ function compileProbability(
 }
 
 type BranchContext = {
-  attacker: NonNullable<ReturnType<typeof getBattlePokemonById>>
-  defender: NonNullable<ReturnType<typeof getBattlePokemonById>>
-  category: MoveCategory
   power: number
   basePowerModifier: number
   attackModifier: number
@@ -257,24 +248,15 @@ function compileBranch(
   context: BranchContext,
   critical: boolean,
 ): DamageFormulaBranch {
-  const defender = defenderStatValuesForPokemon(
-    context.defender,
-    context.category,
-    point.defense,
-  )
   return {
     power: context.power,
     basePowerModifier: context.basePowerModifier,
-    attack: offenseStatValueForPokemon(
-      context.attacker,
-      context.category,
-      point.offense,
-    ),
+    attack: point.offense,
     attackStage: critical
       ? Math.max(context.attackerStage, 0)
       : context.attackerStage,
     attackModifier: context.attackModifier,
-    defense: defender.def,
+    defense: point.defense.def,
     defenseStage: critical
       ? Math.min(context.defenderStage, 0)
       : context.defenderStage,
@@ -425,12 +407,8 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     }
   }
 
-  const category = move.category
   const effectiveness = typeEffectiveness(moveType, defender.types)
   const context: BranchContext = {
-    attacker,
-    defender,
-    category,
     power,
     basePowerModifier: chainModifiers([
       item.basePower,
@@ -462,13 +440,8 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   }
 
   const compilePoint = (point: RawScenarioPoint) => {
-    const defenderStats = defenderStatValuesForPokemon(
-      defender,
-      category,
-      point.defense,
-    )
     return {
-      defenderHp: defenderStats.hp,
+      defenderHp: point.defense.hp,
       ...(raw.snapshot.criticalStage < 3
         ? { normal: compileBranch(point, context, false) }
         : {}),
