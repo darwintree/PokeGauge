@@ -197,8 +197,8 @@ _Avoid_: Offensive spread
 _Avoid_: Element, 元素
 
 **Battle Pokémon identity**:
-用于唯一确定一只可参战宝可梦之**种族值与属性**的标识；当不同形态会改变这些战斗数据时，必须区分到该形态，而不能只停留在 species。
-_Avoid_: Species label, localized name, display label
+用于唯一确定一只可参战宝可梦形态的战斗身份；PokeAPI 对宝可梦及形态的分类是其 source of truth。即使同属一个 species，每个可选形态仍是不同的 Battle Pokémon identity；更换形态等同重新选择宝可梦，而不是修改同一身份的配置。
+_Avoid_: Species label, localized name, display label, form configuration
 
 **Upstream resource identity**:
 项目内部用于引用 PokeAPI 上游实体的稳定标识；采用对应资源的 **numeric id**，显示文案再通过该资源的本地化字段派生，且不把 slug 作为持久化主键。
@@ -215,7 +215,7 @@ _Avoid_: Exact name lookup, upstream slug lookup
 ### Held items
 
 **Held item**（携带道具）:
-攻击方 build configuration 在道具 track 上的一项取值；道具 track 为 **multi-select track**，但每一 scenario 行仅应用一件道具的伤害修饰。含 explicit no-item。
+一方宝可梦的 build configuration 在道具 track 上的一项取值；道具 track 为 **multi-select track**，但每一方在每条 scenario 行仅应用一件道具的伤害修饰。含 explicit no-item。
 _Avoid_: Item, 装备
 
 **Explicit no-item**（显式无道具）:
@@ -230,6 +230,10 @@ _Avoid_: Plate, 石板, type gem
 通过「+」从全属性强化道具池中追加到可见列表、但非本系默认展示的选项。
 _Avoid_: Custom boost, 扩展强化
 
+**Unknown Mega Stone**（未知 Mega 石）:
+需要 Mega 石的 Battle Pokémon identity 尚无对应道具资源时，采用的共用中性占位携带道具；它可以被锁定，但按无效果参与 **Effect-equivalent scenario merge**，合并后不作为结果条件展示。
+_Avoid_: Blank Mega Stone, generated Mega Stone name, 未知道具
+
 **No-boost row**（无加成行）:
 结果行所选 type boost item 与该行招式属性不一致、因而未生效加成的状态；它会按 **Effect-equivalent scenario merge** 与同一 Move snapshot 下的中性选择合并，合并行仍保留该道具的原始选择来源。
 _Avoid_: Mismatched item, 错配道具
@@ -243,6 +247,10 @@ _Avoid_: Official ability recommendation, Ability legality data
 **Ability selection**（特性选择）:
 攻击方或防御方 Ability Track 中的一项当前合法特性选择；双方 Track 均为至少保留一项的多选，选中即视为启用，不提供额外开关。默认只选 **Champions ability usage data** 中最常用的合法特性，无可用数据时全选全部合法特性。
 _Avoid_: Ability activation toggle, Conditional ability simulation
+
+**Unknown ability**（未知特性）:
+PokeAPI 将某个 Battle Pokémon identity 分类为可用形态、但尚未提供其真实特性关系时采用的中性占位特性；它可以被锁定，但按无效果参与 **Effect-equivalent scenario merge**，合并后不作为结果条件展示。上游关系补全后由真实特性取代，不借用其他真实特性的名称。
+_Avoid_: Blank ability, random ability, 白板特性
 
 **Adaptability effect**（适应力效果）:
 攻击方持有适应力且招式属性属于其原始属性时，STAB 为 `2×`；攻击方使用非本系招式或防御方持有适应力时，该特性对本次伤害未生效。
