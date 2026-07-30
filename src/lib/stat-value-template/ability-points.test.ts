@@ -118,17 +118,35 @@ describe("SP label engine", () => {
     }
   })
 
-  it("labels off-grid user templates with SP not raw stat", () => {
-    const max = buildSystemOffenseTemplates(attackerSpecies, category).find(
-      (t) => t.id === "neutral-max",
-    )!
-    const stat = max.values.kind === "offense" ? max.values.stat : 0
+  it("uses actual values when offense and defense have no SP allocation", () => {
     const offGrid = {
       id: "user-x",
       kind: "user" as const,
-      values: { kind: "offense" as const, stat: stat + 1 },
+      values: { kind: "offense" as const, stat: 186 },
     }
-    const label = templateCardLabel(offGrid, attackerSpecies, category, 0, strategy)
-    expect(label).not.toBe(String(stat + 1))
+    const offenseDisplay = resolveTemplateDisplay(
+      offGrid,
+      attackerSpecies,
+      category,
+      0,
+      strategy,
+    )
+    expect(offenseDisplay.primary).toBe("186")
+    expect(offenseDisplay.allocations).toHaveLength(0)
+
+    const defenseOffGrid = {
+      id: "user-y",
+      kind: "user" as const,
+      values: { kind: "defense" as const, hp: 170, def: 153 },
+    }
+    const defenseDisplay = resolveTemplateDisplay(
+      defenseOffGrid,
+      defenderSpecies,
+      category,
+      0,
+      strategy,
+    )
+    expect(defenseDisplay.primary).toBe("170 / 153")
+    expect(defenseDisplay.allocations).toHaveLength(0)
   })
 })

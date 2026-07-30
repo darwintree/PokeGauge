@@ -10,8 +10,6 @@ import {
   getDefenderHpBounds,
   getOffenseStatBounds,
   offenseRangeFromTemplates,
-  snapToAchievableDefenseValues,
-  snapToAchievableOffenseStat,
   type StatStage,
   warmDefenderSpreadCache,
 } from "@/lib/calc-adapter"
@@ -533,12 +531,7 @@ export function useScenarioState(
   }
 
   function confirmAddOffense(stat: number) {
-    const snapped = snapToAchievableOffenseStat(
-      catalog.matchup.attackerSpecies,
-      catalog.moveCategory,
-      stat,
-    )
-    const user = newUserOffenseTemplate(snapped)
+    const user = newUserOffenseTemplate(stat)
     saveUserOffenseTemplate(String(catalog.matchup.attackerId), user)
     setTrackState((s) => ({
       ...s,
@@ -549,13 +542,7 @@ export function useScenarioState(
   }
 
   function confirmAddDefense(hp: number, def: number) {
-    const snapped = snapToAchievableDefenseValues(
-      catalog.matchup.defenderSpecies,
-      catalog.moveCategory,
-      hp,
-      def,
-    )
-    const user = newUserDefenseTemplate(snapped.hp, snapped.def)
+    const user = newUserDefenseTemplate(hp, def)
     saveUserDefenseTemplate(String(catalog.matchup.defenderId), user)
     setTrackState((s) => ({
       ...s,

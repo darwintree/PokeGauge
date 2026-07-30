@@ -484,7 +484,8 @@ export function rowLabels(
         statNameStrategy,
       )
       if (trackState.showResultActual) {
-        statActual = formatTemplateActual(template)
+        const actual = formatTemplateActual(template)
+        statActual = actual === statLabel ? null : actual
       }
     } else {
       statLabel = row.attackerStatId
@@ -506,7 +507,8 @@ export function rowLabels(
         statNameStrategy,
       )
       if (trackState.showResultActual) {
-        defenderActual = formatTemplateActual(template)
+        const actual = formatTemplateActual(template)
+        defenderActual = actual === defenderLabel ? null : actual
       }
     } else {
       defenderLabel = row.defenderId
