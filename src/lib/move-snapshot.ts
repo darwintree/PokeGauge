@@ -1,6 +1,7 @@
 import type { UpstreamResourceId } from "@/lib/resources"
 import {
   isMoveExplicitlyUnsupported,
+  moveCanBecomeSpread,
   reviewedMoveSnapshotDefaults,
   reviewedVariablePowerDefault,
   type CriticalStage,
@@ -53,6 +54,7 @@ export function createMoveSnapshot(
   }
   const reviewed = reviewedMoveDefaults(template.id)
   const alwaysHits = template.alwaysHits ?? reviewed?.alwaysHits ?? false
+  const spreadEligible = template.isSpread || moveCanBecomeSpread(template.id)
   return {
     id,
     moveId: template.id,
@@ -60,8 +62,8 @@ export function createMoveSnapshot(
     accuracy: alwaysHits ? 100 : normalizeSnapshotAccuracy(template.accuracy ?? 0),
     alwaysHits,
     criticalStage: template.criticalStage ?? reviewed?.criticalStage ?? 0,
-    spreadEligible: template.isSpread,
-    spread: template.isSpread,
+    spreadEligible,
+    spread: spreadEligible,
   }
 }
 

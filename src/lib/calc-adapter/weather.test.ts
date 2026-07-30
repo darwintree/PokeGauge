@@ -76,6 +76,7 @@ function rawScenario(
     attackerStage: 0,
     defenderStage: 0,
     weather,
+    terrain: "none",
     screen: "none",
     probabilityMode: "actual",
     lowOutcome: {

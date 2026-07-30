@@ -72,6 +72,10 @@ _Avoid_: Any damaging move, All physical/special moves
 表示当前 matchup 天气状态的 multi-select track，选项为无天气、晴天、下雨、沙暴与下雪。本轮只表达天气对伤害／威力与命中概率的直接影响，不包含回合末伤害、防御能力修正、回复、状态免疫或招式属性变化。
 _Avoid_: Weather damage simulation, Full weather state
 
+**Terrain**（场地）:
+表示当前 matchup 场地状态的 multi-select track，选项为无场地、电气场地、青草场地、精神场地与薄雾场地。本轮只表达场地对本次直接伤害、威力、招式可用性与多人目标修正的影响；接地状态由当前宝可梦的飞行属性与所选飘浮特性推导，不另设 Track。不包含回复、状态免疫、种子、场地持续时间、优先度阻挡、重力或未暴露道具造成的接地变化。
+_Avoid_: Full terrain simulation, Grounded track, 场地历史
+
 **Screen**（墙）:
 表示防守方场上保护状态的 multi-select track，选项仅为无墙、反射壁与光墙，默认只选无墙且至少保留一项。物理招式只受反射壁影响，特殊招式只受光墙影响；同时选择两种墙表示比较两个 Scenario，而不是双墙同时生效。
 _Avoid_: Dual screens option, Screen stack, 场地保护

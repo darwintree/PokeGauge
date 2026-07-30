@@ -334,6 +334,12 @@ describe("matchup scenario pipeline", () => {
             unsupported: [],
             neutral: ["none"],
           },
+          terrain: {
+            effective: [],
+            inactive: [],
+            unsupported: [],
+            neutral: ["none"],
+          },
           "defender-stat": {
             effective: ["hp-32"],
             inactive: [],

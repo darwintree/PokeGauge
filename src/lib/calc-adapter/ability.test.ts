@@ -58,6 +58,7 @@ function rawScenario(overrides: Partial<RawScenario> = {}): RawScenario {
     attackerStage: 0,
     defenderStage: 0,
     weather: "none",
+    terrain: "none",
     screen: "none",
     probabilityMode: "rolls",
     lowOutcome: exactPoint("physical"),

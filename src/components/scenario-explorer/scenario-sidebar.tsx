@@ -11,6 +11,7 @@ import { MoveMultiSelect } from "./move-multi-select"
 import { ScreenTrack } from "./screen-track"
 import { StatStageTrack } from "./stat-stage-track"
 import { StatTrackCard } from "./stat-track-card"
+import { TerrainTrack } from "./terrain-track"
 import type { ScenarioState } from "./use-scenario-state"
 import { WeatherTrack } from "./weather-track"
 
@@ -24,6 +25,7 @@ type TrackId =
   | "attackerAbilities"
   | "defenderAbilities"
   | "weather"
+  | "terrain"
   | "screens"
 
 type ScenarioSidebarProps = {
@@ -163,6 +165,14 @@ export function ScenarioSidebar({
         onToggle={() => toggle("weather")}
       />
     ),
+    terrain: (
+      <TerrainTrack
+        values={trackState.terrains}
+        onChange={state.setTerrains}
+        expanded={activeId === "terrain"}
+        onToggle={() => toggle("terrain")}
+      />
+    ),
     screens: (
       <ScreenTrack
         values={trackState.screens}
@@ -222,7 +232,7 @@ export function ScenarioSidebar({
       {pair("offenseStats", "defenseStats")}
       {pair("attackerStages", "defenderStages")}
       {pair("attackerAbilities", "defenderAbilities")}
-      {pair(null, "screens")}
+      {pair("terrain", "screens")}
       {pair("items", "weather")}
     </section>
   )
