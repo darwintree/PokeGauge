@@ -22,11 +22,6 @@
     --color-sidebar-primary: var(--sidebar-primary);
     --color-sidebar-foreground: var(--sidebar-foreground);
     --color-sidebar: var(--sidebar);
-    --color-chart-5: var(--chart-5);
-    --color-chart-4: var(--chart-4);
-    --color-chart-3: var(--chart-3);
-    --color-chart-2: var(--chart-2);
-    --color-chart-1: var(--chart-1);
     --color-ring: var(--ring);
     --color-input: var(--input);
     --color-border: var(--border);
@@ -50,7 +45,6 @@
     --color-ink: var(--ink);
     --color-paper: var(--paper);
     --color-bg-app: var(--bg-app);
-    --color-bg-sidebar: var(--bg-sidebar);
     --color-hud-muted: var(--hud-muted);
     --color-hairline: var(--hairline);
     --color-card-border: var(--card-border);
@@ -58,9 +52,9 @@
     --color-signal-yellow: var(--signal-yellow);
     --color-damage-critical: var(--damage-critical);
     --color-notice-bg: var(--notice-bg);
-    --shadow-hud-chip: 2px 2px 0 0 rgb(31 36 48 / 0.25);
-    --shadow-hud-panel: 3px 3px 0 0 rgb(31 36 48 / 0.18);
-    --shadow-hud-board: 4px 4px 0 0 rgb(31 36 48 / 0.18);
+    --shadow-hud-chip: 2px 2px 0 0 color-mix(in srgb, var(--ink) 25%, transparent);
+    --shadow-hud-panel: 3px 3px 0 0 color-mix(in srgb, var(--ink) 18%, transparent);
+    --shadow-hud-board: 4px 4px 0 0 color-mix(in srgb, var(--ink) 18%, transparent);
 
     --radius-sm: calc(var(--radius) * 0.6);
     --radius-md: calc(var(--radius) * 0.8);
@@ -78,15 +72,13 @@
     --ink: #1f2430;
     --paper: #ffffff;
     --bg-app: #e8ecfa;
-    --bg-sidebar: #eef1fb;
     --hud-muted: #606776; /* AA on every surface muted text sits on: paper 5.7, card tint 5.3, token-bg 4.8 (design.md § Accessibility) */
     --hairline: #e3e6f2;
     --card-border: #c9cede;
     --token-bg: #e8ebf6;
     --signal-yellow: #ffd23f;
     --notice-bg: #fff8e0;
-    --appbar-from: #3b4a7a;
-    --appbar-to: #2b3a63;
+    --appbar: #33426e;
 
     /* shadcn semantics → HUD */
     --background: var(--bg-app);
@@ -99,7 +91,7 @@
     --primary-foreground: var(--paper);
     --secondary: var(--token-bg);
     --secondary-foreground: var(--ink);
-    --muted: var(--bg-sidebar);
+    --muted: var(--token-bg);
     --muted-foreground: var(--hud-muted);
     --accent: var(--token-bg);
     --accent-foreground: var(--ink);
@@ -107,13 +99,8 @@
     --border: var(--hairline);
     --input: var(--card-border);
     --ring: var(--ink);
-    --chart-1: var(--hud-muted);
-    --chart-2: #a8adc0;
-    --chart-3: var(--card-border);
-    --chart-4: var(--hairline);
-    --chart-5: var(--ink);
     --radius: 0.625rem;
-    --sidebar: var(--bg-sidebar);
+    --sidebar: var(--token-bg);
     --sidebar-foreground: var(--ink);
     --sidebar-primary: var(--ink);
     --sidebar-primary-foreground: var(--paper);
@@ -303,7 +290,7 @@
   button.stat-tier-chip--ex[aria-pressed="true"],
   button.stat-tier-chip--ex[data-state="on"] {
     /* Pressed chips keep their domain tier colors but still cast the hard HUD shadow */
-    box-shadow: 2px 2px 0 0 rgb(31 36 48 / 0.18);
+    box-shadow: 2px 2px 0 0 color-mix(in srgb, var(--ink) 18%, transparent);
   }
 
   button.stat-tier-chip--0[aria-pressed="true"],
@@ -519,7 +506,7 @@
   .track-option[aria-pressed="true"] {
     border-color: var(--ink);
     background: var(--signal-yellow);
-    box-shadow: 2px 2px 0 0 rgb(31 36 48 / 0.25);
+    box-shadow: 2px 2px 0 0 color-mix(in srgb, var(--ink) 25%, transparent);
     font-weight: 800;
   }
 

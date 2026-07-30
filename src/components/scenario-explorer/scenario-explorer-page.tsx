@@ -129,7 +129,7 @@ export function ScenarioExplorerContent({
             mobileView !== "setup" && "hidden",
           )}
         >
-          <div className="rounded-[14px] bg-bg-sidebar p-2.5">
+          <div className="rounded-[14px] bg-token-bg p-2.5">
             <ScenarioSidebar
               catalog={catalog}
               state={state}
@@ -152,7 +152,7 @@ export function ScenarioExplorerContent({
           )}
         >
           <header className="space-y-2">
-            <h1 className="text-[19px] font-extrabold tracking-tight [text-shadow:1px_1px_0_#fff]">
+            <h1 className="text-[19px] font-extrabold tracking-tight [text-shadow:1px_1px_0_var(--paper)]">
               {catalog.matchup.attackerLabel} → {catalog.matchup.defenderLabel}
             </h1>
             <SelectionSummary state={state} />

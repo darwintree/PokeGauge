@@ -7,7 +7,6 @@ colors:
   primary: "{colors.ink}"
   paper: "#ffffff"
   bg-app: "#e8ecfa"
-  bg-sidebar: "#eef1fb"
   hud-muted: "#606776"
   hairline: "#e3e6f2"
   card-border: "#c9cede"
@@ -15,6 +14,7 @@ colors:
   signal-yellow: "#ffd23f"
   notice-bg: "#fff8e0"
   destructive: "#e0352f"
+  appbar: "#33426e"
 typography:
   data:
     fontFamily: &hud-stack '"Baloo 2 Variable", "Yuanti SC", "PingFang SC", "Hiragino Maru Gothic ProN", "Microsoft YaHei", sans-serif'
@@ -58,17 +58,17 @@ Colors are semantic. They communicate hierarchy or state, never decoration.
 
 | Token | Value | Role |
 | --- | --- | --- |
-| `ink` | `#1f2430` | Frames, primary text, and strong data marks |
-| `paper` | `#ffffff` | Primary surfaces |
+| `ink` | `#1f2430` | Frames, primary text, strong data marks, and derived HUD shadows |
+| `paper` | `#ffffff` | Primary surfaces and light text shadows |
 | `bg-app` | `#e8ecfa` | Application canvas |
-| `bg-sidebar` | `#eef1fb` | Secondary structural surfaces |
-| `hud-muted` | `#606776` | Supplementary text |
-| `hairline` | `#e3e6f2` | Quiet separators |
-| `card-border` | `#c9cede` | Quiet inner boundaries |
-| `token-bg` | `#e8ebf6` | Neutral tokens and subtle interaction states |
+| `token-bg` | `#e8ebf6` | Neutral grouped surfaces, tokens, and subtle interaction states |
+| `hud-muted` | `#606776` | Supplementary text and derived muted decoration |
+| `hairline` | `#e3e6f2` | Quiet, non-interactive separators |
+| `card-border` | `#c9cede` | Perceptible interactive-control boundaries |
 | `signal-yellow` | `#ffd23f` | Selected states and high-salience signals |
 | `notice-bg` | `#fff8e0` | Notices |
 | `destructive` | `#e0352f` | Destructive and invalid states |
+| `appbar` | `#33426e` | Top application bar |
 
 Pokémon types, effectiveness, stat tiers, HP, and damage use separate domain tokens. Domain colors must not be reused as general HUD chrome.
 

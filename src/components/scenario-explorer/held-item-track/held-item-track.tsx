@@ -50,7 +50,7 @@ function ItemIcon({ id, className }: { id: string; className?: string }) {
   if (sprite) {
     return <img src={`/items/${sprite}`} alt="" className={cn("size-6 object-contain", className)} />
   }
-  return <CircleSlash className={cn("size-6 text-[#94a3b8]", className)} aria-hidden />
+  return <CircleSlash className={cn("size-6 text-hud-muted/60", className)} aria-hidden />
 }
 
 export function HeldItemTrack({
