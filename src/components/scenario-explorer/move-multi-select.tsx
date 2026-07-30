@@ -1,4 +1,4 @@
-import { Check, ChevronDown, Plus, Search, Trash2 } from "lucide-react"
+import { Check, ChevronDown, Plus, Search, Swords, Trash2 } from "lucide-react"
 import { useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
@@ -21,7 +21,7 @@ type MoveSnapshotPatch = Partial<
   Pick<MoveSnapshot, "power" | "accuracy" | "criticalStage" | "spread">
 >
 
-type MoveMultiSelectProps = {
+export type MoveMultiSelectProps = {
   label: string
   options: CatalogMoveOption[]
   snapshots: MoveSnapshot[]
@@ -77,6 +77,44 @@ function CategoryControl({
           {intl.formatMessage({ id: `track.moveSide.${value}` })}
         </button>
       ))}
+    </div>
+  )
+}
+
+function CategorySignalPills({
+  category,
+  onChange,
+}: {
+  category: MoveCategory
+  onChange: (category: MoveCategory) => void
+}) {
+  const intl = useIntl()
+
+  return (
+    <div
+      role="group"
+      aria-label={intl.formatMessage({ id: "track.moveSide" })}
+      className="flex gap-1"
+    >
+      {(["physical", "special"] as const).map((value) => {
+        const pressed = category === value
+        return (
+          <button
+            key={value}
+            type="button"
+            aria-pressed={pressed}
+            className={cn(
+              "rounded-[9px] border-2 px-2 py-0.5 text-[10px] font-extrabold transition-colors",
+              pressed
+                ? "border-ink bg-signal-yellow shadow-hud-chip"
+                : "border-card-border bg-paper hover:bg-token-bg/60",
+            )}
+            onClick={() => onChange(value)}
+          >
+            {intl.formatMessage({ id: `track.moveSide.${value}` })}
+          </button>
+        )
+      })}
     </div>
   )
 }
@@ -387,102 +425,119 @@ export function MoveMultiSelect({
 
   return (
     <section className="overflow-hidden rounded-[14px] border-2 border-ink bg-paper shadow-hud-panel transition-colors">
-      <div className="group relative flex h-11 items-center gap-2 px-2.5 sm:h-10">
-        <button
-          type="button"
-          aria-expanded={expanded}
-          aria-label={intl.formatMessage({
-            id: expanded ? "track.move.collapse" : "track.move.expand",
-          })}
-          className="absolute inset-0 hover:bg-token-bg/60 active:bg-token-bg/80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-          onClick={onToggle}
-        />
-        <span className="pointer-events-none relative text-xs font-extrabold">{label}</span>
-        <div className="relative z-10 ml-auto">
-          <CategoryControl
-            category={category}
-            onChange={(nextCategory) => {
-              onCategoryChange(nextCategory)
-              if (!expanded) onToggle()
-            }}
-          />
-        </div>
-        <span className="pointer-events-none relative grid size-7 place-items-center text-muted-foreground transition-colors group-hover:text-foreground">
-          <ChevronDown
-            className={cn(
-              "size-3.5 transition-transform",
-              expanded ? "rotate-180" : "",
-            )}
-          />
-        </span>
-      </div>
-
       {!expanded ? (
-        <div className="relative border-t">
-          <button
-            type="button"
-            aria-label={intl.formatMessage({ id: "track.move.expand" })}
-            className="absolute inset-0 hover:bg-token-bg/60 active:bg-token-bg/80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-            onClick={onToggle}
-          />
-          <div className="pointer-events-none relative grid grid-cols-2 gap-x-3 px-2.5">
+        <>
+          <div className="group relative flex h-11 items-center gap-2 px-2.5 sm:h-10">
+            <button
+              type="button"
+              aria-expanded={false}
+              aria-label={intl.formatMessage({ id: "track.move.expand" })}
+              className="absolute inset-0 hover:bg-token-bg/60 active:bg-token-bg/80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+              onClick={onToggle}
+            />
+            <Swords
+              className="pointer-events-none relative size-3.5 shrink-0 text-muted-foreground"
+              strokeWidth={1.75}
+            />
+            <span className="pointer-events-none relative text-xs font-extrabold">{label}</span>
+            <div className="relative z-10 ml-auto">
+              <CategorySignalPills
+                category={category}
+                onChange={(nextCategory) => {
+                  onCategoryChange(nextCategory)
+                  onToggle()
+                }}
+              />
+            </div>
+            <ChevronDown className="pointer-events-none relative size-3.5 shrink-0 text-muted-foreground" />
+          </div>
+          <div className="relative border-t px-2.5 py-2">
+            <button
+              type="button"
+              aria-label={intl.formatMessage({ id: "track.move.expand" })}
+              className="absolute inset-0 hover:bg-token-bg/60 active:bg-token-bg/80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+              onClick={onToggle}
+            />
             {selectedSnapshots.length === 0 ? (
-              <div className="col-span-2 flex h-11 items-center text-[11px] text-muted-foreground sm:h-9">
+              <div className="relative flex h-7 items-center text-[11px] text-muted-foreground">
                 {intl.formatMessage({ id: "track.move.noneSelected" })}
               </div>
             ) : (
-              selectedSnapshots.map((snapshot) => {
-                const option = optionById.get(snapshot.moveId)
-                if (!option) return null
-                return (
-                  <button
-                    key={snapshot.id}
-                    type="button"
-                    className="pointer-events-auto relative flex h-11 min-w-0 items-center gap-1.5 rounded-md text-left transition-colors hover:bg-muted active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-ring sm:h-9"
-                    onClick={() => selectSnapshot(snapshot.id)}
-                  >
-                    <TypeBadge type={option.type} />
-                    <span className="truncate text-[11px] font-medium">{option.label}</span>
-                  </button>
-                )
-              })
+              <div className="pointer-events-none relative flex flex-wrap gap-1.5">
+                {selectedSnapshots.map((snapshot) => {
+                  const option = optionById.get(snapshot.moveId)
+                  if (!option) return null
+                  return (
+                    <button
+                      key={snapshot.id}
+                      type="button"
+                      className="pointer-events-auto relative inline-flex max-w-full items-center gap-1 rounded-[9px] border-2 border-ink bg-signal-yellow px-1.5 py-0.5 shadow-hud-chip active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-ink"
+                      onClick={() => selectSnapshot(snapshot.id)}
+                    >
+                      <TypeBadge type={option.type} />
+                      <span className="truncate text-[11px] font-extrabold">{option.label}</span>
+                    </button>
+                  )
+                })}
+              </div>
             )}
           </div>
-        </div>
+        </>
       ) : (
-        <div className="border-t">
-          {snapshots.map((snapshot) => {
-            const option = optionById.get(snapshot.moveId)
-            if (!option) return null
-            return (
-              <MoveRow
-                key={snapshot.id}
-                snapshot={snapshot}
-                option={option}
-                selected={selectedIds.has(snapshot.id)}
-                editing={editingId === snapshot.id}
-                onToggle={() => toggleSelection(snapshot)}
-                onEdit={() =>
-                  setEditingId((current) =>
-                    current === snapshot.id ? null : snapshot.id,
-                  )
-                }
-                onChange={(patch) => onChange(snapshot.id, patch)}
-                onRemove={() => removeSnapshot(snapshot.id)}
-              />
-            )
-          })}
-          <div className="border-t p-2">
+        <>
+          <div className="group relative flex h-11 items-center gap-2 px-2.5 sm:h-10">
             <button
               type="button"
-              aria-label={intl.formatMessage({ id: "track.addMove" })}
-              className="grid h-10 w-full place-items-center rounded-md border border-dashed border-muted-foreground/35 text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-muted/60 hover:text-foreground active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-ring sm:h-8"
-              onClick={() => setOpen(true)}
-            >
-              <Plus className="size-3.5" />
-            </button>
+              aria-expanded={true}
+              aria-label={intl.formatMessage({ id: "track.move.collapse" })}
+              className="absolute inset-0 hover:bg-token-bg/60 active:bg-token-bg/80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+              onClick={onToggle}
+            />
+            <span className="pointer-events-none relative text-xs font-extrabold">{label}</span>
+            <div className="relative z-10 ml-auto">
+              <CategoryControl
+                category={category}
+                onChange={onCategoryChange}
+              />
+            </div>
+            <span className="pointer-events-none relative grid size-7 place-items-center text-muted-foreground transition-colors group-hover:text-foreground">
+              <ChevronDown className="size-3.5 rotate-180 transition-transform" />
+            </span>
           </div>
-        </div>
+          <div className="border-t">
+            {snapshots.map((snapshot) => {
+              const option = optionById.get(snapshot.moveId)
+              if (!option) return null
+              return (
+                <MoveRow
+                  key={snapshot.id}
+                  snapshot={snapshot}
+                  option={option}
+                  selected={selectedIds.has(snapshot.id)}
+                  editing={editingId === snapshot.id}
+                  onToggle={() => toggleSelection(snapshot)}
+                  onEdit={() =>
+                    setEditingId((current) =>
+                      current === snapshot.id ? null : snapshot.id,
+                    )
+                  }
+                  onChange={(patch) => onChange(snapshot.id, patch)}
+                  onRemove={() => removeSnapshot(snapshot.id)}
+                />
+              )
+            })}
+            <div className="border-t p-2">
+              <button
+                type="button"
+                aria-label={intl.formatMessage({ id: "track.addMove" })}
+                className="grid h-10 w-full place-items-center rounded-md border border-dashed border-muted-foreground/35 text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-muted/60 hover:text-foreground active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-ring sm:h-8"
+                onClick={() => setOpen(true)}
+              >
+                <Plus className="size-3.5" />
+              </button>
+            </div>
+          </div>
+        </>
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
