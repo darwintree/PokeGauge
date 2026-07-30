@@ -47,6 +47,12 @@ import {
   type StatSelectMode,
   type TrackState,
 } from "@/lib/scenario-pipeline"
+import {
+  saveScenarioSnapshot,
+  type ScenarioSnapshotInput,
+} from "@/lib/scenario-storage"
+
+const SCENARIO_SAVE_DELAY_MS = 150
 
 function rangeEndpoints(min: number, max: number): number[] {
   return max === min ? [min] : [min, max]
@@ -137,8 +143,12 @@ function reconcileDefenseFromRange(
   return { selectedIds, temporary }
 }
 
-export function useScenarioState(catalog: MatchupCatalog) {
+export function useScenarioState(
+  catalog: MatchupCatalog,
+  restoredTrackState?: TrackState,
+) {
   const { attackerSpecies, defenderSpecies } = catalog.matchup
+  const restoredTrackStateRef = useRef(restoredTrackState)
 
   const offenseBounds = useMemo(
     () => getOffenseStatBounds(attackerSpecies, catalog.moveCategory),
@@ -155,7 +165,9 @@ export function useScenarioState(catalog: MatchupCatalog) {
     [defenderSpecies, catalog.moveCategory],
   )
 
-  const [trackState, setTrackState] = useState<TrackState>(() => defaultTrackState(catalog))
+  const [trackState, setTrackState] = useState<TrackState>(
+    () => restoredTrackStateRef.current ?? defaultTrackState(catalog),
+  )
   const [userOffenseVersion, setUserOffenseVersion] = useState(0)
   const [userDefenseVersion, setUserDefenseVersion] = useState(0)
   const [addingOffense, setAddingOffense] = useState(false)
@@ -174,9 +186,10 @@ export function useScenarioState(catalog: MatchupCatalog) {
   const defaultDefenderAbilityIdsRef = useRef<number[]>([
     ...catalog.defaultDefenderAbilityIds,
   ])
-  const movesTouchedRef = useRef(false)
-  const attackerAbilitiesTouchedRef = useRef(false)
-  const defenderAbilitiesTouchedRef = useRef(false)
+  const movesTouchedRef = useRef(restoredTrackStateRef.current !== undefined)
+  const attackerAbilitiesTouchedRef = useRef(restoredTrackStateRef.current !== undefined)
+  const defenderAbilitiesTouchedRef = useRef(restoredTrackStateRef.current !== undefined)
+  const pendingScenarioSnapshotRef = useRef<ScenarioSnapshotInput | null>(null)
   const catalogTransitionPending =
     attackerKeyRef.current !==
       `${catalog.matchup.attackerId}:${catalog.moveCategory}` ||
@@ -294,6 +307,49 @@ export function useScenarioState(catalog: MatchupCatalog) {
     }, 0)
     return () => window.clearTimeout(id)
   }, [defenderSpecies, catalog.moveCategory])
+
+  useEffect(() => {
+    if (catalogTransitionPending) return
+    const untouchedDefaultsPending =
+      (catalog.defaultMovePickStatus === "loading" && !movesTouchedRef.current) ||
+      (catalog.defaultAbilityPickStatus === "loading" &&
+        (!attackerAbilitiesTouchedRef.current ||
+          !defenderAbilitiesTouchedRef.current))
+    if (untouchedDefaultsPending) return
+    const snapshot: ScenarioSnapshotInput = {
+      attackerId: catalog.matchup.attackerId,
+      defenderId: catalog.matchup.defenderId,
+      moveCategory: catalog.moveCategory,
+      trackState,
+    }
+    pendingScenarioSnapshotRef.current = snapshot
+    const id = window.setTimeout(() => {
+      saveScenarioSnapshot(snapshot)
+      if (pendingScenarioSnapshotRef.current === snapshot) {
+        pendingScenarioSnapshotRef.current = null
+      }
+    }, SCENARIO_SAVE_DELAY_MS)
+    return () => window.clearTimeout(id)
+  }, [
+    catalog.matchup.attackerId,
+    catalog.matchup.defenderId,
+    catalog.moveCategory,
+    catalog.defaultAbilityPickStatus,
+    catalog.defaultMovePickStatus,
+    catalogTransitionPending,
+    trackState,
+  ])
+
+  useEffect(() => {
+    function flushPendingScenario() {
+      const snapshot = pendingScenarioSnapshotRef.current
+      if (!snapshot) return
+      saveScenarioSnapshot(snapshot)
+      pendingScenarioSnapshotRef.current = null
+    }
+    window.addEventListener("pagehide", flushPendingScenario)
+    return () => window.removeEventListener("pagehide", flushPendingScenario)
+  }, [])
 
   const offenseTemplates = useMemo(() => {
     void userOffenseVersion

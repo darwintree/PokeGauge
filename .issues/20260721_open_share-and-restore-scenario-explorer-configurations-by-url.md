@@ -6,11 +6,16 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST", "READY-FOR-HUMAN"]
 created_at: "2026-07-21T10:07:00Z"
-updated_at: "2026-07-21T10:07:00Z"
+updated_at: "2026-07-30T03:18:00Z"
 ---
 ## Context
 
 当前 Scenario Explorer 的 matchup 与各 Track 配置只保存在 React 运行时状态中。刷新页面后配置丢失，也无法把同一组伤害计算条件交给其他用户复现。
+
+## Split progress
+
+- 页面刷新后的浏览器本地恢复已拆分为 [[archive/20260730_closed_persist-scenario-explorer-state-across-refresh|Persist Scenario Explorer state across refresh]]。
+- 本 issue 继续只跟踪 URL 分享、跨浏览器恢复及其错误反馈。
 
 ## Goal
 
