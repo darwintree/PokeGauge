@@ -6,7 +6,7 @@ status: "open"
 priority: "high"
 labels: ["WAYFINDER:MAP"]
 created_at: "2026-07-31T09:26:00Z"
-updated_at: "2026-07-31T10:31:00Z"
+updated_at: "2026-07-31T10:57:00Z"
 ---
 ## Destination
 
@@ -29,7 +29,7 @@ Reach a decision-complete handoff for a held-item effects spec covering the froz
 - [[archive/20260731_closed_audit-current-held-item-implementation-seams|Audit current held-item implementation seams]]
 - [[archive/20260731_closed_decide-held-item-resource-identity-and-eligibility|Decide held-item resource identity and eligibility]]
 - [[archive/20260731_closed_decide-supported-effect-and-warning-semantics|Decide supported-effect and warning semantics]]
-- [[20260731_open_decide-damage-and-stat-modifier-compilation|Decide damage and stat modifier compilation]]
+- [[archive/20260731_closed_decide-damage-and-stat-modifier-compilation|Decide damage and stat modifier compilation]]
 - [[20260731_open_decide-accuracy-and-critical-hit-item-semantics|Decide accuracy and critical-hit item semantics]]
 - [[20260731_open_decide-form-locked-and-identity-gated-item-behavior|Decide form-locked and identity-gated item behavior]]
 - [[20260731_open_decide-held-item-provenance-and-scenario-merging|Decide held-item provenance and scenario merging]]
@@ -42,6 +42,7 @@ Reach a decision-complete handoff for a held-item effects spec covering the froz
 - [[archive/20260731_closed_audit-current-held-item-implementation-seams|Audit current held-item implementation seams]] — Reuse the existing scenario compiler, integer modifier phases, probability inputs, merge identity, provenance, locked-item shape, and tooltip primitive; decide generalized item metadata, defender compilation, partial-support warnings, probability composition, and identity gating before authoring the spec.
 - [[archive/20260731_closed_decide-held-item-resource-identity-and-eligibility|Decide held-item resource identity and eligibility]] — Freeze 85 PokeAPI-numeric effect identities with PokeAPI labels and locally vendored sprites, static effect-direction pools, unchanged Mega locks, explicit `none`, and no migration for invalid legacy selections.
 - [[archive/20260731_closed_decide-supported-effect-and-warning-semantics|Decide supported-effect and warning semantics]] — Keep partial-support warnings as static Held item Track metadata only: warn the 18 resistance Berries and Utility Umbrella by limitation category without changing calculations, provenance, merging, or result surfaces.
+- [[archive/20260731_closed_decide-damage-and-stat-modifier-compilation|Decide damage and stat modifier compilation]] — Keep the item-agnostic damage kernel; compile current-Scenario item effects into the researched Base Power, stat, final-damage, Berry, and defender Utility Umbrella phases with exact Gen 9 integer semantics.
 
 ## Not yet specified
 
