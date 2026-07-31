@@ -23,5 +23,5 @@ The answer must cover separate attacker and defender item Tracks, merged source 
 - [[archive/20260731_closed_decide-held-item-resource-identity-and-eligibility|Decide held-item resource identity and eligibility]]
 - [[archive/20260731_closed_decide-supported-effect-and-warning-semantics|Decide supported-effect and warning semantics]]
 - [[archive/20260731_closed_decide-damage-and-stat-modifier-compilation|Decide damage and stat modifier compilation]]
-- [[20260731_open_decide-accuracy-and-critical-hit-item-semantics|Decide accuracy and critical-hit item semantics]]
+- [[archive/20260731_closed_decide-accuracy-and-critical-hit-item-semantics|Decide accuracy and critical-hit item semantics]]
 - [[20260731_open_decide-form-locked-and-identity-gated-item-behavior|Decide form-locked and identity-gated item behavior]]
