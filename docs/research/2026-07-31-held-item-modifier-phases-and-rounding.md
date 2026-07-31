@@ -6,7 +6,7 @@ Checked on 2026-07-31 for the frozen held-item spec scope.
 
 The repository declares `@smogon/calc ^0.11.0` and locks `0.11.0` ([package manifest](../../package.json), [lockfile](../../pnpm-lock.yaml)). The npm registry record for that release identifies git commit [`264a4ea`](https://github.com/smogon/damage-calc/tree/264a4ea846a0a0c7724e26c4671ff42e854b5ea1); the checked-in package's `gen789.ts` and `util.ts` byte-match that commit ([npm release record](https://registry.npmjs.org/@smogon/calc/0.11.0)).
 
-The mechanic reference is Pokémon Showdown's Gen 9 implementation at the previously pinned commit [`71d77d3`](https://github.com/smogon/pokemon-showdown/tree/71d77d3d47fd4fdc2551b7b3cf9a0cc4fd3f38fa). These are high-fidelity simulator/calculator sources, not a first-party Pokémon Champions numeric specification. Exact values below are therefore the product's explicit **Gen 9 alignment**.
+The mechanic reference is Pokémon Showdown's Gen 9 implementation at the previously pinned commit [`71d77d3`](https://github.com/smogon/pokemon-showdown/tree/71d77d3d47fd4fdc2551b7b3cf9a0cc4fd3f38fa). The first-party sources reviewed do not publish an equivalent numeric battle specification: the official [Pokémon Champions gameplay page](https://champions.pokemon.com/en-us/gameplay/) describes modes and changing regulation parameters, while the official [Play! Pokémon VGC tournament handbook](https://mcdn.pokemon.com/pokemon-prod/raw/upload/v1/live/static-assets/content-assets/cms2/pdf/play-pokemon/rules/play-pokemon-vgc-tournament-handbook-en.pdf#page=6) specifies item eligibility and the duplicate-item rule, not held-item accuracy coefficients, fixed-point arithmetic, rounding, or the hit RNG. These are therefore high-fidelity simulator/calculator sources, not independent confirmation of the Pokémon Champions executable. Exact values below are the product's explicit **pinned Pokémon Showdown Gen 9 alignment** and must not be described as a first-party Champions formula.
 
 ## Decision-ready result
 
@@ -81,9 +81,26 @@ Mechanic fact: a real Berry is consumed, so a qualifying later hit does not rece
 
 Wide Lens contributes `4505`; Bright Powder and Lax Incense contribute `3686`. Their callbacks only act when accuracy is numeric, so they do not modify semantic `always hits` (`true`) ([Wide Lens](https://github.com/smogon/pokemon-showdown/blob/71d77d3d47fd4fdc2551b7b3cf9a0cc4fd3f38fa/data/items.ts#L7709-L7723), [Bright Powder](https://github.com/smogon/pokemon-showdown/blob/71d77d3d47fd4fdc2551b7b3cf9a0cc4fd3f38fa/data/items.ts#L659-L672), [Lax Incense](https://github.com/smogon/pokemon-showdown/blob/71d77d3d47fd4fdc2551b7b3cf9a0cc4fd3f38fa/data/items.ts#L3293-L3306)).
 
-The order is: start from the move's already-resolved numeric or always-hit accuracy; run the `ModifyAccuracy` item chain; if still numeric, apply accuracy/evasion stages; run the later `Accuracy` event; then roll `accuracy / 100` ([accuracy path](https://github.com/smogon/pokemon-showdown/blob/71d77d3d47fd4fdc2551b7b3cf9a0cc4fd3f38fa/sim/battle-actions.ts#L685-L750)). No explicit numeric `100` cap is applied. An accuracy of `110` is effectively certain because the RNG draw is in `0..99`; the product probability must therefore clamp numeric `accuracy / 100` to `1` ([RNG comparison](https://github.com/smogon/pokemon-showdown/blob/71d77d3d47fd4fdc2551b7b3cf9a0cc4fd3f38fa/sim/prng.ts#L105-L117)).
+The order is: start from the move's numeric or always-hit accuracy; run one `ModifyAccuracy` event whose target handlers include Bright Powder/Lax Incense and whose source handlers include Wide Lens; apply that event's completed modifier chain to accuracy **once**; if still numeric, apply accuracy/evasion stages with integer truncation; run the later `Accuracy` event or always-hit override; then call `randomChance(accuracy, 100)` ([accuracy path](https://github.com/smogon/pokemon-showdown/blob/71d77d3d47fd4fdc2551b7b3cf9a0cc4fd3f38fa/sim/battle-actions.ts#L685-L750), [`runEvent` and modifier application](https://github.com/smogon/pokemon-showdown/blob/71d77d3d47fd4fdc2551b7b3cf9a0cc4fd3f38fa/sim/battle.ts#L720-L892)). The item factors are not independently applied and rounded percentages.
 
-Stacking example: Wide Lens and Bright Powder can coexist on opposite sides. Their single phase chain is `4054`; a base `100` applies to `99`, not two separately rounded percentages. `@smogon/calc` has item names but no hit-probability pipeline, so it cannot be the oracle for this family; use the Showdown event semantics and test the app's compiled probability directly.
+For this frozen scope, one attacking item and one defending item can contribute at most two factors to the event. Wide Lens plus Bright Powder or Lax Incense chains to:
+
+```text
+floor((4505 * 3686 + 2048) / 4096) = 4054
+```
+
+The two-factor result is the same whichever of these two factors is visited first. The combined `4054` is then applied once with the `+2047` half-down rule. These examples are directly reproducible from the pinned source and assume no accuracy/evasion stage or later `Accuracy` override:
+
+| Case | Chained modifier | Integer accuracy after `apply` | Effective hit probability |
+| --- | ---: | ---: | ---: |
+| Wide Lens, base `100` | `4505` | `floor((100 * 4505 + 2047) / 4096) = 110` | `1` |
+| Bright Powder or Lax Incense, base `100` | `3686` | `floor((100 * 3686 + 2047) / 4096) = 90` | `0.90` |
+| Wide Lens + Bright Powder/Lax Incense, base `100` | `4054` | `floor((100 * 4054 + 2047) / 4096) = 99` | `0.99` |
+| Wide Lens + Bright Powder/Lax Incense, base `80` | `4054` | `floor((80 * 4054 + 2047) / 4096) = 79` | `0.79` |
+
+The precision boundary has three layers. Item coefficients and their chained result are integers in units of `1/4096`; exact half in the chain rounds up via `+2048`. Applying the chain produces an integer accuracy point; exact half rounds down via `+2047`. The final RNG samples an integer in `0..99`, so numeric accuracy has one-percentage-point hit-probability resolution after the preceding truncations ([integer modifier implementation](https://github.com/smogon/pokemon-showdown/blob/71d77d3d47fd4fdc2551b7b3cf9a0cc4fd3f38fa/sim/battle.ts#L2302-L2339), [RNG implementation](https://github.com/smogon/pokemon-showdown/blob/71d77d3d47fd4fdc2551b7b3cf9a0cc4fd3f38fa/sim/prng.ts#L78-L117)). Showdown applies no explicit numeric `100` cap: accuracy `110` remains `110`, but every draw in `0..99` succeeds. A probability model must therefore use `min(1, accuracy / 100)` rather than expose `1.10` or create a negative miss mass.
+
+`@smogon/calc` has item names but no hit-probability pipeline, so it cannot be the oracle for this family. The claims above are fully supported as pinned Showdown Gen 9 simulator semantics; because the reviewed first-party sources do not expose the corresponding executable formula, they do not independently establish that Pokémon Champions uses the same coefficients or rounding at every precision boundary.
 
 ## Critical-stage items
 
