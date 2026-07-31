@@ -6,11 +6,11 @@ status: "open"
 priority: "medium"
 labels: ["WAYFINDER:GRILLING"]
 created_at: "2026-07-31T09:27:00Z"
-updated_at: "2026-07-31T10:31:00Z"
+updated_at: "2026-07-31T10:57:00Z"
 ---
 ## Question
 
-How should Light Ball, Thick Club, Deep Sea items, Adamant/Lustrous/Griseous items, Soul Dew, and the three Ogerpon masks bind item effects to Battle Pokémon identity and required forms?
+How should Eviolite, Light Ball, Thick Club, Deep Sea items, Adamant/Lustrous/Griseous items, Soul Dew, and the three Ogerpon masks bind item effects to Battle Pokémon identity and required forms?
 
 Decide candidate visibility, item locking or preservation during form changes, neutral behavior on an ineligible holder, and which form/item effects are supported without implementing move-specific or full battle-form mechanics.
 
