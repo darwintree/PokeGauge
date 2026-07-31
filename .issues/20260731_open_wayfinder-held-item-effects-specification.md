@@ -6,7 +6,7 @@ status: "open"
 priority: "high"
 labels: ["WAYFINDER:MAP"]
 created_at: "2026-07-31T09:26:00Z"
-updated_at: "2026-07-31T11:28:00Z"
+updated_at: "2026-07-31T12:18:00Z"
 ---
 ## Destination
 
@@ -31,7 +31,7 @@ Reach a decision-complete handoff for a held-item effects spec covering the froz
 - [[archive/20260731_closed_decide-supported-effect-and-warning-semantics|Decide supported-effect and warning semantics]]
 - [[archive/20260731_closed_decide-damage-and-stat-modifier-compilation|Decide damage and stat modifier compilation]]
 - [[archive/20260731_closed_decide-accuracy-and-critical-hit-item-semantics|Decide accuracy and critical-hit item semantics]]
-- [[20260731_open_decide-form-locked-and-identity-gated-item-behavior|Decide form-locked and identity-gated item behavior]]
+- [[archive/20260731_closed_decide-form-locked-and-identity-gated-item-behavior|Decide form-locked and identity-gated item behavior]]
 - [[20260731_open_decide-held-item-provenance-and-scenario-merging|Decide held-item provenance and scenario merging]]
 - [[20260731_open_decide-held-item-spec-acceptance-contract|Decide held-item spec acceptance contract]]
 
@@ -44,6 +44,7 @@ Reach a decision-complete handoff for a held-item effects spec covering the froz
 - [[archive/20260731_closed_decide-supported-effect-and-warning-semantics|Decide supported-effect and warning semantics]] — Keep partial-support warnings as static Held item Track metadata only: warn the 18 resistance Berries and Utility Umbrella by limitation category without changing calculations, provenance, merging, or result surfaces.
 - [[archive/20260731_closed_decide-damage-and-stat-modifier-compilation|Decide damage and stat modifier compilation]] — Keep the item-agnostic damage kernel; compile current-Scenario item effects into the researched Base Power, stat, final-damage, Berry, and defender Utility Umbrella phases with exact Gen 9 integer semantics.
 - [[archive/20260731_closed_decide-accuracy-and-critical-hit-item-semantics|Decide accuracy and critical-hit item semantics]] — Keep probability item effects in the Scenario compiler; compose numeric accuracy with the pinned Gen 9 integer chain, derive capped critical stage without mutating snapshots, and merge on normalized probability while retaining item provenance.
+- [[archive/20260731_closed_decide-form-locked-and-identity-gated-item-behavior|Decide form-locked and identity-gated item behavior]] — Generate per-identity Eviolite eligibility from vendored evolution data, apply exact base-species gates, keep current identity-reset semantics, and make the three Ogerpon Masks lock-only without new item warnings.
 
 ## Not yet specified
 
