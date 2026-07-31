@@ -6,7 +6,7 @@ status: "open"
 priority: "high"
 labels: ["WAYFINDER:MAP"]
 created_at: "2026-07-31T09:26:00Z"
-updated_at: "2026-07-31T10:16:00Z"
+updated_at: "2026-07-31T10:31:00Z"
 ---
 ## Destination
 
@@ -28,7 +28,7 @@ Reach a decision-complete handoff for a held-item effects spec covering the froz
 - [[archive/20260731_closed_verify-held-item-modifier-phases-and-rounding|Verify held-item modifier phases and rounding]]
 - [[archive/20260731_closed_audit-current-held-item-implementation-seams|Audit current held-item implementation seams]]
 - [[archive/20260731_closed_decide-held-item-resource-identity-and-eligibility|Decide held-item resource identity and eligibility]]
-- [[20260731_open_decide-supported-effect-and-warning-semantics|Decide supported-effect and warning semantics]]
+- [[archive/20260731_closed_decide-supported-effect-and-warning-semantics|Decide supported-effect and warning semantics]]
 - [[20260731_open_decide-damage-and-stat-modifier-compilation|Decide damage and stat modifier compilation]]
 - [[20260731_open_decide-accuracy-and-critical-hit-item-semantics|Decide accuracy and critical-hit item semantics]]
 - [[20260731_open_decide-form-locked-and-identity-gated-item-behavior|Decide form-locked and identity-gated item behavior]]
@@ -41,6 +41,7 @@ Reach a decision-complete handoff for a held-item effects spec covering the froz
 - [[archive/20260731_closed_verify-held-item-modifier-phases-and-rounding|Verify held-item modifier phases and rounding]] — Preserve Gen 9's phase-specific 4096 integer chains, additive critical stages, numeric-accuracy semantics, static Berry approximation, and holder-scoped Utility Umbrella behavior.
 - [[archive/20260731_closed_audit-current-held-item-implementation-seams|Audit current held-item implementation seams]] — Reuse the existing scenario compiler, integer modifier phases, probability inputs, merge identity, provenance, locked-item shape, and tooltip primitive; decide generalized item metadata, defender compilation, partial-support warnings, probability composition, and identity gating before authoring the spec.
 - [[archive/20260731_closed_decide-held-item-resource-identity-and-eligibility|Decide held-item resource identity and eligibility]] — Freeze 85 PokeAPI-numeric effect identities with PokeAPI labels and locally vendored sprites, static effect-direction pools, unchanged Mega locks, explicit `none`, and no migration for invalid legacy selections.
+- [[archive/20260731_closed_decide-supported-effect-and-warning-semantics|Decide supported-effect and warning semantics]] — Keep partial-support warnings as static Held item Track metadata only: warn the 18 resistance Berries and Utility Umbrella by limitation category without changing calculations, provenance, merging, or result surfaces.
 
 ## Not yet specified
 

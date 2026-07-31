@@ -226,6 +226,10 @@ _Avoid_: Empty item, 空道具
 本轮新增效果支持的 85 项真实道具集合；白名单内不按 M-B 分类差别处理，白名单外不新增效果、兼容或警告语义。攻击方与防守方按道具支持效果的方向静态分池，但不因当前招式、属性或宝可梦未满足 activation 条件而隐藏候选项。现有 Mega Stone／**Unknown Mega Stone** 锁定行为保持不变，不属于该白名单，也不计入 85 项。
 _Avoid_: Complete held-item candidate pool, M-B legal item pool, all upstream items, usage-ranked item pool
 
+**Partially supported held item**（部分支持的携带道具）:
+其计算器相关效果可以正常参与结果，但仍有会使计算器承诺输出产生误解的已知未支持行为；结果保持可用，并在道具选项上静态披露该限制。它不表示道具效果未生效，也不构成独立的 Scenario 来源状态。
+_Avoid_: Unsupported held item, inactive held item, scenario-dependent warning
+
 **Type boost item**（属性强化道具）:
 提升特定属性招式威力的携带道具（如木炭、柔软沙子）；与攻击方属性对应。UI 默认展示本系至多 2 项，可多选参与对比。
 _Avoid_: Plate, 石板, type gem
