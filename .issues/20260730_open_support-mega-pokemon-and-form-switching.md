@@ -6,7 +6,7 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-30T09:53:00Z"
-updated_at: "2026-07-30T10:46:00Z"
+updated_at: "2026-07-31T03:35:00Z"
 ---
 <!--
 This body is user-owned. Adjust the sections freely to fit the issue.
@@ -43,14 +43,19 @@ without manually reconstructing it.
 ## Scope
 
 - Add form switching for both attacker and defender.
-- The default identity for a species connects to every directly selectable
-  non-Mega identity and every Mega identity in that species.
-- A non-default, non-Mega identity connects only to the species' directly
-  selectable non-Mega identities.
-- A Mega identity connects to the default identity and the species' other Mega
-  identities.
-- Add a persistent Mega quick filter to the Pokémon selector. It displays Mega
-  identities directly and combines with type filters using AND.
+- Evolve the Pokémon selection dialog into one Pokémon selector component with
+  persistent same-species-form and Mega priority options.
+- The same-species-form option moves every identity in the current identity's
+  species to the front, without a default/non-default/Mega reachability graph.
+- The Mega option moves Mega identities to the front without hiding non-Mega
+  candidates.
+- Search and type filters reduce the candidate pool before priority sorting.
+- When both priority options are enabled, same-species identities come first;
+  Mega identities come first within that group and the remaining candidates.
+- Keep the existing global candidate boundary. Form priority does not add
+  otherwise ineligible battle-only non-Mega identities.
+- Add a badge that opens the same selector and enables same-species-form
+  priority; do not open a separate form-only popover.
 - On selecting a Mega identity:
   - lock both sides' ability Track to the identity's real ability;
   - when PokeAPI lacks the ability relation, lock the shared Unknown ability;
@@ -69,25 +74,33 @@ without manually reconstructing it.
 
 ## Deferred interaction decision
 
-- [ ] A later design pass must choose the concrete form-switch control, labels,
-  and layout before implementation.
+- [ ] Current prototype work must choose every visual aspect of the badge,
+  including styling, labels, whether it displays a number, and any count
+  semantics.
 
 ## Acceptance criteria
 
-- [ ] Attacker and defender both expose the agreed form-switch interaction.
-- [ ] A default identity can switch directly to each Mega identity and back.
+- [ ] Attacker and defender both use the unified Pokémon selector.
+- [ ] From any selected identity, every eligible identity in the same species
+  can be selected directly through same-species-form priority.
 - [ ] Pokémon with multiple Mega forms can select the intended form explicitly.
-- [ ] Non-default ordinary forms cannot switch directly to Mega identities.
-- [ ] PokeAPI non-battle-only forms use the same interaction without a
-  product-maintained exception list.
+- [ ] Same-species-form priority does not add otherwise ineligible battle-only
+  non-Mega identities.
+- [ ] The selector exposes persistent same-species-form and Mega priority
+  options.
+- [ ] Search and type filters run before priority sorting.
+- [ ] With both priorities enabled, same-species identities precede other
+  species and Mega identities lead within each group.
+- [ ] The badge opens the unified selector with same-species-form priority
+  enabled.
+- [ ] Mega priority moves Mega identities forward without hiding non-Mega
+  candidates.
 - [ ] Selecting a Mega form applies and locks the correct Mega Stone.
 - [ ] The locked Mega Stone cannot be cleared or replaced.
 - [ ] Rayquaza follows its no-Mega-Stone exception.
 - [ ] Selecting a Mega form applies and locks the correct ability.
 - [ ] A Mega with missing upstream ability data locks Unknown ability.
 - [ ] A Mega with a missing stone resource locks Unknown Mega Stone.
-- [ ] The Pokémon selector's persistent Mega filter directly returns Mega
-  identities and intersects with type filters.
 - [ ] Form switching uses the ordinary identity-change reset behavior and does
   not restore prior item or ability choices.
 - [ ] Mega Stones and unknown placeholders merge as no-effect inputs and are
@@ -107,3 +120,7 @@ without manually reconstructing it.
   be decided during implementation design.
 - 2026-07-30: Batch grilling resolved identity, filtering, transition, lock,
   fallback, and result semantics. The concrete form control remains deferred.
+- 2026-07-31: Replaced the separate form-switch reachability model and Mega
+  filter with persistent priority options in the unified Pokémon selector.
+  A badge opens that selector with form priority; every visual aspect of the
+  badge remains in prototype work.
