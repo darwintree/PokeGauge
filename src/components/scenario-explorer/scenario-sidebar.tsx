@@ -21,7 +21,8 @@ type TrackId =
   | "defenseStats"
   | "attackerStages"
   | "defenderStages"
-  | "items"
+  | "attackerItems"
+  | "defenderItems"
   | "attackerAbilities"
   | "defenderAbilities"
   | "weather"
@@ -126,13 +127,25 @@ export function ScenarioSidebar({
         onToggle={() => toggle("defenderStages")}
       />
     ),
-    items: (
+    attackerItems: (
       <HeldItemTrack
         catalog={catalog}
         selectedIds={trackState.attackerItemIds}
         onChange={state.setAttackerItemIds}
-        expanded={activeId === "items"}
-        onToggle={() => toggle("items")}
+        lockedId={catalog.attackerLockedItemId}
+        expanded={activeId === "attackerItems"}
+        onToggle={() => toggle("attackerItems")}
+      />
+    ),
+    defenderItems: (
+      <HeldItemTrack
+        catalog={catalog}
+        side="defender"
+        selectedIds={trackState.defenderItemIds}
+        onChange={state.setDefenderItemIds}
+        lockedId={catalog.defenderLockedItemId}
+        expanded={activeId === "defenderItems"}
+        onToggle={() => toggle("defenderItems")}
       />
     ),
     attackerAbilities: (
@@ -142,6 +155,7 @@ export function ScenarioSidebar({
         selectedIds={trackState.attackerAbilityIds}
         onChange={state.setAttackerAbilityIds}
         onReset={state.resetAttackerAbilities}
+        locked={catalog.attackerLockedAbilityId !== null}
         expanded={activeId === "attackerAbilities"}
         onToggle={() => toggle("attackerAbilities")}
       />
@@ -153,6 +167,7 @@ export function ScenarioSidebar({
         selectedIds={trackState.defenderAbilityIds}
         onChange={state.setDefenderAbilityIds}
         onReset={state.resetDefenderAbilities}
+        locked={catalog.defenderLockedAbilityId !== null}
         expanded={activeId === "defenderAbilities"}
         onToggle={() => toggle("defenderAbilities")}
       />
@@ -232,8 +247,9 @@ export function ScenarioSidebar({
       {pair("offenseStats", "defenseStats")}
       {pair("attackerStages", "defenderStages")}
       {pair("attackerAbilities", "defenderAbilities")}
+      {pair("attackerItems", "defenderItems")}
       {pair("terrain", "screens")}
-      {pair("items", "weather")}
+      {pair("weather", null)}
     </section>
   )
 }

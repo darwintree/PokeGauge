@@ -43,6 +43,7 @@ type TrackOptionProps = {
   actions?: TrackOptionAction[]
   className?: string
   tooltip?: string | null
+  disabled?: boolean
 }
 
 type TrackOptionGroupProps = {
@@ -135,6 +136,7 @@ export function TrackOption({
   actions = [],
   className,
   tooltip,
+  disabled = false,
 }: TrackOptionProps) {
   const buttonClassName = cn(
     "track-option",
@@ -151,6 +153,7 @@ export function TrackOption({
             type="button"
             aria-label={ariaLabel}
             aria-pressed={pressed}
+            disabled={disabled}
             onClick={onToggle}
             className={buttonClassName}
           />
@@ -167,6 +170,7 @@ export function TrackOption({
       type="button"
       aria-label={ariaLabel}
       aria-pressed={pressed}
+      disabled={disabled}
       onClick={onToggle}
       className={buttonClassName}
     >

@@ -1,5 +1,6 @@
 import type { MoveCategory } from "@/lib/catalog/types"
-import { typeFromBoostId } from "@/lib/held-item"
+import { typeFromBoostId, type HeldItemId } from "@/lib/held-item"
+import { isMegaStone, UNKNOWN_ABILITY_ID } from "@/lib/mega"
 import {
   type CriticalStage,
   type MoveSnapshot,
@@ -49,7 +50,8 @@ export type RawScenario = {
   snapshot: MoveSnapshot
   attackerId: BattlePokemonId
   defenderId: BattlePokemonId
-  attackerItemId: string
+  attackerItemId: HeldItemId
+  defenderItemId?: HeldItemId
   attackerAbilityId: number
   defenderAbilityId: number
   attackerStage: StatStage
@@ -81,6 +83,7 @@ export type ScenarioTrack =
   | "attacker-stat"
   | "attacker-stage"
   | "held-item"
+  | "defender-held-item"
   | "attacker-ability"
   | "weather"
   | "terrain"
@@ -159,7 +162,7 @@ function isPokemonType(value: string): value is PokemonType {
 }
 
 function itemModifiers(
-  itemId: string,
+  itemId: HeldItemId,
   category: MoveCategory,
   moveType: PokemonType,
 ): {
@@ -174,17 +177,17 @@ function itemModifiers(
     final: NEUTRAL_MODIFIER,
   }
 
-  if (itemId === "none") {
+  if (itemId === "none" || isMegaStone(itemId)) {
     return {
       ...neutral,
-      source: { track: "held-item", optionId: itemId, state: "neutral" },
+      source: { track: "held-item", optionId: String(itemId), state: "neutral" },
     }
   }
   if (itemId === "life-orb") {
     return {
       ...neutral,
       final: 5324,
-      source: { track: "held-item", optionId: itemId, state: "effective" },
+      source: { track: "held-item", optionId: String(itemId), state: "effective" },
     }
   }
   if (
@@ -194,7 +197,7 @@ function itemModifiers(
     return {
       ...neutral,
       attack: 6144,
-      source: { track: "held-item", optionId: itemId, state: "effective" },
+      source: { track: "held-item", optionId: String(itemId), state: "effective" },
     }
   }
 
@@ -206,7 +209,7 @@ function itemModifiers(
       basePower: effective ? 4915 : NEUTRAL_MODIFIER,
       source: {
         track: "held-item",
-        optionId: itemId,
+        optionId: String(itemId),
         state: effective ? "effective" : "inactive",
       },
     }
@@ -214,7 +217,7 @@ function itemModifiers(
 
   return {
     ...neutral,
-    source: { track: "held-item", optionId: itemId, state: "inactive" },
+    source: { track: "held-item", optionId: String(itemId), state: "inactive" },
   }
 }
 
@@ -333,11 +336,15 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   )
   const attackerHasAdaptability =
     raw.attackerAbilityId === ADAPTABILITY_ABILITY_ID
-  const attackerAbilityState: SourceState = attackerHasAdaptability
+  const attackerAbilityState: SourceState = raw.attackerAbilityId === UNKNOWN_ABILITY_ID
+    ? "neutral"
+    : attackerHasAdaptability
     ? hasOriginalTypeStab ? "effective" : "inactive"
     : "unsupported"
   const defenderAbilityState: SourceState =
-    raw.defenderAbilityId === ADAPTABILITY_ABILITY_ID
+    raw.defenderAbilityId === UNKNOWN_ABILITY_ID
+      ? "neutral"
+      : raw.defenderAbilityId === ADAPTABILITY_ABILITY_ID
       ? "inactive"
       : "unsupported"
   const sources: ScenarioSource[] = [
@@ -354,6 +361,15 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       state: attackerStageState,
     },
     item.source,
+    ...(raw.defenderItemId === undefined
+      ? []
+      : [{
+          track: "defender-held-item" as const,
+          optionId: String(raw.defenderItemId),
+          state: raw.defenderItemId === "none" || isMegaStone(raw.defenderItemId)
+            ? "neutral" as const
+            : "inactive" as const,
+        }]),
     {
       track: "attacker-ability",
       optionId: String(raw.attackerAbilityId),

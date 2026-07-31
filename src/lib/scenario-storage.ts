@@ -17,7 +17,7 @@ import {
 
 export const SCENARIO_STORAGE_KEY = "pokemon-damage-calc:scenario"
 
-const SCENARIO_STORAGE_VERSION = 2
+const SCENARIO_STORAGE_VERSION = 3
 const MOVE_CATEGORIES = ["physical", "special"] as const
 const STAT_MODES = ["preset", "range"] as const
 const PROBABILITY_MODES = ["rolls", "actual"] as const
@@ -58,6 +58,10 @@ function isArrayOf<T>(
 
 function isString(value: unknown): value is string {
   return typeof value === "string"
+}
+
+function isHeldItemId(value: unknown): value is TrackState["attackerItemIds"][number] {
+  return isString(value) || isInteger(value)
 }
 
 function isBoolean(value: unknown): value is boolean {
@@ -136,7 +140,8 @@ function isTrackState(value: unknown): value is TrackState {
     isArrayOf(value.attackerStages, (stage): stage is TrackState["attackerStages"][number] =>
       isOneOf(stage, STAT_STAGES),
     ) &&
-    isArrayOf(value.attackerItemIds, isString) &&
+    isArrayOf(value.attackerItemIds, isHeldItemId) &&
+    isArrayOf(value.defenderItemIds, isHeldItemId) &&
     isArrayOf(value.attackerAbilityIds, isInteger) &&
     isArrayOf(value.weathers, (weather): weather is TrackState["weathers"][number] =>
       isOneOf(weather, WEATHERS),
@@ -247,6 +252,7 @@ export function scenarioSnapshotMatchesCatalog(
   if (
     state.attackerStages.length === 0 ||
     state.attackerItemIds.length === 0 ||
+    state.defenderItemIds.length === 0 ||
     state.attackerAbilityIds.length === 0 ||
     state.weathers.length === 0 ||
     state.terrains.length === 0 ||
@@ -314,6 +320,7 @@ export function scenarioSnapshotMatchesCatalog(
     hasUniqueValues(state.offenseTemplateIds) &&
     hasUniqueValues(state.attackerStages) &&
     hasUniqueValues(state.attackerItemIds) &&
+    hasUniqueValues(state.defenderItemIds) &&
     hasUniqueValues(state.attackerAbilityIds) &&
     hasUniqueValues(state.weathers) &&
     hasUniqueValues(state.terrains) &&
@@ -327,6 +334,22 @@ export function scenarioSnapshotMatchesCatalog(
       state.attackerItemIds,
       new Set(catalog.attackerItems.map((item) => item.id)),
     ) &&
+    hasOnlyKnownIds(
+      state.defenderItemIds,
+      new Set(catalog.defenderItems.map((item) => item.id)),
+    ) &&
+    (catalog.attackerLockedItemId === null ||
+      state.attackerItemIds.length === 1 &&
+      state.attackerItemIds[0] === catalog.attackerLockedItemId) &&
+    (catalog.defenderLockedItemId === null ||
+      state.defenderItemIds.length === 1 &&
+      state.defenderItemIds[0] === catalog.defenderLockedItemId) &&
+    (catalog.attackerLockedAbilityId === null ||
+      state.attackerAbilityIds.length === 1 &&
+      state.attackerAbilityIds[0] === catalog.attackerLockedAbilityId) &&
+    (catalog.defenderLockedAbilityId === null ||
+      state.defenderAbilityIds.length === 1 &&
+      state.defenderAbilityIds[0] === catalog.defenderLockedAbilityId) &&
     hasOnlyKnownIds(
       state.attackerAbilityIds,
       new Set(catalog.attackerAbilities.map((ability) => ability.id)),

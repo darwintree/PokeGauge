@@ -1,5 +1,9 @@
 import { POKEMON_TYPES, type PokemonType } from "@/lib/pokemon/types"
 import type { MoveCategory } from "@/lib/catalog/types"
+import { isMegaStone, megaStoneLabel } from "@/lib/mega"
+import type { SupportedLocale } from "@/lib/i18n"
+
+import type { HeldItemId } from "./types"
 
 export const HELD_ITEM_STORAGE_KEY = "pokemon-damage-calc:held-item-added-boosts"
 
@@ -56,8 +60,8 @@ export function typeBoostCatalogId(type: PokemonType): string {
   return `type-boost-${type}`
 }
 
-export function typeFromBoostId(id: string): PokemonType | undefined {
-  if (!id.startsWith("type-boost-")) return undefined
+export function typeFromBoostId(id: HeldItemId): PokemonType | undefined {
+  if (typeof id !== "string" || !id.startsWith("type-boost-")) return undefined
   const type = id.slice("type-boost-".length)
   return type in TYPE_BOOST ? (type as PokemonType) : undefined
 }
@@ -106,21 +110,26 @@ export function buildCoreCatalogOptions(category: MoveCategory) {
 
 export const ALL_TYPE_BOOST_IDS = POKEMON_TYPES.map(typeBoostCatalogId)
 
-export function itemSprite(id: string): string | null {
+export function itemSprite(id: HeldItemId): string | null {
   if (id === "none") return null
   const boostType = typeFromBoostId(id)
   if (boostType) return TYPE_BOOST[boostType].sprite
   return CORE_ITEM_SPRITE[id] ?? null
 }
 
-export function itemAriaLabel(id: string): string {
+export function itemAriaLabel(id: HeldItemId, locale: SupportedLocale): string {
+  if (isMegaStone(id)) return megaStoneLabel(id, locale)
   const boostType = typeFromBoostId(id)
   if (boostType) return TYPE_BOOST[boostType].label
-  return CORE_ITEM_LABEL_ZH[id] ?? id
+  return typeof id === "string" ? CORE_ITEM_LABEL_ZH[id] ?? id : String(id)
+}
+
+export function itemIsHiddenNeutral(id: HeldItemId): boolean {
+  return id === "none" || isMegaStone(id)
 }
 
 /** Type boost items only affect same-type moves; core items (Life Orb, Choice*) always apply. */
-export function itemHasNoBoostForMove(itemId: string, moveType: PokemonType): boolean {
+export function itemHasNoBoostForMove(itemId: HeldItemId, moveType: PokemonType): boolean {
   const boostType = typeFromBoostId(itemId)
   return boostType != null && boostType !== moveType
 }

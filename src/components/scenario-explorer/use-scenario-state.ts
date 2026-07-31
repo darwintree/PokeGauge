@@ -141,6 +141,38 @@ function reconcileDefenseFromRange(
   return { selectedIds, temporary }
 }
 
+export function trackStateAfterCatalogTransition(
+  state: TrackState,
+  catalog: MatchupCatalog,
+  changes: {
+    attackerOwnerChanged: boolean
+    attackerChanged: boolean
+    defenderChanged: boolean
+  },
+): TrackState {
+  const { attackerOwnerChanged, attackerChanged, defenderChanged } = changes
+  return {
+    ...defaultTrackState(catalog),
+    screens: state.screens,
+    ...(attackerChanged && catalog.attackerPreservesItem && {
+      attackerItemIds: state.attackerItemIds,
+    }),
+    ...(defenderChanged && catalog.defenderPreservesItem && {
+      defenderItemIds: state.defenderItemIds,
+    }),
+    ...(!attackerChanged && {
+      attackerAbilityIds: state.attackerAbilityIds,
+    }),
+    ...(!defenderChanged && {
+      defenderAbilityIds: state.defenderAbilityIds,
+    }),
+    ...(!attackerOwnerChanged && {
+      moveSnapshots: state.moveSnapshots,
+      selectedMoveSnapshotIds: state.selectedMoveSnapshotIds,
+    }),
+  }
+}
+
 export function useScenarioState(
   catalog: MatchupCatalog,
   restoredTrackState?: TrackState,
@@ -218,20 +250,13 @@ export function useScenarioState(
     if (attackerOwnerChanged) {
       movesTouchedRef.current = false
     }
-    setTrackState((state) => ({
-      ...defaultTrackState(catalog),
-      screens: state.screens,
-      ...(!attackerChanged && {
-        attackerAbilityIds: state.attackerAbilityIds,
+    setTrackState((state) =>
+      trackStateAfterCatalogTransition(state, catalog, {
+        attackerOwnerChanged,
+        attackerChanged,
+        defenderChanged,
       }),
-      ...(!defenderChanged && {
-        defenderAbilityIds: state.defenderAbilityIds,
-      }),
-      ...(!attackerOwnerChanged && {
-        moveSnapshots: state.moveSnapshots,
-        selectedMoveSnapshotIds: state.selectedMoveSnapshotIds,
-      }),
-    }))
+    )
     setAddingOffense(false)
     setAddingDefense(false)
   }, [catalog])
@@ -625,14 +650,19 @@ export function useScenarioState(
     deleteOffenseTemplate,
     confirmAddOffense,
     setAddingOffense,
-    setAttackerItemIds: (ids: string[]) =>
-      setTrackState((s) => ({ ...s, attackerItemIds: ids })),
+    setAttackerItemIds: (ids: TrackState["attackerItemIds"]) =>
+      catalog.attackerLockedItemId === null &&
+      setTrackState((s) => ({ ...s, attackerItemIds: ids.length > 0 ? ids : ["none"] })),
+    setDefenderItemIds: (ids: TrackState["defenderItemIds"]) =>
+      catalog.defenderLockedItemId === null &&
+      setTrackState((s) => ({ ...s, defenderItemIds: ids.length > 0 ? ids : ["none"] })),
     setAttackerAbilityIds: (ids: number[]) => {
-      if (ids.length === 0) return
+      if (ids.length === 0 || catalog.attackerLockedAbilityId !== null) return
       attackerAbilitiesTouchedRef.current = true
       setTrackState((s) => ({ ...s, attackerAbilityIds: ids }))
     },
     resetAttackerAbilities: () => {
+      if (catalog.attackerLockedAbilityId !== null) return
       attackerAbilitiesTouchedRef.current = false
       setTrackState((s) => ({
         ...s,
@@ -677,11 +707,12 @@ export function useScenarioState(
         defenderStages: defenderStages.length > 0 ? defenderStages : [0],
       })),
     setDefenderAbilityIds: (ids: number[]) => {
-      if (ids.length === 0) return
+      if (ids.length === 0 || catalog.defenderLockedAbilityId !== null) return
       defenderAbilitiesTouchedRef.current = true
       setTrackState((s) => ({ ...s, defenderAbilityIds: ids }))
     },
     resetDefenderAbilities: () => {
+      if (catalog.defenderLockedAbilityId !== null) return
       defenderAbilitiesTouchedRef.current = false
       setTrackState((s) => ({
         ...s,

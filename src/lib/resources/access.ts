@@ -117,6 +117,11 @@ export async function getResource<TType extends ResourceType>(
     ...(resource.resourceType === "pokemon"
       ? {
           battlePokemonId: resource.id,
+          speciesId: resource.speciesId,
+          speciesName: resource.speciesNames[locale],
+          formName: resource.formNames[locale] || null,
+          isBattleOnly: resource.isBattleOnly,
+          isMega: resource.isMega,
           pokemonSlug: resource.pokemonSlug,
           calcSpeciesName: resource.calcSpeciesName,
           types: resource.types,
@@ -146,6 +151,11 @@ function localizePokemon(
     locale,
     name: resource.names[locale],
     battlePokemonId: resource.id,
+    speciesId: resource.speciesId,
+    speciesName: resource.speciesNames[locale],
+    formName: resource.formNames[locale] || null,
+    isBattleOnly: resource.isBattleOnly,
+    isMega: resource.isMega,
     pokemonSlug: resource.pokemonSlug,
     calcSpeciesName: resource.calcSpeciesName,
     types: resource.types,

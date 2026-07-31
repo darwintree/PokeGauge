@@ -29,7 +29,7 @@ const STAT_KEY_BY_ID: Record<string, string> = {
 }
 
 const missingLocaleNames: Array<{
-  resourceType: "pokemon" | "move" | "ability" | "pokemon-species" | "pokemon-form"
+  resourceType: "pokemon" | "move" | "ability" | "item" | "pokemon-species" | "pokemon-form"
   id: number
   locale: SupportedLocale
   fallbackLocale?: SupportedLocale
@@ -97,7 +97,7 @@ function groupByNumber(rows: CsvRow[], key: string): Map<number, CsvRow[]> {
 }
 
 function namesByLocale(
-  resourceType: "pokemon" | "move" | "ability" | "pokemon-species" | "pokemon-form",
+  resourceType: "pokemon" | "move" | "ability" | "item" | "pokemon-species" | "pokemon-form",
   id: number,
   rows: CsvRow[],
   nameField: string,
@@ -162,6 +162,8 @@ async function main() {
     abilityRows,
     abilityNameRows,
     pokemonAbilityRows,
+    itemRows,
+    itemNameRows,
   ] = await Promise.all([
     readCsv("pokemon"),
     readCsv("pokemon_species"),
@@ -180,6 +182,8 @@ async function main() {
     readCsv("abilities"),
     readCsv("ability_names"),
     readCsv("pokemon_abilities"),
+    readCsv("items"),
+    readCsv("item_names"),
   ])
 
   for (const row of typeRows) TYPE_BY_ID[row.id] = row.identifier
@@ -230,10 +234,7 @@ async function main() {
     if (abilityIds.length === 0) {
       unsupportedBattleIdentities.push({ id, reason: `pokemon/${id} has no current ability relation` })
     }
-    if (
-      abilityIds.length === 0 ||
-      ["hp", "atk", "def", "spa", "spd", "spe"].some((key) => typeof stats[key] !== "number")
-    ) {
+    if (["hp", "atk", "def", "spa", "spd", "spe"].some((key) => typeof stats[key] !== "number")) {
       return []
     }
 
@@ -245,6 +246,8 @@ async function main() {
         resourceType: "pokemon",
         id,
         speciesId,
+        isBattleOnly: defaultForm?.is_battle_only === "1",
+        isMega: defaultForm?.is_mega === "1",
         pokemonSlug: pokemon.identifier,
         speciesSlug: species?.identifier ?? pokemon.identifier,
         calcSpeciesName: names.en || pokemon.identifier,
@@ -303,11 +306,28 @@ async function main() {
     ] as const
   })
 
+  const itemNamesByItemId = groupByNumber(itemNameRows, "item_id")
+  const megaStoneEntries = itemRows
+    .filter((item) => item.category_id === "44")
+    .map((item) => {
+      const id = requiredNumber(item, "id")
+      return [
+        id,
+        {
+          resourceType: "item",
+          id,
+          slug: item.identifier,
+          names: namesByLocale("item", id, itemNamesByItemId.get(id) ?? [], "name"),
+        },
+      ] as const
+    })
+
   const diagnostics = {
     source: "pokeapi",
     pokemonIds: pokemonEntries.map(([id]) => id),
     moveIds: moveEntries.map(([id]) => id),
     abilityIds: abilityEntries.map(([id]) => id),
+    itemIds: megaStoneEntries.map(([id]) => id),
     missingLocaleNames,
     unsupportedBattleIdentities,
   }
@@ -327,16 +347,20 @@ async function main() {
       moduleWithImport(["NormalizedAbility", "UpstreamResourceId"], "GENERATED_ABILITIES", Object.fromEntries(abilityEntries), "Record<UpstreamResourceId, NormalizedAbility>"),
     ),
     writeFile(
+      path.join(OUT_DIR, "mega-stones.ts"),
+      moduleWithImport(["NormalizedItem", "UpstreamResourceId"], "GENERATED_MEGA_STONES", Object.fromEntries(megaStoneEntries), "Record<UpstreamResourceId, NormalizedItem>"),
+    ),
+    writeFile(
       path.join(OUT_DIR, "diagnostics.ts"),
       moduleWithImport(["GeneratedResourceDiagnostics"], "RESOURCE_DIAGNOSTICS", diagnostics, "GeneratedResourceDiagnostics"),
     ),
     writeFile(
       path.join(OUT_DIR, "index.ts"),
-      "export { GENERATED_ABILITIES } from \"./abilities\"\nexport { RESOURCE_DIAGNOSTICS } from \"./diagnostics\"\nexport { GENERATED_MOVES } from \"./moves\"\nexport { GENERATED_POKEMON } from \"./pokemon\"\n",
+      "export { GENERATED_ABILITIES } from \"./abilities\"\nexport { RESOURCE_DIAGNOSTICS } from \"./diagnostics\"\nexport { GENERATED_MEGA_STONES } from \"./mega-stones\"\nexport { GENERATED_MOVES } from \"./moves\"\nexport { GENERATED_POKEMON } from \"./pokemon\"\n",
     ),
   ])
 
-  console.log(`Generated ${pokemonEntries.length} Pokemon, ${moveEntries.length} moves, and ${abilityEntries.length} abilities from local PokeAPI CSV.`)
+  console.log(`Generated ${pokemonEntries.length} Pokemon, ${moveEntries.length} moves, ${abilityEntries.length} abilities, and ${megaStoneEntries.length} Mega Stones from local PokeAPI CSV.`)
 }
 
 main().catch((error) => {
