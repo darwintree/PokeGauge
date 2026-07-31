@@ -6,7 +6,7 @@ status: "closed"
 priority: "high"
 labels: ["WAYFINDER:TASK"]
 created_at: "2026-07-31T09:27:00Z"
-updated_at: "2026-07-31T09:35:00Z"
+updated_at: "2026-07-31T12:18:00Z"
 ---
 ## Question
 
@@ -30,7 +30,7 @@ Record which frozen families already fit an existing seam, which require a produ
 - Kernel: the existing branch interface already has independent base-power, attack, defense, spread, weather, critical, STAB, type-effectiveness, and final modifiers with integer chaining/rounding. No new kernel module is needed; the compiler needs to populate the existing fields at the correct verified phases.
 - Probability/KO: `ProbabilityInput` already carries hit and critical probability and is part of `calculationIdentity`. Hit probability currently composes only move/weather accuracy; critical probability comes from the Move snapshot's total `criticalStage`. KO currently exposes one- and two-hit results by convolving the same ADD twice.
 - Merge/provenance: calculation identity includes snapshot, compiled low/high branches, probability, and KO inputs, while deliberately excluding source selections. Effect-equivalent choices therefore merge and retain `effective | inactive | unsupported | neutral` source sets.
-- Form locking: generic state and UI accept one locked item per side, but only the hard-coded Mega Stone map drives it. Identity-gated behavior can read both Battle Pokémon identities in the compiler; it has no item eligibility/effect metadata yet. Terapagos item preservation is another hard-coded identity exception.
+- Form locking: generic state and UI accept one locked item per side, but only the hard-coded Mega Stone map drives it. Identity-gated behavior can read both Battle Pokémon identities in the compiler; it has no item eligibility/effect metadata yet. Mega Rayquaza item preservation is another hard-coded identity exception.
 - Warnings: `TrackOption` already supports tooltips, and `AbilityTrack` supplies the accessible red-dot pattern requested for unsupported effects. Held items do not yet have support metadata or this marker.
 
 ### Frozen families and the seams they can reuse
@@ -49,7 +49,7 @@ Record which frozen families already fit an existing seam, which require a produ
 3. Define partial support separately from source effectiveness. A resistance Berry must be both effective for the static damage calculation and marked as not modeling consumption. The current `ScenarioSource` has one mutually exclusive state, so naïvely choosing `unsupported` would hide the implemented reduction and choosing `effective` would lose the required warning.
 4. Define derived critical stage and accuracy composition, including cap/rounding and how `rolls` versus `actual` probability modes expose item effects. Do not write item contribution back into a Move snapshot.
 5. Define attacker-versus-defender item presentation. `moveMechanics.modifiers.item` and the formula tooltip currently flatten only the attacker's item phases into one scalar even though defender provenance already exists.
-6. Define generic identity gating/locking for species/form-specific items without accumulating special cases beside Mega Stones and Terapagos.
+6. Define generic identity gating/locking for species/form-specific items without accumulating special cases beside the Mega Stone map and Mega Rayquaza preservation.
 7. Confirm whether warning/support metadata participates in the merge key or is aggregated solely through provenance. Calculation-changing fields already merge correctly because calculation and probability are in the identity.
 
 ### Contracts a naive implementation would break

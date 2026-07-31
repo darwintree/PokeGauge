@@ -219,11 +219,15 @@ _Avoid_: Exact name lookup, upstream slug lookup
 _Avoid_: Item, 装备
 
 **Explicit no-item**（显式无道具）:
-道具 track 中 id 为 `none` 的应用自有选项；它是唯一表示刻意不带道具的身份，与「未选任何道具导致零行」区分。未锁定的道具 track 始终提供该选项；Mega Stone 锁定时不提供。
+道具 track 中 id 为 `none` 的应用自有选项；它是唯一表示刻意不带道具的身份，与「未选任何道具导致零行」区分。未锁定的道具 track 始终提供该选项；identity-locked held item 生效时不提供。
 _Avoid_: Empty item, 空道具
 
+**Identity-locked held item**（身份锁定携带道具）:
+由当前 **Battle Pokémon identity** 唯一要求的携带道具；Track 只显示该锁定项，不把它作为其他 identity 的普通候选，也不提供 **Explicit no-item**。当前包括 Mega Stone／**Unknown Mega Stone** 与三个对应 masked Ogerpon identity 的 Mask。
+_Avoid_: Required candidate, form item, auto-form item
+
 **Held-item effect whitelist**（携带道具效果白名单）:
-本轮新增效果支持的 85 项真实道具集合；白名单内不按 M-B 分类差别处理，白名单外不新增效果、兼容或警告语义。攻击方与防守方按道具支持效果的方向静态分池，但不因当前招式、属性或宝可梦未满足 activation 条件而隐藏候选项。现有 Mega Stone／**Unknown Mega Stone** 锁定行为保持不变，不属于该白名单，也不计入 85 项。
+本轮新增效果支持的 85 项真实道具集合；白名单内不按 M-B 分类差别处理，白名单外不新增效果、兼容或警告语义。除三个 Ogerpon Mask 作为 **Identity-locked held item** 外，攻击方与防守方按道具支持效果的方向静态分池，不因当前招式、属性或宝可梦未满足 activation 条件而隐藏候选项。Mega Stone／**Unknown Mega Stone** 的锁定行为保持不变，不属于该白名单，也不计入 85 项。
 _Avoid_: Complete held-item candidate pool, M-B legal item pool, all upstream items, usage-ranked item pool
 
 **Partially supported held item**（部分支持的携带道具）:
