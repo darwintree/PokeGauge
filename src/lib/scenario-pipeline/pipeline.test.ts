@@ -328,6 +328,12 @@ describe("matchup scenario pipeline", () => {
             unsupported: [],
             neutral: ["none"],
           },
+          "defender-held-item": {
+            effective: [],
+            inactive: [],
+            unsupported: [],
+            neutral: ["none"],
+          },
           weather: {
             effective: [],
             inactive: [],
@@ -424,6 +430,26 @@ describe("matchup scenario pipeline", () => {
         neutral: ["none"],
       })
     }
+  })
+
+  it("expands defender items and merges their neutral damage inputs", () => {
+    const state = defaultTrackState(catalog)
+    selectMoves(catalog, state, [89])
+    state.offenseTemplateIds = ["extreme"]
+    state.defenseTemplateIds = ["hp-32"]
+    state.attackerItemIds = ["none"]
+    state.defenderItemIds = ["none", "life-orb"]
+
+    const rows = scenarioRows(catalog, state)
+
+    expect(expectedRowCount(state)).toBe(2)
+    expect(rows).toHaveLength(1)
+    expect(rows[0].provenance["defender-held-item"]).toEqual({
+      effective: [],
+      inactive: ["life-orb"],
+      unsupported: [],
+      neutral: ["none"],
+    })
   })
 
   it("defaults both stage tracks to zero and includes them in the row product", () => {

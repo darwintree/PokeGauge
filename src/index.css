@@ -409,6 +409,12 @@
       color 0.12s;
   }
 
+  .track-option:disabled {
+    cursor: not-allowed;
+    opacity: 0.68;
+    box-shadow: none;
+  }
+
   .track-option--text {
     min-height: 1.75rem;
     padding: 0.25rem 0.625rem;

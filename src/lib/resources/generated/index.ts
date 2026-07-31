@@ -1,4 +1,5 @@
 export { GENERATED_ABILITIES } from "./abilities"
 export { RESOURCE_DIAGNOSTICS } from "./diagnostics"
+export { GENERATED_MEGA_STONES } from "./mega-stones"
 export { GENERATED_MOVES } from "./moves"
 export { GENERATED_POKEMON } from "./pokemon"

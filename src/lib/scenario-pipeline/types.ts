@@ -12,6 +12,7 @@ import type {
 } from "@/lib/calc-adapter"
 import type { MoveSnapshot } from "@/lib/move-snapshot"
 import type { StatValueTemplate } from "@/lib/stat-value-template"
+import type { HeldItemId } from "@/lib/held-item"
 
 export type StatSelectMode = "preset" | "range"
 
@@ -42,7 +43,8 @@ export type TrackState = {
   showOffenseActual: boolean
   offenseAllocationIndices: Record<string, number>
   attackerStages: StatStage[]
-  attackerItemIds: string[]
+  attackerItemIds: HeldItemId[]
+  defenderItemIds: HeldItemId[]
   attackerAbilityIds: number[]
   weathers: Weather[]
   terrains: Terrain[]

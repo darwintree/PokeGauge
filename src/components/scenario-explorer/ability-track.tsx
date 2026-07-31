@@ -4,6 +4,7 @@ import { FormattedMessage, useIntl } from "react-intl"
 import { Button } from "@/components/ui/button"
 import { ADAPTABILITY_ABILITY_ID } from "@/lib/calc-adapter"
 import type { CatalogAbilityOption } from "@/lib/catalog"
+import { UNKNOWN_ABILITY_ID } from "@/lib/mega"
 
 import { TrackOption, TrackOptionGroup } from "./track-option"
 import { TrackCard } from "./track-card"
@@ -14,6 +15,7 @@ type AbilityTrackProps = {
   selectedIds: number[]
   onChange: (ids: number[]) => void
   onReset: () => void
+  locked?: boolean
   expanded?: boolean
   onToggle?: () => void
 }
@@ -24,6 +26,7 @@ export function AbilityTrack({
   selectedIds,
   onChange,
   onReset,
+  locked = false,
   expanded = true,
   onToggle = () => {},
 }: AbilityTrackProps) {
@@ -63,6 +66,7 @@ export function AbilityTrack({
           size="sm"
           className="h-6 px-2 text-xs"
           onClick={onReset}
+          disabled={locked}
         >
           <FormattedMessage id="track.stage.reset" />
         </Button>
@@ -70,7 +74,9 @@ export function AbilityTrack({
       <TrackOptionGroup aria-label={intl.formatMessage({ id: labelId })}>
         {orderedOptions.map((option) => {
           // Only Adaptability's effect is implemented; everything else carries the red dot
-          const unsupported = option.id !== ADAPTABILITY_ABILITY_ID
+          const unsupported =
+            option.id !== ADAPTABILITY_ABILITY_ID &&
+            option.id !== UNKNOWN_ABILITY_ID
           const unsupportedLabel = intl.formatMessage({ id: "track.ability.unsupported" })
           return (
             <TrackOption
@@ -78,6 +84,7 @@ export function AbilityTrack({
               layout="text"
               pressed={selected.has(option.id)}
               onToggle={() => toggle(option.id)}
+              disabled={locked}
               ariaLabel={unsupported ? `${option.label} · ${unsupportedLabel}` : option.label}
               tooltip={[option.summary, unsupported ? unsupportedLabel : null].filter(Boolean).join("\n") || null}
               className="px-2"

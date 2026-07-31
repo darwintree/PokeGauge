@@ -23,6 +23,8 @@ export type NormalizedBattlePokemon = {
   resourceType: "pokemon"
   id: BattlePokemonId
   speciesId: UpstreamResourceId
+  isBattleOnly: boolean
+  isMega: boolean
   pokemonSlug: string
   speciesSlug: string
   calcSpeciesName: string
@@ -36,6 +38,13 @@ export type NormalizedBattlePokemon = {
 
 export type NormalizedAbility = {
   resourceType: "ability"
+  id: UpstreamResourceId
+  slug: string
+  names: LocalizedNames
+}
+
+export type NormalizedItem = {
+  resourceType: "item"
   id: UpstreamResourceId
   slug: string
   names: LocalizedNames
@@ -64,8 +73,9 @@ export type GeneratedResourceDiagnostics = {
   pokemonIds: BattlePokemonId[]
   moveIds: UpstreamResourceId[]
   abilityIds: UpstreamResourceId[]
+  itemIds: UpstreamResourceId[]
   missingLocaleNames: Array<{
-    resourceType: ResourceType | "pokemon-species" | "pokemon-form"
+    resourceType: ResourceType | "item" | "pokemon-species" | "pokemon-form"
     id: UpstreamResourceId
     locale: SupportedLocale
     fallbackLocale?: SupportedLocale
@@ -107,6 +117,11 @@ export type LocalizedResourceBase<TType extends ResourceType> = {
 
 export type LocalizedPokemonResource = LocalizedResourceBase<"pokemon"> & {
   battlePokemonId: BattlePokemonId
+  speciesId: UpstreamResourceId
+  speciesName: string
+  formName: string | null
+  isBattleOnly: boolean
+  isMega: boolean
   pokemonSlug: string
   calcSpeciesName: string
   types: PokemonType[]

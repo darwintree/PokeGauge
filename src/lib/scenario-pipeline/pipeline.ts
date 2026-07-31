@@ -300,7 +300,8 @@ export function runScenarioPipeline(
   for (const snapshot of trackState.moveSnapshots) {
     if (!selectedMoveSnapshotIds.has(snapshot.id)) continue
     for (const attackerItemId of trackState.attackerItemIds) {
-      for (const attackerAbilityId of trackState.attackerAbilityIds) {
+      for (const defenderItemId of trackState.defenderItemIds) {
+       for (const attackerAbilityId of trackState.attackerAbilityIds) {
         for (const weather of trackState.weathers) {
           for (const terrain of trackState.terrains) {
             for (const attackerStage of trackState.attackerStages) {
@@ -314,6 +315,7 @@ export function runScenarioPipeline(
                           attackerId: catalog.matchup.attackerId,
                           defenderId: catalog.matchup.defenderId,
                           attackerItemId,
+                          defenderItemId,
                           attackerAbilityId,
                           defenderAbilityId,
                           attackerStage,
@@ -377,6 +379,7 @@ export function runScenarioPipeline(
             }
           }
         }
+       }
       }
     }
   }
@@ -427,6 +430,7 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
     offenseAllocationIndices: {},
     attackerStages: [0],
     attackerItemIds: [...catalog.defaultAttackerItemIds],
+    defenderItemIds: [...catalog.defaultDefenderItemIds],
     attackerAbilityIds: [...catalog.defaultAttackerAbilityIds],
     weathers: ["none"],
     terrains: ["none"],
@@ -538,6 +542,7 @@ export function expectedRowCount(trackState: TrackState): number {
     offenseCount *
     trackState.attackerStages.length *
     trackState.attackerItemIds.length *
+    trackState.defenderItemIds.length *
     trackState.attackerAbilityIds.length *
     trackState.weathers.length *
     trackState.terrains.length *

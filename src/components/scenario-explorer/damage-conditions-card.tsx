@@ -5,7 +5,8 @@ import { TypeBadge } from "@/components/pokemon/type-badge"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { NEUTRAL_MODIFIER, type ScenarioTrack } from "@/lib/calc-adapter"
 import type { CatalogAbilityOption, CatalogMoveOption } from "@/lib/catalog"
-import { itemAriaLabel, itemSprite } from "@/lib/held-item"
+import { itemAriaLabel, itemIsHiddenNeutral, itemSprite } from "@/lib/held-item"
+import type { SupportedLocale } from "@/lib/i18n"
 import type { ScenarioRow } from "@/lib/scenario-pipeline"
 
 type DamageConditionsCardProps = {
@@ -29,7 +30,9 @@ function sourceLabel(
   props: DamageConditionsCardProps,
   intl: ReturnType<typeof useIntl>,
 ): string {
-  if (track === "held-item") return itemAriaLabel(id)
+  if (track === "held-item" || track === "defender-held-item") {
+    return itemAriaLabel(id, intl.locale as SupportedLocale)
+  }
   if (track === "attacker-ability" || track === "defender-ability") {
     const options = track === "attacker-ability"
       ? props.attackerAbilities
@@ -52,7 +55,7 @@ function ActiveTokens({
   const intl = useIntl()
   const tracks: ScenarioTrack[] = side === "attack"
     ? ["attacker-stage", "held-item", "attacker-ability", "weather", "terrain"]
-    : ["defender-stage", "defender-ability", "screen"]
+    : ["defender-stage", "defender-held-item", "defender-ability", "screen"]
   const values = tracks.flatMap((track) =>
     (props.row.provenance[track]?.effective ?? [])
       .filter((id) => id !== "none" && id !== "0")
@@ -60,7 +63,9 @@ function ActiveTokens({
   )
 
   return values.map(({ track, id }) => {
-    const sprite = track === "held-item" ? itemSprite(id) : undefined
+    const sprite = track === "held-item" || track === "defender-held-item"
+      ? itemSprite(id)
+      : undefined
     return sprite ? (
       <span
         key={`${track}:${id}`}
@@ -68,7 +73,7 @@ function ActiveTokens({
       >
         <img
           src={`/items/${sprite}`}
-          alt={itemAriaLabel(id)}
+          alt={itemAriaLabel(id, intl.locale as SupportedLocale)}
           className="size-3 object-contain"
         />
       </span>
@@ -88,7 +93,12 @@ function OtherConditions(props: DamageConditionsCardProps) {
   ]>).flatMap(([track, sets]) =>
     (["inactive", "unsupported", "neutral"] as const).flatMap((state) =>
       (sets?.[state] ?? [])
-        .filter((id) => id !== "none" && id !== "0")
+        .filter((id) =>
+          id !== "none" &&
+          id !== "0" &&
+          !((track === "held-item" || track === "defender-held-item") &&
+            itemIsHiddenNeutral(id)),
+        )
         .map((id) => ({ track, state, id })),
     ),
   )
@@ -139,7 +149,7 @@ function FormulaTip(props: DamageConditionsCardProps) {
         <TipRow label={intl.formatMessage({ id: "damage.conditions.basePower" })} value={mechanics.basePower} />
         <TipRow label="STAB" value={modifierLabel(mechanics.modifiers.stab)} />
         <TipRow label={intl.formatMessage({ id: "damage.conditions.effectiveness" })} value={modifierLabel(mechanics.modifiers.typeEffectiveness)} />
-        <TipRow label={intl.formatMessage({ id: "track.item" })} value={`${items.length ? items.map(itemAriaLabel).join(" / ") : intl.formatMessage({ id: "damage.noBoost" })} · ${modifierLabel(mechanics.modifiers.item)}`} />
+        <TipRow label={intl.formatMessage({ id: "track.item" })} value={`${items.length ? items.map((id) => itemAriaLabel(id, intl.locale as SupportedLocale)).join(" / ") : intl.formatMessage({ id: "damage.noBoost" })} · ${modifierLabel(mechanics.modifiers.item)}`} />
         <TipRow label={intl.formatMessage({ id: "track.weather" })} value={`${weather.length ? weather.map((id) => intl.formatMessage({ id: `track.weather.${id}` })).join(" / ") : intl.formatMessage({ id: "track.weather.none" })} · ${modifierLabel(mechanics.modifiers.weather)}`} />
         <TipRow label={intl.formatMessage({ id: "track.terrain" })} value={`${terrain.length ? terrain.map((id) => intl.formatMessage({ id: `track.terrain.${id}` })).join(" / ") : intl.formatMessage({ id: "track.terrain.none" })} · ${modifierLabel(mechanics.modifiers.terrain)}`} />
         <TipRow label={intl.formatMessage({ id: "damage.conditions.spread" })} value={modifierLabel(mechanics.modifiers.spread)} />

@@ -36,6 +36,7 @@ function scenario(): ScenarioSnapshotInput {
       offenseAllocationIndices: {},
       attackerStages: [0],
       attackerItemIds: ["none"],
+      defenderItemIds: ["none"],
       attackerAbilityIds: [8],
       weathers: ["none"],
       terrains: ["none"],
@@ -68,7 +69,7 @@ async function compatibleScenario() {
   return {
     currentCatalog,
     snapshot: {
-      version: 2,
+    version: 3,
       attackerId: 445,
       defenderId: 727,
       moveCategory: "physical",
@@ -101,7 +102,17 @@ describe("scenario storage", () => {
     const input = scenario()
     saveScenarioSnapshot(input)
 
-    expect(loadScenarioSnapshot()).toEqual({ version: 2, ...input })
+    expect(loadScenarioSnapshot()).toEqual({ version: 3, ...input })
+  })
+
+  it("round trips numeric upstream held-item identities", () => {
+    const input = scenario()
+    input.trackState.attackerItemIds = [699]
+    input.trackState.defenderItemIds = [717]
+    saveScenarioSnapshot(input)
+
+    expect(loadScenarioSnapshot()?.trackState.attackerItemIds).toEqual([699])
+    expect(loadScenarioSnapshot()?.trackState.defenderItemIds).toEqual([717])
   })
 
   it.each([

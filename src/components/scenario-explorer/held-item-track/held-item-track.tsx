@@ -1,6 +1,6 @@
 import { CircleSlash, Gem } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
-import { FormattedMessage } from "react-intl"
+import { FormattedMessage, useIntl } from "react-intl"
 
 import {
   ALL_TYPE_BOOST_IDS,
@@ -9,12 +9,15 @@ import {
   defaultStabBoostIds,
   itemAriaLabel,
   itemSprite,
+  type HeldItemId,
   loadAddedBoostIds,
   removeAddedBoostId,
   saveAddedBoostId,
   typeFromBoostId,
 } from "@/lib/held-item"
 import type { MatchupCatalog } from "@/lib/catalog"
+import type { SupportedLocale } from "@/lib/i18n"
+import { isMegaStone } from "@/lib/mega"
 import { orderedPoolSelection } from "@/lib/ordered-pool-selection"
 import { cn } from "@/lib/utils"
 
@@ -28,24 +31,26 @@ import { TrackCard } from "../track-card"
 
 type HeldItemTrackProps = {
   catalog: MatchupCatalog
-  selectedIds: string[]
-  onChange: (ids: string[]) => void
+  selectedIds: HeldItemId[]
+  onChange: (ids: HeldItemId[]) => void
+  side?: "attacker" | "defender"
+  lockedId?: HeldItemId | null
   expanded?: boolean
   onToggle?: () => void
 }
 
 function itemModifier(
-  id: string,
+  id: HeldItemId,
   stabBoostIds: string[],
   addedBoostIds: string[],
 ): TrackOptionModifier {
-  if (typeFromBoostId(id) == null) return { kind: "core" }
+  if (typeof id !== "string" || typeFromBoostId(id) == null) return { kind: "core" }
   if (addedBoostIds.includes(id)) return { kind: "added-boost" }
   if (stabBoostIds.includes(id)) return { kind: "stab-boost" }
   return { kind: "added-boost" }
 }
 
-function ItemIcon({ id, className }: { id: string; className?: string }) {
+function ItemIcon({ id, className }: { id: HeldItemId; className?: string }) {
   const sprite = itemSprite(id)
   if (sprite) {
     return <img src={`/items/${sprite}`} alt="" className={cn("size-6 object-contain", className)} />
@@ -57,40 +62,48 @@ export function HeldItemTrack({
   catalog,
   selectedIds,
   onChange,
+  side = "attacker",
+  lockedId = null,
   expanded = true,
   onToggle = () => {},
 }: HeldItemTrackProps) {
-  const attackerId = String(catalog.matchup.attackerId)
+  const intl = useIntl()
+  const locale = intl.locale as SupportedLocale
+  const ownerId = String(
+    side === "attacker" ? catalog.matchup.attackerId : catalog.matchup.defenderId,
+  )
+  const storageId = side === "attacker" ? ownerId : `defender:${ownerId}`
   const [addedBoostIds, setAddedBoostIds] = useState<string[]>(() =>
-    loadAddedBoostIds(attackerId),
+    loadAddedBoostIds(storageId),
   )
   const [pickerOpen, setPickerOpen] = useState(false)
 
   useEffect(() => {
-    setAddedBoostIds(loadAddedBoostIds(attackerId))
+    setAddedBoostIds(loadAddedBoostIds(storageId))
     setPickerOpen(false)
-  }, [attackerId])
+  }, [storageId])
 
-  const stabBoostIds = defaultStabBoostIds(catalog.attackerTypes)
+  const ownerTypes = side === "attacker" ? catalog.attackerTypes : catalog.defenderTypes
+  const stabBoostIds = defaultStabBoostIds(ownerTypes)
   const visibleIds = useMemo(
     () =>
-      buildVisibleItemIds(
+      lockedId ? [lockedId] : buildVisibleItemIds(
         coreItemIds(catalog.moveCategory),
-        catalog.attackerTypes,
+        ownerTypes,
         addedBoostIds,
       ),
-    [catalog.moveCategory, catalog.attackerTypes, addedBoostIds],
+    [catalog.moveCategory, ownerTypes, addedBoostIds, lockedId],
   )
   const addableIds = useMemo(() => {
     const visible = new Set(visibleIds)
     return ALL_TYPE_BOOST_IDS.filter((id) => !visible.has(id))
   }, [visibleIds])
 
-  function applySelection(pool: readonly string[], next: string[]) {
+  function applySelection(pool: readonly HeldItemId[], next: HeldItemId[]) {
     onChange(orderedPoolSelection(pool, next.length === 0 ? ["none"] : next))
   }
 
-  function toggle(id: string) {
+  function toggle(id: HeldItemId) {
     const next = selectedIds.includes(id)
       ? selectedIds.filter((itemId) => itemId !== id)
       : [...selectedIds, id]
@@ -98,19 +111,19 @@ export function HeldItemTrack({
   }
 
   function addBoost(id: string) {
-    saveAddedBoostId(attackerId, id)
+    saveAddedBoostId(storageId, id)
     setAddedBoostIds((prev) => (prev.includes(id) ? prev : [...prev, id]))
     setPickerOpen(false)
   }
 
   function removeBoost(id: string) {
-    removeAddedBoostId(attackerId, id)
+    removeAddedBoostId(storageId, id)
     const nextAdded = addedBoostIds.filter((itemId) => itemId !== id)
     setAddedBoostIds(nextAdded)
     applySelection(
       buildVisibleItemIds(
         coreItemIds(catalog.moveCategory),
-        catalog.attackerTypes,
+        ownerTypes,
         nextAdded,
       ),
       selectedIds.filter((itemId) => itemId !== id),
@@ -120,11 +133,11 @@ export function HeldItemTrack({
   return (
     <TrackCard
       icon={Gem}
-      label={<FormattedMessage id="track.item" />}
+      label={<FormattedMessage id={side === "attacker" ? "track.attackerItem" : "track.defenderItem"} />}
       summary={
         <span className="flex items-center gap-1">
           {selectedIds.map((id) => (
-            <span key={id} title={itemAriaLabel(id)}>
+            <span key={id} title={itemAriaLabel(id, locale)}>
               <ItemIcon id={id} className="size-4" />
             </span>
           ))}
@@ -136,21 +149,22 @@ export function HeldItemTrack({
       <div className="space-y-2">
         <TrackOptionGroup aria-label="道具">
         {visibleIds.map((id) => {
-          const removable = addedBoostIds.includes(id)
+          const removable = typeof id === "string" && addedBoostIds.includes(id)
           return (
             <TrackOption
               key={id}
               layout="icon"
               pressed={selectedIds.includes(id)}
-              ariaLabel={itemAriaLabel(id)}
+              disabled={lockedId !== null}
+              ariaLabel={itemAriaLabel(id, locale)}
               modifier={itemModifier(id, stabBoostIds, addedBoostIds)}
               onToggle={() => toggle(id)}
               actions={
-                removable
+                removable && typeof id === "string"
                   ? [
                       {
                         kind: "remove",
-                        label: `移除 ${itemAriaLabel(id)}`,
+                        label: `移除 ${itemAriaLabel(id, locale)}`,
                         position: "top-right",
                         onClick: () => removeBoost(id),
                       },
@@ -158,11 +172,11 @@ export function HeldItemTrack({
                   : undefined
               }
             >
-              <ItemIcon id={id} />
+              {isMegaStone(id) && !itemSprite(id) ? <Gem className="size-6" /> : <ItemIcon id={id} />}
             </TrackOption>
           )
         })}
-        {addableIds.length > 0 && (
+        {lockedId === null && addableIds.length > 0 && (
           <TrackOptionAdd
             ariaLabel="添加属性强化道具"
             pressed={pickerOpen}
@@ -170,14 +184,14 @@ export function HeldItemTrack({
           />
         )}
         </TrackOptionGroup>
-        {pickerOpen && addableIds.length > 0 && (
+        {lockedId === null && pickerOpen && addableIds.length > 0 && (
           <div className="grid grid-cols-4 gap-1.5 rounded-md border bg-muted/20 p-2">
             {addableIds.map((id) => (
               <TrackOption
                 key={id}
                 layout="icon"
                 pressed={false}
-                ariaLabel={itemAriaLabel(id)}
+                ariaLabel={itemAriaLabel(id, locale)}
                 modifier={{ kind: "added-boost" }}
                 onToggle={() => addBoost(id)}
               >
