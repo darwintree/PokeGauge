@@ -6,7 +6,7 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-30T09:28:00Z"
-updated_at: "2026-07-31T08:48:00Z"
+updated_at: "2026-07-31T09:28:00Z"
 ---
 ## Goal
 
@@ -27,6 +27,7 @@ updated_at: "2026-07-31T08:48:00Z"
 ## Child issues
 
 - [[20260731_open_implement-defender-held-item-effects|Implement defender held-item effects]]
+- [[20260731_open_wayfinder-held-item-effects-specification|Wayfinder: Held-item effects specification]]
 
 ## Implementation-relevant item checklist (375)
 
