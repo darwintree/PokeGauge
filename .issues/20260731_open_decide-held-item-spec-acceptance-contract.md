@@ -20,4 +20,4 @@ This ticket defines the spec handoff contract; it does not author the spec or im
 
 ## Blocked by
 
-- [[20260731_open_decide-held-item-provenance-and-scenario-merging|Decide held-item provenance and scenario merging]]
+- [[archive/20260731_closed_decide-held-item-provenance-and-scenario-merging|Decide held-item provenance and scenario merging]]
