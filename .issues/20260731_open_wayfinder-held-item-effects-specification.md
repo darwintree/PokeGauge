@@ -6,7 +6,7 @@ status: "open"
 priority: "high"
 labels: ["WAYFINDER:MAP"]
 created_at: "2026-07-31T09:26:00Z"
-updated_at: "2026-07-31T12:18:00Z"
+updated_at: "2026-07-31T12:35:00Z"
 ---
 ## Destination
 
@@ -32,7 +32,7 @@ Reach a decision-complete handoff for a held-item effects spec covering the froz
 - [[archive/20260731_closed_decide-damage-and-stat-modifier-compilation|Decide damage and stat modifier compilation]]
 - [[archive/20260731_closed_decide-accuracy-and-critical-hit-item-semantics|Decide accuracy and critical-hit item semantics]]
 - [[archive/20260731_closed_decide-form-locked-and-identity-gated-item-behavior|Decide form-locked and identity-gated item behavior]]
-- [[20260731_open_decide-held-item-provenance-and-scenario-merging|Decide held-item provenance and scenario merging]]
+- [[archive/20260731_closed_decide-held-item-provenance-and-scenario-merging|Decide held-item provenance and scenario merging]]
 - [[20260731_open_decide-held-item-spec-acceptance-contract|Decide held-item spec acceptance contract]]
 
 ## Decisions so far
@@ -45,6 +45,7 @@ Reach a decision-complete handoff for a held-item effects spec covering the froz
 - [[archive/20260731_closed_decide-damage-and-stat-modifier-compilation|Decide damage and stat modifier compilation]] — Keep the item-agnostic damage kernel; compile current-Scenario item effects into the researched Base Power, stat, final-damage, Berry, and defender Utility Umbrella phases with exact Gen 9 integer semantics.
 - [[archive/20260731_closed_decide-accuracy-and-critical-hit-item-semantics|Decide accuracy and critical-hit item semantics]] — Keep probability item effects in the Scenario compiler; compose numeric accuracy with the pinned Gen 9 integer chain, derive capped critical stage without mutating snapshots, and merge on normalized probability while retaining item provenance.
 - [[archive/20260731_closed_decide-form-locked-and-identity-gated-item-behavior|Decide form-locked and identity-gated item behavior]] — Generate per-identity Eviolite eligibility from vendored evolution data, apply exact base-species gates, keep current identity-reset semantics, and make the three Ogerpon Masks lock-only without new item warnings.
+- [[archive/20260731_closed_decide-held-item-provenance-and-scenario-merging|Decide held-item provenance and scenario merging]] — Reuse the existing calculation-identity merge, four-state side-specific provenance, and result ordering; limit the formula tooltip's item row to attacker Base Power contributions.
 
 ## Not yet specified
 
