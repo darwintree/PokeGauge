@@ -6,8 +6,9 @@ This note verifies the Wayfinder inventory; it is not a product contract.
 
 ## Result
 
-- The frozen inventory contains exactly **88 distinct canonical Showdown item identities**.
-- The pinned `champions` mod resolves **44 as standard** and **44 as `Past`**. The standard half is exactly the map's M-B main scope.
+- The researched candidate inventory contains exactly **88 distinct canonical Showdown item identities**.
+- A later confirmed product decision removed Adamant Crystal, Lustrous Globe, and Griseous Core because their supported damage behavior duplicates the retained Orb counterparts while their distinct form behavior is out of scope. The current frozen inventory therefore contains **85** identities.
+- The pinned `champions` mod resolves the original candidates as **44 standard** and **44 `Past`**; the current 85-item scope contains **44 standard** and **41 `Past`**. The standard half is exactly the map's M-B main scope.
 - The public official Regulation M-B notice does **not** publish a per-item allowlist. It says that regulations govern held items and forbids duplicate held items; the maintenance notice only says that held items were added for M-B. Consequently, the per-item M-B column below is a **pinned Showdown executable proxy**, not an independently verifiable official allowlist.
 - The inventory collapses to eight mechanics shapes: final damage, Base Power, battle stat, incoming damage, numeric accuracy, critical stage, identity-gated Base Power, and holder-relative weather visibility.
 - Showdown uses fixed-point chained modifiers. Values commonly described as `1.1x`, `1.2x`, and `1.3x` are exactly `4505/4096`, `4915/4096`, and `5324/4096` in these hooks, and compose with Showdown's fixed-point rounding rather than floating-point multiplication ([modifier implementation](https://github.com/smogon/pokemon-showdown/blob/71d77d3d47fd4fdc2551b7b3cf9a0cc4fd3f38fa/sim/battle.ts#L2308-L2342)).

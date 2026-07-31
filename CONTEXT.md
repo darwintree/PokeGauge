@@ -205,8 +205,8 @@ _Avoid_: Species label, localized name, display label, form configuration
 _Avoid_: Localized label as id, slug as primary key, dual primary key
 
 **Supported locale**:
-首版产品明确支持的显示语言集合；当前为 **zh-hans、zh-hant、en、ja**，运行时直接从对应上游资源的本地化名称中取值。
-_Avoid_: Arbitrary locale support, fallback locale chain
+首版产品明确支持的显示语言集合；当前为 **zh-hans、zh-hant、en、ja**，运行时优先采用对应 PokeAPI 本地化名称；目标语言缺失时回退英文并记录资源诊断，不维护手写翻译表或多级回退链。
+_Avoid_: Arbitrary locale support, handwritten translation table, multi-step fallback locale chain
 
 **Search**:
 用户用关键词和结构化筛选从宝可梦或招式候选池中找到目标的产品能力；目标是有广度的召回，可逐步包含别名、俗称、黑话等。当前最低可交付范围只承诺匹配当前 **Supported locale** 的本地化展示名。
@@ -215,12 +215,16 @@ _Avoid_: Exact name lookup, upstream slug lookup
 ### Held items
 
 **Held item**（携带道具）:
-一方宝可梦的 build configuration 在道具 track 上的一项取值；道具 track 为 **multi-select track**，但每一方在每条 scenario 行仅应用一件道具的伤害修饰。含 explicit no-item。
+一方宝可梦的 build configuration 在道具 track 上的一项取值；真实道具采用 PokeAPI numeric id 作为唯一身份，Showdown slug 仅用于机制对照，不作持久化主键。道具 track 为 **multi-select track**，但每一方在每条 scenario 行仅应用一件道具的伤害修饰。含 explicit no-item。
 _Avoid_: Item, 装备
 
 **Explicit no-item**（显式无道具）:
-道具 track 中 id 为 `none` 的选项；表示刻意不带道具的配置，与「未选任何道具导致零行」区分。
+道具 track 中 id 为 `none` 的应用自有选项；它是唯一表示刻意不带道具的身份，与「未选任何道具导致零行」区分。未锁定的道具 track 始终提供该选项；Mega Stone 锁定时不提供。
 _Avoid_: Empty item, 空道具
+
+**Held-item effect whitelist**（携带道具效果白名单）:
+本轮新增效果支持的 85 项真实道具集合；白名单内不按 M-B 分类差别处理，白名单外不新增效果、兼容或警告语义。攻击方与防守方按道具支持效果的方向静态分池，但不因当前招式、属性或宝可梦未满足 activation 条件而隐藏候选项。现有 Mega Stone／**Unknown Mega Stone** 锁定行为保持不变，不属于该白名单，也不计入 85 项。
+_Avoid_: Complete held-item candidate pool, M-B legal item pool, all upstream items, usage-ranked item pool
 
 **Type boost item**（属性强化道具）:
 提升特定属性招式威力的携带道具（如木炭、柔软沙子）；与攻击方属性对应。UI 默认展示本系至多 2 项，可多选参与对比。
