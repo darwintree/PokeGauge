@@ -9,8 +9,12 @@ PokeLens 将一组宝可梦对战变量展开为可比较的伤害情景。本�
 ### Matchup
 
 **Matchup（对阵）**:
-有方向的攻击方与防守方组合，是一个 Scenario set 共享的对战基础；不包含 Track 取值或概率模式。
-_Avoid_: Battle, Scenario, Track configuration
+由一个攻击方 Battle Pokémon Identity 与一个防守方 Battle Pokémon Identity 构成的有向组合，是一个 Scenario set 共享的对战基础；不包含 Track 取值或概率模式。
+_Avoid_: Battle, Species matchup, Scenario
+
+**Battle Pokémon Identity（对战宝可梦身份）**:
+Matchup 中宝可梦选择的最小单位，唯一对应一个可选择的单一对战形态。相同 Pokémon Species 的不同 Form 分别拥有独立 Identity；基础形态本身也是一个 Identity。
+_Avoid_: Pokémon Species, form configuration, localized name
 
 ### Tracks
 
@@ -102,7 +106,35 @@ _Avoid_: 16-roll mode, guaranteed damage
 在当前支持范围内，将命中、未命中与会心概率纳入伤害分布后计算击倒概率；未命中计为零伤害。
 _Avoid_: Battle Mode, Actual Probability Mode, Full Odds Mode, Realistic Mode
 
+**Damage Distribution（伤害分布）**:
+以伤害值及其发生概率构成的离散分布；它描述伤害结果，不依赖防守方的 HP。
+_Avoid_: Damage Range, KO Probability
+
+**Atomic Damage Distribution（原子伤害分布）**:
+一次使用 Move Snapshot 所产生的 Damage Distribution，按照当前 Probability Mode 组合未命中、普通伤害与会心伤害。
+_Avoid_: One-shot Damage Distribution, Actual Damage Distribution
+
+**Convolved Damage Distribution（卷积伤害分布）**:
+由一个或多个 Atomic Damage Distribution 卷积得到的累计伤害分布。
+_Avoid_: Accumulated Damage Distribution, Total Damage Distribution
+
+**KO Probability（击倒概率）**:
+一个确定的 Convolved Damage Distribution 中，累计伤害达到或超过一个确定 HP 值的概率。
+_Avoid_: KO Rate, Kill Chance
+
+**KO Probability Range（击倒概率范围）**:
+Stat Range 两个端点分别产生的 KO Probability 所形成的有序范围；Stat Range 本身不视为随机变量。
+_Avoid_: Average KO Probability, Probability Distribution
+
 ## 宝可梦游戏
+
+**Pokémon Species（宝可梦种类）**:
+用于归组多个 Pokémon Form 的物种分类；它不是 Matchup 的直接选中值。
+_Avoid_: Battle Pokémon Identity, selected Pokémon
+
+**Pokémon Form（宝可梦形态）**:
+同一 Pokémon Species 下的一个具体形态。只有具备独立且可选择的对战数据的 Form 才对应一个 Battle Pokémon Identity；纯展示差异不对应独立 Identity。
+_Avoid_: Battle Pokémon Identity, form configuration
 
 **Stat Points（SP，能力点数）**:
 Pokémon Champions 中用于分配能力投入的点数，取代主系列游戏的努力值表达；单项能力可以投入 `0`～`32` SP。
