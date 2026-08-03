@@ -218,12 +218,18 @@ describe("catalog registry", () => {
     expect(rows.every((r) => r.minDamage > 0)).toBe(true)
   })
 
-  it("includes all type-boost items in attackerItems after core options", async () => {
+  it("uses numeric frozen Held-item identities in the side-specific pools", async () => {
     const catalog = await getCatalog(445, 727, LOCALE)
-    const ids = catalog.attackerItems.map((item) => item.id)
-    expect(ids.slice(0, 3)).toEqual(["none", "life-orb", "choice-band"])
-    expect(ids).toContain("type-boost-ground")
-    expect(ids).toContain("type-boost-fairy")
+    const attackerIds = catalog.attackerItems.map((item) => item.id)
+    const defenderIds = catalog.defenderItems.map((item) => item.id)
+
+    expect(attackerIds).toHaveLength(59)
+    expect(defenderIds).toHaveLength(25)
+    expect(attackerIds.slice(0, 4)).toEqual(["none", 247, 245, 213])
+    expect(attackerIds).toContain(214)
+    expect(attackerIds).toContain(2105)
+    expect(defenderIds).toContain(190)
+    expect(defenderIds).not.toContain(247)
     expect(catalog.attackerTypes).toEqual(["dragon", "ground"])
   })
 
@@ -292,7 +298,7 @@ describe("matchup scenario pipeline", () => {
     const state = defaultTrackState(catalog)
     selectMoves(catalog, state, [89])
     state.moveSnapshots[0] = { ...state.moveSnapshots[0], power: 0, accuracy: 0 }
-    state.attackerItemIds = ["none", "type-boost-fire", "type-boost-ground"]
+    state.attackerItemIds = ["none", 226, 214]
     const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
 
     expect(state.moveSnapshots).toHaveLength(1)
@@ -323,8 +329,8 @@ describe("matchup scenario pipeline", () => {
             neutral: [],
           },
           "held-item": {
-            effective: ["type-boost-ground"],
-            inactive: ["type-boost-fire"],
+            effective: ["214"],
+            inactive: ["226"],
             unsupported: [],
             neutral: ["none"],
           },
@@ -383,9 +389,9 @@ describe("matchup scenario pipeline", () => {
     state.defenseTemplateIds = ["hp-32"]
     state.attackerItemIds = [
       "none",
-      "type-boost-fire",
-      "type-boost-water",
-      "type-boost-ground",
+      226,
+      220,
+      214,
     ]
     const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
 
@@ -405,9 +411,9 @@ describe("matchup scenario pipeline", () => {
     ])
 
     for (const [snapshotId, matchingItem] of [
-      ["test-0-424", "type-boost-fire"],
-      ["test-1-127", "type-boost-water"],
-      ["test-2-89", "type-boost-ground"],
+      ["test-0-424", "226"],
+      ["test-1-127", "220"],
+      ["test-2-89", "214"],
     ] as const) {
       const snapshotRows = rows.filter((row) => row.snapshotId === snapshotId)
       const effective = snapshotRows.find((row) =>
@@ -423,9 +429,9 @@ describe("matchup scenario pipeline", () => {
       })
       expect(neutral?.provenance["held-item"]).toEqual({
         effective: [],
-        inactive: state.attackerItemIds.filter(
-          (itemId) => itemId !== "none" && itemId !== matchingItem,
-        ),
+        inactive: state.attackerItemIds
+          .map(String)
+          .filter((itemId) => itemId !== "none" && itemId !== matchingItem),
         unsupported: [],
         neutral: ["none"],
       })
@@ -438,7 +444,7 @@ describe("matchup scenario pipeline", () => {
     state.offenseTemplateIds = ["extreme"]
     state.defenseTemplateIds = ["hp-32"]
     state.attackerItemIds = ["none"]
-    state.defenderItemIds = ["none", "life-orb"]
+    state.defenderItemIds = ["none", 1181]
 
     const rows = scenarioRows(catalog, state)
 
@@ -446,7 +452,7 @@ describe("matchup scenario pipeline", () => {
     expect(rows).toHaveLength(1)
     expect(rows[0].provenance["defender-held-item"]).toEqual({
       effective: [],
-      inactive: ["life-orb"],
+      inactive: ["1181"],
       unsupported: [],
       neutral: ["none"],
     })
@@ -612,7 +618,7 @@ describe("matchup scenario pipeline", () => {
     })
     const sandRows = scenarioRows(catalog, {
       ...state,
-      attackerItemIds: ["type-boost-ground"],
+      attackerItemIds: [214],
     })
 
     expect(noneRows).toHaveLength(1)
@@ -624,7 +630,7 @@ describe("matchup scenario pipeline", () => {
     const state = defaultTrackState(catalog)
     selectMoves(catalog, state, [667])
     state.offenseTemplateIds = ["extreme"]
-    state.attackerItemIds = ["choice-band"]
+    state.attackerItemIds = [197]
     state.defenseTemplateIds = ["min-bulk"]
 
     const [rollRow] = scenarioRows(catalog, state)

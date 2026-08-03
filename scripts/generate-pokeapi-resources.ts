@@ -1,12 +1,15 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises"
 import path from "node:path"
 
+import { FROZEN_HELD_ITEMS } from "../src/lib/held-item/inventory"
+
 type SupportedLocale = "zh-hans" | "zh-hant" | "en" | "ja"
 
 type CsvRow = Record<string, string>
 
 const CSV_ROOT = path.join(process.cwd(), "PokeAPI/pokeapi/data/v2/csv")
 const OUT_DIR = path.join(process.cwd(), "src/lib/resources/generated")
+const PUBLIC_ITEM_DIR = path.join(process.cwd(), "public/items")
 const SUPPORTED_LOCALES = ["zh-hans", "zh-hant", "en", "ja"] as const
 const LANGUAGE_IDS: Record<SupportedLocale, number[]> = {
   "zh-hans": [12],
@@ -15,6 +18,10 @@ const LANGUAGE_IDS: Record<SupportedLocale, number[]> = {
   ja: [1, 11],
 }
 const SPREAD_TARGETS = new Set(["all-other-pokemon", "all-opponents", "entire-field"])
+const EVIOLITE_ELIGIBILITY_OVERRIDES = new Set([10027, 10028, 10029, 10263])
+const GEN_8_ITEM_SPRITES = new Set([1181])
+const GEN_9_ITEM_SPRITES = new Set([2105, 2106, 2107, 2108])
+const PNG_SIGNATURE = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]
 
 const TYPE_BY_ID: Record<string, string> = {}
 const DAMAGE_CLASS_BY_ID: Record<string, string> = {}
@@ -96,6 +103,16 @@ function groupByNumber(rows: CsvRow[], key: string): Map<number, CsvRow[]> {
   return grouped
 }
 
+function groupByOptionalNumber(rows: CsvRow[], key: string): Map<number, CsvRow[]> {
+  const grouped = new Map<number, CsvRow[]>()
+  for (const row of rows) {
+    const id = nullableNumber(row[key])
+    if (id === null) continue
+    grouped.set(id, [...(grouped.get(id) ?? []), row])
+  }
+  return grouped
+}
+
 function namesByLocale(
   resourceType: "pokemon" | "move" | "ability" | "item" | "pokemon-species" | "pokemon-form",
   id: number,
@@ -143,10 +160,28 @@ function composeNames(
   ) as Record<SupportedLocale, string>
 }
 
+function itemSpriteSourcePath(id: number, slug: string): string {
+  const generation = GEN_8_ITEM_SPRITES.has(id)
+    ? "gen8"
+    : GEN_9_ITEM_SPRITES.has(id) ? "gen9" : null
+  return path.posix.join("sprites/items", ...(generation ? [generation] : []), `${slug}.png`)
+}
+
+async function requireLocalPng(filename: string): Promise<void> {
+  const contents = await readFile(path.join(PUBLIC_ITEM_DIR, filename))
+  if (
+    contents.length <= PNG_SIGNATURE.length ||
+    !PNG_SIGNATURE.every((byte, index) => contents[index] === byte)
+  ) {
+    throw new Error(`Expected non-empty PNG item sprite: ${filename}`)
+  }
+}
+
 async function main() {
   const [
     pokemonRows,
     speciesRows,
+    evolutionRows,
     speciesNameRows,
     formRows,
     formNameRows,
@@ -167,6 +202,7 @@ async function main() {
   ] = await Promise.all([
     readCsv("pokemon"),
     readCsv("pokemon_species"),
+    readCsv("pokemon_evolution"),
     readCsv("pokemon_species_names"),
     readCsv("pokemon_forms"),
     readCsv("pokemon_form_names"),
@@ -191,6 +227,8 @@ async function main() {
   for (const row of metaCategoryRows) META_CATEGORY_BY_ID[row.id] = row.identifier
 
   const speciesById = indexById(speciesRows)
+  const childSpeciesByParentId = groupByOptionalNumber(speciesRows, "evolves_from_species_id")
+  const evolutionsByEvolvedSpeciesId = groupByNumber(evolutionRows, "evolved_species_id")
   const speciesNamesBySpeciesId = groupByNumber(speciesNameRows, "pokemon_species_id")
   const formsByPokemonId = groupByNumber(formRows, "pokemon_id")
   const formNamesByFormId = groupByNumber(formNameRows, "pokemon_form_id")
@@ -200,6 +238,19 @@ async function main() {
   const moveNamesByMoveId = groupByNumber(moveNameRows, "move_id")
   const moveMetaByMoveId = groupByNumber(moveMetaRows, "move_id")
   const moveTargetById = indexById(moveTargetRows)
+
+  function evioliteEligible(pokemon: CsvRow): boolean {
+    const id = requiredNumber(pokemon, "id")
+    if (EVIOLITE_ELIGIBILITY_OVERRIDES.has(id)) return true
+
+    const outgoing = (childSpeciesByParentId.get(requiredNumber(pokemon, "species_id")) ?? [])
+      .flatMap((child) =>
+        evolutionsByEvolvedSpeciesId.get(requiredNumber(child, "id")) ?? [],
+      )
+    return pokemon.is_default === "1"
+      ? outgoing.some((evolution) => evolution.base_form_id === "")
+      : outgoing.some((evolution) => Number(evolution.base_form_id) === id)
+  }
 
   const pokemonEntries = pokemonRows.flatMap((pokemon) => {
     const id = requiredNumber(pokemon, "id")
@@ -248,6 +299,7 @@ async function main() {
         speciesId,
         isBattleOnly: defaultForm?.is_battle_only === "1",
         isMega: defaultForm?.is_mega === "1",
+        evioliteEligible: evioliteEligible(pokemon),
         pokemonSlug: pokemon.identifier,
         speciesSlug: species?.identifier ?? pokemon.identifier,
         calcSpeciesName: names.en || pokemon.identifier,
@@ -307,6 +359,31 @@ async function main() {
   })
 
   const itemNamesByItemId = groupByNumber(itemNameRows, "item_id")
+  const itemById = indexById(itemRows)
+  const heldItemEntries = FROZEN_HELD_ITEMS.map((inventoryItem) => {
+    const itemRow = itemById.get(inventoryItem.id)
+    if (!itemRow) throw new Error(`Unknown frozen Held item id: ${inventoryItem.id}`)
+    const slug = itemRow.identifier
+    const spriteFilename = `${slug}.png`
+    return [
+      inventoryItem.id,
+      {
+        resourceType: "item",
+        id: inventoryItem.id,
+        slug,
+        names: namesByLocale(
+          "item",
+          inventoryItem.id,
+          itemNamesByItemId.get(inventoryItem.id) ?? [],
+          "name",
+        ),
+        spriteFilename,
+        spriteSourcePath: itemSpriteSourcePath(inventoryItem.id, slug),
+      },
+    ] as const
+  })
+  await Promise.all(heldItemEntries.map(([, item]) => requireLocalPng(item.spriteFilename)))
+
   const megaStoneEntries = itemRows
     .filter((item) => item.category_id === "44")
     .map((item) => {
@@ -327,7 +404,12 @@ async function main() {
     pokemonIds: pokemonEntries.map(([id]) => id),
     moveIds: moveEntries.map(([id]) => id),
     abilityIds: abilityEntries.map(([id]) => id),
-    itemIds: megaStoneEntries.map(([id]) => id),
+    itemIds: [
+      ...heldItemEntries.map(([id]) => id),
+      ...megaStoneEntries.map(([id]) => id),
+    ],
+    heldItemIds: heldItemEntries.map(([id]) => id),
+    megaStoneIds: megaStoneEntries.map(([id]) => id),
     missingLocaleNames,
     unsupportedBattleIdentities,
   }
@@ -347,6 +429,10 @@ async function main() {
       moduleWithImport(["NormalizedAbility", "UpstreamResourceId"], "GENERATED_ABILITIES", Object.fromEntries(abilityEntries), "Record<UpstreamResourceId, NormalizedAbility>"),
     ),
     writeFile(
+      path.join(OUT_DIR, "held-items.ts"),
+      moduleWithImport(["NormalizedHeldItem", "UpstreamResourceId"], "GENERATED_HELD_ITEMS", Object.fromEntries(heldItemEntries), "Record<UpstreamResourceId, NormalizedHeldItem>"),
+    ),
+    writeFile(
       path.join(OUT_DIR, "mega-stones.ts"),
       moduleWithImport(["NormalizedItem", "UpstreamResourceId"], "GENERATED_MEGA_STONES", Object.fromEntries(megaStoneEntries), "Record<UpstreamResourceId, NormalizedItem>"),
     ),
@@ -356,11 +442,11 @@ async function main() {
     ),
     writeFile(
       path.join(OUT_DIR, "index.ts"),
-      "export { GENERATED_ABILITIES } from \"./abilities\"\nexport { RESOURCE_DIAGNOSTICS } from \"./diagnostics\"\nexport { GENERATED_MEGA_STONES } from \"./mega-stones\"\nexport { GENERATED_MOVES } from \"./moves\"\nexport { GENERATED_POKEMON } from \"./pokemon\"\n",
+      "export { GENERATED_ABILITIES } from \"./abilities\"\nexport { RESOURCE_DIAGNOSTICS } from \"./diagnostics\"\nexport { GENERATED_HELD_ITEMS } from \"./held-items\"\nexport { GENERATED_MEGA_STONES } from \"./mega-stones\"\nexport { GENERATED_MOVES } from \"./moves\"\nexport { GENERATED_POKEMON } from \"./pokemon\"\n",
     ),
   ])
 
-  console.log(`Generated ${pokemonEntries.length} Pokemon, ${moveEntries.length} moves, ${abilityEntries.length} abilities, and ${megaStoneEntries.length} Mega Stones from local PokeAPI CSV.`)
+  console.log(`Generated ${pokemonEntries.length} Pokemon, ${moveEntries.length} moves, ${abilityEntries.length} abilities, ${heldItemEntries.length} Held items, and ${megaStoneEntries.length} Mega Stones from local PokeAPI CSV.`)
 }
 
 main().catch((error) => {

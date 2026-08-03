@@ -1,5 +1,11 @@
 import type { MoveCategory } from "@/lib/catalog/types"
-import { typeFromBoostId, type HeldItemId } from "@/lib/held-item"
+import type { HeldItemId } from "@/lib/held-item"
+import {
+  FROZEN_HELD_ITEM_BY_ID,
+  type FrozenHeldItem,
+  type HeldItemBattleStat,
+  type HeldItemGate,
+} from "@/lib/held-item/inventory"
 import { isMegaStone, UNKNOWN_ABILITY_ID } from "@/lib/mega"
 import {
   type CriticalStage,
@@ -18,6 +24,7 @@ import {
   getBattlePokemonById,
   getMoveById,
   type BattlePokemonId,
+  type NormalizedBattlePokemon,
 } from "@/lib/resources"
 
 import { ADAPTABILITY_ABILITY_ID } from "./ability"
@@ -161,64 +168,141 @@ function isPokemonType(value: string): value is PokemonType {
   return POKEMON_TYPES.includes(value as PokemonType)
 }
 
-function itemModifiers(
-  itemId: HeldItemId,
-  category: MoveCategory,
-  moveType: PokemonType,
-): {
-  attack: number
-  basePower: number
-  final: number
-  source: ScenarioSource
-} {
-  const neutral = {
-    attack: NEUTRAL_MODIFIER,
-    basePower: NEUTRAL_MODIFIER,
-    final: NEUTRAL_MODIFIER,
-  }
+type ItemSide = "attacker" | "defender"
 
+type ItemGateContext = {
+  holder: NormalizedBattlePokemon | undefined
+  category: MoveCategory | undefined
+  moveType: PokemonType | undefined
+  effectiveness: number
+  weather: Weather
+  numericAccuracy: boolean
+}
+
+type CompiledHeldItem = {
+  descriptor?: FrozenHeldItem
+  basePowerModifier: number
+  attackModifier: number
+  defenseModifier: number
+  finalModifier: number
+  accuracyModifier: number
+  criticalStage: number
+  suppressOrdinaryWeatherDamage: boolean
+  source: ScenarioSource
+}
+
+function itemTrack(side: ItemSide): "held-item" | "defender-held-item" {
+  return side === "attacker" ? "held-item" : "defender-held-item"
+}
+
+function gateMatches(gate: HeldItemGate, context: ItemGateContext): boolean {
+  switch (gate.kind) {
+    case "damaging-move":
+      return context.category !== undefined
+    case "move-category":
+      return context.category === gate.category
+    case "move-type":
+      return context.moveType !== undefined && gate.types.includes(context.moveType)
+    case "super-effective":
+      return context.effectiveness > 1
+    case "holder-species":
+      return context.holder !== undefined && gate.speciesIds.includes(context.holder.speciesId)
+    case "holder-identity":
+      return context.holder !== undefined && gate.battlePokemonIds.includes(context.holder.id)
+    case "eviolite-eligible":
+      return context.holder?.evioliteEligible === true
+    case "numeric-accuracy":
+      return context.numericAccuracy
+    case "weather":
+      return gate.weathers.includes(context.weather as "sun" | "rain")
+  }
+}
+
+function battleStatFor(
+  side: ItemSide,
+  category: MoveCategory | undefined,
+): HeldItemBattleStat | undefined {
+  if (category === undefined) return undefined
+  if (side === "attacker") {
+    return category === "physical" ? "attack" : "special-attack"
+  }
+  return category === "physical" ? "defense" : "special-defense"
+}
+
+function compileHeldItem(
+  itemId: HeldItemId,
+  side: ItemSide,
+  context: ItemGateContext,
+): CompiledHeldItem {
+  const track = itemTrack(side)
+  const neutral = {
+    basePowerModifier: NEUTRAL_MODIFIER,
+    attackModifier: NEUTRAL_MODIFIER,
+    defenseModifier: NEUTRAL_MODIFIER,
+    finalModifier: NEUTRAL_MODIFIER,
+    accuracyModifier: NEUTRAL_MODIFIER,
+    criticalStage: 0,
+    suppressOrdinaryWeatherDamage: false,
+  }
   if (itemId === "none" || isMegaStone(itemId)) {
     return {
       ...neutral,
-      source: { track: "held-item", optionId: String(itemId), state: "neutral" },
-    }
-  }
-  if (itemId === "life-orb") {
-    return {
-      ...neutral,
-      final: 5324,
-      source: { track: "held-item", optionId: String(itemId), state: "effective" },
-    }
-  }
-  if (
-    (itemId === "choice-band" && category === "physical") ||
-    (itemId === "choice-specs" && category === "special")
-  ) {
-    return {
-      ...neutral,
-      attack: 6144,
-      source: { track: "held-item", optionId: String(itemId), state: "effective" },
+      source: { track, optionId: String(itemId), state: "neutral" },
     }
   }
 
-  const boostType = typeFromBoostId(itemId)
-  if (boostType) {
-    const effective = boostType === moveType
+  const descriptor = typeof itemId === "number"
+    ? FROZEN_HELD_ITEM_BY_ID.get(itemId)
+    : undefined
+  const poolMatches = descriptor !== undefined &&
+    (descriptor.pool === side || descriptor.pool === "lock")
+  const gatesMatch = poolMatches &&
+    !(side === "defender" && descriptor.pool === "lock") &&
+    descriptor.effect.gates.every((gate) => gateMatches(gate, context))
+  if (!descriptor || !gatesMatch) {
     return {
       ...neutral,
-      basePower: effective ? 4915 : NEUTRAL_MODIFIER,
-      source: {
-        track: "held-item",
-        optionId: String(itemId),
-        state: effective ? "effective" : "inactive",
-      },
+      ...(descriptor ? { descriptor } : {}),
+      source: { track, optionId: String(itemId), state: "inactive" },
     }
   }
 
-  return {
+  const effect = descriptor.effect
+  let effective = true
+  const compiled: CompiledHeldItem = {
     ...neutral,
-    source: { track: "held-item", optionId: String(itemId), state: "inactive" },
+    descriptor,
+    source: { track, optionId: String(itemId), state: "effective" },
   }
+  switch (effect.kind) {
+    case "base-power":
+      compiled.basePowerModifier = effect.modifier
+      break
+    case "battle-stat": {
+      const stat = battleStatFor(side, context.category)
+      effective = stat !== undefined && effect.stats.includes(stat)
+      if (effective && side === "attacker") compiled.attackModifier = effect.modifier
+      if (effective && side === "defender") compiled.defenseModifier = effect.modifier
+      break
+    }
+    case "final-damage":
+      compiled.finalModifier = effect.modifier
+      break
+    case "accuracy":
+      effective = effect.direction === (side === "attacker" ? "outgoing" : "incoming")
+      if (effective) compiled.accuracyModifier = effect.modifier
+      break
+    case "critical-stage":
+      effective = side === "attacker"
+      if (effective) compiled.criticalStage = effect.stage
+      break
+    case "suppress-ordinary-weather-damage":
+      effective = side === "defender"
+      compiled.suppressOrdinaryWeatherDamage = effective
+      break
+  }
+  if (!effective) compiled.source = { ...compiled.source, state: "inactive" }
+  return compiled
 }
 
 function criticalProbability(stage: CriticalStage): number {
@@ -226,19 +310,19 @@ function criticalProbability(stage: CriticalStage): number {
 }
 
 function compileProbability(
-  snapshot: MoveSnapshot,
   mode: ProbabilityMode,
   accuracy: MoveMechanics["accuracy"],
+  criticalStage: CriticalStage,
 ): ProbabilityInput {
   if (mode === "rolls") {
     return {
       hitProbability: 1,
-      criticalHitProbability: snapshot.criticalStage === 3 ? 1 : 0,
+      criticalHitProbability: criticalStage === 3 ? 1 : 0,
     }
   }
   return {
-    hitProbability: accuracy === "always-hits" ? 1 : accuracy / 100,
-    criticalHitProbability: criticalProbability(snapshot.criticalStage),
+    hitProbability: accuracy === "always-hits" ? 1 : Math.min(1, accuracy / 100),
+    criticalHitProbability: criticalProbability(criticalStage),
   }
 }
 
@@ -246,7 +330,8 @@ type BranchContext = {
   power: number
   basePowerModifier: number
   attackModifier: number
-  finalModifier: number
+  defenseModifier: number
+  finalModifiers: readonly number[]
   spread: boolean
   weatherModifier: number
   screenModifier: number
@@ -273,7 +358,7 @@ function compileBranch(
     defenseStage: critical
       ? Math.min(context.defenderStage, 0)
       : context.defenderStage,
-    defenseModifier: NEUTRAL_MODIFIER,
+    defenseModifier: context.defenseModifier,
     spreadModifier: context.spread ? 3072 : NEUTRAL_MODIFIER,
     weatherModifier: context.weatherModifier,
     criticalModifier: critical ? 6144 : NEUTRAL_MODIFIER,
@@ -281,7 +366,7 @@ function compileBranch(
     typeEffectivenessModifier: context.typeEffectivenessModifier,
     finalModifier: chainModifiers([
       critical ? NEUTRAL_MODIFIER : context.screenModifier,
-      context.finalModifier,
+      ...context.finalModifiers,
     ]),
   }
 }
@@ -292,17 +377,36 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   const move = getMoveById(raw.snapshot.moveId)
   const power = normalizeSnapshotPower(raw.snapshot.power)
   const accuracy = normalizeSnapshotAccuracy(raw.snapshot.accuracy)
+  const moveCategory = move && isMoveCategory(move.category) ? move.category : undefined
   const moveType = move && isPokemonType(move.type)
     ? resolveReviewedMoveType(move.id, raw.attackerId, move.type, attacker?.types)
     : undefined
-  const item = move && isMoveCategory(move.category) && moveType
-    ? itemModifiers(raw.attackerItemId, move.category, moveType)
-    : itemModifiers(raw.attackerItemId, "physical", "normal")
+  const effectiveness = moveType && defender
+    ? typeEffectiveness(moveType, defender.types)
+    : 1
+  const commonItemContext = {
+    category: moveCategory,
+    moveType,
+    effectiveness,
+    weather: raw.weather,
+    numericAccuracy: !raw.snapshot.alwaysHits && accuracy > 0,
+  }
+  const attackerItem = compileHeldItem(raw.attackerItemId, "attacker", {
+    ...commonItemContext,
+    holder: attacker,
+  })
+  const defenderItem = raw.defenderItemId === undefined
+    ? undefined
+    : compileHeldItem(raw.defenderItemId, "defender", {
+        ...commonItemContext,
+        holder: defender,
+      })
   const weather = compileWeatherEffect(
     raw.snapshot.moveId,
     moveType,
     raw.weather,
     raw.probabilityMode,
+    defenderItem?.suppressOrdinaryWeatherDamage ?? false,
   )
   const terrain = compileTerrainEffect(
     raw.snapshot.moveId,
@@ -311,13 +415,17 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     isGrounded(attacker?.types ?? [], raw.attackerAbilityId),
     isGrounded(defender?.types ?? [], raw.defenderAbilityId),
   )
-  const criticalOnly = raw.snapshot.criticalStage === 3
+  const derivedCriticalStage = Math.min(
+    3,
+    raw.snapshot.criticalStage + attackerItem.criticalStage,
+  ) as CriticalStage
+  const criticalOnly = derivedCriticalStage === 3
   const breaksScreensBeforeDamage = Boolean(
     move && moveBreaksScreensBeforeDamage(move.id),
   )
   const screen = compileScreenEffect(
     raw.screen,
-    move && isMoveCategory(move.category) ? move.category : undefined,
+    moveCategory,
     criticalOnly,
     breaksScreensBeforeDamage,
   )
@@ -347,6 +455,58 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       : raw.defenderAbilityId === ADAPTABILITY_ABILITY_ID
       ? "inactive"
       : "unsupported"
+
+  const numericAccuracyWith = (
+    includeAttackerItem: boolean,
+    includeDefenderItem: boolean,
+  ): number => applyModifier(accuracy, chainModifiers([
+    includeAttackerItem ? attackerItem.accuracyModifier : NEUTRAL_MODIFIER,
+    includeDefenderItem
+      ? defenderItem?.accuracyModifier ?? NEUTRAL_MODIFIER
+      : NEUTRAL_MODIFIER,
+  ]))
+  const itemModifiedAccuracy = raw.snapshot.alwaysHits
+    ? accuracy
+    : numericAccuracyWith(true, true)
+  const resolvedAccuracy = weather.accuracy ??
+    (raw.snapshot.alwaysHits ? "always-hits" : itemModifiedAccuracy)
+  const moveAccuracy: MoveMechanics["accuracy"] = resolvedAccuracy === "always-hits"
+    ? resolvedAccuracy
+    : Math.min(100, resolvedAccuracy)
+  const normalizedItemAccuracy = (includeAttackerItem: boolean, includeDefenderItem: boolean) =>
+    Math.min(1, numericAccuracyWith(includeAttackerItem, includeDefenderItem) / 100)
+
+  let attackerItemState = attackerItem.source.state
+  if (attackerItem.descriptor?.effect.kind === "accuracy") {
+    attackerItemState = attackerItemState === "effective" &&
+      raw.probabilityMode === "actual" &&
+      weather.accuracy === undefined &&
+      normalizedItemAccuracy(true, true) !== normalizedItemAccuracy(false, true)
+      ? "effective"
+      : "inactive"
+  } else if (attackerItem.descriptor?.effect.kind === "critical-stage") {
+    const visible = raw.probabilityMode === "actual"
+      ? derivedCriticalStage !== raw.snapshot.criticalStage
+      : derivedCriticalStage === 3 && raw.snapshot.criticalStage < 3
+    attackerItemState = attackerItemState === "effective" && visible
+      ? "effective"
+      : "inactive"
+  }
+
+  let defenderItemState = defenderItem?.source.state
+  if (defenderItem?.descriptor?.effect.kind === "accuracy") {
+    defenderItemState = defenderItemState === "effective" &&
+      raw.probabilityMode === "actual" &&
+      weather.accuracy === undefined &&
+      normalizedItemAccuracy(true, true) !== normalizedItemAccuracy(true, false)
+      ? "effective"
+      : "inactive"
+  } else if (defenderItem?.descriptor?.effect.kind === "suppress-ordinary-weather-damage") {
+    defenderItemState = defenderItemState === "effective" && weather.ordinaryDamageSuppressed
+      ? "effective"
+      : "inactive"
+  }
+
   const sources: ScenarioSource[] = [
     ...(raw.sourceOptionIds
       ? [{
@@ -360,16 +520,10 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       optionId: String(raw.attackerStage),
       state: attackerStageState,
     },
-    item.source,
-    ...(raw.defenderItemId === undefined
+    { ...attackerItem.source, state: attackerItemState },
+    ...(defenderItem === undefined
       ? []
-      : [{
-          track: "defender-held-item" as const,
-          optionId: String(raw.defenderItemId),
-          state: raw.defenderItemId === "none" || isMegaStone(raw.defenderItemId)
-            ? "neutral" as const
-            : "inactive" as const,
-        }]),
+      : [{ ...defenderItem.source, state: defenderItemState ?? defenderItem.source.state }]),
     {
       track: "attacker-ability",
       optionId: String(raw.attackerAbilityId),
@@ -453,16 +607,19 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     }
   }
 
-  const effectiveness = typeEffectiveness(moveType, defender.types)
   const context: BranchContext = {
     power,
     basePowerModifier: chainModifiers([
-      item.basePower,
+      attackerItem.basePowerModifier,
       weather.basePowerModifier,
       terrain.basePowerModifier,
     ]),
-    attackModifier: item.attack,
-    finalModifier: item.final,
+    attackModifier: attackerItem.attackModifier,
+    defenseModifier: defenderItem?.defenseModifier ?? NEUTRAL_MODIFIER,
+    finalModifiers: [
+      attackerItem.finalModifier,
+      defenderItem?.finalModifier ?? NEUTRAL_MODIFIER,
+    ],
     spread:
       (move.isSpread || terrain.makesSpread) &&
       raw.snapshot.spreadEligible &&
@@ -476,9 +633,8 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     weatherModifier: weather.damageModifier,
     screenModifier: screen.modifier,
   }
-  const moveAccuracy = weather.accuracy ?? (raw.snapshot.alwaysHits ? "always-hits" : accuracy)
   const mechanicsModifiers = {
-    item: chainModifiers([item.basePower, item.attack, item.final]),
+    item: attackerItem.basePowerModifier,
     weather: chainModifiers([
       weather.basePowerModifier,
       weather.damageModifier,
@@ -493,7 +649,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   const compilePoint = (point: RawScenarioPoint) => {
     return {
       defenderHp: point.defense.hp,
-      ...(raw.snapshot.criticalStage < 3
+      ...(derivedCriticalStage < 3
         ? { normal: compileBranch(point, context, false) }
         : {}),
       critical: compileBranch(point, context, true),
@@ -512,9 +668,9 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       ...(raw.highOutcome ? { high: compilePoint(raw.highOutcome) } : {}),
     },
     probability: compileProbability(
-      raw.snapshot,
       raw.probabilityMode,
       moveAccuracy,
+      derivedCriticalStage,
     ),
     moveMechanics: {
       basePower: power,

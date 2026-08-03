@@ -81,6 +81,13 @@ function calculableScenario(overrides: Partial<RawScenario> = {}): CalculableSce
   return outcome
 }
 
+function heldItemSource(
+  outcome: CalculableScenario,
+  track: "held-item" | "defender-held-item" = "held-item",
+) {
+  return outcome.sources.find((source) => source.track === track)
+}
+
 describe("scenario compiler", () => {
   beforeAll(async () => {
     await Promise.all([listResources("pokemon", "en"), listResources("move", "en")])
@@ -115,7 +122,7 @@ describe("scenario compiler", () => {
   })
 
   it("compiles exact item and branch inputs without names or float modifiers", () => {
-    const outcome = compileScenario(scenario({ attackerItemId: "choice-band" }))
+    const outcome = compileScenario(scenario({ attackerItemId: 197 }))
     expect(outcome.kind).toBe("calculable")
     if (outcome.kind !== "calculable") return
 
@@ -129,13 +136,13 @@ describe("scenario compiler", () => {
     })
     expect(outcome.moveMechanics).toMatchObject({
       basePower: 100,
-      effectivePower: 337,
+      effectivePower: 225,
       accuracy: 100,
-      modifiers: { item: 6144, spread: 3072, stab: 6144 },
+      modifiers: { item: 4096, spread: 3072, stab: 6144 },
     })
     expect(outcome.sources).toEqual([
       { track: "attacker-stage", optionId: "0", state: "neutral" },
-      { track: "held-item", optionId: "choice-band", state: "effective" },
+      { track: "held-item", optionId: "197", state: "effective" },
       { track: "attacker-ability", optionId: "8", state: "unsupported" },
       { track: "weather", optionId: "none", state: "neutral" },
       { track: "terrain", optionId: "none", state: "neutral" },
@@ -143,6 +150,266 @@ describe("scenario compiler", () => {
       { track: "defender-ability", optionId: "22", state: "unsupported" },
       { track: "screen", optionId: "none", state: "neutral" },
     ])
+  })
+
+  describe("frozen held-item effects", () => {
+    it("places Base Power, battle-stat, and final-damage effects in distinct phases", () => {
+      const muscleBand = calculableScenario({ attackerItemId: 243 })
+      const choiceBand = calculableScenario({ attackerItemId: 197 })
+      const lifeOrbAndShuca = calculableScenario({
+        attackerItemId: 247,
+        defenderItemId: 168,
+      })
+
+      expect(muscleBand.calculation.low.normal).toMatchObject({
+        basePowerModifier: 4505,
+        attackModifier: 4096,
+        finalModifier: 4096,
+      })
+      expect(muscleBand.moveMechanics.modifiers.item).toBe(4505)
+      expect(choiceBand.calculation.low.normal).toMatchObject({
+        basePowerModifier: 4096,
+        attackModifier: 6144,
+        finalModifier: 4096,
+      })
+      expect(choiceBand.moveMechanics.modifiers.item).toBe(4096)
+      expect(lifeOrbAndShuca.calculation.low.normal?.finalModifier).toBe(2662)
+      expect(heldItemSource(lifeOrbAndShuca)).toMatchObject({ optionId: "247", state: "effective" })
+      expect(heldItemSource(lifeOrbAndShuca, "defender-held-item")).toMatchObject({
+        optionId: "168",
+        state: "effective",
+      })
+    })
+
+    it("evaluates category, type, effectiveness, and holder gates from the current Scenario", () => {
+      const wrongCategory = calculableScenario({ attackerItemId: 274 })
+      const wrongType = calculableScenario({ attackerItemId: 226 })
+      const lightBall = calculableScenario({ attackerId: 25, attackerItemId: 213 })
+      const ineligibleLightBall = calculableScenario({ attackerItemId: 213 })
+      const lustrousOrb = calculableScenario({
+        attackerId: 484,
+        attackerItemId: 113,
+        snapshot: {
+          ...snapshot,
+          id: "palkia-crabhammer",
+          moveId: 152,
+          spreadEligible: false,
+          spread: false,
+        },
+      })
+
+      expect(wrongCategory.calculation.low.normal?.attackModifier).toBe(4096)
+      expect(heldItemSource(wrongCategory)?.state).toBe("inactive")
+      expect(wrongType.calculation.low.normal?.basePowerModifier).toBe(4096)
+      expect(heldItemSource(wrongType)?.state).toBe("inactive")
+      expect(lightBall.calculation.low.normal?.attackModifier).toBe(8192)
+      expect(ineligibleLightBall.calculation.low.normal?.attackModifier).toBe(4096)
+      expect(heldItemSource(ineligibleLightBall)?.state).toBe("inactive")
+      expect(lustrousOrb.calculation.low.normal?.basePowerModifier).toBe(4915)
+    })
+
+    it("compiles defender battle-stat gates, including per-identity Eviolite eligibility", () => {
+      const specialSnapshot = {
+        ...snapshot,
+        id: "thunder-defense-items",
+        moveId: 87,
+        power: 110,
+        accuracy: 70,
+        spreadEligible: false,
+        spread: false,
+      }
+      const deepSeaScale = calculableScenario({
+        defenderId: 366,
+        defenderItemId: 204,
+        snapshot: specialSnapshot,
+      })
+      const assaultVest = calculableScenario({
+        defenderItemId: 683,
+        snapshot: specialSnapshot,
+      })
+      const eviolite = calculableScenario({ defenderId: 112, defenderItemId: 581 })
+      const ineligibleEviolite = calculableScenario({ defenderId: 464, defenderItemId: 581 })
+
+      expect(deepSeaScale.calculation.low.normal?.defenseModifier).toBe(8192)
+      expect(assaultVest.calculation.low.normal?.defenseModifier).toBe(6144)
+      expect(eviolite.calculation.low.normal?.defenseModifier).toBe(6144)
+      expect(ineligibleEviolite.calculation.low.normal?.defenseModifier).toBe(4096)
+      expect(heldItemSource(ineligibleEviolite, "defender-held-item")?.state).toBe("inactive")
+    })
+
+    it("applies Chilan without a super-effective gate and requires it for other Berries", () => {
+      const tackleSnapshot = {
+        ...snapshot,
+        id: "neutral-tackle",
+        moveId: 33,
+        power: 40,
+        spreadEligible: false,
+        spread: false,
+      }
+      const chilan = calculableScenario({
+        defenderItemId: 177,
+        snapshot: tackleSnapshot,
+      })
+      const nonMatchingBerry = calculableScenario({
+        defenderItemId: 168,
+        snapshot: tackleSnapshot,
+      })
+
+      expect(chilan.calculation.low.normal?.finalModifier).toBe(2048)
+      expect(heldItemSource(chilan, "defender-held-item")?.state).toBe("effective")
+      expect(nonMatchingBerry.calculation.low.normal?.finalModifier).toBe(4096)
+      expect(heldItemSource(nonMatchingBerry, "defender-held-item")?.state).toBe("inactive")
+    })
+
+    it("activates a Mask only for its locked attacking identity", () => {
+      const eligible = calculableScenario({ attackerId: 10273, attackerItemId: 2106 })
+      const wrongIdentity = calculableScenario({ attackerItemId: 2106 })
+      const defenderMask = calculableScenario({ defenderId: 10273, defenderItemId: 2106 })
+
+      expect(eligible.calculation.low.normal?.basePowerModifier).toBe(4915)
+      expect(heldItemSource(eligible)?.state).toBe("effective")
+      expect(wrongIdentity.calculation.low.normal?.basePowerModifier).toBe(4096)
+      expect(heldItemSource(wrongIdentity)?.state).toBe("inactive")
+      expect(heldItemSource(defenderMask, "defender-held-item")?.state).toBe("inactive")
+    })
+
+    it("chains both sides' numeric accuracy before normalization", () => {
+      const outcome = calculableScenario({
+        attackerItemId: 242,
+        defenderItemId: 190,
+        probabilityMode: "actual",
+        snapshot: { ...snapshot, accuracy: 90 },
+      })
+
+      expect(outcome.moveMechanics.accuracy).toBe(89)
+      expect(outcome.probability.hitProbability).toBe(0.89)
+      expect(heldItemSource(outcome)).toMatchObject({ optionId: "242", state: "effective" })
+      expect(heldItemSource(outcome, "defender-held-item")).toMatchObject({
+        optionId: "190",
+        state: "effective",
+      })
+    })
+
+    it("marks accuracy contributions hidden by normalization, mode, or a later override inactive", () => {
+      const normalized = calculableScenario({
+        attackerItemId: 242,
+        probabilityMode: "actual",
+      })
+      const rolls = calculableScenario({
+        attackerItemId: 242,
+        probabilityMode: "rolls",
+        snapshot: { ...snapshot, accuracy: 90 },
+      })
+      const rainOverride = calculableScenario({
+        attackerItemId: 242,
+        defenderItemId: 190,
+        probabilityMode: "actual",
+        weather: "rain",
+        snapshot: {
+          ...snapshot,
+          id: "rain-thunder-items",
+          moveId: 87,
+          power: 110,
+          accuracy: 70,
+          spreadEligible: false,
+          spread: false,
+        },
+      })
+
+      expect(normalized.moveMechanics.accuracy).toBe(100)
+      expect(normalized.probability.hitProbability).toBe(1)
+      expect(heldItemSource(normalized)?.state).toBe("inactive")
+      expect(heldItemSource(rolls)?.state).toBe("inactive")
+      expect(rainOverride.moveMechanics.accuracy).toBe("always-hits")
+      expect(heldItemSource(rainOverride)?.state).toBe("inactive")
+      expect(heldItemSource(rainOverride, "defender-held-item")?.state).toBe("inactive")
+    })
+
+    it("uses the derived capped Critical stage for probability, branches, stages, and Screens", () => {
+      const guaranteed = calculableScenario({
+        attackerId: 865,
+        attackerItemId: 236,
+        attackerStage: -1,
+        defenderStage: 1,
+        screen: "reflect",
+        snapshot: {
+          ...snapshot,
+          id: "sirfetchd-leek",
+          moveId: 370,
+          power: 120,
+          criticalStage: 1,
+          spreadEligible: false,
+          spread: false,
+        },
+      })
+      const randomOnly = calculableScenario({
+        attackerItemId: 209,
+        probabilityMode: "rolls",
+      })
+      const actual = calculableScenario({
+        attackerItemId: 209,
+        probabilityMode: "actual",
+      })
+      const capped = calculableScenario({
+        attackerItemId: 209,
+        probabilityMode: "actual",
+        snapshot: { ...snapshot, criticalStage: 3 },
+      })
+
+      expect(guaranteed.calculation.low.normal).toBeUndefined()
+      expect(guaranteed.calculation.low.critical).toMatchObject({
+        attackStage: 0,
+        defenseStage: 0,
+        finalModifier: 4096,
+      })
+      expect(guaranteed.probability.criticalHitProbability).toBe(1)
+      expect(heldItemSource(guaranteed)?.state).toBe("effective")
+      expect(guaranteed.sources.find((source) => source.track === "screen")?.state).toBe("inactive")
+      expect(randomOnly.probability.criticalHitProbability).toBe(0)
+      expect(heldItemSource(randomOnly)?.state).toBe("inactive")
+      expect(actual.probability.criticalHitProbability).toBe(1 / 8)
+      expect(heldItemSource(actual)?.state).toBe("effective")
+      expect(heldItemSource(capped)?.state).toBe("inactive")
+    })
+
+    it("suppresses only ordinary defender-relative Weather damage for Utility Umbrella", () => {
+      const waterSnapshot = {
+        ...snapshot,
+        id: "rain-crabhammer-umbrella",
+        moveId: 152,
+        spreadEligible: false,
+        spread: false,
+      }
+      const ordinary = calculableScenario({
+        defenderItemId: 1181,
+        weather: "rain",
+        snapshot: waterSnapshot,
+      })
+      const unaffected = calculableScenario({
+        defenderItemId: 1181,
+        weather: "rain",
+      })
+      const hydroSteam = calculableScenario({
+        defenderItemId: 1181,
+        weather: "sun",
+        snapshot: {
+          ...snapshot,
+          id: "sun-hydro-steam-umbrella",
+          moveId: 876,
+          power: 80,
+          accuracy: 100,
+          spreadEligible: false,
+          spread: false,
+        },
+      })
+
+      expect(ordinary.calculation.low.normal?.weatherModifier).toBe(4096)
+      expect(heldItemSource(ordinary, "defender-held-item")?.state).toBe("effective")
+      expect(unaffected.calculation.low.normal?.weatherModifier).toBe(4096)
+      expect(heldItemSource(unaffected, "defender-held-item")?.state).toBe("inactive")
+      expect(hydroSteam.calculation.low.normal?.weatherModifier).toBe(6144)
+      expect(heldItemSource(hydroSteam, "defender-held-item")?.state).toBe("inactive")
+    })
   })
 
   it("compiles exact actual stat values without deriving a setup", () => {
@@ -371,14 +638,14 @@ describe("scenario compiler", () => {
   })
 
   it("keeps ineffective type-boost provenance while compiling a neutral phase", () => {
-    const outcome = compileScenario(scenario({ attackerItemId: "type-boost-fire" }))
+    const outcome = compileScenario(scenario({ attackerItemId: 226 }))
     expect(outcome.kind).toBe("calculable")
     if (outcome.kind !== "calculable") return
 
     expect(outcome.calculation.low.normal?.basePowerModifier).toBe(4096)
     expect(outcome.sources).toEqual([
       { track: "attacker-stage", optionId: "0", state: "neutral" },
-      { track: "held-item", optionId: "type-boost-fire", state: "inactive" },
+      { track: "held-item", optionId: "226", state: "inactive" },
       { track: "attacker-ability", optionId: "8", state: "unsupported" },
       { track: "weather", optionId: "none", state: "neutral" },
       { track: "terrain", optionId: "none", state: "neutral" },
@@ -392,7 +659,7 @@ describe("scenario compiler", () => {
     const outcome = compileScenario(scenario({
       attackerId: 10251,
       defenderId: 812,
-      attackerItemId: "type-boost-fire",
+      attackerItemId: 226,
       snapshot: {
         ...snapshot,
         id: "raging-bull-blaze",

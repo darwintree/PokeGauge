@@ -1,5 +1,3 @@
-import { POKEMON_TYPES, type PokemonType } from "@/lib/pokemon/types"
-import { TYPE_BOOST_CALC_NAME, typeBoostCatalogId } from "@/lib/held-item"
 import type { MoveCategory } from "@/lib/catalog/types"
 
 import type { DefenderSetup, StatSetup } from "./types"
@@ -42,21 +40,6 @@ export function getAttackerStatSetups(category: MoveCategory): Record<string, St
 
 export function getDefenderSetups(category: MoveCategory): Record<string, DefenderSetup> {
   return category === "physical" ? PHYSICAL_DEFENDER : SPECIAL_DEFENDER
-}
-
-const TYPE_BOOST_ITEM_NAMES = Object.fromEntries(
-  POKEMON_TYPES.map((type: PokemonType) => [
-    typeBoostCatalogId(type),
-    TYPE_BOOST_CALC_NAME[type],
-  ]),
-) as Record<string, string>
-
-export const ATTACKER_ITEM_NAMES: Record<string, string | undefined> = {
-  none: undefined,
-  "life-orb": "Life Orb",
-  "choice-band": "Choice Band",
-  "choice-specs": "Choice Specs",
-  ...TYPE_BOOST_ITEM_NAMES,
 }
 
 export function offenseStatKey(category: MoveCategory): "atk" | "spa" {

@@ -115,6 +115,21 @@ describe("scenario storage", () => {
     expect(loadScenarioSnapshot()?.trackState.defenderItemIds).toEqual([717])
   })
 
+  it("rejects legacy synthetic held-item identities while parsing", () => {
+    const input = scenario()
+    data[SCENARIO_STORAGE_KEY] = JSON.stringify({
+      version: 3,
+      ...input,
+      trackState: {
+        ...input.trackState,
+        attackerItemIds: ["life-orb"],
+      },
+    })
+
+    expect(loadScenarioSnapshot()).toBeNull()
+    expect(data[SCENARIO_STORAGE_KEY]).toBeUndefined()
+  })
+
   it.each([
     ["broken JSON", "{"],
     ["unsupported version", JSON.stringify({ version: 1 })],
@@ -137,5 +152,63 @@ describe("scenario storage", () => {
     const { currentCatalog, snapshot } = await compatibleScenario()
 
     expect(scenarioSnapshotMatchesCatalog(snapshot, currentCatalog)).toBe(true)
+  })
+
+  it("accepts valid side-specific numeric Held item selections", async () => {
+    const { currentCatalog, snapshot } = await compatibleScenario()
+    snapshot.trackState.attackerItemIds = [247]
+    snapshot.trackState.defenderItemIds = [581]
+
+    expect(scenarioSnapshotMatchesCatalog(snapshot, currentCatalog)).toBe(true)
+  })
+
+  it.each([
+    ["attacker item on defender side", ["none"], [247]],
+    ["defender item on attacker side", [581], ["none"]],
+    ["whitelist-external id", [1659], ["none"]],
+  ] as const)("rejects %s", async (_label, attackerItemIds, defenderItemIds) => {
+    const { currentCatalog, snapshot } = await compatibleScenario()
+    snapshot.trackState.attackerItemIds = [...attackerItemIds]
+    snapshot.trackState.defenderItemIds = [...defenderItemIds]
+
+    expect(scenarioSnapshotMatchesCatalog(snapshot, currentCatalog)).toBe(false)
+  })
+
+  it("rejects the wrong Ogerpon Mask for an identity lock", async () => {
+    const catalog = await getCatalogShell(10273, 727, "en", "physical")
+    const trackState = defaultTrackState(catalog)
+    trackState.attackerItemIds = [2107]
+
+    expect(
+      scenarioSnapshotMatchesCatalog(
+        {
+          version: 3,
+          attackerId: 10273,
+          defenderId: 727,
+          moveCategory: "physical",
+          trackState,
+        },
+        catalog,
+      ),
+    ).toBe(false)
+  })
+
+  it("accepts a valid restored Mega Stone lock", async () => {
+    const catalog = await getCatalogShell(10034, 727, "en", "physical")
+    const trackState = defaultTrackState(catalog)
+
+    expect(trackState.attackerItemIds).toEqual([699])
+    expect(
+      scenarioSnapshotMatchesCatalog(
+        {
+          version: 3,
+          attackerId: 10034,
+          defenderId: 727,
+          moveCategory: "physical",
+          trackState,
+        },
+        catalog,
+      ),
+    ).toBe(true)
   })
 })

@@ -16,7 +16,7 @@ Preserve the already chosen Resistance Berry behavior: single-hit reduction is s
 
 ## Parent map
 
-[[../20260731_open_wayfinder-held-item-effects-specification|Wayfinder: Held-item effects specification]]
+[[20260731_closed_wayfinder-held-item-effects-specification|Wayfinder: Held-item effects specification]]
 
 ## Blocked by
 

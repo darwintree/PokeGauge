@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "eb3a6510-6d3e-4791-85a3-5b3429739fc6"
 title: "Implement frozen 85-item Held-item effects"
-status: "open"
+status: "closed"
 priority: "high"
 labels: ["READY-FOR-AGENT"]
 created_at: "2026-07-31T13:06:00Z"
-updated_at: "2026-07-31T13:50:00Z"
+updated_at: "2026-08-03T03:21:00Z"
 ---
 ## Problem Statement
 
@@ -327,17 +327,21 @@ The specification is complete only when all 85 inventory rows remain unique, eve
 
 ## Further Notes
 
-- Wayfinder source: [[20260731_open_wayfinder-held-item-effects-specification|Wayfinder: Held-item effects specification]].
-- Acceptance contract: [[archive/20260731_closed_decide-held-item-spec-acceptance-contract|Decide held-item spec acceptance contract]].
+- Wayfinder source: [[20260731_closed_wayfinder-held-item-effects-specification|Wayfinder: Held-item effects specification]].
+- Acceptance contract: [[20260731_closed_decide-held-item-spec-acceptance-contract|Decide held-item spec acceptance contract]].
 - `M`: [Frozen held-item mechanics matrix](../docs/research/2026-07-31-frozen-held-item-mechanics-matrix.md).
 - `R`: [Held-item modifier phases and rounding](../docs/research/2026-07-31-held-item-modifier-phases-and-rounding.md).
 - `E`: [PokeAPI Eviolite eligibility](../docs/research/2026-07-31-pokeapi-eviolite-eligibility.md).
 - `S`: [PokeAPI Held-item sprite coverage](../docs/research/2026-07-31-pokeapi-held-item-sprite-coverage.md).
 - Discussion trace: [Held-item spec acceptance contract](../docs/traces/discussion/2026-07-31-held-item-spec-acceptance-contract.md).
 - This issue is the authoritative `to-spec` publication selected by the user after Wayfinder. It replaces only the previously anticipated `docs/spec/held-item-effects.md` publication path; all substantive Wayfinder decisions and acceptance obligations remain unchanged.
-- The earlier [[20260731_open_implement-defender-held-item-effects|Implement defender held-item effects]] issue is covered by this unified attacker-and-defender contract; tracker cleanup of that issue is separate from this publication.
+- The earlier [[20260731_closed_implement-defender-held-item-effects|Implement defender held-item effects]] issue is covered by this unified attacker-and-defender contract; tracker cleanup of that issue is separate from this publication.
 - The AFK implementation must use `implementation-with-traces` only for implementation choices the contract genuinely leaves unresolved.
 
 ## Parent issue
 
-[[20260730_open_implement-pokemon-held-item-effects|Implement Pokémon held-item effects]]
+[[../20260730_open_implement-pokemon-held-item-effects|Implement Pokémon held-item effects]]
+
+## Resolution
+
+2026-08-03：frozen-85 契约已端到端实现：85 项数字资源与本地精灵、58/24/3 静态池与锁定态、攻击方和防守方编译效果、精确整数修正与概率、来源合并、部分支持警告、Eviolite 身份资格及严格场景恢复均已落地。独立 code review 后补齐普通道具本地化 tooltip、代表性 pipeline 验收用例及 Mega 烈空坐对上一身份专属道具的重置边界。`pnpm generate:pokeapi`、328 项测试、lint、build、性能门禁与桌面/移动端设计复核全部通过。

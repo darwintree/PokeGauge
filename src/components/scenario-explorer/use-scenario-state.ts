@@ -64,6 +64,13 @@ export function normalizeScreens(screens: TrackState["screens"]): TrackState["sc
   return screens.length > 0 ? screens : ["none"]
 }
 
+function itemSelectionFits(
+  selectedIds: TrackState["attackerItemIds"],
+  options: MatchupCatalog["attackerItems"],
+): boolean {
+  return selectedIds.every((id) => options.some((option) => option.id === id))
+}
+
 function snapshotsForMoveIds(
   catalog: MatchupCatalog,
   moveIds: readonly number[],
@@ -154,10 +161,12 @@ export function trackStateAfterCatalogTransition(
   return {
     ...defaultTrackState(catalog),
     screens: state.screens,
-    ...(attackerChanged && catalog.attackerPreservesItem && {
+    ...(attackerChanged && catalog.attackerPreservesItem &&
+      itemSelectionFits(state.attackerItemIds, catalog.attackerItems) && {
       attackerItemIds: state.attackerItemIds,
     }),
-    ...(defenderChanged && catalog.defenderPreservesItem && {
+    ...(defenderChanged && catalog.defenderPreservesItem &&
+      itemSelectionFits(state.defenderItemIds, catalog.defenderItems) && {
       defenderItemIds: state.defenderItemIds,
     }),
     ...(!attackerChanged && {

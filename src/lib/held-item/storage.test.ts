@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import {
   loadAddedBoostIds,
+  normalizeAddedBoostIds,
   removeAddedBoostId,
   saveAddedBoostId,
 } from "@/lib/held-item/storage"
@@ -22,15 +23,21 @@ describe("held-item storage", () => {
   })
 
   it("removeAddedBoostId drops id from attacker list", () => {
-    saveAddedBoostId("garchomp", "type-boost-fire")
-    saveAddedBoostId("garchomp", "type-boost-water")
-    removeAddedBoostId("garchomp", "type-boost-fire")
-    expect(loadAddedBoostIds("garchomp")).toEqual(["type-boost-water"])
+    saveAddedBoostId("garchomp", 226)
+    saveAddedBoostId("garchomp", 220)
+    removeAddedBoostId("garchomp", 226)
+    expect(loadAddedBoostIds("garchomp")).toEqual([220])
   })
 
   it("removeAddedBoostId clears empty attacker key", () => {
-    saveAddedBoostId("garchomp", "type-boost-fire")
-    removeAddedBoostId("garchomp", "type-boost-fire")
+    saveAddedBoostId("garchomp", 226)
+    removeAddedBoostId("garchomp", 226)
     expect(loadAddedBoostIds("garchomp")).toEqual([])
+  })
+
+  it("filters legacy, external, and malformed visibility ids", () => {
+    expect(
+      normalizeAddedBoostIds(["type-boost-fire", 226, 1659, null, 226]),
+    ).toEqual([226, 226])
   })
 })

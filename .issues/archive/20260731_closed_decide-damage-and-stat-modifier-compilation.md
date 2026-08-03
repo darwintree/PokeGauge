@@ -16,7 +16,7 @@ Decide activation predicates, holder-side separation, modifier phases, integer r
 
 ## Parent map
 
-[[../20260731_open_wayfinder-held-item-effects-specification|Wayfinder: Held-item effects specification]]
+[[20260731_closed_wayfinder-held-item-effects-specification|Wayfinder: Held-item effects specification]]
 
 ## Blocked by
 

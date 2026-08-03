@@ -25,6 +25,7 @@ export type NormalizedBattlePokemon = {
   speciesId: UpstreamResourceId
   isBattleOnly: boolean
   isMega: boolean
+  evioliteEligible: boolean
   pokemonSlug: string
   speciesSlug: string
   calcSpeciesName: string
@@ -48,6 +49,11 @@ export type NormalizedItem = {
   id: UpstreamResourceId
   slug: string
   names: LocalizedNames
+}
+
+export type NormalizedHeldItem = NormalizedItem & {
+  spriteFilename: string
+  spriteSourcePath: string
 }
 
 export type NormalizedMove = {
@@ -74,6 +80,8 @@ export type GeneratedResourceDiagnostics = {
   moveIds: UpstreamResourceId[]
   abilityIds: UpstreamResourceId[]
   itemIds: UpstreamResourceId[]
+  heldItemIds: UpstreamResourceId[]
+  megaStoneIds: UpstreamResourceId[]
   missingLocaleNames: Array<{
     resourceType: ResourceType | "item" | "pokemon-species" | "pokemon-form"
     id: UpstreamResourceId
@@ -122,6 +130,7 @@ export type LocalizedPokemonResource = LocalizedResourceBase<"pokemon"> & {
   formName: string | null
   isBattleOnly: boolean
   isMega: boolean
+  evioliteEligible: boolean
   pokemonSlug: string
   calcSpeciesName: string
   types: PokemonType[]

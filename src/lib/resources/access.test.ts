@@ -26,6 +26,7 @@ describe("localized resource access", () => {
     expect(getBattlePokemonById(445)).toMatchObject({
       resourceType: "pokemon",
       id: 445,
+      evioliteEligible: false,
       types: ["dragon", "ground"],
       baseStats: { hp: 108, atk: 130 },
     })
@@ -94,6 +95,19 @@ describe("localized resource access", () => {
     })
   })
 
+  it("exposes per-identity Eviolite eligibility through localized resources", async () => {
+    await expect(getResource("pokemon", 112, "en")).resolves.toMatchObject({
+      id: 112,
+      name: "Rhydon",
+      evioliteEligible: true,
+    })
+    await expect(getResource("pokemon", 464, "en")).resolves.toMatchObject({
+      id: 464,
+      name: "Rhyperior",
+      evioliteEligible: false,
+    })
+  })
+
   it("routes by resource type and resolves only the current locale display name", async () => {
     await expect(getResource("pokemon", 445, "zh-hans")).resolves.toMatchObject({
       name: "烈咬陆鲨",
@@ -126,6 +140,8 @@ describe("localized resource access", () => {
     expect(diagnostics.pokemonIds).toContain(445)
     expect(diagnostics.moveIds).toContain(89)
     expect(diagnostics.abilityIds).toContain(91)
+    expect(diagnostics.heldItemIds).toHaveLength(85)
+    expect(diagnostics.megaStoneIds).toHaveLength(47)
     expect(diagnostics.missingLocaleNames.length).toBeGreaterThan(0)
     expect(diagnostics.unsupportedBattleIdentities).toEqual(
       expect.arrayContaining([

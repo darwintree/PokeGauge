@@ -62,6 +62,29 @@ describe("fixed-point damage kernel", () => {
     expect(halfDown).not.toEqual(roundedToTwo)
   })
 
+  it("applies the exact-half final modifier to every K0 roll", () => {
+    const neutral = calculateDamageRolls({
+      low: {
+        defenderHp: 200,
+        normal: branch({ power: 225, attack: 100, defense: 100 }),
+      },
+    }).low.normal
+    const halved = calculateDamageRolls({
+      low: {
+        defenderHp: 200,
+        normal: branch({
+          power: 225,
+          attack: 100,
+          defense: 100,
+          finalModifier: 2048,
+        }),
+      },
+    }).low.normal
+
+    expect(neutral).toEqual([85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 101])
+    expect(halved).toEqual([42, 43, 43, 44, 44, 45, 45, 46, 46, 47, 47, 48, 48, 49, 49, 50])
+  })
+
   it("matches all normal and critical rolls at an exact .5-down attack phase", () => {
     const attacker = new Pokemon(CALC_GEN, "Eevee", {
       level: VGC_LEVEL,
