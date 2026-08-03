@@ -52,7 +52,7 @@ function rawScenario(
     weather: "none",
     terrain,
     screen: "none",
-    probabilityMode: "rolls",
+    probabilityMode: "classic",
     lowOutcome: {
       offense: offenseStatValue(ATTACKER.name, category, offense),
       defense: defenderStatValues(DEFENDER.name, category, defense),

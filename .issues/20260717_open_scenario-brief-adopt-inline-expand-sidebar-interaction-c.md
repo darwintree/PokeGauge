@@ -6,7 +6,7 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST", "READY-FOR-HUMAN"]
 created_at: "2026-07-17T10:30:00Z"
-updated_at: "2026-07-17T10:33:00Z"
+updated_at: "2026-08-03T08:24:00Z"
 ---
 ## Context
 
@@ -34,7 +34,7 @@ Sidebar interaction model:
 
 The brief is not a passive summary in the results header. It is the sidebar’s primary structure:
 
-- Show **all tracks** (species, moves, stats, ability, item, screens, weather, …) in a scannable map.
+- Show the **Matchup and all Tracks** (Move, Stat, ability, item, screens, weather, …) in a scannable map; the selected Pokémon are Battle Pokémon Identities, not Pokémon Species Tracks.
 - Let the user open the corresponding track editor by operating on that map cell/row.
 
 ## Current prototype shape (reference, not final polish)

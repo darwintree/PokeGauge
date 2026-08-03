@@ -1,6 +1,6 @@
-import type { KoProbabilityValue } from "@/lib/calc-adapter"
+import type { KOProbabilityValue } from "@/lib/calc-adapter"
 
-export function formatKoProbability(value: KoProbabilityValue, locale: string): string {
+export function formatKOProbability(value: KOProbabilityValue, locale: string): string {
   const formatter = new Intl.NumberFormat(locale, {
     style: "percent",
     maximumFractionDigits: 1,

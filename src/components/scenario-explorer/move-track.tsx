@@ -21,7 +21,7 @@ type MoveSnapshotPatch = Partial<
   Pick<MoveSnapshot, "power" | "accuracy" | "criticalStage" | "spread">
 >
 
-export type MoveMultiSelectProps = {
+export type MoveTrackProps = {
   label: string
   options: CatalogMoveOption[]
   snapshots: MoveSnapshot[]
@@ -280,7 +280,7 @@ function SnapshotEditor({
             variant="outline"
             onClick={() => setConfirmingRemove(false)}
           >
-            {intl.formatMessage({ id: "template.cancel" })}
+            {intl.formatMessage({ id: "action.cancel" })}
           </Button>
         ) : null}
       </div>
@@ -367,7 +367,7 @@ function MoveRow({
   )
 }
 
-export function MoveMultiSelect({
+export function MoveTrack({
   label,
   options,
   snapshots,
@@ -380,7 +380,7 @@ export function MoveMultiSelect({
   onToggle = () => {},
   category = options[0]?.category ?? "physical",
   onCategoryChange = () => {},
-}: MoveMultiSelectProps) {
+}: MoveTrackProps) {
   const intl = useIntl()
   const [open, setOpen] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)

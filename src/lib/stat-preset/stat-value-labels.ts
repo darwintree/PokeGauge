@@ -9,25 +9,25 @@ import type { MoveCategory } from "@/lib/catalog/types"
 
 import { defenseStatMod, offenseStatMod, type NatureMod } from "./nature-mod"
 import { statDisplayName, type StatNameStrategy } from "./stat-name-strategy"
-import type { DefenseTemplateValues, StatValueTemplate } from "./types"
+import type { DefenseStatValue, StatPreset } from "./types"
 
 export const EX_LABEL = "EX"
 
-export type EffortAllocation = {
-  cardLabel: string
+export type StatAllocationMatch = {
+  label: string
   setup: StatSetup | DefenderSetup
 }
 
-export type TemplateDisplay = {
+export type StatPresetDisplay = {
   primary: string
-  allocations: EffortAllocation[]
+  allocations: StatAllocationMatch[]
   tooltip: string | null
 }
 
-const offenseAllocationCache = new Map<string, EffortAllocation[]>()
-const defenseAllocationCache = new Map<string, EffortAllocation[]>()
+const offenseAllocationCache = new Map<string, StatAllocationMatch[]>()
+const defenseAllocationCache = new Map<string, StatAllocationMatch[]>()
 
-export function evToAbilityPoints(ev: number): number {
+export function evToStatPoints(ev: number): number {
   return Math.floor((ev + 4) / 8)
 }
 
@@ -39,7 +39,7 @@ function isDefenseEx(hpPoints: number, defPoints: number, defMod: NatureMod): bo
   return hpPoints === 32 && defPoints === 32 && defMod === "+"
 }
 
-export function offenseSpLabel(
+export function offenseStatValueLabel(
   points: number,
   mod: NatureMod,
   category: MoveCategory,
@@ -50,7 +50,7 @@ export function offenseSpLabel(
   return `${points}${statName}${mod}`
 }
 
-export function defenseSpLabel(
+export function defenseStatValueLabel(
   hpPoints: number,
   defPoints: number,
   defMod: NatureMod,
@@ -64,28 +64,28 @@ export function defenseSpLabel(
 }
 
 /** Spread → SP label (neutral mod for offense fallback) */
-export function offenseSpreadLabel(
+export function offenseStatAllocationLabel(
   setup: StatSetup,
   category: MoveCategory,
   strategy: StatNameStrategy,
 ): string {
   const statKey = offenseStatKey(category)
-  const points = evToAbilityPoints(setup.evs[statKey] ?? 0)
+  const points = evToStatPoints(setup.evs[statKey] ?? 0)
   const mod = offenseStatMod(setup.nature, category)
-  return offenseSpLabel(points, mod === "-" ? "" : mod, category, strategy)
+  return offenseStatValueLabel(points, mod === "-" ? "" : mod, category, strategy)
 }
 
 /** Spread → SP label (defense fallback) */
-export function defenseSpreadLabel(
+export function defenseStatAllocationLabel(
   setup: DefenderSetup,
   category: MoveCategory,
   strategy: StatNameStrategy,
 ): string {
   const defKey = defenseStatKey(category)
-  const hpPoints = evToAbilityPoints(setup.evs.hp ?? 0)
-  const defPoints = evToAbilityPoints(setup.evs[defKey] ?? 0)
+  const hpPoints = evToStatPoints(setup.evs.hp ?? 0)
+  const defPoints = evToStatPoints(setup.evs[defKey] ?? 0)
   const defMod = defenseStatMod(setup.nature, category)
-  return defenseSpLabel(
+  return defenseStatValueLabel(
     hpPoints,
     defPoints,
     defMod === "-" ? "" : defMod,
@@ -115,7 +115,7 @@ function enumerateOffenseSpreads(statKey: "atk" | "spa"): StatSetup[] {
   return out
 }
 
-function sortByNeutralFirst<T extends EffortAllocation>(
+function sortByNeutralFirst<T extends StatAllocationMatch>(
   list: T[],
   isNeutral: (setup: StatSetup | DefenderSetup) => boolean,
 ): T[] {
@@ -123,31 +123,31 @@ function sortByNeutralFirst<T extends EffortAllocation>(
     const aNeutral = isNeutral(a.setup) ? 0 : 1
     const bNeutral = isNeutral(b.setup) ? 0 : 1
     if (aNeutral !== bNeutral) return aNeutral - bNeutral
-    return a.cardLabel.localeCompare(b.cardLabel)
+    return a.label.localeCompare(b.label)
   })
 }
 
 export function enumerateOffenseAllocations(
-  species: string,
+  calcName: string,
   category: MoveCategory,
   targetStat: number,
   strategy: StatNameStrategy,
-): EffortAllocation[] {
-  const cacheKey = `${species}\0${category}\0${targetStat}\0${strategy}`
+): StatAllocationMatch[] {
+  const cacheKey = `${calcName}\0${category}\0${targetStat}\0${strategy}`
   const cached = offenseAllocationCache.get(cacheKey)
   if (cached) return cached
 
   const statKey = offenseStatKey(category)
-  const groups = new Map<string, EffortAllocation>()
+  const groups = new Map<string, StatAllocationMatch>()
 
   for (const setup of enumerateOffenseSpreads(statKey)) {
-    if (getOffenseStat(species, category, setup) !== targetStat) continue
-    const points = evToAbilityPoints(setup.evs[statKey] ?? 0)
+    if (getOffenseStat(calcName, category, setup) !== targetStat) continue
+    const points = evToStatPoints(setup.evs[statKey] ?? 0)
     const mod = offenseStatMod(setup.nature, category)
     if (mod === "-") continue
-    const cardLabel = offenseSpLabel(points, mod, category, strategy)
-    if (!groups.has(cardLabel)) {
-      groups.set(cardLabel, { cardLabel, setup })
+    const label = offenseStatValueLabel(points, mod, category, strategy)
+    if (!groups.has(label)) {
+      groups.set(label, { label, setup })
     }
   }
 
@@ -160,27 +160,27 @@ export function enumerateOffenseAllocations(
 }
 
 export function enumerateDefenseAllocations(
-  species: string,
+  calcName: string,
   category: MoveCategory,
-  target: DefenseTemplateValues,
+  target: DefenseStatValue,
   strategy: StatNameStrategy,
-): EffortAllocation[] {
-  const cacheKey = `${species}\0${category}\0${target.hp}\0${target.def}\0${strategy}`
+): StatAllocationMatch[] {
+  const cacheKey = `${calcName}\0${category}\0${target.hp}\0${target.def}\0${strategy}`
   const cached = defenseAllocationCache.get(cacheKey)
   if (cached) return cached
 
-  const groups = new Map<string, EffortAllocation>()
+  const groups = new Map<string, StatAllocationMatch>()
 
-  for (const entry of getDefenderSpreadGrid(species, category)) {
+  for (const entry of getDefenderSpreadGrid(calcName, category)) {
     if (entry.hp !== target.hp || entry.def !== target.def) continue
     const defMod = defenseStatMod(entry.setup.nature, category)
     if (defMod === "-") continue
     const defKey = defenseStatKey(category)
-    const hpPoints = evToAbilityPoints(entry.setup.evs.hp ?? 0)
-    const defPoints = evToAbilityPoints(entry.setup.evs[defKey] ?? 0)
-    const cardLabel = defenseSpLabel(hpPoints, defPoints, defMod, category, strategy)
-    if (!groups.has(cardLabel)) {
-      groups.set(cardLabel, { cardLabel, setup: entry.setup })
+    const hpPoints = evToStatPoints(entry.setup.evs.hp ?? 0)
+    const defPoints = evToStatPoints(entry.setup.evs[defKey] ?? 0)
+    const label = defenseStatValueLabel(hpPoints, defPoints, defMod, category, strategy)
+    if (!groups.has(label)) {
+      groups.set(label, { label, setup: entry.setup })
     }
   }
 
@@ -192,81 +192,81 @@ export function enumerateDefenseAllocations(
   return allocations
 }
 
-export function formatOffenseActual(stat: number): string {
+export function formatOffenseStatValue(stat: number): string {
   return String(stat)
 }
 
-export function formatDefenseActual(hp: number, def: number): string {
+export function formatDefenseStatValue(hp: number, def: number): string {
   return `${hp} / ${def}`
 }
 
-export function formatTemplateActual(template: StatValueTemplate): string {
-  if (template.values.kind === "offense") {
-    return formatOffenseActual(template.values.stat)
+export function formatStatPresetValue(preset: StatPreset): string {
+  if (preset.values.kind === "offense") {
+    return formatOffenseStatValue(preset.values.stat)
   }
-  return formatDefenseActual(template.values.hp, template.values.def)
+  return formatDefenseStatValue(preset.values.hp, preset.values.def)
 }
 
 function buildAllocationTooltip(
-  template: StatValueTemplate,
-  allocations: EffortAllocation[],
+  preset: StatPreset,
+  allocations: StatAllocationMatch[],
 ): string {
-  const actual = formatTemplateActual(template)
-  const labels = allocations.map((a) => a.cardLabel).join(" · ")
-  return labels ? `${actual}\n${labels}` : actual
+  const statValueText = formatStatPresetValue(preset)
+  const labels = allocations.map((a) => a.label).join(" · ")
+  return labels ? `${statValueText}\n${labels}` : statValueText
 }
 
-export function resolveTemplateDisplay(
-  template: StatValueTemplate,
-  species: string,
+export function resolveStatPresetDisplay(
+  preset: StatPreset,
+  calcName: string,
   category: MoveCategory,
   allocationIndex: number,
   strategy: StatNameStrategy,
-): TemplateDisplay {
-  const values = template.values
+): StatPresetDisplay {
+  const values = preset.values
   const allocations =
     values.kind === "offense"
-      ? enumerateOffenseAllocations(species, category, values.stat, strategy)
-      : enumerateDefenseAllocations(species, category, values, strategy)
+      ? enumerateOffenseAllocations(calcName, category, values.stat, strategy)
+      : enumerateDefenseAllocations(calcName, category, values, strategy)
 
   const primary =
     allocations.length > 0
-      ? allocations[allocationIndex % allocations.length].cardLabel
-      : formatTemplateActual(template)
+      ? allocations[allocationIndex % allocations.length].label
+      : formatStatPresetValue(preset)
 
   return {
     primary,
     allocations,
-    tooltip: buildAllocationTooltip(template, allocations),
+    tooltip: buildAllocationTooltip(preset, allocations),
   }
 }
 
-export function templateCardLabel(
-  template: StatValueTemplate,
-  species: string,
+export function statPresetLabel(
+  preset: StatPreset,
+  calcName: string,
   category: MoveCategory,
   allocationIndex = 0,
   strategy: StatNameStrategy = "habcds",
 ): string {
-  return resolveTemplateDisplay(
-    template,
-    species,
+  return resolveStatPresetDisplay(
+    preset,
+    calcName,
     category,
     allocationIndex,
     strategy,
   ).primary
 }
 
-export function offenseValueOf(template: StatValueTemplate): number {
-  if (template.values.kind !== "offense") {
-    throw new Error("Not an offense template")
+export function offenseValueOf(preset: StatPreset): number {
+  if (preset.values.kind !== "offense") {
+    throw new Error("Not an offense preset")
   }
-  return template.values.stat
+  return preset.values.stat
 }
 
-export function defenseValuesOf(template: StatValueTemplate): DefenseTemplateValues {
-  if (template.values.kind !== "defense") {
-    throw new Error("Not a defense template")
+export function defenseValuesOf(preset: StatPreset): DefenseStatValue {
+  if (preset.values.kind !== "defense") {
+    throw new Error("Not a defense preset")
   }
-  return template.values
+  return preset.values
 }

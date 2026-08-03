@@ -87,7 +87,7 @@ export function compileWeatherEffect(
   const effective =
     basePower !== NEUTRAL_MODIFIER ||
     damage !== NEUTRAL_MODIFIER ||
-    (probabilityMode === "actual" && accuracy !== undefined)
+    (probabilityMode === "battle-odds" && accuracy !== undefined)
 
   return {
     basePowerModifier: basePower,

@@ -12,13 +12,13 @@ import {
   itemSprite,
 } from "@/lib/held-item"
 import type { SupportedLocale } from "@/lib/i18n"
-import type { ScenarioRow } from "@/lib/scenario-pipeline"
+import type { ScenarioResult } from "@/lib/scenario-pipeline"
 
 type DamageConditionsCardProps = {
   move: CatalogMoveOption
-  row: ScenarioRow
-  attackerStat: { label: string; actual?: string | null }
-  defender: { label: string; actual?: string | null }
+  row: ScenarioResult
+  attackerStat: { label: string; statValue?: string | null }
+  defender: { label: string; statValue?: string | null }
   attackerAbilities: CatalogAbilityOption[]
   defenderAbilities: CatalogAbilityOption[]
   isRangeEnvelope: boolean
@@ -94,7 +94,7 @@ function OtherConditions(props: DamageConditionsCardProps) {
   const intl = useIntl()
   const entries = (Object.entries(props.row.provenance) as Array<[
     ScenarioTrack,
-    ScenarioRow["provenance"][ScenarioTrack],
+    ScenarioResult["provenance"][ScenarioTrack],
   ]>).flatMap(([track, sets]) =>
     (["inactive", "unsupported", "neutral"] as const).flatMap((state) =>
       (sets?.[state] ?? [])
@@ -175,12 +175,12 @@ function TipRow({ label, value }: { label: string; value: string | number }) {
   return <div className="flex items-start justify-between gap-4 text-xs"><span className="text-muted-foreground">{label}</span><span className="text-right tabular-nums">{value}</span></div>
 }
 
-function IdentityLine({ label, value, actual, children }: { label: string; value: string; actual?: string | null; children?: React.ReactNode }) {
+function IdentityLine({ label, value, statValue, children }: { label: string; value: string; statValue?: string | null; children?: React.ReactNode }) {
   return (
     <div className="flex min-w-0 items-center gap-1.5 text-[10.5px]">
       <span className="w-[26px] shrink-0 text-[8.5px] text-muted-foreground">{label}</span>
       <span className="truncate font-bold">{value}</span>
-      {actual && <span className="text-[9px] text-muted-foreground tabular-nums">{actual}</span>}
+      {statValue && <span className="text-[9px] text-muted-foreground tabular-nums">{statValue}</span>}
       <span className="ml-auto flex shrink-0 items-center gap-1">{children}</span>
     </div>
   )
@@ -201,8 +201,8 @@ export function DamageConditionsCard(props: DamageConditionsCardProps) {
         <FormulaTip {...props} />
       </div>
       <div className="space-y-0.5 px-2 py-1">
-        <IdentityLine label={intl.formatMessage({ id: "damage.row.attack" })} value={props.attackerStat.label} actual={props.attackerStat.actual}><ActiveTokens {...props} side="attack" /></IdentityLine>
-        <IdentityLine label={intl.formatMessage({ id: "damage.row.defense" })} value={props.defender.label} actual={props.defender.actual}><ActiveTokens {...props} side="defense" /><OtherConditions {...props} /></IdentityLine>
+        <IdentityLine label={intl.formatMessage({ id: "damage.row.attack" })} value={props.attackerStat.label} statValue={props.attackerStat.statValue}><ActiveTokens {...props} side="attack" /></IdentityLine>
+        <IdentityLine label={intl.formatMessage({ id: "damage.row.defense" })} value={props.defender.label} statValue={props.defender.statValue}><ActiveTokens {...props} side="defense" /><OtherConditions {...props} /></IdentityLine>
       </div>
     </article>
   )

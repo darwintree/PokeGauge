@@ -36,9 +36,9 @@ function statValueForPokemon(
   return Math.floor((common + 5) * nature)
 }
 
-export function statValue(species: string, stat: StatKey, setup: StatSetup): number {
-  const pokemon = getBattlePokemonByCalcName(species)
-  if (!pokemon) throw new Error(`Unknown generated Pokemon for stat calculation: ${species}`)
+export function statValue(calcName: string, stat: StatKey, setup: StatSetup): number {
+  const pokemon = getBattlePokemonByCalcName(calcName)
+  if (!pokemon) throw new Error(`Unknown generated Pokemon for stat calculation: ${calcName}`)
   return statValueForPokemon(pokemon, stat, setup)
 }
 
@@ -62,20 +62,20 @@ export function defenderStatValuesForPokemon(
 }
 
 export function offenseStatValue(
-  species: string,
+  calcName: string,
   category: MoveCategory,
   setup: StatSetup,
 ): number {
-  return statValue(species, offenseStatKey(category), setup)
+  return statValue(calcName, offenseStatKey(category), setup)
 }
 
 export function defenderStatValues(
-  species: string,
+  calcName: string,
   category: MoveCategory,
   setup: DefenderSetup,
 ): { hp: number; def: number } {
   return {
-    hp: statValue(species, "hp", setup),
-    def: statValue(species, defenseStatKey(category), setup),
+    hp: statValue(calcName, "hp", setup),
+    def: statValue(calcName, defenseStatKey(category), setup),
   }
 }

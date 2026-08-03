@@ -314,7 +314,7 @@ function compileProbability(
   accuracy: MoveMechanics["accuracy"],
   criticalStage: CriticalStage,
 ): ProbabilityInput {
-  if (mode === "rolls") {
+  if (mode === "classic") {
     return {
       hitProbability: 1,
       criticalHitProbability: criticalStage === 3 ? 1 : 0,
@@ -479,13 +479,13 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   let attackerItemState = attackerItem.source.state
   if (attackerItem.descriptor?.effect.kind === "accuracy") {
     attackerItemState = attackerItemState === "effective" &&
-      raw.probabilityMode === "actual" &&
+      raw.probabilityMode === "battle-odds" &&
       weather.accuracy === undefined &&
       normalizedItemAccuracy(true, true) !== normalizedItemAccuracy(false, true)
       ? "effective"
       : "inactive"
   } else if (attackerItem.descriptor?.effect.kind === "critical-stage") {
-    const visible = raw.probabilityMode === "actual"
+    const visible = raw.probabilityMode === "battle-odds"
       ? derivedCriticalStage !== raw.snapshot.criticalStage
       : derivedCriticalStage === 3 && raw.snapshot.criticalStage < 3
     attackerItemState = attackerItemState === "effective" && visible
@@ -496,7 +496,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   let defenderItemState = defenderItem?.source.state
   if (defenderItem?.descriptor?.effect.kind === "accuracy") {
     defenderItemState = defenderItemState === "effective" &&
-      raw.probabilityMode === "actual" &&
+      raw.probabilityMode === "battle-odds" &&
       weather.accuracy === undefined &&
       normalizedItemAccuracy(true, true) !== normalizedItemAccuracy(true, false)
       ? "effective"

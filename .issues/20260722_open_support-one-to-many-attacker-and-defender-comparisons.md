@@ -6,21 +6,21 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-22T08:42:00Z"
-updated_at: "2026-07-22T08:42:00Z"
+updated_at: "2026-08-03T08:24:00Z"
 ---
 ## Goal
 
-支持两种批量对比模式：
+支持两种 Battle Pokémon Identity 批量对比模式：
 
-- 单个 attacker 对多个 defender
-- 单个 defender 对多个 attacker
+- 单个攻击方 Battle Pokémon Identity 对多个防守方 Battle Pokémon Identity
+- 单个防守方 Battle Pokémon Identity 对多个攻击方 Battle Pokémon Identity
 
 ## Acceptance criteria
 
 - 两种模式都能在同一结果视图中比较多个对象。
 - 一次只有一侧为多个对象，另一侧保持单个。
-- 每条结果能明确对应其 attacker 和 defender。
-- 现有单 attacker 对单 defender 的流程继续可用。
+- 每条结果能明确对应其攻击方与防守方 Battle Pokémon Identity。
+- 现有单一 Matchup 流程继续可用。
 
 ## Out of scope
 

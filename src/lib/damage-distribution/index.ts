@@ -1,9 +1,19 @@
 import { convolveSparseDistributions } from "@/lib/convolution"
 
 const probabilities = Symbol("damage-distribution-probabilities")
+declare const atomic: unique symbol
+declare const convolved: unique symbol
 
-export type DamageDistribution = {
+type DamageDistribution = {
   readonly [probabilities]: ReadonlyMap<number, number>
+}
+
+export type AtomicDamageDistribution = DamageDistribution & {
+  readonly [atomic]: true
+}
+
+export type ConvolvedDamageDistribution = DamageDistribution & {
+  readonly [convolved]: true
 }
 
 export type AtomicDamageDistributionInput = {
@@ -26,7 +36,7 @@ export function createAtomicDamageDistribution({
   criticalHitProbability,
   normalDamageRolls,
   criticalDamageRolls,
-}: AtomicDamageDistributionInput): DamageDistribution {
+}: AtomicDamageDistributionInput): AtomicDamageDistribution {
   const distribution = new Map<number, number>()
 
   addProbability(distribution, 0, 1 - hitProbability)
@@ -46,21 +56,21 @@ export function createAtomicDamageDistribution({
     }
   }
 
-  return { [probabilities]: distribution }
+  return { [probabilities]: distribution } as unknown as AtomicDamageDistribution
 }
 
-export function convolveDamageDistributions(
-  distributions: readonly DamageDistribution[],
-): DamageDistribution {
+export function convolveAtomicDamageDistributions(
+  distributions: readonly [AtomicDamageDistribution, ...AtomicDamageDistribution[]],
+): ConvolvedDamageDistribution {
   return {
     [probabilities]: convolveSparseDistributions(
       distributions.map((distribution) => distribution[probabilities]),
     ),
-  }
+  } as ConvolvedDamageDistribution
 }
 
-export function koProbability(
-  distribution: DamageDistribution,
+export function calculateKOProbability(
+  distribution: ConvolvedDamageDistribution,
   hp: number,
 ): number {
   let probability = 0

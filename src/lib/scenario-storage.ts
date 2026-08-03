@@ -10,17 +10,18 @@ import {
 import type { MatchupCatalog, MoveCategory } from "@/lib/catalog"
 import { moveCanBecomeSpread } from "@/lib/move-semantics"
 import {
-  defenseTemplatesForState,
-  offenseTemplatesForState,
+  defensePresetsForState,
+  offensePresetsForState,
   type TrackState,
 } from "@/lib/scenario-pipeline"
 
 export const SCENARIO_STORAGE_KEY = "pokemon-damage-calc:scenario"
 
-const SCENARIO_STORAGE_VERSION = 3
+const SCENARIO_STORAGE_VERSION = 4
+const LEGACY_SCENARIO_STORAGE_VERSION = 3
 const MOVE_CATEGORIES = ["physical", "special"] as const
 const STAT_MODES = ["preset", "range"] as const
-const PROBABILITY_MODES = ["rolls", "actual"] as const
+const PROBABILITY_MODES = ["classic", "battle-odds"] as const
 const CRITICAL_STAGES = [0, 1, 2, 3] as const
 
 export type ScenarioSnapshot = {
@@ -84,7 +85,7 @@ function isAllocationIndices(value: unknown): value is Record<string, number> {
   )
 }
 
-function isTemporaryTemplate(
+function isTemporaryPreset(
   value: unknown,
   valuesKind: "offense" | "defense",
 ): boolean {
@@ -128,14 +129,14 @@ function isTrackState(value: unknown): value is TrackState {
     isArrayOf(value.moveSnapshots, isMoveSnapshot) &&
     isArrayOf(value.selectedMoveSnapshotIds, isString) &&
     isOneOf(value.statMode, STAT_MODES) &&
-    isArrayOf(value.offenseTemplateIds, isString) &&
-    Array.isArray(value.offenseTemporaryTemplates) &&
-    value.offenseTemporaryTemplates.every((template) =>
-      isTemporaryTemplate(template, "offense"),
+    isArrayOf(value.offensePresetIds, isString) &&
+    Array.isArray(value.offenseTemporaryPresets) &&
+    value.offenseTemporaryPresets.every((preset) =>
+      isTemporaryPreset(preset, "offense"),
     ) &&
     isNumberRange(value.statRange) &&
     isBoolean(value.statRangeTouched) &&
-    isBoolean(value.showOffenseActual) &&
+    isBoolean(value.showOffenseStatValue) &&
     isAllocationIndices(value.offenseAllocationIndices) &&
     isArrayOf(value.attackerStages, (stage): stage is TrackState["attackerStages"][number] =>
       isOneOf(stage, STAT_STAGES),
@@ -150,16 +151,16 @@ function isTrackState(value: unknown): value is TrackState {
       isOneOf(terrain, TERRAINS),
     ) &&
     isOneOf(value.defenderMode, STAT_MODES) &&
-    isArrayOf(value.defenseTemplateIds, isString) &&
-    Array.isArray(value.defenseTemporaryTemplates) &&
-    value.defenseTemporaryTemplates.every((template) =>
-      isTemporaryTemplate(template, "defense"),
+    isArrayOf(value.defensePresetIds, isString) &&
+    Array.isArray(value.defenseTemporaryPresets) &&
+    value.defenseTemporaryPresets.every((preset) =>
+      isTemporaryPreset(preset, "defense"),
     ) &&
     isNumberRange(value.defenderRanges.hp) &&
     isNumberRange(value.defenderRanges.def) &&
     isBoolean(value.defenderRangeTouched) &&
-    isBoolean(value.showDefenseActual) &&
-    isBoolean(value.showResultActual) &&
+    isBoolean(value.showDefenseStatValue) &&
+    isBoolean(value.showResultStatValue) &&
     isAllocationIndices(value.defenseAllocationIndices) &&
     isArrayOf(value.defenderStages, (stage): stage is TrackState["defenderStages"][number] =>
       isOneOf(stage, STAT_STAGES),
@@ -172,18 +173,62 @@ function isTrackState(value: unknown): value is TrackState {
   )
 }
 
-function parseScenarioSnapshot(value: unknown): ScenarioSnapshot | null {
+function migrateLegacyScenarioSnapshot(value: unknown): unknown {
   if (
     !isRecord(value) ||
-    value.version !== SCENARIO_STORAGE_VERSION ||
-    !isInteger(value.attackerId) ||
-    !isInteger(value.defenderId) ||
-    !isOneOf(value.moveCategory, MOVE_CATEGORIES) ||
-    !isTrackState(value.trackState)
+    value.version !== LEGACY_SCENARIO_STORAGE_VERSION ||
+    !isRecord(value.trackState)
+  ) {
+    return value
+  }
+
+  const {
+    offenseTemplateIds,
+    offenseTemporaryTemplates,
+    defenseTemplateIds,
+    defenseTemporaryTemplates,
+    showOffenseActual,
+    showDefenseActual,
+    showResultActual,
+    probabilityMode,
+    ...trackState
+  } = value.trackState
+
+  return {
+    ...value,
+    version: SCENARIO_STORAGE_VERSION,
+    trackState: {
+      ...trackState,
+      offensePresetIds: offenseTemplateIds,
+      offenseTemporaryPresets: offenseTemporaryTemplates,
+      defensePresetIds: defenseTemplateIds,
+      defenseTemporaryPresets: defenseTemporaryTemplates,
+      showOffenseStatValue: showOffenseActual,
+      showDefenseStatValue: showDefenseActual,
+      showResultStatValue: showResultActual,
+      probabilityMode:
+        probabilityMode === "rolls"
+          ? "classic"
+          : probabilityMode === "actual"
+            ? "battle-odds"
+            : probabilityMode,
+    },
+  }
+}
+
+function parseScenarioSnapshot(value: unknown): ScenarioSnapshot | null {
+  const migrated = migrateLegacyScenarioSnapshot(value)
+  if (
+    !isRecord(migrated) ||
+    migrated.version !== SCENARIO_STORAGE_VERSION ||
+    !isInteger(migrated.attackerId) ||
+    !isInteger(migrated.defenderId) ||
+    !isOneOf(migrated.moveCategory, MOVE_CATEGORIES) ||
+    !isTrackState(migrated.trackState)
   ) {
     return null
   }
-  return value as ScenarioSnapshot
+  return migrated as ScenarioSnapshot
 }
 
 export function discardScenarioSnapshot(): void {
@@ -262,18 +307,18 @@ export function scenarioSnapshotMatchesCatalog(
     !rangeFits(
       state.statRange,
       getOffenseStatBounds(
-        catalog.matchup.attackerSpecies,
+        catalog.matchup.attackerCalcName,
         catalog.moveCategory,
       ),
     ) ||
     !rangeFits(
       state.defenderRanges.hp,
-      getDefenderHpBounds(catalog.matchup.defenderSpecies),
+      getDefenderHpBounds(catalog.matchup.defenderCalcName),
     ) ||
     !rangeFits(
       state.defenderRanges.def,
       getDefenderDefBounds(
-        catalog.matchup.defenderSpecies,
+        catalog.matchup.defenderCalcName,
         catalog.moveCategory,
       ),
     )
@@ -302,34 +347,34 @@ export function scenarioSnapshotMatchesCatalog(
     return false
   }
 
-  const offenseTemplateIds =
-    state.offenseTemplateIds.length === 0
+  const offensePresetIds =
+    state.offensePresetIds.length === 0
       ? new Set<string>()
       : new Set(
-          offenseTemplatesForState(catalog, state).map((template) => template.id),
+          offensePresetsForState(catalog, state).map((preset) => preset.id),
         )
-  const defenseTemplateIds =
-    state.defenseTemplateIds.length === 0
+  const defensePresetIds =
+    state.defensePresetIds.length === 0
       ? new Set<string>()
       : new Set(
-          defenseTemplatesForState(catalog, state).map((template) => template.id),
+          defensePresetsForState(catalog, state).map((preset) => preset.id),
         )
 
   return (
     hasUniqueValues(state.selectedMoveSnapshotIds) &&
-    hasUniqueValues(state.offenseTemplateIds) &&
+    hasUniqueValues(state.offensePresetIds) &&
     hasUniqueValues(state.attackerStages) &&
     hasUniqueValues(state.attackerItemIds) &&
     hasUniqueValues(state.defenderItemIds) &&
     hasUniqueValues(state.attackerAbilityIds) &&
     hasUniqueValues(state.weathers) &&
     hasUniqueValues(state.terrains) &&
-    hasUniqueValues(state.defenseTemplateIds) &&
+    hasUniqueValues(state.defensePresetIds) &&
     hasUniqueValues(state.defenderStages) &&
     hasUniqueValues(state.defenderAbilityIds) &&
     hasUniqueValues(state.screens) &&
-    hasOnlyKnownIds(state.offenseTemplateIds, offenseTemplateIds) &&
-    hasOnlyKnownIds(state.defenseTemplateIds, defenseTemplateIds) &&
+    hasOnlyKnownIds(state.offensePresetIds, offensePresetIds) &&
+    hasOnlyKnownIds(state.defensePresetIds, defensePresetIds) &&
     hasOnlyKnownIds(
       state.attackerItemIds,
       new Set(catalog.attackerItems.map((item) => item.id)),

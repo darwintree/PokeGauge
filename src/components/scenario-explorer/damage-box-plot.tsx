@@ -7,16 +7,16 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import type { KoProbabilityValue } from "@/lib/calc-adapter"
+import type { KOProbabilityValue } from "@/lib/calc-adapter"
 import type {
   CatalogAbilityOption,
   CatalogMoveOption,
   CatalogOption,
 } from "@/lib/catalog/types"
-import type { ScenarioRow } from "@/lib/scenario-pipeline"
+import type { ScenarioResult } from "@/lib/scenario-pipeline"
 import { cn } from "@/lib/utils"
 
-import { formatKoProbability } from "./format-ko-probability"
+import { formatKOProbability } from "./format-ko-probability"
 import { DamageConditionsCard } from "./damage-conditions-card"
 
 // Non-linear axis: 0–100% linear over 72% of width, 100–200% sqrt-compressed
@@ -51,7 +51,7 @@ function pctSpan(minPct: number, maxPct: number): { left: string; width: string 
 
 type Tone = "lethal" | "warm" | "cool"
 
-function lethalTone(row: ScenarioRow): Tone {
+function lethalTone(row: ScenarioResult): Tone {
   const peak = Math.max(row.maxPercent, row.critMaxPercent)
   if (peak >= 100) return "lethal"
   if (peak >= 75) return "warm"
@@ -71,11 +71,11 @@ const TONE_DOT_CLASS = {
 } as const
 
 /** Peak of a KO probability value (number or range), for zero/hot states. */
-function koPeak(value: KoProbabilityValue): number {
+function koPeak(value: KOProbabilityValue): number {
   return typeof value === "number" ? value : value.max
 }
 
-function KoProbabilityColumns({ row }: { row: ScenarioRow }) {
+function KOProbabilityColumns({ row }: { row: ScenarioResult }) {
   const intl = useIntl()
   const unavailable = intl.formatMessage({ id: "damage.ko.unavailable" })
   const ohkoHot = row.koProbabilities != null && koPeak(row.koProbabilities.ohko) > 0
@@ -87,13 +87,13 @@ function KoProbabilityColumns({ row }: { row: ScenarioRow }) {
         <dd className="text-[12px] font-extrabold">
           {row.koProbabilities ? (
             ohkoHot ? (
-              /* Yellow is reserved for a real OHKO chance. */
+              /* Yellow is reserved for a non-zero OHKO Probability. */
               <span className="inline-block rounded-[8px] border-2 border-ink bg-signal-yellow px-1.5 py-px shadow-hud-chip">
-                {formatKoProbability(row.koProbabilities.ohko, intl.locale)}
+                {formatKOProbability(row.koProbabilities.ohko, intl.locale)}
               </span>
             ) : (
               <span className={koPeak(row.koProbabilities.ohko) === 0 ? "text-hud-muted" : undefined}>
-                {formatKoProbability(row.koProbabilities.ohko, intl.locale)}
+                {formatKOProbability(row.koProbabilities.ohko, intl.locale)}
               </span>
             )
           ) : (
@@ -106,7 +106,7 @@ function KoProbabilityColumns({ row }: { row: ScenarioRow }) {
         <dd className="text-[12px] font-extrabold">
           {row.koProbabilities ? (
             <span className={koPeak(row.koProbabilities.twoHit) === 0 ? "text-hud-muted" : undefined}>
-              {formatKoProbability(row.koProbabilities.twoHit, intl.locale)}
+              {formatKOProbability(row.koProbabilities.twoHit, intl.locale)}
             </span>
           ) : (
             <span className="text-hud-muted">{unavailable}</span>
@@ -121,9 +121,9 @@ type DamageBoxPlotProps = {
   move: CatalogMoveOption
   attackerAbilities?: CatalogAbilityOption[]
   defenderAbilities?: CatalogAbilityOption[]
-  attackerStat: Pick<CatalogOption<string>, "id" | "label"> & { actual?: string | null }
-  defender: Pick<CatalogOption<string>, "id" | "label"> & { actual?: string | null }
-  row: ScenarioRow
+  attackerStat: Pick<CatalogOption<string>, "id" | "label"> & { statValue?: string | null }
+  defender: Pick<CatalogOption<string>, "id" | "label"> & { statValue?: string | null }
+  row: ScenarioResult
   isRangeEnvelope?: boolean
   showAccuracy?: boolean
 }
@@ -251,7 +251,7 @@ export function DamageBoxPlot({
           )}
         </TooltipContent>
       </Tooltip>
-      <KoProbabilityColumns row={row} />
+      <KOProbabilityColumns row={row} />
     </div>
   )
 }

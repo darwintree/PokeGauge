@@ -75,14 +75,14 @@ async function exactHeldItemFixture({
     spread: false,
   }]
   state.selectedMoveSnapshotIds = [snapshotId]
-  state.offenseTemplateIds = [`${snapshotId}-offense`]
-  state.offenseTemporaryTemplates = [{
+  state.offensePresetIds = [`${snapshotId}-offense`]
+  state.offenseTemporaryPresets = [{
     id: `${snapshotId}-offense`,
     kind: "temporary",
     values: { kind: "offense", stat: offense },
   }]
-  state.defenseTemplateIds = [`${snapshotId}-defense`]
-  state.defenseTemporaryTemplates = [{
+  state.defensePresetIds = [`${snapshotId}-defense`]
+  state.defenseTemporaryPresets = [{
     id: `${snapshotId}-defense`,
     kind: "temporary",
     values: { kind: "defense", hp, def: defense },
@@ -96,7 +96,7 @@ async function exactHeldItemFixture({
   state.weathers = ["none"]
   state.terrains = ["none"]
   state.screens = ["none"]
-  state.probabilityMode = "actual"
+  state.probabilityMode = "battle-odds"
   return { catalog, state }
 }
 
@@ -212,7 +212,7 @@ describe("cross-mechanism acceptance", () => {
     })
     state.attackerItemIds = [236]
     state.screens = ["reflect"]
-    state.probabilityMode = "rolls"
+    state.probabilityMode = "classic"
     const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
 
     const result = runScenarioPipeline(catalog, state)
@@ -377,53 +377,53 @@ describe("cross-mechanism acceptance", () => {
     state.attackerItemIds = [209]
     const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
 
-    const actualResult = runScenarioPipeline(catalog, state)
+    const battleOddsResult = runScenarioPipeline(catalog, state)
 
     expect(kernel.mock.results[0].value.low).toMatchObject({
       normal: [126, 128, 128, 132, 132, 134, 134, 138, 138, 140, 140, 144, 144, 146, 146, 150],
       critical: [188, 192, 194, 198, 198, 200, 204, 206, 206, 210, 212, 216, 216, 218, 222, 224],
     })
-    expect(actualResult.rows[0].provenance).toMatchObject({
+    expect(battleOddsResult.rows[0].provenance).toMatchObject({
       "held-item": { effective: ["209"] },
     })
-    expect(actualResult.rows[0].koProbabilities?.ohko).toBeCloseTo(0.0703125)
-    expect(actualResult.rows[0].koProbabilities?.twoHit).toBeCloseTo(0.8240625)
+    expect(battleOddsResult.rows[0].koProbabilities?.ohko).toBeCloseTo(0.0703125)
+    expect(battleOddsResult.rows[0].koProbabilities?.twoHit).toBeCloseTo(0.8240625)
 
-    state.probabilityMode = "rolls"
+    state.probabilityMode = "classic"
     kernel.mockClear()
-    const rollsResult = runScenarioPipeline(catalog, state)
+    const classicResult = runScenarioPipeline(catalog, state)
 
-    expect(rollsResult.rows[0]).toMatchObject({
+    expect(classicResult.rows[0]).toMatchObject({
       criticalOnly: false,
       provenance: { "held-item": { inactive: ["209"] } },
     })
-    expect(rollsResult.rows[0].koProbabilities?.ohko).toBe(0)
-    expect(rollsResult.rows[0].koProbabilities?.twoHit).toBe(1)
+    expect(classicResult.rows[0].koProbabilities?.ohko).toBe(0)
+    expect(classicResult.rows[0].koProbabilities?.twoHit).toBe(1)
 
     state.moveSnapshots = state.moveSnapshots.map((snapshot) => ({
       ...snapshot,
       criticalStage: 2,
     }))
     kernel.mockClear()
-    const guaranteedRolls = runScenarioPipeline(catalog, state)
+    const guaranteedClassic = runScenarioPipeline(catalog, state)
 
     expect(kernel.mock.results[0].value.low).not.toHaveProperty("normal")
     expect(kernel.mock.results[0].value.low.critical).toEqual([
       188, 192, 194, 198, 198, 200, 204, 206,
       206, 210, 212, 216, 216, 218, 222, 224,
     ])
-    expect(guaranteedRolls.rows[0]).toMatchObject({
+    expect(guaranteedClassic.rows[0]).toMatchObject({
       criticalOnly: true,
       minDamage: 188,
       maxDamage: 224,
       provenance: { "held-item": { effective: ["209"] } },
     })
-    expect(guaranteedRolls.rows[0].koProbabilities?.ohko).toBeCloseTo(0.625)
-    expect(guaranteedRolls.rows[0].koProbabilities?.twoHit).toBe(1)
+    expect(guaranteedClassic.rows[0].koProbabilities?.ohko).toBeCloseTo(0.625)
+    expect(guaranteedClassic.rows[0].koProbabilities?.twoHit).toBe(1)
 
-    state.probabilityMode = "actual"
-    const guaranteedActual = runScenarioPipeline(catalog, state)
-    expect(guaranteedActual.rows[0]).toMatchObject({
+    state.probabilityMode = "battle-odds"
+    const guaranteedBattleOdds = runScenarioPipeline(catalog, state)
+    expect(guaranteedBattleOdds.rows[0]).toMatchObject({
       criticalOnly: true,
       provenance: { "held-item": { effective: ["209"] } },
     })
@@ -480,16 +480,16 @@ describe("cross-mechanism acceptance", () => {
       spread: false,
     }]
     state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
-    state.offenseTemplateIds = ["neutral-max"]
+    state.offensePresetIds = ["neutral-max"]
     state.attackerStages = [1]
     state.attackerItemIds = [197]
     state.attackerAbilityIds = [ADAPTABILITY_ABILITY_ID]
     state.weathers = ["rain"]
-    state.defenseTemplateIds = ["standard-bulk"]
+    state.defensePresetIds = ["standard-bulk"]
     state.defenderStages = [1]
     state.defenderAbilityIds = [17]
     state.screens = ["reflect"]
-    state.probabilityMode = "rolls"
+    state.probabilityMode = "classic"
     const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
 
     const presetResult = runScenarioPipeline(catalog, state)
@@ -600,12 +600,12 @@ describe("cross-mechanism acceptance", () => {
       spread: false,
     }]
     state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
-    state.offenseTemplateIds = ["neutral-max"]
+    state.offensePresetIds = ["neutral-max"]
     state.attackerStages = [-1, 0]
     state.attackerItemIds = ["none", 226]
     state.attackerAbilityIds = [52, 75]
     state.weathers = ["none", "sand"]
-    state.defenseTemplateIds = ["standard-bulk"]
+    state.defensePresetIds = ["standard-bulk"]
     state.defenderStages = [0, 1]
     state.defenderAbilityIds = [17, 47]
     state.screens = ["none", "reflect", "light-screen"]

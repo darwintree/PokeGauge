@@ -8,7 +8,7 @@ import { localeMessages } from "@/lib/i18n"
 import { createMoveSnapshot } from "@/lib/move-snapshot"
 import { defaultTrackState, type UnavailableScenarioGroup } from "@/lib/scenario-pipeline"
 
-import { MoveMultiSelect } from "./move-multi-select"
+import { MoveTrack } from "./move-track"
 import { ScenarioResults } from "./scenario-results"
 
 function withEnglish(component: React.ReactNode): string {
@@ -44,10 +44,10 @@ describe("unavailable Scenario display", () => {
       unavailable,
       trackState,
       statNameStrategy: "english",
-      onShowResultActualChange: () => {},
+      onShowResultStatValueChange: () => {},
       onProbabilityModeChange: () => {},
     }))
-    const trackMarkup = withEnglish(createElement(MoveMultiSelect, {
+    const trackMarkup = withEnglish(createElement(MoveTrack, {
       label: "Moves",
       options: catalog.moves,
       snapshots: [snapshot],
@@ -83,7 +83,7 @@ describe("unavailable Scenario display", () => {
       }],
       trackState,
       statNameStrategy: "english",
-      onShowResultActualChange: () => {},
+      onShowResultStatValueChange: () => {},
       onProbabilityModeChange: () => {},
     }))
 

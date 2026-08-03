@@ -4,12 +4,12 @@ import {
   defaultDefenderDefRange,
   defaultDefenderHpRange,
   defaultOffenseStatRange,
-  defenderDefRangeFromTemplates,
-  defenderHpRangeFromTemplates,
+  defenderDefRangeFromPresets,
+  defenderHpRangeFromPresets,
   getDefenderDefBounds,
   getDefenderHpBounds,
   getOffenseStatBounds,
-  offenseRangeFromTemplates,
+  offenseRangeFromPresets,
   type StatStage,
   warmDefenderSpreadCache,
 } from "@/lib/calc-adapter"
@@ -21,25 +21,25 @@ import {
   type MoveSnapshot,
 } from "@/lib/move-snapshot"
 import {
-  deleteUserDefenseTemplate,
-  deleteUserOffenseTemplate,
-  findTemplateByDefenseValues,
-  findTemplateByOffenseValue,
-  newTemporaryDefenseTemplate,
-  newTemporaryOffenseTemplate,
-  newUserDefenseTemplate,
-  newUserOffenseTemplate,
-  saveUserDefenseTemplate,
-  saveUserOffenseTemplate,
+  deleteUserDefensePreset,
+  deleteUserOffensePreset,
+  findPresetByDefenseValues,
+  findPresetByOffenseValue,
+  newTemporaryDefensePreset,
+  newTemporaryOffensePreset,
+  newUserDefensePreset,
+  newUserOffensePreset,
+  saveUserDefensePreset,
+  saveUserOffensePreset,
   loadStatNameStrategy,
   saveStatNameStrategy,
   type StatNameStrategy,
-  type StatValueTemplate,
-} from "@/lib/stat-value-template"
+  type StatPreset,
+} from "@/lib/stat-preset"
 import {
-  defenseTemplatesForState,
+  defensePresetsForState,
   defaultTrackState,
-  offenseTemplatesForState,
+  offensePresetsForState,
   runScenarioPipeline,
   type DefenderStatRanges,
   type StatSelectMode,
@@ -103,19 +103,19 @@ function cycleAllocationIndex(
 }
 
 function reconcileOffenseFromRange(
-  allTemplates: StatValueTemplate[],
+  allPresets: StatPreset[],
   statRange: TrackState["statRange"],
-  existingTemp: StatValueTemplate[],
-): { selectedIds: string[]; temporary: StatValueTemplate[] } {
+  existingTemp: StatPreset[],
+): { selectedIds: string[]; temporary: StatPreset[] } {
   const temporary = [...existingTemp]
   const selectedIds: string[] = []
 
   for (const value of rangeEndpoints(statRange.min, statRange.max)) {
     let match =
-      findTemplateByOffenseValue(allTemplates, value) ??
-      findTemplateByOffenseValue(temporary, value)
+      findPresetByOffenseValue(allPresets, value) ??
+      findPresetByOffenseValue(temporary, value)
     if (!match) {
-      match = newTemporaryOffenseTemplate(value)
+      match = newTemporaryOffensePreset(value)
       temporary.push(match)
     }
     selectedIds.push(match.id)
@@ -125,20 +125,20 @@ function reconcileOffenseFromRange(
 }
 
 function reconcileDefenseFromRange(
-  allTemplates: StatValueTemplate[],
+  allPresets: StatPreset[],
   ranges: DefenderStatRanges,
-  existingTemp: StatValueTemplate[],
-): { selectedIds: string[]; temporary: StatValueTemplate[] } {
+  existingTemp: StatPreset[],
+): { selectedIds: string[]; temporary: StatPreset[] } {
   const temporary = [...existingTemp]
   const selectedIds: string[] = []
 
   for (const hp of rangeEndpoints(ranges.hp.min, ranges.hp.max)) {
     for (const def of rangeEndpoints(ranges.def.min, ranges.def.max)) {
       let match =
-        findTemplateByDefenseValues(allTemplates, hp, def) ??
-        findTemplateByDefenseValues(temporary, hp, def)
+        findPresetByDefenseValues(allPresets, hp, def) ??
+        findPresetByDefenseValues(temporary, hp, def)
       if (!match) {
-        match = newTemporaryDefenseTemplate(hp, def)
+        match = newTemporaryDefensePreset(hp, def)
         temporary.push(match)
       }
       if (!selectedIds.includes(match.id)) selectedIds.push(match.id)
@@ -186,22 +186,22 @@ export function useScenarioState(
   catalog: MatchupCatalog,
   restoredTrackState?: TrackState,
 ) {
-  const { attackerSpecies, defenderSpecies } = catalog.matchup
+  const { attackerCalcName, defenderCalcName } = catalog.matchup
   const restoredTrackStateRef = useRef(restoredTrackState)
 
   const offenseBounds = useMemo(
-    () => getOffenseStatBounds(attackerSpecies, catalog.moveCategory),
-    [attackerSpecies, catalog.moveCategory],
+    () => getOffenseStatBounds(attackerCalcName, catalog.moveCategory),
+    [attackerCalcName, catalog.moveCategory],
   )
 
   const defenderHpBounds = useMemo(
-    () => getDefenderHpBounds(defenderSpecies),
-    [defenderSpecies],
+    () => getDefenderHpBounds(defenderCalcName),
+    [defenderCalcName],
   )
 
   const defenderDefBounds = useMemo(
-    () => getDefenderDefBounds(defenderSpecies, catalog.moveCategory),
-    [defenderSpecies, catalog.moveCategory],
+    () => getDefenderDefBounds(defenderCalcName, catalog.moveCategory),
+    [defenderCalcName, catalog.moveCategory],
   )
 
   const [trackState, setTrackState] = useState<TrackState>(
@@ -335,10 +335,10 @@ export function useScenarioState(
 
   useEffect(() => {
     const id = window.setTimeout(() => {
-      warmDefenderSpreadCache(defenderSpecies, catalog.moveCategory)
+      warmDefenderSpreadCache(defenderCalcName, catalog.moveCategory)
     }, 0)
     return () => window.clearTimeout(id)
-  }, [defenderSpecies, catalog.moveCategory])
+  }, [defenderCalcName, catalog.moveCategory])
 
   useEffect(() => {
     if (catalogTransitionPending) return
@@ -383,14 +383,14 @@ export function useScenarioState(
     return () => window.removeEventListener("pagehide", flushPendingScenario)
   }, [])
 
-  const offenseTemplates = useMemo(() => {
+  const offensePresets = useMemo(() => {
     void userOffenseVersion
-    return offenseTemplatesForState(catalog, trackState)
+    return offensePresetsForState(catalog, trackState)
   }, [catalog, trackState, userOffenseVersion])
 
-  const defenseTemplates = useMemo(() => {
+  const defensePresets = useMemo(() => {
     void userDefenseVersion
-    return defenseTemplatesForState(catalog, trackState)
+    return defensePresetsForState(catalog, trackState)
   }, [catalog, trackState, userDefenseVersion])
 
   const pipelineResult = useMemo(
@@ -408,12 +408,12 @@ export function useScenarioState(
     moves: trackState.selectedMoveSnapshotIds.length,
     stats:
       trackState.statMode === "preset"
-        ? `${trackState.offenseTemplateIds.length} 预设`
+        ? `${trackState.offensePresetIds.length} 预设`
         : `数轴 ${trackState.statRange.min}-${trackState.statRange.max}`,
     items: trackState.attackerItemIds.length,
     defenders:
       trackState.defenderMode === "preset"
-        ? `${trackState.defenseTemplateIds.length} 预设`
+        ? `${trackState.defensePresetIds.length} 预设`
         : `数轴 HP ${trackState.defenderRanges.hp.min}-${trackState.defenderRanges.hp.max}`,
     rows: rows.length,
   }
@@ -422,26 +422,26 @@ export function useScenarioState(
     setTrackState((s) => {
       if (mode === "range") {
         if (s.statRangeTouched) return { ...s, statMode: mode }
-        const templates = offenseTemplatesForState(catalog, s)
+        const presets = offensePresetsForState(catalog, s)
         return {
           ...s,
           statMode: mode,
-          statRange: offenseRangeFromTemplates(templates, s.offenseTemplateIds, () =>
-            defaultOffenseStatRange(attackerSpecies, catalog.moveCategory),
+          statRange: offenseRangeFromPresets(presets, s.offensePresetIds, () =>
+            defaultOffenseStatRange(attackerCalcName, catalog.moveCategory),
           ),
         }
       }
 
       const { selectedIds, temporary } = reconcileOffenseFromRange(
-        offenseTemplatesForState(catalog, s),
+        offensePresetsForState(catalog, s),
         s.statRange,
-        s.offenseTemporaryTemplates,
+        s.offenseTemporaryPresets,
       )
       return {
         ...s,
         statMode: mode,
-        offenseTemplateIds: selectedIds,
-        offenseTemporaryTemplates: temporary,
+        offensePresetIds: selectedIds,
+        offenseTemporaryPresets: temporary,
       }
     })
   }
@@ -450,58 +450,58 @@ export function useScenarioState(
     setTrackState((s) => {
       if (mode === "range") {
         if (s.defenderRangeTouched) return { ...s, defenderMode: mode }
-        const templates = defenseTemplatesForState(catalog, s)
+        const presets = defensePresetsForState(catalog, s)
         return {
           ...s,
           defenderMode: mode,
           defenderRanges: {
-            hp: defenderHpRangeFromTemplates(templates, s.defenseTemplateIds, () =>
-              defaultDefenderHpRange(defenderSpecies),
+            hp: defenderHpRangeFromPresets(presets, s.defensePresetIds, () =>
+              defaultDefenderHpRange(defenderCalcName),
             ),
-            def: defenderDefRangeFromTemplates(templates, s.defenseTemplateIds, () =>
-              defaultDefenderDefRange(defenderSpecies, catalog.moveCategory),
+            def: defenderDefRangeFromPresets(presets, s.defensePresetIds, () =>
+              defaultDefenderDefRange(defenderCalcName, catalog.moveCategory),
             ),
           },
         }
       }
 
       const { selectedIds, temporary } = reconcileDefenseFromRange(
-        defenseTemplatesForState(catalog, s),
+        defensePresetsForState(catalog, s),
         s.defenderRanges,
-        s.defenseTemporaryTemplates,
+        s.defenseTemporaryPresets,
       )
       return {
         ...s,
         defenderMode: mode,
-        defenseTemplateIds: selectedIds,
-        defenseTemporaryTemplates: temporary,
+        defensePresetIds: selectedIds,
+        defenseTemporaryPresets: temporary,
       }
     })
   }
 
-  const toggleOffenseTemplate = useCallback((id: string) => {
+  const toggleOffensePreset = useCallback((id: string) => {
     setTrackState((s) => {
-      const selected = new Set(s.offenseTemplateIds)
+      const selected = new Set(s.offensePresetIds)
       if (selected.has(id)) selected.delete(id)
       else selected.add(id)
-      const offenseTemplateIds = offenseTemplates
+      const offensePresetIds = offensePresets
         .filter((t) => selected.has(t.id))
         .map((t) => t.id)
-      return { ...s, offenseTemplateIds }
+      return { ...s, offensePresetIds }
     })
-  }, [offenseTemplates])
+  }, [offensePresets])
 
-  const toggleDefenseTemplate = useCallback((id: string) => {
+  const toggleDefensePreset = useCallback((id: string) => {
     setTrackState((s) => {
-      const selected = new Set(s.defenseTemplateIds)
+      const selected = new Set(s.defensePresetIds)
       if (selected.has(id)) selected.delete(id)
       else selected.add(id)
-      const defenseTemplateIds = defenseTemplates
+      const defensePresetIds = defensePresets
         .filter((t) => selected.has(t.id))
         .map((t) => t.id)
-      return { ...s, defenseTemplateIds }
+      return { ...s, defensePresetIds }
     })
-  }, [defenseTemplates])
+  }, [defensePresets])
 
   function cycleOffenseAllocation(id: string) {
     setTrackState((s) => ({
@@ -517,70 +517,70 @@ export function useScenarioState(
     }))
   }
 
-  function persistOffenseTemplate(id: string) {
-    const template = offenseTemplates.find((t) => t.id === id)
-    if (!template || template.kind !== "temporary") return
-    const user = newUserOffenseTemplate(
-      template.values.kind === "offense" ? template.values.stat : 0,
+  function persistOffensePreset(id: string) {
+    const preset = offensePresets.find((t) => t.id === id)
+    if (!preset || preset.kind !== "temporary") return
+    const user = newUserOffensePreset(
+      preset.values.kind === "offense" ? preset.values.stat : 0,
     )
-    saveUserOffenseTemplate(String(catalog.matchup.attackerId), user)
+    saveUserOffensePreset(String(catalog.matchup.attackerId), user)
     setTrackState((s) => ({
       ...s,
-      offenseTemporaryTemplates: s.offenseTemporaryTemplates.filter((t) => t.id !== id),
-      offenseTemplateIds: s.offenseTemplateIds.map((tid) => (tid === id ? user.id : tid)),
+      offenseTemporaryPresets: s.offenseTemporaryPresets.filter((t) => t.id !== id),
+      offensePresetIds: s.offensePresetIds.map((tid) => (tid === id ? user.id : tid)),
     }))
     setUserOffenseVersion((v) => v + 1)
   }
 
-  function persistDefenseTemplate(id: string) {
-    const template = defenseTemplates.find((t) => t.id === id)
-    if (!template || template.kind !== "temporary") return
-    const v = template.values.kind === "defense" ? template.values : { hp: 0, def: 0 }
-    const user = newUserDefenseTemplate(v.hp, v.def)
-    saveUserDefenseTemplate(String(catalog.matchup.defenderId), user)
+  function persistDefensePreset(id: string) {
+    const preset = defensePresets.find((t) => t.id === id)
+    if (!preset || preset.kind !== "temporary") return
+    const v = preset.values.kind === "defense" ? preset.values : { hp: 0, def: 0 }
+    const user = newUserDefensePreset(v.hp, v.def)
+    saveUserDefensePreset(String(catalog.matchup.defenderId), user)
     setTrackState((s) => ({
       ...s,
-      defenseTemporaryTemplates: s.defenseTemporaryTemplates.filter((t) => t.id !== id),
-      defenseTemplateIds: s.defenseTemplateIds.map((tid) => (tid === id ? user.id : tid)),
+      defenseTemporaryPresets: s.defenseTemporaryPresets.filter((t) => t.id !== id),
+      defensePresetIds: s.defensePresetIds.map((tid) => (tid === id ? user.id : tid)),
     }))
     setUserDefenseVersion((v) => v + 1)
   }
 
-  function deleteOffenseTemplate(id: string) {
-    deleteUserOffenseTemplate(String(catalog.matchup.attackerId), id)
+  function deleteOffensePreset(id: string) {
+    deleteUserOffensePreset(String(catalog.matchup.attackerId), id)
     setTrackState((s) => ({
       ...s,
-      offenseTemplateIds: s.offenseTemplateIds.filter((tid) => tid !== id),
+      offensePresetIds: s.offensePresetIds.filter((tid) => tid !== id),
     }))
     setUserOffenseVersion((v) => v + 1)
   }
 
-  function deleteDefenseTemplate(id: string) {
-    deleteUserDefenseTemplate(String(catalog.matchup.defenderId), id)
+  function deleteDefensePreset(id: string) {
+    deleteUserDefensePreset(String(catalog.matchup.defenderId), id)
     setTrackState((s) => ({
       ...s,
-      defenseTemplateIds: s.defenseTemplateIds.filter((tid) => tid !== id),
+      defensePresetIds: s.defensePresetIds.filter((tid) => tid !== id),
     }))
     setUserDefenseVersion((v) => v + 1)
   }
 
   function confirmAddOffense(stat: number) {
-    const user = newUserOffenseTemplate(stat)
-    saveUserOffenseTemplate(String(catalog.matchup.attackerId), user)
+    const user = newUserOffensePreset(stat)
+    saveUserOffensePreset(String(catalog.matchup.attackerId), user)
     setTrackState((s) => ({
       ...s,
-      offenseTemplateIds: [...s.offenseTemplateIds, user.id],
+      offensePresetIds: [...s.offensePresetIds, user.id],
     }))
     setUserOffenseVersion((v) => v + 1)
     setAddingOffense(false)
   }
 
   function confirmAddDefense(hp: number, def: number) {
-    const user = newUserDefenseTemplate(hp, def)
-    saveUserDefenseTemplate(String(catalog.matchup.defenderId), user)
+    const user = newUserDefensePreset(hp, def)
+    saveUserDefensePreset(String(catalog.matchup.defenderId), user)
     setTrackState((s) => ({
       ...s,
-      defenseTemplateIds: [...s.defenseTemplateIds, user.id],
+      defensePresetIds: [...s.defensePresetIds, user.id],
     }))
     setUserDefenseVersion((v) => v + 1)
     setAddingDefense(false)
@@ -636,8 +636,8 @@ export function useScenarioState(
     trackState,
     rows,
     unavailable,
-    offenseTemplates,
-    defenseTemplates,
+    offensePresets,
+    defensePresets,
     selectionSummary,
     offenseBounds,
     defenderHpBounds,
@@ -649,14 +649,14 @@ export function useScenarioState(
     removeMoveSnapshot,
     setSelectedMoveSnapshotIds,
     setStatMode,
-    toggleOffenseTemplate,
+    toggleOffensePreset,
     setStatRange: (statRange: TrackState["statRange"]) =>
       setTrackState((s) => ({ ...s, statRange, statRangeTouched: true })),
-    setShowOffenseActual: (showOffenseActual: boolean) =>
-      setTrackState((s) => ({ ...s, showOffenseActual })),
+    setShowOffenseStatValue: (showOffenseStatValue: boolean) =>
+      setTrackState((s) => ({ ...s, showOffenseStatValue })),
     cycleOffenseAllocation,
-    persistOffenseTemplate,
-    deleteOffenseTemplate,
+    persistOffensePreset,
+    deleteOffensePreset,
     confirmAddOffense,
     setAddingOffense,
     setAttackerItemIds: (ids: TrackState["attackerItemIds"]) =>
@@ -699,17 +699,17 @@ export function useScenarioState(
         attackerStages: attackerStages.length > 0 ? attackerStages : [0],
       })),
     setDefenderMode,
-    toggleDefenseTemplate,
+    toggleDefensePreset,
     setDefenderRanges: (defenderRanges: DefenderStatRanges) =>
       setTrackState((s) => ({
         ...s,
         defenderRanges,
         defenderRangeTouched: true,
       })),
-    setShowDefenseActual: (showDefenseActual: boolean) =>
-      setTrackState((s) => ({ ...s, showDefenseActual })),
-    setShowResultActual: (showResultActual: boolean) =>
-      setTrackState((s) => ({ ...s, showResultActual })),
+    setShowDefenseStatValue: (showDefenseStatValue: boolean) =>
+      setTrackState((s) => ({ ...s, showDefenseStatValue })),
+    setShowResultStatValue: (showResultStatValue: boolean) =>
+      setTrackState((s) => ({ ...s, showResultStatValue })),
     setDefenderStages: (defenderStages: StatStage[]) =>
       setTrackState((s) => ({
         ...s,
@@ -731,8 +731,8 @@ export function useScenarioState(
     setProbabilityMode: (probabilityMode: TrackState["probabilityMode"]) =>
       setTrackState((s) => ({ ...s, probabilityMode })),
     cycleDefenseAllocation,
-    persistDefenseTemplate,
-    deleteDefenseTemplate,
+    persistDefensePreset,
+    deleteDefensePreset,
     confirmAddDefense,
     setAddingDefense,
     statNameStrategy,

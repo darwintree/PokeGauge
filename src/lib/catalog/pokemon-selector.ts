@@ -1,11 +1,11 @@
-import type { SpeciesOption } from "./types"
+import type { BattlePokemonOption } from "./types"
 
-export function prioritizeSpeciesOptions(
-  options: SpeciesOption[],
+export function prioritizeBattlePokemonOptions(
+  options: BattlePokemonOption[],
   currentSpeciesId: number | null,
   sameSpeciesFirst: boolean,
   megaFirst: boolean,
-): SpeciesOption[] {
+): BattlePokemonOption[] {
   return options
     .map((option, index) => ({ option, index }))
     .sort((a, b) => {
@@ -23,9 +23,9 @@ export function prioritizeSpeciesOptions(
     .map(({ option }) => option)
 }
 
-export function speciesHasAlternateIdentity(
-  options: SpeciesOption[],
-  selected: SpeciesOption | null,
+export function speciesHasMultipleBattlePokemonIdentities(
+  options: BattlePokemonOption[],
+  selected: BattlePokemonOption | null,
 ): boolean {
   return selected !== null &&
     options.filter((option) => option.speciesId === selected.speciesId).length >= 2

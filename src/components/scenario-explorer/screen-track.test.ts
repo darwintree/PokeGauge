@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest"
 
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { localeMessages } from "@/lib/i18n"
-import type { ScenarioRow } from "@/lib/scenario-pipeline"
+import type { ScenarioResult } from "@/lib/scenario-pipeline"
 
 import { DamageBoxPlot } from "./damage-box-plot"
 import { ScreenTrack } from "./screen-track"
@@ -28,7 +28,7 @@ describe("Screen Track", () => {
   })
 
   it("shows effective screens inline, folds inactive screens, and omits no screen", () => {
-    const row: ScenarioRow = {
+    const row: ScenarioResult = {
       calculationIdentity: "screen-display",
       snapshotId: "screen-display",
       moveId: 33,

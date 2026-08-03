@@ -5,7 +5,7 @@ import { expect, it } from "vitest"
 
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { localeMessages } from "@/lib/i18n"
-import type { ScenarioRow } from "@/lib/scenario-pipeline"
+import type { ScenarioResult } from "@/lib/scenario-pipeline"
 
 import { AbilityTrack } from "./ability-track"
 import { DamageBoxPlot } from "./damage-box-plot"
@@ -32,7 +32,7 @@ it("marks only unsupported ability effects in the Track", () => {
 })
 
 it("renders effective abilities inline and folds inactive and unsupported states", () => {
-  const row: ScenarioRow = {
+  const row: ScenarioResult = {
     calculationIdentity: "ability-display",
     snapshotId: "ability-display",
     moveId: 33,

@@ -6,7 +6,7 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST", "NEEDS-TRIAGE"]
 created_at: "2026-07-31T08:48:00Z"
-updated_at: "2026-07-31T08:49:00Z"
+updated_at: "2026-08-03T08:24:00Z"
 ---
 ## Goal
 
@@ -14,9 +14,9 @@ updated_at: "2026-07-31T08:49:00Z"
 
 ## Questions to resolve
 
-- 使用率应按 Battle Pokémon identity 独立排序，还是按同种形态聚合后再分配给各形态。
+- 使用率应按 Battle Pokémon Identity 独立排序，还是按同一 Pokémon Species 聚合后再分配给各 Pokémon Form。
 - 普通形态与一个或多个 Mega 形态的使用率如何综合，避免重复计算同一条对战选择链。
-- 该排序与“同种形态优先”“Mega 优先”两个显式优先选项如何正交组合。
+- 该排序与“同一 Pokémon Species 形态优先”“Mega 优先”两个显式优先选项如何正交组合。
 - 数据缺失、形态无法关联或不同来源赛季不一致时如何回退。
 
 ## Acceptance direction

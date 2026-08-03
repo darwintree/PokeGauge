@@ -8,13 +8,10 @@ export {
   warmDefenderSpreadCache,
 } from "./stat-bounds"
 export {
-  defenderDefRangeFromPresets,
-  defenderHpRangeFromPresets,
   defaultDefenderDefRange,
   defaultDefenderHpRange,
   defaultOffenseStatRange,
   defaultStatRange,
-  offenseRangeFromPresets,
   clampStat,
   sameStatRange,
   snapToAnchors,
@@ -65,17 +62,17 @@ export type {
   MoveTemplateSnapshotDefaults,
 } from "@/lib/move-snapshot"
 export {
-  defenderDefRangeFromTemplates,
-  defenderHpRangeFromTemplates,
+  defenderDefRangeFromPresets,
+  defenderHpRangeFromPresets,
   envelopeRange,
-  offenseRangeFromTemplates,
-} from "./template-range"
+  offenseRangeFromPresets,
+} from "./preset-range"
 export type {
   AttackStatBounds,
   DefenderSetup,
-  KoProbabilities,
-  KoProbabilityRange,
-  KoProbabilityValue,
+  KOProbabilities,
+  KOProbabilityRange,
+  KOProbabilityValue,
   ProbabilityMode,
   StatAxisBounds,
   StatAxisSnapPoint,

@@ -1,13 +1,13 @@
 import { useEffect, useState, type ReactNode } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-import type { MatchupCatalog, MoveCategory, SpeciesOption } from "@/lib/catalog"
+import type { MatchupCatalog, MoveCategory, BattlePokemonOption } from "@/lib/catalog"
 import type { BattlePokemonId } from "@/lib/resources"
 
 import { AbilityTrack } from "./ability-track"
 import { HeldItemTrack } from "./held-item-track/held-item-track"
-import { SpeciesSelect } from "./matchup-selector"
-import { MoveMultiSelect } from "./move-multi-select"
+import { BattlePokemonSelect } from "./matchup-selector"
+import { MoveTrack } from "./move-track"
 import { ScreenTrack } from "./screen-track"
 import { StatStageTrack } from "./stat-stage-track"
 import { StatTrackCard } from "./stat-track-card"
@@ -32,8 +32,8 @@ type TrackId =
 type ScenarioSidebarProps = {
   catalog: MatchupCatalog
   state: ScenarioState
-  attackers: SpeciesOption[]
-  defenders: SpeciesOption[]
+  attackers: BattlePokemonOption[]
+  defenders: BattlePokemonOption[]
   attackerId: BattlePokemonId
   defenderId: BattlePokemonId
   onAttackerChange: (id: BattlePokemonId) => void
@@ -74,7 +74,7 @@ export function ScenarioSidebar({
 
   const tracks: Record<TrackId, ReactNode> = {
     moves: (
-      <MoveMultiSelect
+      <MoveTrack
         label={intl.formatMessage({ id: "track.moves" })}
         options={catalog.moves}
         snapshots={trackState.moveSnapshots}
@@ -228,14 +228,14 @@ export function ScenarioSidebar({
   return (
     <section aria-label={intl.formatMessage({ id: "app.setup" })} className="space-y-3">
       <div className="grid grid-cols-2 gap-2">
-        <SpeciesSelect
+        <BattlePokemonSelect
           label={intl.formatMessage({ id: "matchup.attacker" })}
           options={attackers}
           value={attackerId}
           onChange={onAttackerChange}
           spriteSide="back"
         />
-        <SpeciesSelect
+        <BattlePokemonSelect
           label={intl.formatMessage({ id: "matchup.defender" })}
           options={defenders}
           value={defenderId}

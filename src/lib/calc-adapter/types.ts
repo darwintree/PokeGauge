@@ -7,7 +7,7 @@ export type StatSetup = {
 
 export type DefenderSetup = StatSetup
 
-export type ProbabilityMode = "rolls" | "actual"
+export type ProbabilityMode = "classic" | "battle-odds"
 
 export const STAT_STAGES = [
   -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6,
@@ -15,16 +15,16 @@ export const STAT_STAGES = [
 
 export type StatStage = (typeof STAT_STAGES)[number]
 
-export type KoProbabilityRange = {
+export type KOProbabilityRange = {
   min: number
   max: number
 }
 
-export type KoProbabilityValue = number | KoProbabilityRange
+export type KOProbabilityValue = number | KOProbabilityRange
 
-export type KoProbabilities = {
-  ohko: KoProbabilityValue
-  twoHit: KoProbabilityValue
+export type KOProbabilities = {
+  ohko: KOProbabilityValue
+  twoHit: KOProbabilityValue
 }
 
 export type StatRange = {

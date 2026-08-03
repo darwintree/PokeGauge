@@ -6,7 +6,7 @@ status: "open"
 priority: "high"
 labels: ["TECH-DEBT", "NEEDS-TRIAGE"]
 created_at: "2026-08-03T04:40:00Z"
-updated_at: "2026-08-03T04:40:00Z"
+updated_at: "2026-08-03T08:24:00Z"
 ---
 ## Problem
 
@@ -35,8 +35,8 @@ updated_at: "2026-08-03T04:40:00Z"
 - canonical compiled representation 应表达阶段化公式输入、展示投影，还是二者由同一结果对象派生。
 - 最终威力应定义为哪种可解释值；当阶段化取整无法压缩为单一等价威力时，是展示分阶段值、理论等价值，还是调整标签。
 - 普通分支与必定会心分支存在差异时，展示投影如何表达。
-- 命中展示是否直接来自 canonical probability input；Actual probability、16 roll、always-hits、天气 override 与超过 100 的封顶如何呈现。
-- Effect-equivalent scenario merge 是否直接复用同一 canonical calculation identity。
+- 命中展示是否直接来自 canonical probability input；Battle Odds Mode、Classic Mode、always-hits、天气 override 与超过 100 的封顶如何呈现。
+- Scenario Merge 是否直接复用同一 canonical calculation identity。
 
 ## Required cases
 
@@ -46,7 +46,7 @@ updated_at: "2026-08-03T04:40:00Z"
 
 ### Numeric accuracy
 
-Wide Lens 与 Bright Powder／Lax Incense 的固定点链只计算一次。展示百分比与 Actual probability 的 hitProbability 必须来自同一结果；always-hits、天气后置 override 与 100% 封顶保持一致。16 roll 忽略命中概率的契约必须显式表达。
+Wide Lens 与 Bright Powder／Lax Incense 的固定点链只计算一次。展示百分比与 Battle Odds Mode 的 hitProbability 必须来自同一结果；always-hits、天气后置 override 与 100% 封顶保持一致。Classic Mode 假定命中的契约必须显式表达。
 
 ### Phase-sensitive power
 

@@ -18,8 +18,8 @@ export type {
   CatalogMoveOption,
   CatalogOption,
   MatchupCatalog,
-  MatchupIdentity,
+  Matchup,
   MoveCategory,
-  SpeciesOption,
+  BattlePokemonOption,
 } from "./types"
 export type { DefensePresetId, OffensePresetId, OffenseSnapPresetId } from "./preset-labels"

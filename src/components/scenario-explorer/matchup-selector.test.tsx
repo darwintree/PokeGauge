@@ -6,20 +6,20 @@ import { IntlProvider } from "react-intl"
 import { describe, expect, it } from "vitest"
 import { afterEach, beforeEach, vi } from "vitest"
 
-import type { SpeciesOption } from "@/lib/catalog"
+import type { BattlePokemonOption } from "@/lib/catalog"
 import { localeMessages } from "@/lib/i18n/messages"
 
-import { SpeciesSelect } from "./matchup-selector"
+import { BattlePokemonSelect } from "./matchup-selector"
 import {
-  prioritizeSpeciesOptions,
-  speciesHasAlternateIdentity,
+  prioritizeBattlePokemonOptions,
+  speciesHasMultipleBattlePokemonIdentities,
 } from "@/lib/catalog/pokemon-selector"
 
 function option(
   id: number,
   speciesId: number,
   isMega = false,
-): SpeciesOption {
+): BattlePokemonOption {
   return {
     id,
     speciesId,
@@ -41,14 +41,14 @@ describe("Pokemon selector priorities", () => {
 
   it("keeps same-species identities first and Mega first within each group", () => {
     expect(
-      prioritizeSpeciesOptions(options, 1, true, true).map(({ id }) => id),
+      prioritizeBattlePokemonOptions(options, 1, true, true).map(({ id }) => id),
     ).toEqual([3, 1, 4, 2])
   })
 
   it("shows the form entry only for species with multiple eligible identities", () => {
-    expect(speciesHasAlternateIdentity(options, options[0])).toBe(true)
-    expect(speciesHasAlternateIdentity(options, option(5, 3))).toBe(false)
-    expect(speciesHasAlternateIdentity(options, null)).toBe(false)
+    expect(speciesHasMultipleBattlePokemonIdentities(options, options[0])).toBe(true)
+    expect(speciesHasMultipleBattlePokemonIdentities(options, option(5, 3))).toBe(false)
+    expect(speciesHasMultipleBattlePokemonIdentities(options, null)).toBe(false)
   })
 })
 
@@ -88,7 +88,7 @@ describe("Pokemon selector interactions", () => {
     await act(async () => {
       root.render(
         <IntlProvider locale="zh-hans" messages={localeMessages["zh-hans"]}>
-          <SpeciesSelect
+          <BattlePokemonSelect
             label="进攻方"
             options={options}
             value={1}

@@ -11,7 +11,7 @@ export function SelectionSummary({ state }: { state: ScenarioState }) {
     state.trackState.statMode === "preset"
       ? intl.formatMessage(
           { id: "summary.statsPreset" },
-          { count: state.trackState.offenseTemplateIds.length },
+          { count: state.trackState.offensePresetIds.length },
         )
       : intl.formatMessage(
           { id: "summary.statsRange" },
@@ -21,7 +21,7 @@ export function SelectionSummary({ state }: { state: ScenarioState }) {
     state.trackState.defenderMode === "preset"
       ? intl.formatMessage(
           { id: "summary.defendersPreset" },
-          { count: state.trackState.defenseTemplateIds.length },
+          { count: state.trackState.defensePresetIds.length },
         )
       : intl.formatMessage(
           { id: "summary.defendersRange" },

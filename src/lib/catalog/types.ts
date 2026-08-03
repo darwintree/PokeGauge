@@ -21,17 +21,17 @@ export type CatalogMoveOption = CatalogOption<UpstreamResourceId> & {
 
 export type CatalogAbilityOption = CatalogOption<UpstreamResourceId>
 
-export type MatchupIdentity = {
+export type Matchup = {
   attackerId: BattlePokemonId
   defenderId: BattlePokemonId
   attackerLabel: string
   defenderLabel: string
-  attackerSpecies: string
-  defenderSpecies: string
+  attackerCalcName: string
+  defenderCalcName: string
 }
 
 export type MatchupCatalog = {
-  matchup: MatchupIdentity
+  matchup: Matchup
   /** Selected Battle Pokémon typing used by Move and domain compilation. */
   attackerTypes: PokemonType[]
   defenderTypes: PokemonType[]
@@ -64,7 +64,7 @@ export type MatchupCatalog = {
   defenderPreservesItem: boolean
 }
 
-export type SpeciesOption = {
+export type BattlePokemonOption = {
   id: BattlePokemonId
   speciesId: UpstreamResourceId
   label: string

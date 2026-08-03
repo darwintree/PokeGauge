@@ -17,59 +17,59 @@ import {
 } from "@/lib/calc-adapter/scenario-compiler"
 import type { MatchupCatalog } from "@/lib/catalog/types"
 import {
-  convolveDamageDistributions,
+  convolveAtomicDamageDistributions,
   createAtomicDamageDistribution,
-  koProbability,
+  calculateKOProbability,
 } from "@/lib/damage-distribution"
 import { createMoveSnapshot } from "@/lib/move-snapshot"
 import {
-  buildSystemDefenseTemplates,
-  buildSystemOffenseTemplates,
-  defaultDefenseSelection,
-  defaultOffenseSelection,
+  buildSystemDefensePresets,
+  buildSystemOffensePresets,
+  defaultDefensePresetSelection,
+  defaultOffensePresetSelection,
   defenseValuesOf,
-  formatTemplateActual,
-  loadUserDefenseTemplates,
-  loadUserOffenseTemplates,
-  mergeTemplates,
+  formatStatPresetValue,
+  loadUserDefensePresets,
+  loadUserOffensePresets,
+  mergeStatPresets,
   offenseValueOf,
-  templateCardLabel,
+  statPresetLabel,
   type StatNameStrategy,
-  type StatValueTemplate,
-} from "@/lib/stat-value-template"
+  type StatPreset,
+} from "@/lib/stat-preset"
 
 import type {
   ProvenanceOptionSets,
   ScenarioPipelineResult,
   ScenarioProvenance,
-  ScenarioRow,
+  ScenarioResult,
   TrackState,
   UnavailableScenarioGroup,
 } from "./types"
 import { RANGE_DEFENDER_ID, RANGE_STAT_ID } from "./types"
 
-export function offenseTemplatesForState(
+export function offensePresetsForState(
   catalog: MatchupCatalog,
   trackState: TrackState,
-): StatValueTemplate[] {
-  const { attackerSpecies } = catalog.matchup
-  const system = buildSystemOffenseTemplates(attackerSpecies, catalog.moveCategory)
-  const user = loadUserOffenseTemplates(String(catalog.matchup.attackerId))
-  return mergeTemplates(system, user, trackState.offenseTemporaryTemplates)
+): StatPreset[] {
+  const { attackerCalcName } = catalog.matchup
+  const system = buildSystemOffensePresets(attackerCalcName, catalog.moveCategory)
+  const user = loadUserOffensePresets(String(catalog.matchup.attackerId))
+  return mergeStatPresets(system, user, trackState.offenseTemporaryPresets)
 }
 
-export function defenseTemplatesForState(
+export function defensePresetsForState(
   catalog: MatchupCatalog,
   trackState: TrackState,
-): StatValueTemplate[] {
-  const { defenderSpecies } = catalog.matchup
-  const system = buildSystemDefenseTemplates(defenderSpecies, catalog.moveCategory)
-  const user = loadUserDefenseTemplates(String(catalog.matchup.defenderId))
-  return mergeTemplates(system, user, trackState.defenseTemporaryTemplates)
+): StatPreset[] {
+  const { defenderCalcName } = catalog.matchup
+  const system = buildSystemDefensePresets(defenderCalcName, catalog.moveCategory)
+  const user = loadUserDefensePresets(String(catalog.matchup.defenderId))
+  return mergeStatPresets(system, user, trackState.defenseTemporaryPresets)
 }
 
-function findTemplate(templates: StatValueTemplate[], id: string): StatValueTemplate | undefined {
-  return templates.find((t) => t.id === id)
+function findPreset(presets: StatPreset[], id: string): StatPreset | undefined {
+  return presets.find((t) => t.id === id)
 }
 
 type PreparedStatChoice = {
@@ -94,7 +94,7 @@ function mainRolls(point: DamageKernelResult["low"]): readonly number[] {
   return rolls
 }
 
-function fixedKoProbabilities(
+function fixedKOProbabilities(
   point: DamageKernelResult["low"],
   probability: ProbabilityInput,
 ) {
@@ -104,9 +104,12 @@ function fixedKoProbabilities(
     criticalDamageRolls: point.critical,
   })
   return {
-    ohko: koProbability(atomic, point.defenderHp),
-    twoHit: koProbability(
-      convolveDamageDistributions([atomic, atomic]),
+    ohko: calculateKOProbability(
+      convolveAtomicDamageDistributions([atomic]),
+      point.defenderHp,
+    ),
+    twoHit: calculateKOProbability(
+      convolveAtomicDamageDistributions([atomic, atomic]),
       point.defenderHp,
     ),
   }
@@ -124,14 +127,13 @@ function summarizeDamage(
   const highCritical = high.critical ?? highMain
   const lowAverage = average(lowMain)
   const highAverage = average(highMain)
-  const lowKo = fixedKoProbabilities(low, probability)
-  const highKo = fixedKoProbabilities(high, probability)
+  const lowKo = fixedKOProbabilities(low, probability)
+  const highKo = fixedKOProbabilities(high, probability)
   const minDamage = Math.min(...lowMain)
   const maxDamage = Math.max(...highMain)
   const critMinDamage = Math.min(...lowCritical)
   const critMaxDamage = Math.max(...highCritical)
   const avgDamage = result.high ? (lowAverage + highAverage) / 2 : lowAverage
-  const highOhkoRolls = highMain.filter((damage) => damage >= high.defenderHp).length
 
   return {
     minDamage,
@@ -146,7 +148,6 @@ function summarizeDamage(
     critMaxDamage,
     critMinPercent: (critMinDamage / low.defenderHp) * 100,
     critMaxPercent: (critMaxDamage / high.defenderHp) * 100,
-    ohkoChance: highOhkoRolls > 0 ? (highOhkoRolls / highMain.length) * 100 : undefined,
     koProbabilities: result.high
       ? {
           ohko: {
@@ -164,7 +165,7 @@ function summarizeDamage(
 
 function offenseChoices(
   trackState: TrackState,
-  templates: StatValueTemplate[],
+  presets: StatPreset[],
 ): PreparedStatChoice[] {
   if (trackState.statMode === "range") {
     return [{
@@ -174,17 +175,17 @@ function offenseChoices(
     }]
   }
 
-  return trackState.offenseTemplateIds.flatMap((id) => {
-    const template = findTemplate(templates, id)
-    if (!template) return []
-    const value = offenseValueOf(template)
+  return trackState.offensePresetIds.flatMap((id) => {
+    const preset = findPreset(presets, id)
+    if (!preset) return []
+    const value = offenseValueOf(preset)
     return [{ id, low: value, high: value }]
   })
 }
 
 function defenseChoices(
   trackState: TrackState,
-  templates: StatValueTemplate[],
+  presets: StatPreset[],
 ): PreparedDefenseChoice[] {
   if (trackState.defenderMode === "range") {
     return [{
@@ -206,10 +207,10 @@ function defenseChoices(
     }]
   }
 
-  return trackState.defenseTemplateIds.flatMap((id) => {
-    const template = findTemplate(templates, id)
-    if (!template) return []
-    const values = defenseValuesOf(template)
+  return trackState.defensePresetIds.flatMap((id) => {
+    const preset = findPreset(presets, id)
+    if (!preset) return []
+    const values = defenseValuesOf(preset)
     return [{ id, low: values, high: values }]
   })
 }
@@ -254,14 +255,14 @@ function addSources(
   }
 }
 
-type ScenarioRowContext = Pick<
-  ScenarioRow,
+type ScenarioResultContext = Pick<
+  ScenarioResult,
   "snapshotId" | "moveId" | "attackerStatId" | "defenderId"
-> & Pick<ScenarioRow, "statRange" | "defenderRanges">
+> & Pick<ScenarioResult, "statRange" | "defenderRanges">
 
 type CalculableGroup = {
   outcome: CalculableScenario
-  context: ScenarioRowContext
+  context: ScenarioResultContext
   provenance: ScenarioProvenance
 }
 
@@ -291,10 +292,10 @@ export function runScenarioPipeline(
 ): ScenarioPipelineResult {
   const calculableGroups = new Map<string, CalculableGroup>()
   const unavailableGroups = new Map<string, UnavailableGroupBuilder>()
-  const offenseTemplates = offenseTemplatesForState(catalog, trackState)
-  const defenseTemplates = defenseTemplatesForState(catalog, trackState)
-  const preparedOffense = offenseChoices(trackState, offenseTemplates)
-  const preparedDefense = defenseChoices(trackState, defenseTemplates)
+  const offensePresets = offensePresetsForState(catalog, trackState)
+  const defensePresets = defensePresetsForState(catalog, trackState)
+  const preparedOffense = offenseChoices(trackState, offensePresets)
+  const preparedDefense = defenseChoices(trackState, defensePresets)
   const selectedMoveSnapshotIds = new Set(trackState.selectedMoveSnapshotIds)
 
   for (const snapshot of trackState.moveSnapshots) {
@@ -406,11 +407,11 @@ export function runScenarioPipeline(
 }
 
 export function defaultTrackState(catalog: MatchupCatalog): TrackState {
-  const { attackerSpecies, defenderSpecies } = catalog.matchup
-  const offenseSystem = buildSystemOffenseTemplates(attackerSpecies, catalog.moveCategory)
-  const defenseSystem = buildSystemDefenseTemplates(defenderSpecies, catalog.moveCategory)
-  const offenseUser = loadUserOffenseTemplates(String(catalog.matchup.attackerId))
-  const defenseUser = loadUserDefenseTemplates(String(catalog.matchup.defenderId))
+  const { attackerCalcName, defenderCalcName } = catalog.matchup
+  const offenseSystem = buildSystemOffensePresets(attackerCalcName, catalog.moveCategory)
+  const defenseSystem = buildSystemDefensePresets(defenderCalcName, catalog.moveCategory)
+  const offenseUser = loadUserOffensePresets(String(catalog.matchup.attackerId))
+  const defenseUser = loadUserDefensePresets(String(catalog.matchup.defenderId))
   const moveSnapshots = catalog.defaultMovePoolIds.flatMap((moveId) => {
     const move = catalog.moves.find((candidate) => candidate.id === moveId)
     return move ? [createMoveSnapshot(move)] : []
@@ -422,11 +423,11 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
       .filter((snapshot) => catalog.defaultMoveIds.includes(snapshot.moveId))
       .map((snapshot) => snapshot.id),
     statMode: "preset",
-    offenseTemplateIds: defaultOffenseSelection(offenseSystem, offenseUser),
-    offenseTemporaryTemplates: [],
-    statRange: defaultOffenseStatRange(attackerSpecies, catalog.moveCategory),
+    offensePresetIds: defaultOffensePresetSelection(offenseSystem, offenseUser),
+    offenseTemporaryPresets: [],
+    statRange: defaultOffenseStatRange(attackerCalcName, catalog.moveCategory),
     statRangeTouched: false,
-    showOffenseActual: false,
+    showOffenseStatValue: false,
     offenseAllocationIndices: {},
     attackerStages: [0],
     attackerItemIds: [...catalog.defaultAttackerItemIds],
@@ -435,65 +436,65 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
     weathers: ["none"],
     terrains: ["none"],
     defenderMode: "preset",
-    defenseTemplateIds: defaultDefenseSelection(defenseSystem, defenseUser),
-    defenseTemporaryTemplates: [],
+    defensePresetIds: defaultDefensePresetSelection(defenseSystem, defenseUser),
+    defenseTemporaryPresets: [],
     defenderRanges: {
-      hp: defaultDefenderHpRange(defenderSpecies),
-      def: defaultDefenderDefRange(defenderSpecies, catalog.moveCategory),
+      hp: defaultDefenderHpRange(defenderCalcName),
+      def: defaultDefenderDefRange(defenderCalcName, catalog.moveCategory),
     },
     defenderRangeTouched: false,
-    showDefenseActual: false,
-    showResultActual: false,
+    showDefenseStatValue: false,
+    showResultStatValue: false,
     defenseAllocationIndices: {},
     defenderStages: [0],
     defenderAbilityIds: [...catalog.defaultDefenderAbilityIds],
     screens: ["none"],
-    probabilityMode: "rolls",
+    probabilityMode: "classic",
   }
 }
 
-export type RowLabelTemplates = {
-  offense: StatValueTemplate[]
-  defense: StatValueTemplate[]
+export type RowLabelPresets = {
+  offense: StatPreset[]
+  defense: StatPreset[]
 }
 
 export function rowLabels(
   catalog: MatchupCatalog,
-  row: ScenarioRow,
+  row: ScenarioResult,
   trackState: TrackState,
   statNameStrategy: StatNameStrategy,
-  templates?: RowLabelTemplates,
+  presets?: RowLabelPresets,
 ): {
   move: string
   stat: string
-  statActual: string | null
+  offenseStatValueLabel: string | null
   defender: string
-  defenderActual: string | null
+  defenseStatValueLabel: string | null
 } {
   const findItem = (options: { id: string | number; label: string }[], id: string | number) =>
     options.find((o) => o.id === id)?.label ?? id
 
   const defStatLabel = catalog.defenseStatLabel
-  const offenseTemplates = templates?.offense ?? offenseTemplatesForState(catalog, trackState)
-  const defenseTemplates = templates?.defense ?? defenseTemplatesForState(catalog, trackState)
+  const offensePresets = presets?.offense ?? offensePresetsForState(catalog, trackState)
+  const defensePresets = presets?.defense ?? defensePresetsForState(catalog, trackState)
 
   let statLabel: string
-  let statActual: string | null = null
+  let offenseStatValueLabel: string | null = null
   if (row.attackerStatId === RANGE_STAT_ID && row.statRange) {
     statLabel = `${catalog.offenseStatLabel} ${row.statRange.min}-${row.statRange.max}`
   } else {
-    const template = offenseTemplates.find((t) => t.id === row.attackerStatId)
-    if (template) {
-      statLabel = templateCardLabel(
-        template,
-        catalog.matchup.attackerSpecies,
+    const preset = offensePresets.find((t) => t.id === row.attackerStatId)
+    if (preset) {
+      statLabel = statPresetLabel(
+        preset,
+        catalog.matchup.attackerCalcName,
         catalog.moveCategory,
-        trackState.offenseAllocationIndices[template.id] ?? 0,
+        trackState.offenseAllocationIndices[preset.id] ?? 0,
         statNameStrategy,
       )
-      if (trackState.showResultActual) {
-        const actual = formatTemplateActual(template)
-        statActual = actual === statLabel ? null : actual
+      if (trackState.showResultStatValue) {
+        const statValueText = formatStatPresetValue(preset)
+        offenseStatValueLabel = statValueText === statLabel ? null : statValueText
       }
     } else {
       statLabel = row.attackerStatId
@@ -501,22 +502,22 @@ export function rowLabels(
   }
 
   let defenderLabel: string
-  let defenderActual: string | null = null
+  let defenseStatValueLabel: string | null = null
   if (row.defenderId === RANGE_DEFENDER_ID && row.defenderRanges) {
     defenderLabel = `HP ${row.defenderRanges.hp.min}-${row.defenderRanges.hp.max} · ${defStatLabel} ${row.defenderRanges.def.min}-${row.defenderRanges.def.max}`
   } else {
-    const template = defenseTemplates.find((t) => t.id === row.defenderId)
-    if (template) {
-      defenderLabel = templateCardLabel(
-        template,
-        catalog.matchup.defenderSpecies,
+    const preset = defensePresets.find((t) => t.id === row.defenderId)
+    if (preset) {
+      defenderLabel = statPresetLabel(
+        preset,
+        catalog.matchup.defenderCalcName,
         catalog.moveCategory,
-        trackState.defenseAllocationIndices[template.id] ?? 0,
+        trackState.defenseAllocationIndices[preset.id] ?? 0,
         statNameStrategy,
       )
-      if (trackState.showResultActual) {
-        const actual = formatTemplateActual(template)
-        defenderActual = actual === defenderLabel ? null : actual
+      if (trackState.showResultStatValue) {
+        const statValueText = formatStatPresetValue(preset)
+        defenseStatValueLabel = statValueText === defenderLabel ? null : statValueText
       }
     } else {
       defenderLabel = row.defenderId
@@ -526,17 +527,17 @@ export function rowLabels(
   return {
     move: String(findItem(catalog.moves, row.moveId)),
     stat: statLabel,
-    statActual,
+    offenseStatValueLabel,
     defender: defenderLabel,
-    defenderActual,
+    defenseStatValueLabel,
   }
 }
 
 export function expectedRowCount(trackState: TrackState): number {
   const offenseCount =
-    trackState.statMode === "range" ? 1 : trackState.offenseTemplateIds.length
+    trackState.statMode === "range" ? 1 : trackState.offensePresetIds.length
   const defenderCount =
-    trackState.defenderMode === "range" ? 1 : trackState.defenseTemplateIds.length
+    trackState.defenderMode === "range" ? 1 : trackState.defensePresetIds.length
   return (
     trackState.selectedMoveSnapshotIds.length *
     offenseCount *

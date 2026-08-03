@@ -60,7 +60,7 @@ function rawScenario(overrides: Partial<RawScenario> = {}): RawScenario {
     weather: "none",
     terrain: "none",
     screen: "none",
-    probabilityMode: "rolls",
+    probabilityMode: "classic",
     lowOutcome: exactPoint("physical"),
     ...overrides,
   }
@@ -205,12 +205,12 @@ describe("ability scenario product and provenance", () => {
       "pipeline-revelation-dance",
     )]
     state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
-    state.offenseTemplateIds = ["neutral-max"]
+    state.offensePresetIds = ["neutral-max"]
     state.attackerStages = [0]
     state.attackerItemIds = ["none"]
     state.attackerAbilityIds = [50, ADAPTABILITY_ABILITY_ID]
     state.weathers = ["none"]
-    state.defenseTemplateIds = ["standard-bulk"]
+    state.defensePresetIds = ["standard-bulk"]
     state.defenderStages = [0]
     state.defenderAbilityIds = [17]
     const calculateRolls = damageKernel.calculateDamageRolls
@@ -276,12 +276,12 @@ describe("ability scenario product and provenance", () => {
     const state = defaultTrackState(catalog)
     state.moveSnapshots = [createMoveSnapshot(waterGun, "pipeline-water-gun")]
     state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
-    state.offenseTemplateIds = ["neutral-max"]
+    state.offensePresetIds = ["neutral-max"]
     state.attackerStages = [0]
     state.attackerItemIds = ["none"]
     state.attackerAbilityIds = [50, ADAPTABILITY_ABILITY_ID]
     state.weathers = ["none"]
-    state.defenseTemplateIds = ["standard-bulk"]
+    state.defensePresetIds = ["standard-bulk"]
     state.defenderStages = [0]
     state.defenderAbilityIds = [50, ADAPTABILITY_ABILITY_ID]
     const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")

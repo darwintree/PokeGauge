@@ -6,7 +6,7 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-30T09:28:00Z"
-updated_at: "2026-08-03T03:21:00Z"
+updated_at: "2026-08-03T08:24:00Z"
 ---
 ## Goal
 
@@ -420,7 +420,7 @@ updated_at: "2026-08-03T03:21:00Z"
 
 - 不把计算器扩张为完整战斗模拟器；需要额外回合或战斗历史的道具必须先定义最小输入契约。
 - 未实现道具不得被标记为已判断无效。
-- Mega Stone 应通过 Mega 形态的种族值、属性与特性建模；是否需要在 Held item track 中显式选择，留给对应子 issue 决定。
+- Mega Stone 应通过 Mega Pokémon Form 的种族值、属性与特性建模；是否需要在 Held item Track 中显式选择，留给对应子 issue 决定。
 - 仅有通用 Fling / Natural Gift 载荷意义的物品不为每个 identity 单独实现。
 
 ## Current state

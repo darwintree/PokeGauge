@@ -13,18 +13,18 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import type { SpeciesOption } from "@/lib/catalog/types"
+import type { BattlePokemonOption } from "@/lib/catalog/types"
 import {
-  prioritizeSpeciesOptions,
-  speciesHasAlternateIdentity,
+  prioritizeBattlePokemonOptions,
+  speciesHasMultipleBattlePokemonIdentities,
 } from "@/lib/catalog/pokemon-selector"
 import { POKEMON_TYPES, type PokemonType } from "@/lib/pokemon/types"
 import type { BattlePokemonId } from "@/lib/resources"
 import { cn } from "@/lib/utils"
 
-type SpeciesSelectProps = {
+type BattlePokemonSelectProps = {
   label: string
-  options: SpeciesOption[]
+  options: BattlePokemonOption[]
   value: BattlePokemonId | null
   onChange: (id: BattlePokemonId) => void
   spriteSide?: "front" | "back"
@@ -35,7 +35,7 @@ type SpeciesSelectProps = {
   awaiting?: boolean
 }
 
-function speciesMatches(option: SpeciesOption, query: string, typeFilters: PokemonType[]) {
+function battlePokemonMatches(option: BattlePokemonOption, query: string, typeFilters: PokemonType[]) {
   const q = query.trim().toLowerCase()
   const matchesQuery =
     !q ||
@@ -67,14 +67,14 @@ function MegaMark() {
   )
 }
 
-function SpeciesChoice({
+function BattlePokemonChoice({
   option,
   current,
   shortLabel,
   onSelect,
   compact = false,
 }: {
-  option: SpeciesOption
+  option: BattlePokemonOption
   current: boolean
   shortLabel?: string
   onSelect: () => void
@@ -115,7 +115,7 @@ function SpeciesChoice({
   )
 }
 
-export function SpeciesSelect({
+export function BattlePokemonSelect({
   label,
   options,
   value,
@@ -125,7 +125,7 @@ export function SpeciesSelect({
   disabled = false,
   className,
   awaiting = false,
-}: SpeciesSelectProps) {
+}: BattlePokemonSelectProps) {
   const intl = useIntl()
   const searchId = useId()
   const [open, setOpen] = useState(false)
@@ -140,8 +140,8 @@ export function SpeciesSelect({
     [options, value],
   )
   const filteredOptions = useMemo(
-    () => prioritizeSpeciesOptions(
-      visibleOptions.filter((option) => speciesMatches(option, query, typeFilters)),
+    () => prioritizeBattlePokemonOptions(
+      visibleOptions.filter((option) => battlePokemonMatches(option, query, typeFilters)),
       selected?.speciesId ?? null,
       sameSpeciesFirst,
       megaFirst,
@@ -172,7 +172,7 @@ export function SpeciesSelect({
   const placeholder =
     selected?.label ?? intl.formatMessage({ id: "matchup.placeholder" })
 
-  const showFormBadge = speciesHasAlternateIdentity(options, selected)
+  const showFormBadge = speciesHasMultipleBattlePokemonIdentities(options, selected)
 
   return (
     <div className={cn("relative", disabled && "pointer-events-none opacity-40", className)}>
@@ -339,7 +339,7 @@ export function SpeciesSelect({
               <div className="shrink-0 overflow-x-auto overscroll-x-contain">
                 <div className="flex gap-2 pb-1">
                   {sameSpeciesOptions.map((option) => (
-                    <SpeciesChoice
+                    <BattlePokemonChoice
                       key={option.id}
                       option={option}
                       current={option.id === value}
@@ -359,7 +359,7 @@ export function SpeciesSelect({
                   </div>
                 ) : (
                   listOptions.map((option) => (
-                    <SpeciesChoice
+                    <BattlePokemonChoice
                       key={option.id}
                       option={option}
                       current={option.id === value}
@@ -379,8 +379,8 @@ export function SpeciesSelect({
 type MatchupSelectorProps = {
   attackerId: BattlePokemonId
   defenderId: BattlePokemonId
-  attackers: SpeciesOption[]
-  defenders: SpeciesOption[]
+  attackers: BattlePokemonOption[]
+  defenders: BattlePokemonOption[]
   onAttackerChange: (id: BattlePokemonId) => void
   onDefenderChange: (id: BattlePokemonId) => void
 }
@@ -400,14 +400,14 @@ export function MatchupSelector({
         <FormattedMessage id="matchup.section" />
       </Label>
       <div className="grid gap-2">
-        <SpeciesSelect
+        <BattlePokemonSelect
           label={intl.formatMessage({ id: "matchup.attacker" })}
           options={attackers}
           value={attackerId}
           onChange={onAttackerChange}
         />
         <div className="text-muted-foreground flex justify-center text-xs">↓</div>
-        <SpeciesSelect
+        <BattlePokemonSelect
           label={intl.formatMessage({ id: "matchup.defender" })}
           options={defenders}
           value={defenderId}

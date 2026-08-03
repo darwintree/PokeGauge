@@ -9,12 +9,12 @@ import { Switch } from "@/components/ui/switch"
 import type { StatAxisBounds, StatRange } from "@/lib/calc-adapter"
 import type { MoveCategory } from "@/lib/catalog/types"
 import {
-  formatTemplateActual,
-  resolveTemplateDisplay,
+  formatStatPresetValue,
+  resolveStatPresetDisplay,
   STAT_NAME_STRATEGY_OPTIONS,
   type StatNameStrategy,
-  type StatValueTemplate,
-} from "@/lib/stat-value-template"
+  type StatPreset,
+} from "@/lib/stat-preset"
 import type { StatTierTokenSet } from "@/lib/stat-tier-colors"
 
 import {
@@ -26,13 +26,13 @@ import {
   type TrackOptionModifier,
 } from "./track-option"
 
-type TemplatePresetProps = {
-  templates: StatValueTemplate[]
+type StatPresetOptionsProps = {
+  presets: StatPreset[]
   selectedIds: string[]
-  species: string
+  calcName: string
   category: MoveCategory
   statNameStrategy: StatNameStrategy
-  showActual: boolean
+  showStatValue: boolean
   allocationIndices: Record<string, number>
   onToggle: (id: string) => void
   onCycleAllocation: (id: string) => void
@@ -43,13 +43,13 @@ type TemplatePresetProps = {
   addAriaLabel?: string
 }
 
-type TemplateCardProps = {
-  template: StatValueTemplate
+type StatPresetCardProps = {
+  preset: StatPreset
   selected: boolean
   label: string
-  actualText: string
+  statValueText: string
   tooltip: string | null
-  showActual: boolean
+  showStatValue: boolean
   allocationCount: number
   onToggle: () => void
   onCycleAllocation: () => void
@@ -58,31 +58,31 @@ type TemplateCardProps = {
   tier: StatTierTokenSet | null
 }
 
-function templateModifier(
-  template: StatValueTemplate,
+function statPresetModifier(
+  preset: StatPreset,
   tier: StatTierTokenSet | null,
 ): TrackOptionModifier | undefined {
   if (tier) return { kind: "tier", tier }
-  if (template.kind === "temporary") return { kind: "temporary" }
+  if (preset.kind === "temporary") return { kind: "temporary" }
   return undefined
 }
 
-function templateActions({
-  template,
+function statPresetActions({
+  preset,
   allocationCount,
   onDelete,
   onPersist,
   onCycleAllocation,
   labels,
 }: Pick<
-  TemplateCardProps,
-  "template" | "allocationCount" | "onDelete" | "onPersist" | "onCycleAllocation"
+  StatPresetCardProps,
+  "preset" | "allocationCount" | "onDelete" | "onPersist" | "onCycleAllocation"
 > & {
   labels: { delete: string; persist: string; cycleAllocation: string }
 }): TrackOptionAction[] {
   const actions: TrackOptionAction[] = []
 
-  if (template.kind === "user" && onDelete) {
+  if (preset.kind === "user" && onDelete) {
     actions.push({
       kind: "remove",
       label: labels.delete,
@@ -91,7 +91,7 @@ function templateActions({
     })
   }
 
-  if (template.kind === "temporary" && onPersist) {
+  if (preset.kind === "temporary" && onPersist) {
     actions.push({
       kind: "persist",
       label: labels.persist,
@@ -114,28 +114,28 @@ function templateActions({
   return actions
 }
 
-function TemplateCard({
-  template,
+function StatPresetCard({
+  preset,
   selected,
   label,
-  actualText,
+  statValueText,
   tooltip,
-  showActual,
+  showStatValue,
   allocationCount,
   onToggle,
   onCycleAllocation,
   onDelete,
   onPersist,
   tier,
-}: TemplateCardProps) {
+}: StatPresetCardProps) {
   const intl = useIntl()
   const hasNoSpAllocation = allocationCount === 0
-  const noSpAllocationMessage = intl.formatMessage({ id: "template.noSpAllocation" })
-  let ariaLabel = `${label} 模版`
+  const noSpAllocationMessage = intl.formatMessage({ id: "statPreset.noSpAllocation" })
+  let ariaLabel = `${label} ${intl.formatMessage({ id: "statPreset.label" })}`
   if (hasNoSpAllocation) {
     ariaLabel = `${label} ${noSpAllocationMessage}`
-  } else if (showActual) {
-    ariaLabel = `${label} ${actualText} 模版`
+  } else if (showStatValue) {
+    ariaLabel = `${label} ${statValueText} ${intl.formatMessage({ id: "statPreset.label" })}`
   }
 
   return (
@@ -143,18 +143,18 @@ function TemplateCard({
       layout="text"
       pressed={selected}
       ariaLabel={ariaLabel}
-      modifier={templateModifier(template, tier)}
+      modifier={statPresetModifier(preset, tier)}
       tooltip={hasNoSpAllocation ? noSpAllocationMessage : tooltip}
-      actions={templateActions({
-        template,
+      actions={statPresetActions({
+        preset,
         allocationCount,
         onDelete,
         onPersist,
         onCycleAllocation,
         labels: {
-          delete: intl.formatMessage({ id: "template.delete" }),
-          persist: intl.formatMessage({ id: "template.persist" }),
-          cycleAllocation: intl.formatMessage({ id: "template.cycleAllocation" }),
+          delete: intl.formatMessage({ id: "statPreset.delete" }),
+          persist: intl.formatMessage({ id: "statPreset.persist" }),
+          cycleAllocation: intl.formatMessage({ id: "statPreset.cycleAllocation" }),
         },
       })}
       onToggle={onToggle}
@@ -165,20 +165,20 @@ function TemplateCard({
           <CircleAlert aria-hidden="true" className="text-hud-muted size-3" />
         ) : null}
       </span>
-      {showActual && !hasNoSpAllocation ? (
-        <TrackOptionSummary>{actualText}</TrackOptionSummary>
+      {showStatValue && !hasNoSpAllocation ? (
+        <TrackOptionSummary>{statValueText}</TrackOptionSummary>
       ) : null}
     </TrackOption>
   )
 }
 
-export function StatValueTemplatePreset({
-  templates,
+export function StatPresetOptions({
+  presets,
   selectedIds,
-  species,
+  calcName,
   category,
   statNameStrategy,
-  showActual,
+  showStatValue,
   allocationIndices,
   onToggle,
   onCycleAllocation,
@@ -187,44 +187,44 @@ export function StatValueTemplatePreset({
   adding = false,
   onAddClick,
   addAriaLabel,
-}: TemplatePresetProps) {
+}: StatPresetOptionsProps) {
   const intl = useIntl()
   return (
     <TrackOptionGroup className="w-full overflow-visible">
-      {templates.map((template) => {
-        const selected = selectedIds.includes(template.id)
-        const allocIndex = allocationIndices[template.id] ?? 0
-        const display = resolveTemplateDisplay(
-          template,
-          species,
+      {presets.map((preset) => {
+        const selected = selectedIds.includes(preset.id)
+        const allocIndex = allocationIndices[preset.id] ?? 0
+        const display = resolveStatPresetDisplay(
+          preset,
+          calcName,
           category,
           allocIndex,
           statNameStrategy,
         )
-        const actualText = formatTemplateActual(template)
+        const statValueText = formatStatPresetValue(preset)
 
         return (
-          <TemplateCard
-            key={template.id}
-            template={template}
+          <StatPresetCard
+            key={preset.id}
+            preset={preset}
             selected={selected}
             label={display.primary}
-            actualText={actualText}
+            statValueText={statValueText}
             tooltip={display.tooltip}
-            showActual={showActual}
+            showStatValue={showStatValue}
             allocationCount={display.allocations.length}
-            onToggle={() => onToggle(template.id)}
-            onCycleAllocation={() => onCycleAllocation(template.id)}
-            onDelete={onDelete ? () => onDelete(template.id) : undefined}
-            onPersist={onPersist ? () => onPersist(template.id) : undefined}
-            tier={template.systemTier ?? null}
+            onToggle={() => onToggle(preset.id)}
+            onCycleAllocation={() => onCycleAllocation(preset.id)}
+            onDelete={onDelete ? () => onDelete(preset.id) : undefined}
+            onPersist={onPersist ? () => onPersist(preset.id) : undefined}
+            tier={preset.systemTier ?? null}
           />
         )
       })}
       {onAddClick && (
         <TrackOptionAdd
           layout="text"
-          ariaLabel={addAriaLabel ?? intl.formatMessage({ id: "template.add" })}
+          ariaLabel={addAriaLabel ?? intl.formatMessage({ id: "statPreset.add" })}
           pressed={adding}
           onClick={onAddClick}
         />
@@ -233,7 +233,7 @@ export function StatValueTemplatePreset({
   )
 }
 
-export function ShowActualValuesSwitch({
+export function ShowStatValuesSwitch({
   checked,
   onCheckedChange,
   label,
@@ -254,7 +254,7 @@ export function ShowActualValuesSwitch({
         className="border-2 border-ink data-checked:bg-signal-yellow data-unchecked:bg-paper [&_[data-slot=switch-thumb]]:size-2.5 [&_[data-slot=switch-thumb]]:bg-ink"
       />
       <Label htmlFor={id} className="cursor-pointer text-[10.5px] font-bold">
-        {label ?? intl.formatMessage({ id: "stat.showActual" })}
+        {label ?? intl.formatMessage({ id: "stat.showValue" })}
       </Label>
     </div>
   )
@@ -290,7 +290,7 @@ export function StatNameStrategySelect({
   )
 }
 
-type AddOffenseTemplateProps = {
+type AddOffensePresetProps = {
   statLabel: string
   bounds: StatAxisBounds
   onConfirm: (stat: number) => void
@@ -308,10 +308,10 @@ function ConfirmCancelActions({
   return (
     <div className="flex justify-end gap-1.5">
       <Button type="button" variant="ghost" size="sm" className="h-7 text-xs" onClick={onCancel}>
-        {intl.formatMessage({ id: "template.cancel" })}
+        {intl.formatMessage({ id: "action.cancel" })}
       </Button>
       <Button type="button" size="sm" className="h-7 text-xs" onClick={onConfirm}>
-        {intl.formatMessage({ id: "template.confirm" })}
+        {intl.formatMessage({ id: "action.confirm" })}
       </Button>
     </div>
   )
@@ -321,19 +321,19 @@ function defaultAxisPoint(bounds: StatAxisBounds): number {
   return bounds.snapPoints[1]?.value ?? Math.round((bounds.min + bounds.max) / 2)
 }
 
-export function AddOffenseTemplatePanel({
+export function AddOffensePresetPanel({
   statLabel,
   bounds,
   onConfirm,
   onCancel,
-}: AddOffenseTemplateProps) {
+}: AddOffensePresetProps) {
   const [range, setRange] = useStateRange(defaultAxisPoint(bounds))
   const intl = useIntl()
 
   return (
     <div className="space-y-2 rounded-lg border bg-muted/20 p-2">
       <Label className="text-muted-foreground text-[11px]">
-        {intl.formatMessage({ id: "template.add" })} {statLabel}
+        {intl.formatMessage({ id: "statPreset.add" })} {statLabel}
       </Label>
       <StatRangeAxis
         statLabel={statLabel}
@@ -347,7 +347,7 @@ export function AddOffenseTemplatePanel({
   )
 }
 
-type AddDefenseTemplateProps = {
+type AddDefensePresetProps = {
   hpBounds: StatAxisBounds
   defBounds: StatAxisBounds
   defStatLabel: string
@@ -355,13 +355,13 @@ type AddDefenseTemplateProps = {
   onCancel: () => void
 }
 
-export function AddDefenseTemplatePanel({
+export function AddDefensePresetPanel({
   hpBounds,
   defBounds,
   defStatLabel,
   onConfirm,
   onCancel,
-}: AddDefenseTemplateProps) {
+}: AddDefensePresetProps) {
   const [hpRange, setHpRange] = useStateRange(defaultAxisPoint(hpBounds))
   const [defRange, setDefRange] = useStateRange(defaultAxisPoint(defBounds))
   const intl = useIntl()
@@ -369,7 +369,7 @@ export function AddDefenseTemplatePanel({
   return (
     <div className="space-y-2 rounded-lg border bg-muted/20 p-2">
       <Label className="text-muted-foreground text-[11px]">
-        {intl.formatMessage({ id: "template.addDefender" })}
+        {intl.formatMessage({ id: "statPreset.addDefender" })}
       </Label>
       <StatRangeAxis
         statLabel="HP"

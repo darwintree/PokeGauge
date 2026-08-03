@@ -1,7 +1,7 @@
 import { FormattedMessage, useIntl } from "react-intl"
 
-import { SpeciesSelect } from "@/components/scenario-explorer/matchup-selector"
-import type { SpeciesOption } from "@/lib/catalog"
+import { BattlePokemonSelect } from "@/components/scenario-explorer/matchup-selector"
+import type { BattlePokemonOption } from "@/lib/catalog"
 import type { BattlePokemonId } from "@/lib/resources"
 
 function homeHintId(
@@ -14,8 +14,8 @@ function homeHintId(
 }
 
 type HomeScreenProps = {
-  attackers: SpeciesOption[]
-  defenders: SpeciesOption[]
+  attackers: BattlePokemonOption[]
+  defenders: BattlePokemonOption[]
   attackerId: BattlePokemonId | null
   defenderId: BattlePokemonId | null
   onAttackerChange: (id: BattlePokemonId) => void
@@ -54,7 +54,7 @@ export function HomeScreen({
 
       <div className="fixed inset-x-0 bottom-4 z-30 px-4 sm:bottom-6 sm:px-6">
         <div className="mx-auto grid max-w-2xl gap-2 rounded-2xl border-2 border-ink bg-paper p-2 shadow-hud-board sm:grid-cols-2">
-          <SpeciesSelect
+          <BattlePokemonSelect
             label={intl.formatMessage({ id: "matchup.attacker" })}
             options={attackers}
             value={attackerId}
@@ -63,7 +63,7 @@ export function HomeScreen({
             presentation="rail"
             awaiting={attackerId == null && defenderId != null}
           />
-          <SpeciesSelect
+          <BattlePokemonSelect
             label={intl.formatMessage({ id: "matchup.defender" })}
             options={defenders}
             value={defenderId}
