@@ -4,10 +4,12 @@ import {
   getResource,
   listResources,
   type BattlePokemonId,
-  type ChampionsAbilityUsageRecord,
-  type ChampionsBattleFormat,
-  type ChampionsMoveUsageRecord,
 } from "@/lib/resources"
+import type {
+  ChampionsAbilityUsageRecord,
+  ChampionsBattleFormat,
+  ChampionsMoveUsageRecord,
+} from "./types"
 
 const CHAMPIONS_FORMAT: ChampionsBattleFormat = "Doubles"
 const CHAMPIONS_INDEX_URL = "https://championsbattledata.com/api"

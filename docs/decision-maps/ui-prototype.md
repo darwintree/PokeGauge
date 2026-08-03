@@ -142,7 +142,7 @@ Type: Prototype
 - **粗竖线** = 通常 roll 算术平均
 - 暴击区间在通常区间上方时，用虚线桥接两段
 
-当前 mock 以 Gen 6+ 1.5× 暴击倍率 hardcode；见 [`damage-result-row.tsx`](../../src/components/scenario-explorer/damage-result-row.tsx)。
+当前 mock 以 Gen 6+ 1.5× 暴击倍率 hardcode；见 [`damage-result-row.tsx`](../../src/features/scenario-explorer/results/damage-result-row.tsx)。
 
 ---
 

@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it } from "vitest"
 
-import { getAttackerStatSetups, getDefenderSetups } from "@/lib/calc-adapter"
+import { getAttackerStatSetups, getDefenderSetups } from "@/lib/stat-calculation"
 import { getCatalogShell } from "@/lib/catalog"
 import {
   buildSystemDefensePresets,

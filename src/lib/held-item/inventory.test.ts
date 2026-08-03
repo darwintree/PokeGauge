@@ -1,7 +1,7 @@
 import { Generations, toID } from "@smogon/calc"
 import { describe, expect, it } from "vitest"
 
-import { POKEMON_TYPES } from "@/lib/pokemon/types"
+import { POKEMON_TYPES } from "@/lib/pokemon"
 
 import {
   ATTACKER_HELD_ITEM_IDS,
@@ -16,7 +16,7 @@ import {
   type HeldItemEffect,
   type HeldItemGate,
   type HeldItemModifier,
-} from "./inventory"
+} from "@/lib/held-item"
 
 const VALID_MODIFIERS = new Set<HeldItemModifier>([
   2048,

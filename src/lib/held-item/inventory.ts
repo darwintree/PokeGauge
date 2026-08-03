@@ -1,4 +1,4 @@
-import type { PokemonType } from "@/lib/pokemon/types"
+import type { PokemonType } from "@/lib/pokemon"
 
 export const HELD_ITEM_POOLS = ["attacker", "defender", "lock"] as const
 

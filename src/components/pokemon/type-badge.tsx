@@ -1,10 +1,14 @@
 import { useIntl } from "react-intl"
 
-import {
-  type PokemonType,
-  typeCssVar,
-  typeForegroundCssVar,
-} from "@/lib/pokemon/types"
+import type { PokemonType } from "@/lib/pokemon"
+
+function typeCssVar(type: PokemonType): string {
+  return `var(--pokemon-type-${type})`
+}
+
+function typeForegroundCssVar(type: PokemonType): string {
+  return `var(--pokemon-type-${type}-foreground)`
+}
 
 type TypeBadgeProps = {
   type: PokemonType
