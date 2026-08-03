@@ -10,7 +10,7 @@ import { getCatalogShell, resolveCatalogDefaultMovePick } from "@/lib/catalog"
 import {
   ATTACKER_HELD_ITEM_IDS,
   DEFENDER_HELD_ITEM_IDS,
-  UNKNOWN_MEGA_STONE_ITEM_ID,
+  UNKNOWN_MEGA_STONE_ID,
 } from "@/lib/held-item"
 
 afterEach(() => {
@@ -137,7 +137,7 @@ describe("catalog Held-item candidates", () => {
     expect(knownMega.defaultAttackerItemIds).toEqual([699])
     expect(knownMega.attackerLockedItemId).toBe(699)
     expect(unknownMega.attackerItems.map((item) => item.id)).toEqual([
-      UNKNOWN_MEGA_STONE_ITEM_ID,
+      UNKNOWN_MEGA_STONE_ID,
     ])
     expect(ogerpon.attackerItems.map((item) => item.id)).toEqual([2106])
     expect(ogerpon.defenderItems.map((item) => item.id)).toEqual([2107])

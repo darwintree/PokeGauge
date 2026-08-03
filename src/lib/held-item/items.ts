@@ -1,9 +1,8 @@
-import type { CatalogOption } from "@/lib/catalog/types"
-import type { SupportedLocale } from "@/lib/i18n"
-import { localeMessages } from "@/lib/i18n/messages"
-import { isMegaStone, megaStoneLabel } from "@/lib/mega"
+import type { CatalogOption } from "@/lib/catalog"
+import { localeMessages, type SupportedLocale } from "@/lib/i18n"
+import { isMegaStone, megaStoneLabel } from "./mega-stones"
 import { GENERATED_HELD_ITEMS } from "@/lib/resources/generated/held-items"
-import type { NormalizedHeldItem } from "@/lib/resources/types"
+import type { NormalizedHeldItem } from "@/lib/resources"
 
 import {
   ATTACKER_HELD_ITEM_IDS,

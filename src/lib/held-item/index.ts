@@ -17,12 +17,14 @@ export {
   FROZEN_HELD_ITEMS,
   isFrozenHeldItemId,
   LOCK_HELD_ITEM_IDS,
+  heldItemIdsForPool,
 } from "./inventory"
 export type {
   FrozenHeldItem,
   HeldItemBattleStat,
   HeldItemEffect,
   HeldItemGate,
+  HeldItemModifier,
   HeldItemPool,
   HeldItemWarning,
 } from "./inventory"
@@ -34,6 +36,12 @@ export {
 } from "./storage"
 export {
   EXPLICIT_NO_ITEM_ID,
-  UNKNOWN_MEGA_STONE_ITEM_ID,
+  UNKNOWN_MEGA_STONE_ID,
 } from "./types"
 export type { HeldItemId } from "./types"
+export {
+  isMegaStone,
+  megaStoneFor,
+  megaStoneLabel,
+} from "./mega-stones"
+export type { MegaStoneId } from "./mega-stones"

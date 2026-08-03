@@ -1,5 +1,5 @@
-import { defenseStatKey, offenseStatKey } from "@/lib/calc-adapter/presets"
-import type { MoveCategory } from "@/lib/catalog/types"
+import { defenseStatKey, offenseStatKey } from "@/lib/stat-calculation"
+import type { MoveCategory } from "@/lib/catalog"
 
 /** Nature boost/lower for stat modifier display (∅ / + / −). */
 const NATURE_BOOST: Record<string, string> = {

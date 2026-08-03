@@ -7,7 +7,7 @@ Pokémon battle damage calculator.
 | Topic | Where |
 | --- | --- |
 | App entry | [`src/main.tsx`](src/main.tsx) · [`src/App.tsx`](src/App.tsx) |
-| Scenario Explorer | [`src/components/scenario-explorer/`](src/components/scenario-explorer/) |
+| Scenario Explorer | [`src/features/scenario-explorer/`](src/features/scenario-explorer/) |
 | Theme / Tailwind | [`src/index.css`](src/index.css) |
 | shadcn config | [`components.json`](components.json) |
 | UI primitives | [`src/components/ui/`](src/components/ui/) |

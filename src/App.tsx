@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { IntlProvider } from "react-intl"
 
 import { AppHeader } from "@/components/app-header"
-import { ScenarioExplorerPage } from "@/components/scenario-explorer/scenario-explorer-page"
+import { ScenarioExplorerPage } from "@/features/scenario-explorer/scenario-explorer-page"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { loadInitialLocale, localeMessages, saveLocale, type SupportedLocale } from "@/lib/i18n"
 

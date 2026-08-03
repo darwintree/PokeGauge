@@ -1,0 +1,115 @@
+import type { PokemonType } from "@/lib/pokemon"
+import type { BattlePokemonId, UpstreamResourceId } from "@/lib/resources"
+
+export type CriticalStage = 0 | 1 | 2 | 3
+
+type SnapshotDefaults = {
+  alwaysHits: boolean
+  criticalStage: CriticalStage
+}
+
+type VariablePowerConfig = {
+  initialPower: number
+}
+
+const REVIEWED_SNAPSHOT_DEFAULTS: Partial<
+  Record<UpstreamResourceId, SnapshotDefaults>
+> = {
+  129: { alwaysHits: true, criticalStage: 0 },
+  869: { alwaysHits: true, criticalStage: 0 },
+  870: { alwaysHits: true, criticalStage: 3 },
+}
+
+const REVIEWED_VARIABLE_POWER: Partial<
+  Record<UpstreamResourceId, VariablePowerConfig>
+> = {
+  284: { initialPower: 150 },
+  323: { initialPower: 150 },
+  360: { initialPower: 0 },
+  484: { initialPower: 0 },
+  486: { initialPower: 0 },
+  500: { initialPower: 20 },
+}
+
+const IDENTITY_MOVE_TYPES: Partial<
+  Record<UpstreamResourceId, Partial<Record<BattlePokemonId, PokemonType>>>
+> = {
+  783: {
+    877: "electric",
+    10187: "dark",
+  },
+  873: {
+    128: "normal",
+    10250: "fighting",
+    10251: "fire",
+    10252: "water",
+  },
+  904: {
+    1017: "grass",
+    10273: "water",
+    10274: "fire",
+    10275: "rock",
+  },
+}
+
+const UNSUPPORTED_MOVE_IDS = new Set<UpstreamResourceId>([
+  237,
+  473,
+  492,
+  540,
+  548,
+  722,
+  723,
+  743,
+  776,
+  801,
+  877,
+  894,
+])
+
+function isZMove(moveId: UpstreamResourceId): boolean {
+  return (
+    (moveId >= 622 && moveId <= 658) ||
+    (moveId >= 695 && moveId <= 703) ||
+    moveId === 719 ||
+    (moveId >= 723 && moveId <= 728)
+  )
+}
+
+function isMaxMove(moveId: UpstreamResourceId): boolean {
+  return moveId >= 757 && moveId <= 774
+}
+
+export function isMoveExplicitlyUnsupported(moveId: UpstreamResourceId): boolean {
+  return UNSUPPORTED_MOVE_IDS.has(moveId) || isZMove(moveId) || isMaxMove(moveId)
+}
+
+export function reviewedVariablePowerDefault(
+  moveId: UpstreamResourceId,
+): number | undefined {
+  return REVIEWED_VARIABLE_POWER[moveId]?.initialPower
+}
+
+export function reviewedMoveSnapshotDefaults(
+  moveId: UpstreamResourceId,
+): SnapshotDefaults | undefined {
+  return REVIEWED_SNAPSHOT_DEFAULTS[moveId]
+}
+
+export function resolveReviewedMoveType(
+  moveId: UpstreamResourceId,
+  attackerId: BattlePokemonId,
+  fallback: PokemonType,
+  attackerTypes: readonly PokemonType[] = [],
+): PokemonType {
+  if (moveId === 686) return attackerTypes[0] ?? fallback
+  return IDENTITY_MOVE_TYPES[moveId]?.[attackerId] ?? fallback
+}
+
+export function moveBreaksScreensBeforeDamage(moveId: UpstreamResourceId): boolean {
+  return moveId === 280 || moveId === 706 || moveId === 873
+}
+
+export function moveCanBecomeSpread(moveId: UpstreamResourceId): boolean {
+  return moveId === 797
+}

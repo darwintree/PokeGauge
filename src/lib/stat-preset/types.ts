@@ -1,5 +1,3 @@
-import type { StatTierTokenSet } from "@/lib/stat-tier-colors"
-
 export type StatPresetKind = "system" | "user" | "temporary"
 
 export type OffenseStatValue = {
@@ -17,8 +15,6 @@ export type StatPreset = {
   id: string
   kind: StatPresetKind
   values: OffenseStatValue | DefenseStatValue
-  /** System presets — tier chip color */
-  systemTier?: StatTierTokenSet | null
 }
 
 export type StoredUserStatPresets = {

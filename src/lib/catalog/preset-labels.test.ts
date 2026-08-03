@@ -5,7 +5,7 @@ import {
   OFFENSE_AXIS_SNAP_LABELS,
   OFFENSE_PRESET_LABELS,
   OFFENSE_SNAP_PRESET_IDS,
-} from "./preset-labels"
+} from "@/lib/catalog"
 
 describe("preset labels", () => {
   it("uses tier pill labels from grill", () => {

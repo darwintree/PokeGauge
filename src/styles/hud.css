@@ -1,0 +1,101 @@
+@theme inline {
+    --font-heading: var(--font-sans);
+    /* Rounded faces are part of the HUD toy language (design.md § Typography).
+       Bundled Baloo 2 carries Latin + digits everywhere; CJK falls back to
+       system faces, SC forms first so Japanese kanji variants never leak in. */
+    --font-sans: "Baloo 2 Variable", "Yuanti SC", "PingFang SC", "Hiragino Maru Gothic ProN", "Microsoft YaHei", sans-serif;
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+
+    /* HUD tokens: design.md § Color / § Shape / § Elevation and depth */
+    --color-ink: var(--ink);
+    --color-paper: var(--paper);
+    --color-bg-app: var(--bg-app);
+    --color-hud-muted: var(--hud-muted);
+    --color-hairline: var(--hairline);
+    --color-card-border: var(--card-border);
+    --color-token-bg: var(--token-bg);
+    --color-signal-yellow: var(--signal-yellow);
+    --color-damage-critical: var(--damage-critical);
+    --color-notice-bg: var(--notice-bg);
+    --shadow-hud-chip: 2px 2px 0 0 color-mix(in srgb, var(--ink) 25%, transparent);
+    --shadow-hud-panel: 3px 3px 0 0 color-mix(in srgb, var(--ink) 18%, transparent);
+    --shadow-hud-board: 4px 4px 0 0 color-mix(in srgb, var(--ink) 18%, transparent);
+
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+    color-scheme: light;
+
+    /* HUD primitives: design.md § Color */
+    --ink: #1f2430;
+    --paper: #ffffff;
+    --bg-app: #e8ecfa;
+    --hud-muted: #606776; /* AA on every surface muted text sits on: paper 5.7, card tint 5.3, token-bg 4.8 (design.md § Accessibility) */
+    --hairline: #e3e6f2;
+    --card-border: #c9cede;
+    --token-bg: #e8ebf6;
+    --signal-yellow: #ffd23f;
+    --notice-bg: #fff8e0;
+    --appbar: #33426e;
+
+    /* shadcn semantics → HUD */
+    --background: var(--bg-app);
+    --foreground: var(--ink);
+    --card: var(--paper);
+    --card-foreground: var(--ink);
+    --popover: var(--paper);
+    --popover-foreground: var(--ink);
+    --primary: var(--ink);
+    --primary-foreground: var(--paper);
+    --secondary: var(--token-bg);
+    --secondary-foreground: var(--ink);
+    --muted: var(--token-bg);
+    --muted-foreground: var(--hud-muted);
+    --accent: var(--token-bg);
+    --accent-foreground: var(--ink);
+    --destructive: #e0352f;
+    --border: var(--hairline);
+    --input: var(--card-border);
+    --ring: var(--ink);
+    --radius: 0.625rem;
+    --sidebar: var(--token-bg);
+    --sidebar-foreground: var(--ink);
+    --sidebar-primary: var(--ink);
+    --sidebar-primary-foreground: var(--paper);
+    --sidebar-accent: var(--token-bg);
+    --sidebar-accent-foreground: var(--ink);
+    --sidebar-border: var(--hairline);
+    --sidebar-ring: var(--ink);
+}

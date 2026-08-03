@@ -9,3 +9,8 @@ export {
   setChampionsMoveUsageFetcherForTest,
   setChampionsPokemonUsageFetcherForTest,
 } from "./move-usage"
+export type {
+  ChampionsAbilityUsageRecord,
+  ChampionsBattleFormat,
+  ChampionsMoveUsageRecord,
+} from "./types"

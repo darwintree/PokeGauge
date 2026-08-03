@@ -25,7 +25,7 @@ The app already separates localized resource lookup from catalog/scenario behavi
 
 - `src/lib/resources/types.ts` defines `UpstreamResourceId`, `BattlePokemonId`, localized Pokemon resources, and localized move resources.
 - `src/lib/catalog/types.ts` expects `BattlePokemonId`, localized labels, English `species` and `moveName` strings for `@smogon/calc`, Pokemon `types`, move `type`, and a `physical | special` move category.
-- `src/lib/scenario-pipeline/pipeline.ts` only needs catalog move IDs, `moveName`, matchup species names, and the matchup move category to compute rows.
+- `src/lib/scenario/evaluate.ts` only needs catalog move IDs, `moveName`, matchup species names, and the matchup move category to compute rows.
 
 The new boundary should replace mock data and hardcoded catalog entries without letting PokeAPI response shapes leak into those modules.
 

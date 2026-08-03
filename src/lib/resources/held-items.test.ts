@@ -6,7 +6,7 @@ import { describe, expect, it } from "vitest"
 import {
   FROZEN_HELD_ITEM_IDS,
   FROZEN_HELD_ITEMS,
-} from "@/lib/held-item/inventory"
+} from "@/lib/held-item"
 
 import { RESOURCE_DIAGNOSTICS } from "./generated/diagnostics"
 import { GENERATED_HELD_ITEMS } from "./generated/held-items"

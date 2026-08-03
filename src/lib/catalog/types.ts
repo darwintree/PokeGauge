@@ -1,4 +1,4 @@
-import type { PokemonType } from "@/lib/pokemon/types"
+import type { PokemonType } from "@/lib/pokemon"
 import type { BattlePokemonId, UpstreamResourceId } from "@/lib/resources"
 import type { HeldItemId } from "@/lib/held-item"
 
@@ -40,20 +40,16 @@ export type MatchupCatalog = {
   offenseStatLabel: string
   defenseStatLabel: string
   moves: CatalogMoveOption[]
-  attackerStats: CatalogOption[]
   attackerItems: CatalogOption<HeldItemId>[]
   defenderItems: CatalogOption<HeldItemId>[]
   attackerAbilities: CatalogAbilityOption[]
-  defenderBulks: CatalogOption[]
   defenderAbilities: CatalogAbilityOption[]
   defaultMovePickStatus: "loading" | "ready" | "unavailable"
   defaultAbilityPickStatus: "loading" | "ready"
   defaultMovePoolIds: UpstreamResourceId[]
   defaultMoveIds: UpstreamResourceId[]
-  defaultAttackerStatIds: string[]
   defaultAttackerItemIds: HeldItemId[]
   defaultDefenderItemIds: HeldItemId[]
-  defaultDefenderIds: string[]
   defaultAttackerAbilityIds: UpstreamResourceId[]
   defaultDefenderAbilityIds: UpstreamResourceId[]
   attackerLockedItemId: HeldItemId | null

@@ -5,7 +5,7 @@ import {
   normalizeAddedBoostIds,
   removeAddedBoostId,
   saveAddedBoostId,
-} from "@/lib/held-item/storage"
+} from "@/lib/held-item"
 
 describe("held-item storage", () => {
   beforeEach(() => {

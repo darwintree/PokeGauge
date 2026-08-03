@@ -1,11 +1,12 @@
-import { getOffenseStat } from "@/lib/calc-adapter"
-import { getDefenderSpreadGrid } from "@/lib/calc-adapter/stat-bounds"
-import type { DefenderSetup, StatSetup } from "@/lib/calc-adapter/types"
 import {
+  getDefenderSpreadGrid,
+  getOffenseStat,
   defenseStatKey,
   offenseStatKey,
-} from "@/lib/calc-adapter/presets"
-import type { MoveCategory } from "@/lib/catalog/types"
+  type DefenderSetup,
+  type StatSetup,
+} from "@/lib/stat-calculation"
+import type { MoveCategory } from "@/lib/catalog"
 
 import { defenseStatMod, offenseStatMod, type NatureMod } from "./nature-mod"
 import { statDisplayName, type StatNameStrategy } from "./stat-name-strategy"

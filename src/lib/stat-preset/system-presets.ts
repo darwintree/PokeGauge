@@ -2,15 +2,11 @@ import {
   getDefenderDefStat,
   getDefenderHp,
   getOffenseStat,
-} from "@/lib/calc-adapter"
-import { getAttackerStatSetups, getDefenderSetups } from "@/lib/calc-adapter/presets"
-import type { MoveCategory } from "@/lib/catalog/types"
-import {
-  defenderBulkTier,
-  offenseStatTier,
-} from "@/lib/stat-tier-colors"
+} from "@/lib/stat-calculation"
+import { getAttackerStatSetups, getDefenderSetups } from "@/lib/stat-calculation"
+import type { MoveCategory } from "@/lib/catalog"
 
-import type { DefensePresetId, OffensePresetId } from "@/lib/catalog/preset-labels"
+import type { DefensePresetId, OffensePresetId } from "@/lib/catalog"
 
 import type { StatPreset } from "./types"
 
@@ -31,7 +27,6 @@ function offenseSystemPreset(
     id,
     kind: "system",
     values: { kind: "offense", stat },
-    systemTier: offenseStatTier(id),
   }
 }
 
@@ -47,7 +42,6 @@ function defenseSystemPreset(
     id,
     kind: "system",
     values: { kind: "defense", hp, def },
-    systemTier: defenderBulkTier(id),
   }
 }
 
