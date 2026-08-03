@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"
 
 import { useDualHandleDrag } from "./use-dual-handle-drag"
 
-type StatRangeAxisProps = {
+type StatRangeInputProps = {
   statLabel: string
   bounds: StatAxisBounds
   value: StatRange
@@ -25,13 +25,13 @@ function pctForValue(value: number, min: number, max: number): number {
   return ((value - min) / span) * 100
 }
 
-export function StatRangeAxis({
+export function StatRangeInput({
   statLabel,
   bounds,
   value,
   onChange,
   mode = "range",
-}: StatRangeAxisProps) {
+}: StatRangeInputProps) {
   const rootRef = useRef<HTMLDivElement>(null)
   const fineTuneId = useId()
   const [fineTune, setFineTune] = useState<FineTuneHandle>(null)

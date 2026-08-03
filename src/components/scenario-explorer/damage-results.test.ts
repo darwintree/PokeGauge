@@ -9,7 +9,7 @@ import { createMoveSnapshot } from "@/lib/move-snapshot"
 import { defaultTrackState, type UnavailableScenarioGroup } from "@/lib/scenario-pipeline"
 
 import { MoveTrack } from "./move-track"
-import { ScenarioResults } from "./scenario-results"
+import { DamageResults } from "./damage-results"
 
 function withEnglish(component: React.ReactNode): string {
   return renderToStaticMarkup(createElement(
@@ -38,7 +38,7 @@ describe("unavailable Scenario display", () => {
       provenance: {},
     }]
 
-    const resultsMarkup = withEnglish(createElement(ScenarioResults, {
+    const resultsMarkup = withEnglish(createElement(DamageResults, {
       catalog,
       rows: [],
       unavailable,
@@ -71,7 +71,7 @@ describe("unavailable Scenario display", () => {
     const snapshot = createMoveSnapshot(move, "unsupported-crabhammer")
     trackState.moveSnapshots = [snapshot]
 
-    const markup = withEnglish(createElement(ScenarioResults, {
+    const markup = withEnglish(createElement(DamageResults, {
       catalog,
       rows: [],
       unavailable: [{

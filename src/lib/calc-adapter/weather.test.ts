@@ -4,7 +4,7 @@ import { renderToStaticMarkup } from "react-dom/server"
 import { IntlProvider } from "react-intl"
 import { beforeAll, describe, expect, it, vi } from "vitest"
 
-import { DamageBoxPlot } from "@/components/scenario-explorer/damage-box-plot"
+import { DamageResultRow } from "@/components/scenario-explorer/damage-result-row"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { getCatalogShell, type MoveCategory } from "@/lib/catalog"
 import { localeMessages } from "@/lib/i18n"
@@ -412,7 +412,7 @@ describe("weather scenario product and provenance", () => {
       createElement(
         TooltipProvider,
         null,
-        createElement(DamageBoxPlot, {
+        createElement(DamageResultRow, {
           move,
           attackerStat: { id: "neutral-max", label: "Sp. Atk" },
           defender: { id: "standard-bulk", label: "Sp. Def" },

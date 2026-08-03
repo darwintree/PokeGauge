@@ -4,14 +4,13 @@ import { useIntl } from "react-intl"
 
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-import { StatRangeAxis } from "@/components/scenario-explorer/stat-range-axis"
+import { StatRangeInput } from "@/components/scenario-explorer/stat-range-input"
 import { Switch } from "@/components/ui/switch"
 import type { StatAxisBounds, StatRange } from "@/lib/calc-adapter"
 import type { MoveCategory } from "@/lib/catalog/types"
 import {
   formatStatPresetValue,
   resolveStatPresetDisplay,
-  STAT_NAME_STRATEGY_OPTIONS,
   type StatNameStrategy,
   type StatPreset,
 } from "@/lib/stat-preset"
@@ -26,7 +25,7 @@ import {
   type TrackOptionModifier,
 } from "./track-option"
 
-type StatPresetOptionsProps = {
+type StatPresetChoicesProps = {
   presets: StatPreset[]
   selectedIds: string[]
   calcName: string
@@ -43,7 +42,7 @@ type StatPresetOptionsProps = {
   addAriaLabel?: string
 }
 
-type StatPresetCardProps = {
+type StatPresetChoiceProps = {
   preset: StatPreset
   selected: boolean
   label: string
@@ -75,7 +74,7 @@ function statPresetActions({
   onCycleAllocation,
   labels,
 }: Pick<
-  StatPresetCardProps,
+  StatPresetChoiceProps,
   "preset" | "allocationCount" | "onDelete" | "onPersist" | "onCycleAllocation"
 > & {
   labels: { delete: string; persist: string; cycleAllocation: string }
@@ -114,7 +113,7 @@ function statPresetActions({
   return actions
 }
 
-function StatPresetCard({
+function StatPresetChoice({
   preset,
   selected,
   label,
@@ -127,7 +126,7 @@ function StatPresetCard({
   onDelete,
   onPersist,
   tier,
-}: StatPresetCardProps) {
+}: StatPresetChoiceProps) {
   const intl = useIntl()
   const hasNoSpAllocation = allocationCount === 0
   const noSpAllocationMessage = intl.formatMessage({ id: "statPreset.noSpAllocation" })
@@ -172,7 +171,7 @@ function StatPresetCard({
   )
 }
 
-export function StatPresetOptions({
+export function StatPresetChoices({
   presets,
   selectedIds,
   calcName,
@@ -187,7 +186,7 @@ export function StatPresetOptions({
   adding = false,
   onAddClick,
   addAriaLabel,
-}: StatPresetOptionsProps) {
+}: StatPresetChoicesProps) {
   const intl = useIntl()
   return (
     <TrackOptionGroup className="w-full overflow-visible">
@@ -204,7 +203,7 @@ export function StatPresetOptions({
         const statValueText = formatStatPresetValue(preset)
 
         return (
-          <StatPresetCard
+          <StatPresetChoice
             key={preset.id}
             preset={preset}
             selected={selected}
@@ -260,36 +259,6 @@ export function ShowStatValuesSwitch({
   )
 }
 
-export function StatNameStrategySelect({
-  value,
-  onChange,
-}: {
-  value: StatNameStrategy
-  onChange: (value: StatNameStrategy) => void
-}) {
-  const id = useId()
-  const intl = useIntl()
-  return (
-    <div className="flex items-center gap-2">
-      <Label htmlFor={id} className="text-muted-foreground text-[11px] font-normal">
-        {intl.formatMessage({ id: "stat.display" })}
-      </Label>
-      <select
-        id={id}
-        value={value}
-        onChange={(event) => onChange(event.target.value as StatNameStrategy)}
-        className="border-input bg-background h-7 max-w-[9.5rem] flex-1 rounded-md border px-2 text-[11px]"
-      >
-        {STAT_NAME_STRATEGY_OPTIONS.map((option) => (
-          <option key={option} value={option}>
-            {intl.formatMessage({ id: `stat.strategy.${option}` })}
-          </option>
-        ))}
-      </select>
-    </div>
-  )
-}
-
 type AddOffensePresetProps = {
   statLabel: string
   bounds: StatAxisBounds
@@ -335,7 +304,7 @@ export function AddOffensePresetPanel({
       <Label className="text-muted-foreground text-[11px]">
         {intl.formatMessage({ id: "statPreset.add" })} {statLabel}
       </Label>
-      <StatRangeAxis
+      <StatRangeInput
         statLabel={statLabel}
         bounds={bounds}
         value={range}
@@ -371,14 +340,14 @@ export function AddDefensePresetPanel({
       <Label className="text-muted-foreground text-[11px]">
         {intl.formatMessage({ id: "statPreset.addDefender" })}
       </Label>
-      <StatRangeAxis
+      <StatRangeInput
         statLabel="HP"
         bounds={hpBounds}
         value={hpRange}
         onChange={setHpRange}
         mode="single"
       />
-      <StatRangeAxis
+      <StatRangeInput
         statLabel={defStatLabel}
         bounds={defBounds}
         value={defRange}

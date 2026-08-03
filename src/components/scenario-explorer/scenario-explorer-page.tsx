@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-import { HomeScreen } from "@/components/scenario-explorer/home-screen"
+import { MatchupLanding } from "@/components/scenario-explorer/matchup-landing"
 import { Button } from "@/components/ui/button"
 import {
   getCatalogShell,
@@ -24,9 +24,9 @@ import {
 } from "@/lib/scenario-storage"
 import { cn } from "@/lib/utils"
 
-import { ScenarioResults } from "./scenario-results"
-import { ScenarioSidebar } from "./scenario-sidebar"
-import { SelectionSummary } from "./track-controls"
+import { DamageResults } from "./damage-results"
+import { ScenarioSetupPanel } from "./scenario-setup-panel"
+import { ScenarioSetSummary } from "./scenario-set-summary"
 import { useScenarioState } from "./use-scenario-state"
 
 type ScenarioExplorerPageProps = {
@@ -52,7 +52,7 @@ function catalogKey(catalog: MatchupCatalog): string {
   ].join(":")
 }
 
-export function ScenarioExplorerContent({
+export function ScenarioWorkspace({
   catalog,
   attackers,
   defenders,
@@ -130,7 +130,7 @@ export function ScenarioExplorerContent({
           )}
         >
           <div className="rounded-[14px] bg-token-bg p-2.5">
-            <ScenarioSidebar
+            <ScenarioSetupPanel
               catalog={catalog}
               state={state}
               attackers={attackers}
@@ -155,9 +155,9 @@ export function ScenarioExplorerContent({
             <h1 className="text-[19px] font-extrabold tracking-tight [text-shadow:1px_1px_0_var(--paper)]">
               {catalog.matchup.attackerLabel} → {catalog.matchup.defenderLabel}
             </h1>
-            <SelectionSummary state={state} />
+            <ScenarioSetSummary state={state} />
           </header>
-          <ScenarioResults
+          <DamageResults
             catalog={catalog}
             rows={state.rows}
             unavailable={state.unavailable}
@@ -382,7 +382,7 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
           leavingHome && "translate-y-2 opacity-0",
         )}
       >
-        <HomeScreen
+        <MatchupLanding
           attackers={localizedOptions.attackers}
           defenders={localizedOptions.defenders}
           attackerId={attackerId}
@@ -396,7 +396,7 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
 
   return (
     <div className="motion-safe:animate-[home-rise_500ms_cubic-bezier(0.16,1,0.3,1)_both]">
-      <ScenarioExplorerContent
+      <ScenarioWorkspace
         attackers={localizedOptions.attackers}
         defenders={localizedOptions.defenders}
         catalog={catalog}

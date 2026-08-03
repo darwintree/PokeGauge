@@ -22,10 +22,14 @@ import {
 import type { StatNameStrategy } from "@/lib/stat-preset"
 import { cn } from "@/lib/utils"
 
-import { BoxPlotLegend, DamageAxis, DamageBoxPlot } from "./damage-box-plot"
-import { ShowStatValuesSwitch } from "./stat-preset-options"
+import {
+  DamagePercentAxis,
+  DamageRangeLegend,
+  DamageResultRow,
+} from "./damage-result-row"
+import { ShowStatValuesSwitch } from "./stat-preset-choices"
 
-type ScenarioResultsProps = {
+type DamageResultsProps = {
   catalog: MatchupCatalog
   rows: ScenarioResult[]
   unavailable: UnavailableScenarioGroup[]
@@ -35,7 +39,7 @@ type ScenarioResultsProps = {
   onProbabilityModeChange: (mode: TrackState["probabilityMode"]) => void
 }
 
-function UnavailableNotices({
+function UnavailableScenarioNotices({
   catalog,
   unavailable,
 }: {
@@ -82,7 +86,7 @@ function catalogOption<T extends { id: string | number }>(options: T[], id: stri
   return found
 }
 
-export function ScenarioResults({
+export function DamageResults({
   catalog,
   rows,
   unavailable,
@@ -90,7 +94,7 @@ export function ScenarioResults({
   statNameStrategy,
   onShowResultStatValueChange,
   onProbabilityModeChange,
-}: ScenarioResultsProps) {
+}: DamageResultsProps) {
   const rowLabelPresets = useMemo(
     () => ({
       offense: offensePresetsForState(catalog, trackState),
@@ -102,7 +106,7 @@ export function ScenarioResults({
   if (rows.length === 0) {
     return (
       <>
-        <UnavailableNotices catalog={catalog} unavailable={unavailable} />
+        <UnavailableScenarioNotices catalog={catalog} unavailable={unavailable} />
         {unavailable.length === 0 && (
           <Empty className="rounded-2xl border-2 border-ink bg-paper shadow-hud-board">
             <EmptyHeader>
@@ -118,7 +122,7 @@ export function ScenarioResults({
 
   return (
     <>
-      <UnavailableNotices catalog={catalog} unavailable={unavailable} />
+      <UnavailableScenarioNotices catalog={catalog} unavailable={unavailable} />
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <ToggleGroup
           value={[trackState.probabilityMode]}
@@ -153,7 +157,7 @@ export function ScenarioResults({
       </div>
       {/* The board is the only chunky container in the results area. */}
       <div className="rounded-[16px] border-2 border-ink bg-paper shadow-hud-board">
-        <DamageAxis />
+        <DamagePercentAxis />
         <ul className="pb-2">
           {rows.map((row, index) => {
             const labels = rowLabels(catalog, row, trackState, statNameStrategy, rowLabelPresets)
@@ -177,7 +181,7 @@ export function ScenarioResults({
                       : "border-t border-hairline"),
                 )}
               >
-                <DamageBoxPlot
+                <DamageResultRow
                   move={catalogOption(catalog.moves, row.moveId)}
                   attackerAbilities={catalog.attackerAbilities}
                   defenderAbilities={catalog.defenderAbilities}
@@ -199,7 +203,7 @@ export function ScenarioResults({
             )
           })}
         </ul>
-        <BoxPlotLegend
+        <DamageRangeLegend
           showAverage={rows.some(
             (row) =>
               row.attackerStatId !== RANGE_STAT_ID &&

@@ -46,7 +46,7 @@ function moveMatches(option: CatalogMoveOption, query: string) {
   )
 }
 
-function CategoryControl({
+function MoveCategoryControl({
   category,
   onChange,
 }: {
@@ -81,7 +81,7 @@ function CategoryControl({
   )
 }
 
-function CategorySignalPills({
+function MoveCategoryToggle({
   category,
   onChange,
 }: {
@@ -119,7 +119,7 @@ function CategorySignalPills({
   )
 }
 
-function SelectionToggle({
+function MoveSelectionToggle({
   option,
   selected,
   onToggle,
@@ -155,7 +155,7 @@ function SelectionToggle({
   )
 }
 
-function SnapshotEditor({
+function MoveSnapshotEditor({
   snapshot,
   onChange,
   onRemove,
@@ -288,7 +288,7 @@ function SnapshotEditor({
   )
 }
 
-function MoveRow({
+function MoveSnapshotRow({
   snapshot,
   option,
   selected,
@@ -354,14 +354,14 @@ function MoveRow({
             )}
           />
         </button>
-        <SelectionToggle
+        <MoveSelectionToggle
           option={option}
           selected={selected}
           onToggle={onToggle}
         />
       </div>
       {editing ? (
-        <SnapshotEditor snapshot={snapshot} onChange={onChange} onRemove={onRemove} />
+        <MoveSnapshotEditor snapshot={snapshot} onChange={onChange} onRemove={onRemove} />
       ) : null}
     </div>
   )
@@ -441,7 +441,7 @@ export function MoveTrack({
             />
             <span className="pointer-events-none relative text-xs font-extrabold">{label}</span>
             <div className="relative z-10 ml-auto">
-              <CategorySignalPills
+              <MoveCategoryToggle
                 category={category}
                 onChange={(nextCategory) => {
                   onCategoryChange(nextCategory)
@@ -495,7 +495,7 @@ export function MoveTrack({
             />
             <span className="pointer-events-none relative text-xs font-extrabold">{label}</span>
             <div className="relative z-10 ml-auto">
-              <CategoryControl
+              <MoveCategoryControl
                 category={category}
                 onChange={onCategoryChange}
               />
@@ -509,7 +509,7 @@ export function MoveTrack({
               const option = optionById.get(snapshot.moveId)
               if (!option) return null
               return (
-                <MoveRow
+                <MoveSnapshotRow
                   key={snapshot.id}
                   snapshot={snapshot}
                   option={option}

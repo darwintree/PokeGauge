@@ -6,11 +6,11 @@ import type { BattlePokemonId } from "@/lib/resources"
 
 import { AbilityTrack } from "./ability-track"
 import { HeldItemTrack } from "./held-item-track/held-item-track"
-import { BattlePokemonSelect } from "./matchup-selector"
+import { BattlePokemonPicker } from "./battle-pokemon-picker"
 import { MoveTrack } from "./move-track"
 import { ScreenTrack } from "./screen-track"
-import { StatStageTrack } from "./stat-stage-track"
-import { StatTrackCard } from "./stat-track-card"
+import { BattleStatStageTrack } from "./battle-stat-stage-track"
+import { StatTrack } from "./stat-track"
 import { TerrainTrack } from "./terrain-track"
 import type { ScenarioState } from "./use-scenario-state"
 import { WeatherTrack } from "./weather-track"
@@ -29,7 +29,7 @@ type TrackId =
   | "terrain"
   | "screens"
 
-type ScenarioSidebarProps = {
+type ScenarioSetupPanelProps = {
   catalog: MatchupCatalog
   state: ScenarioState
   attackers: BattlePokemonOption[]
@@ -41,7 +41,7 @@ type ScenarioSidebarProps = {
   onMoveCategoryChange: (category: MoveCategory) => void
 }
 
-export function ScenarioSidebar({
+export function ScenarioSetupPanel({
   catalog,
   state,
   attackers,
@@ -51,7 +51,7 @@ export function ScenarioSidebar({
   onAttackerChange,
   onDefenderChange,
   onMoveCategoryChange,
-}: ScenarioSidebarProps) {
+}: ScenarioSetupPanelProps) {
   const intl = useIntl()
   const [activeId, setActiveId] = useState<TrackId | null>(null)
   const { trackState } = state
@@ -90,7 +90,7 @@ export function ScenarioSidebar({
       />
     ),
     offenseStats: (
-      <StatTrackCard
+      <StatTrack
         side="offense"
         catalog={catalog}
         state={state}
@@ -99,7 +99,7 @@ export function ScenarioSidebar({
       />
     ),
     defenseStats: (
-      <StatTrackCard
+      <StatTrack
         side="defense"
         catalog={catalog}
         state={state}
@@ -108,7 +108,7 @@ export function ScenarioSidebar({
       />
     ),
     attackerStages: (
-      <StatStageTrack
+      <BattleStatStageTrack
         label={<FormattedMessage id="track.attackerStage" />}
         ariaLabel={intl.formatMessage({ id: "track.attackerStage" })}
         values={trackState.attackerStages}
@@ -118,7 +118,7 @@ export function ScenarioSidebar({
       />
     ),
     defenderStages: (
-      <StatStageTrack
+      <BattleStatStageTrack
         label={<FormattedMessage id="track.defenderStage" />}
         ariaLabel={intl.formatMessage({ id: "track.defenderStage" })}
         values={trackState.defenderStages}
@@ -228,14 +228,14 @@ export function ScenarioSidebar({
   return (
     <section aria-label={intl.formatMessage({ id: "app.setup" })} className="space-y-3">
       <div className="grid grid-cols-2 gap-2">
-        <BattlePokemonSelect
+        <BattlePokemonPicker
           label={intl.formatMessage({ id: "matchup.attacker" })}
           options={attackers}
           value={attackerId}
           onChange={onAttackerChange}
           spriteSide="back"
         />
-        <BattlePokemonSelect
+        <BattlePokemonPicker
           label={intl.formatMessage({ id: "matchup.defender" })}
           options={defenders}
           value={defenderId}

@@ -2,7 +2,7 @@ import { Layers3, Plus, Search } from "lucide-react"
 import { useId, useMemo, useRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-import { TypeBadge, TypeBadgeRow } from "@/components/pokemon/type-badge"
+import { TypeBadge, TypeBadgeList } from "@/components/pokemon/type-badge"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -22,13 +22,13 @@ import { POKEMON_TYPES, type PokemonType } from "@/lib/pokemon/types"
 import type { BattlePokemonId } from "@/lib/resources"
 import { cn } from "@/lib/utils"
 
-type BattlePokemonSelectProps = {
+type BattlePokemonPickerProps = {
   label: string
   options: BattlePokemonOption[]
   value: BattlePokemonId | null
   onChange: (id: BattlePokemonId) => void
   spriteSide?: "front" | "back"
-  /** default = sidebar; rail = home-screen instrument control */
+  /** default = setup panel; rail = matchup landing instrument control */
   presentation?: "default" | "rail"
   disabled?: boolean
   className?: string
@@ -50,7 +50,7 @@ function toggleType(filters: PokemonType[], type: PokemonType): PokemonType[] {
   return filters.includes(type) ? filters.filter((t) => t !== type) : [...filters, type]
 }
 
-function MegaMark() {
+function MegaBadge() {
   return (
     <span
       aria-hidden
@@ -67,7 +67,7 @@ function MegaMark() {
   )
 }
 
-function BattlePokemonChoice({
+function BattlePokemonPickerItem({
   option,
   current,
   shortLabel,
@@ -98,7 +98,7 @@ function BattlePokemonChoice({
           alt=""
           className="size-full object-contain [image-rendering:pixelated]"
         />
-        {option.isMega && <MegaMark />}
+        {option.isMega && <MegaBadge />}
       </span>
       <span className={cn("min-w-0", compact && "mt-1 block text-center")}>
         <span className={cn("block truncate font-bold", compact ? "text-xs" : "text-sm")}>
@@ -110,12 +110,12 @@ function BattlePokemonChoice({
           </span>
         )}
       </span>
-      {!compact && <span className="ml-auto"><TypeBadgeRow types={option.types} /></span>}
+      {!compact && <span className="ml-auto"><TypeBadgeList types={option.types} /></span>}
     </button>
   )
 }
 
-export function BattlePokemonSelect({
+export function BattlePokemonPicker({
   label,
   options,
   value,
@@ -125,7 +125,7 @@ export function BattlePokemonSelect({
   disabled = false,
   className,
   awaiting = false,
-}: BattlePokemonSelectProps) {
+}: BattlePokemonPickerProps) {
   const intl = useIntl()
   const searchId = useId()
   const [open, setOpen] = useState(false)
@@ -219,7 +219,7 @@ export function BattlePokemonSelect({
                 {placeholder}
               </span>
             </span>
-            {selected && <TypeBadgeRow types={selected.types} />}
+            {selected && <TypeBadgeList types={selected.types} />}
           </>
         ) : (
           <>
@@ -251,7 +251,7 @@ export function BattlePokemonSelect({
               </span>
               {selected && (
                 <span className="flex justify-center">
-                  <TypeBadgeRow types={selected.types} />
+                  <TypeBadgeList types={selected.types} />
                 </span>
               )}
             </span>
@@ -339,7 +339,7 @@ export function BattlePokemonSelect({
               <div className="shrink-0 overflow-x-auto overscroll-x-contain">
                 <div className="flex gap-2 pb-1">
                   {sameSpeciesOptions.map((option) => (
-                    <BattlePokemonChoice
+                    <BattlePokemonPickerItem
                       key={option.id}
                       option={option}
                       current={option.id === value}
@@ -359,7 +359,7 @@ export function BattlePokemonSelect({
                   </div>
                 ) : (
                   listOptions.map((option) => (
-                    <BattlePokemonChoice
+                    <BattlePokemonPickerItem
                       key={option.id}
                       option={option}
                       current={option.id === value}
@@ -372,48 +372,6 @@ export function BattlePokemonSelect({
           </div>
         </DialogContent>
       </Dialog>
-    </div>
-  )
-}
-
-type MatchupSelectorProps = {
-  attackerId: BattlePokemonId
-  defenderId: BattlePokemonId
-  attackers: BattlePokemonOption[]
-  defenders: BattlePokemonOption[]
-  onAttackerChange: (id: BattlePokemonId) => void
-  onDefenderChange: (id: BattlePokemonId) => void
-}
-
-export function MatchupSelector({
-  attackerId,
-  defenderId,
-  attackers,
-  defenders,
-  onAttackerChange,
-  onDefenderChange,
-}: MatchupSelectorProps) {
-  const intl = useIntl()
-  return (
-    <div className="space-y-3">
-      <Label className="text-muted-foreground text-xs">
-        <FormattedMessage id="matchup.section" />
-      </Label>
-      <div className="grid gap-2">
-        <BattlePokemonSelect
-          label={intl.formatMessage({ id: "matchup.attacker" })}
-          options={attackers}
-          value={attackerId}
-          onChange={onAttackerChange}
-        />
-        <div className="text-muted-foreground flex justify-center text-xs">↓</div>
-        <BattlePokemonSelect
-          label={intl.formatMessage({ id: "matchup.defender" })}
-          options={defenders}
-          value={defenderId}
-          onChange={onDefenderChange}
-        />
-      </div>
     </div>
   )
 }

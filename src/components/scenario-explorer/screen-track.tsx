@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { SCREENS, type Screen } from "@/lib/calc-adapter"
 
 import { TrackOption, TrackOptionGroup } from "./track-option"
-import { TrackCard } from "./track-card"
+import { TrackPanel } from "./track-panel"
 
 type ScreenTrackProps = {
   values: Screen[]
@@ -27,7 +27,7 @@ export function ScreenTrack({ values, onChange, expanded = true, onToggle = () =
   const selected = new Set(values)
 
   return (
-    <TrackCard
+    <TrackPanel
       icon={Fence}
       label={<FormattedMessage id="track.screen" />}
       summary={values.map((screen) => intl.formatMessage({ id: `track.screen.${screen}` })).join(", ")}
@@ -64,6 +64,6 @@ export function ScreenTrack({ values, onChange, expanded = true, onToggle = () =
         })}
       </TrackOptionGroup>
       </div>
-    </TrackCard>
+    </TrackPanel>
   )
 }

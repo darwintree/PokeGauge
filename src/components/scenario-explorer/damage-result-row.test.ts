@@ -7,10 +7,10 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 import { localeMessages } from "@/lib/i18n"
 import type { ScenarioResult } from "@/lib/scenario-pipeline"
 
-import { BoxPlotLegend, DamageBoxPlot, pctToFraction } from "./damage-box-plot"
+import { DamageRangeLegend, DamageResultRow, pctToFraction } from "./damage-result-row"
 import { formatKOProbability } from "./format-ko-probability"
 
-describe("damage-box-plot non-linear axis mapping", () => {
+describe("damage result row non-linear axis mapping", () => {
   it("maps 0–100 linearly over the first 72%", () => {
     expect(pctToFraction(0)).toBe(0)
     expect(pctToFraction(50)).toBeCloseTo(0.36, 10)
@@ -45,7 +45,7 @@ describe("formatKOProbability", () => {
   })
 })
 
-describe("DamageBoxPlot range envelopes", () => {
+describe("DamageResultRow range envelopes", () => {
   const row: ScenarioResult = {
     calculationIdentity: "range-envelope",
     snapshotId: "range-envelope",
@@ -86,7 +86,7 @@ describe("DamageBoxPlot range envelopes", () => {
       createElement(
         TooltipProvider,
         null,
-        createElement(DamageBoxPlot, {
+        createElement(DamageResultRow, {
           move: {
             id: 33,
             label: "Tackle",
@@ -120,7 +120,7 @@ describe("DamageBoxPlot range envelopes", () => {
     const markup = renderToStaticMarkup(createElement(
       IntlProvider,
       { locale: "en", messages: localeMessages.en },
-      createElement(BoxPlotLegend, { showAverage: false }),
+      createElement(DamageRangeLegend, { showAverage: false }),
     ))
 
     expect(markup).not.toContain("Average damage")

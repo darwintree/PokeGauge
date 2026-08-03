@@ -7,7 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 import { localeMessages } from "@/lib/i18n"
 import type { ScenarioResult } from "@/lib/scenario-pipeline"
 
-import { DamageBoxPlot } from "./damage-box-plot"
+import { DamageResultRow } from "./damage-result-row"
 import { ScreenTrack } from "./screen-track"
 import { normalizeScreens } from "./use-scenario-state"
 
@@ -66,7 +66,7 @@ describe("Screen Track", () => {
       createElement(
         TooltipProvider,
         null,
-        createElement(DamageBoxPlot, {
+        createElement(DamageResultRow, {
           move: {
             id: 33,
             label: "Tackle",
