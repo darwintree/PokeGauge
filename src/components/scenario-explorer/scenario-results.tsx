@@ -12,26 +12,26 @@ import type { MatchupCatalog } from "@/lib/catalog"
 import {
   RANGE_DEFENDER_ID,
   RANGE_STAT_ID,
-  defenseTemplatesForState,
-  offenseTemplatesForState,
+  defensePresetsForState,
+  offensePresetsForState,
   rowLabels,
-  type ScenarioRow,
+  type ScenarioResult,
   type TrackState,
   type UnavailableScenarioGroup,
 } from "@/lib/scenario-pipeline"
-import type { StatNameStrategy } from "@/lib/stat-value-template"
+import type { StatNameStrategy } from "@/lib/stat-preset"
 import { cn } from "@/lib/utils"
 
 import { BoxPlotLegend, DamageAxis, DamageBoxPlot } from "./damage-box-plot"
-import { ShowActualValuesSwitch } from "./stat-value-template-preset"
+import { ShowStatValuesSwitch } from "./stat-preset-options"
 
 type ScenarioResultsProps = {
   catalog: MatchupCatalog
-  rows: ScenarioRow[]
+  rows: ScenarioResult[]
   unavailable: UnavailableScenarioGroup[]
   trackState: TrackState
   statNameStrategy: StatNameStrategy
-  onShowResultActualChange: (checked: boolean) => void
+  onShowResultStatValueChange: (checked: boolean) => void
   onProbabilityModeChange: (mode: TrackState["probabilityMode"]) => void
 }
 
@@ -88,13 +88,13 @@ export function ScenarioResults({
   unavailable,
   trackState,
   statNameStrategy,
-  onShowResultActualChange,
+  onShowResultStatValueChange,
   onProbabilityModeChange,
 }: ScenarioResultsProps) {
-  const rowLabelTemplates = useMemo(
+  const rowLabelPresets = useMemo(
     () => ({
-      offense: offenseTemplatesForState(catalog, trackState),
-      defense: defenseTemplatesForState(catalog, trackState),
+      offense: offensePresetsForState(catalog, trackState),
+      defense: defensePresetsForState(catalog, trackState),
     }),
     [catalog, trackState],
   )
@@ -123,7 +123,7 @@ export function ScenarioResults({
         <ToggleGroup
           value={[trackState.probabilityMode]}
           onValueChange={(value) => {
-            if (value[0] === "rolls" || value[0] === "actual") {
+            if (value[0] === "classic" || value[0] === "battle-odds") {
               onProbabilityModeChange(value[0])
             }
           }}
@@ -134,21 +134,21 @@ export function ScenarioResults({
           className="gap-0 rounded-[10px] border-2 border-ink bg-paper p-0.5 shadow-hud-chip"
         >
           <ToggleGroupItem
-            value="rolls"
+            value="classic"
             className="rounded-[7px] px-2.5 text-[11px] font-extrabold text-ink hover:bg-token-bg aria-pressed:bg-signal-yellow aria-pressed:text-ink aria-pressed:shadow-none"
           >
-            <FormattedMessage id="probability.mode.rolls" />
+            <FormattedMessage id="probability.mode.classic" />
           </ToggleGroupItem>
           <ToggleGroupItem
-            value="actual"
+            value="battle-odds"
             className="rounded-[7px] px-2.5 text-[11px] font-extrabold text-ink hover:bg-token-bg aria-pressed:bg-signal-yellow aria-pressed:text-ink aria-pressed:shadow-none"
           >
-            <FormattedMessage id="probability.mode.actual" />
+            <FormattedMessage id="probability.mode.battleOdds" />
           </ToggleGroupItem>
         </ToggleGroup>
-        <ShowActualValuesSwitch
-          checked={trackState.showResultActual}
-          onCheckedChange={onShowResultActualChange}
+        <ShowStatValuesSwitch
+          checked={trackState.showResultStatValue}
+          onCheckedChange={onShowResultStatValueChange}
         />
       </div>
       {/* The board is the only chunky container in the results area. */}
@@ -156,7 +156,7 @@ export function ScenarioResults({
         <DamageAxis />
         <ul className="pb-2">
           {rows.map((row, index) => {
-            const labels = rowLabels(catalog, row, trackState, statNameStrategy, rowLabelTemplates)
+            const labels = rowLabels(catalog, row, trackState, statNameStrategy, rowLabelPresets)
             const isRangeEnvelope =
               row.attackerStatId === RANGE_STAT_ID || row.defenderId === RANGE_DEFENDER_ID
             const startsMoveGroup = index === 0 || rows[index - 1].snapshotId !== row.snapshotId
@@ -184,16 +184,16 @@ export function ScenarioResults({
                   attackerStat={{
                     id: row.attackerStatId,
                     label: labels.stat,
-                    actual: labels.statActual,
+                    statValue: labels.offenseStatValueLabel,
                   }}
                   defender={{
                     id: row.defenderId,
                     label: labels.defender,
-                    actual: labels.defenderActual,
+                    statValue: labels.defenseStatValueLabel,
                   }}
                   row={row}
                   isRangeEnvelope={isRangeEnvelope}
-                  showAccuracy={trackState.probabilityMode === "actual"}
+                  showAccuracy={trackState.probabilityMode === "battle-odds"}
                 />
               </li>
             )

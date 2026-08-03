@@ -12,7 +12,7 @@ import {
 
 import type { DefensePresetId, OffensePresetId } from "@/lib/catalog/preset-labels"
 
-import type { StatValueTemplate } from "./types"
+import type { StatPreset } from "./types"
 
 const OFFENSE_SYSTEM_IDS = ["neutral-zero", "neutral-max", "extreme"] as const
 const DEFENSE_SYSTEM_IDS = ["min-bulk", "hp-32", "standard-bulk"] as const
@@ -20,13 +20,13 @@ const DEFENSE_SYSTEM_IDS = ["min-bulk", "hp-32", "standard-bulk"] as const
 export const OFFENSE_DEFAULT_SELECTED: OffensePresetId[] = ["neutral-max", "extreme"]
 export const DEFENSE_DEFAULT_SELECTED: DefensePresetId[] = ["hp-32"]
 
-function offenseSystemTemplate(
+function offenseSystemPreset(
   id: OffensePresetId,
-  species: string,
+  calcName: string,
   category: MoveCategory,
-): StatValueTemplate {
+): StatPreset {
   const setup = getAttackerStatSetups(category)[id]
-  const stat = getOffenseStat(species, category, setup)
+  const stat = getOffenseStat(calcName, category, setup)
   return {
     id,
     kind: "system",
@@ -35,14 +35,14 @@ function offenseSystemTemplate(
   }
 }
 
-function defenseSystemTemplate(
+function defenseSystemPreset(
   id: DefensePresetId,
-  species: string,
+  calcName: string,
   category: MoveCategory,
-): StatValueTemplate {
+): StatPreset {
   const setup = getDefenderSetups(category)[id]
-  const hp = getDefenderHp(species, setup)
-  const def = getDefenderDefStat(species, category, setup)
+  const hp = getDefenderHp(calcName, setup)
+  const def = getDefenderDefStat(calcName, category, setup)
   return {
     id,
     kind: "system",
@@ -51,82 +51,82 @@ function defenseSystemTemplate(
   }
 }
 
-export function buildSystemOffenseTemplates(
-  species: string,
+export function buildSystemOffensePresets(
+  calcName: string,
   category: MoveCategory,
-): StatValueTemplate[] {
-  return OFFENSE_SYSTEM_IDS.map((id) => offenseSystemTemplate(id, species, category))
+): StatPreset[] {
+  return OFFENSE_SYSTEM_IDS.map((id) => offenseSystemPreset(id, calcName, category))
 }
 
-export function buildSystemDefenseTemplates(
-  species: string,
+export function buildSystemDefensePresets(
+  calcName: string,
   category: MoveCategory,
-): StatValueTemplate[] {
-  return DEFENSE_SYSTEM_IDS.map((id) => defenseSystemTemplate(id, species, category))
+): StatPreset[] {
+  return DEFENSE_SYSTEM_IDS.map((id) => defenseSystemPreset(id, calcName, category))
 }
 
-export function isSystemTemplateId(id: string): boolean {
+export function isSystemPresetId(id: string): boolean {
   return (
     (OFFENSE_SYSTEM_IDS as readonly string[]).includes(id) ||
     (DEFENSE_SYSTEM_IDS as readonly string[]).includes(id)
   )
 }
 
-export function defaultOffenseSelection(
-  systemTemplates: StatValueTemplate[],
-  userTemplates: StatValueTemplate[],
+export function defaultOffensePresetSelection(
+  systemPresets: StatPreset[],
+  userPresets: StatPreset[],
 ): string[] {
   const systemIds = new Set(
-    systemTemplates
+    systemPresets
       .filter((t) => (OFFENSE_DEFAULT_SELECTED as readonly string[]).includes(t.id))
       .map((t) => t.id),
   )
-  const userIds = userTemplates.map((t) => t.id)
+  const userIds = userPresets.map((t) => t.id)
   return [...systemIds, ...userIds]
 }
 
-export function defaultDefenseSelection(
-  systemTemplates: StatValueTemplate[],
-  userTemplates: StatValueTemplate[],
+export function defaultDefensePresetSelection(
+  systemPresets: StatPreset[],
+  userPresets: StatPreset[],
 ): string[] {
   const systemIds = new Set(
-    systemTemplates
+    systemPresets
       .filter((t) => (DEFENSE_DEFAULT_SELECTED as readonly string[]).includes(t.id))
       .map((t) => t.id),
   )
-  const userIds = userTemplates.map((t) => t.id)
+  const userIds = userPresets.map((t) => t.id)
   return [...systemIds, ...userIds]
 }
 
-export function mergeTemplates(
-  system: StatValueTemplate[],
-  user: StatValueTemplate[],
-  temporary: StatValueTemplate[],
-): StatValueTemplate[] {
+export function mergeStatPresets(
+  system: StatPreset[],
+  user: StatPreset[],
+  temporary: StatPreset[],
+): StatPreset[] {
   return [...system, ...user, ...temporary]
 }
 
-export function findTemplateByOffenseValue(
-  templates: StatValueTemplate[],
+export function findPresetByOffenseValue(
+  presets: StatPreset[],
   value: number,
-): StatValueTemplate | undefined {
-  return templates.find(
+): StatPreset | undefined {
+  return presets.find(
     (t) => t.values.kind === "offense" && t.values.stat === value,
   )
 }
 
-export function findTemplateByDefenseValues(
-  templates: StatValueTemplate[],
+export function findPresetByDefenseValues(
+  presets: StatPreset[],
   hp: number,
   def: number,
-): StatValueTemplate | undefined {
-  return templates.find(
+): StatPreset | undefined {
+  return presets.find(
     (t) =>
       t.values.kind === "defense" && t.values.hp === hp && t.values.def === def,
   )
 }
 
-export function newUserOffenseTemplate(stat: number): StatValueTemplate {
+export function newUserOffensePreset(stat: number): StatPreset {
   return {
     id: `user-${crypto.randomUUID()}`,
     kind: "user",
@@ -134,7 +134,7 @@ export function newUserOffenseTemplate(stat: number): StatValueTemplate {
   }
 }
 
-export function newUserDefenseTemplate(hp: number, def: number): StatValueTemplate {
+export function newUserDefensePreset(hp: number, def: number): StatPreset {
   return {
     id: `user-${crypto.randomUUID()}`,
     kind: "user",
@@ -142,7 +142,7 @@ export function newUserDefenseTemplate(hp: number, def: number): StatValueTempla
   }
 }
 
-export function newTemporaryOffenseTemplate(stat: number): StatValueTemplate {
+export function newTemporaryOffensePreset(stat: number): StatPreset {
   return {
     id: `temp-${crypto.randomUUID()}`,
     kind: "temporary",
@@ -150,7 +150,7 @@ export function newTemporaryOffenseTemplate(stat: number): StatValueTemplate {
   }
 }
 
-export function newTemporaryDefenseTemplate(hp: number, def: number): StatValueTemplate {
+export function newTemporaryDefensePreset(hp: number, def: number): StatPreset {
   return {
     id: `temp-${crypto.randomUUID()}`,
     kind: "temporary",

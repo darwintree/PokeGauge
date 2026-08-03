@@ -38,7 +38,7 @@ import type {
   CatalogMoveOption,
   MatchupCatalog,
   MoveCategory,
-  SpeciesOption,
+  BattlePokemonOption,
 } from "./types"
 
 const STANDARD_TYPES = new Set([
@@ -81,7 +81,7 @@ const DEFAULT_MATCHUP = {
 } as const
 
 const DEFAULT_USAGE_TIMEOUT_MS = 5_000
-const POKEMON_OPTIONS_BY_LOCALE = new Map<SupportedLocale, Promise<SpeciesOption[]>>()
+const POKEMON_OPTIONS_BY_LOCALE = new Map<SupportedLocale, Promise<BattlePokemonOption[]>>()
 const MOVE_OPTIONS_BY_LOCALE_CATEGORY = new Map<string, CatalogMoveOption[]>()
 
 function statLabels(category: MoveCategory, locale: SupportedLocale) {
@@ -149,7 +149,7 @@ async function abilityOptions(
   )
 }
 
-function localizedSpeciesOption(resource: LocalizedPokemonResource): SpeciesOption {
+function localizedBattlePokemonOption(resource: LocalizedPokemonResource): BattlePokemonOption {
   return Object.freeze({
     id: resource.battlePokemonId,
     speciesId: resource.speciesId,
@@ -157,11 +157,11 @@ function localizedSpeciesOption(resource: LocalizedPokemonResource): SpeciesOpti
     species: resource.speciesName,
     form: resource.formName,
     isMega: resource.isMega,
-    types: Object.freeze([...resource.types]) as SpeciesOption["types"],
+    types: Object.freeze([...resource.types]) as BattlePokemonOption["types"],
   })
 }
 
-async function listPokemonOptions(locale: SupportedLocale): Promise<SpeciesOption[]> {
+async function listPokemonOptions(locale: SupportedLocale): Promise<BattlePokemonOption[]> {
   const cached = POKEMON_OPTIONS_BY_LOCALE.get(locale)
   if (cached) return cached
 
@@ -169,17 +169,17 @@ async function listPokemonOptions(locale: SupportedLocale): Promise<SpeciesOptio
     Object.freeze(
       pokemon
         .filter((resource) => resource.isMega || !resource.isBattleOnly)
-        .map(localizedSpeciesOption)
+        .map(localizedBattlePokemonOption)
         .sort((a, b) => a.label.localeCompare(b.label)),
-    ) as SpeciesOption[],
+    ) as BattlePokemonOption[],
   )
   POKEMON_OPTIONS_BY_LOCALE.set(locale, options)
   return options
 }
 
 export async function rankPokemonOptionsByChampionsUsage(
-  options: SpeciesOption[],
-): Promise<SpeciesOption[]> {
+  options: BattlePokemonOption[],
+): Promise<BattlePokemonOption[]> {
   const usageIds = await withTimeout(
     listChampionsPokemonUsageIds(),
     DEFAULT_USAGE_TIMEOUT_MS,
@@ -194,11 +194,11 @@ export async function rankPokemonOptionsByChampionsUsage(
   ]
 }
 
-export async function listAttackers(locale: SupportedLocale): Promise<SpeciesOption[]> {
+export async function listAttackers(locale: SupportedLocale): Promise<BattlePokemonOption[]> {
   return listPokemonOptions(locale)
 }
 
-export async function listDefenders(locale: SupportedLocale): Promise<SpeciesOption[]> {
+export async function listDefenders(locale: SupportedLocale): Promise<BattlePokemonOption[]> {
   return listPokemonOptions(locale)
 }
 
@@ -433,8 +433,8 @@ export async function getCatalogShell(
       defenderId,
       attackerLabel: attackerResource.name,
       defenderLabel: defenderResource.name,
-      attackerSpecies: attackerResource.calcSpeciesName,
-      defenderSpecies: defenderResource.calcSpeciesName,
+      attackerCalcName: attackerResource.calcSpeciesName,
+      defenderCalcName: defenderResource.calcSpeciesName,
     },
     attackerTypes: attackerResource.types,
     defenderTypes: defenderResource.types,

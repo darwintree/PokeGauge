@@ -44,15 +44,15 @@ const snapshot: MoveSnapshot = {
 }
 
 function exactPoint(
-  attackerSpecies: string,
-  defenderSpecies: string,
+  attackerCalcName: string,
+  defenderCalcName: string,
   category: MoveCategory,
   offense: StatSetup = getAttackerStatSetups(category)["neutral-max"],
   defense: DefenderSetup = getDefenderSetups(category)["standard-bulk"],
 ): RawScenarioPoint {
   return {
-    offense: offenseStatValue(attackerSpecies, category, offense),
-    defense: defenderStatValues(defenderSpecies, category, defense),
+    offense: offenseStatValue(attackerCalcName, category, offense),
+    defense: defenderStatValues(defenderCalcName, category, defense),
   }
 }
 
@@ -69,7 +69,7 @@ function scenario(overrides: Partial<RawScenario> = {}): RawScenario {
     weather: "none",
     terrain: "none",
     screen: "none",
-    probabilityMode: "rolls",
+    probabilityMode: "classic",
     lowOutcome: exactPoint("Garchomp", "Incineroar", "physical"),
     ...overrides,
   }
@@ -277,7 +277,7 @@ describe("scenario compiler", () => {
       const outcome = calculableScenario({
         attackerItemId: 242,
         defenderItemId: 190,
-        probabilityMode: "actual",
+        probabilityMode: "battle-odds",
         snapshot: { ...snapshot, accuracy: 90 },
       })
 
@@ -293,17 +293,17 @@ describe("scenario compiler", () => {
     it("marks accuracy contributions hidden by normalization, mode, or a later override inactive", () => {
       const normalized = calculableScenario({
         attackerItemId: 242,
-        probabilityMode: "actual",
+        probabilityMode: "battle-odds",
       })
       const rolls = calculableScenario({
         attackerItemId: 242,
-        probabilityMode: "rolls",
+        probabilityMode: "classic",
         snapshot: { ...snapshot, accuracy: 90 },
       })
       const rainOverride = calculableScenario({
         attackerItemId: 242,
         defenderItemId: 190,
-        probabilityMode: "actual",
+        probabilityMode: "battle-odds",
         weather: "rain",
         snapshot: {
           ...snapshot,
@@ -344,15 +344,15 @@ describe("scenario compiler", () => {
       })
       const randomOnly = calculableScenario({
         attackerItemId: 209,
-        probabilityMode: "rolls",
+        probabilityMode: "classic",
       })
-      const actual = calculableScenario({
+      const battleOdds = calculableScenario({
         attackerItemId: 209,
-        probabilityMode: "actual",
+        probabilityMode: "battle-odds",
       })
       const capped = calculableScenario({
         attackerItemId: 209,
-        probabilityMode: "actual",
+        probabilityMode: "battle-odds",
         snapshot: { ...snapshot, criticalStage: 3 },
       })
 
@@ -367,8 +367,8 @@ describe("scenario compiler", () => {
       expect(guaranteed.sources.find((source) => source.track === "screen")?.state).toBe("inactive")
       expect(randomOnly.probability.criticalHitProbability).toBe(0)
       expect(heldItemSource(randomOnly)?.state).toBe("inactive")
-      expect(actual.probability.criticalHitProbability).toBe(1 / 8)
-      expect(heldItemSource(actual)?.state).toBe("effective")
+      expect(battleOdds.probability.criticalHitProbability).toBe(1 / 8)
+      expect(heldItemSource(battleOdds)?.state).toBe("effective")
       expect(heldItemSource(capped)?.state).toBe("inactive")
     })
 
@@ -412,7 +412,7 @@ describe("scenario compiler", () => {
     })
   })
 
-  it("compiles exact actual stat values without deriving a setup", () => {
+  it("compiles exact Stat Values without deriving a setup", () => {
     const outcome = calculableScenario({
       lowOutcome: {
         offense: 186,
@@ -431,9 +431,9 @@ describe("scenario compiler", () => {
     expect(calculableScenario({ defenderId: 6 }).moveMechanics.effectivePower).toBe(0)
   })
 
-  it("shares weather accuracy between mechanics and actual probability", () => {
+  it("shares weather accuracy between mechanics and Battle Odds Mode", () => {
     const rain = calculableScenario({
-      probabilityMode: "actual",
+      probabilityMode: "battle-odds",
       weather: "rain",
       snapshot: {
         ...snapshot,
@@ -451,7 +451,7 @@ describe("scenario compiler", () => {
   })
 
   it("compiles +3 as a critical-only branch in both probability modes", () => {
-    for (const probabilityMode of ["rolls", "actual"] as const) {
+    for (const probabilityMode of ["classic", "battle-odds"] as const) {
       const outcome = compileScenario(scenario({
         probabilityMode,
         snapshot: { ...snapshot, criticalStage: 3, accuracy: 80 },
@@ -461,7 +461,7 @@ describe("scenario compiler", () => {
       expect(outcome.calculation.low.normal).toBeUndefined()
       expect(outcome.calculation.low.critical?.criticalModifier).toBe(6144)
       expect(outcome.probability).toEqual({
-        hitProbability: probabilityMode === "rolls" ? 1 : 0.8,
+        hitProbability: probabilityMode === "classic" ? 1 : 0.8,
         criticalHitProbability: 1,
       })
     }
@@ -473,7 +473,7 @@ describe("scenario compiler", () => {
     [2, 1 / 2],
   ] as const)("compiles critical stage +%i to ordinary and critical branches", (criticalStage, probability) => {
     const outcome = compileScenario(scenario({
-      probabilityMode: "actual",
+      probabilityMode: "battle-odds",
       snapshot: { ...snapshot, criticalStage },
     }))
     expect(outcome.kind).toBe("calculable")
@@ -523,14 +523,14 @@ describe("scenario compiler", () => {
   })
 
   it.each([
-    ["rolls", 0, 0],
-    ["rolls", 1, 0],
-    ["rolls", 2, 0],
-    ["rolls", 3, 1],
-    ["actual", 0, 1 / 24],
-    ["actual", 1, 1 / 8],
-    ["actual", 2, 1 / 2],
-    ["actual", 3, 1],
+    ["classic", 0, 0],
+    ["classic", 1, 0],
+    ["classic", 2, 0],
+    ["classic", 3, 1],
+    ["battle-odds", 0, 1 / 24],
+    ["battle-odds", 1, 1 / 8],
+    ["battle-odds", 2, 1 / 2],
+    ["battle-odds", 3, 1],
   ] as const)(
     "compiles %s probability at critical stage +%i",
     (probabilityMode, criticalStage, criticalHitProbability) => {
@@ -758,7 +758,7 @@ describe("scenario compiler", () => {
       expect(calculationIdentity(noCritical)).not.toBe(identity)
     })
 
-    it("includes the actual low and high Range endpoint inputs", () => {
+    it("includes the concrete low and high Range endpoint inputs", () => {
       const outcome = calculableScenario({
         highOutcome: {
           offense: offenseStatValue(

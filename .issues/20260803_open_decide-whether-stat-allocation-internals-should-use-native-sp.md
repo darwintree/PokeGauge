@@ -6,7 +6,7 @@ status: "open"
 priority: "medium"
 labels: ["TECH-DEBT", "READY-FOR-AGENT"]
 created_at: "2026-08-03T07:33:00Z"
-updated_at: "2026-08-03T07:33:00Z"
+updated_at: "2026-08-03T08:24:00Z"
 ---
 ## Context
 
@@ -14,7 +14,7 @@ CONTEXT.md now defines Stat Allocation as Nature plus Pokémon Champions Stat Po
 
 Relevant paths:
 
-- src/lib/stat-value-template/ability-points.ts
+- src/lib/stat-preset/stat-value-labels.ts
 - src/lib/calc-adapter/local-stats.ts
 - src/lib/calc-adapter/stat-bounds.ts
 - docs/domain/stat-value-template-display-labels.md

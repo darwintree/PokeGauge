@@ -28,11 +28,11 @@ function scenario(): ScenarioSnapshotInput {
       }],
       selectedMoveSnapshotIds: ["snapshot-earthquake"],
       statMode: "preset",
-      offenseTemplateIds: [],
-      offenseTemporaryTemplates: [],
+      offensePresetIds: [],
+      offenseTemporaryPresets: [],
       statRange: { min: 130, max: 182 },
       statRangeTouched: false,
-      showOffenseActual: false,
+      showOffenseStatValue: false,
       offenseAllocationIndices: {},
       attackerStages: [0],
       attackerItemIds: ["none"],
@@ -41,20 +41,20 @@ function scenario(): ScenarioSnapshotInput {
       weathers: ["none"],
       terrains: ["none"],
       defenderMode: "preset",
-      defenseTemplateIds: [],
-      defenseTemporaryTemplates: [],
+      defensePresetIds: [],
+      defenseTemporaryPresets: [],
       defenderRanges: {
         hp: { min: 170, max: 202 },
         def: { min: 110, max: 156 },
       },
       defenderRangeTouched: false,
-      showDefenseActual: false,
-      showResultActual: true,
+      showDefenseStatValue: false,
+      showResultStatValue: true,
       defenseAllocationIndices: {},
       defenderStages: [0],
       defenderAbilityIds: [22],
       screens: ["none"],
-      probabilityMode: "actual",
+      probabilityMode: "battle-odds",
     },
   }
 }
@@ -69,7 +69,7 @@ async function compatibleScenario() {
   return {
     currentCatalog,
     snapshot: {
-    version: 3,
+      version: 4,
       attackerId: 445,
       defenderId: 727,
       moveCategory: "physical",
@@ -102,7 +102,39 @@ describe("scenario storage", () => {
     const input = scenario()
     saveScenarioSnapshot(input)
 
-    expect(loadScenarioSnapshot()).toEqual({ version: 3, ...input })
+    expect(loadScenarioSnapshot()).toEqual({ version: 4, ...input })
+  })
+
+  it("migrates version 3 terminology without dropping the saved scenario", () => {
+    const input = scenario()
+    const {
+      offensePresetIds,
+      offenseTemporaryPresets,
+      defensePresetIds,
+      defenseTemporaryPresets,
+      showOffenseStatValue,
+      showDefenseStatValue,
+      showResultStatValue,
+      probabilityMode: _probabilityMode,
+      ...trackState
+    } = input.trackState
+    data[SCENARIO_STORAGE_KEY] = JSON.stringify({
+      ...input,
+      version: 3,
+      trackState: {
+        ...trackState,
+        offenseTemplateIds: offensePresetIds,
+        offenseTemporaryTemplates: offenseTemporaryPresets,
+        defenseTemplateIds: defensePresetIds,
+        defenseTemporaryTemplates: defenseTemporaryPresets,
+        showOffenseActual: showOffenseStatValue,
+        showDefenseActual: showDefenseStatValue,
+        showResultActual: showResultStatValue,
+        probabilityMode: "actual",
+      },
+    })
+
+    expect(loadScenarioSnapshot()).toEqual({ version: 4, ...input })
   })
 
   it("round trips numeric upstream held-item identities", () => {
@@ -182,7 +214,7 @@ describe("scenario storage", () => {
     expect(
       scenarioSnapshotMatchesCatalog(
         {
-          version: 3,
+          version: 4,
           attackerId: 10273,
           defenderId: 727,
           moveCategory: "physical",
@@ -201,7 +233,7 @@ describe("scenario storage", () => {
     expect(
       scenarioSnapshotMatchesCatalog(
         {
-          version: 3,
+          version: 4,
           attackerId: 10034,
           defenderId: 727,
           moveCategory: "physical",

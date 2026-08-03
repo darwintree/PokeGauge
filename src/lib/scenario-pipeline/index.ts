@@ -1,18 +1,18 @@
 export {
   defaultTrackState,
   expectedRowCount,
-  offenseTemplatesForState,
-  defenseTemplatesForState,
+  offensePresetsForState,
+  defensePresetsForState,
   rowLabels,
   runScenarioPipeline,
-  type RowLabelTemplates,
+  type RowLabelPresets,
 } from "./pipeline"
 export type {
   DefenderStatRanges,
   ProvenanceOptionSets,
   ScenarioPipelineResult,
   ScenarioProvenance,
-  ScenarioRow,
+  ScenarioResult,
   StatRange,
   StatSelectMode,
   TrackState,

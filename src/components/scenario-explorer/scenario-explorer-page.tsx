@@ -12,7 +12,7 @@ import {
   resolveCatalogDefaultMovePick,
   type MatchupCatalog,
   type MoveCategory,
-  type SpeciesOption,
+  type BattlePokemonOption,
 } from "@/lib/catalog"
 import type { SupportedLocale } from "@/lib/i18n"
 import type { BattlePokemonId } from "@/lib/resources"
@@ -34,14 +34,14 @@ type ScenarioExplorerPageProps = {
 }
 
 type LocalizedCatalogState = {
-  attackers: SpeciesOption[]
-  defenders: SpeciesOption[]
+  attackers: BattlePokemonOption[]
+  defenders: BattlePokemonOption[]
   catalog: MatchupCatalog
 }
 
 type LocalizedOptionsState = {
-  attackers: SpeciesOption[]
-  defenders: SpeciesOption[]
+  attackers: BattlePokemonOption[]
+  defenders: BattlePokemonOption[]
 }
 
 function catalogKey(catalog: MatchupCatalog): string {
@@ -163,7 +163,7 @@ export function ScenarioExplorerContent({
             unavailable={state.unavailable}
             trackState={state.trackState}
             statNameStrategy={state.statNameStrategy}
-            onShowResultActualChange={state.setShowResultActual}
+            onShowResultStatValueChange={state.setShowResultStatValue}
             onProbabilityModeChange={state.setProbabilityMode}
           />
         </main>

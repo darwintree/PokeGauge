@@ -5,10 +5,10 @@ import { describe, expect, it } from "vitest"
 
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { localeMessages } from "@/lib/i18n"
-import type { ScenarioRow } from "@/lib/scenario-pipeline"
+import type { ScenarioResult } from "@/lib/scenario-pipeline"
 
 import { BoxPlotLegend, DamageBoxPlot, pctToFraction } from "./damage-box-plot"
-import { formatKoProbability } from "./format-ko-probability"
+import { formatKOProbability } from "./format-ko-probability"
 
 describe("damage-box-plot non-linear axis mapping", () => {
   it("maps 0–100 linearly over the first 72%", () => {
@@ -34,19 +34,19 @@ describe("damage-box-plot non-linear axis mapping", () => {
   })
 })
 
-describe("formatKoProbability", () => {
+describe("formatKOProbability", () => {
   it("formats fixed values and explicit zero", () => {
-    expect(formatKoProbability(0, "en")).toBe("0%")
-    expect(formatKoProbability(0.95, "en")).toBe("95%")
+    expect(formatKOProbability(0, "en")).toBe("0%")
+    expect(formatKOProbability(0.95, "en")).toBe("95%")
   })
 
   it("keeps range endpoints instead of averaging them", () => {
-    expect(formatKoProbability({ min: 0.0625, max: 0.875 }, "en")).toBe("6.3%-87.5%")
+    expect(formatKOProbability({ min: 0.0625, max: 0.875 }, "en")).toBe("6.3%-87.5%")
   })
 })
 
 describe("DamageBoxPlot range envelopes", () => {
-  const row: ScenarioRow = {
+  const row: ScenarioResult = {
     calculationIdentity: "range-envelope",
     snapshotId: "range-envelope",
     moveId: 33,
@@ -126,7 +126,7 @@ describe("DamageBoxPlot range envelopes", () => {
     expect(markup).not.toContain("Average damage")
   })
 
-  it("shows accuracy only in actual probability mode", () => {
+  it("shows accuracy only in Battle Odds Mode", () => {
     row.moveMechanics.accuracy = 85
 
     expect(render(false)).not.toContain("85%")

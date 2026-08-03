@@ -83,7 +83,7 @@ function rawScenario(
     weather: "none",
     terrain: "none",
     screen: testCase.screen,
-    probabilityMode: "rolls",
+    probabilityMode: "classic",
     lowOutcome: {
       offense: offenseStatValueForPokemon(
         attacker,
@@ -241,12 +241,12 @@ describe("screen scenario product and provenance", () => {
       spread: false,
     }]
     state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
-    state.offenseTemplateIds = ["neutral-max"]
+    state.offensePresetIds = ["neutral-max"]
     state.attackerStages = [0]
     state.attackerItemIds = ["none"]
     state.attackerAbilityIds = [8]
     state.weathers = ["none"]
-    state.defenseTemplateIds = ["standard-bulk"]
+    state.defensePresetIds = ["standard-bulk"]
     state.defenderStages = [0]
     state.defenderAbilityIds = [17]
     state.screens = [...SCREENS]
@@ -314,12 +314,12 @@ describe("screen scenario product and provenance", () => {
       const state = defaultTrackState(catalog)
       state.moveSnapshots = [createMoveSnapshot(move, `pipeline-breaker-${moveId}`)]
       state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
-      state.offenseTemplateIds = ["neutral-max"]
+      state.offensePresetIds = ["neutral-max"]
       state.attackerStages = [0]
       state.attackerItemIds = ["none"]
       state.attackerAbilityIds = [catalog.attackerAbilities[0].id]
       state.weathers = ["none"]
-      state.defenseTemplateIds = ["standard-bulk"]
+      state.defensePresetIds = ["standard-bulk"]
       state.defenderStages = [0]
       state.defenderAbilityIds = [catalog.defenderAbilities[0].id]
       state.screens = [...SCREENS]

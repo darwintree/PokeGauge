@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest"
 
 import {
-  convolveDamageDistributions,
+  convolveAtomicDamageDistributions,
   createAtomicDamageDistribution,
-  koProbability,
+  calculateKOProbability,
 } from "@/lib/damage-distribution"
 
 const rolls = (damage: number) => Array<number>(16).fill(damage)
@@ -17,10 +17,11 @@ describe("damage distribution", () => {
       criticalDamageRolls: rolls(20),
     })
 
-    expect(koProbability(distribution, 1)).toBeCloseTo(0.75)
-    expect(koProbability(distribution, 10)).toBeCloseTo(0.75)
-    expect(koProbability(distribution, 20)).toBeCloseTo(0.15)
-    expect(koProbability(distribution, 21)).toBe(0)
+    const convolved = convolveAtomicDamageDistributions([distribution])
+    expect(calculateKOProbability(convolved, 1)).toBeCloseTo(0.75)
+    expect(calculateKOProbability(convolved, 10)).toBeCloseTo(0.75)
+    expect(calculateKOProbability(convolved, 20)).toBeCloseTo(0.15)
+    expect(calculateKOProbability(convolved, 21)).toBe(0)
   })
 
   it("aggregates duplicate zero-damage rolls with misses", () => {
@@ -31,8 +32,9 @@ describe("damage distribution", () => {
       criticalDamageRolls: rolls(20),
     })
 
-    expect(koProbability(distribution, 1)).toBeCloseTo(0.25)
-    expect(koProbability(distribution, 10)).toBeCloseTo(0.25)
+    const convolved = convolveAtomicDamageDistributions([distribution])
+    expect(calculateKOProbability(convolved, 1)).toBeCloseTo(0.25)
+    expect(calculateKOProbability(convolved, 10)).toBeCloseTo(0.25)
   })
 
   it("accepts normal-only and critical-only calculations", () => {
@@ -47,8 +49,8 @@ describe("damage distribution", () => {
       criticalDamageRolls: rolls(20),
     })
 
-    expect(koProbability(normal, 10)).toBeCloseTo(0.5)
-    expect(koProbability(critical, 20)).toBeCloseTo(0.5)
+    expect(calculateKOProbability(convolveAtomicDamageDistributions([normal]), 10)).toBeCloseTo(0.5)
+    expect(calculateKOProbability(convolveAtomicDamageDistributions([critical]), 20)).toBeCloseTo(0.5)
   })
 
   it("rejects a missing branch with positive probability", () => {
@@ -69,12 +71,12 @@ describe("damage distribution", () => {
       criticalDamageRolls: rolls(90),
     })
 
-    expect(koProbability(atomic, 100)).toBe(0)
-    expect(koProbability(convolveDamageDistributions([atomic, atomic]), 100)).toBeCloseTo(
+    expect(calculateKOProbability(convolveAtomicDamageDistributions([atomic]), 100)).toBe(0)
+    expect(calculateKOProbability(convolveAtomicDamageDistributions([atomic, atomic]), 100)).toBeCloseTo(
       0.25,
     )
     expect(
-      koProbability(convolveDamageDistributions([atomic, atomic, atomic]), 100),
+      calculateKOProbability(convolveAtomicDamageDistributions([atomic, atomic, atomic]), 100),
     ).toBeCloseTo(0.5)
   })
 })

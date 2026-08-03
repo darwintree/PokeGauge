@@ -78,7 +78,7 @@ function rawScenario(
     weather,
     terrain: "none",
     screen: "none",
-    probabilityMode: "actual",
+    probabilityMode: "battle-odds",
     lowOutcome: {
       offense: offenseStatValue(ATTACKER[category].name, category, offense),
       defense: defenderStatValues(DEFENDER.name, category, defense),
@@ -305,9 +305,9 @@ describe("weather scenario product and provenance", () => {
       "pipeline-fire",
     )]
     state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
-    state.offenseTemplateIds = ["neutral-max"]
+    state.offensePresetIds = ["neutral-max"]
     state.attackerItemIds = ["none"]
-    state.defenseTemplateIds = ["standard-bulk"]
+    state.defensePresetIds = ["standard-bulk"]
 
     expect(state.weathers).toEqual(["none"])
     expect(expectedRowCount(state)).toBe(1)
@@ -324,9 +324,9 @@ describe("weather scenario product and provenance", () => {
       "pipeline-weather-ball",
     )]
     state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
-    state.offenseTemplateIds = ["neutral-max"]
+    state.offensePresetIds = ["neutral-max"]
     state.attackerItemIds = ["none"]
-    state.defenseTemplateIds = ["standard-bulk"]
+    state.defensePresetIds = ["standard-bulk"]
     state.weathers = [...WEATHERS]
     const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
 
@@ -363,11 +363,11 @@ describe("weather scenario product and provenance", () => {
       "pipeline-thunder",
     )]
     state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
-    state.offenseTemplateIds = ["neutral-max"]
+    state.offensePresetIds = ["neutral-max"]
     state.attackerItemIds = ["none"]
-    state.defenseTemplateIds = ["standard-bulk"]
+    state.defensePresetIds = ["standard-bulk"]
     state.weathers = ["none", "rain"]
-    state.probabilityMode = "rolls"
+    state.probabilityMode = "classic"
 
     const result = runScenarioPipeline(catalog, state)
 
@@ -380,7 +380,7 @@ describe("weather scenario product and provenance", () => {
     })
   })
 
-  it("keeps accuracy weather effective in actual mode even when edited accuracy merges", async () => {
+  it("keeps accuracy weather effective in Battle Odds Mode even when edited accuracy merges", async () => {
     const catalog = await getCatalogShell(6, 143, "en", "special")
     const state = singleAbilityState(catalog)
     const thunder = createMoveSnapshot(
@@ -389,11 +389,11 @@ describe("weather scenario product and provenance", () => {
     )
     state.moveSnapshots = [{ ...thunder, accuracy: 100 }]
     state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
-    state.offenseTemplateIds = ["neutral-max"]
+    state.offensePresetIds = ["neutral-max"]
     state.attackerItemIds = ["none"]
-    state.defenseTemplateIds = ["standard-bulk"]
+    state.defensePresetIds = ["standard-bulk"]
     state.weathers = ["none", "rain"]
-    state.probabilityMode = "actual"
+    state.probabilityMode = "battle-odds"
 
     const result = runScenarioPipeline(catalog, state)
 

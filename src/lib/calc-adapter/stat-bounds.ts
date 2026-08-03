@@ -60,31 +60,31 @@ function enumerateDefenderSpreads(category: MoveCategory): DefenderSetup[] {
 }
 
 export function getOffenseStat(
-  species: string,
+  calcName: string,
   category: MoveCategory,
   setup: StatSetup,
 ): number {
-  return offenseStatValue(species, category, setup)
+  return offenseStatValue(calcName, category, setup)
 }
 
 function getDefenderStats(
-  species: string,
+  calcName: string,
   category: MoveCategory,
   setup: DefenderSetup,
 ): { hp: number; def: number } {
-  return defenderStatValues(species, category, setup)
+  return defenderStatValues(calcName, category, setup)
 }
 
-export function getDefenderHp(species: string, setup: DefenderSetup): number {
-  return getDefenderStats(species, "physical", setup).hp
+export function getDefenderHp(calcName: string, setup: DefenderSetup): number {
+  return getDefenderStats(calcName, "physical", setup).hp
 }
 
 export function getDefenderDefStat(
-  species: string,
+  calcName: string,
   category: MoveCategory,
   setup: DefenderSetup,
 ): number {
-  return getDefenderStats(species, category, setup).def
+  return getDefenderStats(calcName, category, setup).def
 }
 
 type DefenderSpreadEntry = {
@@ -96,15 +96,15 @@ type DefenderSpreadEntry = {
 const defenderSpreadCache = new Map<string, DefenderSpreadEntry[]>()
 
 export function getDefenderSpreadGrid(
-  species: string,
+  calcName: string,
   category: MoveCategory,
 ): DefenderSpreadEntry[] {
-  const key = `${species}:${category}`
+  const key = `${calcName}:${category}`
   const cached = defenderSpreadCache.get(key)
   if (cached) return cached
 
   const grid = enumerateDefenderSpreads(category).map((setup) => {
-    const { hp, def } = getDefenderStats(species, category, setup)
+    const { hp, def } = getDefenderStats(calcName, category, setup)
     return { setup, hp, def }
   })
   defenderSpreadCache.set(key, grid)
@@ -112,13 +112,13 @@ export function getDefenderSpreadGrid(
 }
 
 export function getOffenseStatBounds(
-  species: string,
+  calcName: string,
   category: MoveCategory,
 ): StatAxisBounds {
   const statKey = offenseStatKey(category)
   const setups = getAttackerStatSetups(category)
   const stats = enumerateStatSpreads(statKey).map((s) =>
-    getOffenseStat(species, category, s),
+    getOffenseStat(calcName, category, s),
   )
 
   return {
@@ -126,17 +126,17 @@ export function getOffenseStatBounds(
     max: Math.max(...stats),
     snapPoints: OFFENSE_SNAP_PRESET_IDS.map((id) => ({
       id,
-      value: getOffenseStat(species, category, setups[id]),
+      value: getOffenseStat(calcName, category, setups[id]),
       label: OFFENSE_AXIS_SNAP_LABELS[id],
       tier: offenseSnapTier(id)!,
     })),
   }
 }
 
-export function getDefenderHpBounds(species: string): StatAxisBounds {
+export function getDefenderHpBounds(calcName: string): StatAxisBounds {
   const setups = getDefenderSetups("physical")
   const stats = Array.from({ length: 64 }, (_, i) => i * 4).map((hpEv) =>
-    getDefenderHp(species, { nature: "Serious", evs: { hp: hpEv } }),
+    getDefenderHp(calcName, { nature: "Serious", evs: { hp: hpEv } }),
   )
 
   return {
@@ -144,7 +144,7 @@ export function getDefenderHpBounds(species: string): StatAxisBounds {
     max: Math.max(...stats),
     snapPoints: DEFENSE_HP_SNAP_IDS.map((id) => ({
       id,
-      value: getDefenderHp(species, setups[id]),
+      value: getDefenderHp(calcName, setups[id]),
       label: DEFENSE_HP_AXIS_LABELS[id],
       tier: defenseHpSnapTier(id)!,
     })),
@@ -152,13 +152,13 @@ export function getDefenderHpBounds(species: string): StatAxisBounds {
 }
 
 export function getDefenderDefBounds(
-  species: string,
+  calcName: string,
   category: MoveCategory,
 ): StatAxisBounds {
   const setups = getDefenderSetups(category)
   const defKey = defenseStatKey(category)
   const stats = enumerateStatSpreads(defKey).map((s) =>
-    getDefenderDefStat(species, category, s),
+    getDefenderDefStat(calcName, category, s),
   )
 
   return {
@@ -166,17 +166,17 @@ export function getDefenderDefBounds(
     max: Math.max(...stats),
     snapPoints: DEFENSE_DEF_SNAP_IDS.map((id) => ({
       id,
-      value: getDefenderDefStat(species, category, setups[id]),
+      value: getDefenderDefStat(calcName, category, setups[id]),
       label: DEFENSE_DEF_AXIS_LABELS[id],
       tier: defenseDefSnapTier(id)!,
     })),
   }
 }
 
-/** ponytail: ~37k spreads/species; warm once so range-mode clicks stay responsive */
+/** ponytail: ~37k spreads/calcName; warm once so range-mode clicks stay responsive */
 export function warmDefenderSpreadCache(
-  species: string,
+  calcName: string,
   category: MoveCategory,
 ): void {
-  getDefenderSpreadGrid(species, category)
+  getDefenderSpreadGrid(calcName, category)
 }

@@ -4,19 +4,19 @@ import { FormattedMessage, useIntl } from "react-intl"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { MatchupCatalog } from "@/lib/catalog"
 import {
-  defenseTemplatesForState,
-  offenseTemplatesForState,
+  defensePresetsForState,
+  offensePresetsForState,
   type StatSelectMode,
 } from "@/lib/scenario-pipeline"
-import { templateCardLabel } from "@/lib/stat-value-template"
+import { statPresetLabel } from "@/lib/stat-preset"
 
 import { StatRangeAxis } from "./stat-range-axis"
 import {
-  AddDefenseTemplatePanel,
-  AddOffenseTemplatePanel,
-  ShowActualValuesSwitch,
-  StatValueTemplatePreset,
-} from "./stat-value-template-preset"
+  AddDefensePresetPanel,
+  AddOffensePresetPanel,
+  ShowStatValuesSwitch,
+  StatPresetOptions,
+} from "./stat-preset-options"
 import { TrackCard } from "./track-card"
 import type { ScenarioState } from "./use-scenario-state"
 
@@ -33,14 +33,14 @@ function offenseSummary(catalog: MatchupCatalog, state: ScenarioState): string {
   if (trackState.statMode === "range") {
     return `${trackState.statRange.min}-${trackState.statRange.max}`
   }
-  const templates = offenseTemplatesForState(catalog, trackState)
-  return trackState.offenseTemplateIds
+  const presets = offensePresetsForState(catalog, trackState)
+  return trackState.offensePresetIds
     .map((id) => {
-      const template = templates.find((candidate) => candidate.id === id)
-      return template
-        ? templateCardLabel(
-            template,
-            catalog.matchup.attackerSpecies,
+      const preset = presets.find((candidate) => candidate.id === id)
+      return preset
+        ? statPresetLabel(
+            preset,
+            catalog.matchup.attackerCalcName,
             catalog.moveCategory,
             trackState.offenseAllocationIndices[id] ?? 0,
             state.statNameStrategy,
@@ -55,14 +55,14 @@ function defenseSummary(catalog: MatchupCatalog, state: ScenarioState): string {
   if (trackState.defenderMode === "range") {
     return `HP ${trackState.defenderRanges.hp.min}-${trackState.defenderRanges.hp.max}, ${catalog.defenseStatLabel} ${trackState.defenderRanges.def.min}-${trackState.defenderRanges.def.max}`
   }
-  const templates = defenseTemplatesForState(catalog, trackState)
-  return trackState.defenseTemplateIds
+  const presets = defensePresetsForState(catalog, trackState)
+  return trackState.defensePresetIds
     .map((id) => {
-      const template = templates.find((candidate) => candidate.id === id)
-      return template
-        ? templateCardLabel(
-            template,
-            catalog.matchup.defenderSpecies,
+      const preset = presets.find((candidate) => candidate.id === id)
+      return preset
+        ? statPresetLabel(
+            preset,
+            catalog.matchup.defenderCalcName,
             catalog.moveCategory,
             trackState.defenseAllocationIndices[id] ?? 0,
             state.statNameStrategy,
@@ -112,28 +112,28 @@ export function StatTrackCard({
         <TabsContent value="preset" className="mt-0 space-y-2">
           {offense ? (
             <>
-              <StatValueTemplatePreset
-                templates={state.offenseTemplates}
-                selectedIds={trackState.offenseTemplateIds}
-                species={catalog.matchup.attackerSpecies}
+              <StatPresetOptions
+                presets={state.offensePresets}
+                selectedIds={trackState.offensePresetIds}
+                calcName={catalog.matchup.attackerCalcName}
                 category={catalog.moveCategory}
                 statNameStrategy={state.statNameStrategy}
-                showActual={trackState.showOffenseActual}
+                showStatValue={trackState.showOffenseStatValue}
                 allocationIndices={trackState.offenseAllocationIndices}
-                onToggle={state.toggleOffenseTemplate}
+                onToggle={state.toggleOffensePreset}
                 onCycleAllocation={state.cycleOffenseAllocation}
-                onDelete={state.deleteOffenseTemplate}
-                onPersist={state.persistOffenseTemplate}
+                onDelete={state.deleteOffensePreset}
+                onPersist={state.persistOffensePreset}
                 adding={state.addingOffense}
                 onAddClick={() => state.setAddingOffense((value) => !value)}
-                addAriaLabel={intl.formatMessage({ id: "template.addAttacker" })}
+                addAriaLabel={intl.formatMessage({ id: "statPreset.addAttacker" })}
               />
-              <ShowActualValuesSwitch
-                checked={trackState.showOffenseActual}
-                onCheckedChange={state.setShowOffenseActual}
+              <ShowStatValuesSwitch
+                checked={trackState.showOffenseStatValue}
+                onCheckedChange={state.setShowOffenseStatValue}
               />
               {state.addingOffense && (
-                <AddOffenseTemplatePanel
+                <AddOffensePresetPanel
                   statLabel={catalog.offenseStatLabel}
                   bounds={state.offenseBounds}
                   onConfirm={state.confirmAddOffense}
@@ -143,28 +143,28 @@ export function StatTrackCard({
             </>
           ) : (
             <>
-              <StatValueTemplatePreset
-                templates={state.defenseTemplates}
-                selectedIds={trackState.defenseTemplateIds}
-                species={catalog.matchup.defenderSpecies}
+              <StatPresetOptions
+                presets={state.defensePresets}
+                selectedIds={trackState.defensePresetIds}
+                calcName={catalog.matchup.defenderCalcName}
                 category={catalog.moveCategory}
                 statNameStrategy={state.statNameStrategy}
-                showActual={trackState.showDefenseActual}
+                showStatValue={trackState.showDefenseStatValue}
                 allocationIndices={trackState.defenseAllocationIndices}
-                onToggle={state.toggleDefenseTemplate}
+                onToggle={state.toggleDefensePreset}
                 onCycleAllocation={state.cycleDefenseAllocation}
-                onDelete={state.deleteDefenseTemplate}
-                onPersist={state.persistDefenseTemplate}
+                onDelete={state.deleteDefensePreset}
+                onPersist={state.persistDefensePreset}
                 adding={state.addingDefense}
                 onAddClick={() => state.setAddingDefense((value) => !value)}
-                addAriaLabel={intl.formatMessage({ id: "template.addDefender" })}
+                addAriaLabel={intl.formatMessage({ id: "statPreset.addDefender" })}
               />
-              <ShowActualValuesSwitch
-                checked={trackState.showDefenseActual}
-                onCheckedChange={state.setShowDefenseActual}
+              <ShowStatValuesSwitch
+                checked={trackState.showDefenseStatValue}
+                onCheckedChange={state.setShowDefenseStatValue}
               />
               {state.addingDefense && (
-                <AddDefenseTemplatePanel
+                <AddDefensePresetPanel
                   hpBounds={state.defenderHpBounds}
                   defBounds={state.defenderDefBounds}
                   defStatLabel={catalog.defenseStatLabel}

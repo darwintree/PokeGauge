@@ -6,15 +6,15 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-17T03:42:00Z"
-updated_at: "2026-07-17T03:43:00Z"
+updated_at: "2026-08-03T08:24:00Z"
 ---
 ## Context
 
-Core battle mechanics 规格规定单个 Range 行使用 lowOutcome／highOutcome 两个实际计算端点，但不决定不同滑块选段吸附到相同端点后是否效果等价。
+Core battle mechanics 规格规定单个 Stat Range 使用 lowOutcome／highOutcome 两个计算端点，但不决定不同端点选择吸附到相同值后是否计算等价。
 
 ## Question
 
-定义 Range Track 原始滑块值、可达端点、calculation identity 与效果等价合并之间的关系，以及是否需要跨不同选段保留原始选择来源。
+定义 Stat Range 原始端点值、可达端点、calculation identity 与 Scenario Merge 之间的关系，以及是否需要跨不同区间保留 Track 来源。
 
 ## Source
 

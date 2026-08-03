@@ -1,5 +1,5 @@
 import type {
-  KoProbabilities,
+  KOProbabilities,
   MoveMechanics,
   ProbabilityMode,
   Screen,
@@ -11,7 +11,7 @@ import type {
   Weather,
 } from "@/lib/calc-adapter"
 import type { MoveSnapshot } from "@/lib/move-snapshot"
-import type { StatValueTemplate } from "@/lib/stat-value-template"
+import type { StatPreset } from "@/lib/stat-preset"
 import type { HeldItemId } from "@/lib/held-item"
 
 export type StatSelectMode = "preset" | "range"
@@ -36,11 +36,11 @@ export type TrackState = {
   moveSnapshots: MoveSnapshot[]
   selectedMoveSnapshotIds: string[]
   statMode: StatSelectMode
-  offenseTemplateIds: string[]
-  offenseTemporaryTemplates: StatValueTemplate[]
+  offensePresetIds: string[]
+  offenseTemporaryPresets: StatPreset[]
   statRange: StatRange
   statRangeTouched: boolean
-  showOffenseActual: boolean
+  showOffenseStatValue: boolean
   offenseAllocationIndices: Record<string, number>
   attackerStages: StatStage[]
   attackerItemIds: HeldItemId[]
@@ -49,12 +49,12 @@ export type TrackState = {
   weathers: Weather[]
   terrains: Terrain[]
   defenderMode: StatSelectMode
-  defenseTemplateIds: string[]
-  defenseTemporaryTemplates: StatValueTemplate[]
+  defensePresetIds: string[]
+  defenseTemporaryPresets: StatPreset[]
   defenderRanges: DefenderStatRanges
   defenderRangeTouched: boolean
-  showDefenseActual: boolean
-  showResultActual: boolean
+  showDefenseStatValue: boolean
+  showResultStatValue: boolean
   defenseAllocationIndices: Record<string, number>
   defenderStages: StatStage[]
   defenderAbilityIds: number[]
@@ -62,7 +62,7 @@ export type TrackState = {
   probabilityMode: ProbabilityMode
 }
 
-export type ScenarioRow = {
+export type ScenarioResult = {
   calculationIdentity: string
   snapshotId: string
   moveId: number
@@ -83,8 +83,7 @@ export type ScenarioRow = {
   critMaxDamage: number
   critMinPercent: number
   critMaxPercent: number
-  ohkoChance?: number
-  koProbabilities?: KoProbabilities
+  koProbabilities?: KOProbabilities
 }
 
 export type ProvenanceOptionSets = Record<SourceState, string[]>
@@ -102,6 +101,6 @@ export type UnavailableScenarioGroup = {
 }
 
 export type ScenarioPipelineResult = {
-  rows: ScenarioRow[]
+  rows: ScenarioResult[]
   unavailable: UnavailableScenarioGroup[]
 }
