@@ -32,7 +32,7 @@ export type MatchupIdentity = {
 
 export type MatchupCatalog = {
   matchup: MatchupIdentity
-  /** Attacker typing — drives default visible type-boost items in UI */
+  /** Selected Battle Pokémon typing used by Move and domain compilation. */
   attackerTypes: PokemonType[]
   defenderTypes: PokemonType[]
   /** All moves in pick share this category — v1 single-category attackers only */

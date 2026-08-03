@@ -1,135 +1,108 @@
-import { POKEMON_TYPES, type PokemonType } from "@/lib/pokemon/types"
-import type { MoveCategory } from "@/lib/catalog/types"
-import { isMegaStone, megaStoneLabel } from "@/lib/mega"
+import type { CatalogOption } from "@/lib/catalog/types"
 import type { SupportedLocale } from "@/lib/i18n"
+import { localeMessages } from "@/lib/i18n/messages"
+import { isMegaStone, megaStoneLabel } from "@/lib/mega"
+import { GENERATED_HELD_ITEMS } from "@/lib/resources/generated/held-items"
+import type { NormalizedHeldItem } from "@/lib/resources/types"
 
-import type { HeldItemId } from "./types"
+import {
+  ATTACKER_HELD_ITEM_IDS,
+  DEFENDER_HELD_ITEM_IDS,
+  FROZEN_HELD_ITEM_BY_ID,
+  type FrozenHeldItem,
+  type HeldItemPool,
+  type HeldItemWarning,
+} from "./inventory"
+import {
+  EXPLICIT_NO_ITEM_ID,
+  type HeldItemId,
+} from "./types"
 
 export const HELD_ITEM_STORAGE_KEY = "pokemon-damage-calc:held-item-added-boosts"
 
-export const TYPE_BOOST: Record<
-  PokemonType,
-  { calc: string; sprite: string; label: string }
-> = {
-  normal: { calc: "Silk Scarf", sprite: "silkscarf.png", label: "丝绸围巾" },
-  fire: { calc: "Charcoal", sprite: "charcoal.png", label: "木炭" },
-  water: { calc: "Mystic Water", sprite: "mysticwater.png", label: "神秘水滴" },
-  electric: { calc: "Magnet", sprite: "magnet.png", label: "磁铁" },
-  grass: { calc: "Miracle Seed", sprite: "miracleseed.png", label: "奇迹种子" },
-  ice: { calc: "Never-Melt Ice", sprite: "never-meltice.png", label: "不融冰" },
-  fighting: { calc: "Black Belt", sprite: "blackbelt.png", label: "黑带" },
-  poison: { calc: "Poison Barb", sprite: "poisonbarb.png", label: "毒针" },
-  ground: { calc: "Soft Sand", sprite: "softsand.png", label: "柔软沙子" },
-  flying: { calc: "Sharp Beak", sprite: "sharpbeak.png", label: "锐利鸟嘴" },
-  psychic: { calc: "Twisted Spoon", sprite: "twistedspoon.png", label: "弯曲的汤匙" },
-  bug: { calc: "Silver Powder", sprite: "silverpowder.png", label: "银粉" },
-  rock: { calc: "Hard Stone", sprite: "hardstone.png", label: "硬石头" },
-  ghost: { calc: "Spell Tag", sprite: "spelltag.png", label: "咒术之符" },
-  dragon: { calc: "Dragon Fang", sprite: "dragonfang.png", label: "龙之牙" },
-  dark: { calc: "Black Glasses", sprite: "blackglasses.png", label: "黑色眼镜" },
-  steel: { calc: "Metal Coat", sprite: "metalcoat.png", label: "金属膜" },
-  fairy: { calc: "Fairy Feather", sprite: "fairyfeather.png", label: "妖精之羽" },
+const MASK_BY_BATTLE_POKEMON_ID: Readonly<Record<number, number>> = {
+  10273: 2106,
+  10274: 2107,
+  10275: 2108,
 }
 
-export const TYPE_BOOST_CALC_NAME = Object.fromEntries(
-  POKEMON_TYPES.map((type) => [type, TYPE_BOOST[type].calc]),
-) as Record<PokemonType, string>
+const heldItems = GENERATED_HELD_ITEMS as Record<number, NormalizedHeldItem>
 
-const CORE_ITEM_SUMMARY: Record<string, string> = {
-  none: "-",
-  "life-orb": "1.3× 伤害",
-  "choice-band": "1.5× 物攻",
-  "choice-specs": "1.5× 特攻",
+function numericId(id: string | number): number | undefined {
+  if (typeof id === "number") return Number.isInteger(id) ? id : undefined
+  if (!/^\d+$/.test(id)) return undefined
+  const parsed = Number(id)
+  return Number.isSafeInteger(parsed) ? parsed : undefined
 }
 
-export const CORE_ITEM_SPRITE: Record<string, string | null> = {
-  none: null,
-  "life-orb": "lifeorb.png",
-  "choice-band": "choiceband.png",
-  "choice-specs": "choicespecs.png",
+export function heldItemDescriptor(
+  id: string | number,
+): FrozenHeldItem | undefined {
+  const parsed = numericId(id)
+  return parsed === undefined ? undefined : FROZEN_HELD_ITEM_BY_ID.get(parsed)
 }
 
-export const CORE_ITEM_LABEL_ZH: Record<string, string> = {
-  none: "无道具",
-  "life-orb": "生命宝珠",
-  "choice-band": "讲究头带",
-  "choice-specs": "讲究眼镜",
+export function heldItemWarning(
+  id: string | number,
+): HeldItemWarning | undefined {
+  return heldItemDescriptor(id)?.warning
 }
 
-export function typeBoostCatalogId(type: PokemonType): string {
-  return `type-boost-${type}`
+export function heldItemContributesBasePower(id: string | number): boolean {
+  return heldItemDescriptor(id)?.effect.kind === "base-power"
 }
 
-export function typeFromBoostId(id: HeldItemId): PokemonType | undefined {
-  if (typeof id !== "string" || !id.startsWith("type-boost-")) return undefined
-  const type = id.slice("type-boost-".length)
-  return type in TYPE_BOOST ? (type as PokemonType) : undefined
+export function lockedHeldItemFor(
+  battlePokemonId: number,
+): number | null {
+  return MASK_BY_BATTLE_POKEMON_ID[battlePokemonId] ?? null
 }
 
-export function defaultStabBoostIds(types: PokemonType[]): string[] {
-  return types.slice(0, 2).map(typeBoostCatalogId)
-}
-
-export function buildVisibleItemIds(
-  coreIds: string[],
-  attackerTypes: PokemonType[],
-  addedBoostIds: string[],
-): string[] {
-  const seen = new Set<string>()
-  const result: string[] = []
-
-  for (const id of [...coreIds, ...defaultStabBoostIds(attackerTypes), ...addedBoostIds]) {
-    if (seen.has(id)) continue
-    seen.add(id)
-    result.push(id)
+export function itemAriaLabel(
+  id: string | number,
+  locale: SupportedLocale,
+): string {
+  if (id === EXPLICIT_NO_ITEM_ID) {
+    return localeMessages[locale]["track.item.none"]
   }
-
-  return result
-}
-
-export function buildTypeBoostCatalogOptions() {
-  return POKEMON_TYPES.map((type) => ({
-    id: typeBoostCatalogId(type),
-    label: TYPE_BOOST[type].label,
-    summary: `1.2× ${type} 招式`,
-  }))
-}
-
-export function coreItemIds(category: MoveCategory): string[] {
-  const choice = category === "physical" ? "choice-band" : "choice-specs"
-  return ["none", "life-orb", choice]
-}
-
-export function buildCoreCatalogOptions(category: MoveCategory) {
-  return coreItemIds(category).map((id) => ({
-    id,
-    label: CORE_ITEM_LABEL_ZH[id],
-    summary: CORE_ITEM_SUMMARY[id],
-  }))
-}
-
-export const ALL_TYPE_BOOST_IDS = POKEMON_TYPES.map(typeBoostCatalogId)
-
-export function itemSprite(id: HeldItemId): string | null {
-  if (id === "none") return null
-  const boostType = typeFromBoostId(id)
-  if (boostType) return TYPE_BOOST[boostType].sprite
-  return CORE_ITEM_SPRITE[id] ?? null
-}
-
-export function itemAriaLabel(id: HeldItemId, locale: SupportedLocale): string {
   if (isMegaStone(id)) return megaStoneLabel(id, locale)
-  const boostType = typeFromBoostId(id)
-  if (boostType) return TYPE_BOOST[boostType].label
-  return typeof id === "string" ? CORE_ITEM_LABEL_ZH[id] ?? id : String(id)
+  const parsed = numericId(id)
+  return parsed === undefined
+    ? String(id)
+    : heldItems[parsed]?.names[locale] ?? String(id)
 }
 
-export function itemIsHiddenNeutral(id: HeldItemId): boolean {
-  return id === "none" || isMegaStone(id)
+export function itemSprite(id: string | number): string | null {
+  const parsed = numericId(id)
+  return parsed === undefined
+    ? null
+    : heldItems[parsed]?.spriteFilename ?? null
 }
 
-/** Type boost items only affect same-type moves; core items (Life Orb, Choice*) always apply. */
-export function itemHasNoBoostForMove(itemId: HeldItemId, moveType: PokemonType): boolean {
-  const boostType = typeFromBoostId(itemId)
-  return boostType != null && boostType !== moveType
+export function itemIsHiddenNeutral(id: string | number): boolean {
+  return id === EXPLICIT_NO_ITEM_ID || isMegaStone(id)
+}
+
+export function heldItemCatalogOption(
+  id: HeldItemId,
+  locale: SupportedLocale,
+): CatalogOption<HeldItemId> {
+  return {
+    id,
+    label: itemAriaLabel(id, locale),
+    summary: "",
+  }
+}
+
+export function buildHeldItemCatalogOptions(
+  pool: Exclude<HeldItemPool, "lock">,
+  locale: SupportedLocale,
+): CatalogOption<HeldItemId>[] {
+  const ids = pool === "attacker"
+    ? ATTACKER_HELD_ITEM_IDS
+    : DEFENDER_HELD_ITEM_IDS
+  return [
+    heldItemCatalogOption(EXPLICIT_NO_ITEM_ID, locale),
+    ...ids.map((id) => heldItemCatalogOption(id, locale)),
+  ]
 }

@@ -28,7 +28,7 @@ Official M-B sources decide legality; pinned Pokémon Showdown Gen 9 / Champions
 
 ## Parent map
 
-[[../20260731_open_wayfinder-held-item-effects-specification|Wayfinder: Held-item effects specification]]
+[[20260731_closed_wayfinder-held-item-effects-specification|Wayfinder: Held-item effects specification]]
 
 ## Resolution
 

@@ -7,6 +7,11 @@ import {
   setChampionsMoveUsageFetcherForTest,
 } from "@/lib/champions"
 import { getCatalogShell, resolveCatalogDefaultMovePick } from "@/lib/catalog"
+import {
+  ATTACKER_HELD_ITEM_IDS,
+  DEFENDER_HELD_ITEM_IDS,
+  UNKNOWN_MEGA_STONE_ITEM_ID,
+} from "@/lib/held-item"
 
 afterEach(() => {
   vi.useRealTimers()
@@ -99,6 +104,59 @@ describe("catalog move candidate ordering", () => {
     expect(catalog.moves).toEqual(shell.moves)
     expect(catalog.defaultMovePoolIds).toEqual([])
     expect(catalog.defaultMoveIds).toEqual([])
+  })
+})
+
+describe("catalog Held-item candidates", () => {
+  it("uses category-independent attacker and defender pools", async () => {
+    const [physical, special] = await Promise.all([
+      getCatalogShell(445, 727, "en", "physical"),
+      getCatalogShell(445, 727, "en", "special"),
+    ])
+    const attackerIds = ["none", ...ATTACKER_HELD_ITEM_IDS]
+    const defenderIds = ["none", ...DEFENDER_HELD_ITEM_IDS]
+
+    expect(physical.attackerItems.map((item) => item.id)).toEqual(attackerIds)
+    expect(special.attackerItems.map((item) => item.id)).toEqual(attackerIds)
+    expect(physical.defenderItems.map((item) => item.id)).toEqual(defenderIds)
+    expect(special.defenderItems.map((item) => item.id)).toEqual(defenderIds)
+    expect(physical.defaultAttackerItemIds).toEqual(["none"])
+    expect(physical.defaultDefenderItemIds).toEqual(["none"])
+    expect(physical.attackerLockedItemId).toBeNull()
+    expect(physical.defenderLockedItemId).toBeNull()
+  })
+
+  it("exposes exactly the required Mega or Ogerpon lock", async () => {
+    const [knownMega, unknownMega, ogerpon] = await Promise.all([
+      getCatalogShell(10034, 727, "en"),
+      getCatalogShell(10301, 727, "en"),
+      getCatalogShell(10273, 10274, "en"),
+    ])
+
+    expect(knownMega.attackerItems.map((item) => item.id)).toEqual([699])
+    expect(knownMega.defaultAttackerItemIds).toEqual([699])
+    expect(knownMega.attackerLockedItemId).toBe(699)
+    expect(unknownMega.attackerItems.map((item) => item.id)).toEqual([
+      UNKNOWN_MEGA_STONE_ITEM_ID,
+    ])
+    expect(ogerpon.attackerItems.map((item) => item.id)).toEqual([2106])
+    expect(ogerpon.defenderItems.map((item) => item.id)).toEqual([2107])
+    expect(ogerpon.defaultAttackerItemIds).toEqual([2106])
+    expect(ogerpon.defaultDefenderItemIds).toEqual([2107])
+    expect(ogerpon.attackerLockedItemId).toBe(2106)
+    expect(ogerpon.defenderLockedItemId).toBe(2107)
+  })
+
+  it("keeps Mega Rayquaza unlocked with the ordinary default", async () => {
+    const catalog = await getCatalogShell(10079, 727, "en")
+
+    expect(catalog.attackerItems.map((item) => item.id)).toEqual([
+      "none",
+      ...ATTACKER_HELD_ITEM_IDS,
+    ])
+    expect(catalog.defaultAttackerItemIds).toEqual(["none"])
+    expect(catalog.attackerLockedItemId).toBeNull()
+    expect(catalog.attackerPreservesItem).toBe(true)
   })
 })
 

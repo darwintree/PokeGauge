@@ -24,6 +24,7 @@ type CompiledWeatherEffect = {
   basePowerModifier: number
   damageModifier: number
   accuracy?: WeatherAccuracy
+  ordinaryDamageSuppressed: boolean
   state: "effective" | "inactive" | "unsupported" | "neutral"
   unavailable?: "weather-type-change"
 }
@@ -39,8 +40,10 @@ function damageModifier(
   moveId: number,
   moveType: PokemonType | undefined,
   weather: Weather,
+  suppressOrdinaryDamage: boolean,
 ): number {
   if (moveId === 876 && weather === "sun") return 6144
+  if (suppressOrdinaryDamage) return NEUTRAL_MODIFIER
   if (weather === "sun") {
     if (moveType === "fire") return 6144
     if (moveType === "water") return 2048
@@ -57,11 +60,13 @@ export function compileWeatherEffect(
   moveType: PokemonType | undefined,
   weather: Weather,
   probabilityMode: ProbabilityMode,
+  suppressOrdinaryDamage = false,
 ): CompiledWeatherEffect {
   if (weather === "none") {
     return {
       basePowerModifier: NEUTRAL_MODIFIER,
       damageModifier: NEUTRAL_MODIFIER,
+      ordinaryDamageSuppressed: false,
       state: "neutral",
     }
   }
@@ -69,13 +74,15 @@ export function compileWeatherEffect(
     return {
       basePowerModifier: NEUTRAL_MODIFIER,
       damageModifier: NEUTRAL_MODIFIER,
+      ordinaryDamageSuppressed: false,
       state: "unsupported",
       unavailable: "weather-type-change",
     }
   }
 
   const basePower = basePowerModifier(moveId, weather)
-  const damage = damageModifier(moveId, moveType, weather)
+  const ordinaryDamage = damageModifier(moveId, moveType, weather, false)
+  const damage = damageModifier(moveId, moveType, weather, suppressOrdinaryDamage)
   const accuracy = WEATHER_ACCURACY[moveId]?.[weather]
   const effective =
     basePower !== NEUTRAL_MODIFIER ||
@@ -85,6 +92,7 @@ export function compileWeatherEffect(
   return {
     basePowerModifier: basePower,
     damageModifier: damage,
+    ordinaryDamageSuppressed: suppressOrdinaryDamage && damage !== ordinaryDamage,
     ...(accuracy === undefined ? {} : { accuracy }),
     state: effective ? "effective" : "inactive",
   }

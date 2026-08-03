@@ -61,7 +61,7 @@ function isString(value: unknown): value is string {
 }
 
 function isHeldItemId(value: unknown): value is TrackState["attackerItemIds"][number] {
-  return isString(value) || isInteger(value)
+  return value === "none" || value === "unknown-mega-stone" || isInteger(value)
 }
 
 function isBoolean(value: unknown): value is boolean {

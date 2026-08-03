@@ -9,8 +9,8 @@ describe("scenario identity transitions", () => {
   it("applies both sides' locked Mega values through the ordinary identity reset", async () => {
     const baseCatalog = await getCatalogShell(6, 9, "en")
     const state = defaultTrackState(baseCatalog)
-    state.attackerItemIds = ["life-orb"]
-    state.defenderItemIds = ["choice-band"]
+    state.attackerItemIds = [247]
+    state.defenderItemIds = [581]
 
     const megaCatalog = await getCatalogShell(10034, 10035, "en")
     const next = trackStateAfterCatalogTransition(state, megaCatalog, {
@@ -28,7 +28,7 @@ describe("scenario identity transitions", () => {
   it("preserves Rayquaza's current item while keeping the item Track editable", async () => {
     const baseCatalog = await getCatalogShell(6, 9, "en")
     const state = defaultTrackState(baseCatalog)
-    state.attackerItemIds = ["life-orb"]
+    state.attackerItemIds = [247]
 
     const rayquazaCatalog = await getCatalogShell(10079, 9, "en")
     const next = trackStateAfterCatalogTransition(state, rayquazaCatalog, {
@@ -38,7 +38,22 @@ describe("scenario identity transitions", () => {
     })
 
     expect(rayquazaCatalog.attackerLockedItemId).toBeNull()
-    expect(next.attackerItemIds).toEqual(["life-orb"])
+    expect(next.attackerItemIds).toEqual([247])
+  })
+
+  it("resets identity-locked Masks when switching either side to Mega Rayquaza", async () => {
+    const baseCatalog = await getCatalogShell(10273, 10274, "en")
+    const state = defaultTrackState(baseCatalog)
+
+    const rayquazaCatalog = await getCatalogShell(10079, 10079, "en")
+    const next = trackStateAfterCatalogTransition(state, rayquazaCatalog, {
+      attackerOwnerChanged: true,
+      attackerChanged: true,
+      defenderChanged: true,
+    })
+
+    expect(next.attackerItemIds).toEqual(["none"])
+    expect(next.defenderItemIds).toEqual(["none"])
   })
 
   it("does not restore pre-Mega item or ability values after switching back", async () => {

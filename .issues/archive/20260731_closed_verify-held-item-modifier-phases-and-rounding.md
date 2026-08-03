@@ -16,7 +16,7 @@ The result must distinguish facts owned by Gen 9 mechanics from choices the prod
 
 ## Parent map
 
-[[../20260731_open_wayfinder-held-item-effects-specification|Wayfinder: Held-item effects specification]]
+[[20260731_closed_wayfinder-held-item-effects-specification|Wayfinder: Held-item effects specification]]
 
 ## Resolution
 

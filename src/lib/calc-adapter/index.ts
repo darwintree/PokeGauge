@@ -92,7 +92,6 @@ export { WEATHERS } from "./weather"
 export type { Weather } from "./weather"
 
 export {
-  ATTACKER_ITEM_NAMES,
   ATTACKER_STAT_SETUPS,
   DEFENDER_SETUPS,
   getAttackerStatSetups,

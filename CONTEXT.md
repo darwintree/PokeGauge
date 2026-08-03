@@ -235,12 +235,8 @@ _Avoid_: Complete held-item candidate pool, M-B legal item pool, all upstream it
 _Avoid_: Unsupported held item, inactive held item, scenario-dependent warning
 
 **Type boost item**（属性强化道具）:
-提升特定属性招式威力的携带道具（如木炭、柔软沙子）；与攻击方属性对应。UI 默认展示本系至多 2 项，可多选参与对比。
+提升特定属性招式威力的携带道具（如木炭、柔软沙子）。它在攻击方静态候选池中始终可见，可多选参与对比；是否生效仅由当前招式的已解析属性决定。
 _Avoid_: Plate, 石板, type gem
-
-**Added type boost**（添加属性强化）:
-通过「+」从全属性强化道具池中追加到可见列表、但非本系默认展示的选项。
-_Avoid_: Custom boost, 扩展强化
 
 **Unknown Mega Stone**（未知 Mega 石）:
 需要 Mega 石的 Battle Pokémon identity 尚无对应道具资源时，采用的共用中性占位携带道具；它可以被锁定，但按无效果参与 **Effect-equivalent scenario merge**，合并后不作为结果条件展示。

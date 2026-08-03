@@ -1,8 +1,8 @@
 import { typeEffectiveness } from "@/lib/calc-adapter/damage-kernel"
 import {
-  buildCoreCatalogOptions,
-  buildTypeBoostCatalogOptions,
-  type HeldItemId,
+  buildHeldItemCatalogOptions,
+  heldItemCatalogOption,
+  lockedHeldItemFor,
 } from "@/lib/held-item"
 import {
   listChampionsAbilityUsageRecords,
@@ -26,7 +26,6 @@ import {
 import {
   UNKNOWN_ABILITY_ID,
   megaStoneFor,
-  megaStoneLabel,
 } from "@/lib/mega"
 import {
   DEFENSE_PRESET_LABELS,
@@ -36,7 +35,6 @@ import {
 } from "./preset-labels"
 import type {
   CatalogAbilityOption,
-  CatalogOption,
   CatalogMoveOption,
   MatchupCatalog,
   MoveCategory,
@@ -134,10 +132,6 @@ function buildDefenderBulks(category: MoveCategory) {
     label: DEFENSE_PRESET_LABELS[id],
     summary,
   }))
-}
-
-function buildAttackerItems(category: MoveCategory) {
-  return [...buildCoreCatalogOptions(category), ...buildTypeBoostCatalogOptions()]
 }
 
 async function abilityOptions(
@@ -422,28 +416,16 @@ export async function getCatalogShell(
   )
 
   const labels = statLabels(activeMoveCategory, locale)
-  const attackerStone = attackerResource.isMega
-    ? megaStoneFor(attackerResource.battlePokemonId)
-    : null
-  const defenderStone = defenderResource.isMega
-    ? megaStoneFor(defenderResource.battlePokemonId)
-    : null
-  const attackerItems: CatalogOption<HeldItemId>[] = buildAttackerItems(activeMoveCategory)
-  const defenderItems: CatalogOption<HeldItemId>[] = buildAttackerItems(activeMoveCategory)
-  if (attackerStone && !attackerItems.some((item) => item.id === attackerStone)) {
-    attackerItems.push({
-      id: attackerStone,
-      label: megaStoneLabel(attackerStone, locale),
-      summary: "",
-    })
-  }
-  if (defenderStone && !defenderItems.some((item) => item.id === defenderStone)) {
-    defenderItems.push({
-      id: defenderStone,
-      label: megaStoneLabel(defenderStone, locale),
-      summary: "",
-    })
-  }
+  const attackerLockedItemId = lockedHeldItemFor(attackerResource.battlePokemonId) ??
+    (attackerResource.isMega ? megaStoneFor(attackerResource.battlePokemonId) : null)
+  const defenderLockedItemId = lockedHeldItemFor(defenderResource.battlePokemonId) ??
+    (defenderResource.isMega ? megaStoneFor(defenderResource.battlePokemonId) : null)
+  const attackerItems = attackerLockedItemId === null
+    ? buildHeldItemCatalogOptions("attacker", locale)
+    : [heldItemCatalogOption(attackerLockedItemId, locale)]
+  const defenderItems = defenderLockedItemId === null
+    ? buildHeldItemCatalogOptions("defender", locale)
+    : [heldItemCatalogOption(defenderLockedItemId, locale)]
 
   return {
     matchup: {
@@ -471,13 +453,13 @@ export async function getCatalogShell(
     defaultMovePoolIds: [],
     defaultMoveIds: [],
     defaultAttackerStatIds: ["neutral-max", "extreme"],
-    defaultAttackerItemIds: [attackerStone ?? "none"],
-    defaultDefenderItemIds: [defenderStone ?? "none"],
+    defaultAttackerItemIds: [attackerLockedItemId ?? "none"],
+    defaultDefenderItemIds: [defenderLockedItemId ?? "none"],
     defaultDefenderIds: ["hp-32"],
     defaultAttackerAbilityIds: attackerAbilities.map((ability) => ability.id),
     defaultDefenderAbilityIds: defenderAbilities.map((ability) => ability.id),
-    attackerLockedItemId: attackerStone,
-    defenderLockedItemId: defenderStone,
+    attackerLockedItemId,
+    defenderLockedItemId,
     attackerLockedAbilityId: attackerResource.isMega ? attackerAbilities[0]?.id ?? UNKNOWN_ABILITY_ID : null,
     defenderLockedAbilityId: defenderResource.isMega ? defenderAbilities[0]?.id ?? UNKNOWN_ABILITY_ID : null,
     attackerPreservesItem: attackerResource.battlePokemonId === 10079,
