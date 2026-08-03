@@ -8,7 +8,7 @@ import { localeMessages } from "@/lib/i18n"
 import type { ScenarioResult } from "@/lib/scenario-pipeline"
 
 import { AbilityTrack } from "./ability-track"
-import { DamageBoxPlot } from "./damage-box-plot"
+import { DamageResultRow } from "./damage-result-row"
 
 it("marks only unsupported ability effects in the Track", () => {
   const markup = renderToStaticMarkup(createElement(
@@ -80,7 +80,7 @@ it("renders effective abilities inline and folds inactive and unsupported states
     createElement(
       TooltipProvider,
       null,
-      createElement(DamageBoxPlot, {
+      createElement(DamageResultRow, {
         move: {
           id: 33,
           label: "Tackle",

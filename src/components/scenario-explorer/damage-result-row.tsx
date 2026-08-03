@@ -17,7 +17,7 @@ import type { ScenarioResult } from "@/lib/scenario-pipeline"
 import { cn } from "@/lib/utils"
 
 import { formatKOProbability } from "./format-ko-probability"
-import { DamageConditionsCard } from "./damage-conditions-card"
+import { DamageScenarioSummary } from "./damage-scenario-summary"
 
 // Non-linear axis: 0–100% linear over 72% of width, 100–200% sqrt-compressed
 // into the remaining 28%. Hard cap 200%.
@@ -75,7 +75,7 @@ function koPeak(value: KOProbabilityValue): number {
   return typeof value === "number" ? value : value.max
 }
 
-function KOProbabilityColumns({ row }: { row: ScenarioResult }) {
+function KOProbabilitySummary({ row }: { row: ScenarioResult }) {
   const intl = useIntl()
   const unavailable = intl.formatMessage({ id: "damage.ko.unavailable" })
   const ohkoHot = row.koProbabilities != null && koPeak(row.koProbabilities.ohko) > 0
@@ -117,7 +117,7 @@ function KOProbabilityColumns({ row }: { row: ScenarioResult }) {
   )
 }
 
-type DamageBoxPlotProps = {
+type DamageResultRowProps = {
   move: CatalogMoveOption
   attackerAbilities?: CatalogAbilityOption[]
   defenderAbilities?: CatalogAbilityOption[]
@@ -128,7 +128,7 @@ type DamageBoxPlotProps = {
   showAccuracy?: boolean
 }
 
-export function DamageBoxPlot({
+export function DamageResultRow({
   move,
   attackerAbilities = [],
   defenderAbilities = [],
@@ -137,7 +137,7 @@ export function DamageBoxPlot({
   row,
   isRangeEnvelope = false,
   showAccuracy = false,
-}: DamageBoxPlotProps) {
+}: DamageResultRowProps) {
   const intl = useIntl()
   const tone = lethalTone(row)
   const box = pctSpan(row.minPercent, row.maxPercent)
@@ -149,7 +149,7 @@ export function DamageBoxPlot({
 
   return (
     <div className="grid min-h-[4.5rem] gap-3 md:grid-cols-[14.75rem_minmax(0,1fr)_9rem] md:items-center">
-      <DamageConditionsCard
+      <DamageScenarioSummary
         move={move}
         row={row}
         attackerStat={attackerStat}
@@ -251,7 +251,7 @@ export function DamageBoxPlot({
           )}
         </TooltipContent>
       </Tooltip>
-      <KOProbabilityColumns row={row} />
+      <KOProbabilitySummary row={row} />
     </div>
   )
 }
@@ -276,7 +276,7 @@ function HoverLabel({ children }: { children: React.ReactNode }) {
   return <span className="text-muted-foreground text-[10px]">{children}</span>
 }
 
-export function DamageAxis() {
+export function DamagePercentAxis() {
   const intl = useIntl()
   return (
     <div className="sticky top-[6.25rem] z-10 mb-2 flex rounded-t-[14px] border-b border-hairline bg-paper px-3 py-1.5 sm:px-4 md:pl-[16.5rem] lg:top-14">
@@ -311,7 +311,7 @@ export function DamageAxis() {
   )
 }
 
-export function BoxPlotLegend({ showAverage = true }: { showAverage?: boolean }) {
+export function DamageRangeLegend({ showAverage = true }: { showAverage?: boolean }) {
   const intl = useIntl()
   return (
     <div className="mt-2 flex flex-wrap gap-4 border-t border-hairline px-3 py-3 text-[10.5px] font-extrabold text-hud-muted sm:px-4">

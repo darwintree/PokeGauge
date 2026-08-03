@@ -5,13 +5,13 @@ import { Button } from "@/components/ui/button"
 import { STAT_STAGES, type StatStage } from "@/lib/calc-adapter"
 
 import { TrackOption, TrackOptionGroup } from "./track-option"
-import { TrackCard } from "./track-card"
+import { TrackPanel } from "./track-panel"
 
 function stageLabel(stage: StatStage): string {
   return stage > 0 ? `+${stage}` : String(stage)
 }
 
-type StatStageTrackProps = {
+type BattleStatStageTrackProps = {
   label: React.ReactNode
   ariaLabel: string
   values: StatStage[]
@@ -20,14 +20,14 @@ type StatStageTrackProps = {
   onToggle?: () => void
 }
 
-export function StatStageTrack({
+export function BattleStatStageTrack({
   label,
   ariaLabel,
   values,
   onChange,
   expanded = true,
   onToggle = () => {},
-}: StatStageTrackProps) {
+}: BattleStatStageTrackProps) {
   const selected = new Set(values)
 
   function toggle(stage: StatStage) {
@@ -39,7 +39,7 @@ export function StatStageTrack({
   }
 
   return (
-    <TrackCard
+    <TrackPanel
       icon={ChevronsUpDown}
       label={label}
       summary={values.length > 0 ? values.map(stageLabel).join(", ") : "0"}
@@ -76,6 +76,6 @@ export function StatStageTrack({
         })}
       </TrackOptionGroup>
       </div>
-    </TrackCard>
+    </TrackPanel>
   )
 }

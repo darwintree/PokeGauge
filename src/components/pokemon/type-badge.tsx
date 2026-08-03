@@ -10,7 +10,7 @@ type TypeBadgeProps = {
   type: PokemonType
 }
 
-type TypeBadgeRowProps = {
+type TypeBadgeListProps = {
   types: PokemonType[]
 }
 
@@ -29,7 +29,7 @@ export function TypeBadge({ type }: TypeBadgeProps) {
   )
 }
 
-export function TypeBadgeRow({ types }: TypeBadgeRowProps) {
+export function TypeBadgeList({ types }: TypeBadgeListProps) {
   if (types.length === 0) return null
   return (
     <span className="inline-flex flex-wrap justify-end gap-0.5">

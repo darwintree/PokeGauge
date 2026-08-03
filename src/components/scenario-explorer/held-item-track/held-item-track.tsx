@@ -14,7 +14,7 @@ import { orderedPoolSelection } from "@/lib/ordered-pool-selection"
 import { cn } from "@/lib/utils"
 
 import { TrackOption, TrackOptionGroup } from "../track-option"
-import { TrackCard } from "../track-card"
+import { TrackPanel } from "../track-panel"
 
 type HeldItemTrackProps = {
   catalog: MatchupCatalog
@@ -74,7 +74,7 @@ export function HeldItemTrack({
   }
 
   return (
-    <TrackCard
+    <TrackPanel
       icon={Gem}
       label={
         <FormattedMessage
@@ -136,6 +136,6 @@ export function HeldItemTrack({
           )
         })}
       </TrackOptionGroup>
-    </TrackCard>
+    </TrackPanel>
   )
 }

@@ -14,7 +14,7 @@ import {
 import type { SupportedLocale } from "@/lib/i18n"
 import type { ScenarioResult } from "@/lib/scenario-pipeline"
 
-type DamageConditionsCardProps = {
+type DamageScenarioSummaryProps = {
   move: CatalogMoveOption
   row: ScenarioResult
   attackerStat: { label: string; statValue?: string | null }
@@ -32,7 +32,7 @@ function modifierLabel(value: number): string {
 function sourceLabel(
   track: ScenarioTrack,
   id: string,
-  props: DamageConditionsCardProps,
+  props: DamageScenarioSummaryProps,
   intl: ReturnType<typeof useIntl>,
 ): string {
   if (track === "held-item" || track === "defender-held-item") {
@@ -56,7 +56,7 @@ function sourceLabel(
 function ActiveTokens({
   side,
   ...props
-}: DamageConditionsCardProps & { side: "attack" | "defense" }) {
+}: DamageScenarioSummaryProps & { side: "attack" | "defense" }) {
   const intl = useIntl()
   const tracks: ScenarioTrack[] = side === "attack"
     ? ["attacker-stage", "held-item", "attacker-ability", "weather", "terrain"]
@@ -90,7 +90,7 @@ function ActiveTokens({
   })
 }
 
-function OtherConditions(props: DamageConditionsCardProps) {
+function AdditionalConditionDetails(props: DamageScenarioSummaryProps) {
   const intl = useIntl()
   const entries = (Object.entries(props.row.provenance) as Array<[
     ScenarioTrack,
@@ -133,7 +133,7 @@ function OtherConditions(props: DamageConditionsCardProps) {
   )
 }
 
-function FormulaTip(props: DamageConditionsCardProps) {
+function DamageFormulaTooltip(props: DamageScenarioSummaryProps) {
   const intl = useIntl()
   const mechanics = props.row.moveMechanics
   const items = props.row.provenance["held-item"]?.effective.filter(
@@ -153,15 +153,15 @@ function FormulaTip(props: DamageConditionsCardProps) {
         <Info className="size-3 text-muted-foreground" />
       </TooltipTrigger>
       <TooltipContent side="right" align="start" className="w-64 flex-col items-stretch gap-1.5 rounded-xl border-2 border-ink bg-paper p-3 shadow-hud-panel">
-        <TipRow label={intl.formatMessage({ id: "damage.conditions.basePower" })} value={mechanics.basePower} />
-        <TipRow label="STAB" value={modifierLabel(mechanics.modifiers.stab)} />
-        <TipRow label={intl.formatMessage({ id: "damage.conditions.effectiveness" })} value={modifierLabel(mechanics.modifiers.typeEffectiveness)} />
+        <FormulaDetailRow label={intl.formatMessage({ id: "damage.conditions.basePower" })} value={mechanics.basePower} />
+        <FormulaDetailRow label="STAB" value={modifierLabel(mechanics.modifiers.stab)} />
+        <FormulaDetailRow label={intl.formatMessage({ id: "damage.conditions.effectiveness" })} value={modifierLabel(mechanics.modifiers.typeEffectiveness)} />
         {items.length > 0 && (
-          <TipRow label={intl.formatMessage({ id: "track.item" })} value={`${items.map((id) => itemAriaLabel(id, intl.locale as SupportedLocale)).join(" / ")} · ${modifierLabel(mechanics.modifiers.item)}`} />
+          <FormulaDetailRow label={intl.formatMessage({ id: "track.item" })} value={`${items.map((id) => itemAriaLabel(id, intl.locale as SupportedLocale)).join(" / ")} · ${modifierLabel(mechanics.modifiers.item)}`} />
         )}
-        <TipRow label={intl.formatMessage({ id: "track.weather" })} value={`${weather.length ? weather.map((id) => intl.formatMessage({ id: `track.weather.${id}` })).join(" / ") : intl.formatMessage({ id: "track.weather.none" })} · ${modifierLabel(mechanics.modifiers.weather)}`} />
-        <TipRow label={intl.formatMessage({ id: "track.terrain" })} value={`${terrain.length ? terrain.map((id) => intl.formatMessage({ id: `track.terrain.${id}` })).join(" / ") : intl.formatMessage({ id: "track.terrain.none" })} · ${modifierLabel(mechanics.modifiers.terrain)}`} />
-        <TipRow label={intl.formatMessage({ id: "damage.conditions.spread" })} value={modifierLabel(mechanics.modifiers.spread)} />
+        <FormulaDetailRow label={intl.formatMessage({ id: "track.weather" })} value={`${weather.length ? weather.map((id) => intl.formatMessage({ id: `track.weather.${id}` })).join(" / ") : intl.formatMessage({ id: "track.weather.none" })} · ${modifierLabel(mechanics.modifiers.weather)}`} />
+        <FormulaDetailRow label={intl.formatMessage({ id: "track.terrain" })} value={`${terrain.length ? terrain.map((id) => intl.formatMessage({ id: `track.terrain.${id}` })).join(" / ") : intl.formatMessage({ id: "track.terrain.none" })} · ${modifierLabel(mechanics.modifiers.terrain)}`} />
+        <FormulaDetailRow label={intl.formatMessage({ id: "damage.conditions.spread" })} value={modifierLabel(mechanics.modifiers.spread)} />
         <div className="mt-1 flex justify-between border-t pt-1.5 font-medium">
           <span>{intl.formatMessage({ id: "damage.conditions.effectivePower" })}{props.showAccuracy && ` / ${intl.formatMessage({ id: "damage.conditions.accuracy" })}`}</span>
           <span className="tabular-nums">{mechanics.effectivePower}{props.showAccuracy && ` / ${accuracy}`}</span>
@@ -171,11 +171,11 @@ function FormulaTip(props: DamageConditionsCardProps) {
   )
 }
 
-function TipRow({ label, value }: { label: string; value: string | number }) {
+function FormulaDetailRow({ label, value }: { label: string; value: string | number }) {
   return <div className="flex items-start justify-between gap-4 text-xs"><span className="text-muted-foreground">{label}</span><span className="text-right tabular-nums">{value}</span></div>
 }
 
-function IdentityLine({ label, value, statValue, children }: { label: string; value: string; statValue?: string | null; children?: React.ReactNode }) {
+function ScenarioIdentityLine({ label, value, statValue, children }: { label: string; value: string; statValue?: string | null; children?: React.ReactNode }) {
   return (
     <div className="flex min-w-0 items-center gap-1.5 text-[10.5px]">
       <span className="w-[26px] shrink-0 text-[8.5px] text-muted-foreground">{label}</span>
@@ -186,7 +186,7 @@ function IdentityLine({ label, value, statValue, children }: { label: string; va
   )
 }
 
-export function DamageConditionsCard(props: DamageConditionsCardProps) {
+export function DamageScenarioSummary(props: DamageScenarioSummaryProps) {
   const intl = useIntl()
   const accuracy = props.row.moveMechanics.accuracy === "always-hits"
     ? intl.formatMessage({ id: "damage.conditions.alwaysHits" })
@@ -198,11 +198,11 @@ export function DamageConditionsCard(props: DamageConditionsCardProps) {
         <span className="flex min-w-0 items-center gap-1"><TypeBadge type={props.move.type} /><span className="truncate text-[12px] font-extrabold">{props.move.label}</span></span>
         <strong title={intl.formatMessage({ id: "damage.conditions.effectivePower" })} className="ml-auto text-[13px] font-extrabold leading-4 tabular-nums">{props.row.moveMechanics.effectivePower}</strong>
         {props.showAccuracy && <><span aria-hidden className="text-[10.5px] text-muted-foreground">·</span><span title={intl.formatMessage({ id: "damage.conditions.accuracy" })} className="text-[10.5px] tabular-nums">{accuracy}</span></>}
-        <FormulaTip {...props} />
+        <DamageFormulaTooltip {...props} />
       </div>
       <div className="space-y-0.5 px-2 py-1">
-        <IdentityLine label={intl.formatMessage({ id: "damage.row.attack" })} value={props.attackerStat.label} statValue={props.attackerStat.statValue}><ActiveTokens {...props} side="attack" /></IdentityLine>
-        <IdentityLine label={intl.formatMessage({ id: "damage.row.defense" })} value={props.defender.label} statValue={props.defender.statValue}><ActiveTokens {...props} side="defense" /><OtherConditions {...props} /></IdentityLine>
+        <ScenarioIdentityLine label={intl.formatMessage({ id: "damage.row.attack" })} value={props.attackerStat.label} statValue={props.attackerStat.statValue}><ActiveTokens {...props} side="attack" /></ScenarioIdentityLine>
+        <ScenarioIdentityLine label={intl.formatMessage({ id: "damage.row.defense" })} value={props.defender.label} statValue={props.defender.statValue}><ActiveTokens {...props} side="defense" /><AdditionalConditionDetails {...props} /></ScenarioIdentityLine>
       </div>
     </article>
   )

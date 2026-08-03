@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { WEATHERS, type Weather } from "@/lib/calc-adapter"
 
 import { TrackOption, TrackOptionGroup } from "./track-option"
-import { TrackCard } from "./track-card"
+import { TrackPanel } from "./track-panel"
 
 type WeatherTrackProps = {
   values: Weather[]
@@ -27,7 +27,7 @@ export function WeatherTrack({ values, onChange, expanded = true, onToggle = () 
   }
 
   return (
-    <TrackCard
+    <TrackPanel
       icon={CloudSun}
       label={<FormattedMessage id="track.weather" />}
       summary={values.map((weather) => intl.formatMessage({ id: `track.weather.${weather}` })).join(", ")}
@@ -64,6 +64,6 @@ export function WeatherTrack({ values, onChange, expanded = true, onToggle = () 
         })}
       </TrackOptionGroup>
       </div>
-    </TrackCard>
+    </TrackPanel>
   )
 }

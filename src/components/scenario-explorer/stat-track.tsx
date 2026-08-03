@@ -10,17 +10,17 @@ import {
 } from "@/lib/scenario-pipeline"
 import { statPresetLabel } from "@/lib/stat-preset"
 
-import { StatRangeAxis } from "./stat-range-axis"
+import { StatRangeInput } from "./stat-range-input"
 import {
   AddDefensePresetPanel,
   AddOffensePresetPanel,
   ShowStatValuesSwitch,
-  StatPresetOptions,
-} from "./stat-preset-options"
-import { TrackCard } from "./track-card"
+  StatPresetChoices,
+} from "./stat-preset-choices"
+import { TrackPanel } from "./track-panel"
 import type { ScenarioState } from "./use-scenario-state"
 
-type StatTrackCardProps = {
+type StatTrackProps = {
   side: "offense" | "defense"
   catalog: MatchupCatalog
   state: ScenarioState
@@ -72,20 +72,20 @@ function defenseSummary(catalog: MatchupCatalog, state: ScenarioState): string {
     .join(", ")
 }
 
-export function StatTrackCard({
+export function StatTrack({
   side,
   catalog,
   state,
   expanded,
   onToggle,
-}: StatTrackCardProps) {
+}: StatTrackProps) {
   const intl = useIntl()
   const { trackState } = state
   const offense = side === "offense"
   const mode = offense ? trackState.statMode : trackState.defenderMode
 
   return (
-    <TrackCard
+    <TrackPanel
       icon={Gauge}
       label={offense ? catalog.offenseStatLabel : `HP / ${catalog.defenseStatLabel}`}
       summary={offense ? offenseSummary(catalog, state) : defenseSummary(catalog, state)}
@@ -112,7 +112,7 @@ export function StatTrackCard({
         <TabsContent value="preset" className="mt-0 space-y-2">
           {offense ? (
             <>
-              <StatPresetOptions
+              <StatPresetChoices
                 presets={state.offensePresets}
                 selectedIds={trackState.offensePresetIds}
                 calcName={catalog.matchup.attackerCalcName}
@@ -143,7 +143,7 @@ export function StatTrackCard({
             </>
           ) : (
             <>
-              <StatPresetOptions
+              <StatPresetChoices
                 presets={state.defensePresets}
                 selectedIds={trackState.defensePresetIds}
                 calcName={catalog.matchup.defenderCalcName}
@@ -177,7 +177,7 @@ export function StatTrackCard({
         </TabsContent>
         <TabsContent value="range" className="mt-0 space-y-2">
           {offense ? (
-            <StatRangeAxis
+            <StatRangeInput
               statLabel={catalog.offenseStatLabel}
               bounds={state.offenseBounds}
               value={trackState.statRange}
@@ -185,7 +185,7 @@ export function StatTrackCard({
             />
           ) : (
             <>
-              <StatRangeAxis
+              <StatRangeInput
                 statLabel="HP"
                 bounds={state.defenderHpBounds}
                 value={trackState.defenderRanges.hp}
@@ -193,7 +193,7 @@ export function StatTrackCard({
                   state.setDefenderRanges({ hp, def: trackState.defenderRanges.def })
                 }
               />
-              <StatRangeAxis
+              <StatRangeInput
                 statLabel={catalog.defenseStatLabel}
                 bounds={state.defenderDefBounds}
                 value={trackState.defenderRanges.def}
@@ -205,6 +205,6 @@ export function StatTrackCard({
           )}
         </TabsContent>
       </Tabs>
-    </TrackCard>
+    </TrackPanel>
   )
 }

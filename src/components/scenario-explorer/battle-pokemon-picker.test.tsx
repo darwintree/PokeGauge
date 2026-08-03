@@ -9,7 +9,7 @@ import { afterEach, beforeEach, vi } from "vitest"
 import type { BattlePokemonOption } from "@/lib/catalog"
 import { localeMessages } from "@/lib/i18n/messages"
 
-import { BattlePokemonSelect } from "./matchup-selector"
+import { BattlePokemonPicker } from "./battle-pokemon-picker"
 import {
   prioritizeBattlePokemonOptions,
   speciesHasMultipleBattlePokemonIdentities,
@@ -88,7 +88,7 @@ describe("Pokemon selector interactions", () => {
     await act(async () => {
       root.render(
         <IntlProvider locale="zh-hans" messages={localeMessages["zh-hans"]}>
-          <BattlePokemonSelect
+          <BattlePokemonPicker
             label="进攻方"
             options={options}
             value={1}

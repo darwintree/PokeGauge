@@ -4,7 +4,7 @@ import type { ReactNode } from "react"
 
 import { cn } from "@/lib/utils"
 
-type TrackCardProps = {
+type TrackPanelProps = {
   label: ReactNode
   icon: LucideIcon
   summary: ReactNode
@@ -15,7 +15,7 @@ type TrackCardProps = {
   className?: string
 }
 
-export function TrackCard({
+export function TrackPanel({
   label,
   icon: Icon,
   summary,
@@ -24,7 +24,7 @@ export function TrackCard({
   children,
   preview,
   className,
-}: TrackCardProps) {
+}: TrackPanelProps) {
   return (
     <section
       className={cn(

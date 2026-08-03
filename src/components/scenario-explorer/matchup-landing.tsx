@@ -1,6 +1,6 @@
 import { FormattedMessage, useIntl } from "react-intl"
 
-import { BattlePokemonSelect } from "@/components/scenario-explorer/matchup-selector"
+import { BattlePokemonPicker } from "@/components/scenario-explorer/battle-pokemon-picker"
 import type { BattlePokemonOption } from "@/lib/catalog"
 import type { BattlePokemonId } from "@/lib/resources"
 
@@ -13,7 +13,7 @@ function homeHintId(
   return "home.needDefender"
 }
 
-type HomeScreenProps = {
+type MatchupLandingProps = {
   attackers: BattlePokemonOption[]
   defenders: BattlePokemonOption[]
   attackerId: BattlePokemonId | null
@@ -23,14 +23,14 @@ type HomeScreenProps = {
 }
 
 /** Empty-matchup home: typographic hero + bottom instrument rail. */
-export function HomeScreen({
+export function MatchupLanding({
   attackers,
   defenders,
   attackerId,
   defenderId,
   onAttackerChange,
   onDefenderChange,
-}: HomeScreenProps) {
+}: MatchupLandingProps) {
   const intl = useIntl()
   const hint = homeHintId(attackerId, defenderId)
 
@@ -54,7 +54,7 @@ export function HomeScreen({
 
       <div className="fixed inset-x-0 bottom-4 z-30 px-4 sm:bottom-6 sm:px-6">
         <div className="mx-auto grid max-w-2xl gap-2 rounded-2xl border-2 border-ink bg-paper p-2 shadow-hud-board sm:grid-cols-2">
-          <BattlePokemonSelect
+          <BattlePokemonPicker
             label={intl.formatMessage({ id: "matchup.attacker" })}
             options={attackers}
             value={attackerId}
@@ -63,7 +63,7 @@ export function HomeScreen({
             presentation="rail"
             awaiting={attackerId == null && defenderId != null}
           />
-          <BattlePokemonSelect
+          <BattlePokemonPicker
             label={intl.formatMessage({ id: "matchup.defender" })}
             options={defenders}
             value={defenderId}

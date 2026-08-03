@@ -7,7 +7,7 @@ import type { CatalogAbilityOption } from "@/lib/catalog"
 import { UNKNOWN_ABILITY_ID } from "@/lib/mega"
 
 import { TrackOption, TrackOptionGroup } from "./track-option"
-import { TrackCard } from "./track-card"
+import { TrackPanel } from "./track-panel"
 
 type AbilityTrackProps = {
   labelId: "track.attackerAbility" | "track.defenderAbility"
@@ -51,7 +51,7 @@ export function AbilityTrack({
     .join(", ")
 
   return (
-    <TrackCard
+    <TrackPanel
       icon={Sparkles}
       label={<FormattedMessage id={labelId} />}
       summary={summary || "-"}
@@ -99,6 +99,6 @@ export function AbilityTrack({
         })}
       </TrackOptionGroup>
       </div>
-    </TrackCard>
+    </TrackPanel>
   )
 }

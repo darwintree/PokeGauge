@@ -75,7 +75,7 @@ function LocaleSelect({
   )
 }
 
-function ProjectDialog({ locale, onLocaleChange }: LocaleControlProps) {
+function ProjectInfoDialog({ locale, onLocaleChange }: LocaleControlProps) {
   const intl = useIntl()
 
   return (
@@ -250,7 +250,7 @@ export function AppHeader({
             </span>
           </Button>
 
-          <ProjectDialog locale={locale} onLocaleChange={onLocaleChange} />
+          <ProjectInfoDialog locale={locale} onLocaleChange={onLocaleChange} />
 
           <LocaleSelect
             id="header-locale"
