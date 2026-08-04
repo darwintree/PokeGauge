@@ -39,6 +39,7 @@ type ChampionsIndexPokemon = {
 
 type ChampionsIndexApi = {
   defaultSeason?: string
+  dataVersion?: string
   pokemon?: ChampionsIndexPokemon[]
 }
 
@@ -54,6 +55,7 @@ type ChampionsBattleApi = {
   format: ChampionsBattleFormat
   season: string
   source: string
+  dataVersion?: string
   data?: ChampionsBattleRow[]
   rows?: ChampionsBattleRow[]
 }
@@ -78,6 +80,9 @@ let abilityUsageFetcher: (
 ) => Promise<ChampionsAbilityUsageRecord[]> = fetchChampionsAbilityUsageOnline
 let pokemonUsagePromise: Promise<BattlePokemonId[]> | undefined
 let pokemonUsageFetcher: () => Promise<BattlePokemonId[]> = fetchChampionsPokemonUsageOnline
+let championsIndexPromise: Promise<ChampionsIndexApi> | undefined
+const battleRowsCache = new Map<BattlePokemonId, Promise<ChampionsBattleApi | null>>()
+let jsonFetcher: (url: string) => Promise<unknown> = fetchJsonFromNetwork
 
 function normalizeJoinName(name: string): string {
   return name
@@ -86,10 +91,22 @@ function normalizeJoinName(name: string): string {
     .replace(/[^a-z0-9]+/g, "")
 }
 
-async function fetchJson<T>(url: string): Promise<T> {
+async function fetchJsonFromNetwork<T>(url: string): Promise<T> {
   const response = await fetch(url)
   if (!response.ok) throw new Error(`Champions API request failed ${response.status}: ${url}`)
   return response.json() as Promise<T>
+}
+
+async function fetchJson<T>(url: string): Promise<T> {
+  return jsonFetcher(url) as Promise<T>
+}
+
+function fetchChampionsIndex(): Promise<ChampionsIndexApi> {
+  championsIndexPromise ??= fetchJson<ChampionsIndexApi>(CHAMPIONS_INDEX_URL)
+  championsIndexPromise.catch(() => {
+    championsIndexPromise = undefined
+  })
+  return championsIndexPromise
 }
 
 function championsIndexByName(index: ChampionsIndexApi): Map<string, ChampionsIndexPokemon> {
@@ -105,7 +122,7 @@ function championsIndexByName(index: ChampionsIndexApi): Map<string, ChampionsIn
 async function fetchChampionsPokemonUsageOnline(): Promise<BattlePokemonId[]> {
   const [pokemon, index] = await Promise.all([
     listResources("pokemon", "en"),
-    fetchJson<ChampionsIndexApi>(CHAMPIONS_INDEX_URL),
+    fetchChampionsIndex(),
   ])
   const pokemonByName = new Map(
     pokemon.flatMap((resource) =>
@@ -144,11 +161,8 @@ async function fetchChampionsPokemonUsageOnline(): Promise<BattlePokemonId[]> {
 
 async function fetchChampionsBattleRows(
   pokemon: ChampionsIndexPokemon,
-  defaultSeason: string,
-): Promise<ChampionsBattleApi | null> {
-  const season =
-    pokemon.battleDataCsvs?.find((entry) => entry.format === CHAMPIONS_FORMAT)?.season ??
-    defaultSeason
+  season: string,
+): Promise<ChampionsBattleApi> {
   const url = `https://championsbattledata.com/api/battle/${CHAMPIONS_FORMAT}/${encodeURIComponent(pokemon.battleName || pokemon.name)}?season=${encodeURIComponent(season)}`
   return fetchJson<ChampionsBattleApi>(url)
 }
@@ -158,19 +172,44 @@ async function fetchChampionsBattleData(
 ): Promise<ChampionsBattleApi | null> {
   const [pokemon, index] = await Promise.all([
     getResource("pokemon", battlePokemonId, "en"),
-    fetchJson<ChampionsIndexApi>(CHAMPIONS_INDEX_URL),
+    fetchChampionsIndex(),
   ])
-  const preferredName = CHAMPIONS_NAME_OVERRIDES[battlePokemonId] ?? pokemon.name
+  const sourceId = pokemon.isMega ? pokemon.speciesId : battlePokemonId
+  let promise = battleRowsCache.get(sourceId)
+  if (!promise) {
+    promise = fetchChampionsSourceBattleData(sourceId, index)
+    battleRowsCache.set(sourceId, promise)
+    promise.catch(() => {
+      if (battleRowsCache.get(sourceId) === promise) {
+        battleRowsCache.delete(sourceId)
+      }
+    })
+  }
+  return promise
+}
+
+async function fetchChampionsSourceBattleData(
+  sourceId: BattlePokemonId,
+  index: ChampionsIndexApi,
+): Promise<ChampionsBattleApi | null> {
+  const pokemon = await getResource("pokemon", sourceId, "en")
+  const preferredName = CHAMPIONS_NAME_OVERRIDES[sourceId] ?? pokemon.name
   const championsPokemon = championsIndexByName(index).get(normalizeJoinName(preferredName))
-  return championsPokemon
-    ? fetchChampionsBattleRows(championsPokemon, index.defaultSeason ?? "Current")
-    : null
+  if (!championsPokemon) return null
+  const battleData = await fetchChampionsBattleRows(
+    championsPokemon,
+    index.defaultSeason ?? "Current",
+  )
+  return { ...battleData, dataVersion: index.dataVersion ?? "" }
 }
 
 async function fetchChampionsMoveUsageOnline(
   battlePokemonId: BattlePokemonId,
 ): Promise<ChampionsMoveUsageRecord[]> {
-  const battleData = await fetchChampionsBattleData(battlePokemonId)
+  const [battleData] = await Promise.all([
+    fetchChampionsBattleData(battlePokemonId),
+    listResources("move", "en"),
+  ])
   if (!battleData) return []
 
   return (battleData.data ?? battleData.rows ?? [])
@@ -184,6 +223,7 @@ async function fetchChampionsMoveUsageOnline(
         format: CHAMPIONS_FORMAT,
         season: battleData.season,
         source: battleData.source,
+        dataVersion: battleData.dataVersion ?? "",
         rank: row.rank,
         percentage: row.percentage_value ?? null,
         championsMoveName: row.name,
@@ -289,4 +329,24 @@ export function setChampionsPokemonUsageFetcherForTest(
 export function resetChampionsPokemonUsageFetcherForTest(): void {
   pokemonUsagePromise = undefined
   pokemonUsageFetcher = fetchChampionsPokemonUsageOnline
+}
+
+export function setChampionsJsonFetcherForTest(
+  fetcher: (url: string) => Promise<unknown>,
+): void {
+  championsIndexPromise = undefined
+  battleRowsCache.clear()
+  usageCache.clear()
+  abilityUsageCache.clear()
+  pokemonUsagePromise = undefined
+  jsonFetcher = fetcher
+}
+
+export function resetChampionsJsonFetcherForTest(): void {
+  championsIndexPromise = undefined
+  battleRowsCache.clear()
+  usageCache.clear()
+  abilityUsageCache.clear()
+  pokemonUsagePromise = undefined
+  jsonFetcher = fetchJsonFromNetwork
 }

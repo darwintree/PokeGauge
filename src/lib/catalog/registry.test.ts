@@ -67,17 +67,17 @@ describe("catalog move candidate ordering", () => {
 
   it("seeds every same-side usage move and selects usage above 50% or super-effective moves", async () => {
     setChampionsMoveUsageFetcherForTest(async (battlePokemonId) => [
-      { battlePokemonId, moveId: 182, format: "Doubles", season: "test", source: "test", rank: 1, percentage: 90, championsMoveName: "Protect" },
-      { battlePokemonId, moveId: 317, format: "Doubles", season: "test", source: "test", rank: 2, percentage: 80, championsMoveName: "Rock Tomb" },
-      { battlePokemonId, moveId: 53, format: "Doubles", season: "test", source: "test", rank: 3, percentage: 70, championsMoveName: "Flamethrower" },
-      { battlePokemonId, moveId: 89, format: "Doubles", season: "test", source: "test", rank: 4, percentage: 60, championsMoveName: "Earthquake" },
-      { battlePokemonId, moveId: 337, format: "Doubles", season: "test", source: "test", rank: 5, percentage: 50, championsMoveName: "Dragon Claw" },
-      { battlePokemonId, moveId: 157, format: "Doubles", season: "test", source: "test", rank: 6, percentage: 40, championsMoveName: "Rock Slide" },
-      { battlePokemonId, moveId: 707, format: "Doubles", season: "test", source: "test", rank: 7, percentage: 30, championsMoveName: "Stomping Tantrum" },
-      { battlePokemonId, moveId: 398, format: "Doubles", season: "test", source: "test", rank: 8, percentage: 20, championsMoveName: "Poison Jab" },
-      { battlePokemonId, moveId: 200, format: "Doubles", season: "test", source: "test", rank: 9, percentage: 10, championsMoveName: "Outrage" },
-      { battlePokemonId, moveId: 242, format: "Doubles", season: "test", source: "test", rank: 10, percentage: 5, championsMoveName: "Crunch" },
-      { battlePokemonId, moveId: 444, format: "Doubles", season: "test", source: "test", rank: 11, percentage: 4, championsMoveName: "Stone Edge" },
+      { battlePokemonId, moveId: 182, format: "Doubles", season: "test", source: "test", dataVersion: "test", rank: 1, percentage: 90, championsMoveName: "Protect" },
+      { battlePokemonId, moveId: 317, format: "Doubles", season: "test", source: "test", dataVersion: "test", rank: 2, percentage: 80, championsMoveName: "Rock Tomb" },
+      { battlePokemonId, moveId: 53, format: "Doubles", season: "test", source: "test", dataVersion: "test", rank: 3, percentage: 70, championsMoveName: "Flamethrower" },
+      { battlePokemonId, moveId: 89, format: "Doubles", season: "test", source: "test", dataVersion: "test", rank: 4, percentage: 60, championsMoveName: "Earthquake" },
+      { battlePokemonId, moveId: 337, format: "Doubles", season: "test", source: "test", dataVersion: "test", rank: 5, percentage: 50, championsMoveName: "Dragon Claw" },
+      { battlePokemonId, moveId: 157, format: "Doubles", season: "test", source: "test", dataVersion: "test", rank: 6, percentage: 40, championsMoveName: "Rock Slide" },
+      { battlePokemonId, moveId: 707, format: "Doubles", season: "test", source: "test", dataVersion: "test", rank: 7, percentage: 30, championsMoveName: "Stomping Tantrum" },
+      { battlePokemonId, moveId: 398, format: "Doubles", season: "test", source: "test", dataVersion: "test", rank: 8, percentage: 20, championsMoveName: "Poison Jab" },
+      { battlePokemonId, moveId: 200, format: "Doubles", season: "test", source: "test", dataVersion: "test", rank: 9, percentage: 10, championsMoveName: "Outrage" },
+      { battlePokemonId, moveId: 242, format: "Doubles", season: "test", source: "test", dataVersion: "test", rank: 10, percentage: 5, championsMoveName: "Crunch" },
+      { battlePokemonId, moveId: 444, format: "Doubles", season: "test", source: "test", dataVersion: "test", rank: 11, percentage: 4, championsMoveName: "Stone Edge" },
     ])
 
     const shell = await getCatalogShell(445, 727, "en", "physical")
