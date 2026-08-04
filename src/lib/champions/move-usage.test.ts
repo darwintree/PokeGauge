@@ -1,0 +1,107 @@
+import { afterEach, expect, it } from "vitest"
+
+import {
+  listChampionsAbilityUsageRecords,
+  listChampionsMoveUsageRecords,
+  resetChampionsJsonFetcherForTest,
+  setChampionsJsonFetcherForTest,
+} from "@/lib/champions"
+
+afterEach(resetChampionsJsonFetcherForTest)
+
+function championsFixture(): {
+  fetcher: (url: string) => Promise<unknown>
+  calls: { index: number; battle: number }
+} {
+  const calls = { index: 0, battle: 0 }
+  const fetcher = async (url: string): Promise<unknown> => {
+    if (url === "https://championsbattledata.com/api") {
+      calls.index += 1
+      return {
+        defaultSeason: "Current",
+        dataVersion: "20260729090313995",
+        pokemon: [{
+          name: "Charizard",
+          slug: "charizard",
+          battleName: "Charizard",
+          battleDataCsvs: [{ season: "M4", format: "Doubles", path: "M4" }],
+        }],
+      }
+    }
+    if (
+      url ===
+      "https://championsbattledata.com/api/battle/Doubles/Charizard?season=Current"
+    ) {
+      calls.battle += 1
+      return {
+        pokemon: "Charizard",
+        format: "Doubles",
+        season: "Current",
+        source: "pokemon_champions_assets/battle_data/Doubles/Charizard.csv",
+        rows: [
+          { category: "move", rank: 1, name: "Flamethrower", percentage_value: 90 },
+          { category: "move", rank: 2, name: "Dragon Claw", percentage_value: 80 },
+          { category: "ability", rank: 1, name: "Blaze", percentage_value: 100 },
+        ],
+      }
+    }
+    throw new Error(`unexpected Champions URL: ${url}`)
+  }
+  return { fetcher, calls }
+}
+
+it("inherits base species usage rows for Mega identities via the index default season", async () => {
+  const { fetcher, calls } = championsFixture()
+  setChampionsJsonFetcherForTest(fetcher)
+
+  const megaX = await listChampionsMoveUsageRecords(10034)
+  const megaY = await listChampionsMoveUsageRecords(10035)
+  const base = await listChampionsMoveUsageRecords(6)
+
+  expect(megaX).toEqual([
+    expect.objectContaining({
+      battlePokemonId: 10034,
+      moveId: 53,
+      season: "Current",
+      source: "pokemon_champions_assets/battle_data/Doubles/Charizard.csv",
+      dataVersion: "20260729090313995",
+      rank: 1,
+      percentage: 90,
+      championsMoveName: "Flamethrower",
+    }),
+    expect.objectContaining({
+      battlePokemonId: 10034,
+      moveId: 337,
+      season: "Current",
+      dataVersion: "20260729090313995",
+      rank: 2,
+      championsMoveName: "Dragon Claw",
+    }),
+  ])
+  expect(megaY.map((record) => record.battlePokemonId)).toEqual([10035, 10035])
+  expect(base.map((record) => record.battlePokemonId)).toEqual([6, 6])
+  expect(calls.battle).toBe(1)
+  expect(calls.index).toBe(1)
+})
+
+it("shares one battle rows fetch between move and ability consumers", async () => {
+  const { fetcher, calls } = championsFixture()
+  setChampionsJsonFetcherForTest(fetcher)
+
+  const [moves, abilities] = await Promise.all([
+    listChampionsMoveUsageRecords(10034),
+    listChampionsAbilityUsageRecords(10034),
+  ])
+
+  expect(moves.map((record) => record.moveId)).toEqual([53, 337])
+  expect(abilities.map((record) => record.abilityId)).toEqual([66])
+  expect(calls.battle).toBe(1)
+  expect(calls.index).toBe(1)
+})
+
+it("returns no usage rows when the base species has no Champions entry", async () => {
+  const { fetcher } = championsFixture()
+  setChampionsJsonFetcherForTest(fetcher)
+
+  await expect(listChampionsMoveUsageRecords(10043)).resolves.toEqual([])
+})

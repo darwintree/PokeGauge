@@ -8,6 +8,7 @@ export type ChampionsMoveUsageRecord = {
   format: ChampionsBattleFormat
   season: string
   source: string
+  dataVersion: string
   rank: number
   percentage: number | null
   championsMoveName: string

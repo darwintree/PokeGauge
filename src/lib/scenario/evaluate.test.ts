@@ -49,13 +49,13 @@ function installChampionsMoveUsageFixture() {
   setChampionsMoveUsageFetcherForTest(async (battlePokemonId) => {
     if (battlePokemonId !== 445) return []
     return [
-      { battlePokemonId, moveId: 337, format: "Doubles", season: "test", source: "test", rank: 1, percentage: 89.1, championsMoveName: "Dragon Claw" },
-      { battlePokemonId, moveId: 157, format: "Doubles", season: "test", source: "test", rank: 2, percentage: 84.3, championsMoveName: "Rock Slide" },
-      { battlePokemonId, moveId: 89, format: "Doubles", season: "test", source: "test", rank: 3, percentage: 78.8, championsMoveName: "Earthquake" },
-      { battlePokemonId, moveId: 182, format: "Doubles", season: "test", source: "test", rank: 4, percentage: 73, championsMoveName: "Protect" },
-      { battlePokemonId, moveId: 707, format: "Doubles", season: "test", source: "test", rank: 5, percentage: 32.1, championsMoveName: "Stomping Tantrum" },
-      { battlePokemonId, moveId: 398, format: "Doubles", season: "test", source: "test", rank: 6, percentage: 16.2, championsMoveName: "Poison Jab" },
-      { battlePokemonId, moveId: 317, format: "Doubles", season: "test", source: "test", rank: 7, percentage: 8.6, championsMoveName: "Rock Tomb" },
+      { battlePokemonId, moveId: 337, format: "Doubles", season: "test", source: "test", dataVersion: "test", rank: 1, percentage: 89.1, championsMoveName: "Dragon Claw" },
+      { battlePokemonId, moveId: 157, format: "Doubles", season: "test", source: "test", dataVersion: "test", rank: 2, percentage: 84.3, championsMoveName: "Rock Slide" },
+      { battlePokemonId, moveId: 89, format: "Doubles", season: "test", source: "test", dataVersion: "test", rank: 3, percentage: 78.8, championsMoveName: "Earthquake" },
+      { battlePokemonId, moveId: 182, format: "Doubles", season: "test", source: "test", dataVersion: "test", rank: 4, percentage: 73, championsMoveName: "Protect" },
+      { battlePokemonId, moveId: 707, format: "Doubles", season: "test", source: "test", dataVersion: "test", rank: 5, percentage: 32.1, championsMoveName: "Stomping Tantrum" },
+      { battlePokemonId, moveId: 398, format: "Doubles", season: "test", source: "test", dataVersion: "test", rank: 6, percentage: 16.2, championsMoveName: "Poison Jab" },
+      { battlePokemonId, moveId: 317, format: "Doubles", season: "test", source: "test", dataVersion: "test", rank: 7, percentage: 8.6, championsMoveName: "Rock Tomb" },
     ]
   })
 }
