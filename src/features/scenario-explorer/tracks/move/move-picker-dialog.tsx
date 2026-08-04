@@ -1,3 +1,4 @@
+import { useId } from "react"
 import { Search } from "lucide-react"
 import { FormattedMessage, useIntl } from "react-intl"
 
@@ -40,6 +41,7 @@ export function MovePickerDialog({
   onSelect: (moveId: number) => void
 }) {
   const intl = useIntl()
+  const searchId = useId()
   const filteredOptions = options.filter((option) => moveMatches(option, query))
 
   return (
@@ -49,7 +51,7 @@ export function MovePickerDialog({
           <DialogTitle>{intl.formatMessage({ id: "track.addMove" })}</DialogTitle>
         </DialogHeader>
         <div className="relative m-3 mb-2">
-          <Label htmlFor="move-search" className="sr-only">
+          <Label htmlFor={searchId} className="sr-only">
             {intl.formatMessage({ id: "track.move.search" })}
           </Label>
           <Search
@@ -57,7 +59,7 @@ export function MovePickerDialog({
             aria-hidden
           />
           <Input
-            id="move-search"
+            id={searchId}
             value={query}
             placeholder={intl.formatMessage({ id: "track.move.search" })}
             className="pl-8"

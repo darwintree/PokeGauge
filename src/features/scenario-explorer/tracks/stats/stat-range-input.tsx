@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from "react"
 import { Minus, Plus } from "lucide-react"
+import { useIntl } from "react-intl"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -43,6 +44,7 @@ export function StatRangeInput({
   onChange,
   mode = "range",
 }: StatRangeInputProps) {
+  const intl = useIntl()
   const rootRef = useRef<HTMLDivElement>(null)
   const fineTuneId = useId()
   const [fineTune, setFineTune] = useState<FineTuneHandle>(null)
@@ -166,7 +168,10 @@ export function StatRangeInput({
               <button
                 key={handle}
                 type="button"
-                aria-label={`${statLabel} ${handle === "min" ? "下限" : "上限"}`}
+                aria-label={intl.formatMessage(
+                  { id: handle === "min" ? "stat.range.min" : "stat.range.max" },
+                  { stat: statLabel },
+                )}
                 aria-expanded={fineTune === handle}
                 aria-controls={fineTune === handle ? fineTuneId : undefined}
                 className={cn(
@@ -215,7 +220,7 @@ export function StatRangeInput({
             type="button"
             variant="outline"
             size="icon-xs"
-            aria-label="减 1"
+            aria-label={intl.formatMessage({ id: "stat.range.decrement" })}
             onClick={() => nudge(fineTune, -1)}
           >
             <Minus />
@@ -227,7 +232,7 @@ export function StatRangeInput({
             type="button"
             variant="outline"
             size="icon-xs"
-            aria-label="加 1"
+            aria-label={intl.formatMessage({ id: "stat.range.increment" })}
             onClick={() => nudge(fineTune, 1)}
           >
             <Plus />
