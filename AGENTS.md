@@ -42,9 +42,16 @@ Package manager: **pnpm** (`packageManager` in [`package.json`](package.json)).
 
 ### Frontend design review
 
-For frontend implementation, UI redesign, or interactive prototype work, use the **design-taste-frontend** skill to review the completed result before finishing the task, then apply any corrections identified by that review. This review-and-correct pass is a completion requirement, not an optional report.
+Frontend implementation, UI redesign, and interactive prototype work must use the **design-taste-frontend** skill to review the completed result before finishing the task, then apply any corrections identified by that review. This review-and-correct pass is a completion requirement, not an optional report. Work with no frontend surface (data loading, engine logic, tests, docs, etc.) does not require this review.
 
 When using **design-taste-frontend** in this repository, ignore its statements that exclude dashboards, dense product UI, or similar application surfaces. Apply its relevant design and pre-flight rules to those surfaces as well.
+
+### Subagent review
+
+When a review uses sub-agents:
+
+- Cap nesting depth at one level: review sub-agents must not spawn further sub-agents.
+- Spawn with `fork_turns: "none"` so reviewers do not inherit the main conversation context.
 
 ### Issue tracker
 
