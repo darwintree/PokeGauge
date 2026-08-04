@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "7789004a-e513-4266-97cf-f7600b79af60"
 title: "Unify displayed power and accuracy with compiled kernel semantics"
-status: "open"
+status: "closed"
 priority: "high"
 labels: ["TECH-DEBT", "NEEDS-TRIAGE"]
 created_at: "2026-08-03T04:40:00Z"
-updated_at: "2026-08-03T08:24:00Z"
+updated_at: "2026-08-04T03:35:00Z"
 ---
 ## Problem
 
@@ -58,6 +58,17 @@ Wide Lens 与 Bright Powder／Lax Incense 的固定点链只计算一次。展�
 - 不新增天气、场地、道具或招式机制。
 - 不重新设计 Damage Conditions Card 的视觉层级。
 - 不把 presentation concerns 放进纯 damage kernel；共享的是编译 source 与语义，不是 React 依赖。
+
+## Resolution
+
+已于 2026-08-04 实现（设计决定见 `docs/traces/discussion/2026-08-04-equivalent-power-projection.md`，实现决定见 `docs/traces/implementations/2026-08-04-equivalent-power-projection.md`）。
+
+- 新增纯函数 `projectMoveMechanics(compiled)` 从 `lib/damage-calculation` 导出；`compileScenario` 不再构造 `effectivePower`／`modifiers`，pipeline 与 React 均从该导出消费。
+- 投影按 kernel phase（base-power → spread → weather-damage → critical → stab → type-effectiveness → final）逐分支折算“等效威力”，删除扁平 `modifiers` map（含死字段 `modifiers.screen`）；Terrain 修正由 kernel branch 派生，不再漂移。
+- compiled 携带 `hitFact`（`always-hits` 或封顶 100 的数值），`hitProbability` 由同一解析派生；结果卡显示归一化有效命中概率，“必中”仅保留在 Move Snapshot 与 tooltip；Classic Mode 命中契约有回归测试。
+- Scenario Merge identity 保持 calculation + probability + ko，不包含投影。
+- 术语更新为“等效威力”（zh）／“Equivalent Power”（en）／“実質威力”（ja），tooltip 显示定义文案：伤害 ≈ 攻击 × 等效威力 / 防御。
+- 回归测试覆盖 Terrain drift、phase 组合（道具 + 天气 + 场地 + Spread + STAB + 克制 + 免疫）、数值命中链、天气 override、Classic Mode 契约。
 
 ## Acceptance criteria
 

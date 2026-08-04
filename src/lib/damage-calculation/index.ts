@@ -16,8 +16,8 @@ export { calculationIdentity, compileScenario } from "./scenario-compiler"
 export type {
   CalculableScenario,
   CompilerOutcome,
+  HitFact,
   KoInput,
-  MoveMechanics,
   ProbabilityInput,
   RawScenario,
   RawScenarioPoint,
@@ -27,6 +27,13 @@ export type {
   UnavailableReason,
   UnavailableScenario,
 } from "./scenario-compiler"
+export { projectMoveMechanics } from "./mechanics-projection"
+export type {
+  MechanicsPhase,
+  MechanicsPhaseKind,
+  MoveMechanics,
+  MoveMechanicsBranch,
+} from "./mechanics-projection"
 export { SCREENS } from "./screen"
 export type { Screen } from "./screen"
 export { STAT_STAGES } from "./types"

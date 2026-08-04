@@ -126,6 +126,12 @@ _Avoid_: KO Rate, Kill Chance
 Stat Range 两个端点分别产生的 KO Probability 所形成的有序范围；Stat Range 本身不视为随机变量。
 _Avoid_: Average KO Probability, Probability Distribution
 
+### 伤害展示
+
+**等效威力（Equivalent Power）**:
+由 Scenario 编译结果按 kernel 阶段顺序折算出的展示数值，用于估算伤害：`伤害 ≈ 攻击 × 等效威力 / 防御`；按普通／会心分支分别折算，属性免疫显示 0，不是 kernel 直接使用的数值。
+_Avoid_: 最终威力, effective power, kernel input power
+
 ## 宝可梦游戏
 
 **Pokémon Species（宝可梦种类）**:

@@ -9,6 +9,7 @@ import {
   type RawScenarioPoint,
   type ScenarioSource,
   compileScenario,
+  projectMoveMechanics,
 } from "@/lib/damage-calculation"
 import type { MatchupCatalog } from "@/lib/catalog"
 import {
@@ -360,7 +361,7 @@ export function runScenarioPipeline(
       ...group.context,
       provenance: group.provenance,
       criticalOnly: group.outcome.calculation.low.normal === undefined,
-      moveMechanics: group.outcome.moveMechanics,
+      moveMechanics: projectMoveMechanics(group.outcome),
       ...computed,
     }
   })

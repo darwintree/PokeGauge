@@ -55,9 +55,10 @@ it("renders effective abilities inline and folds inactive and unsupported states
     criticalOnly: false,
     moveMechanics: {
       basePower: 40,
-      effectivePower: 40,
-      accuracy: 100,
-      modifiers: { item: 4096, weather: 4096, terrain: 4096, spread: 4096, stab: 4096, typeEffectiveness: 4096, screen: 4096 },
+      normal: { effectivePower: 40, phases: [] },
+      critical: { effectivePower: 60, phases: [] },
+      hitFact: 100,
+      hitProbability: 1,
     },
     minDamage: 20,
     maxDamage: 24,
