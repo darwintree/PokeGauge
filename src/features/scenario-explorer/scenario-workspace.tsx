@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"
 
 import { DamageResults } from "./results/damage-results"
 import { ScenarioSetupPanel } from "./scenario-setup-panel"
-import { ScenarioSetSummary } from "./scenario-set-summary"
+import { ResultSetSummary } from "./results-summary"
 import { useScenarioState } from "./state/use-scenario-state"
 
 type LocalizedCatalogState = {
@@ -121,7 +121,7 @@ export function ScenarioWorkspace({
             <h1 className="text-[19px] font-extrabold tracking-tight [text-shadow:1px_1px_0_var(--paper)]">
               {catalog.matchup.attackerLabel} → {catalog.matchup.defenderLabel}
             </h1>
-            <ScenarioSetSummary state={state} />
+            <ResultSetSummary state={state} />
           </header>
           <DamageResults
             catalog={catalog}
