@@ -26,7 +26,7 @@ import {
   DamageRangeLegend,
   DamageResultRow,
 } from "./damage-result-row"
-import { ShowStatValuesSwitch } from "../tracks/stats/stat-preset-choices"
+import { ShowStatValuesSwitch } from "../tracks/common/show-stat-values-switch"
 import { rowLabels } from "./row-labels"
 
 type DamageResultsProps = {
