@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge"
 
 import type { ScenarioState } from "./state/use-scenario-state"
 
-export function ScenarioSetSummary({ state }: { state: ScenarioState }) {
+export function ResultSetSummary({ state }: { state: ScenarioState }) {
   const intl = useIntl()
   const s = state.selectionSummary
   const stats =
