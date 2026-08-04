@@ -3,6 +3,7 @@ import { useMemo, useState } from "react"
 import { useIntl } from "react-intl"
 
 import { TypeBadge } from "@/components/pokemon/type-badge"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import type { CatalogMoveOption, MoveCategory } from "@/lib/catalog"
 import type { MoveSnapshot } from "@/lib/move"
 import { MovePickerDialog } from "./move-picker-dialog"
@@ -28,73 +29,43 @@ export type MoveTrackProps = {
 function MoveCategoryControl({
   category,
   onChange,
+  variant = "panel",
 }: {
   category: MoveCategory
   onChange: (category: MoveCategory) => void
+  variant?: "panel" | "chip"
 }) {
   const intl = useIntl()
+  const chip = variant === "chip"
 
   return (
-    <div
-      role="group"
+    <ToggleGroup
+      value={[category]}
+      onValueChange={(value) => {
+        if (value[0] === "physical" || value[0] === "special") onChange(value[0])
+      }}
       aria-label={intl.formatMessage({ id: "track.moveSide" })}
-      className="grid w-[5.5rem] grid-cols-2 gap-px rounded-md bg-muted p-0.5"
+      className={cn(
+        chip
+          ? "gap-1"
+          : "grid w-[5.5rem] grid-cols-2 gap-px rounded-md bg-muted p-0.5",
+      )}
     >
       {(["physical", "special"] as const).map((value) => (
-        <button
+        <ToggleGroupItem
           key={value}
-          type="button"
-          aria-pressed={category === value}
+          value={value}
           className={cn(
-            "h-8 rounded-[4px] px-1.5 text-[10px] font-medium transition-colors active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-ring sm:h-6",
-            category === value
-              ? "bg-background text-foreground shadow-sm"
-              : "text-muted-foreground hover:text-foreground",
+            chip
+              ? "h-auto min-w-0 rounded-[9px] border-2 border-card-border bg-paper px-2 py-0.5 text-[10px] font-extrabold hover:bg-token-bg/60 aria-pressed:border-ink aria-pressed:bg-signal-yellow aria-pressed:shadow-hud-chip aria-pressed:hover:bg-signal-yellow"
+              : "h-8 rounded-[4px] px-1.5 text-[10px] font-medium transition-colors active:scale-[0.98] aria-pressed:bg-background aria-pressed:text-foreground aria-pressed:shadow-sm aria-pressed:hover:bg-background sm:h-6",
+            !chip && "text-muted-foreground hover:text-foreground",
           )}
-          onClick={() => onChange(value)}
         >
           {intl.formatMessage({ id: `track.moveSide.${value}` })}
-        </button>
+        </ToggleGroupItem>
       ))}
-    </div>
-  )
-}
-
-function MoveCategoryToggle({
-  category,
-  onChange,
-}: {
-  category: MoveCategory
-  onChange: (category: MoveCategory) => void
-}) {
-  const intl = useIntl()
-
-  return (
-    <div
-      role="group"
-      aria-label={intl.formatMessage({ id: "track.moveSide" })}
-      className="flex gap-1"
-    >
-      {(["physical", "special"] as const).map((value) => {
-        const pressed = category === value
-        return (
-          <button
-            key={value}
-            type="button"
-            aria-pressed={pressed}
-            className={cn(
-              "rounded-[9px] border-2 px-2 py-0.5 text-[10px] font-extrabold transition-colors",
-              pressed
-                ? "border-ink bg-signal-yellow shadow-hud-chip"
-                : "border-card-border bg-paper hover:bg-token-bg/60",
-            )}
-            onClick={() => onChange(value)}
-          >
-            {intl.formatMessage({ id: `track.moveSide.${value}` })}
-          </button>
-        )
-      })}
-    </div>
+    </ToggleGroup>
   )
 }
 
@@ -167,12 +138,13 @@ export function MoveTrack({
             />
             <span className="pointer-events-none relative text-xs font-extrabold">{label}</span>
             <div className="relative z-10 ml-auto">
-              <MoveCategoryToggle
+              <MoveCategoryControl
                 category={category}
                 onChange={(nextCategory) => {
                   onCategoryChange(nextCategory)
                   onToggle()
                 }}
+                variant="chip"
               />
             </div>
             <ChevronDown className="pointer-events-none relative size-3.5 shrink-0 text-muted-foreground" />
