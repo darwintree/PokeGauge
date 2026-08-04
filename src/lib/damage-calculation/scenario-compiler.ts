@@ -113,25 +113,12 @@ export type CalculableScenario = {
   }
   calculation: CompiledDamageInput
   probability: ProbabilityInput
-  moveMechanics: MoveMechanics
+  hitFact: HitFact
   ko: KoInput
   sources: ScenarioSource[]
 }
 
-export type MoveMechanics = {
-  basePower: number
-  effectivePower: number
-  accuracy: number | "always-hits"
-  modifiers: {
-    item: number
-    weather: number
-    terrain: number
-    spread: number
-    stab: number
-    typeEffectiveness: number
-    screen: number
-  }
-}
+export type HitFact = number | "always-hits"
 
 export type UnavailableReason =
   | "unconfigured-move"
@@ -310,7 +297,7 @@ function criticalProbability(stage: CriticalStage): number {
 
 function compileProbability(
   mode: ProbabilityMode,
-  accuracy: MoveMechanics["accuracy"],
+  hitFact: HitFact,
   criticalStage: CriticalStage,
 ): ProbabilityInput {
   if (mode === "classic") {
@@ -320,7 +307,7 @@ function compileProbability(
     }
   }
   return {
-    hitProbability: accuracy === "always-hits" ? 1 : Math.min(1, accuracy / 100),
+    hitProbability: hitFact === "always-hits" ? 1 : Math.min(1, hitFact / 100),
     criticalHitProbability: criticalProbability(criticalStage),
   }
 }
@@ -469,7 +456,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     : numericAccuracyWith(true, true)
   const resolvedAccuracy = weather.accuracy ??
     (raw.snapshot.alwaysHits ? "always-hits" : itemModifiedAccuracy)
-  const moveAccuracy: MoveMechanics["accuracy"] = resolvedAccuracy === "always-hits"
+  const hitFact: HitFact = resolvedAccuracy === "always-hits"
     ? resolvedAccuracy
     : Math.min(100, resolvedAccuracy)
   const normalizedItemAccuracy = (includeAttackerItem: boolean, includeDefenderItem: boolean) =>
@@ -632,19 +619,6 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     weatherModifier: weather.damageModifier,
     screenModifier: screen.modifier,
   }
-  const mechanicsModifiers = {
-    item: attackerItem.basePowerModifier,
-    weather: chainModifiers([
-      weather.basePowerModifier,
-      weather.damageModifier,
-    ]),
-    terrain: terrain.basePowerModifier,
-    spread: context.spread ? 3072 : NEUTRAL_MODIFIER,
-    stab: context.stabModifier,
-    typeEffectiveness: context.typeEffectivenessModifier,
-    screen: context.screenModifier,
-  }
-
   const compilePoint = (point: RawScenarioPoint) => {
     return {
       defenderHp: point.defense.hp,
@@ -668,23 +642,10 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     },
     probability: compileProbability(
       raw.probabilityMode,
-      moveAccuracy,
+      hitFact,
       derivedCriticalStage,
     ),
-    moveMechanics: {
-      basePower: power,
-      effectivePower: mechanicsModifiers.typeEffectiveness === 0
-        ? 0
-        : Math.max(1, applyModifier(power, chainModifiers([
-            mechanicsModifiers.item,
-            mechanicsModifiers.weather,
-            mechanicsModifiers.spread,
-            mechanicsModifiers.stab,
-            mechanicsModifiers.typeEffectiveness,
-          ]))),
-      accuracy: moveAccuracy,
-      modifiers: mechanicsModifiers,
-    },
+    hitFact,
     ko: { hitCounts: [1, 2] },
     sources,
   }

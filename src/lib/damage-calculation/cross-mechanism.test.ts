@@ -156,7 +156,11 @@ describe("cross-mechanism acceptance", () => {
       maxDamage: 180,
       critMinDamage: 228,
       critMaxDamage: 270,
-      moveMechanics: { modifiers: { item: 4915 } },
+      moveMechanics: {
+        normal: {
+          phases: expect.arrayContaining([{ kind: "base-power", modifier: 4915 }]),
+        },
+      },
       provenance: {
         "held-item": {
           effective: ["220", "276"],
@@ -230,7 +234,15 @@ describe("cross-mechanism acceptance", () => {
       maxDamage: 354,
       critMinDamage: 300,
       critMaxDamage: 354,
-      moveMechanics: { modifiers: { item: 4096, screen: 4096 } },
+      moveMechanics: {
+        normal: null,
+        critical: {
+          phases: expect.arrayContaining([
+            { kind: "critical", modifier: 6144 },
+            { kind: "final", modifier: 4096 },
+          ]),
+        },
+      },
       provenance: {
         "held-item": { effective: ["236"] },
         screen: { inactive: ["reflect"] },
@@ -329,7 +341,11 @@ describe("cross-mechanism acceptance", () => {
       maxDamage: 180,
       critMinDamage: 226,
       critMaxDamage: 269,
-      moveMechanics: { modifiers: { typeEffectiveness: 8192 } },
+      moveMechanics: {
+        normal: {
+          phases: expect.arrayContaining([{ kind: "type-effectiveness", modifier: 8192 }]),
+        },
+      },
       provenance: { "held-item": { effective: ["245"] } },
     })
     expect(positiveResult.rows[0].koProbabilities?.ohko).toBeCloseTo(0.0375)
@@ -365,7 +381,11 @@ describe("cross-mechanism acceptance", () => {
       maxDamage: 75,
       critMinDamage: 94,
       critMaxDamage: 112,
-      moveMechanics: { modifiers: { typeEffectiveness: 4096 } },
+      moveMechanics: {
+        normal: {
+          phases: expect.arrayContaining([{ kind: "type-effectiveness", modifier: 4096 }]),
+        },
+      },
       provenance: { "held-item": { inactive: ["245"] } },
     })
     expect(negativeResult.rows[0].koProbabilities?.ohko).toBe(0)
@@ -454,7 +474,14 @@ describe("cross-mechanism acceptance", () => {
       maxDamage: 224,
       critMinDamage: 284,
       critMaxDamage: 336,
-      moveMechanics: { modifiers: { weather: 6144, typeEffectiveness: 8192 } },
+      moveMechanics: {
+        normal: {
+          phases: expect.arrayContaining([
+            { kind: "weather-damage", modifier: 6144 },
+            { kind: "type-effectiveness", modifier: 8192 },
+          ]),
+        },
+      },
       provenance: { "defender-held-item": { neutral: ["none"] } },
     })
     expect(result.rows[1]).toMatchObject({
@@ -462,7 +489,14 @@ describe("cross-mechanism acceptance", () => {
       maxDamage: 150,
       critMinDamage: 188,
       critMaxDamage: 224,
-      moveMechanics: { modifiers: { weather: 4096, typeEffectiveness: 8192 } },
+      moveMechanics: {
+        normal: {
+          phases: expect.arrayContaining([
+            { kind: "weather-damage", modifier: 4096 },
+            { kind: "type-effectiveness", modifier: 8192 },
+          ]),
+        },
+      },
       provenance: { "defender-held-item": { effective: ["1181"] } },
     })
     expect(result.rows[1].koProbabilities?.ohko).toBeCloseTo(0.0234375)

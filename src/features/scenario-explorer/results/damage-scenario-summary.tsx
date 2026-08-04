@@ -3,10 +3,13 @@ import { useIntl } from "react-intl"
 
 import { TypeBadge } from "@/components/pokemon/type-badge"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { NEUTRAL_MODIFIER, type ScenarioTrack } from "@/lib/damage-calculation"
+import {
+  NEUTRAL_MODIFIER,
+  type MechanicsPhase,
+  type ScenarioTrack,
+} from "@/lib/damage-calculation"
 import type { CatalogAbilityOption, CatalogMoveOption } from "@/lib/catalog"
 import {
-  heldItemContributesBasePower,
   itemAriaLabel,
   itemIsHiddenNeutral,
   itemSprite,
@@ -136,14 +139,27 @@ function AdditionalConditionDetails(props: DamageScenarioSummaryProps) {
 function DamageFormulaTooltip(props: DamageScenarioSummaryProps) {
   const intl = useIntl()
   const mechanics = props.row.moveMechanics
-  const items = props.row.provenance["held-item"]?.effective.filter(
-    heldItemContributesBasePower,
-  ) ?? []
-  const weather = props.row.provenance.weather?.effective.filter((id) => id !== "none") ?? []
-  const terrain = props.row.provenance.terrain?.effective.filter((id) => id !== "none") ?? []
-  const accuracy = mechanics.accuracy === "always-hits"
+  const branch = mechanics.normal ?? mechanics.critical
+  if (!branch) return null
+  const accuracy = mechanics.hitFact === "always-hits"
     ? intl.formatMessage({ id: "damage.conditions.alwaysHits" })
-    : `${mechanics.accuracy}%`
+    : `${mechanics.hitFact}%`
+  const phaseLabels: Record<MechanicsPhase["kind"], string> = {
+    "base-power": intl.formatMessage({ id: "damage.conditions.basePowerModifier" }),
+    spread: intl.formatMessage({ id: "damage.conditions.spread" }),
+    "weather-damage": intl.formatMessage({ id: "damage.conditions.weatherDamage" }),
+    critical: intl.formatMessage({ id: "damage.critical" }),
+    stab: "STAB",
+    "type-effectiveness": intl.formatMessage({ id: "damage.conditions.effectiveness" }),
+    final: intl.formatMessage({ id: "damage.conditions.final" }),
+  }
+  const phases = branch.phases
+  const criticalPhase = mechanics.critical?.phases.find(
+    (phase) => phase.kind === "critical",
+  )
+  const effectivePower = mechanics.normal && mechanics.critical
+    ? `${mechanics.normal.effectivePower} / ${mechanics.critical.effectivePower}`
+    : branch.effectivePower
 
   return (
     <Tooltip>
@@ -154,18 +170,19 @@ function DamageFormulaTooltip(props: DamageScenarioSummaryProps) {
       </TooltipTrigger>
       <TooltipContent side="right" align="start" className="w-64 flex-col items-stretch gap-1.5 rounded-xl border-2 border-ink bg-paper p-3 shadow-hud-panel">
         <FormulaDetailRow label={intl.formatMessage({ id: "damage.conditions.basePower" })} value={mechanics.basePower} />
-        <FormulaDetailRow label="STAB" value={modifierLabel(mechanics.modifiers.stab)} />
-        <FormulaDetailRow label={intl.formatMessage({ id: "damage.conditions.effectiveness" })} value={modifierLabel(mechanics.modifiers.typeEffectiveness)} />
-        {items.length > 0 && (
-          <FormulaDetailRow label={intl.formatMessage({ id: "track.item" })} value={`${items.map((id) => itemAriaLabel(id, intl.locale as SupportedLocale)).join(" / ")} · ${modifierLabel(mechanics.modifiers.item)}`} />
+        {phases.map((phase) => (
+          <FormulaDetailRow key={phase.kind} label={phaseLabels[phase.kind]} value={modifierLabel(phase.modifier)} />
+        ))}
+        {mechanics.normal && criticalPhase && (
+          <FormulaDetailRow label={phaseLabels.critical} value={modifierLabel(criticalPhase.modifier)} />
         )}
-        <FormulaDetailRow label={intl.formatMessage({ id: "track.weather" })} value={`${weather.length ? weather.map((id) => intl.formatMessage({ id: `track.weather.${id}` })).join(" / ") : intl.formatMessage({ id: "track.weather.none" })} · ${modifierLabel(mechanics.modifiers.weather)}`} />
-        <FormulaDetailRow label={intl.formatMessage({ id: "track.terrain" })} value={`${terrain.length ? terrain.map((id) => intl.formatMessage({ id: `track.terrain.${id}` })).join(" / ") : intl.formatMessage({ id: "track.terrain.none" })} · ${modifierLabel(mechanics.modifiers.terrain)}`} />
-        <FormulaDetailRow label={intl.formatMessage({ id: "damage.conditions.spread" })} value={modifierLabel(mechanics.modifiers.spread)} />
         <div className="mt-1 flex justify-between border-t pt-1.5 font-medium">
           <span>{intl.formatMessage({ id: "damage.conditions.effectivePower" })}{props.showAccuracy && ` / ${intl.formatMessage({ id: "damage.conditions.accuracy" })}`}</span>
-          <span className="tabular-nums">{mechanics.effectivePower}{props.showAccuracy && ` / ${accuracy}`}</span>
+          <span className="tabular-nums">{effectivePower}{props.showAccuracy && ` / ${accuracy}`}</span>
         </div>
+        <p className="border-t pt-1.5 text-[10px] leading-4 text-muted-foreground">
+          {intl.formatMessage({ id: "damage.conditions.effectivePowerHint" })}
+        </p>
       </TooltipContent>
     </Tooltip>
   )
@@ -188,15 +205,15 @@ function ScenarioIdentityLine({ label, value, statValue, children }: { label: st
 
 export function DamageScenarioSummary(props: DamageScenarioSummaryProps) {
   const intl = useIntl()
-  const accuracy = props.row.moveMechanics.accuracy === "always-hits"
-    ? intl.formatMessage({ id: "damage.conditions.alwaysHits" })
-    : `${props.row.moveMechanics.accuracy}%`
+  const mechanics = props.row.moveMechanics
+  const branch = mechanics.normal ?? mechanics.critical
+  const accuracy = `${Math.round(mechanics.hitProbability * 100)}%`
 
   return (
     <article className="relative w-full rounded-[10px] border border-card-border bg-muted/60 md:w-[14.75rem]">
       <div className="flex items-center gap-1 border-b border-card-border px-2 py-1">
         <span className="flex min-w-0 items-center gap-1"><TypeBadge type={props.move.type} /><span className="truncate text-[12px] font-extrabold">{props.move.label}</span></span>
-        <strong title={intl.formatMessage({ id: "damage.conditions.effectivePower" })} className="ml-auto text-[13px] font-extrabold leading-4 tabular-nums">{props.row.moveMechanics.effectivePower}</strong>
+        <strong title={intl.formatMessage({ id: "damage.conditions.effectivePower" })} className="ml-auto text-[13px] font-extrabold leading-4 tabular-nums">{branch?.effectivePower}</strong>
         {props.showAccuracy && <><span aria-hidden className="text-[10.5px] text-muted-foreground">·</span><span title={intl.formatMessage({ id: "damage.conditions.accuracy" })} className="text-[10.5px] tabular-nums">{accuracy}</span></>}
         <DamageFormulaTooltip {...props} />
       </div>

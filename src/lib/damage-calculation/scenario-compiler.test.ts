@@ -24,6 +24,7 @@ import {
   type RawScenario,
   type RawScenarioPoint,
   compileScenario,
+  projectMoveMechanics,
 } from "@/lib/damage-calculation"
 import {
   type DefenderSetup,
@@ -133,12 +134,20 @@ describe("scenario compiler", () => {
       typeEffectivenessModifier: 8192,
       finalModifier: 4096,
     })
-    expect(outcome.moveMechanics).toMatchObject({
+    const mechanics = projectMoveMechanics(outcome)
+    expect(mechanics).toMatchObject({
       basePower: 100,
-      effectivePower: 225,
-      accuracy: 100,
-      modifiers: { item: 4096, spread: 3072, stab: 6144 },
+      hitFact: 100,
+      hitProbability: 1,
     })
+    expect(mechanics.normal).toMatchObject({ effectivePower: 224 })
+    expect(mechanics.normal!.phases).toEqual(expect.arrayContaining([
+      { kind: "base-power", modifier: 4096 },
+      { kind: "spread", modifier: 3072 },
+      { kind: "stab", modifier: 6144 },
+      { kind: "type-effectiveness", modifier: 8192 },
+      { kind: "final", modifier: 4096 },
+    ]))
     expect(outcome.sources).toEqual([
       { track: "attacker-stage", optionId: "0", state: "neutral" },
       { track: "held-item", optionId: "197", state: "effective" },
@@ -165,13 +174,19 @@ describe("scenario compiler", () => {
         attackModifier: 4096,
         finalModifier: 4096,
       })
-      expect(muscleBand.moveMechanics.modifiers.item).toBe(4505)
+      expect(projectMoveMechanics(muscleBand).normal!.phases).toContainEqual({
+        kind: "base-power",
+        modifier: 4505,
+      })
       expect(choiceBand.calculation.low.normal).toMatchObject({
         basePowerModifier: 4096,
         attackModifier: 6144,
         finalModifier: 4096,
       })
-      expect(choiceBand.moveMechanics.modifiers.item).toBe(4096)
+      expect(projectMoveMechanics(choiceBand).normal!.phases).toContainEqual({
+        kind: "base-power",
+        modifier: 4096,
+      })
       expect(lifeOrbAndShuca.calculation.low.normal?.finalModifier).toBe(2662)
       expect(heldItemSource(lifeOrbAndShuca)).toMatchObject({ optionId: "247", state: "effective" })
       expect(heldItemSource(lifeOrbAndShuca, "defender-held-item")).toMatchObject({
@@ -280,7 +295,7 @@ describe("scenario compiler", () => {
         snapshot: { ...snapshot, accuracy: 90 },
       })
 
-      expect(outcome.moveMechanics.accuracy).toBe(89)
+      expect(projectMoveMechanics(outcome).hitFact).toBe(89)
       expect(outcome.probability.hitProbability).toBe(0.89)
       expect(heldItemSource(outcome)).toMatchObject({ optionId: "242", state: "effective" })
       expect(heldItemSource(outcome, "defender-held-item")).toMatchObject({
@@ -315,11 +330,11 @@ describe("scenario compiler", () => {
         },
       })
 
-      expect(normalized.moveMechanics.accuracy).toBe(100)
+      expect(projectMoveMechanics(normalized).hitFact).toBe(100)
       expect(normalized.probability.hitProbability).toBe(1)
       expect(heldItemSource(normalized)?.state).toBe("inactive")
       expect(heldItemSource(rolls)?.state).toBe("inactive")
-      expect(rainOverride.moveMechanics.accuracy).toBe("always-hits")
+      expect(projectMoveMechanics(rainOverride).hitFact).toBe("always-hits")
       expect(heldItemSource(rainOverride)?.state).toBe("inactive")
       expect(heldItemSource(rainOverride, "defender-held-item")?.state).toBe("inactive")
     })
@@ -427,7 +442,80 @@ describe("scenario compiler", () => {
   })
 
   it("reports zero final power against a type immunity", () => {
-    expect(calculableScenario({ defenderId: 6 }).moveMechanics.effectivePower).toBe(0)
+    const mechanics = projectMoveMechanics(calculableScenario({ defenderId: 6 }))
+    expect(mechanics.normal?.effectivePower).toBe(0)
+    expect(mechanics.critical?.effectivePower).toBe(0)
+  })
+
+  it("projects Electric Terrain base power into both kernel input and display", () => {
+    const outcome = calculableScenario({
+      attackerId: 25,
+      terrain: "electric",
+      snapshot: {
+        ...snapshot,
+        id: "pikachu-thunderbolt-electric-terrain",
+        moveId: 85,
+        power: 90,
+        spreadEligible: false,
+        spread: false,
+      },
+    })
+    const mechanics = projectMoveMechanics(outcome)
+
+    expect(outcome.calculation.low.normal?.basePowerModifier).toBe(5325)
+    expect(mechanics.normal!.phases).toContainEqual({
+      kind: "base-power",
+      modifier: 5325,
+    })
+    expect(mechanics.normal!.effectivePower).toBe(175)
+  })
+
+  it("projects a combined phase chain in kernel order and keeps immunity at zero", () => {
+    const combined = calculableScenario({
+      attackerItemId: 243,
+      weather: "rain",
+      terrain: "grassy",
+      snapshot: {
+        ...snapshot,
+        id: "earthquake-muscle-band-grassy-rain",
+      },
+    })
+    const mechanics = projectMoveMechanics(combined)
+
+    expect(combined.calculation.low.normal?.basePowerModifier).toBe(2253)
+    expect(mechanics.normal!.phases).toEqual(expect.arrayContaining([
+      { kind: "base-power", modifier: 2253 },
+      { kind: "spread", modifier: 3072 },
+      { kind: "weather-damage", modifier: 4096 },
+      { kind: "stab", modifier: 6144 },
+      { kind: "type-effectiveness", modifier: 8192 },
+      { kind: "final", modifier: 4096 },
+    ]))
+    expect(mechanics.normal!.effectivePower).toBe(122)
+    expect(mechanics.critical!.effectivePower).toBe(182)
+
+    const immune = projectMoveMechanics(calculableScenario({ defenderId: 6 }))
+    expect(immune.normal!.phases).toContainEqual({
+      kind: "type-effectiveness",
+      modifier: 0,
+    })
+    expect(immune.normal!.effectivePower).toBe(0)
+  })
+
+  it("derives hitProbability from the resolved fact in both probability modes", () => {
+    const snapshot90 = { ...snapshot, accuracy: 90 }
+    const battleOdds = calculableScenario({
+      probabilityMode: "battle-odds",
+      snapshot: snapshot90,
+    })
+    const classic = calculableScenario({
+      probabilityMode: "classic",
+      snapshot: snapshot90,
+    })
+
+    expect(projectMoveMechanics(battleOdds).hitProbability).toBe(0.9)
+    expect(projectMoveMechanics(classic).hitProbability).toBe(1)
+    expect(projectMoveMechanics(classic).hitFact).toBe(90)
   })
 
   it("shares weather accuracy between mechanics and Battle Odds Mode", () => {
@@ -445,7 +533,7 @@ describe("scenario compiler", () => {
       },
     })
 
-    expect(rain.moveMechanics.accuracy).toBe("always-hits")
+    expect(projectMoveMechanics(rain).hitFact).toBe("always-hits")
     expect(rain.probability.hitProbability).toBe(1)
   })
 
