@@ -14,9 +14,9 @@ import { StatRangeInput } from "./stat-range-input"
 import {
   AddDefensePresetPanel,
   AddOffensePresetPanel,
-  ShowStatValuesSwitch,
   StatPresetChoices,
 } from "./stat-preset-choices"
+import { ShowStatValuesSwitch } from "../common/show-stat-values-switch"
 import { TrackPanel } from "../common/track-panel"
 import type { ScenarioState } from "../../state/use-scenario-state"
 
