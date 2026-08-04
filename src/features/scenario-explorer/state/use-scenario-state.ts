@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 
 import {
   defaultDefenderDefRange,
@@ -38,24 +38,13 @@ import {
   reconcileDefenseFromRange,
   reconcileOffenseFromRange,
   runScenarioPipeline,
-  selectedSnapshotMoveIds,
-  snapshotMoveIds,
-  snapshotsForMoveIds,
-  trackStateAfterCatalogTransition,
   type DefenderStatRanges,
   type StatSelectMode,
   type TrackState,
 } from "@/lib/scenario"
-import {
-  saveScenarioSnapshot,
-  type ScenarioSnapshotInput,
-} from "@/lib/scenario"
 
-const SCENARIO_SAVE_DELAY_MS = 150
-
-function sameIds(a: readonly number[], b: readonly number[]): boolean {
-  return a.length === b.length && a.every((id, index) => id === b[index])
-}
+import { useCatalogTransitionSync } from "./use-catalog-transition-sync"
+import { useScenarioSnapshotPersistence } from "./use-scenario-snapshot-persistence"
 
 function cycleAllocationIndex(
   indices: Record<string, number>,
@@ -64,13 +53,12 @@ function cycleAllocationIndex(
   return { ...indices, [id]: (indices[id] ?? 0) + 1 }
 }
 
-
 export function useScenarioState(
   catalog: MatchupCatalog,
   restoredTrackState?: TrackState,
 ) {
   const { attackerCalcName, defenderCalcName } = catalog.matchup
-  const restoredTrackStateRef = useRef(restoredTrackState)
+  const restored = restoredTrackState !== undefined
 
   const offenseBounds = useMemo(
     () => getOffenseStatBounds(attackerCalcName, catalog.moveCategory),
@@ -88,34 +76,35 @@ export function useScenarioState(
   )
 
   const [trackState, setTrackState] = useState<TrackState>(
-    () => restoredTrackStateRef.current ?? defaultTrackState(catalog),
+    () => restoredTrackState ?? defaultTrackState(catalog),
   )
   const [userOffenseVersion, setUserOffenseVersion] = useState(0)
   const [userDefenseVersion, setUserDefenseVersion] = useState(0)
   const [addingOffense, setAddingOffense] = useState(false)
   const [addingDefense, setAddingDefense] = useState(false)
   const [statNameStrategy, setStatNameStrategyState] = useState<StatNameStrategy>(loadStatNameStrategy)
-  const attackerKeyRef = useRef(
-    `${catalog.matchup.attackerId}:${catalog.moveCategory}`,
+
+  const {
+    catalogTransitionPending,
+    movesTouchedRef,
+    attackerAbilitiesTouchedRef,
+    defenderAbilitiesTouchedRef,
+  } = useCatalogTransitionSync(
+    catalog,
+    restored,
+    setTrackState,
+    setAddingOffense,
+    setAddingDefense,
   )
-  const attackerIdRef = useRef(catalog.matchup.attackerId)
-  const defenderIdRef = useRef(catalog.matchup.defenderId)
-  const defaultMovePoolIdsRef = useRef<number[]>([...catalog.defaultMovePoolIds])
-  const defaultMoveIdsRef = useRef<number[]>([...catalog.defaultMoveIds])
-  const defaultAttackerAbilityIdsRef = useRef<number[]>([
-    ...catalog.defaultAttackerAbilityIds,
-  ])
-  const defaultDefenderAbilityIdsRef = useRef<number[]>([
-    ...catalog.defaultDefenderAbilityIds,
-  ])
-  const movesTouchedRef = useRef(restoredTrackStateRef.current !== undefined)
-  const attackerAbilitiesTouchedRef = useRef(restoredTrackStateRef.current !== undefined)
-  const defenderAbilitiesTouchedRef = useRef(restoredTrackStateRef.current !== undefined)
-  const pendingScenarioSnapshotRef = useRef<ScenarioSnapshotInput | null>(null)
-  const catalogTransitionPending =
-    attackerKeyRef.current !==
-      `${catalog.matchup.attackerId}:${catalog.moveCategory}` ||
-    defenderIdRef.current !== catalog.matchup.defenderId
+
+  useScenarioSnapshotPersistence({
+    catalog,
+    trackState,
+    catalogTransitionPending,
+    movesTouchedRef,
+    attackerAbilitiesTouchedRef,
+    defenderAbilitiesTouchedRef,
+  })
 
   const setStatNameStrategy = useCallback((strategy: StatNameStrategy) => {
     saveStatNameStrategy(strategy)
@@ -123,148 +112,11 @@ export function useScenarioState(
   }, [])
 
   useEffect(() => {
-    const attackerKey = `${catalog.matchup.attackerId}:${catalog.moveCategory}`
-    const attackerOwnerChanged = attackerKeyRef.current !== attackerKey
-    const attackerChanged = attackerIdRef.current !== catalog.matchup.attackerId
-    const defenderChanged = defenderIdRef.current !== catalog.matchup.defenderId
-    if (!attackerOwnerChanged && !defenderChanged) return
-    attackerKeyRef.current = attackerKey
-    attackerIdRef.current = catalog.matchup.attackerId
-    defenderIdRef.current = catalog.matchup.defenderId
-    if (attackerOwnerChanged) {
-      defaultMovePoolIdsRef.current = [...catalog.defaultMovePoolIds]
-      defaultMoveIdsRef.current = [...catalog.defaultMoveIds]
-    }
-    defaultAttackerAbilityIdsRef.current = [...catalog.defaultAttackerAbilityIds]
-    defaultDefenderAbilityIdsRef.current = [...catalog.defaultDefenderAbilityIds]
-    if (attackerChanged) attackerAbilitiesTouchedRef.current = false
-    if (defenderChanged) defenderAbilitiesTouchedRef.current = false
-    if (attackerOwnerChanged) {
-      movesTouchedRef.current = false
-    }
-    setTrackState((state) =>
-      trackStateAfterCatalogTransition(state, catalog, {
-        attackerOwnerChanged,
-        attackerChanged,
-        defenderChanged,
-      }),
-    )
-    setAddingOffense(false)
-    setAddingDefense(false)
-  }, [catalog])
-
-  useEffect(() => {
-    if (catalog.defaultMovePickStatus !== "ready") return
-    const previousDefaultMovePoolIds = defaultMovePoolIdsRef.current
-    const previousDefaultMoveIds = defaultMoveIdsRef.current
-    if (
-      sameIds(previousDefaultMovePoolIds, catalog.defaultMovePoolIds) &&
-      sameIds(previousDefaultMoveIds, catalog.defaultMoveIds)
-    ) return
-    defaultMovePoolIdsRef.current = [...catalog.defaultMovePoolIds]
-    defaultMoveIdsRef.current = [...catalog.defaultMoveIds]
-    setTrackState((s) => {
-      if (movesTouchedRef.current) return s
-      if (!sameIds(snapshotMoveIds(s.moveSnapshots), previousDefaultMovePoolIds)) return s
-      if (!sameIds(
-        selectedSnapshotMoveIds(s.moveSnapshots, s.selectedMoveSnapshotIds),
-        previousDefaultMoveIds,
-      )) return s
-      const moveSnapshots = sameIds(previousDefaultMovePoolIds, catalog.defaultMovePoolIds)
-        ? s.moveSnapshots
-        : snapshotsForMoveIds(catalog, catalog.defaultMovePoolIds)
-      const selectedMoveIds = new Set(catalog.defaultMoveIds)
-      return {
-        ...s,
-        moveSnapshots,
-        selectedMoveSnapshotIds: moveSnapshots
-          .filter((snapshot) => selectedMoveIds.has(snapshot.moveId))
-          .map((snapshot) => snapshot.id),
-      }
-    })
-  }, [catalog, catalog.defaultMovePoolIds, catalog.defaultMoveIds])
-
-  useEffect(() => {
-    if (catalog.defaultAbilityPickStatus !== "ready") return
-    const previousAttackerIds = defaultAttackerAbilityIdsRef.current
-    const previousDefenderIds = defaultDefenderAbilityIdsRef.current
-    const attackerDefaultsChanged = !sameIds(
-      previousAttackerIds,
-      catalog.defaultAttackerAbilityIds,
-    )
-    const defenderDefaultsChanged = !sameIds(
-      previousDefenderIds,
-      catalog.defaultDefenderAbilityIds,
-    )
-    if (!attackerDefaultsChanged && !defenderDefaultsChanged) return
-    defaultAttackerAbilityIdsRef.current = [...catalog.defaultAttackerAbilityIds]
-    defaultDefenderAbilityIdsRef.current = [...catalog.defaultDefenderAbilityIds]
-    setTrackState((state) => ({
-      ...state,
-      attackerAbilityIds:
-        attackerDefaultsChanged &&
-        !attackerAbilitiesTouchedRef.current &&
-        sameIds(state.attackerAbilityIds, previousAttackerIds)
-          ? [...catalog.defaultAttackerAbilityIds]
-          : state.attackerAbilityIds,
-      defenderAbilityIds:
-        defenderDefaultsChanged &&
-        !defenderAbilitiesTouchedRef.current &&
-        sameIds(state.defenderAbilityIds, previousDefenderIds)
-          ? [...catalog.defaultDefenderAbilityIds]
-          : state.defenderAbilityIds,
-    }))
-  }, [catalog, catalog.defaultAttackerAbilityIds, catalog.defaultDefenderAbilityIds])
-
-  useEffect(() => {
     const id = window.setTimeout(() => {
       warmDefenderSpreadCache(defenderCalcName, catalog.moveCategory)
     }, 0)
     return () => window.clearTimeout(id)
   }, [defenderCalcName, catalog.moveCategory])
-
-  useEffect(() => {
-    if (catalogTransitionPending) return
-    const untouchedDefaultsPending =
-      (catalog.defaultMovePickStatus === "loading" && !movesTouchedRef.current) ||
-      (catalog.defaultAbilityPickStatus === "loading" &&
-        (!attackerAbilitiesTouchedRef.current ||
-          !defenderAbilitiesTouchedRef.current))
-    if (untouchedDefaultsPending) return
-    const snapshot: ScenarioSnapshotInput = {
-      attackerId: catalog.matchup.attackerId,
-      defenderId: catalog.matchup.defenderId,
-      moveCategory: catalog.moveCategory,
-      trackState,
-    }
-    pendingScenarioSnapshotRef.current = snapshot
-    const id = window.setTimeout(() => {
-      saveScenarioSnapshot(snapshot)
-      if (pendingScenarioSnapshotRef.current === snapshot) {
-        pendingScenarioSnapshotRef.current = null
-      }
-    }, SCENARIO_SAVE_DELAY_MS)
-    return () => window.clearTimeout(id)
-  }, [
-    catalog.matchup.attackerId,
-    catalog.matchup.defenderId,
-    catalog.moveCategory,
-    catalog.defaultAbilityPickStatus,
-    catalog.defaultMovePickStatus,
-    catalogTransitionPending,
-    trackState,
-  ])
-
-  useEffect(() => {
-    function flushPendingScenario() {
-      const snapshot = pendingScenarioSnapshotRef.current
-      if (!snapshot) return
-      saveScenarioSnapshot(snapshot)
-      pendingScenarioSnapshotRef.current = null
-    }
-    window.addEventListener("pagehide", flushPendingScenario)
-    return () => window.removeEventListener("pagehide", flushPendingScenario)
-  }, [])
 
   const offensePresets = useMemo(() => {
     void userOffenseVersion
@@ -286,20 +138,6 @@ export function useScenarioState(
     [catalog, catalogTransitionPending, trackState],
   )
   const { rows, unavailable } = pipelineResult
-
-  const selectionSummary = {
-    moves: trackState.selectedMoveSnapshotIds.length,
-    stats:
-      trackState.statMode === "preset"
-        ? `${trackState.offensePresetIds.length} 预设`
-        : `数轴 ${trackState.statRange.min}-${trackState.statRange.max}`,
-    items: trackState.attackerItemIds.length,
-    defenders:
-      trackState.defenderMode === "preset"
-        ? `${trackState.defensePresetIds.length} 预设`
-        : `数轴 HP ${trackState.defenderRanges.hp.min}-${trackState.defenderRanges.hp.max}`,
-    rows: rows.length,
-  }
 
   function setStatMode(mode: StatSelectMode) {
     setTrackState((s) => {
@@ -521,7 +359,6 @@ export function useScenarioState(
     unavailable,
     offensePresets,
     defensePresets,
-    selectionSummary,
     offenseBounds,
     defenderHpBounds,
     defenderDefBounds,

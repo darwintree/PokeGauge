@@ -121,7 +121,7 @@ export function ScenarioWorkspace({
             <h1 className="text-[19px] font-extrabold tracking-tight [text-shadow:1px_1px_0_var(--paper)]">
               {catalog.matchup.attackerLabel} → {catalog.matchup.defenderLabel}
             </h1>
-            <ResultSetSummary state={state} />
+            <ResultSetSummary trackState={state.trackState} rowCount={state.rows.length} />
           </header>
           <DamageResults
             catalog={catalog}
