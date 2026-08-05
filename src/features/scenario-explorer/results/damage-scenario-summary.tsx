@@ -12,10 +12,11 @@ import type { CatalogAbilityOption, CatalogMoveOption } from "@/lib/catalog"
 import {
   itemAriaLabel,
   itemIsHiddenNeutral,
-  itemSprite,
 } from "@/lib/held-item"
 import type { SupportedLocale } from "@/lib/i18n"
 import type { ScenarioResult } from "@/lib/scenario"
+
+import { HeldItemSpriteIcon } from "../tracks/held-item/held-item-sprite-icon"
 
 type DamageScenarioSummaryProps = {
   move: CatalogMoveOption
@@ -71,21 +72,18 @@ function ActiveTokens({
   )
 
   return values.map(({ track, id }) => {
-    const sprite = track === "held-item" || track === "defender-held-item"
-      ? itemSprite(id)
-      : undefined
-    return sprite ? (
-      <span
-        key={`${track}:${id}`}
-        className="grid size-[14px] place-items-center rounded-[4px] border border-ink bg-paper"
-      >
-        <img
-          src={`/items/${sprite}`}
-          alt={itemAriaLabel(id, intl.locale as SupportedLocale)}
-          className="size-3 object-contain"
-        />
-      </span>
-    ) : (
+    if (track === "held-item" || track === "defender-held-item") {
+      return (
+        <span
+          key={`${track}:${id}`}
+          className="grid size-[14px] place-items-center rounded-[4px] border border-ink bg-paper"
+          title={itemAriaLabel(id, intl.locale as SupportedLocale)}
+        >
+          <HeldItemSpriteIcon id={id} className="size-3" />
+        </span>
+      )
+    }
+    return (
       <span key={`${track}:${id}`} className="rounded-[5px] bg-token-bg px-1 text-[9px] font-extrabold leading-4 text-ink">
         {sourceLabel(track, id, props, intl)}
       </span>

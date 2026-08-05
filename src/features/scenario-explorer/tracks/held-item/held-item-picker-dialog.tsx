@@ -5,7 +5,6 @@ import type { CatalogOption } from "@/lib/catalog"
 import {
   heldItemMatchesPickerFilters,
   isFormTriggerItem,
-  itemSprite,
   listHeldItemPickerOptions,
   type HeldItemId,
   type HeldItemPickerHolder,
@@ -16,6 +15,7 @@ import type { BattlePokemonId } from "@/lib/resources"
 import { cn } from "@/lib/utils"
 
 import { PickerDialog } from "../../pickers/picker-dialog"
+import { HeldItemSpriteIcon } from "./held-item-sprite-icon"
 
 const TAGS: HeldItemPickerTag[] = ["exclusive", "power", "stat", "berry"]
 
@@ -134,7 +134,6 @@ export function HeldItemPickerDialog({
       }
     >
       {filtered.map((option) => {
-        const sprite = typeof option.id === "number" ? itemSprite(option.id) : null
         const formTrigger =
           typeof option.id === "number" && isFormTriggerItem(option.id)
         const formHint = intl.formatMessage({ id: "track.item.formTrigger.hint" })
@@ -146,13 +145,11 @@ export function HeldItemPickerDialog({
             onClick={() => choose(option)}
           >
             <span className="grid size-7 place-items-center rounded-md bg-token-bg">
-              {sprite ? (
-                <img
-                  src={`/items/${sprite}`}
-                  alt=""
-                  className="size-5 object-contain [image-rendering:pixelated]"
-                />
-              ) : null}
+              <HeldItemSpriteIcon
+                id={option.id}
+                className="size-5"
+                imgClassName="[image-rendering:pixelated]"
+              />
             </span>
             <span className="min-w-0 truncate text-sm font-medium">{option.label}</span>
             {formTrigger ? (

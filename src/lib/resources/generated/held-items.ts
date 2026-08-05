@@ -11,7 +11,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Adamant Orb",
       "ja": "こんごうだま"
     },
-    "spriteFilename": "adamant-orb.png",
     "spriteSourcePath": "sprites/items/adamant-orb.png"
   },
   "113": {
@@ -24,7 +23,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Lustrous Orb",
       "ja": "しらたま"
     },
-    "spriteFilename": "lustrous-orb.png",
     "spriteSourcePath": "sprites/items/lustrous-orb.png"
   },
   "161": {
@@ -37,7 +35,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Occa Berry",
       "ja": "オッカのみ"
     },
-    "spriteFilename": "occa-berry.png",
     "spriteSourcePath": "sprites/items/occa-berry.png"
   },
   "162": {
@@ -50,7 +47,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Passho Berry",
       "ja": "イトケのみ"
     },
-    "spriteFilename": "passho-berry.png",
     "spriteSourcePath": "sprites/items/passho-berry.png"
   },
   "163": {
@@ -63,7 +59,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Wacan Berry",
       "ja": "ソクノのみ"
     },
-    "spriteFilename": "wacan-berry.png",
     "spriteSourcePath": "sprites/items/wacan-berry.png"
   },
   "164": {
@@ -76,7 +71,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Rindo Berry",
       "ja": "リンドのみ"
     },
-    "spriteFilename": "rindo-berry.png",
     "spriteSourcePath": "sprites/items/rindo-berry.png"
   },
   "165": {
@@ -89,7 +83,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Yache Berry",
       "ja": "ヤチェのみ"
     },
-    "spriteFilename": "yache-berry.png",
     "spriteSourcePath": "sprites/items/yache-berry.png"
   },
   "166": {
@@ -102,7 +95,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Chople Berry",
       "ja": "ヨプのみ"
     },
-    "spriteFilename": "chople-berry.png",
     "spriteSourcePath": "sprites/items/chople-berry.png"
   },
   "167": {
@@ -115,7 +107,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Kebia Berry",
       "ja": "ビアーのみ"
     },
-    "spriteFilename": "kebia-berry.png",
     "spriteSourcePath": "sprites/items/kebia-berry.png"
   },
   "168": {
@@ -128,7 +119,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Shuca Berry",
       "ja": "シュカのみ"
     },
-    "spriteFilename": "shuca-berry.png",
     "spriteSourcePath": "sprites/items/shuca-berry.png"
   },
   "169": {
@@ -141,7 +131,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Coba Berry",
       "ja": "バコウのみ"
     },
-    "spriteFilename": "coba-berry.png",
     "spriteSourcePath": "sprites/items/coba-berry.png"
   },
   "170": {
@@ -154,7 +143,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Payapa Berry",
       "ja": "ウタンのみ"
     },
-    "spriteFilename": "payapa-berry.png",
     "spriteSourcePath": "sprites/items/payapa-berry.png"
   },
   "171": {
@@ -167,7 +155,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Tanga Berry",
       "ja": "タンガのみ"
     },
-    "spriteFilename": "tanga-berry.png",
     "spriteSourcePath": "sprites/items/tanga-berry.png"
   },
   "172": {
@@ -180,7 +167,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Charti Berry",
       "ja": "ヨロギのみ"
     },
-    "spriteFilename": "charti-berry.png",
     "spriteSourcePath": "sprites/items/charti-berry.png"
   },
   "173": {
@@ -193,7 +179,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Kasib Berry",
       "ja": "カシブのみ"
     },
-    "spriteFilename": "kasib-berry.png",
     "spriteSourcePath": "sprites/items/kasib-berry.png"
   },
   "174": {
@@ -206,7 +191,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Haban Berry",
       "ja": "ハバンのみ"
     },
-    "spriteFilename": "haban-berry.png",
     "spriteSourcePath": "sprites/items/haban-berry.png"
   },
   "175": {
@@ -219,7 +203,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Colbur Berry",
       "ja": "ナモのみ"
     },
-    "spriteFilename": "colbur-berry.png",
     "spriteSourcePath": "sprites/items/colbur-berry.png"
   },
   "176": {
@@ -232,7 +215,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Babiri Berry",
       "ja": "リリバのみ"
     },
-    "spriteFilename": "babiri-berry.png",
     "spriteSourcePath": "sprites/items/babiri-berry.png"
   },
   "177": {
@@ -245,7 +227,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Chilan Berry",
       "ja": "ホズのみ"
     },
-    "spriteFilename": "chilan-berry.png",
     "spriteSourcePath": "sprites/items/chilan-berry.png"
   },
   "190": {
@@ -258,7 +239,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Bright Powder",
       "ja": "ひかりのこな"
     },
-    "spriteFilename": "bright-powder.png",
     "spriteSourcePath": "sprites/items/bright-powder.png"
   },
   "197": {
@@ -271,7 +251,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Choice Band",
       "ja": "こだわりハチマキ"
     },
-    "spriteFilename": "choice-band.png",
     "spriteSourcePath": "sprites/items/choice-band.png"
   },
   "199": {
@@ -284,7 +263,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Silver Powder",
       "ja": "ぎんのこな"
     },
-    "spriteFilename": "silver-powder.png",
     "spriteSourcePath": "sprites/items/silver-powder.png"
   },
   "202": {
@@ -297,7 +275,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Soul Dew",
       "ja": "こころのしずく"
     },
-    "spriteFilename": "soul-dew.png",
     "spriteSourcePath": "sprites/items/soul-dew.png"
   },
   "203": {
@@ -310,7 +287,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Deep Sea Tooth",
       "ja": "しんかいのキバ"
     },
-    "spriteFilename": "deep-sea-tooth.png",
     "spriteSourcePath": "sprites/items/deep-sea-tooth.png"
   },
   "204": {
@@ -323,7 +299,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Deep Sea Scale",
       "ja": "しんかいのウロコ"
     },
-    "spriteFilename": "deep-sea-scale.png",
     "spriteSourcePath": "sprites/items/deep-sea-scale.png"
   },
   "209": {
@@ -336,7 +311,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Scope Lens",
       "ja": "ピントレンズ"
     },
-    "spriteFilename": "scope-lens.png",
     "spriteSourcePath": "sprites/items/scope-lens.png"
   },
   "210": {
@@ -349,7 +323,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Metal Coat",
       "ja": "メタルコート"
     },
-    "spriteFilename": "metal-coat.png",
     "spriteSourcePath": "sprites/items/metal-coat.png"
   },
   "213": {
@@ -362,7 +335,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Light Ball",
       "ja": "でんきだま"
     },
-    "spriteFilename": "light-ball.png",
     "spriteSourcePath": "sprites/items/light-ball.png"
   },
   "214": {
@@ -375,7 +347,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Soft Sand",
       "ja": "やわらかいすな"
     },
-    "spriteFilename": "soft-sand.png",
     "spriteSourcePath": "sprites/items/soft-sand.png"
   },
   "215": {
@@ -388,7 +359,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Hard Stone",
       "ja": "かたいいし"
     },
-    "spriteFilename": "hard-stone.png",
     "spriteSourcePath": "sprites/items/hard-stone.png"
   },
   "216": {
@@ -401,7 +371,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Miracle Seed",
       "ja": "きせきのタネ"
     },
-    "spriteFilename": "miracle-seed.png",
     "spriteSourcePath": "sprites/items/miracle-seed.png"
   },
   "217": {
@@ -414,7 +383,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Black Glasses",
       "ja": "くろいメガネ"
     },
-    "spriteFilename": "black-glasses.png",
     "spriteSourcePath": "sprites/items/black-glasses.png"
   },
   "218": {
@@ -427,7 +395,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Black Belt",
       "ja": "くろおび"
     },
-    "spriteFilename": "black-belt.png",
     "spriteSourcePath": "sprites/items/black-belt.png"
   },
   "219": {
@@ -440,7 +407,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Magnet",
       "ja": "じしゃく"
     },
-    "spriteFilename": "magnet.png",
     "spriteSourcePath": "sprites/items/magnet.png"
   },
   "220": {
@@ -453,7 +419,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Mystic Water",
       "ja": "しんぴのしずく"
     },
-    "spriteFilename": "mystic-water.png",
     "spriteSourcePath": "sprites/items/mystic-water.png"
   },
   "221": {
@@ -466,7 +431,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Sharp Beak",
       "ja": "するどいくちばし"
     },
-    "spriteFilename": "sharp-beak.png",
     "spriteSourcePath": "sprites/items/sharp-beak.png"
   },
   "222": {
@@ -479,7 +443,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Poison Barb",
       "ja": "どくバリ"
     },
-    "spriteFilename": "poison-barb.png",
     "spriteSourcePath": "sprites/items/poison-barb.png"
   },
   "223": {
@@ -492,7 +455,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Never-Melt Ice",
       "ja": "とけないこおり"
     },
-    "spriteFilename": "never-melt-ice.png",
     "spriteSourcePath": "sprites/items/never-melt-ice.png"
   },
   "224": {
@@ -505,7 +467,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Spell Tag",
       "ja": "のろいのおふだ"
     },
-    "spriteFilename": "spell-tag.png",
     "spriteSourcePath": "sprites/items/spell-tag.png"
   },
   "225": {
@@ -518,7 +479,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Twisted Spoon",
       "ja": "まがったスプーン"
     },
-    "spriteFilename": "twisted-spoon.png",
     "spriteSourcePath": "sprites/items/twisted-spoon.png"
   },
   "226": {
@@ -531,7 +491,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Charcoal",
       "ja": "もくたん"
     },
-    "spriteFilename": "charcoal.png",
     "spriteSourcePath": "sprites/items/charcoal.png"
   },
   "227": {
@@ -544,7 +503,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Dragon Fang",
       "ja": "りゅうのキバ"
     },
-    "spriteFilename": "dragon-fang.png",
     "spriteSourcePath": "sprites/items/dragon-fang.png"
   },
   "228": {
@@ -557,7 +515,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Silk Scarf",
       "ja": "シルクのスカーフ"
     },
-    "spriteFilename": "silk-scarf.png",
     "spriteSourcePath": "sprites/items/silk-scarf.png"
   },
   "231": {
@@ -570,7 +527,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Sea Incense",
       "ja": "うしおのおこう"
     },
-    "spriteFilename": "sea-incense.png",
     "spriteSourcePath": "sprites/items/sea-incense.png"
   },
   "232": {
@@ -583,7 +539,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Lax Incense",
       "ja": "のんきのおこう"
     },
-    "spriteFilename": "lax-incense.png",
     "spriteSourcePath": "sprites/items/lax-incense.png"
   },
   "233": {
@@ -596,7 +551,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Lucky Punch",
       "ja": "ラッキーパンチ"
     },
-    "spriteFilename": "lucky-punch.png",
     "spriteSourcePath": "sprites/items/lucky-punch.png"
   },
   "235": {
@@ -609,7 +563,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Thick Club",
       "ja": "ふといホネ"
     },
-    "spriteFilename": "thick-club.png",
     "spriteSourcePath": "sprites/items/thick-club.png"
   },
   "236": {
@@ -622,7 +575,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Leek",
       "ja": "ながねぎ"
     },
-    "spriteFilename": "stick.png",
     "spriteSourcePath": "sprites/items/stick.png"
   },
   "242": {
@@ -635,7 +587,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Wide Lens",
       "ja": "こうかくレンズ"
     },
-    "spriteFilename": "wide-lens.png",
     "spriteSourcePath": "sprites/items/wide-lens.png"
   },
   "243": {
@@ -648,7 +599,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Muscle Band",
       "ja": "ちからのハチマキ"
     },
-    "spriteFilename": "muscle-band.png",
     "spriteSourcePath": "sprites/items/muscle-band.png"
   },
   "244": {
@@ -661,7 +611,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Wise Glasses",
       "ja": "ものしりメガネ"
     },
-    "spriteFilename": "wise-glasses.png",
     "spriteSourcePath": "sprites/items/wise-glasses.png"
   },
   "245": {
@@ -674,7 +623,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Expert Belt",
       "ja": "たつじんのおび"
     },
-    "spriteFilename": "expert-belt.png",
     "spriteSourcePath": "sprites/items/expert-belt.png"
   },
   "247": {
@@ -687,7 +635,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Life Orb",
       "ja": "いのちのたま"
     },
-    "spriteFilename": "life-orb.png",
     "spriteSourcePath": "sprites/items/life-orb.png"
   },
   "274": {
@@ -700,7 +647,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Choice Specs",
       "ja": "こだわりメガネ"
     },
-    "spriteFilename": "choice-specs.png",
     "spriteSourcePath": "sprites/items/choice-specs.png"
   },
   "275": {
@@ -713,7 +659,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Flame Plate",
       "ja": "ひのたまプレート"
     },
-    "spriteFilename": "flame-plate.png",
     "spriteSourcePath": "sprites/items/flame-plate.png"
   },
   "276": {
@@ -726,7 +671,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Splash Plate",
       "ja": "しずくプレート"
     },
-    "spriteFilename": "splash-plate.png",
     "spriteSourcePath": "sprites/items/splash-plate.png"
   },
   "277": {
@@ -739,7 +683,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Zap Plate",
       "ja": "いかずちプレート"
     },
-    "spriteFilename": "zap-plate.png",
     "spriteSourcePath": "sprites/items/zap-plate.png"
   },
   "278": {
@@ -752,7 +695,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Meadow Plate",
       "ja": "みどりのプレート"
     },
-    "spriteFilename": "meadow-plate.png",
     "spriteSourcePath": "sprites/items/meadow-plate.png"
   },
   "279": {
@@ -765,7 +707,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Icicle Plate",
       "ja": "つららのプレート"
     },
-    "spriteFilename": "icicle-plate.png",
     "spriteSourcePath": "sprites/items/icicle-plate.png"
   },
   "280": {
@@ -778,7 +719,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Fist Plate",
       "ja": "こぶしのプレート"
     },
-    "spriteFilename": "fist-plate.png",
     "spriteSourcePath": "sprites/items/fist-plate.png"
   },
   "281": {
@@ -791,7 +731,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Toxic Plate",
       "ja": "もうどくプレート"
     },
-    "spriteFilename": "toxic-plate.png",
     "spriteSourcePath": "sprites/items/toxic-plate.png"
   },
   "282": {
@@ -804,7 +743,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Earth Plate",
       "ja": "だいちのプレート"
     },
-    "spriteFilename": "earth-plate.png",
     "spriteSourcePath": "sprites/items/earth-plate.png"
   },
   "283": {
@@ -817,7 +755,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Sky Plate",
       "ja": "あおぞらプレート"
     },
-    "spriteFilename": "sky-plate.png",
     "spriteSourcePath": "sprites/items/sky-plate.png"
   },
   "284": {
@@ -830,7 +767,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Mind Plate",
       "ja": "ふしぎのプレート"
     },
-    "spriteFilename": "mind-plate.png",
     "spriteSourcePath": "sprites/items/mind-plate.png"
   },
   "285": {
@@ -843,7 +779,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Insect Plate",
       "ja": "たまむしプレート"
     },
-    "spriteFilename": "insect-plate.png",
     "spriteSourcePath": "sprites/items/insect-plate.png"
   },
   "286": {
@@ -856,7 +791,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Stone Plate",
       "ja": "がんせきプレート"
     },
-    "spriteFilename": "stone-plate.png",
     "spriteSourcePath": "sprites/items/stone-plate.png"
   },
   "287": {
@@ -869,7 +803,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Spooky Plate",
       "ja": "もののけプレート"
     },
-    "spriteFilename": "spooky-plate.png",
     "spriteSourcePath": "sprites/items/spooky-plate.png"
   },
   "288": {
@@ -882,7 +815,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Draco Plate",
       "ja": "りゅうのプレート"
     },
-    "spriteFilename": "draco-plate.png",
     "spriteSourcePath": "sprites/items/draco-plate.png"
   },
   "289": {
@@ -895,7 +827,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Dread Plate",
       "ja": "こわもてプレート"
     },
-    "spriteFilename": "dread-plate.png",
     "spriteSourcePath": "sprites/items/dread-plate.png"
   },
   "290": {
@@ -908,7 +839,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Iron Plate",
       "ja": "こうてつプレート"
     },
-    "spriteFilename": "iron-plate.png",
     "spriteSourcePath": "sprites/items/iron-plate.png"
   },
   "291": {
@@ -921,7 +851,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Odd Incense",
       "ja": "あやしいおこう"
     },
-    "spriteFilename": "odd-incense.png",
     "spriteSourcePath": "sprites/items/odd-incense.png"
   },
   "292": {
@@ -934,7 +863,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Rock Incense",
       "ja": "がんせきおこう"
     },
-    "spriteFilename": "rock-incense.png",
     "spriteSourcePath": "sprites/items/rock-incense.png"
   },
   "294": {
@@ -947,7 +875,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Wave Incense",
       "ja": "さざなみのおこう"
     },
-    "spriteFilename": "wave-incense.png",
     "spriteSourcePath": "sprites/items/wave-incense.png"
   },
   "295": {
@@ -960,7 +887,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Rose Incense",
       "ja": "おはなのおこう"
     },
-    "spriteFilename": "rose-incense.png",
     "spriteSourcePath": "sprites/items/rose-incense.png"
   },
   "303": {
@@ -973,7 +899,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Razor Claw",
       "ja": "するどいツメ"
     },
-    "spriteFilename": "razor-claw.png",
     "spriteSourcePath": "sprites/items/razor-claw.png"
   },
   "442": {
@@ -986,7 +911,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Griseous Orb",
       "ja": "はっきんだま"
     },
-    "spriteFilename": "griseous-orb.png",
     "spriteSourcePath": "sprites/items/griseous-orb.png"
   },
   "581": {
@@ -999,7 +923,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Eviolite",
       "ja": "しんかのきせき"
     },
-    "spriteFilename": "eviolite.png",
     "spriteSourcePath": "sprites/items/eviolite.png"
   },
   "683": {
@@ -1012,7 +935,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Assault Vest",
       "ja": "とつげきチョッキ"
     },
-    "spriteFilename": "assault-vest.png",
     "spriteSourcePath": "sprites/items/assault-vest.png"
   },
   "684": {
@@ -1025,7 +947,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Pixie Plate",
       "ja": "せいれいプレート"
     },
-    "spriteFilename": "pixie-plate.png",
     "spriteSourcePath": "sprites/items/pixie-plate.png"
   },
   "723": {
@@ -1038,7 +959,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Roseli Berry",
       "ja": "ロゼルのみ"
     },
-    "spriteFilename": "roseli-berry.png",
     "spriteSourcePath": "sprites/items/roseli-berry.png"
   },
   "1181": {
@@ -1051,7 +971,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Utility Umbrella",
       "ja": "ばんのうがさ"
     },
-    "spriteFilename": "utility-umbrella.png",
     "spriteSourcePath": "sprites/items/gen8/utility-umbrella.png"
   },
   "2105": {
@@ -1064,7 +983,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Fairy Feather",
       "ja": "ようせいのハネ"
     },
-    "spriteFilename": "fairy-feather.png",
     "spriteSourcePath": "sprites/items/gen9/fairy-feather.png"
   },
   "2106": {
@@ -1077,7 +995,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Wellspring Mask",
       "ja": "いどのめん"
     },
-    "spriteFilename": "wellspring-mask.png",
     "spriteSourcePath": "sprites/items/gen9/wellspring-mask.png"
   },
   "2107": {
@@ -1090,7 +1007,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Hearthflame Mask",
       "ja": "かまどのめん"
     },
-    "spriteFilename": "hearthflame-mask.png",
     "spriteSourcePath": "sprites/items/gen9/hearthflame-mask.png"
   },
   "2108": {
@@ -1103,7 +1019,6 @@ export const GENERATED_HELD_ITEMS = {
       "en": "Cornerstone Mask",
       "ja": "いしずえのめん"
     },
-    "spriteFilename": "cornerstone-mask.png",
     "spriteSourcePath": "sprites/items/gen9/cornerstone-mask.png"
   }
 } as const satisfies Record<UpstreamResourceId, NormalizedHeldItem>

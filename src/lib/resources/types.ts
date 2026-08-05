@@ -51,7 +51,6 @@ export type NormalizedItem = {
 }
 
 export type NormalizedHeldItem = NormalizedItem & {
-  spriteFilename: string
   spriteSourcePath: string
 }
 

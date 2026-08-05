@@ -9,7 +9,6 @@ type CsvRow = Record<string, string>
 
 const CSV_ROOT = path.join(process.cwd(), "PokeAPI/pokeapi/data/v2/csv")
 const OUT_DIR = path.join(process.cwd(), "src/lib/resources/generated")
-const PUBLIC_ITEM_DIR = path.join(process.cwd(), "public/items")
 const SUPPORTED_LOCALES = ["zh-hans", "zh-hant", "en", "ja"] as const
 const LANGUAGE_IDS: Record<SupportedLocale, number[]> = {
   "zh-hans": [12],
@@ -21,7 +20,6 @@ const SPREAD_TARGETS = new Set(["all-other-pokemon", "all-opponents", "entire-fi
 const EVIOLITE_ELIGIBILITY_OVERRIDES = new Set([10027, 10028, 10029, 10263])
 const GEN_8_ITEM_SPRITES = new Set([1181])
 const GEN_9_ITEM_SPRITES = new Set([2105, 2106, 2107, 2108])
-const PNG_SIGNATURE = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]
 
 const TYPE_BY_ID: Record<string, string> = {}
 const DAMAGE_CLASS_BY_ID: Record<string, string> = {}
@@ -165,16 +163,6 @@ function itemSpriteSourcePath(id: number, slug: string): string {
     ? "gen8"
     : GEN_9_ITEM_SPRITES.has(id) ? "gen9" : null
   return path.posix.join("sprites/items", ...(generation ? [generation] : []), `${slug}.png`)
-}
-
-async function requireLocalPng(filename: string): Promise<void> {
-  const contents = await readFile(path.join(PUBLIC_ITEM_DIR, filename))
-  if (
-    contents.length <= PNG_SIGNATURE.length ||
-    !PNG_SIGNATURE.every((byte, index) => contents[index] === byte)
-  ) {
-    throw new Error(`Expected non-empty PNG item sprite: ${filename}`)
-  }
 }
 
 async function main() {
@@ -364,7 +352,6 @@ async function main() {
     const itemRow = itemById.get(inventoryItem.id)
     if (!itemRow) throw new Error(`Unknown frozen Held item id: ${inventoryItem.id}`)
     const slug = itemRow.identifier
-    const spriteFilename = `${slug}.png`
     return [
       inventoryItem.id,
       {
@@ -377,24 +364,24 @@ async function main() {
           itemNamesByItemId.get(inventoryItem.id) ?? [],
           "name",
         ),
-        spriteFilename,
         spriteSourcePath: itemSpriteSourcePath(inventoryItem.id, slug),
       },
     ] as const
   })
-  await Promise.all(heldItemEntries.map(([, item]) => requireLocalPng(item.spriteFilename)))
 
   const megaStoneEntries = itemRows
     .filter((item) => item.category_id === "44")
     .map((item) => {
       const id = requiredNumber(item, "id")
+      const slug = item.identifier
       return [
         id,
         {
           resourceType: "item",
           id,
-          slug: item.identifier,
+          slug,
           names: namesByLocale("item", id, itemNamesByItemId.get(id) ?? [], "name"),
+          spriteSourcePath: itemSpriteSourcePath(id, slug),
         },
       ] as const
     })
@@ -434,7 +421,7 @@ async function main() {
     ),
     writeFile(
       path.join(OUT_DIR, "mega-stones.ts"),
-      moduleWithImport(["NormalizedItem", "UpstreamResourceId"], "GENERATED_MEGA_STONES", Object.fromEntries(megaStoneEntries), "Record<UpstreamResourceId, NormalizedItem>"),
+      moduleWithImport(["NormalizedHeldItem", "UpstreamResourceId"], "GENERATED_MEGA_STONES", Object.fromEntries(megaStoneEntries), "Record<UpstreamResourceId, NormalizedHeldItem>"),
     ),
     writeFile(
       path.join(OUT_DIR, "diagnostics.ts"),

@@ -4,9 +4,10 @@ export {
   heldItemContributesBasePower,
   heldItemDescriptor,
   heldItemWarning,
+  HELD_ITEM_SPRITES_COMMIT,
   itemAriaLabel,
   itemIsHiddenNeutral,
-  itemSprite,
+  itemSpriteUrl,
   lockedHeldItemFor,
 } from "./items"
 export {
