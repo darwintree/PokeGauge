@@ -6,7 +6,7 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-15T02:45:00Z"
-updated_at: "2026-07-30T09:10:00Z"
+updated_at: "2026-08-05T09:30:00Z"
 ---
 ## Goal
 
@@ -15,6 +15,8 @@ updated_at: "2026-07-30T09:10:00Z"
 当前只有 Adaptability 已作为伤害效果实现；其他合法特性仍须保持明确的“效果暂未支持”状态，不能被误标为已判断无效。
 
 调研、Champions 可用特性与使用率优先级见 [Champions ability inventory and priority](../docs/research/2026-07-30-champions-ability-inventory-and-priority.md)。
+
+伤害计算器相关性分桶与首批冻结候选见 [Champions ability damage-calc relevance and first freeze](../docs/research/2026-08-05-champions-ability-damage-relevance-and-first-freeze.md)（规划调研，非产品契约）。
 
 ## Tracking
 
@@ -27,7 +29,14 @@ updated_at: "2026-07-30T09:10:00Z"
 
 ## Child issues
 
-<!-- Add implementation child issues here as they are created. -->
+- [[20260805_open_ability-track-none|Ability Track none]]
+- [[20260805_open_ability-init-projection-to-weather-terrain-stage|Ability init projection to Weather Terrain Stage]]
+- [[20260805_open_ordinary-hit-ability-damage-modifiers|Ordinary-hit ability damage modifiers]]
+- [[20260805_open_green-dot-conditional-ability-effects|Green-dot conditional ability effects]]
+- [[20260805_open_ability-immunities-and-type-exceptions|Ability immunities and type exceptions]]
+- [[20260805_open_result-side-move-type-rewrite-and-protean-stab|Result-side move-type rewrite and Protean STAB]]
+- [[20260805_open_ability-weather-and-item-composition|Ability weather and item composition]]
+- [[20260805_open_defer-parental-bond-until-multi-hit|Defer Parental Bond until multi-hit]]
 
 ## Ability checklist (313)
 
@@ -375,3 +384,4 @@ updated_at: "2026-07-30T09:10:00Z"
 
 - Adaptability 已实现，作为历史基线直接勾选。
 - Run Away、Honey Gather、Ball Fetch 在竞技训练家战斗中无效果，记为 `N/A`。
+- 2026-08-05：伤害相关性调研见 Goal 中的 first-freeze 笔记；首批范围产品决策见 [[../docs/traces/discussion/2026-08-05-ability-effects-first-freeze-scope|特性效果首批冻结范围讨论记录]]。已按机制族开子 issue（见 Child issues）。Mold Breaker 族剔出首批；Parental Bond 见 defer 子 issue。
