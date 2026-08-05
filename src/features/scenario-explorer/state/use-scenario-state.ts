@@ -440,12 +440,11 @@ export function useScenarioState(
       })
     },
     setAttackerAbilityIds: (ids: number[]) => {
-      if (ids.length === 0 || catalog.attackerLockedAbilityId !== null) return
+      if (ids.length === 0) return
       attackerAbilitiesTouchedRef.current = true
       setTrackState((s) => ({ ...s, attackerAbilityIds: ids }))
     },
     resetAttackerAbilities: () => {
-      if (catalog.attackerLockedAbilityId !== null) return
       attackerAbilitiesTouchedRef.current = false
       setTrackState((s) => ({
         ...s,
@@ -490,12 +489,11 @@ export function useScenarioState(
         defenderStages: defenderStages.length > 0 ? defenderStages : [0],
       })),
     setDefenderAbilityIds: (ids: number[]) => {
-      if (ids.length === 0 || catalog.defenderLockedAbilityId !== null) return
+      if (ids.length === 0) return
       defenderAbilitiesTouchedRef.current = true
       setTrackState((s) => ({ ...s, defenderAbilityIds: ids }))
     },
     resetDefenderAbilities: () => {
-      if (catalog.defenderLockedAbilityId !== null) return
       defenderAbilitiesTouchedRef.current = false
       setTrackState((s) => ({
         ...s,

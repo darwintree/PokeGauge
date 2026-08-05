@@ -9,6 +9,7 @@ import {
   type ScenarioTrack,
 } from "@/lib/damage-calculation"
 import type { CatalogAbilityOption, CatalogMoveOption } from "@/lib/catalog"
+import { abilityIsHiddenNeutral } from "@/lib/ability"
 import {
   itemAriaLabel,
   itemIsHiddenNeutral,
@@ -27,6 +28,11 @@ type DamageScenarioSummaryProps = {
   defenderAbilities: CatalogAbilityOption[]
   isRangeEnvelope: boolean
   showAccuracy: boolean
+}
+
+function abilitySourceIsHidden(track: ScenarioTrack, id: string): boolean {
+  return (track === "attacker-ability" || track === "defender-ability") &&
+    abilityIsHiddenNeutral(id)
 }
 
 function modifierLabel(value: number): string {
@@ -67,7 +73,7 @@ function ActiveTokens({
     : ["defender-stage", "defender-held-item", "defender-ability", "screen"]
   const values = tracks.flatMap((track) =>
     (props.row.provenance[track]?.effective ?? [])
-      .filter((id) => id !== "none" && id !== "0")
+      .filter((id) => id !== "none" && id !== "0" && !abilitySourceIsHidden(track, id))
       .map((id) => ({ track, id })),
   )
 
@@ -102,6 +108,7 @@ function AdditionalConditionDetails(props: DamageScenarioSummaryProps) {
         .filter((id) =>
           id !== "none" &&
           id !== "0" &&
+          !abilitySourceIsHidden(track, id) &&
           !((track === "held-item" || track === "defender-held-item") &&
             itemIsHiddenNeutral(id)),
         )

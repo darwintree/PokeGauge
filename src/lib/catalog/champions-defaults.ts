@@ -12,6 +12,7 @@ import type {
   BattlePokemonOption,
 } from "./types"
 import type { BattlePokemonId, UpstreamResourceId } from "@/lib/resources"
+import { NO_ABILITY_ID } from "@/lib/ability"
 
 export const DEFAULT_USAGE_TIMEOUT_MS = 5_000
 
@@ -133,8 +134,9 @@ export async function resolveDefaultAbilityIds(
   battlePokemonId: BattlePokemonId,
   abilities: CatalogAbilityOption[],
 ): Promise<UpstreamResourceId[]> {
+  const legalAbilities = abilities.filter((ability) => ability.id !== NO_ABILITY_ID)
   try {
-    const legalIds = new Set(abilities.map((ability) => ability.id))
+    const legalIds = new Set(legalAbilities.map((ability) => ability.id))
     const defaultId = (await withTimeout(
       listChampionsAbilityUsageRecords(battlePokemonId),
       DEFAULT_USAGE_TIMEOUT_MS,
@@ -149,6 +151,6 @@ export async function resolveDefaultAbilityIds(
       .find((record) => legalIds.has(record.abilityId))?.abilityId
     return defaultId === undefined ? [...legalIds] : [defaultId]
   } catch {
-    return abilities.map((ability) => ability.id)
+    return legalAbilities.map((ability) => ability.id)
   }
 }

@@ -9,6 +9,7 @@ import type { ScenarioResult } from "@/lib/scenario"
 
 import { AbilityTrack } from "./ability-track"
 import { DamageResultRow } from "../../results/damage-result-row"
+import { NO_ABILITY_ID } from "@/lib/ability"
 
 it("marks only unsupported ability effects in the Track", () => {
   const markup = renderToStaticMarkup(createElement(
@@ -18,6 +19,7 @@ it("marks only unsupported ability effects in the Track", () => {
       labelId: "track.attackerAbility",
       options: [
         { id: 91, label: "Adaptability", summary: "" },
+        { id: NO_ABILITY_ID, label: "—", accessibleLabel: "No ability", summary: "" },
         { id: 50, label: "Run Away", summary: "" },
       ],
       selectedIds: [91, 50],
@@ -29,6 +31,10 @@ it("marks only unsupported ability effects in the Track", () => {
   expect(markup).toContain("Adaptability")
   expect(markup).toContain("Run Away")
   expect(markup.match(/Effect not supported yet/g)).toHaveLength(1)
+  expect(markup.indexOf('aria-label="No ability"')).toBeLessThan(
+    markup.indexOf('aria-label="Adaptability"'),
+  )
+  expect(markup.match(/aria-label="No ability"/g)).toHaveLength(1)
 })
 
 it("renders effective abilities inline and folds inactive and unsupported states", () => {
@@ -39,11 +45,17 @@ it("renders effective abilities inline and folds inactive and unsupported states
     attackerStatId: "neutral-max",
     defenderId: "standard-bulk",
     provenance: {
+      "attacker-stage": {
+        effective: ["-1"],
+        inactive: [],
+        unsupported: [],
+        neutral: [],
+      },
       "attacker-ability": {
         effective: ["91"],
         inactive: [],
         unsupported: [],
-        neutral: [],
+        neutral: [String(NO_ABILITY_ID)],
       },
       "defender-ability": {
         effective: [],
@@ -72,6 +84,7 @@ it("renders effective abilities inline and folds inactive and unsupported states
     critMaxPercent: 18,
   }
   const abilities = [
+    { id: NO_ABILITY_ID, label: "—", accessibleLabel: "No ability", summary: "" },
     { id: 91, label: "Adaptability", summary: "" },
     { id: 50, label: "Run Away", summary: "" },
   ]
@@ -107,4 +120,6 @@ it("renders effective abilities inline and folds inactive and unsupported states
   expect(markup).toContain("Inactive")
   expect(markup).toContain("Unsupported")
   expect(markup).toContain("Run Away")
+  expect(markup).not.toContain("No ability")
+  expect(markup).toContain(">-1<")
 })

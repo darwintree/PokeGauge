@@ -8,6 +8,7 @@ import {
   setChampionsItemUsageFetcherForTest,
   setChampionsMoveUsageFetcherForTest,
 } from "@/lib/champions"
+import { NO_ABILITY_ID } from "@/lib/ability"
 import { getCatalogShell, resolveCatalogDefaultMovePick } from "@/lib/catalog"
 import {
   ATTACKER_HELD_ITEM_IDS,
@@ -175,6 +176,7 @@ describe("catalog ability candidates and defaults", () => {
     const catalog = await getCatalogShell(445, 94, "en")
 
     expect(catalog.attackerAbilities).toEqual([
+      { id: NO_ABILITY_ID, label: "—", accessibleLabel: "No ability", summary: "" },
       { id: 8, label: "Sand Veil", summary: "" },
       { id: 24, label: "Rough Skin", summary: "" },
     ])
@@ -215,10 +217,10 @@ describe("catalog ability candidates and defaults", () => {
     )
 
     expect(catalog.defaultAttackerAbilityIds).toEqual(
-      catalog.attackerAbilities.map((ability) => ability.id),
+      catalog.attackerAbilities.slice(1).map((ability) => ability.id),
     )
     expect(catalog.defaultDefenderAbilityIds).toEqual(
-      catalog.defenderAbilities.map((ability) => ability.id),
+      catalog.defenderAbilities.slice(1).map((ability) => ability.id),
     )
   })
 
@@ -231,10 +233,25 @@ describe("catalog ability candidates and defaults", () => {
     const catalog = await result
 
     expect(catalog.defaultAttackerAbilityIds).toEqual(
-      catalog.attackerAbilities.map((ability) => ability.id),
+      catalog.attackerAbilities.slice(1).map((ability) => ability.id),
     )
     expect(catalog.defaultDefenderAbilityIds).toEqual(
-      catalog.defenderAbilities.map((ability) => ability.id),
+      catalog.defenderAbilities.slice(1).map((ability) => ability.id),
     )
+  })
+
+  it("limits Mega candidates to none and the fixed ability without defaulting none", async () => {
+    const catalog = await getCatalogShell(10034, 10301, "en")
+
+    expect(catalog.attackerAbilities.map((ability) => ability.id)).toEqual([
+      NO_ABILITY_ID,
+      catalog.attackerLockedAbilityId,
+    ])
+    expect(catalog.defenderAbilities.map((ability) => ability.id)).toEqual([
+      NO_ABILITY_ID,
+      catalog.defenderLockedAbilityId,
+    ])
+    expect(catalog.defaultAttackerAbilityIds).toEqual([catalog.attackerLockedAbilityId])
+    expect(catalog.defaultDefenderAbilityIds).toEqual([catalog.defenderLockedAbilityId])
   })
 })

@@ -10,7 +10,7 @@ import {
   type LocalizedPokemonResource,
   type UpstreamResourceId,
 } from "@/lib/resources"
-import { UNKNOWN_ABILITY_ID } from "@/lib/ability"
+import { NO_ABILITY_ID, UNKNOWN_ABILITY_ID } from "@/lib/ability"
 import type {
   BattlePokemonOption,
   CatalogAbilityOption,
@@ -72,6 +72,15 @@ export async function abilityOptions(
       return { id, label: ability.name, summary: "" }
     }),
   )
+}
+
+export function noAbilityOption(locale: SupportedLocale): CatalogAbilityOption {
+  return {
+    id: NO_ABILITY_ID,
+    label: "—",
+    accessibleLabel: localeMessages[locale]["track.ability.none"],
+    summary: "",
+  }
 }
 
 function localizedBattlePokemonOption(resource: LocalizedPokemonResource): BattlePokemonOption {

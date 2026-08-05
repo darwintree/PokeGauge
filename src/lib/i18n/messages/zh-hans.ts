@@ -59,6 +59,7 @@ export const zhHansMessages: Record<string, string> = {
     "track.attackerItem": "攻击方道具",
     "track.defenderItem": "防守方道具",
     "track.ability.unknown": "未知特性",
+    "track.ability.none": "无特性",
     "track.item.none": "无道具",
     "track.item.unknownMegaStone": "未知 Mega 石",
     "track.addItem": "添加道具",

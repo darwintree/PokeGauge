@@ -29,7 +29,7 @@ updated_at: "2026-08-05T09:30:00Z"
 
 ## Child issues
 
-- [[20260805_open_ability-track-none|Ability Track none]]
+- [[archive/20260805_closed_ability-track-none|Ability Track none]]
 - [[20260805_open_ability-init-projection-to-weather-terrain-stage|Ability init projection to Weather Terrain Stage]]
 - [[20260805_open_ordinary-hit-ability-damage-modifiers|Ordinary-hit ability damage modifiers]]
 - [[20260805_open_green-dot-conditional-ability-effects|Green-dot conditional ability effects]]

@@ -2,9 +2,12 @@ import { Sparkles } from "lucide-react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { Button } from "@/components/ui/button"
-import { ADAPTABILITY_ABILITY_ID } from "@/lib/ability"
+import {
+  ADAPTABILITY_ABILITY_ID,
+  NO_ABILITY_ID,
+  UNKNOWN_ABILITY_ID,
+} from "@/lib/ability"
 import type { CatalogAbilityOption } from "@/lib/catalog"
-import { UNKNOWN_ABILITY_ID } from "@/lib/ability"
 
 import { TrackOption, TrackOptionGroup } from "./track-option"
 import { TrackPanel } from "./track-panel"
@@ -15,7 +18,6 @@ type AbilityTrackProps = {
   selectedIds: number[]
   onChange: (ids: number[]) => void
   onReset: () => void
-  locked?: boolean
   expanded?: boolean
   onToggle?: () => void
 }
@@ -26,7 +28,6 @@ export function AbilityTrack({
   selectedIds,
   onChange,
   onReset,
-  locked = false,
   expanded = true,
   onToggle = () => {},
 }: AbilityTrackProps) {
@@ -42,8 +43,9 @@ export function AbilityTrack({
     )
   }
 
-  const orderedOptions = [...options].sort(
-    (a, b) => Number(selected.has(b.id)) - Number(selected.has(a.id)),
+  const orderedOptions = [...options].sort((a, b) =>
+    Number(b.id === NO_ABILITY_ID) - Number(a.id === NO_ABILITY_ID) ||
+    Number(selected.has(b.id)) - Number(selected.has(a.id)),
   )
   const summary = options
     .filter((option) => selected.has(option.id))
@@ -66,7 +68,6 @@ export function AbilityTrack({
           size="sm"
           className="h-6 px-2 text-xs"
           onClick={onReset}
-          disabled={locked}
         >
           <FormattedMessage id="track.stage.reset" />
         </Button>
@@ -76,7 +77,8 @@ export function AbilityTrack({
           // Only Adaptability's effect is implemented; everything else carries the red dot
           const unsupported =
             option.id !== ADAPTABILITY_ABILITY_ID &&
-            option.id !== UNKNOWN_ABILITY_ID
+            option.id !== UNKNOWN_ABILITY_ID &&
+            option.id !== NO_ABILITY_ID
           const unsupportedLabel = intl.formatMessage({ id: "track.ability.unsupported" })
           return (
             <TrackOption
@@ -84,8 +86,9 @@ export function AbilityTrack({
               layout="text"
               pressed={selected.has(option.id)}
               onToggle={() => toggle(option.id)}
-              disabled={locked}
-              ariaLabel={unsupported ? `${option.label} · ${unsupportedLabel}` : option.label}
+              ariaLabel={unsupported
+                ? `${option.label} · ${unsupportedLabel}`
+                : option.accessibleLabel ?? option.label}
               tooltip={[option.summary, unsupported ? unsupportedLabel : null].filter(Boolean).join("\n") || null}
               className="px-2"
             >

@@ -59,6 +59,7 @@ export const enMessages: Record<string, string> = {
     "track.attackerItem": "Attacker item",
     "track.defenderItem": "Defender item",
     "track.ability.unknown": "Unknown ability",
+    "track.ability.none": "No ability",
     "track.item.none": "No held item",
     "track.item.unknownMegaStone": "Unknown Mega Stone",
     "track.addItem": "Add held item",

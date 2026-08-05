@@ -10,7 +10,7 @@ import {
   runScenarioPipeline,
 } from "@/lib/scenario"
 
-import { ADAPTABILITY_ABILITY_ID } from "@/lib/ability"
+import { ADAPTABILITY_ABILITY_ID, NO_ABILITY_ID } from "@/lib/ability"
 import { CALC_GEN, VGC_LEVEL } from "@/lib/damage-calculation"
 import * as damageKernel from "@/lib/damage-calculation"
 import { defenderStatValues, offenseStatValue } from "@/lib/stat-calculation"
@@ -155,6 +155,20 @@ describe("ability compiler", () => {
     expect(outcome.sources).toEqual(expect.arrayContaining([
       { track: "attacker-ability", optionId: "50", state: "unsupported" },
       { track: "defender-ability", optionId: "17", state: "unsupported" },
+    ]))
+  })
+
+  it("compiles no ability as a neutral source without changing damage inputs", () => {
+    const ordinary = calculable()
+    const none = calculable({
+      attackerAbilityId: NO_ABILITY_ID,
+      defenderAbilityId: NO_ABILITY_ID,
+    })
+
+    expect(none.calculation).toEqual(ordinary.calculation)
+    expect(none.sources).toEqual(expect.arrayContaining([
+      { track: "attacker-ability", optionId: String(NO_ABILITY_ID), state: "neutral" },
+      { track: "defender-ability", optionId: String(NO_ABILITY_ID), state: "neutral" },
     ]))
   })
 
@@ -305,5 +319,35 @@ describe("ability scenario product and provenance", () => {
       neutral: [],
     })
     kernel.mockRestore()
+  })
+
+  it("merges no ability with effect-equivalent unsupported branches", async () => {
+    const catalog = await getCatalogShell(133, 143, "en", "physical")
+    const state = defaultTrackState(catalog)
+    const tackle = catalog.moves.find((move) => move.id === TACKLE.moveId)
+    if (!tackle) throw new Error("Expected Tackle catalog option")
+    state.moveSnapshots = [createMoveSnapshot(tackle, TACKLE.id)]
+    state.selectedMoveSnapshotIds = [TACKLE.id]
+    state.offensePresetIds = ["neutral-max"]
+    state.defensePresetIds = ["standard-bulk"]
+    state.attackerAbilityIds = [NO_ABILITY_ID, 50]
+    state.defenderAbilityIds = [NO_ABILITY_ID, 17]
+
+    const result = runScenarioPipeline(catalog, state)
+
+    expect(expectedRowCount(state)).toBe(4)
+    expect(result.rows).toHaveLength(1)
+    expect(result.rows[0].provenance["attacker-ability"]).toEqual({
+      effective: [],
+      inactive: [],
+      unsupported: ["50"],
+      neutral: [String(NO_ABILITY_ID)],
+    })
+    expect(result.rows[0].provenance["defender-ability"]).toEqual({
+      effective: [],
+      inactive: [],
+      unsupported: ["17"],
+      neutral: [String(NO_ABILITY_ID)],
+    })
   })
 })
