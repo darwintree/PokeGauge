@@ -17,7 +17,7 @@ it("derives stackable picker tags from effect kind, gates, and form-triggers", (
   expect(heldItemPickerTags(1181)).toEqual([]) // Utility Umbrella
 })
 
-it("matches a single selected tag and keeps holder-eligible filtering optional", () => {
+it("matches a single selected tag and always applies holder eligibility", () => {
   const lifeOrb = {
     id: 247,
     label: "Life Orb",
@@ -35,7 +35,6 @@ it("matches a single selected tag and keeps holder-eligible filtering optional",
     heldItemMatchesPickerFilters(lifeOrb, {
       query: "",
       tag: "power",
-      holderEligible: false,
       holder: { battlePokemonId: 6, speciesId: 6, evioliteEligible: false },
     }),
   ).toBe(true)
@@ -44,7 +43,6 @@ it("matches a single selected tag and keeps holder-eligible filtering optional",
     heldItemMatchesPickerFilters(rindo, {
       query: "",
       tag: "power",
-      holderEligible: false,
       holder: { battlePokemonId: 6, speciesId: 6, evioliteEligible: false },
     }),
   ).toBe(false)
@@ -53,7 +51,6 @@ it("matches a single selected tag and keeps holder-eligible filtering optional",
     heldItemMatchesPickerFilters(rindo, {
       query: "",
       tag: "berry",
-      holderEligible: false,
       holder: { battlePokemonId: 6, speciesId: 6, evioliteEligible: false },
     }),
   ).toBe(true)
@@ -62,7 +59,6 @@ it("matches a single selected tag and keeps holder-eligible filtering optional",
     heldItemMatchesPickerFilters(adamant, {
       query: "adam",
       tag: "exclusive",
-      holderEligible: true,
       holder: { battlePokemonId: 6, speciesId: 6, evioliteEligible: false },
     }),
   ).toBe(false)

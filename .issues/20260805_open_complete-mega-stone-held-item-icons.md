@@ -34,7 +34,7 @@ updated_at: "2026-08-05T04:59:00Z"
 ## Related
 
 - [[20260803_open_decide-held-item-sprite-loading-path]]
-- [[20260805_open_polish-held-item-picker-ui-styling]]
+- [[archive/20260805_closed_polish-held-item-picker-ui-styling]]
 - Spec out-of-scope note: `docs/spec/held-item-pick.md`（Sprite loading paths）
 
 ## Acceptance ideas

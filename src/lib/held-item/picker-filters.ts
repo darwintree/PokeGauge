@@ -94,7 +94,6 @@ export function heldItemMatchesPickerFilters(
   filters: {
     query: string
     tag: HeldItemPickerTag | null
-    holderEligible: boolean
     holder: HeldItemPickerHolder
     selectableIds?: ReadonlySet<BattlePokemonId>
   },
@@ -107,13 +106,7 @@ export function heldItemMatchesPickerFilters(
   if (filters.tag && !heldItemPickerTags(option.id).includes(filters.tag)) {
     return false
   }
-  if (
-    filters.holderEligible &&
-    !isHolderEligibleHeldItem(option.id, filters.holder, filters.selectableIds)
-  ) {
-    return false
-  }
-  return true
+  return isHolderEligibleHeldItem(option.id, filters.holder, filters.selectableIds)
 }
 
 export function listHeldItemPickerOptions(input: {
