@@ -134,6 +134,18 @@ function AdditionalConditionDetails(props: DamageScenarioSummaryProps) {
   )
 }
 
+function CritCtMark({ label }: { label: string }) {
+  return (
+    <span
+      title={label}
+      aria-label={label}
+      className="inline-flex h-[1.1em] items-center rounded-[3px] bg-damage-critical px-0.5 text-[0.65em] font-extrabold leading-none text-paper"
+    >
+      CT
+    </span>
+  )
+}
+
 function DamageFormulaTooltip(props: DamageScenarioSummaryProps) {
   const intl = useIntl()
   const mechanics = props.row.moveMechanics
@@ -155,8 +167,19 @@ function DamageFormulaTooltip(props: DamageScenarioSummaryProps) {
   const criticalPhase = mechanics.critical?.phases.find(
     (phase) => phase.kind === "critical",
   )
+  const criticalLabel = intl.formatMessage({ id: "damage.critical" })
   const effectivePower = mechanics.normal && mechanics.critical
-    ? `${mechanics.normal.effectivePower} / ${mechanics.critical.effectivePower}`
+    ? (
+      <span className="inline-flex items-baseline gap-0.5">
+        {mechanics.normal.effectivePower}
+        <span className="inline-flex items-baseline gap-0.5 text-muted-foreground">
+          <span aria-hidden>(</span>
+          <CritCtMark label={criticalLabel} />
+          {mechanics.critical.effectivePower}
+          <span aria-hidden>)</span>
+        </span>
+      </span>
+    )
     : branch.effectivePower
 
   return (
