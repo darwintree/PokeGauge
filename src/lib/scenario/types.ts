@@ -41,6 +41,8 @@ export type TrackState = {
   showOffenseStatValue: boolean
   offenseAllocationIndices: Record<string, number>
   attackerStages: StatStage[]
+  attackerItemPoolIds: HeldItemId[]
+  defenderItemPoolIds: HeldItemId[]
   attackerItemIds: HeldItemId[]
   defenderItemIds: HeldItemId[]
   attackerAbilityIds: number[]

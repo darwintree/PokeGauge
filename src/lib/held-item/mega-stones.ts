@@ -7,7 +7,7 @@ import { UNKNOWN_MEGA_STONE_ID } from "./types"
 export { UNKNOWN_MEGA_STONE_ID } from "./types"
 export type MegaStoneId = UpstreamResourceId | typeof UNKNOWN_MEGA_STONE_ID
 
-const MEGA_STONE_BY_ID: Partial<Record<BattlePokemonId, UpstreamResourceId>> = {
+export const MEGA_STONE_BY_ID: Partial<Record<BattlePokemonId, UpstreamResourceId>> = {
   10033: 698,
   10034: 699,
   10035: 717,

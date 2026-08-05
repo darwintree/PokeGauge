@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "b40bf775-ab1b-4219-923d-2cfcf00979ed"
 title: "Decide held-item Track presentation and selection model"
-status: "open"
+status: "closed"
 priority: "medium"
 labels: ["FEATURE-REQUEST", "NEEDS-TRIAGE"]
 created_at: "2026-08-03T04:30:00Z"
-updated_at: "2026-08-05T03:35:00Z"
+updated_at: "2026-08-05T03:59:00Z"
 ---
 ## Goal
 
@@ -24,15 +24,19 @@ updated_at: "2026-08-05T03:35:00Z"
 
 ## Related
 
-- [[20260731_open_choose-default-held-items-from-usage-data]]
-- [[20260803_open_decide-whether-held-items-may-change-pokemon-form]]
-- [[20260805_open_iterate-held-item-default-recompute-untouched-policy]]
+- [[20260731_closed_choose-default-held-items-from-usage-data]]
+- [[20260803_closed_decide-whether-held-items-may-change-pokemon-form]]
+- [[../20260805_open_iterate-held-item-default-recompute-untouched-policy]]
 
 ## Acceptance
 
 - [x] Spec change 已 accepted，且 `docs/spec/held-item-pick.md` 反映展示与选择契约
-- [ ] 实现完成后：逐条审计讨论记录中与本 issue 相关的决定均已落地
-- [ ] 桌面与移动端均可完成池内多选、Picker 筛选添加、形态确认与锁定只读
+- [x] 实现完成后：逐条审计讨论记录中与本 issue 相关的决定均已落地
+- [x] 桌面与移动端均可完成池内多选、Picker 筛选添加、形态确认与锁定只读
+
+## Resolution
+
+Implemented against `docs/spec/held-item-pick.md`: usage/manual pool + add Picker (AND tags + holder-eligible), form-trigger confirm dialog, locked Identity read-only. Trace: `docs/traces/implementations/2026-08-05-held-item-pick-and-form-switch.md`.
 
 ## Non-goals
 

@@ -87,10 +87,12 @@ export function trackStateAfterCatalogTransition(
     screens: state.screens,
     ...(attackerChanged && catalog.attackerPreservesItem &&
       itemSelectionFits(state.attackerItemIds, catalog.attackerItems) && {
+      attackerItemPoolIds: state.attackerItemPoolIds,
       attackerItemIds: state.attackerItemIds,
     }),
     ...(defenderChanged && catalog.defenderPreservesItem &&
       itemSelectionFits(state.defenderItemIds, catalog.defenderItems) && {
+      defenderItemPoolIds: state.defenderItemPoolIds,
       defenderItemIds: state.defenderItemIds,
     }),
     ...(!attackerChanged && {

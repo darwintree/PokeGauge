@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "e2793198-2a9c-4066-bf8e-9361948fd037"
 title: "Decide whether held items may change Pokémon form"
-status: "open"
+status: "closed"
 priority: "medium"
 labels: ["FEATURE-REQUEST", "NEEDS-TRIAGE"]
 created_at: "2026-08-03T04:30:00Z"
-updated_at: "2026-08-05T03:35:00Z"
+updated_at: "2026-08-05T03:59:00Z"
 ---
 ## Goal
 
@@ -24,15 +24,19 @@ updated_at: "2026-08-05T03:35:00Z"
 
 ## Related
 
-- [[20260803_open_decide-held-item-track-presentation-and-selection-model]]
-- [[20260731_open_choose-default-held-items-from-usage-data]]
-- [[archive/20260731_closed_implement-frozen-85-item-held-item-effects|Implement frozen 85-item Held-item effects]]
+- [[20260803_closed_decide-held-item-track-presentation-and-selection-model]]
+- [[20260731_closed_choose-default-held-items-from-usage-data]]
+- [[20260731_closed_implement-frozen-85-item-held-item-effects|Implement frozen 85-item Held-item effects]]
 
 ## Acceptance
 
 - [x] Spec change 已 accepted，且 `docs/spec/held-item-pick.md` 反映形态切换与锁定契约
-- [ ] 实现完成后：逐条审计讨论记录中与本 issue 相关的决定均已落地
-- [ ] 任一 UI 选择、保存和恢复状态都不产生道具与 Identity 相互矛盾的稳定态
+- [x] 实现完成后：逐条审计讨论记录中与本 issue 相关的决定均已落地
+- [x] 任一 UI 选择、保存和恢复状态都不产生道具与 Identity 相互矛盾的稳定态
+
+## Resolution
+
+Implemented: form-trigger map + legal transition, confirm→Pokémon re-select transition, locked Identity short-circuit. Trace: `docs/traces/implementations/2026-08-05-held-item-pick-and-form-switch.md`.
 
 ## Non-goals
 

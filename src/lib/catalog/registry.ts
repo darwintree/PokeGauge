@@ -1,4 +1,6 @@
 import {
+  ATTACKER_HELD_ITEM_IDS,
+  DEFENDER_HELD_ITEM_IDS,
   buildHeldItemCatalogOptions,
   heldItemCatalogOption,
   lockedHeldItemFor,
@@ -14,6 +16,8 @@ import type {
 } from "./types"
 import {
   abilityOptions,
+  listAttackers,
+  listDefenders,
   snapshotCapableMoveOptions,
   statLabels,
 } from "./resource-options"
@@ -21,6 +25,7 @@ import {
   resolveDefaultAbilityIds,
   resolveDefaultMovePick,
 } from "./champions-defaults"
+import { resolveDefaultHeldItemPick } from "./held-item-defaults"
 
 const DEFAULT_MOVE_CATEGORY_BY_ATTACKER: Partial<Record<BattlePokemonId, MoveCategory>> = {
   445: "physical",
@@ -114,8 +119,14 @@ export async function getCatalogShell(
     /** Champions defaults load asynchronously; global snapshot-capable moves remain searchable. */
     defaultMovePickStatus: "loading",
     defaultAbilityPickStatus: "loading",
+    defaultItemPickStatus:
+      attackerLockedItemId === null || defenderLockedItemId === null
+        ? "loading"
+        : "ready",
     defaultMovePoolIds: [],
     defaultMoveIds: [],
+    defaultAttackerItemPoolIds: attackerLockedItemId === null ? [] : [attackerLockedItemId],
+    defaultDefenderItemPoolIds: defenderLockedItemId === null ? [] : [defenderLockedItemId],
     defaultAttackerItemIds: [attackerLockedItemId ?? "none"],
     defaultDefenderItemIds: [defenderLockedItemId ?? "none"],
     defaultAttackerAbilityIds: attackerAbilities.map((ability) => ability.id),
@@ -132,23 +143,60 @@ export async function getCatalogShell(
 export async function resolveCatalogDefaultMovePick(
   catalog: MatchupCatalog,
 ): Promise<MatchupCatalog> {
-  const [defaultMovePick, defaultAttackerAbilityIds, defaultDefenderAbilityIds] =
-    await Promise.all([
-      resolveDefaultMovePick(
-        catalog.matchup.attackerId,
-        catalog.moveCategory,
-        catalog.moves,
-        catalog.defenderTypes,
-      ),
-      resolveDefaultAbilityIds(catalog.matchup.attackerId, catalog.attackerAbilities),
-      resolveDefaultAbilityIds(catalog.matchup.defenderId, catalog.defenderAbilities),
-    ])
+  // Selectable identity sets are locale-invariant; en is enough for id membership.
+  const [attackerOptions, defenderOptions] = await Promise.all([
+    listAttackers("en"),
+    listDefenders("en"),
+  ])
+  const selectableAttackerIds = new Set(attackerOptions.map((option) => option.id))
+  const selectableDefenderIds = new Set(defenderOptions.map((option) => option.id))
+
+  const [
+    defaultMovePick,
+    defaultAttackerAbilityIds,
+    defaultDefenderAbilityIds,
+    attackerItemPick,
+    defenderItemPick,
+  ] = await Promise.all([
+    resolveDefaultMovePick(
+      catalog.matchup.attackerId,
+      catalog.moveCategory,
+      catalog.moves,
+      catalog.defenderTypes,
+    ),
+    resolveDefaultAbilityIds(catalog.matchup.attackerId, catalog.attackerAbilities),
+    resolveDefaultAbilityIds(catalog.matchup.defenderId, catalog.defenderAbilities),
+    resolveDefaultHeldItemPick({
+      battlePokemonId: catalog.matchup.attackerId,
+      lockedItemId: catalog.attackerLockedItemId,
+      sideEligibleIds: new Set(ATTACKER_HELD_ITEM_IDS),
+      selectableIds: selectableAttackerIds,
+    }),
+    resolveDefaultHeldItemPick({
+      battlePokemonId: catalog.matchup.defenderId,
+      lockedItemId: catalog.defenderLockedItemId,
+      sideEligibleIds: new Set(DEFENDER_HELD_ITEM_IDS),
+      selectableIds: selectableDefenderIds,
+    }),
+  ])
+
+  // Each side already embeds none-fallback on failure; gate sync on non-loading only.
+  const itemStatus =
+    attackerItemPick.status === "unavailable" && defenderItemPick.status === "unavailable"
+      ? "unavailable"
+      : "ready"
+
   return {
     ...catalog,
     ...defaultMovePick,
     defaultAbilityPickStatus: "ready",
+    defaultItemPickStatus: itemStatus,
     defaultAttackerAbilityIds,
     defaultDefenderAbilityIds,
+    defaultAttackerItemPoolIds: attackerItemPick.poolIds,
+    defaultDefenderItemPoolIds: defenderItemPick.poolIds,
+    defaultAttackerItemIds: attackerItemPick.selectedIds,
+    defaultDefenderItemIds: defenderItemPick.selectedIds,
   }
 }
 

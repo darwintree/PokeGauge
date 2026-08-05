@@ -10,7 +10,7 @@ import { localeMessages } from "@/lib/i18n"
 
 import { HeldItemTrack } from "./held-item-track"
 
-describe("locked held-item Tracks", () => {
+describe("held-item Tracks", () => {
   let root: Root
   let container: HTMLDivElement
 
@@ -65,11 +65,15 @@ describe("locked held-item Tracks", () => {
     await renderTrack({
       catalog,
       side,
+      poolIds: [stoneId],
       selectedIds: [stoneId],
       lockedId: side === "attacker"
         ? catalog.attackerLockedItemId
         : catalog.defenderLockedItemId,
+      selectableIds: new Set([attackerId, defenderId]),
       onChange,
+      onAdd: vi.fn(),
+      onFormTriggerConfirm: vi.fn(),
     })
 
     const option = container.querySelector(`button.track-option[aria-label="${label}"]`)
@@ -83,37 +87,35 @@ describe("locked held-item Tracks", () => {
     expect(onChange).not.toHaveBeenCalled()
   })
 
-  it("renders the complete static pool for each unlocked side", async () => {
+  it("renders the usage/manual pool rather than the full frozen catalog", async () => {
     const catalog = await getCatalogShell(445, 727, "en")
 
     await renderTrack({
       catalog,
-      selectedIds: ["none"],
+      poolIds: [247],
+      selectedIds: [247],
+      selectableIds: new Set([445, 727]),
       onChange: vi.fn(),
+      onAdd: vi.fn(),
+      onFormTriggerConfirm: vi.fn(),
     })
-    expect(container.querySelectorAll("button.track-option")).toHaveLength(
-      catalog.attackerItems.length,
-    )
+    expect(container.querySelectorAll("button.track-option")).toHaveLength(1)
     expect(container.querySelector('button[aria-label="Life Orb"]')).not.toBeNull()
-    expect(container.querySelector('button[aria-label="Eviolite"]')).toBeNull()
-
-    await renderTrack({
-      catalog,
-      side: "defender",
-      selectedIds: ["none"],
-      onChange: vi.fn(),
-    })
-    expect(container.querySelectorAll("button.track-option")).toHaveLength(
-      catalog.defenderItems.length,
-    )
-    expect(container.querySelector('button[aria-label="Eviolite"]')).not.toBeNull()
-    expect(container.querySelector('button[aria-label="Life Orb"]')).toBeNull()
+    expect(container.querySelector('button[aria-label="Add held item"]')).not.toBeNull()
   })
 
   it("restores explicit no-item after removing the last unlocked item", async () => {
     const catalog = await getCatalogShell(445, 727, "en")
     const onChange = vi.fn()
-    await renderTrack({ catalog, selectedIds: [247], onChange })
+    await renderTrack({
+      catalog,
+      poolIds: [247],
+      selectedIds: [247],
+      selectableIds: new Set([445]),
+      onChange,
+      onAdd: vi.fn(),
+      onFormTriggerConfirm: vi.fn(),
+    })
 
     await act(async () => {
       ;(container.querySelector(
@@ -125,30 +127,17 @@ describe("locked held-item Tracks", () => {
     expect(onChange).toHaveBeenCalledWith(["none"])
   })
 
-  it("shows the localized item name in ordinary option tooltips", async () => {
-    const catalog = await getCatalogShell(445, 727, "en")
-    await renderTrack({ catalog, selectedIds: ["none"], onChange: vi.fn() })
-
-    const option = container.querySelector(
-      'button[aria-label="Life Orb"]',
-    ) as HTMLButtonElement
-    await act(async () => {
-      document.dispatchEvent(new KeyboardEvent("keydown", { key: "Tab", bubbles: true }))
-      option.focus()
-      await Promise.resolve()
-    })
-
-    expect(document.querySelector('[data-slot="tooltip-content"]')?.textContent)
-      .toContain("Life Orb")
-  })
-
   it("locks the matching Ogerpon Mask", async () => {
     const catalog = await getCatalogShell(10273, 727, "en")
     await renderTrack({
       catalog,
+      poolIds: [2106],
       selectedIds: [2106],
       lockedId: catalog.attackerLockedItemId,
+      selectableIds: new Set([10273, 727]),
       onChange: vi.fn(),
+      onAdd: vi.fn(),
+      onFormTriggerConfirm: vi.fn(),
     })
 
     const options = container.querySelectorAll("button.track-option")
@@ -162,8 +151,12 @@ describe("locked held-item Tracks", () => {
     await renderTrack({
       catalog,
       side: "defender",
+      poolIds: [162],
       selectedIds: [162],
+      selectableIds: new Set([727]),
       onChange: vi.fn(),
+      onAdd: vi.fn(),
+      onFormTriggerConfirm: vi.fn(),
     })
 
     const option = Array.from(

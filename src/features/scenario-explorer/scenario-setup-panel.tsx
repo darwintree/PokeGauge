@@ -130,8 +130,12 @@ export function ScenarioSetupPanel({
     attackerItems: (
       <HeldItemTrack
         catalog={catalog}
+        poolIds={trackState.attackerItemPoolIds}
         selectedIds={trackState.attackerItemIds}
         onChange={state.setAttackerItemIds}
+        onAdd={state.addAttackerItem}
+        onFormTriggerConfirm={onAttackerChange}
+        selectableIds={new Set(attackers.map((option) => option.id))}
         lockedId={catalog.attackerLockedItemId}
         expanded={activeId === "attackerItems"}
         onToggle={() => toggle("attackerItems")}
@@ -141,8 +145,12 @@ export function ScenarioSetupPanel({
       <HeldItemTrack
         catalog={catalog}
         side="defender"
+        poolIds={trackState.defenderItemPoolIds}
         selectedIds={trackState.defenderItemIds}
         onChange={state.setDefenderItemIds}
+        onAdd={state.addDefenderItem}
+        onFormTriggerConfirm={onDefenderChange}
+        selectableIds={new Set(defenders.map((option) => option.id))}
         lockedId={catalog.defenderLockedItemId}
         expanded={activeId === "defenderItems"}
         onToggle={() => toggle("defenderItems")}

@@ -89,6 +89,8 @@ export function useScenarioState(
     movesTouchedRef,
     attackerAbilitiesTouchedRef,
     defenderAbilitiesTouchedRef,
+    attackerItemsTouchedRef,
+    defenderItemsTouchedRef,
   } = useCatalogTransitionSync(
     catalog,
     restored,
@@ -104,6 +106,8 @@ export function useScenarioState(
     movesTouchedRef,
     attackerAbilitiesTouchedRef,
     defenderAbilitiesTouchedRef,
+    attackerItemsTouchedRef,
+    defenderItemsTouchedRef,
   })
 
   const setStatNameStrategy = useCallback((strategy: StatNameStrategy) => {
@@ -379,12 +383,56 @@ export function useScenarioState(
     deleteOffensePreset,
     confirmAddOffense,
     setAddingOffense,
-    setAttackerItemIds: (ids: TrackState["attackerItemIds"]) =>
-      catalog.attackerLockedItemId === null &&
-      setTrackState((s) => ({ ...s, attackerItemIds: ids.length > 0 ? ids : ["none"] })),
-    setDefenderItemIds: (ids: TrackState["defenderItemIds"]) =>
-      catalog.defenderLockedItemId === null &&
-      setTrackState((s) => ({ ...s, defenderItemIds: ids.length > 0 ? ids : ["none"] })),
+    setAttackerItemIds: (ids: TrackState["attackerItemIds"]) => {
+      if (catalog.attackerLockedItemId !== null) return
+      attackerItemsTouchedRef.current = true
+      setTrackState((s) => ({
+        ...s,
+        attackerItemIds: ids.length > 0 ? ids : ["none"],
+      }))
+    },
+    setDefenderItemIds: (ids: TrackState["defenderItemIds"]) => {
+      if (catalog.defenderLockedItemId !== null) return
+      defenderItemsTouchedRef.current = true
+      setTrackState((s) => ({
+        ...s,
+        defenderItemIds: ids.length > 0 ? ids : ["none"],
+      }))
+    },
+    addAttackerItem: (id: TrackState["attackerItemIds"][number]) => {
+      if (catalog.attackerLockedItemId !== null || id === "none") return
+      attackerItemsTouchedRef.current = true
+      setTrackState((s) => {
+        const pool = s.attackerItemPoolIds.includes(id)
+          ? s.attackerItemPoolIds
+          : [...s.attackerItemPoolIds.filter((itemId) => itemId !== "none"), id]
+        const selected = s.attackerItemIds.includes(id)
+          ? s.attackerItemIds
+          : [...s.attackerItemIds.filter((itemId) => itemId !== "none"), id]
+        return {
+          ...s,
+          attackerItemPoolIds: pool,
+          attackerItemIds: selected.length > 0 ? selected : ["none"],
+        }
+      })
+    },
+    addDefenderItem: (id: TrackState["defenderItemIds"][number]) => {
+      if (catalog.defenderLockedItemId !== null || id === "none") return
+      defenderItemsTouchedRef.current = true
+      setTrackState((s) => {
+        const pool = s.defenderItemPoolIds.includes(id)
+          ? s.defenderItemPoolIds
+          : [...s.defenderItemPoolIds.filter((itemId) => itemId !== "none"), id]
+        const selected = s.defenderItemIds.includes(id)
+          ? s.defenderItemIds
+          : [...s.defenderItemIds.filter((itemId) => itemId !== "none"), id]
+        return {
+          ...s,
+          defenderItemPoolIds: pool,
+          defenderItemIds: selected.length > 0 ? selected : ["none"],
+        }
+      })
+    },
     setAttackerAbilityIds: (ids: number[]) => {
       if (ids.length === 0 || catalog.attackerLockedAbilityId !== null) return
       attackerAbilitiesTouchedRef.current = true

@@ -1,5 +1,6 @@
 import {
   getAbilityIdByJoinName,
+  getItemIdByJoinName,
   getMoveIdByJoinName,
   getResource,
   listResources,
@@ -8,6 +9,7 @@ import {
 import type {
   ChampionsAbilityUsageRecord,
   ChampionsBattleFormat,
+  ChampionsItemUsageRecord,
   ChampionsMoveUsageRecord,
 } from "./types"
 
@@ -78,6 +80,9 @@ const abilityUsageCache = new Map<BattlePokemonId, Promise<ChampionsAbilityUsage
 let abilityUsageFetcher: (
   battlePokemonId: BattlePokemonId,
 ) => Promise<ChampionsAbilityUsageRecord[]> = fetchChampionsAbilityUsageOnline
+const itemUsageCache = new Map<BattlePokemonId, Promise<ChampionsItemUsageRecord[]>>()
+let itemUsageFetcher: (battlePokemonId: BattlePokemonId) => Promise<ChampionsItemUsageRecord[]> =
+  fetchChampionsItemUsageOnline
 let pokemonUsagePromise: Promise<BattlePokemonId[]> | undefined
 let pokemonUsageFetcher: () => Promise<BattlePokemonId[]> = fetchChampionsPokemonUsageOnline
 let championsIndexPromise: Promise<ChampionsIndexApi> | undefined
@@ -258,6 +263,29 @@ async function fetchChampionsAbilityUsageOnline(
     })
 }
 
+async function fetchChampionsItemUsageOnline(
+  battlePokemonId: BattlePokemonId,
+): Promise<ChampionsItemUsageRecord[]> {
+  const battleData = await fetchChampionsBattleData(battlePokemonId)
+  if (!battleData) return []
+
+  // Champions emits `held_item` (not `item`); keep unmapped/`nothing` rows with null itemId
+  // so the top-10 boundary can skip without backfill.
+  return (battleData.data ?? battleData.rows ?? [])
+    .filter((row) => row.category === "held_item")
+    .map((row) => ({
+      battlePokemonId,
+      itemId: getItemIdByJoinName(row.name) ?? null,
+      format: CHAMPIONS_FORMAT,
+      season: battleData.season,
+      source: battleData.source,
+      dataVersion: battleData.dataVersion ?? "",
+      rank: row.rank,
+      percentage: row.percentage_value ?? null,
+      championsItemName: row.name,
+    }))
+}
+
 export async function listChampionsMoveUsageRecords(
   battlePokemonId: BattlePokemonId,
 ): Promise<ChampionsMoveUsageRecord[]> {
@@ -314,6 +342,34 @@ export function resetChampionsAbilityUsageFetcherForTest(): void {
   abilityUsageFetcher = fetchChampionsAbilityUsageOnline
 }
 
+export async function listChampionsItemUsageRecords(
+  battlePokemonId: BattlePokemonId,
+): Promise<ChampionsItemUsageRecord[]> {
+  let promise = itemUsageCache.get(battlePokemonId)
+  if (!promise) {
+    promise = itemUsageFetcher(battlePokemonId)
+    itemUsageCache.set(battlePokemonId, promise)
+    promise.catch(() => {
+      if (itemUsageCache.get(battlePokemonId) === promise) {
+        itemUsageCache.delete(battlePokemonId)
+      }
+    })
+  }
+  return promise
+}
+
+export function setChampionsItemUsageFetcherForTest(
+  fetcher: (battlePokemonId: BattlePokemonId) => Promise<ChampionsItemUsageRecord[]>,
+): void {
+  itemUsageCache.clear()
+  itemUsageFetcher = fetcher
+}
+
+export function resetChampionsItemUsageFetcherForTest(): void {
+  itemUsageCache.clear()
+  itemUsageFetcher = fetchChampionsItemUsageOnline
+}
+
 export function listChampionsPokemonUsageIds(): Promise<BattlePokemonId[]> {
   pokemonUsagePromise ??= pokemonUsageFetcher()
   return pokemonUsagePromise
@@ -338,6 +394,7 @@ export function setChampionsJsonFetcherForTest(
   battleRowsCache.clear()
   usageCache.clear()
   abilityUsageCache.clear()
+  itemUsageCache.clear()
   pokemonUsagePromise = undefined
   jsonFetcher = fetcher
 }
@@ -347,6 +404,7 @@ export function resetChampionsJsonFetcherForTest(): void {
   battleRowsCache.clear()
   usageCache.clear()
   abilityUsageCache.clear()
+  itemUsageCache.clear()
   pokemonUsagePromise = undefined
   jsonFetcher = fetchJsonFromNetwork
 }

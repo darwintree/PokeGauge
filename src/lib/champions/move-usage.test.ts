@@ -2,6 +2,7 @@ import { afterEach, expect, it } from "vitest"
 
 import {
   listChampionsAbilityUsageRecords,
+  listChampionsItemUsageRecords,
   listChampionsMoveUsageRecords,
   resetChampionsJsonFetcherForTest,
   setChampionsJsonFetcherForTest,
@@ -42,6 +43,10 @@ function championsFixture(): {
           { category: "move", rank: 1, name: "Flamethrower", percentage_value: 90 },
           { category: "move", rank: 2, name: "Dragon Claw", percentage_value: 80 },
           { category: "ability", rank: 1, name: "Blaze", percentage_value: 100 },
+          { category: "held_item", rank: 1, name: "Charizardite Y", percentage_value: 95 },
+          { category: "held_item", rank: 2, name: "Life Orb", percentage_value: 3 },
+          { category: "held_item", rank: 3, name: "nothing", percentage_value: 1 },
+          { category: "held_item", rank: 4, name: "Unknown Relic", percentage_value: 0.5 },
         ],
       }
     }
@@ -104,4 +109,70 @@ it("returns no usage rows when the base species has no Champions entry", async (
   setChampionsJsonFetcherForTest(fetcher)
 
   await expect(listChampionsMoveUsageRecords(10043)).resolves.toEqual([])
+})
+
+it("inherits base species held-item usage rows for Mega identities", async () => {
+  const { fetcher, calls } = championsFixture()
+  setChampionsJsonFetcherForTest(fetcher)
+
+  const megaX = await listChampionsItemUsageRecords(10034)
+  const megaY = await listChampionsItemUsageRecords(10035)
+  const base = await listChampionsItemUsageRecords(6)
+
+  expect(megaX).toEqual([
+    expect.objectContaining({
+      battlePokemonId: 10034,
+      itemId: 717,
+      season: "Current",
+      source: "pokemon_champions_assets/battle_data/Doubles/Charizard.csv",
+      dataVersion: "20260729090313995",
+      rank: 1,
+      percentage: 95,
+      championsItemName: "Charizardite Y",
+    }),
+    expect.objectContaining({
+      battlePokemonId: 10034,
+      itemId: 247,
+      rank: 2,
+      championsItemName: "Life Orb",
+    }),
+    expect.objectContaining({
+      battlePokemonId: 10034,
+      itemId: null,
+      rank: 3,
+      championsItemName: "nothing",
+    }),
+    expect.objectContaining({
+      battlePokemonId: 10034,
+      itemId: null,
+      rank: 4,
+      championsItemName: "Unknown Relic",
+    }),
+  ])
+  expect(megaY.map((record) => record.battlePokemonId)).toEqual([
+    10035, 10035, 10035, 10035,
+  ])
+  expect(base.map((record) => record.itemId)).toEqual([717, 247, null, null])
+  expect(calls.battle).toBe(1)
+})
+
+it("shares one battle rows fetch between move and item consumers", async () => {
+  const { fetcher, calls } = championsFixture()
+  setChampionsJsonFetcherForTest(fetcher)
+
+  const [moves, items] = await Promise.all([
+    listChampionsMoveUsageRecords(6),
+    listChampionsItemUsageRecords(6),
+  ])
+
+  expect(moves.map((record) => record.moveId)).toEqual([53, 337])
+  expect(items.map((record) => record.itemId)).toEqual([717, 247, null, null])
+  expect(calls.battle).toBe(1)
+})
+
+it("returns no held-item usage rows when the base species has no Champions entry", async () => {
+  const { fetcher } = championsFixture()
+  setChampionsJsonFetcherForTest(fetcher)
+
+  await expect(listChampionsItemUsageRecords(10043)).resolves.toEqual([])
 })

@@ -35,6 +35,8 @@ function scenario(): ScenarioSnapshotInput {
       showOffenseStatValue: false,
       offenseAllocationIndices: {},
       attackerStages: [0],
+      attackerItemPoolIds: ["none"],
+      defenderItemPoolIds: ["none"],
       attackerItemIds: ["none"],
       defenderItemIds: ["none"],
       attackerAbilityIds: [8],

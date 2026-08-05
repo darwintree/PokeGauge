@@ -1,4 +1,6 @@
 import type { SupportedLocale } from "@/lib/i18n"
+import { GENERATED_HELD_ITEMS } from "./generated/held-items"
+import { GENERATED_MEGA_STONES } from "./generated/mega-stones"
 import type {
   GeneratedResourceDiagnostics,
   LocalizedAbilityResource,
@@ -31,6 +33,7 @@ let pokemonByCalcName: Map<string, NormalizedBattlePokemon> | undefined
 let moveByCalcName: Map<string, NormalizedMove> | undefined
 let moveIdByJoinName: Map<string, UpstreamResourceId> | undefined
 let abilityIdByJoinName: Map<string, UpstreamResourceId> | undefined
+let itemIdByJoinName: Map<string, UpstreamResourceId> | undefined
 
 function buildFirstByName<T>(values: T[], getName: (value: T) => string): Map<string, T> {
   const byName = new Map<string, T>()
@@ -271,4 +274,23 @@ export function getMoveIdByJoinName(name: string): UpstreamResourceId | undefine
 
 export function getAbilityIdByJoinName(name: string): UpstreamResourceId | undefined {
   return abilityIdByJoinName?.get(normalizeJoinName(name))
+}
+
+function buildItemIdByJoinName(
+  resources: Array<{ id: UpstreamResourceId; slug: string; names: Record<string, string> }>,
+): Map<string, UpstreamResourceId> {
+  return new Map(
+    resources.flatMap((item) => [
+      [normalizeJoinName(item.slug), item.id] as const,
+      ...Object.values(item.names).map((name) => [normalizeJoinName(name), item.id] as const),
+    ]),
+  )
+}
+
+export function getItemIdByJoinName(name: string): UpstreamResourceId | undefined {
+  itemIdByJoinName ??= buildItemIdByJoinName([
+    ...Object.values(GENERATED_HELD_ITEMS),
+    ...Object.values(GENERATED_MEGA_STONES),
+  ])
+  return itemIdByJoinName.get(normalizeJoinName(name))
 }
