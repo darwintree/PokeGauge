@@ -6,28 +6,35 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST", "NEEDS-TRIAGE"]
 created_at: "2026-08-03T04:30:00Z"
-updated_at: "2026-08-03T04:30:00Z"
+updated_at: "2026-08-05T03:35:00Z"
 ---
 ## Goal
 
 确定 Held item Track 中道具图片的展示、分区、排序与多选交互，使大量静态候选在桌面和移动端仍可识别、可操作。
 
-## Questions to resolve
+## Decision
 
-- 攻击方与防守方候选如何分区，是否再按效果族、属性或其他稳定维度分组。
-- 全量平铺、折叠分区、搜索、选择器或其他交互模型如何取舍。
-- 已选项、显式无道具、身份锁定项和部分支持警告如何显示。
-- 多选、取消最后一项、跨分区选择及选择顺序采用什么规则。
-- 本地化名称、tooltip、键盘操作、触控目标和响应式布局的最低契约。
+产品决策已确认。权威记录：
+
+- 讨论：[[20260805_discussion_held-item-track-usage-defaults-and-form-switch|docs/traces/discussion/2026-08-05-held-item-track-usage-defaults-and-form-switch.md]]
+- Spec change（accepted）：`docs/spec/changes/2026-08-05-held-item-pick-and-form-switch.md`
+- 最终 spec：`docs/spec/held-item-pick.md`
+
+摘要：Track 同构 Move Track（折叠已选 chip / 展开多选 + Picker）；不做效果族分区；空选中 → `["none"]`；部分支持警告保留；形态道具在池中为「将切换形态」导航提示。Picker：搜索 + 标签「专属」「威力」「能力」「树果」（AND）+「当前持有者可用」；无 `none`；目录 = 侧资格池 + 合法形态道具。
+
+## Related
+
+- [[20260731_open_choose-default-held-items-from-usage-data]]
+- [[20260803_open_decide-whether-held-items-may-change-pokemon-form]]
+- [[20260805_open_iterate-held-item-default-recompute-untouched-policy]]
+
+## Acceptance
+
+- [x] Spec change 已 accepted，且 `docs/spec/held-item-pick.md` 反映展示与选择契约
+- [ ] 实现完成后：逐条审计讨论记录中与本 issue 相关的决定均已落地
+- [ ] 桌面与移动端均可完成池内多选、Picker 筛选添加、形态确认与锁定只读
 
 ## Non-goals
 
 - 不决定 sprite 的来源或加载路径。
-- 不决定基于使用率的默认选择。
-- 不改变道具候选资格、效果计算或结果面板信息层级。
-
-## Acceptance direction
-
-- 明确桌面与移动端的信息架构和选择状态机。
-- 分区与排序不改变候选资格或计算身份。
-- 名称、锁定态、警告和多选操作均具备可验收的可访问行为。
+- 不在本 issue 单独重开使用率默认或形态映射（见相关 issue / 同一 change）。

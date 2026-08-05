@@ -6,22 +6,35 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST", "NEEDS-TRIAGE"]
 created_at: "2026-07-31T08:48:00Z"
-updated_at: "2026-08-03T08:24:00Z"
+updated_at: "2026-08-05T03:35:00Z"
 ---
 ## Goal
 
 攻击方与防守方 Held item Track 的默认选择应考虑当前 Battle Pokémon Identity 的道具使用率，而不是仅依赖静态目录顺序。
 
-## Questions to resolve
+## Decision
 
-- 使用哪个 Champions 双打赛季与数据源作为 source of truth。
-- 默认选一个还是多个道具，以及“无道具”是否参与默认选择。
-- 使用率记录与 PokeAPI item identity 的关联、缺失记录和不可识别道具如何处理。
-- Mega 形态强制 Mega Stone 时，锁定规则如何覆盖使用率默认值。
-- 切换 Battle Pokémon Identity 或恢复已保存 Matchup 时，何时重新计算默认值。
+产品决策已确认。权威记录：
 
-## Acceptance direction
+- 讨论：[[docs/traces/discussion/2026-08-05-held-item-track-usage-defaults-and-form-switch]]
+- Spec change（accepted）：`docs/spec/changes/2026-08-05-held-item-pick-and-form-switch.md`
+- 最终 spec：`docs/spec/held-item-pick.md`
 
-- 默认值规则确定、可复现，并同时适用于攻击方与防守方。
-- 使用率只决定默认选择或排序，不改变道具候选资格。
-- 用户显式选择和 Mega Stone 锁定不会被异步使用率结果覆盖。
+摘要：Champions 默认赛季；Mega 继承 base；top 10 为高使用率边界；默认选中边界内全部非形态触发且有资格的道具；`none` / `nothing` 不进默认；不 backfill；不扩大 frozen 资格（形态例外另见形态 issue）；untouched 异步写入；Identity 变更重走默认；恢复 Matchup 不覆盖。重算策略迭代：[[20260805_open_iterate-held-item-default-recompute-untouched-policy]]。
+
+## Related
+
+- [[20260803_open_decide-held-item-track-presentation-and-selection-model]]
+- [[20260803_open_decide-whether-held-items-may-change-pokemon-form]]
+- [[20260805_open_iterate-held-item-default-recompute-untouched-policy]]
+
+## Acceptance
+
+- [x] Spec change 已 accepted，且 `docs/spec/held-item-pick.md` 反映使用率池与默认契约
+- [ ] 实现完成后：逐条审计讨论记录中与本 issue 相关的决定均已落地
+- [ ] 攻防双方默认规则可复现；用户显式选择与形态锁定不被异步使用率覆盖
+
+## Non-goals
+
+- 不把 Smogon chaos 订为 source of truth。
+- 不在本 issue 迭代 untouched 粒度（见独立 issue）。
