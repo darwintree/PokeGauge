@@ -37,10 +37,21 @@ export async function rankPokemonOptionsByChampionsUsage(
   if (usageIds.length === 0) return options
 
   const byId = new Map(options.map((option) => [option.id, option]))
-  const usageIdSet = new Set(usageIds)
+  const megasBySpecies = new Map<UpstreamResourceId, BattlePokemonOption[]>()
+  for (const option of options) {
+    if (!option.isMega) continue
+    const megas = megasBySpecies.get(option.speciesId)
+    if (megas) megas.push(option)
+    else megasBySpecies.set(option.speciesId, [option])
+  }
+  const ranked = usageIds.flatMap((id) => {
+    const base = byId.get(id)
+    return base ? [base, ...(megasBySpecies.get(base.speciesId) ?? [])] : []
+  })
+  const rankedIds = new Set(ranked.map((option) => option.id))
   return [
-    ...usageIds.flatMap((id) => byId.get(id) ?? []),
-    ...options.filter((option) => !usageIdSet.has(option.id)),
+    ...ranked,
+    ...options.filter((option) => !rankedIds.has(option.id)),
   ]
 }
 

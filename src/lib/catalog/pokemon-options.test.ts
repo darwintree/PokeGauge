@@ -32,4 +32,14 @@ describe("Pokemon option ranking", () => {
 
     expect(ranked.slice(0, 2).map((option) => option.id)).toEqual([727, 445])
   })
+
+  it("ranks Mega forms directly after their base form", async () => {
+    setChampionsPokemonUsageFetcherForTest(async () => [6])
+    const options = await listAttackers("en")
+
+    const ranked = await rankPokemonOptionsByChampionsUsage(options)
+
+    expect(ranked.slice(0, 3).map((option) => option.id)).toEqual([6, 10034, 10035])
+    expect(ranked.filter((option) => option.id === 10034)).toHaveLength(1)
+  })
 })
