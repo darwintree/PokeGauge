@@ -120,8 +120,8 @@ export function HeldItemTrack({
     }
     const next = selectedIds.includes(id)
       ? selectedIds.filter((itemId) => itemId !== id)
-      : [...selectedIds.filter((itemId) => itemId !== "none"), id]
-    // Coerce empty selection to none without requiring none in the usage pool order.
+      : [...selectedIds, id]
+    // Empty selection always floors to none; none may coexist with ordinary items.
     onChange(next.length === 0 ? ["none"] : orderedPoolSelection(displayPoolIds, next))
   }
 
@@ -171,13 +171,10 @@ export function HeldItemTrack({
             // Form-trigger affordances only on unlocked Identities; locks are ordinary selected chips.
             const formTrigger =
               lockedId === null && typeof id === "number" && isFormTriggerItem(id)
-            const accessibleLabel = [
-              label,
-              formTrigger
-                ? intl.formatMessage({ id: "track.item.formTrigger.hint" })
-                : null,
-              warningText,
-            ].filter(Boolean).join(", ")
+            const formHint = formTrigger
+              ? intl.formatMessage({ id: "track.item.formTrigger.hint" })
+              : null
+            const detailParts = [label, formHint, warningText].filter(Boolean)
 
             return (
               <TrackOption
@@ -185,10 +182,8 @@ export function HeldItemTrack({
                 layout="icon"
                 pressed={!formTrigger && selectedIds.includes(id)}
                 disabled={lockedId !== null}
-                ariaLabel={accessibleLabel}
-                tooltip={[label, formTrigger
-                  ? intl.formatMessage({ id: "track.item.formTrigger.hint" })
-                  : null, warningText].filter(Boolean).join("\n")}
+                ariaLabel={detailParts.join(", ")}
+                tooltip={detailParts.join("\n")}
                 modifier={{ kind: "core" }}
                 className={cn(
                   "relative max-lg:size-11",

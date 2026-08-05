@@ -10,11 +10,7 @@ import {
   type TrackState,
 } from "@/lib/scenario"
 
-function sameIds(a: readonly number[], b: readonly number[]): boolean {
-  return a.length === b.length && a.every((id, index) => id === b[index])
-}
-
-function sameHeldItemIds(a: readonly HeldItemId[], b: readonly HeldItemId[]): boolean {
+function sameIds<T>(a: readonly T[], b: readonly T[]): boolean {
   return a.length === b.length && a.every((id, index) => id === b[index])
 }
 
@@ -177,37 +173,44 @@ export function useCatalogTransitionSync(
     const previousAttackerIds = defaultAttackerItemIdsRef.current
     const previousDefenderIds = defaultDefenderItemIdsRef.current
     const attackerDefaultsChanged =
-      !sameHeldItemIds(previousAttackerPool, catalog.defaultAttackerItemPoolIds) ||
-      !sameHeldItemIds(previousAttackerIds, catalog.defaultAttackerItemIds)
+      !sameIds(previousAttackerPool, catalog.defaultAttackerItemPoolIds) ||
+      !sameIds(previousAttackerIds, catalog.defaultAttackerItemIds)
     const defenderDefaultsChanged =
-      !sameHeldItemIds(previousDefenderPool, catalog.defaultDefenderItemPoolIds) ||
-      !sameHeldItemIds(previousDefenderIds, catalog.defaultDefenderItemIds)
+      !sameIds(previousDefenderPool, catalog.defaultDefenderItemPoolIds) ||
+      !sameIds(previousDefenderIds, catalog.defaultDefenderItemIds)
     if (!attackerDefaultsChanged && !defenderDefaultsChanged) return
     defaultAttackerItemPoolIdsRef.current = [...catalog.defaultAttackerItemPoolIds]
     defaultDefenderItemPoolIdsRef.current = [...catalog.defaultDefenderItemPoolIds]
     defaultAttackerItemIdsRef.current = [...catalog.defaultAttackerItemIds]
     defaultDefenderItemIdsRef.current = [...catalog.defaultDefenderItemIds]
-    setTrackState((state) => ({
-      ...state,
-      ...(attackerDefaultsChanged &&
+    setTrackState((state) => {
+      let next = state
+      if (
+        attackerDefaultsChanged &&
         !attackerItemsTouchedRef.current &&
-        sameHeldItemIds(state.attackerItemPoolIds, previousAttackerPool) &&
-        sameHeldItemIds(state.attackerItemIds, previousAttackerIds)
-        ? {
-            attackerItemPoolIds: [...catalog.defaultAttackerItemPoolIds],
-            attackerItemIds: [...catalog.defaultAttackerItemIds],
-          }
-        : {}),
-      ...(defenderDefaultsChanged &&
+        sameIds(state.attackerItemPoolIds, previousAttackerPool) &&
+        sameIds(state.attackerItemIds, previousAttackerIds)
+      ) {
+        next = {
+          ...next,
+          attackerItemPoolIds: [...catalog.defaultAttackerItemPoolIds],
+          attackerItemIds: [...catalog.defaultAttackerItemIds],
+        }
+      }
+      if (
+        defenderDefaultsChanged &&
         !defenderItemsTouchedRef.current &&
-        sameHeldItemIds(state.defenderItemPoolIds, previousDefenderPool) &&
-        sameHeldItemIds(state.defenderItemIds, previousDefenderIds)
-        ? {
-            defenderItemPoolIds: [...catalog.defaultDefenderItemPoolIds],
-            defenderItemIds: [...catalog.defaultDefenderItemIds],
-          }
-        : {}),
-    }))
+        sameIds(state.defenderItemPoolIds, previousDefenderPool) &&
+        sameIds(state.defenderItemIds, previousDefenderIds)
+      ) {
+        next = {
+          ...next,
+          defenderItemPoolIds: [...catalog.defaultDefenderItemPoolIds],
+          defenderItemIds: [...catalog.defaultDefenderItemIds],
+        }
+      }
+      return next
+    })
   }, [
     catalog,
     catalog.defaultAttackerItemPoolIds,

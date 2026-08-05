@@ -53,6 +53,22 @@ function cycleAllocationIndex(
   return { ...indices, [id]: (indices[id] ?? 0) + 1 }
 }
 
+function appendHeldItemId(
+  poolIds: TrackState["attackerItemPoolIds"],
+  selectedIds: TrackState["attackerItemIds"],
+  id: TrackState["attackerItemIds"][number],
+): {
+  poolIds: TrackState["attackerItemPoolIds"]
+  selectedIds: TrackState["attackerItemIds"]
+} {
+  const nextPool = poolIds.includes(id) ? poolIds : [...poolIds, id]
+  const nextSelected = selectedIds.includes(id) ? selectedIds : [...selectedIds, id]
+  return {
+    poolIds: nextPool,
+    selectedIds: nextSelected.length > 0 ? nextSelected : ["none"],
+  }
+}
+
 export function useScenarioState(
   catalog: MatchupCatalog,
   restoredTrackState?: TrackState,
@@ -403,16 +419,11 @@ export function useScenarioState(
       if (catalog.attackerLockedItemId !== null || id === "none") return
       attackerItemsTouchedRef.current = true
       setTrackState((s) => {
-        const pool = s.attackerItemPoolIds.includes(id)
-          ? s.attackerItemPoolIds
-          : [...s.attackerItemPoolIds.filter((itemId) => itemId !== "none"), id]
-        const selected = s.attackerItemIds.includes(id)
-          ? s.attackerItemIds
-          : [...s.attackerItemIds.filter((itemId) => itemId !== "none"), id]
+        const next = appendHeldItemId(s.attackerItemPoolIds, s.attackerItemIds, id)
         return {
           ...s,
-          attackerItemPoolIds: pool,
-          attackerItemIds: selected.length > 0 ? selected : ["none"],
+          attackerItemPoolIds: next.poolIds,
+          attackerItemIds: next.selectedIds,
         }
       })
     },
@@ -420,16 +431,11 @@ export function useScenarioState(
       if (catalog.defenderLockedItemId !== null || id === "none") return
       defenderItemsTouchedRef.current = true
       setTrackState((s) => {
-        const pool = s.defenderItemPoolIds.includes(id)
-          ? s.defenderItemPoolIds
-          : [...s.defenderItemPoolIds.filter((itemId) => itemId !== "none"), id]
-        const selected = s.defenderItemIds.includes(id)
-          ? s.defenderItemIds
-          : [...s.defenderItemIds.filter((itemId) => itemId !== "none"), id]
+        const next = appendHeldItemId(s.defenderItemPoolIds, s.defenderItemIds, id)
         return {
           ...s,
-          defenderItemPoolIds: pool,
-          defenderItemIds: selected.length > 0 ? selected : ["none"],
+          defenderItemPoolIds: next.poolIds,
+          defenderItemIds: next.selectedIds,
         }
       })
     },

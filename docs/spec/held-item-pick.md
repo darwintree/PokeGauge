@@ -32,9 +32,9 @@ Rows after the first 10 do not enter the initial Held item Track.
 
 ### Default selection
 
-Every non-form-trigger item that entered the initial pool from the high-usage boundary is selected by default.
+On an unlocked Identity, the initial pool always includes `none` ahead of usage-sourced items. Every non-form-trigger item that entered the initial pool from the high-usage boundary is selected by default, and `none` is selected with them.
 
-`none` never enters usage-driven default selection. When usage is missing, empty, failed, or timed out, or when the default-selectable set is empty, selection falls back to `["none"]`, except on an Identity that locks a form item.
+`none` is not produced by Champions usage rows; it is a floor entry in the initial pool and default selection. When usage is missing, empty, failed, or timed out, or when no ordinary usage-sourced items enter the pool, selection is `["none"]` and the pool still includes `none` (plus any legal form-trigger items that entered). An Identity that locks a form item is unchanged: it exposes only the locked item.
 
 Only selected held-item ids participate in scenario generation.
 
@@ -58,7 +58,7 @@ An Identity that locks a Mega Stone, unknown Mega Stone, or Ogerpon Mask exposes
 
 Each side's Held item Track follows the Move Track information architecture: a collapsed summary of selected items, and an expanded pool with multi-select plus an add affordance. Effect-family partitions are not required.
 
-Deselecting every real item coerces selection to `["none"]`. Existing partial-support warnings remain on applicable selected items.
+`none` and ordinary items may be selected together. Deselecting every selected id coerces selection to `["none"]`, adding `none` to the displayed pool if absent. Existing partial-support warnings remain on applicable selected items.
 
 Form-trigger items in the pool present as unselected switch affordances, not as selected chips.
 
@@ -66,7 +66,7 @@ Form-trigger items in the pool present as unselected switch affordances, not as 
 
 The Held item Picker lists that side's frozen-eligible items, plus form-trigger items that are legal for the current Identity. It does not offer a full Mega Stone catalog and does not offer `none`.
 
-The Picker provides localized name search; optional AND-combined tags **exclusive**, **power**, **stat**, and **berry**; and a **holder-eligible** filter that defaults to on. With no tags selected, tag filtering is inactive. Critical-hit, accuracy, and Utility Umbrella items have no tags and appear when tag filtering is inactive or when name search matches.
+The Picker provides localized name search; an optional single-select tag among **exclusive**, **power**, **stat**, and **berry**; and a **holder-eligible** filter that defaults to on. With no tag selected, tag filtering is inactive. Selecting another tag replaces the previous one; selecting the active tag again clears it. Critical-hit, accuracy, and Utility Umbrella items have no tags and appear when tag filtering is inactive or when name search matches.
 
 Tag membership:
 
@@ -91,7 +91,7 @@ Restoring a saved Matchup restores saved held-item state and is not overwritten 
 
 - Usage rank determines initial pool order among usage-sourced items.
 - Manually added ordinary items are selected immediately.
-- Deselecting an ordinary item retains it in the track pool unless selection coerces to `["none"]` with no other real items selected.
+- Deselecting an ordinary item retains it in the track pool. Deselecting every selected id coerces selection to `["none"]`.
 - Attacker and defender sides use the same contract, each against their own Identity and side eligibility.
 
 ## Error Rules
@@ -113,9 +113,9 @@ No stable state may pair a Battle Pokémon Identity with a held-item selection t
 ## Acceptance Criteria
 
 - Only boundary-eligible ordinary items and legal form-trigger items from the first 10 Champions usage rows enter the initial usage-sourced pool; skipped rows do not backfill.
-- Default selection selects every non-form-trigger usage-sourced pool item and never usage-selects `none` or form-trigger items.
+- Default selection on an unlocked Identity includes `none` plus every non-form-trigger usage-sourced pool item; form-trigger items are never default-selected.
 - Missing usage data yields the defined fallback without blocking the Picker.
 - A Mega Identity with an upstream base species entry exposes the same ordered item usage rows as that species; without one, it produces no usage rows.
 - Confirming a form-trigger item switches Identity via the Pokémon re-select transition; cancel leaves state unchanged; locked forms leave only via the Pokémon Selector.
-- Picker AND tags, holder-eligible default, ordering, ordinary add-and-select, and form-trigger navigation behave as specified.
+- Picker single-select tags, holder-eligible default, ordering, ordinary add-and-select, and form-trigger navigation behave as specified.
 - Untouched usage initialization, Identity change re-initialization, and saved Matchup restore behave as specified.

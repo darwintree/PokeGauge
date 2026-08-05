@@ -15,18 +15,16 @@ import { DEFAULT_USAGE_TIMEOUT_MS, withTimeout } from "./champions-defaults"
 function orderItemUsageRecords(
   records: ChampionsItemUsageRecord[],
 ): ChampionsItemUsageRecord[] {
-  const sorted = records.toSorted((a, b) => {
-    const byRank = a.rank - b.rank
-    if (byRank !== 0) return byRank
-    const byUsage =
+  const sorted = records.toSorted(
+    (a, b) =>
+      a.rank - b.rank ||
       (b.percentage ?? Number.NEGATIVE_INFINITY) -
-      (a.percentage ?? Number.NEGATIVE_INFINITY)
-    if (byUsage !== 0) return byUsage
-    const byName = a.championsItemName.localeCompare(b.championsItemName)
-    if (byName !== 0) return byName
-    return (a.itemId ?? Number.POSITIVE_INFINITY) - (b.itemId ?? Number.POSITIVE_INFINITY)
-  })
+        (a.percentage ?? Number.NEGATIVE_INFINITY) ||
+      a.championsItemName.localeCompare(b.championsItemName) ||
+      (a.itemId ?? Number.POSITIVE_INFINITY) - (b.itemId ?? Number.POSITIVE_INFINITY),
+  )
 
+  // Keep null itemId rows (nothing / unmapped) in the top-10 window; dedupe mapped ids only.
   const seen = new Set<number>()
   const ordered: ChampionsItemUsageRecord[] = []
   for (const record of sorted) {
@@ -91,13 +89,13 @@ export async function resolveDefaultHeldItemPick(input: {
     }
 
     return {
-      poolIds,
-      selectedIds: selectedIds.length > 0 ? selectedIds : [EXPLICIT_NO_ITEM_ID],
+      poolIds: [EXPLICIT_NO_ITEM_ID, ...poolIds],
+      selectedIds: [EXPLICIT_NO_ITEM_ID, ...selectedIds],
       status: "ready",
     }
   } catch {
     return {
-      poolIds: [],
+      poolIds: [EXPLICIT_NO_ITEM_ID],
       selectedIds: [EXPLICIT_NO_ITEM_ID],
       status: "unavailable",
     }

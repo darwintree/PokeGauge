@@ -104,13 +104,53 @@ describe("held-item Tracks", () => {
     expect(container.querySelector('button[aria-label="Add held item"]')).not.toBeNull()
   })
 
-  it("restores explicit no-item after removing the last unlocked item", async () => {
+  it("restores explicit no-item after clearing every selected id", async () => {
     const catalog = await getCatalogShell(445, 727, "en")
     const onChange = vi.fn()
     await renderTrack({
       catalog,
-      poolIds: [247],
-      selectedIds: [247],
+      poolIds: ["none", 247],
+      selectedIds: ["none", 247],
+      selectableIds: new Set([445]),
+      onChange,
+      onAdd: vi.fn(),
+      onFormTriggerConfirm: vi.fn(),
+    })
+
+    await act(async () => {
+      ;(container.querySelector(
+        'button[aria-label="Life Orb"]',
+      ) as HTMLButtonElement).click()
+      await Promise.resolve()
+    })
+    expect(onChange).toHaveBeenCalledWith(["none"])
+
+    onChange.mockClear()
+    await renderTrack({
+      catalog,
+      poolIds: ["none", 247],
+      selectedIds: ["none"],
+      selectableIds: new Set([445]),
+      onChange,
+      onAdd: vi.fn(),
+      onFormTriggerConfirm: vi.fn(),
+    })
+    await act(async () => {
+      ;(container.querySelector(
+        'button[aria-label="No held item"]',
+      ) as HTMLButtonElement).click()
+      await Promise.resolve()
+    })
+    expect(onChange).toHaveBeenCalledWith(["none"])
+  })
+
+  it("keeps none selected when toggling an ordinary item on", async () => {
+    const catalog = await getCatalogShell(445, 727, "en")
+    const onChange = vi.fn()
+    await renderTrack({
+      catalog,
+      poolIds: ["none", 247],
+      selectedIds: ["none"],
       selectableIds: new Set([445]),
       onChange,
       onAdd: vi.fn(),
@@ -124,7 +164,7 @@ describe("held-item Tracks", () => {
       await Promise.resolve()
     })
 
-    expect(onChange).toHaveBeenCalledWith(["none"])
+    expect(onChange).toHaveBeenCalledWith(["none", 247])
   })
 
   it("locks the matching Ogerpon Mask", async () => {
