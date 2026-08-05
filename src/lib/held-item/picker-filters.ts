@@ -40,17 +40,16 @@ function holderGatesAllow(
   holder: HeldItemPickerHolder,
 ): boolean {
   for (const gate of gates) {
-    if (gate.kind === "holder-species" && !gate.speciesIds.includes(holder.speciesId)) {
-      return false
-    }
-    if (
-      gate.kind === "holder-identity" &&
-      !gate.battlePokemonIds.includes(holder.battlePokemonId)
-    ) {
-      return false
-    }
-    if (gate.kind === "eviolite-eligible" && !holder.evioliteEligible) {
-      return false
+    switch (gate.kind) {
+      case "holder-species":
+        if (!gate.speciesIds.includes(holder.speciesId)) return false
+        break
+      case "holder-identity":
+        if (!gate.battlePokemonIds.includes(holder.battlePokemonId)) return false
+        break
+      case "eviolite-eligible":
+        if (!holder.evioliteEligible) return false
+        break
     }
   }
   return true
@@ -94,7 +93,7 @@ export function heldItemMatchesPickerFilters(
   option: Pick<CatalogOption<HeldItemId>, "id" | "label">,
   filters: {
     query: string
-    tags: readonly HeldItemPickerTag[]
+    tag: HeldItemPickerTag | null
     holderEligible: boolean
     holder: HeldItemPickerHolder
     selectableIds?: ReadonlySet<BattlePokemonId>
@@ -105,9 +104,8 @@ export function heldItemMatchesPickerFilters(
   if (query && !option.label.toLowerCase().includes(query)) {
     return false
   }
-  if (filters.tags.length > 0) {
-    const tags = new Set(heldItemPickerTags(option.id))
-    if (!filters.tags.every((tag) => tags.has(tag))) return false
+  if (filters.tag && !heldItemPickerTags(option.id).includes(filters.tag)) {
+    return false
   }
   if (
     filters.holderEligible &&
@@ -124,13 +122,11 @@ export function listHeldItemPickerOptions(input: {
   battlePokemonId: BattlePokemonId
   selectableIds: ReadonlySet<BattlePokemonId>
 }): CatalogOption<HeldItemId>[] {
-  const frozenIds = input.side === "attacker"
-    ? ATTACKER_HELD_ITEM_IDS
-    : DEFENDER_HELD_ITEM_IDS
-  const frozen = frozenIds.map((id) => heldItemCatalogOption(id, input.locale))
+  const frozenIds =
+    input.side === "attacker" ? ATTACKER_HELD_ITEM_IDS : DEFENDER_HELD_ITEM_IDS
   const frozenIdSet = new Set<HeldItemId>(frozenIds)
+  const options = frozenIds.map((id) => heldItemCatalogOption(id, input.locale))
 
-  const extras: CatalogOption<HeldItemId>[] = []
   for (const itemId of formTriggerItemIds()) {
     if (frozenIdSet.has(itemId)) continue
     if (
@@ -142,8 +138,8 @@ export function listHeldItemPickerOptions(input: {
     ) {
       continue
     }
-    extras.push(heldItemCatalogOption(itemId, input.locale))
+    options.push(heldItemCatalogOption(itemId, input.locale))
   }
 
-  return [...frozen, ...extras]
+  return options
 }

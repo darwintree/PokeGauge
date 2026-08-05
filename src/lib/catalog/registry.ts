@@ -125,8 +125,10 @@ export async function getCatalogShell(
         : "ready",
     defaultMovePoolIds: [],
     defaultMoveIds: [],
-    defaultAttackerItemPoolIds: attackerLockedItemId === null ? [] : [attackerLockedItemId],
-    defaultDefenderItemPoolIds: defenderLockedItemId === null ? [] : [defenderLockedItemId],
+    defaultAttackerItemPoolIds:
+      attackerLockedItemId === null ? ["none"] : [attackerLockedItemId],
+    defaultDefenderItemPoolIds:
+      defenderLockedItemId === null ? ["none"] : [defenderLockedItemId],
     defaultAttackerItemIds: [attackerLockedItemId ?? "none"],
     defaultDefenderItemIds: [defenderLockedItemId ?? "none"],
     defaultAttackerAbilityIds: attackerAbilities.map((ability) => ability.id),

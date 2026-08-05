@@ -55,11 +55,11 @@ it("builds the top-10 boundary without backfill and selects non-form-trigger ite
   })
 
   expect(result.status).toBe("ready")
-  expect(result.poolIds).toEqual([717, 247])
-  expect(result.selectedIds).toEqual([247])
+  expect(result.poolIds).toEqual(["none", 717, 247])
+  expect(result.selectedIds).toEqual(["none", 247])
 })
 
-it("falls back to none when usage is empty or only form-triggers remain", async () => {
+it("keeps none in the pool and selection when usage is empty or only form-triggers remain", async () => {
   setChampionsItemUsageFetcherForTest(async (battlePokemonId) => [
     record(battlePokemonId, { itemId: 717, rank: 1, percentage: 100, championsItemName: "Charizardite Y" }),
   ])
@@ -72,7 +72,7 @@ it("falls back to none when usage is empty or only form-triggers remain", async 
       selectableIds: selectable,
     }),
   ).resolves.toEqual({
-    poolIds: [717],
+    poolIds: ["none", 717],
     selectedIds: ["none"],
     status: "ready",
   })
@@ -89,7 +89,7 @@ it("falls back to none when usage is empty or only form-triggers remain", async 
       selectableIds: selectable,
     }),
   ).resolves.toEqual({
-    poolIds: [],
+    poolIds: ["none"],
     selectedIds: ["none"],
     status: "unavailable",
   })

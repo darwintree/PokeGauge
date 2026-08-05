@@ -1,9 +1,9 @@
-import { FormattedMessage, useIntl } from "react-intl"
 import { useMemo, useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import { Toggle } from "@/components/ui/toggle"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import type { CatalogOption } from "@/lib/catalog"
 import {
   heldItemMatchesPickerFilters,
@@ -16,11 +16,31 @@ import {
 } from "@/lib/held-item"
 import type { SupportedLocale } from "@/lib/i18n"
 import type { BattlePokemonId } from "@/lib/resources"
-
-import { PickerDialog } from "../../pickers/picker-dialog"
 import { cn } from "@/lib/utils"
 
+import { PickerDialog } from "../../pickers/picker-dialog"
+
 const TAGS: HeldItemPickerTag[] = ["exclusive", "power", "stat", "berry"]
+
+function isHeldItemPickerTag(value: string | undefined): value is HeldItemPickerTag {
+  return (
+    value === "exclusive" ||
+    value === "power" ||
+    value === "stat" ||
+    value === "berry"
+  )
+}
+
+type HeldItemPickerDialogProps = {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  side: "attacker" | "defender"
+  locale: SupportedLocale
+  holder: HeldItemPickerHolder
+  selectableIds: ReadonlySet<BattlePokemonId>
+  onSelect: (id: number) => void
+  onFormTrigger: (id: number) => void
+}
 
 export function HeldItemPickerDialog({
   open,
@@ -31,19 +51,10 @@ export function HeldItemPickerDialog({
   selectableIds,
   onSelect,
   onFormTrigger,
-}: {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  side: "attacker" | "defender"
-  locale: SupportedLocale
-  holder: HeldItemPickerHolder
-  selectableIds: ReadonlySet<BattlePokemonId>
-  onSelect: (id: number) => void
-  onFormTrigger: (id: number) => void
-}) {
+}: HeldItemPickerDialogProps) {
   const intl = useIntl()
   const [query, setQuery] = useState("")
-  const [tags, setTags] = useState<HeldItemPickerTag[]>([])
+  const [tag, setTag] = useState<HeldItemPickerTag | null>(null)
   const [holderEligible, setHolderEligible] = useState(true)
 
   const options = useMemo(
@@ -60,20 +71,12 @@ export function HeldItemPickerDialog({
   const filtered = options.filter((option) =>
     heldItemMatchesPickerFilters(option, {
       query,
-      tags,
+      tag,
       holderEligible,
       holder,
       selectableIds,
     }),
   )
-
-  function toggleTag(tag: HeldItemPickerTag) {
-    setTags((current) =>
-      current.includes(tag)
-        ? current.filter((value) => value !== tag)
-        : [...current, tag],
-    )
-  }
 
   function choose(option: CatalogOption<HeldItemId>) {
     if (typeof option.id !== "number") return
@@ -85,16 +88,18 @@ export function HeldItemPickerDialog({
     onOpenChange(false)
   }
 
+  function resetFilters() {
+    setQuery("")
+    setTag(null)
+    setHolderEligible(true)
+  }
+
   return (
     <PickerDialog
       open={open}
       onOpenChange={(next) => {
         onOpenChange(next)
-        if (!next) {
-          setQuery("")
-          setTags([])
-          setHolderEligible(true)
-        }
+        if (!next) resetFilters()
       }}
       title={intl.formatMessage({ id: "track.addItem" })}
       searchLabel={intl.formatMessage({ id: "track.item.search" })}
@@ -103,19 +108,26 @@ export function HeldItemPickerDialog({
       onQueryChange={setQuery}
       beforeList={
         <div className="flex flex-col gap-2">
-          <div className="flex flex-wrap gap-1.5">
-            {TAGS.map((tag) => (
-              <Toggle
-                key={tag}
-                pressed={tags.includes(tag)}
+          <ToggleGroup
+            value={tag ? [tag] : []}
+            onValueChange={(value) => {
+              const next = value[0]
+              setTag(isHeldItemPickerTag(next) ? next : null)
+            }}
+            spacing={0}
+            className="flex flex-wrap gap-1.5"
+          >
+            {TAGS.map((value) => (
+              <ToggleGroupItem
+                key={value}
+                value={value}
                 size="sm"
                 className="h-7 px-2 text-[11px] font-bold"
-                onPressedChange={() => toggleTag(tag)}
               >
-                <FormattedMessage id={`track.item.tag.${tag}`} />
-              </Toggle>
+                <FormattedMessage id={`track.item.tag.${value}`} />
+              </ToggleGroupItem>
             ))}
-          </div>
+          </ToggleGroup>
           <Label className="flex min-w-0 items-center justify-between gap-2 text-xs font-bold">
             <FormattedMessage id="track.item.holderEligible" />
             <Switch
@@ -133,7 +145,8 @@ export function HeldItemPickerDialog({
     >
       {filtered.map((option) => {
         const sprite = typeof option.id === "number" ? itemSprite(option.id) : null
-        const formTrigger = typeof option.id === "number" && isFormTriggerItem(option.id)
+        const formTrigger =
+          typeof option.id === "number" && isFormTriggerItem(option.id)
         return (
           <button
             key={String(option.id)}
