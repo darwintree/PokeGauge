@@ -11,6 +11,9 @@ import type { MoveSnapshotPatch } from "./move-snapshot-row"
 import { MoveSnapshotRow } from "./move-snapshot-row"
 import { cn } from "@/lib/utils"
 
+const collapsedSelectedMoveChipClass =
+  "pointer-events-auto relative inline-flex max-w-full items-center gap-1 rounded-[9px] border-2 border-card-border bg-paper px-1.5 py-0.5 transition-colors active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-ink [&:is(:hover,:active,:focus-visible)]:border-ink [&:is(:hover,:active,:focus-visible)]:bg-signal-yellow [&:is(:hover,:active,:focus-visible)]:shadow-hud-chip"
+
 export type MoveTrackProps = {
   label: string
   options: CatalogMoveOption[]
@@ -169,7 +172,7 @@ export function MoveTrack({
                     <button
                       key={snapshot.id}
                       type="button"
-                      className="pointer-events-auto relative inline-flex max-w-full items-center gap-1 rounded-[9px] border-2 border-ink bg-signal-yellow px-1.5 py-0.5 shadow-hud-chip active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-ink"
+                      className={collapsedSelectedMoveChipClass}
                       onClick={() => selectSnapshot(snapshot.id)}
                     >
                       <TypeBadge type={option.type} />
