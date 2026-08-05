@@ -1,21 +1,20 @@
-import { readFileSync } from "node:fs"
-import path from "node:path"
 import { toID } from "@smogon/calc"
 import { describe, expect, it } from "vitest"
 
 import {
   FROZEN_HELD_ITEM_IDS,
   FROZEN_HELD_ITEMS,
+  HELD_ITEM_SPRITES_COMMIT,
+  itemSpriteUrl,
 } from "@/lib/held-item"
 
 import { RESOURCE_DIAGNOSTICS } from "./generated/diagnostics"
 import { GENERATED_HELD_ITEMS } from "./generated/held-items"
+import { GENERATED_MEGA_STONES } from "./generated/mega-stones"
 import { GENERATED_POKEMON } from "./generated/pokemon"
 
-const PNG_SIGNATURE = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]
-
 describe("generated Held-item resources", () => {
-  it("covers exactly the frozen numeric inventory with localized names and sprites", () => {
+  it("covers exactly the frozen numeric inventory with localized names and sprite paths", () => {
     const resources = Object.values(GENERATED_HELD_ITEMS)
 
     expect(resources).toHaveLength(85)
@@ -25,21 +24,15 @@ describe("generated Held-item resources", () => {
     expect(resources.every((item) =>
       Object.values(item.names).every((name) => name.length > 0)
     )).toBe(true)
-
-    for (const item of resources) {
-      const sprite = readFileSync(
-        path.join(process.cwd(), "public/items", item.spriteFilename),
-      )
-      expect(sprite.length).toBeGreaterThan(PNG_SIGNATURE.length)
-      expect([...sprite.subarray(0, PNG_SIGNATURE.length)]).toEqual(PNG_SIGNATURE)
-    }
+    expect(resources.every((item) => item.spriteSourcePath.startsWith("sprites/items/"))).toBe(
+      true,
+    )
   })
 
   it("records PokeAPI slugs and reviewed generation-specific sprite paths", () => {
     expect(GENERATED_HELD_ITEMS[236]).toMatchObject({
       slug: "stick",
       names: { en: "Leek" },
-      spriteFilename: "stick.png",
       spriteSourcePath: "sprites/items/stick.png",
     })
     expect(GENERATED_HELD_ITEMS[247].spriteSourcePath).toBe(
@@ -53,6 +46,31 @@ describe("generated Held-item resources", () => {
         /^sprites\/items\/gen9\//,
       )
     }
+  })
+
+  it("records Mega Stone sprite source paths", () => {
+    const stones = Object.values(GENERATED_MEGA_STONES)
+    expect(stones).toHaveLength(47)
+    expect(stones.every((item) => item.spriteSourcePath.startsWith("sprites/items/"))).toBe(
+      true,
+    )
+    expect(GENERATED_MEGA_STONES[699].spriteSourcePath).toBe(
+      "sprites/items/charizardite-x.png",
+    )
+  })
+
+  it("builds pinned hotlink URLs for frozen items and Mega Stones", () => {
+    expect(itemSpriteUrl(247)).toBe(
+      `https://raw.githubusercontent.com/PokeAPI/sprites/${HELD_ITEM_SPRITES_COMMIT}/sprites/items/life-orb.png`,
+    )
+    expect(itemSpriteUrl(699)).toBe(
+      `https://raw.githubusercontent.com/PokeAPI/sprites/${HELD_ITEM_SPRITES_COMMIT}/sprites/items/charizardite-x.png`,
+    )
+    expect(itemSpriteUrl(1181)).toBe(
+      `https://raw.githubusercontent.com/PokeAPI/sprites/${HELD_ITEM_SPRITES_COMMIT}/sprites/items/gen8/utility-umbrella.png`,
+    )
+    expect(itemSpriteUrl("unknown-mega-stone")).toBeNull()
+    expect(itemSpriteUrl("none")).toBeNull()
   })
 
   it("joins each PokeAPI identity to its reviewed Showdown identity", () => {

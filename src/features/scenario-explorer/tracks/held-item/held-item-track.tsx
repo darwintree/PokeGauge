@@ -1,4 +1,4 @@
-import { CircleSlash, Gem, Plus } from "lucide-react"
+import { Gem, Plus } from "lucide-react"
 import { useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
@@ -15,9 +15,7 @@ import {
   formTriggerIdentityFor,
   heldItemWarning,
   isFormTriggerItem,
-  isMegaStone,
   itemAriaLabel,
-  itemSprite,
   type HeldItemId,
 } from "@/lib/held-item"
 import type { SupportedLocale } from "@/lib/i18n"
@@ -28,6 +26,7 @@ import { cn } from "@/lib/utils"
 import { TrackOption, TrackOptionGroup } from "../common/track-option"
 import { TrackPanel } from "../common/track-panel"
 import { HeldItemPickerDialog } from "./held-item-picker-dialog"
+import { HeldItemSpriteIcon } from "./held-item-sprite-icon"
 import { orderedPoolSelection } from "./ordered-pool-selection"
 
 type HeldItemTrackProps = {
@@ -42,25 +41,6 @@ type HeldItemTrackProps = {
   lockedId?: HeldItemId | null
   expanded?: boolean
   onToggle?: () => void
-}
-
-function ItemIcon({ id, className }: { id: HeldItemId; className?: string }) {
-  const sprite = itemSprite(id)
-  if (sprite) {
-    return (
-      <img
-        src={`/items/${sprite}`}
-        alt=""
-        className={cn("size-6 object-contain", className)}
-      />
-    )
-  }
-  return (
-    <CircleSlash
-      className={cn("size-6 text-hud-muted/60", className)}
-      aria-hidden
-    />
-  )
 }
 
 export function HeldItemTrack({
@@ -147,7 +127,7 @@ export function HeldItemTrack({
           <span className="flex items-center gap-1">
             {selectedIds.map((id) => (
               <span key={String(id)} title={itemAriaLabel(id, locale)}>
-                <ItemIcon id={id} className="size-4" />
+                <HeldItemSpriteIcon id={id} className="size-4" />
               </span>
             ))}
           </span>
@@ -191,9 +171,7 @@ export function HeldItemTrack({
                 )}
                 onToggle={() => toggle(id)}
               >
-                {isMegaStone(id) && !itemSprite(id)
-                  ? <Gem className="size-6" />
-                  : <ItemIcon id={id} />}
+                <HeldItemSpriteIcon id={id} />
                 {warning && (
                   <span
                     aria-hidden

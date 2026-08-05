@@ -87,6 +87,16 @@ Changing the side's Battle Pokémon Identity, including a confirmed form-trigger
 
 Restoring a saved Matchup restores saved held-item state and is not overwritten by usage defaults.
 
+### Sprite loading
+
+Held-item Track chips, Picker rows, locked Identity item chips, and result provenance item icons that share the held-item sprite helper load icons by runtime URL against the PokeAPI/sprites repository at commit `8dfa3d97e953caaafaafd4963eff7621811af08e`. The URL path is that item's recorded repository-relative sprite source path, including `sprites/items/gen8/` and `sprites/items/gen9/` when required.
+
+Frozen held-item pool items and Mega Stones with a recorded sprite source path expose a URL. Synthetic `unknown-mega-stone` has no sprite source path.
+
+When no sprite URL exists or the image fails to load, those surfaces use one shared placeholder affordance for every such item.
+
+First-party hosting may replace the GitHub origin while keeping the same pinned sprite bytes, source paths, and placeholder rules.
+
 ## State Rules
 
 - Usage rank determines initial pool order among usage-sourced items.
@@ -104,7 +114,7 @@ No stable state may pair a Battle Pokémon Identity with a held-item selection t
 
 ## Out of Scope
 
-- Sprite loading paths.
+- Pokémon species sprite hosting.
 - Frozen-85 damage compilation, result-panel information hierarchy, and ordinary eligibility whitelist contents, except where form-trigger exposure and Identity transition are defined above.
 - In-battle mid-turn forme changes, item consumption, or history.
 - Smogon chaos as an item-usage source.
@@ -119,3 +129,4 @@ No stable state may pair a Battle Pokémon Identity with a held-item selection t
 - Confirming a form-trigger item switches Identity via the Pokémon re-select transition; cancel leaves state unchanged; locked forms leave only via the Pokémon Selector.
 - Picker single-select tags, always-on current-holder eligibility, ordering, ordinary add-and-select, and form-trigger navigation behave as specified.
 - Untouched usage initialization, Identity change re-initialization, and saved Matchup restore behave as specified.
+- Path-backed frozen items and Mega Stones resolve icons through the pinned sprites commit and recorded source paths; missing path or load failure shows the shared placeholder.

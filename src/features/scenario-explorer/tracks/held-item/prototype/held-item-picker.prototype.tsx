@@ -11,6 +11,7 @@ import { FormattedMessage, useIntl } from "react-intl"
 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { HELD_ITEM_SPRITES_COMMIT } from "@/lib/held-item"
 import { cn } from "@/lib/utils"
 
 const TAGS = ["exclusive", "power", "stat", "berry"] as const
@@ -26,16 +27,16 @@ type MockItem = {
 }
 
 const MOCK_ITEMS: MockItem[] = [
-  { id: 1, label: "Choice Specs", sprite: "choice-specs.png", tag: "power", holderEligible: true },
-  { id: 2, label: "Life Orb", sprite: "life-orb.png", tag: "power", holderEligible: true },
-  { id: 3, label: "Assault Vest", sprite: "assault-vest.png", tag: "stat", holderEligible: true },
-  { id: 4, label: "Eviolite", sprite: "eviolite.png", tag: "stat", holderEligible: true },
-  { id: 5, label: "Occa Berry", sprite: "occa-berry.png", tag: "berry", holderEligible: true },
-  { id: 6, label: "Babiri Berry", sprite: "babiri-berry.png", tag: "berry", holderEligible: false },
-  { id: 7, label: "Hearthflame Mask", sprite: "hearthflame-mask.png", tag: "exclusive", formTrigger: true, holderEligible: true },
-  { id: 8, label: "Cornerstone Mask", sprite: "cornerstone-mask.png", tag: "exclusive", formTrigger: true, holderEligible: true },
-  { id: 9, label: "Black Glasses", sprite: "black-glasses.png", tag: "power", holderEligible: false },
-  { id: 10, label: "Adamant Orb", sprite: "adamant-orb.png", tag: "exclusive", holderEligible: false },
+  { id: 1, label: "Choice Specs", sprite: "sprites/items/choice-specs.png", tag: "power", holderEligible: true },
+  { id: 2, label: "Life Orb", sprite: "sprites/items/life-orb.png", tag: "power", holderEligible: true },
+  { id: 3, label: "Assault Vest", sprite: "sprites/items/assault-vest.png", tag: "stat", holderEligible: true },
+  { id: 4, label: "Eviolite", sprite: "sprites/items/eviolite.png", tag: "stat", holderEligible: true },
+  { id: 5, label: "Occa Berry", sprite: "sprites/items/occa-berry.png", tag: "berry", holderEligible: true },
+  { id: 6, label: "Babiri Berry", sprite: "sprites/items/babiri-berry.png", tag: "berry", holderEligible: false },
+  { id: 7, label: "Hearthflame Mask", sprite: "sprites/items/gen9/hearthflame-mask.png", tag: "exclusive", formTrigger: true, holderEligible: true },
+  { id: 8, label: "Cornerstone Mask", sprite: "sprites/items/gen9/cornerstone-mask.png", tag: "exclusive", formTrigger: true, holderEligible: true },
+  { id: 9, label: "Black Glasses", sprite: "sprites/items/black-glasses.png", tag: "power", holderEligible: false },
+  { id: 10, label: "Adamant Orb", sprite: "sprites/items/adamant-orb.png", tag: "exclusive", holderEligible: false },
 ]
 
 function filterItems(items: MockItem[], query: string, tag: Tag | null) {
@@ -167,7 +168,7 @@ export function HeldItemPickerPrototype() {
                 >
                   <span className="grid size-7 place-items-center rounded-md bg-token-bg">
                     <img
-                      src={`/items/${item.sprite}`}
+                      src={`https://raw.githubusercontent.com/PokeAPI/sprites/${HELD_ITEM_SPRITES_COMMIT}/${item.sprite}`}
                       alt=""
                       className="size-5 object-contain [image-rendering:pixelated]"
                     />

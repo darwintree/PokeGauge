@@ -1,8 +1,8 @@
 import type { CatalogOption } from "@/lib/catalog"
 import { localeMessages, type SupportedLocale } from "@/lib/i18n"
-import { isMegaStone, megaStoneLabel } from "./mega-stones"
-import { GENERATED_HELD_ITEMS } from "@/lib/resources/generated/held-items"
 import type { NormalizedHeldItem } from "@/lib/resources"
+import { GENERATED_HELD_ITEMS } from "@/lib/resources/generated/held-items"
+import { GENERATED_MEGA_STONES } from "@/lib/resources/generated/mega-stones"
 
 import {
   ATTACKER_HELD_ITEM_IDS,
@@ -12,10 +12,15 @@ import {
   type HeldItemPool,
   type HeldItemWarning,
 } from "./inventory"
+import { isMegaStone, megaStoneLabel } from "./mega-stones"
 import {
   EXPLICIT_NO_ITEM_ID,
   type HeldItemId,
 } from "./types"
+
+/** Pinned PokeAPI/sprites commit for held-item icon hotlinks. */
+export const HELD_ITEM_SPRITES_COMMIT =
+  "8dfa3d97e953caaafaafd4963eff7621811af08e"
 
 export const HELD_ITEM_STORAGE_KEY = "pokemon-damage-calc:held-item-added-boosts"
 
@@ -26,12 +31,21 @@ export const MASK_BY_BATTLE_POKEMON_ID: Readonly<Record<number, number>> = {
 }
 
 const heldItems = GENERATED_HELD_ITEMS as Record<number, NormalizedHeldItem>
+const megaStones = GENERATED_MEGA_STONES as Record<number, NormalizedHeldItem>
 
 function numericId(id: string | number): number | undefined {
   if (typeof id === "number") return Number.isInteger(id) ? id : undefined
   if (!/^\d+$/.test(id)) return undefined
   const parsed = Number(id)
   return Number.isSafeInteger(parsed) ? parsed : undefined
+}
+
+function spriteSourcePathFor(id: string | number): string | null {
+  const parsed = numericId(id)
+  if (parsed === undefined) return null
+  return heldItems[parsed]?.spriteSourcePath
+    ?? megaStones[parsed]?.spriteSourcePath
+    ?? null
 }
 
 export function heldItemDescriptor(
@@ -71,11 +85,10 @@ export function itemAriaLabel(
     : heldItems[parsed]?.names[locale] ?? String(id)
 }
 
-export function itemSprite(id: string | number): string | null {
-  const parsed = numericId(id)
-  return parsed === undefined
-    ? null
-    : heldItems[parsed]?.spriteFilename ?? null
+export function itemSpriteUrl(id: string | number): string | null {
+  const sourcePath = spriteSourcePathFor(id)
+  if (!sourcePath) return null
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/${HELD_ITEM_SPRITES_COMMIT}/${sourcePath}`
 }
 
 export function itemIsHiddenNeutral(id: string | number): boolean {
