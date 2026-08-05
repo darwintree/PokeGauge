@@ -6,7 +6,7 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-15T02:45:00Z"
-updated_at: "2026-08-05T09:30:00Z"
+updated_at: "2026-08-05T10:31:00Z"
 ---
 ## Goal
 
@@ -31,7 +31,10 @@ updated_at: "2026-08-05T09:30:00Z"
 
 - [[archive/20260805_closed_ability-track-none|Ability Track none]]
 - [[20260805_open_ability-init-projection-to-weather-terrain-stage|Ability init projection to Weather Terrain Stage]]
-- [[20260805_open_ordinary-hit-ability-damage-modifiers|Ordinary-hit ability damage modifiers]]
+- [[20260805_open_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]
+- [[20260805_open_ability-critical-hit-and-accuracy-modifiers|Ability critical-hit and accuracy modifiers]]
+- [[20260805_open_ability-stage-and-screen-bypass|Ability stage and screen bypass]]
+- [[20260805_open_ability-contact-and-held-item-interactions|Ability contact and held-item interactions]]
 - [[20260805_open_green-dot-conditional-ability-effects|Green-dot conditional ability effects]]
 - [[20260805_open_ability-immunities-and-type-exceptions|Ability immunities and type exceptions]]
 - [[20260805_open_result-side-move-type-rewrite-and-protean-stab|Result-side move-type rewrite and Protean STAB]]
