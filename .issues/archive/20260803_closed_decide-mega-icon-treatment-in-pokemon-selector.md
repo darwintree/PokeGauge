@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "b782e64a-b63e-4e1b-a7c2-e11af70071d5"
 title: "Decide Mega icon treatment in Pokémon Selector"
-status: "open"
+status: "closed"
 priority: "medium"
 labels: ["FEATURE-REQUEST", "NEEDS-TRIAGE"]
 created_at: "2026-08-03T04:31:00Z"
-updated_at: "2026-08-03T08:24:00Z"
+updated_at: "2026-08-05T01:40:00Z"
 ---
 ## Goal
 
@@ -32,3 +32,15 @@ updated_at: "2026-08-03T08:24:00Z"
 - 基础 Pokémon Form 与每个 Mega Battle Pokémon Identity 在所有 Selector 状态下均可无歧义识别。
 - 标识不只依赖颜色，并具有明确的 accessible name 或等价文本。
 - 图标不会改变选择行为、候选排序或 Battle Pokémon Identity 语义。
+
+## Resolution
+
+2026-08-05：移除 Pokémon Selector 中的 Mega 图标（sprite corner badge 及手绘 Mega gem SVG）。
+
+- 识别方式：Mega 与 X/Y 变体由现有本地化名称与形态短标签无歧义识别（如 "Mega Charizard X" / "超级喷火龙Ｘ"、compact 行 "Mega X"），不再使用图标。
+- 显示范围：候选行、搜索结果、same-species 分组与 trigger 均不显示 Mega 图标；`isMega` 仅保留给排序（Mega first）与 Mega Stone/Ability 锁定，无视觉呈现。
+- 可交互性：图标不存在，无与整行选择冲突的问题。
+- 无障碍：行文本即 accessible name，不依赖颜色；删除的图标原为 `aria-hidden` 装饰，不影响键盘与读屏语义。
+- 与既有选项共存：same-species forms 与 Mega first 开关、候选排序、Battle Pokémon Identity 语义均不变。
+
+验收方向满足：所有 Selector 状态下通过文本无歧义识别；标识不依赖颜色且具备 accessible name；图标不改变选择行为。

@@ -27,23 +27,6 @@ function battlePokemonMatches(
   return matchesQuery && matchesTypes
 }
 
-function MegaBadge() {
-  return (
-    <span
-      aria-hidden
-      className="absolute right-0 bottom-0 grid size-5 place-items-center rounded-full border border-ink bg-ink text-paper"
-    >
-      <svg viewBox="0 0 16 16" className="size-3" fill="none">
-        <path
-          d="M8 1.5 13 6 9.5 14 8 9.5 6.5 14 3 6 8 1.5Z"
-          fill="currentColor"
-        />
-        <path d="m5.4 6.2 2.6 2 2.6-2L8 3.8 5.4 6.2Z" fill="var(--ink)" />
-      </svg>
-    </span>
-  )
-}
-
 function BattlePokemonPickerItem({
   option,
   current,
@@ -69,13 +52,12 @@ function BattlePokemonPickerItem({
       )}
       onClick={onSelect}
     >
-      <span className={cn("relative shrink-0", compact ? "mx-auto block size-14" : "size-12")}>
+      <span className={cn("shrink-0", compact ? "mx-auto block size-14" : "size-12")}>
         <img
           src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${option.id}.png`}
           alt=""
           className="size-full object-contain [image-rendering:pixelated]"
         />
-        {option.isMega && <MegaBadge />}
       </span>
       <span className={cn("min-w-0", compact && "mt-1 block text-center")}>
         <span className={cn("block truncate font-bold", compact ? "text-xs" : "text-sm")}>
