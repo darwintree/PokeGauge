@@ -35,7 +35,7 @@ updated_at: "2026-08-05T09:30:00Z"
 ## References
 
 - [[../docs/traces/discussion/2026-08-05-ability-effects-first-freeze-scope|特性效果首批冻结范围讨论记录]] §3–§6
-- 相关基建：[[20260805_open_ability-track-none|Ability Track none]]
+- 相关基建：[[archive/20260805_closed_ability-track-none|Ability Track none]]
 
 ## Open questions
 

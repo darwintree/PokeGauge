@@ -403,12 +403,6 @@ export function scenarioSnapshotMatchesCatalog(
     (catalog.defenderLockedItemId === null ||
       state.defenderItemIds.length === 1 &&
       state.defenderItemIds[0] === catalog.defenderLockedItemId) &&
-    (catalog.attackerLockedAbilityId === null ||
-      state.attackerAbilityIds.length === 1 &&
-      state.attackerAbilityIds[0] === catalog.attackerLockedAbilityId) &&
-    (catalog.defenderLockedAbilityId === null ||
-      state.defenderAbilityIds.length === 1 &&
-      state.defenderAbilityIds[0] === catalog.defenderLockedAbilityId) &&
     hasOnlyKnownIds(
       state.attackerAbilityIds,
       new Set(catalog.attackerAbilities.map((ability) => ability.id)),

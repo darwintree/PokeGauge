@@ -59,6 +59,7 @@ export const jaMessages: Record<string, string> = {
     "track.attackerItem": "攻撃側の道具",
     "track.defenderItem": "防御側の道具",
     "track.ability.unknown": "不明な特性",
+    "track.ability.none": "特性なし",
     "track.item.none": "もちものなし",
     "track.item.unknownMegaStone": "不明なメガストーン",
     "track.addItem": "もちものを追加",

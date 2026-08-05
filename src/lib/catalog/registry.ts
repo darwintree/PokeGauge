@@ -18,6 +18,7 @@ import {
   abilityOptions,
   listAttackers,
   listDefenders,
+  noAbilityOption,
   snapshotCapableMoveOptions,
   statLabels,
 } from "./resource-options"
@@ -67,12 +68,14 @@ export async function getCatalogShell(
     abilityOptions(attackerResource.abilityIds, locale),
     abilityOptions(defenderResource.abilityIds, locale),
   ])
-  const attackerAbilities = attackerResource.isMega
+  const attackerIdentityAbilities = attackerResource.isMega
     ? allAttackerAbilities.slice(0, 1)
     : allAttackerAbilities
-  const defenderAbilities = defenderResource.isMega
+  const defenderIdentityAbilities = defenderResource.isMega
     ? allDefenderAbilities.slice(0, 1)
     : allDefenderAbilities
+  const attackerAbilities = [noAbilityOption(locale), ...attackerIdentityAbilities]
+  const defenderAbilities = [noAbilityOption(locale), ...defenderIdentityAbilities]
 
   const moves = (await snapshotCapableMoveOptions(locale, activeMoveCategory)).map(
     (move) => ({
@@ -131,12 +134,12 @@ export async function getCatalogShell(
       defenderLockedItemId === null ? ["none"] : [defenderLockedItemId],
     defaultAttackerItemIds: [attackerLockedItemId ?? "none"],
     defaultDefenderItemIds: [defenderLockedItemId ?? "none"],
-    defaultAttackerAbilityIds: attackerAbilities.map((ability) => ability.id),
-    defaultDefenderAbilityIds: defenderAbilities.map((ability) => ability.id),
+    defaultAttackerAbilityIds: attackerIdentityAbilities.map((ability) => ability.id),
+    defaultDefenderAbilityIds: defenderIdentityAbilities.map((ability) => ability.id),
     attackerLockedItemId,
     defenderLockedItemId,
-    attackerLockedAbilityId: attackerResource.isMega ? attackerAbilities[0]?.id ?? UNKNOWN_ABILITY_ID : null,
-    defenderLockedAbilityId: defenderResource.isMega ? defenderAbilities[0]?.id ?? UNKNOWN_ABILITY_ID : null,
+    attackerLockedAbilityId: attackerResource.isMega ? attackerIdentityAbilities[0]?.id ?? UNKNOWN_ABILITY_ID : null,
+    defenderLockedAbilityId: defenderResource.isMega ? defenderIdentityAbilities[0]?.id ?? UNKNOWN_ABILITY_ID : null,
     attackerPreservesItem: attackerResource.battlePokemonId === 10079,
     defenderPreservesItem: defenderResource.battlePokemonId === 10079,
   }

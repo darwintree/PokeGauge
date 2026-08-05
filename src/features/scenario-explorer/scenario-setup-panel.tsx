@@ -163,7 +163,6 @@ export function ScenarioSetupPanel({
         selectedIds={trackState.attackerAbilityIds}
         onChange={state.setAttackerAbilityIds}
         onReset={state.resetAttackerAbilities}
-        locked={catalog.attackerLockedAbilityId !== null}
         expanded={activeId === "attackerAbilities"}
         onToggle={() => toggle("attackerAbilities")}
       />
@@ -175,7 +174,6 @@ export function ScenarioSetupPanel({
         selectedIds={trackState.defenderAbilityIds}
         onChange={state.setDefenderAbilityIds}
         onReset={state.resetDefenderAbilities}
-        locked={catalog.defenderLockedAbilityId !== null}
         expanded={activeId === "defenderAbilities"}
         onToggle={() => toggle("defenderAbilities")}
       />

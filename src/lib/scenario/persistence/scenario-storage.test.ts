@@ -9,6 +9,7 @@ import {
   type ScenarioSnapshotInput,
 } from "@/lib/scenario"
 import { defaultTrackState } from "@/lib/scenario"
+import { NO_ABILITY_ID } from "@/lib/ability"
 
 function scenario(): ScenarioSnapshotInput {
   return {
@@ -188,6 +189,18 @@ describe("scenario storage", () => {
     expect(scenarioSnapshotMatchesCatalog(snapshot, currentCatalog)).toBe(true)
   })
 
+  it("round trips and validates no ability independently from Unknown ability", async () => {
+    const { currentCatalog, snapshot } = await compatibleScenario()
+    snapshot.trackState.attackerAbilityIds = [NO_ABILITY_ID, 8]
+    snapshot.trackState.defenderAbilityIds = [NO_ABILITY_ID]
+    saveScenarioSnapshot(snapshot)
+
+    const restored = loadScenarioSnapshot()
+    expect(restored?.trackState.attackerAbilityIds).toEqual([NO_ABILITY_ID, 8])
+    expect(restored?.trackState.defenderAbilityIds).toEqual([NO_ABILITY_ID])
+    expect(restored && scenarioSnapshotMatchesCatalog(restored, currentCatalog)).toBe(true)
+  })
+
   it("accepts valid side-specific numeric Held item selections", async () => {
     const { currentCatalog, snapshot } = await compatibleScenario()
     snapshot.trackState.attackerItemIds = [247]
@@ -244,5 +257,23 @@ describe("scenario storage", () => {
         catalog,
       ),
     ).toBe(true)
+  })
+
+  it("accepts every allowed restored Mega ability selection", async () => {
+    const catalog = await getCatalogShell(10034, 727, "en", "physical")
+    const fixed = catalog.attackerLockedAbilityId
+    if (fixed === null) throw new Error("Expected fixed Mega ability")
+    for (const selection of [[NO_ABILITY_ID], [fixed], [NO_ABILITY_ID, fixed]]) {
+      const trackState = defaultTrackState(catalog)
+      trackState.attackerAbilityIds = selection
+
+      expect(scenarioSnapshotMatchesCatalog({
+        version: 4,
+        attackerId: 10034,
+        defenderId: 727,
+        moveCategory: "physical",
+        trackState,
+      }, catalog)).toBe(true)
+    }
   })
 })

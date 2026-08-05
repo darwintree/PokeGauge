@@ -59,6 +59,7 @@ export const zhHantMessages: Record<string, string> = {
     "track.attackerItem": "攻擊方道具",
     "track.defenderItem": "防守方道具",
     "track.ability.unknown": "未知特性",
+    "track.ability.none": "無特性",
     "track.item.none": "無道具",
     "track.item.unknownMegaStone": "未知 Mega 石",
     "track.addItem": "新增道具",

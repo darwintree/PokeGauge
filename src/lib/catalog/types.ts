@@ -19,7 +19,9 @@ export type CatalogMoveOption = CatalogOption<UpstreamResourceId> & {
   isSpread: boolean
 }
 
-export type CatalogAbilityOption = CatalogOption<UpstreamResourceId>
+export type CatalogAbilityOption = CatalogOption<UpstreamResourceId> & {
+  accessibleLabel?: string
+}
 
 export type Matchup = {
   attackerId: BattlePokemonId

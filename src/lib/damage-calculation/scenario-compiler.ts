@@ -27,7 +27,7 @@ import {
   type NormalizedBattlePokemon,
 } from "@/lib/resources"
 
-import { ADAPTABILITY_ABILITY_ID, UNKNOWN_ABILITY_ID } from "@/lib/ability"
+import { ADAPTABILITY_ABILITY_ID, NO_ABILITY_ID, UNKNOWN_ABILITY_ID } from "@/lib/ability"
 import {
   type CompiledDamageInput,
   type DamageFormulaBranch,
@@ -430,13 +430,14 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   )
   const attackerHasAdaptability =
     raw.attackerAbilityId === ADAPTABILITY_ABILITY_ID
-  const attackerAbilityState: SourceState = raw.attackerAbilityId === UNKNOWN_ABILITY_ID
+  const attackerAbilityState: SourceState =
+    raw.attackerAbilityId === UNKNOWN_ABILITY_ID || raw.attackerAbilityId === NO_ABILITY_ID
     ? "neutral"
     : attackerHasAdaptability
     ? hasOriginalTypeStab ? "effective" : "inactive"
     : "unsupported"
   const defenderAbilityState: SourceState =
-    raw.defenderAbilityId === UNKNOWN_ABILITY_ID
+    raw.defenderAbilityId === UNKNOWN_ABILITY_ID || raw.defenderAbilityId === NO_ABILITY_ID
       ? "neutral"
       : raw.defenderAbilityId === ADAPTABILITY_ABILITY_ID
       ? "inactive"

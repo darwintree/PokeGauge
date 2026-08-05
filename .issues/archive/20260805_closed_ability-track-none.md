@@ -2,15 +2,15 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "b14815db-011e-40a2-bc68-141930312d9a"
 title: "Ability Track none"
-status: "open"
+status: "closed"
 priority: "high"
 labels: ["FEATURE-REQUEST", "READY-FOR-AGENT"]
 created_at: "2026-08-05T09:25:00Z"
-updated_at: "2026-08-05T09:46:00Z"
+updated_at: "2026-08-05T09:59:00Z"
 ---
 ## Parent issue
 
-[[20260715_open_implement-pokemon-ability-effects|Implement Pokémon ability effects]]
+[[../20260715_open_implement-pokemon-ability-effects|Implement Pokémon ability effects]]
 
 ## Goal
 
@@ -43,8 +43,8 @@ updated_at: "2026-08-05T09:46:00Z"
 
 ## References
 
-- [[../docs/traces/discussion/2026-08-05-ability-effects-first-freeze-scope|特性效果首批冻结范围讨论记录]] §2
-- [[../docs/research/2026-08-05-champions-ability-damage-relevance-and-first-freeze|Champions ability damage-calc relevance and first freeze]]
+- [[../../docs/traces/discussion/2026-08-05-ability-effects-first-freeze-scope|特性效果首批冻结范围讨论记录]] §2
+- [[../../docs/research/2026-08-05-champions-ability-damage-relevance-and-first-freeze|Champions ability damage-calc relevance and first freeze]]
 
 ## Out of scope
 
@@ -54,10 +54,18 @@ updated_at: "2026-08-05T09:46:00Z"
 
 ## Acceptance criteria
 
-- [ ] 攻防双方的普通形态与所有 Mega 都可选择绝对首位的 `—`，且 Track 仍满足至少一项选择。
-- [ ] Mega 只允许 `none` 与其固定特性／`Unknown ability`，可单选或并选；其他锁定契约不变。
-- [ ] 默认、Reset、身份切换与异步默认刷新均不会自动选择 `none` 或覆盖用户选择。
-- [ ] `none` 与 `Unknown ability` 保持不同身份，可保存和恢复；旧存档仍可读取。
-- [ ] `none` 编译为 `neutral`，不贡献特性效果、不显示状态点，并从全部结果展示中隐藏。
-- [ ] `none` 不修改 Weather、Terrain、Stage，且效果等价分支继续按既有规则合并。
-- [ ] 讨论记录 §2 可逐条审计。
+- [x] 攻防双方的普通形态与所有 Mega 都可选择绝对首位的 `—`，且 Track 仍满足至少一项选择。
+- [x] Mega 只允许 `none` 与其固定特性／`Unknown ability`，可单选或并选；其他锁定契约不变。
+- [x] 默认、Reset、身份切换与异步默认刷新均不会自动选择 `none` 或覆盖用户选择。
+- [x] `none` 与 `Unknown ability` 保持不同身份，可保存和恢复；旧存档仍可读取。
+- [x] `none` 编译为 `neutral`，不贡献特性效果、不显示状态点，并从全部结果展示中隐藏。
+- [x] `none` 不修改 Weather、Terrain、Stage，且效果等价分支继续按既有规则合并。
+- [x] 讨论记录 §2 可逐条审计。
+
+## Resolution
+
+- 新增独立 `NO_ABILITY_ID`，由 catalog 向普通形态和 Mega 双方候选绝对首位注入本地化 `—`，默认与 Reset 只使用合法真实／固定／Unknown 特性。
+- Mega Ability Track 改为可编辑，但候选仍限制为 `none` 与固定特性／`Unknown ability`；Held item 与形态锁定保持不变。
+- Scenario compiler 将 `none` 作为 neutral provenance 输入，沿用 calculation identity 合并等价分支；结果摘要统一隐藏该来源。
+- Scenario persistence 接受普通形态与 Mega 的 `none` 单选／并选，旧数值存档无需迁移。
+- 已通过 62 个相关测试、`pnpm lint`、`pnpm build`，并完成桌面与 390px 窄屏 UI review/correct；实际验证 Mega 选择、Reset 与刷新恢复。
