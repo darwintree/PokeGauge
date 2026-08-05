@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { IntlProvider } from "react-intl"
 
 import { AppHeader } from "@/components/app-header"
+import { HeldItemPickerPrototype } from "@/features/scenario-explorer/tracks/held-item/prototype/held-item-picker.prototype"
 import { MoveTrackCollapsedChipsPrototype } from "@/features/scenario-explorer/tracks/move/prototype/move-track-collapsed-chips.prototype"
 import { ScenarioExplorerPage } from "@/features/scenario-explorer/scenario-explorer-page"
 import { TooltipProvider } from "@/components/ui/tooltip"
@@ -29,6 +30,8 @@ function App() {
           <div className="mx-auto max-w-7xl">
             {PROTOTYPE === "move-track-collapsed-chips" ? (
               <MoveTrackCollapsedChipsPrototype />
+            ) : PROTOTYPE === "held-item-picker" ? (
+              <HeldItemPickerPrototype />
             ) : (
               <ScenarioExplorerPage locale={locale} />
             )}

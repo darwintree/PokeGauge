@@ -66,7 +66,7 @@ Form-trigger items in the pool present as unselected switch affordances, not as 
 
 The Held item Picker lists that side's frozen-eligible items, plus form-trigger items that are legal for the current Identity. It does not offer a full Mega Stone catalog and does not offer `none`.
 
-The Picker provides localized name search; an optional single-select tag among **exclusive**, **power**, **stat**, and **berry**; and a **holder-eligible** filter that defaults to on. With no tag selected, tag filtering is inactive. Selecting another tag replaces the previous one; selecting the active tag again clears it. Critical-hit, accuracy, and Utility Umbrella items have no tags and appear when tag filtering is inactive or when name search matches.
+The Picker provides localized name search and an optional single-select tag among **exclusive**, **power**, **stat**, and **berry**. Listed rows are always restricted to items usable by the current holder, including form-trigger items only when the transition is legal. With no tag selected, tag filtering is inactive. Selecting another tag replaces the previous one; selecting the active tag again clears it. Critical-hit, accuracy, and Utility Umbrella items have no tags and appear when tag filtering is inactive or when name search matches.
 
 Tag membership:
 
@@ -117,5 +117,5 @@ No stable state may pair a Battle Pokémon Identity with a held-item selection t
 - Missing usage data yields the defined fallback without blocking the Picker.
 - A Mega Identity with an upstream base species entry exposes the same ordered item usage rows as that species; without one, it produces no usage rows.
 - Confirming a form-trigger item switches Identity via the Pokémon re-select transition; cancel leaves state unchanged; locked forms leave only via the Pokémon Selector.
-- Picker single-select tags, holder-eligible default, ordering, ordinary add-and-select, and form-trigger navigation behave as specified.
+- Picker single-select tags, always-on current-holder eligibility, ordering, ordinary add-and-select, and form-trigger navigation behave as specified.
 - Untouched usage initialization, Identity change re-initialization, and saved Matchup restore behave as specified.

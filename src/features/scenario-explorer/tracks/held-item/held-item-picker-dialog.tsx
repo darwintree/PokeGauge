@@ -1,9 +1,6 @@
 import { useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import type { CatalogOption } from "@/lib/catalog"
 import {
   heldItemMatchesPickerFilters,
@@ -21,15 +18,6 @@ import { cn } from "@/lib/utils"
 import { PickerDialog } from "../../pickers/picker-dialog"
 
 const TAGS: HeldItemPickerTag[] = ["exclusive", "power", "stat", "berry"]
-
-function isHeldItemPickerTag(value: string | undefined): value is HeldItemPickerTag {
-  return (
-    value === "exclusive" ||
-    value === "power" ||
-    value === "stat" ||
-    value === "berry"
-  )
-}
 
 type HeldItemPickerDialogProps = {
   open: boolean
@@ -55,7 +43,6 @@ export function HeldItemPickerDialog({
   const intl = useIntl()
   const [query, setQuery] = useState("")
   const [tag, setTag] = useState<HeldItemPickerTag | null>(null)
-  const [holderEligible, setHolderEligible] = useState(true)
 
   const options = useMemo(
     () =>
@@ -72,7 +59,6 @@ export function HeldItemPickerDialog({
     heldItemMatchesPickerFilters(option, {
       query,
       tag,
-      holderEligible,
       holder,
       selectableIds,
     }),
@@ -91,7 +77,6 @@ export function HeldItemPickerDialog({
   function resetFilters() {
     setQuery("")
     setTag(null)
-    setHolderEligible(true)
   }
 
   return (
@@ -106,39 +91,44 @@ export function HeldItemPickerDialog({
       searchPlaceholder={intl.formatMessage({ id: "track.item.search" })}
       query={query}
       onQueryChange={setQuery}
+      filtersClassName="-mx-4 -mt-4 space-y-2.5 border-b bg-token-bg/40 px-4 py-3"
       beforeList={
-        <div className="flex flex-col gap-2">
-          <ToggleGroup
-            value={tag ? [tag] : []}
-            onValueChange={(value) => {
-              const next = value[0]
-              setTag(isHeldItemPickerTag(next) ? next : null)
-            }}
-            spacing={0}
-            className="flex flex-wrap gap-1.5"
+        <div className="flex gap-1.5 overflow-x-auto overscroll-x-contain pb-0.5">
+          <button
+            type="button"
+            aria-pressed={tag === null}
+            className={cn(
+              "flex min-h-8 shrink-0 items-center rounded-full border-2 px-3 text-[11px] font-extrabold",
+              tag === null
+                ? "border-ink bg-ink text-paper"
+                : "border-card-border bg-paper text-muted-foreground hover:bg-token-bg/60",
+            )}
+            onClick={() => setTag(null)}
           >
-            {TAGS.map((value) => (
-              <ToggleGroupItem
+            <FormattedMessage id="track.item.tag.all" />
+          </button>
+          {TAGS.map((value) => {
+            const pressed = tag === value
+            return (
+              <button
                 key={value}
-                value={value}
-                size="sm"
-                className="h-7 px-2 text-[11px] font-bold"
+                type="button"
+                aria-pressed={pressed}
+                className={cn(
+                  "flex min-h-8 shrink-0 items-center rounded-full border-2 px-3 text-[11px] font-extrabold",
+                  pressed
+                    ? "border-ink bg-signal-yellow shadow-hud-chip"
+                    : "border-card-border bg-paper hover:bg-token-bg/60",
+                )}
+                onClick={() => setTag(pressed ? null : value)}
               >
                 <FormattedMessage id={`track.item.tag.${value}`} />
-              </ToggleGroupItem>
-            ))}
-          </ToggleGroup>
-          <Label className="flex min-w-0 items-center justify-between gap-2 text-xs font-bold">
-            <FormattedMessage id="track.item.holderEligible" />
-            <Switch
-              size="sm"
-              checked={holderEligible}
-              onCheckedChange={setHolderEligible}
-            />
-          </Label>
+              </button>
+            )
+          })}
         </div>
       }
-      bodyClassName="p-1"
+      bodyClassName="px-1"
       empty={
         filtered.length === 0 ? <FormattedMessage id="matchup.noMatches" /> : undefined
       }
@@ -147,29 +137,35 @@ export function HeldItemPickerDialog({
         const sprite = typeof option.id === "number" ? itemSprite(option.id) : null
         const formTrigger =
           typeof option.id === "number" && isFormTriggerItem(option.id)
+        const formHint = intl.formatMessage({ id: "track.item.formTrigger.hint" })
         return (
           <button
             key={String(option.id)}
             type="button"
-            className={cn(
-              "flex w-full items-center gap-3 border-b px-2 py-2.5 text-left last:border-b-0 hover:bg-muted/60 focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-ring",
-              formTrigger && "bg-token-bg/40",
-            )}
+            className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-3 border-b px-2 py-2.5 text-left last:border-b-0 hover:bg-muted/60 focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-ring"
             onClick={() => choose(option)}
           >
-            {sprite ? (
-              <img src={`/items/${sprite}`} alt="" className="size-6 object-contain" />
-            ) : (
-              <span className="size-6" />
-            )}
-            <span className="min-w-0 flex-1">
-              <span className="block truncate text-sm font-medium">{option.label}</span>
-              {formTrigger && (
-                <span className="block truncate text-[11px] text-muted-foreground">
-                  <FormattedMessage id="track.item.formTrigger.hint" />
-                </span>
-              )}
+            <span className="grid size-7 place-items-center rounded-md bg-token-bg">
+              {sprite ? (
+                <img
+                  src={`/items/${sprite}`}
+                  alt=""
+                  className="size-5 object-contain [image-rendering:pixelated]"
+                />
+              ) : null}
             </span>
+            <span className="min-w-0 truncate text-sm font-medium">{option.label}</span>
+            {formTrigger ? (
+              <span
+                className="rounded-[5px] bg-ink px-1.5 py-0.5 text-[9px] font-extrabold tracking-wide text-paper"
+                aria-label={formHint}
+                title={formHint}
+              >
+                FORM
+              </span>
+            ) : (
+              <span className="w-10" aria-hidden />
+            )}
           </button>
         )
       })}
