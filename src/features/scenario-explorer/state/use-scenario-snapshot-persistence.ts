@@ -13,6 +13,8 @@ export function useScenarioSnapshotPersistence({
   movesTouchedRef,
   attackerAbilitiesTouchedRef,
   defenderAbilitiesTouchedRef,
+  attackerItemsTouchedRef,
+  defenderItemsTouchedRef,
 }: {
   catalog: MatchupCatalog
   trackState: TrackState
@@ -20,6 +22,8 @@ export function useScenarioSnapshotPersistence({
   movesTouchedRef: RefObject<boolean>
   attackerAbilitiesTouchedRef: RefObject<boolean>
   defenderAbilitiesTouchedRef: RefObject<boolean>
+  attackerItemsTouchedRef: RefObject<boolean>
+  defenderItemsTouchedRef: RefObject<boolean>
 }) {
   const pendingScenarioSnapshotRef = useRef<ScenarioSnapshotInput | null>(null)
 
@@ -29,7 +33,9 @@ export function useScenarioSnapshotPersistence({
       (catalog.defaultMovePickStatus === "loading" && !movesTouchedRef.current) ||
       (catalog.defaultAbilityPickStatus === "loading" &&
         (!attackerAbilitiesTouchedRef.current ||
-          !defenderAbilitiesTouchedRef.current))
+          !defenderAbilitiesTouchedRef.current)) ||
+      (catalog.defaultItemPickStatus === "loading" &&
+        (!attackerItemsTouchedRef.current || !defenderItemsTouchedRef.current))
     if (untouchedDefaultsPending) return
     const snapshot: ScenarioSnapshotInput = {
       attackerId: catalog.matchup.attackerId,
@@ -51,11 +57,14 @@ export function useScenarioSnapshotPersistence({
     catalog.moveCategory,
     catalog.defaultAbilityPickStatus,
     catalog.defaultMovePickStatus,
+    catalog.defaultItemPickStatus,
     catalogTransitionPending,
     trackState,
     movesTouchedRef,
     attackerAbilitiesTouchedRef,
     defenderAbilitiesTouchedRef,
+    attackerItemsTouchedRef,
+    defenderItemsTouchedRef,
   ])
 
   useEffect(() => {

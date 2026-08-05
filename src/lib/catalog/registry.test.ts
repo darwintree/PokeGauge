@@ -2,8 +2,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import {
   resetChampionsAbilityUsageFetcherForTest,
+  resetChampionsItemUsageFetcherForTest,
   resetChampionsMoveUsageFetcherForTest,
   setChampionsAbilityUsageFetcherForTest,
+  setChampionsItemUsageFetcherForTest,
   setChampionsMoveUsageFetcherForTest,
 } from "@/lib/champions"
 import { getCatalogShell, resolveCatalogDefaultMovePick } from "@/lib/catalog"
@@ -16,11 +18,13 @@ import {
 afterEach(() => {
   vi.useRealTimers()
   resetChampionsAbilityUsageFetcherForTest()
+  resetChampionsItemUsageFetcherForTest()
   resetChampionsMoveUsageFetcherForTest()
 })
 
 beforeEach(() => {
   setChampionsAbilityUsageFetcherForTest(async () => [])
+  setChampionsItemUsageFetcherForTest(async () => [])
   setChampionsMoveUsageFetcherForTest(async () => [])
 })
 
@@ -122,6 +126,9 @@ describe("catalog Held-item candidates", () => {
     expect(special.defenderItems.map((item) => item.id)).toEqual(defenderIds)
     expect(physical.defaultAttackerItemIds).toEqual(["none"])
     expect(physical.defaultDefenderItemIds).toEqual(["none"])
+    expect(physical.defaultAttackerItemPoolIds).toEqual([])
+    expect(physical.defaultDefenderItemPoolIds).toEqual([])
+    expect(physical.defaultItemPickStatus).toBe("loading")
     expect(physical.attackerLockedItemId).toBeNull()
     expect(physical.defenderLockedItemId).toBeNull()
   })
@@ -135,6 +142,7 @@ describe("catalog Held-item candidates", () => {
 
     expect(knownMega.attackerItems.map((item) => item.id)).toEqual([699])
     expect(knownMega.defaultAttackerItemIds).toEqual([699])
+    expect(knownMega.defaultAttackerItemPoolIds).toEqual([699])
     expect(knownMega.attackerLockedItemId).toBe(699)
     expect(unknownMega.attackerItems.map((item) => item.id)).toEqual([
       UNKNOWN_MEGA_STONE_ID,
@@ -143,6 +151,7 @@ describe("catalog Held-item candidates", () => {
     expect(ogerpon.defenderItems.map((item) => item.id)).toEqual([2107])
     expect(ogerpon.defaultAttackerItemIds).toEqual([2106])
     expect(ogerpon.defaultDefenderItemIds).toEqual([2107])
+    expect(ogerpon.defaultItemPickStatus).toBe("ready")
     expect(ogerpon.attackerLockedItemId).toBe(2106)
     expect(ogerpon.defenderLockedItemId).toBe(2107)
   })
@@ -155,6 +164,7 @@ describe("catalog Held-item candidates", () => {
       ...ATTACKER_HELD_ITEM_IDS,
     ])
     expect(catalog.defaultAttackerItemIds).toEqual(["none"])
+    expect(catalog.defaultAttackerItemPoolIds).toEqual([])
     expect(catalog.attackerLockedItemId).toBeNull()
     expect(catalog.attackerPreservesItem).toBe(true)
   })

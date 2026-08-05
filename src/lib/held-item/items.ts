@@ -19,7 +19,7 @@ import {
 
 export const HELD_ITEM_STORAGE_KEY = "pokemon-damage-calc:held-item-added-boosts"
 
-const MASK_BY_BATTLE_POKEMON_ID: Readonly<Record<number, number>> = {
+export const MASK_BY_BATTLE_POKEMON_ID: Readonly<Record<number, number>> = {
   10273: 2106,
   10274: 2107,
   10275: 2108,

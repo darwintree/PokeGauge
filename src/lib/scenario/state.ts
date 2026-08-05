@@ -62,6 +62,8 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
     showOffenseStatValue: false,
     offenseAllocationIndices: {},
     attackerStages: [0],
+    attackerItemPoolIds: [...catalog.defaultAttackerItemPoolIds],
+    defenderItemPoolIds: [...catalog.defaultDefenderItemPoolIds],
     attackerItemIds: [...catalog.defaultAttackerItemIds],
     defenderItemIds: [...catalog.defaultDefenderItemIds],
     attackerAbilityIds: [...catalog.defaultAttackerAbilityIds],

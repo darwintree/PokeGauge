@@ -13,14 +13,18 @@ import type {
 } from "./types"
 import type { BattlePokemonId, UpstreamResourceId } from "@/lib/resources"
 
-const DEFAULT_USAGE_TIMEOUT_MS = 5_000
+export const DEFAULT_USAGE_TIMEOUT_MS = 5_000
 
-function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
+export function withTimeout<T>(
+  promise: Promise<T>,
+  timeoutMs: number,
+  label = "Default pick",
+): Promise<T> {
   let timeout: ReturnType<typeof setTimeout> | undefined
   return Promise.race([
     promise,
     new Promise<T>((_, reject) => {
-      timeout = setTimeout(() => reject(new Error("Default Move pick timed out")), timeoutMs)
+      timeout = setTimeout(() => reject(new Error(`${label} timed out`)), timeoutMs)
     }),
   ]).finally(() => {
     if (timeout) clearTimeout(timeout)

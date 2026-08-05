@@ -31,9 +31,9 @@ updated_at: "2026-08-05T03:24:00Z"
 
 ## Related
 
-- [[20260731_open_choose-default-held-items-from-usage-data]]
-- [[20260803_open_decide-held-item-track-presentation-and-selection-model]]
-- [[20260803_open_decide-whether-held-items-may-change-pokemon-form]]
+- [[archive/20260731_closed_choose-default-held-items-from-usage-data]]
+- [[archive/20260803_closed_decide-held-item-track-presentation-and-selection-model]]
+- [[archive/20260803_closed_decide-whether-held-items-may-change-pokemon-form]]
 
 ## Non-goals
 

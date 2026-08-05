@@ -138,9 +138,12 @@ function isTrackState(value: unknown): value is TrackState {
     isArrayOf(value.attackerStages, (stage): stage is TrackState["attackerStages"][number] =>
       isOneOf(stage, STAT_STAGES),
     ) &&
+    isArrayOf(value.attackerItemPoolIds, isHeldItemId) &&
+    isArrayOf(value.defenderItemPoolIds, isHeldItemId) &&
     isArrayOf(value.attackerItemIds, isHeldItemId) &&
     isArrayOf(value.defenderItemIds, isHeldItemId) &&
     isArrayOf(value.attackerAbilityIds, isInteger) &&
+
     isArrayOf(value.weathers, (weather): weather is TrackState["weathers"][number] =>
       isOneOf(weather, WEATHERS),
     ) &&
@@ -170,46 +173,60 @@ function isTrackState(value: unknown): value is TrackState {
   )
 }
 
+function withItemPools(trackState: Record<string, unknown>): Record<string, unknown> {
+  return {
+    ...trackState,
+    attackerItemPoolIds: Array.isArray(trackState.attackerItemPoolIds)
+      ? trackState.attackerItemPoolIds
+      : trackState.attackerItemIds,
+    defenderItemPoolIds: Array.isArray(trackState.defenderItemPoolIds)
+      ? trackState.defenderItemPoolIds
+      : trackState.defenderItemIds,
+  }
+}
+
 function migrateLegacyScenarioSnapshot(value: unknown): unknown {
-  if (
-    !isRecord(value) ||
-    value.version !== LEGACY_SCENARIO_STORAGE_VERSION ||
-    !isRecord(value.trackState)
-  ) {
-    return value
+  if (!isRecord(value) || !isRecord(value.trackState)) return value
+
+  if (value.version === LEGACY_SCENARIO_STORAGE_VERSION) {
+    const {
+      offenseTemplateIds,
+      offenseTemporaryTemplates,
+      defenseTemplateIds,
+      defenseTemporaryTemplates,
+      showOffenseActual,
+      showDefenseActual,
+      showResultActual,
+      probabilityMode,
+      ...trackState
+    } = value.trackState
+
+    return {
+      ...value,
+      version: SCENARIO_STORAGE_VERSION,
+      trackState: withItemPools({
+        ...trackState,
+        offensePresetIds: offenseTemplateIds,
+        offenseTemporaryPresets: offenseTemporaryTemplates,
+        defensePresetIds: defenseTemplateIds,
+        defenseTemporaryPresets: defenseTemporaryTemplates,
+        showOffenseStatValue: showOffenseActual,
+        showDefenseStatValue: showDefenseActual,
+        showResultStatValue: showResultActual,
+        probabilityMode:
+          probabilityMode === "rolls"
+            ? "classic"
+            : probabilityMode === "actual"
+              ? "battle-odds"
+              : probabilityMode,
+      }),
+    }
   }
 
-  const {
-    offenseTemplateIds,
-    offenseTemporaryTemplates,
-    defenseTemplateIds,
-    defenseTemporaryTemplates,
-    showOffenseActual,
-    showDefenseActual,
-    showResultActual,
-    probabilityMode,
-    ...trackState
-  } = value.trackState
-
+  // Current version snapshots saved before item pools existed.
   return {
     ...value,
-    version: SCENARIO_STORAGE_VERSION,
-    trackState: {
-      ...trackState,
-      offensePresetIds: offenseTemplateIds,
-      offenseTemporaryPresets: offenseTemporaryTemplates,
-      defensePresetIds: defenseTemplateIds,
-      defenseTemporaryPresets: defenseTemporaryTemplates,
-      showOffenseStatValue: showOffenseActual,
-      showDefenseStatValue: showDefenseActual,
-      showResultStatValue: showResultActual,
-      probabilityMode:
-        probabilityMode === "rolls"
-          ? "classic"
-          : probabilityMode === "actual"
-            ? "battle-odds"
-            : probabilityMode,
-    },
+    trackState: withItemPools(value.trackState),
   }
 }
 

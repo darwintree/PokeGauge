@@ -24,3 +24,16 @@ export type ChampionsAbilityUsageRecord = {
   percentage: number | null
   championsAbilityName: string
 }
+
+export type ChampionsItemUsageRecord = {
+  battlePokemonId: BattlePokemonId
+  /** null when Champions names `nothing` or an unmapped item identity. */
+  itemId: UpstreamResourceId | null
+  format: ChampionsBattleFormat
+  season: string
+  source: string
+  dataVersion: string
+  rank: number
+  percentage: number | null
+  championsItemName: string
+}
