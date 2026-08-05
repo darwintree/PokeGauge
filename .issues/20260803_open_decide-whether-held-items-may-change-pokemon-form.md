@@ -5,37 +5,36 @@ title: "Decide whether held items may change Pokémon form"
 status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST", "NEEDS-TRIAGE"]
-created_at: "2026-08-03T04:31:00Z"
-updated_at: "2026-08-03T08:24:00Z"
+created_at: "2026-08-03T04:30:00Z"
+updated_at: "2026-08-05T03:35:00Z"
 ---
 ## Goal
 
 决定选择或移除特定 Held item 时，是否允许应用主动切换到另一 Battle Pokémon Identity（即具备独立对战数据的 Pokémon Form）。
 
-## Current contract
+## Decision
 
-现有 frozen-85 Held-item spec 规定选择道具不得合成另一 Battle Pokémon Identity，并将 Mask form transitions 等形态行为排除在范围外；改变该规则需要显式 spec change。
+产品决策已确认：**允许**，经确认对话框，且仅限显式映射表内、目标可选且合法可达的形态触发道具。权威记录：
 
-## Questions to resolve
+- 讨论：[[docs/traces/discussion/2026-08-05-held-item-track-usage-defaults-and-form-switch]]
+- Spec change（accepted）：`docs/spec/changes/2026-08-05-held-item-pick-and-form-switch.md`
+- 最终 spec：`docs/spec/held-item-pick.md`
 
-- 哪些道具族允许触发形态变化：Mega Stone、Ogerpon Mask、signature Orb，或其他明确白名单。
-- 道具到 Battle Pokémon Identity 是单向建议、自动切换还是双向锁定；移除或替换道具时是否回退。
-- 宝可梦 Selector、Held item Track 与 Identity lock 中谁拥有最终身份，冲突时优先级如何确定。
-- Held item Choice Track 遇到多个可能改变 Identity 的选项时如何限制或报错。
-- 切换宝可梦、恢复保存场景和异步默认值如何保持转换原子性。
-- 形态变化只发生在配置阶段，还是还要表达战斗中的动态变身。
+摘要：点击形态道具 = 导航而非多选；确认后等同 Pokémon 重选 transition；目标 Identity 锁定对应道具；离开形态仅 Selector；目标不可选不进池。废止旧讨论中「选道具绝不切换 Identity」的绝对禁令（以 accepted spec 为准）。
+
+## Related
+
+- [[20260803_open_decide-held-item-track-presentation-and-selection-model]]
+- [[20260731_open_choose-default-held-items-from-usage-data]]
+- [[archive/20260731_closed_implement-frozen-85-item-held-item-effects|Implement frozen 85-item Held-item effects]]
+
+## Acceptance
+
+- [x] Spec change 已 accepted，且 `docs/spec/held-item-pick.md` 反映形态切换与锁定契约
+- [ ] 实现完成后：逐条审计讨论记录中与本 issue 相关的决定均已落地
+- [ ] 任一 UI 选择、保存和恢复状态都不产生道具与 Identity 相互矛盾的稳定态
 
 ## Non-goals
 
 - 不在本 issue 扩展具体道具的伤害效果。
 - 不默认实现战斗历史、回合内变身或道具消耗。
-
-## Related issues
-
-- [[archive/20260731_closed_implement-frozen-85-item-held-item-effects|Implement frozen 85-item Held-item effects]]
-
-## Acceptance direction
-
-- 明确 Battle Pokémon Identity 的唯一 owner、允许触发转换的道具集合和完整状态转换规则。
-- 任一 UI 选择、保存和恢复状态都不能产生道具与 Battle Pokémon Identity 相互矛盾的场景。
-- 明确需要修改的现有 spec 契约与不兼容行为。
