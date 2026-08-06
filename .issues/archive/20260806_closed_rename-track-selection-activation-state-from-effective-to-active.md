@@ -27,7 +27,7 @@ updated_at: "2026-08-06T08:16:00Z"
 - 同步当前代码、测试、fixture 与活跃 issue 中指向这些程序符号的命名。
 - 不修改 `docs/traces/discussion/` 或 `docs/traces/implementations/` 中的历史记录。
 - 不改变 serialized Scenario Track State；若没有持久化 provenance，则不得新增迁移层。
-- 本 issue 不阻塞 [[../20260805_open_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]，两者按落地时现有字面量适配即可。
+- 本 issue 不阻塞 [[20260805_closed_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]，两者按落地时现有字面量适配即可。
 
 ## Verification Checklist
 

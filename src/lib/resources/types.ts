@@ -70,6 +70,7 @@ export type NormalizedMove = {
   damageKind: DamageKind
   target: string
   isSpread: boolean
+  flags: string[]
 }
 
 export type GeneratedResourceDiagnostics = {

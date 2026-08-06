@@ -1,4 +1,5 @@
 export { CALC_GEN, VGC_LEVEL } from "./calc-constants"
+export { compileAbilityEffect } from "./ability"
 export {
   calculateDamageRolls,
   applyModifier,

@@ -35,7 +35,7 @@ updated_at: "2026-08-05T10:31:00Z"
 
 - Flash Fire 等充能加攻状态
 - Mold Breaker 忽略防守方特性
-- Water Bubble 的 Water 进攻与 Fire 防守减伤，见 [[20260805_open_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]
+- Water Bubble 的 Water 进攻与 Fire 防守减伤，见 [[archive/20260805_closed_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]
 
 ## Acceptance criteria
 

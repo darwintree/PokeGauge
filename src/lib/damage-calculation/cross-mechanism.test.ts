@@ -658,7 +658,7 @@ describe("cross-mechanism acceptance", () => {
       "attacker-ability": { unsupported: ["52", "75"] },
       weather: { inactive: ["sand"], neutral: ["none"] },
       "defender-stage": { inactive: ["1"], neutral: ["0"] },
-      "defender-ability": { unsupported: ["17", "47"] },
+      "defender-ability": { inactive: ["47"], unsupported: ["17"] },
       screen: {
         inactive: ["reflect", "light-screen"],
         neutral: ["none"],

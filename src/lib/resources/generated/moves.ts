@@ -18,7 +18,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "2": {
     "resourceType": "move",
@@ -38,7 +43,12 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "3": {
     "resourceType": "move",
@@ -59,7 +69,12 @@ export const GENERATED_MOVES = {
     "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "4": {
     "resourceType": "move",
@@ -80,7 +95,13 @@ export const GENERATED_MOVES = {
     "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch"
+    ]
   },
   "5": {
     "resourceType": "move",
@@ -99,7 +120,13 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch"
+    ]
   },
   "6": {
     "resourceType": "move",
@@ -118,7 +145,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "7": {
     "resourceType": "move",
@@ -137,7 +168,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch"
+    ]
   },
   "8": {
     "resourceType": "move",
@@ -156,7 +193,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch"
+    ]
   },
   "9": {
     "resourceType": "move",
@@ -175,7 +218,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch"
+    ]
   },
   "10": {
     "resourceType": "move",
@@ -194,7 +243,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "11": {
     "resourceType": "move",
@@ -213,7 +267,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "12": {
     "resourceType": "move",
@@ -232,7 +291,12 @@ export const GENERATED_MOVES = {
     "accuracy": 30,
     "damageKind": "ohko",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "13": {
     "resourceType": "move",
@@ -252,7 +316,12 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "charge",
+      "protect",
+      "mirror"
+    ]
   },
   "14": {
     "resourceType": "move",
@@ -271,7 +340,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "dance"
+    ]
   },
   "15": {
     "resourceType": "move",
@@ -290,7 +363,12 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "16": {
     "resourceType": "move",
@@ -309,7 +387,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "distance"
+    ]
   },
   "17": {
     "resourceType": "move",
@@ -328,7 +411,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "distance"
+    ]
   },
   "18": {
     "resourceType": "move",
@@ -347,7 +436,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "force-switch",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "reflectable",
+      "mirror",
+      "authentic"
+    ]
   },
   "19": {
     "resourceType": "move",
@@ -366,7 +460,15 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "charge",
+      "protect",
+      "mirror",
+      "gravity",
+      "distance"
+    ]
   },
   "20": {
     "resourceType": "move",
@@ -385,7 +487,12 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "21": {
     "resourceType": "move",
@@ -404,7 +511,13 @@ export const GENERATED_MOVES = {
     "accuracy": 75,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "22": {
     "resourceType": "move",
@@ -423,7 +536,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "23": {
     "resourceType": "move",
@@ -442,7 +560,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "24": {
     "resourceType": "move",
@@ -463,7 +587,12 @@ export const GENERATED_MOVES = {
     "maxHits": 2,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "25": {
     "resourceType": "move",
@@ -482,7 +611,12 @@ export const GENERATED_MOVES = {
     "accuracy": 75,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "26": {
     "resourceType": "move",
@@ -501,7 +635,13 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "gravity"
+    ]
   },
   "27": {
     "resourceType": "move",
@@ -520,7 +660,12 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "28": {
     "resourceType": "move",
@@ -539,7 +684,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "29": {
     "resourceType": "move",
@@ -558,7 +708,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "30": {
     "resourceType": "move",
@@ -577,7 +732,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "31": {
     "resourceType": "move",
@@ -598,7 +758,12 @@ export const GENERATED_MOVES = {
     "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "32": {
     "resourceType": "move",
@@ -617,7 +782,12 @@ export const GENERATED_MOVES = {
     "accuracy": 30,
     "damageKind": "ohko",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "33": {
     "resourceType": "move",
@@ -636,7 +806,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "34": {
     "resourceType": "move",
@@ -655,7 +830,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "35": {
     "resourceType": "move",
@@ -674,7 +855,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "36": {
     "resourceType": "move",
@@ -693,7 +879,12 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "37": {
     "resourceType": "move",
@@ -712,7 +903,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "random-opponent",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "38": {
     "resourceType": "move",
@@ -731,7 +927,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "39": {
     "resourceType": "move",
@@ -750,7 +951,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "40": {
     "resourceType": "move",
@@ -769,7 +975,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "41": {
     "resourceType": "move",
@@ -790,7 +1000,11 @@ export const GENERATED_MOVES = {
     "maxHits": 2,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "42": {
     "resourceType": "move",
@@ -811,7 +1025,11 @@ export const GENERATED_MOVES = {
     "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "43": {
     "resourceType": "move",
@@ -830,7 +1048,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "44": {
     "resourceType": "move",
@@ -849,7 +1072,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "bite"
+    ]
   },
   "45": {
     "resourceType": "move",
@@ -868,7 +1097,14 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "46": {
     "resourceType": "move",
@@ -887,7 +1123,13 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "force-switch",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "reflectable",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "47": {
     "resourceType": "move",
@@ -906,7 +1148,14 @@ export const GENERATED_MOVES = {
     "accuracy": 55,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "48": {
     "resourceType": "move",
@@ -925,7 +1174,14 @@ export const GENERATED_MOVES = {
     "accuracy": 55,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "49": {
     "resourceType": "move",
@@ -944,7 +1200,11 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "50": {
     "resourceType": "move",
@@ -963,7 +1223,14 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "authentic",
+      "mental"
+    ]
   },
   "51": {
     "resourceType": "move",
@@ -982,7 +1249,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "52": {
     "resourceType": "move",
@@ -1001,7 +1272,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "53": {
     "resourceType": "move",
@@ -1020,7 +1295,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "54": {
     "resourceType": "move",
@@ -1039,7 +1318,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "field-effect",
     "target": "users-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "55": {
     "resourceType": "move",
@@ -1058,7 +1340,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "56": {
     "resourceType": "move",
@@ -1077,7 +1363,11 @@ export const GENERATED_MOVES = {
     "accuracy": 80,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "57": {
     "resourceType": "move",
@@ -1096,7 +1386,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "58": {
     "resourceType": "move",
@@ -1115,7 +1410,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "59": {
     "resourceType": "move",
@@ -1134,7 +1433,11 @@ export const GENERATED_MOVES = {
     "accuracy": 70,
     "damageKind": "damage-ailment",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "60": {
     "resourceType": "move",
@@ -1153,7 +1456,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "61": {
     "resourceType": "move",
@@ -1172,7 +1479,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "62": {
     "resourceType": "move",
@@ -1191,7 +1502,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "63": {
     "resourceType": "move",
@@ -1210,7 +1525,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "recharge",
+      "protect",
+      "mirror"
+    ]
   },
   "64": {
     "resourceType": "move",
@@ -1229,7 +1549,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "distance"
+    ]
   },
   "65": {
     "resourceType": "move",
@@ -1248,7 +1574,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "distance"
+    ]
   },
   "66": {
     "resourceType": "move",
@@ -1267,7 +1599,12 @@ export const GENERATED_MOVES = {
     "accuracy": 80,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "67": {
     "resourceType": "move",
@@ -1286,7 +1623,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "68": {
     "resourceType": "move",
@@ -1305,7 +1647,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "specific-move",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect"
+    ]
   },
   "69": {
     "resourceType": "move",
@@ -1324,7 +1670,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "70": {
     "resourceType": "move",
@@ -1343,7 +1695,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "71": {
     "resourceType": "move",
@@ -1362,7 +1719,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-heal",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "heal"
+    ]
   },
   "72": {
     "resourceType": "move",
@@ -1381,7 +1743,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-heal",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "heal"
+    ]
   },
   "73": {
     "resourceType": "move",
@@ -1400,7 +1767,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "74": {
     "resourceType": "move",
@@ -1419,7 +1791,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "75": {
     "resourceType": "move",
@@ -1439,7 +1814,11 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "76": {
     "resourceType": "move",
@@ -1458,7 +1837,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "charge",
+      "protect",
+      "mirror"
+    ]
   },
   "77": {
     "resourceType": "move",
@@ -1477,7 +1861,13 @@ export const GENERATED_MOVES = {
     "accuracy": 75,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "powder"
+    ]
   },
   "78": {
     "resourceType": "move",
@@ -1496,7 +1886,13 @@ export const GENERATED_MOVES = {
     "accuracy": 75,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "powder"
+    ]
   },
   "79": {
     "resourceType": "move",
@@ -1515,7 +1911,13 @@ export const GENERATED_MOVES = {
     "accuracy": 75,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "powder"
+    ]
   },
   "80": {
     "resourceType": "move",
@@ -1534,7 +1936,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "random-opponent",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "dance"
+    ]
   },
   "81": {
     "resourceType": "move",
@@ -1553,7 +1961,12 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "net-good-stats",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "82": {
     "resourceType": "move",
@@ -1572,7 +1985,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "83": {
     "resourceType": "move",
@@ -1591,7 +2008,11 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "84": {
     "resourceType": "move",
@@ -1610,7 +2031,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "85": {
     "resourceType": "move",
@@ -1629,7 +2054,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "86": {
     "resourceType": "move",
@@ -1648,7 +2077,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "87": {
     "resourceType": "move",
@@ -1667,7 +2101,11 @@ export const GENERATED_MOVES = {
     "accuracy": 70,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "88": {
     "resourceType": "move",
@@ -1686,7 +2124,11 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "89": {
     "resourceType": "move",
@@ -1705,7 +2147,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "90": {
     "resourceType": "move",
@@ -1724,7 +2171,12 @@ export const GENERATED_MOVES = {
     "accuracy": 30,
     "damageKind": "ohko",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "91": {
     "resourceType": "move",
@@ -1743,7 +2195,14 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "charge",
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "92": {
     "resourceType": "move",
@@ -1762,7 +2221,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "93": {
     "resourceType": "move",
@@ -1781,7 +2245,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "94": {
     "resourceType": "move",
@@ -1800,7 +2268,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "95": {
     "resourceType": "move",
@@ -1819,7 +2291,12 @@ export const GENERATED_MOVES = {
     "accuracy": 60,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "96": {
     "resourceType": "move",
@@ -1838,7 +2315,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "97": {
     "resourceType": "move",
@@ -1857,7 +2337,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "98": {
     "resourceType": "move",
@@ -1876,7 +2359,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "99": {
     "resourceType": "move",
@@ -1895,7 +2383,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "100": {
     "resourceType": "move",
@@ -1914,7 +2407,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "101": {
     "resourceType": "move",
@@ -1933,7 +2427,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "102": {
     "resourceType": "move",
@@ -1952,7 +2450,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "authentic"
+    ]
   },
   "103": {
     "resourceType": "move",
@@ -1971,7 +2473,14 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "net-good-stats",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "104": {
     "resourceType": "move",
@@ -1990,7 +2499,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "105": {
     "resourceType": "move",
@@ -2009,7 +2521,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "heal",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "heal"
+    ]
   },
   "106": {
     "resourceType": "move",
@@ -2028,7 +2544,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "107": {
     "resourceType": "move",
@@ -2047,7 +2566,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "108": {
     "resourceType": "move",
@@ -2066,7 +2588,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "109": {
     "resourceType": "move",
@@ -2085,7 +2612,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "110": {
     "resourceType": "move",
@@ -2104,7 +2636,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "111": {
     "resourceType": "move",
@@ -2123,7 +2658,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "112": {
     "resourceType": "move",
@@ -2142,7 +2680,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "113": {
     "resourceType": "move",
@@ -2161,7 +2702,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "field-effect",
     "target": "users-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "114": {
     "resourceType": "move",
@@ -2180,7 +2724,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "whole-field-effect",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "authentic"
+    ]
   },
   "115": {
     "resourceType": "move",
@@ -2199,7 +2746,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "field-effect",
     "target": "users-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "116": {
     "resourceType": "move",
@@ -2218,7 +2768,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "117": {
     "resourceType": "move",
@@ -2237,7 +2790,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect"
+    ]
   },
   "118": {
     "resourceType": "move",
@@ -2256,7 +2813,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "119": {
     "resourceType": "move",
@@ -2275,7 +2833,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "120": {
     "resourceType": "move",
@@ -2294,7 +2853,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "121": {
     "resourceType": "move",
@@ -2313,7 +2876,12 @@ export const GENERATED_MOVES = {
     "accuracy": 75,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "122": {
     "resourceType": "move",
@@ -2332,7 +2900,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "123": {
     "resourceType": "move",
@@ -2351,7 +2924,11 @@ export const GENERATED_MOVES = {
     "accuracy": 70,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "124": {
     "resourceType": "move",
@@ -2370,7 +2947,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "125": {
     "resourceType": "move",
@@ -2389,7 +2970,11 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "126": {
     "resourceType": "move",
@@ -2408,7 +2993,11 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "127": {
     "resourceType": "move",
@@ -2427,7 +3016,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "128": {
     "resourceType": "move",
@@ -2446,7 +3040,12 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "129": {
     "resourceType": "move",
@@ -2465,7 +3064,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "130": {
     "resourceType": "move",
@@ -2484,7 +3087,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "charge",
+      "protect",
+      "mirror"
+    ]
   },
   "131": {
     "resourceType": "move",
@@ -2505,7 +3114,11 @@ export const GENERATED_MOVES = {
     "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "132": {
     "resourceType": "move",
@@ -2524,7 +3137,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "133": {
     "resourceType": "move",
@@ -2543,7 +3161,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "134": {
     "resourceType": "move",
@@ -2562,7 +3183,12 @@ export const GENERATED_MOVES = {
     "accuracy": 80,
     "damageKind": "net-good-stats",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "135": {
     "resourceType": "move",
@@ -2581,7 +3207,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "heal",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "heal"
+    ]
   },
   "136": {
     "resourceType": "move",
@@ -2600,7 +3230,13 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "gravity"
+    ]
   },
   "137": {
     "resourceType": "move",
@@ -2619,7 +3255,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "138": {
     "resourceType": "move",
@@ -2638,7 +3279,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-heal",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "heal"
+    ]
   },
   "139": {
     "resourceType": "move",
@@ -2657,7 +3303,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "ailment",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "140": {
     "resourceType": "move",
@@ -2678,7 +3329,12 @@ export const GENERATED_MOVES = {
     "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "141": {
     "resourceType": "move",
@@ -2697,7 +3353,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-heal",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "heal"
+    ]
   },
   "142": {
     "resourceType": "move",
@@ -2716,7 +3378,12 @@ export const GENERATED_MOVES = {
     "accuracy": 75,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "143": {
     "resourceType": "move",
@@ -2736,7 +3403,13 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "charge",
+      "protect",
+      "mirror",
+      "distance"
+    ]
   },
   "144": {
     "resourceType": "move",
@@ -2755,7 +3428,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "145": {
     "resourceType": "move",
@@ -2774,7 +3448,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "146": {
     "resourceType": "move",
@@ -2793,7 +3471,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch"
+    ]
   },
   "147": {
     "resourceType": "move",
@@ -2812,7 +3496,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "powder"
+    ]
   },
   "148": {
     "resourceType": "move",
@@ -2831,7 +3521,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "149": {
     "resourceType": "move",
@@ -2850,7 +3545,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "150": {
     "resourceType": "move",
@@ -2869,7 +3568,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "gravity"
+    ]
   },
   "151": {
     "resourceType": "move",
@@ -2888,7 +3590,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "152": {
     "resourceType": "move",
@@ -2908,7 +3613,12 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "153": {
     "resourceType": "move",
@@ -2927,7 +3637,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "154": {
     "resourceType": "move",
@@ -2948,7 +3662,12 @@ export const GENERATED_MOVES = {
     "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "155": {
     "resourceType": "move",
@@ -2969,7 +3688,11 @@ export const GENERATED_MOVES = {
     "maxHits": 2,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "156": {
     "resourceType": "move",
@@ -2988,7 +3711,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "heal"
+    ]
   },
   "157": {
     "resourceType": "move",
@@ -3007,7 +3734,11 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "158": {
     "resourceType": "move",
@@ -3026,7 +3757,13 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "bite"
+    ]
   },
   "159": {
     "resourceType": "move",
@@ -3045,7 +3782,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "160": {
     "resourceType": "move",
@@ -3064,7 +3804,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "161": {
     "resourceType": "move",
@@ -3083,7 +3826,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "162": {
     "resourceType": "move",
@@ -3102,7 +3849,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "163": {
     "resourceType": "move",
@@ -3122,7 +3874,12 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "164": {
     "resourceType": "move",
@@ -3141,7 +3898,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "non-sky-battle"
+    ]
   },
   "165": {
     "resourceType": "move",
@@ -3160,7 +3921,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "random-opponent",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect"
+    ]
   },
   "166": {
     "resourceType": "move",
@@ -3179,7 +3944,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "authentic"
+    ]
   },
   "167": {
     "resourceType": "move",
@@ -3200,7 +3968,12 @@ export const GENERATED_MOVES = {
     "maxHits": 3,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "168": {
     "resourceType": "move",
@@ -3219,7 +3992,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "169": {
     "resourceType": "move",
@@ -3238,7 +4016,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "170": {
     "resourceType": "move",
@@ -3257,7 +4040,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "171": {
     "resourceType": "move",
@@ -3276,7 +4063,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "172": {
     "resourceType": "move",
@@ -3295,7 +4086,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "defrost"
+    ]
   },
   "173": {
     "resourceType": "move",
@@ -3314,7 +4111,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "174": {
     "resourceType": "move",
@@ -3333,7 +4136,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "specific-move",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "authentic"
+    ]
   },
   "175": {
     "resourceType": "move",
@@ -3352,7 +4158,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "176": {
     "resourceType": "move",
@@ -3371,7 +4182,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "authentic"
+    ]
   },
   "177": {
     "resourceType": "move",
@@ -3391,7 +4205,12 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "distance"
+    ]
   },
   "178": {
     "resourceType": "move",
@@ -3410,7 +4229,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "powder"
+    ]
   },
   "179": {
     "resourceType": "move",
@@ -3429,7 +4254,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "180": {
     "resourceType": "move",
@@ -3448,7 +4278,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "authentic"
+    ]
   },
   "181": {
     "resourceType": "move",
@@ -3467,7 +4303,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "182": {
     "resourceType": "move",
@@ -3486,7 +4326,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "183": {
     "resourceType": "move",
@@ -3505,7 +4346,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch"
+    ]
   },
   "184": {
     "resourceType": "move",
@@ -3524,7 +4371,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "185": {
     "resourceType": "move",
@@ -3543,7 +4395,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "186": {
     "resourceType": "move",
@@ -3562,7 +4419,12 @@ export const GENERATED_MOVES = {
     "accuracy": 75,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "187": {
     "resourceType": "move",
@@ -3581,7 +4443,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "188": {
     "resourceType": "move",
@@ -3600,7 +4465,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "189": {
     "resourceType": "move",
@@ -3619,7 +4489,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "190": {
     "resourceType": "move",
@@ -3638,7 +4512,12 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "191": {
     "resourceType": "move",
@@ -3657,7 +4536,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "field-effect",
     "target": "opponents-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "reflectable",
+      "non-sky-battle"
+    ]
   },
   "192": {
     "resourceType": "move",
@@ -3676,7 +4559,12 @@ export const GENERATED_MOVES = {
     "accuracy": 50,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "193": {
     "resourceType": "move",
@@ -3695,7 +4583,13 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "authentic"
+    ]
   },
   "194": {
     "resourceType": "move",
@@ -3714,7 +4608,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "authentic"
+    ]
   },
   "195": {
     "resourceType": "move",
@@ -3733,7 +4630,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "ailment",
     "target": "all-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "sound",
+      "distance",
+      "authentic"
+    ]
   },
   "196": {
     "resourceType": "move",
@@ -3752,7 +4654,11 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage-lower",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "197": {
     "resourceType": "move",
@@ -3771,7 +4677,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "198": {
     "resourceType": "move",
@@ -3792,7 +4699,11 @@ export const GENERATED_MOVES = {
     "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "199": {
     "resourceType": "move",
@@ -3811,7 +4722,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "200": {
     "resourceType": "move",
@@ -3830,7 +4745,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "random-opponent",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "201": {
     "resourceType": "move",
@@ -3849,7 +4769,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "whole-field-effect",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": []
   },
   "202": {
     "resourceType": "move",
@@ -3868,7 +4789,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-heal",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "heal"
+    ]
   },
   "203": {
     "resourceType": "move",
@@ -3887,7 +4813,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "204": {
     "resourceType": "move",
@@ -3906,7 +4833,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "205": {
     "resourceType": "move",
@@ -3925,7 +4857,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "206": {
     "resourceType": "move",
@@ -3944,7 +4881,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "207": {
     "resourceType": "move",
@@ -3963,7 +4905,12 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "swagger",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "208": {
     "resourceType": "move",
@@ -3982,7 +4929,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "heal",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "heal"
+    ]
   },
   "209": {
     "resourceType": "move",
@@ -4001,7 +4952,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "210": {
     "resourceType": "move",
@@ -4020,7 +4976,12 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "211": {
     "resourceType": "move",
@@ -4039,7 +5000,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "212": {
     "resourceType": "move",
@@ -4058,7 +5024,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "reflectable",
+      "mirror"
+    ]
   },
   "213": {
     "resourceType": "move",
@@ -4077,7 +5047,14 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "authentic",
+      "mental"
+    ]
   },
   "214": {
     "resourceType": "move",
@@ -4096,7 +5073,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "215": {
     "resourceType": "move",
@@ -4115,7 +5093,13 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user-and-allies",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "sound",
+      "distance",
+      "authentic"
+    ]
   },
   "216": {
     "resourceType": "move",
@@ -4134,7 +5118,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "217": {
     "resourceType": "move",
@@ -4153,7 +5142,11 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "218": {
     "resourceType": "move",
@@ -4172,7 +5165,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "219": {
     "resourceType": "move",
@@ -4191,7 +5189,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "field-effect",
     "target": "users-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "220": {
     "resourceType": "move",
@@ -4210,7 +5211,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "221": {
     "resourceType": "move",
@@ -4229,7 +5234,12 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "defrost"
+    ]
   },
   "222": {
     "resourceType": "move",
@@ -4248,7 +5258,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "223": {
     "resourceType": "move",
@@ -4267,7 +5282,13 @@ export const GENERATED_MOVES = {
     "accuracy": 50,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch"
+    ]
   },
   "224": {
     "resourceType": "move",
@@ -4286,7 +5307,12 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "225": {
     "resourceType": "move",
@@ -4305,7 +5331,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "226": {
     "resourceType": "move",
@@ -4324,7 +5354,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "227": {
     "resourceType": "move",
@@ -4343,7 +5374,14 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "authentic",
+      "mental"
+    ]
   },
   "228": {
     "resourceType": "move",
@@ -4362,7 +5400,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "229": {
     "resourceType": "move",
@@ -4381,7 +5424,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "230": {
     "resourceType": "move",
@@ -4400,7 +5448,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "231": {
     "resourceType": "move",
@@ -4419,7 +5472,12 @@ export const GENERATED_MOVES = {
     "accuracy": 75,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "232": {
     "resourceType": "move",
@@ -4438,7 +5496,12 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "233": {
     "resourceType": "move",
@@ -4457,7 +5520,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "234": {
     "resourceType": "move",
@@ -4476,7 +5544,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "heal",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "heal"
+    ]
   },
   "235": {
     "resourceType": "move",
@@ -4495,7 +5567,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "heal",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "heal"
+    ]
   },
   "236": {
     "resourceType": "move",
@@ -4514,7 +5590,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "heal",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "heal"
+    ]
   },
   "237": {
     "resourceType": "move",
@@ -4533,7 +5613,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "238": {
     "resourceType": "move",
@@ -4553,7 +5637,12 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "239": {
     "resourceType": "move",
@@ -4572,7 +5661,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "240": {
     "resourceType": "move",
@@ -4591,7 +5684,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "whole-field-effect",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": []
   },
   "241": {
     "resourceType": "move",
@@ -4610,7 +5704,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "whole-field-effect",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": []
   },
   "242": {
     "resourceType": "move",
@@ -4629,7 +5724,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "bite"
+    ]
   },
   "243": {
     "resourceType": "move",
@@ -4648,7 +5749,10 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "specific-move",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect"
+    ]
   },
   "244": {
     "resourceType": "move",
@@ -4667,7 +5771,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "authentic"
+    ]
   },
   "245": {
     "resourceType": "move",
@@ -4686,7 +5793,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "246": {
     "resourceType": "move",
@@ -4705,7 +5817,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "247": {
     "resourceType": "move",
@@ -4724,7 +5840,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "248": {
     "resourceType": "move",
@@ -4743,7 +5864,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "249": {
     "resourceType": "move",
@@ -4762,7 +5884,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "250": {
     "resourceType": "move",
@@ -4781,7 +5908,11 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "251": {
     "resourceType": "move",
@@ -4802,7 +5933,11 @@ export const GENERATED_MOVES = {
     "maxHits": 6,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "252": {
     "resourceType": "move",
@@ -4821,7 +5956,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "253": {
     "resourceType": "move",
@@ -4840,7 +5980,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "random-opponent",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "254": {
     "resourceType": "move",
@@ -4859,7 +6005,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "255": {
     "resourceType": "move",
@@ -4878,7 +6027,10 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect"
+    ]
   },
   "256": {
     "resourceType": "move",
@@ -4897,7 +6049,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "heal",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "heal"
+    ]
   },
   "257": {
     "resourceType": "move",
@@ -4916,7 +6072,11 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-ailment",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "258": {
     "resourceType": "move",
@@ -4935,7 +6095,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "whole-field-effect",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": []
   },
   "259": {
     "resourceType": "move",
@@ -4954,7 +6115,14 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "authentic",
+      "mental"
+    ]
   },
   "260": {
     "resourceType": "move",
@@ -4973,7 +6141,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "swagger",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "261": {
     "resourceType": "move",
@@ -4992,7 +6165,12 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "262": {
     "resourceType": "move",
@@ -5011,7 +6189,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "263": {
     "resourceType": "move",
@@ -5030,7 +6212,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "264": {
     "resourceType": "move",
@@ -5049,7 +6236,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "punch"
+    ]
   },
   "265": {
     "resourceType": "move",
@@ -5068,7 +6260,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "266": {
     "resourceType": "move",
@@ -5087,7 +6284,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "267": {
     "resourceType": "move",
@@ -5106,7 +6304,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "268": {
     "resourceType": "move",
@@ -5125,7 +6324,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "269": {
     "resourceType": "move",
@@ -5144,7 +6346,14 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "authentic",
+      "mental"
+    ]
   },
   "270": {
     "resourceType": "move",
@@ -5163,7 +6372,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "ally",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "authentic"
+    ]
   },
   "271": {
     "resourceType": "move",
@@ -5182,7 +6394,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "272": {
     "resourceType": "move",
@@ -5201,7 +6417,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "authentic"
+    ]
   },
   "273": {
     "resourceType": "move",
@@ -5220,7 +6439,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "heal"
+    ]
   },
   "274": {
     "resourceType": "move",
@@ -5239,7 +6462,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "275": {
     "resourceType": "move",
@@ -5258,7 +6482,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "ailment",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "non-sky-battle"
+    ]
   },
   "276": {
     "resourceType": "move",
@@ -5277,7 +6505,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "277": {
     "resourceType": "move",
@@ -5296,7 +6529,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "278": {
     "resourceType": "move",
@@ -5315,7 +6549,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "279": {
     "resourceType": "move",
@@ -5334,7 +6571,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "280": {
     "resourceType": "move",
@@ -5353,7 +6595,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "281": {
     "resourceType": "move",
@@ -5372,7 +6619,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "282": {
     "resourceType": "move",
@@ -5391,7 +6643,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "283": {
     "resourceType": "move",
@@ -5410,7 +6667,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "284": {
     "resourceType": "move",
@@ -5429,7 +6691,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "285": {
     "resourceType": "move",
@@ -5448,7 +6714,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "authentic"
+    ]
   },
   "286": {
     "resourceType": "move",
@@ -5467,7 +6738,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "authentic"
+    ]
   },
   "287": {
     "resourceType": "move",
@@ -5486,7 +6761,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "288": {
     "resourceType": "move",
@@ -5505,7 +6783,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "authentic"
+    ]
   },
   "289": {
     "resourceType": "move",
@@ -5524,7 +6805,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "authentic"
+    ]
   },
   "290": {
     "resourceType": "move",
@@ -5543,7 +6827,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "291": {
     "resourceType": "move",
@@ -5562,7 +6850,14 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "charge",
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "292": {
     "resourceType": "move",
@@ -5583,7 +6878,12 @@ export const GENERATED_MOVES = {
     "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "293": {
     "resourceType": "move",
@@ -5602,7 +6902,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "294": {
     "resourceType": "move",
@@ -5621,7 +6924,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "295": {
     "resourceType": "move",
@@ -5640,7 +6946,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "296": {
     "resourceType": "move",
@@ -5659,7 +6969,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "297": {
     "resourceType": "move",
@@ -5678,7 +6993,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "dance"
+    ]
   },
   "298": {
     "resourceType": "move",
@@ -5697,7 +7018,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "ailment",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "dance"
+    ]
   },
   "299": {
     "resourceType": "move",
@@ -5717,7 +7043,12 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "300": {
     "resourceType": "move",
@@ -5736,7 +7067,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "whole-field-effect",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "non-sky-battle"
+    ]
   },
   "301": {
     "resourceType": "move",
@@ -5755,7 +7089,13 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "302": {
     "resourceType": "move",
@@ -5774,7 +7114,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "303": {
     "resourceType": "move",
@@ -5793,7 +7138,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "heal",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "heal"
+    ]
   },
   "304": {
     "resourceType": "move",
@@ -5812,7 +7161,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "305": {
     "resourceType": "move",
@@ -5831,7 +7186,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "bite"
+    ]
   },
   "306": {
     "resourceType": "move",
@@ -5850,7 +7211,12 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "307": {
     "resourceType": "move",
@@ -5869,7 +7235,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "recharge",
+      "protect",
+      "mirror"
+    ]
   },
   "308": {
     "resourceType": "move",
@@ -5888,7 +7259,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "recharge",
+      "protect",
+      "mirror"
+    ]
   },
   "309": {
     "resourceType": "move",
@@ -5907,7 +7283,13 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch"
+    ]
   },
   "310": {
     "resourceType": "move",
@@ -5926,7 +7308,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "311": {
     "resourceType": "move",
@@ -5945,7 +7332,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "312": {
     "resourceType": "move",
@@ -5964,7 +7356,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user-and-allies",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "distance"
+    ]
   },
   "313": {
     "resourceType": "move",
@@ -5983,7 +7379,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "314": {
     "resourceType": "move",
@@ -6003,7 +7404,11 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "315": {
     "resourceType": "move",
@@ -6022,7 +7427,11 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "316": {
     "resourceType": "move",
@@ -6041,7 +7450,13 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "authentic"
+    ]
   },
   "317": {
     "resourceType": "move",
@@ -6060,7 +7475,11 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "318": {
     "resourceType": "move",
@@ -6079,7 +7498,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "319": {
     "resourceType": "move",
@@ -6098,7 +7521,14 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "net-good-stats",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "320": {
     "resourceType": "move",
@@ -6117,7 +7547,14 @@ export const GENERATED_MOVES = {
     "accuracy": 55,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "321": {
     "resourceType": "move",
@@ -6136,7 +7573,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "322": {
     "resourceType": "move",
@@ -6155,7 +7597,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "323": {
     "resourceType": "move",
@@ -6174,7 +7619,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "324": {
     "resourceType": "move",
@@ -6193,7 +7642,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "325": {
     "resourceType": "move",
@@ -6212,7 +7665,13 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch"
+    ]
   },
   "326": {
     "resourceType": "move",
@@ -6231,7 +7690,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "327": {
     "resourceType": "move",
@@ -6250,7 +7713,13 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch"
+    ]
   },
   "328": {
     "resourceType": "move",
@@ -6269,7 +7738,11 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "329": {
     "resourceType": "move",
@@ -6288,7 +7761,11 @@ export const GENERATED_MOVES = {
     "accuracy": 30,
     "damageKind": "ohko",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "330": {
     "resourceType": "move",
@@ -6307,7 +7784,12 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage-lower",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "331": {
     "resourceType": "move",
@@ -6328,7 +7810,12 @@ export const GENERATED_MOVES = {
     "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "332": {
     "resourceType": "move",
@@ -6347,7 +7834,13 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "distance"
+    ]
   },
   "333": {
     "resourceType": "move",
@@ -6368,7 +7861,11 @@ export const GENERATED_MOVES = {
     "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "334": {
     "resourceType": "move",
@@ -6387,7 +7884,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "335": {
     "resourceType": "move",
@@ -6406,7 +7906,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "reflectable",
+      "mirror"
+    ]
   },
   "336": {
     "resourceType": "move",
@@ -6425,7 +7929,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user-and-allies",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "sound"
+    ]
   },
   "337": {
     "resourceType": "move",
@@ -6444,7 +7952,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "338": {
     "resourceType": "move",
@@ -6463,7 +7976,13 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "recharge",
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "339": {
     "resourceType": "move",
@@ -6482,7 +8001,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "340": {
     "resourceType": "move",
@@ -6501,7 +8023,15 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "charge",
+      "protect",
+      "mirror",
+      "gravity",
+      "distance"
+    ]
   },
   "341": {
     "resourceType": "move",
@@ -6520,7 +8050,11 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "342": {
     "resourceType": "move",
@@ -6540,7 +8074,12 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "343": {
     "resourceType": "move",
@@ -6559,7 +8098,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "344": {
     "resourceType": "move",
@@ -6578,7 +8122,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "345": {
     "resourceType": "move",
@@ -6597,7 +8146,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "346": {
     "resourceType": "move",
@@ -6616,7 +8169,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "whole-field-effect",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "non-sky-battle"
+    ]
   },
   "347": {
     "resourceType": "move",
@@ -6635,7 +8191,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "348": {
     "resourceType": "move",
@@ -6655,7 +8214,12 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "349": {
     "resourceType": "move",
@@ -6674,7 +8238,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "dance"
+    ]
   },
   "350": {
     "resourceType": "move",
@@ -6695,7 +8263,12 @@ export const GENERATED_MOVES = {
     "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "351": {
     "resourceType": "move",
@@ -6714,7 +8287,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "352": {
     "resourceType": "move",
@@ -6733,7 +8310,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "distance",
+      "pulse"
+    ]
   },
   "353": {
     "resourceType": "move",
@@ -6752,7 +8335,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "354": {
     "resourceType": "move",
@@ -6771,7 +8355,11 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "355": {
     "resourceType": "move",
@@ -6790,7 +8378,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "heal",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "heal"
+    ]
   },
   "356": {
     "resourceType": "move",
@@ -6809,7 +8401,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "whole-field-effect",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "non-sky-battle"
+    ]
   },
   "357": {
     "resourceType": "move",
@@ -6828,7 +8423,13 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "authentic"
+    ]
   },
   "358": {
     "resourceType": "move",
@@ -6847,7 +8448,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "359": {
     "resourceType": "move",
@@ -6866,7 +8472,13 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch"
+    ]
   },
   "360": {
     "resourceType": "move",
@@ -6885,7 +8497,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "361": {
     "resourceType": "move",
@@ -6904,7 +8522,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "heal"
+    ]
   },
   "362": {
     "resourceType": "move",
@@ -6923,7 +8545,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "363": {
     "resourceType": "move",
@@ -6942,7 +8568,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "364": {
     "resourceType": "move",
@@ -6961,7 +8591,10 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "mirror"
+    ]
   },
   "365": {
     "resourceType": "move",
@@ -6980,7 +8613,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "distance"
+    ]
   },
   "366": {
     "resourceType": "move",
@@ -6999,7 +8638,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "field-effect",
     "target": "users-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "367": {
     "resourceType": "move",
@@ -7018,7 +8660,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user-or-ally",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "368": {
     "resourceType": "move",
@@ -7037,7 +8680,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "specific-move",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "369": {
     "resourceType": "move",
@@ -7056,7 +8703,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "370": {
     "resourceType": "move",
@@ -7075,7 +8727,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "371": {
     "resourceType": "move",
@@ -7094,7 +8751,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "372": {
     "resourceType": "move",
@@ -7113,7 +8775,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "373": {
     "resourceType": "move",
@@ -7132,7 +8799,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "374": {
     "resourceType": "move",
@@ -7151,7 +8823,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "375": {
     "resourceType": "move",
@@ -7170,7 +8846,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "376": {
     "resourceType": "move",
@@ -7189,7 +8869,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "377": {
     "resourceType": "move",
@@ -7208,7 +8893,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "ailment",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "mental"
+    ]
   },
   "378": {
     "resourceType": "move",
@@ -7227,7 +8918,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "379": {
     "resourceType": "move",
@@ -7246,7 +8942,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "380": {
     "resourceType": "move",
@@ -7265,7 +8964,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "381": {
     "resourceType": "move",
@@ -7284,7 +8988,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "field-effect",
     "target": "users-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "382": {
     "resourceType": "move",
@@ -7303,7 +9010,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon-me-first",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "authentic"
+    ]
   },
   "383": {
     "resourceType": "move",
@@ -7322,7 +9033,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "384": {
     "resourceType": "move",
@@ -7341,7 +9053,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "authentic"
+    ]
   },
   "385": {
     "resourceType": "move",
@@ -7360,7 +9077,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "authentic"
+    ]
   },
   "386": {
     "resourceType": "move",
@@ -7379,7 +9101,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "387": {
     "resourceType": "move",
@@ -7398,7 +9125,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "388": {
     "resourceType": "move",
@@ -7417,7 +9149,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "389": {
     "resourceType": "move",
@@ -7436,7 +9173,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "390": {
     "resourceType": "move",
@@ -7455,7 +9197,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "field-effect",
     "target": "opponents-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "reflectable",
+      "non-sky-battle"
+    ]
   },
   "391": {
     "resourceType": "move",
@@ -7474,7 +9220,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "authentic"
+    ]
   },
   "392": {
     "resourceType": "move",
@@ -7493,7 +9244,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "393": {
     "resourceType": "move",
@@ -7512,7 +9266,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "gravity"
+    ]
   },
   "394": {
     "resourceType": "move",
@@ -7531,7 +9289,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "defrost"
+    ]
   },
   "395": {
     "resourceType": "move",
@@ -7550,7 +9314,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "396": {
     "resourceType": "move",
@@ -7569,7 +9338,14 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "distance",
+      "pulse",
+      "ballistics"
+    ]
   },
   "397": {
     "resourceType": "move",
@@ -7588,7 +9364,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "398": {
     "resourceType": "move",
@@ -7607,7 +9386,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "399": {
     "resourceType": "move",
@@ -7626,7 +9410,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "distance",
+      "pulse"
+    ]
   },
   "400": {
     "resourceType": "move",
@@ -7646,7 +9436,12 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "401": {
     "resourceType": "move",
@@ -7665,7 +9460,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "402": {
     "resourceType": "move",
@@ -7684,7 +9484,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "403": {
     "resourceType": "move",
@@ -7703,7 +9508,12 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "distance"
+    ]
   },
   "404": {
     "resourceType": "move",
@@ -7722,7 +9532,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "405": {
     "resourceType": "move",
@@ -7741,7 +9556,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "406": {
     "resourceType": "move",
@@ -7760,7 +9581,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "distance",
+      "pulse"
+    ]
   },
   "407": {
     "resourceType": "move",
@@ -7779,7 +9606,12 @@ export const GENERATED_MOVES = {
     "accuracy": 75,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "408": {
     "resourceType": "move",
@@ -7798,7 +9630,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "409": {
     "resourceType": "move",
@@ -7817,7 +9653,14 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-heal",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch",
+      "heal"
+    ]
   },
   "410": {
     "resourceType": "move",
@@ -7836,7 +9679,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "411": {
     "resourceType": "move",
@@ -7855,7 +9702,12 @@ export const GENERATED_MOVES = {
     "accuracy": 70,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "412": {
     "resourceType": "move",
@@ -7874,7 +9726,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "413": {
     "resourceType": "move",
@@ -7893,7 +9750,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "distance"
+    ]
   },
   "414": {
     "resourceType": "move",
@@ -7912,7 +9775,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "415": {
     "resourceType": "move",
@@ -7931,7 +9799,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "416": {
     "resourceType": "move",
@@ -7950,7 +9822,13 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "recharge",
+      "protect",
+      "mirror"
+    ]
   },
   "417": {
     "resourceType": "move",
@@ -7969,7 +9847,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "418": {
     "resourceType": "move",
@@ -7988,7 +9869,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch"
+    ]
   },
   "419": {
     "resourceType": "move",
@@ -8007,7 +9894,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "420": {
     "resourceType": "move",
@@ -8026,7 +9918,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "421": {
     "resourceType": "move",
@@ -8046,7 +9942,12 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "422": {
     "resourceType": "move",
@@ -8065,7 +9966,13 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "bite"
+    ]
   },
   "423": {
     "resourceType": "move",
@@ -8084,7 +9991,13 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "bite"
+    ]
   },
   "424": {
     "resourceType": "move",
@@ -8103,7 +10016,13 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "bite"
+    ]
   },
   "425": {
     "resourceType": "move",
@@ -8122,7 +10041,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "426": {
     "resourceType": "move",
@@ -8141,7 +10065,12 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "427": {
     "resourceType": "move",
@@ -8161,7 +10090,11 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "428": {
     "resourceType": "move",
@@ -8180,7 +10113,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "429": {
     "resourceType": "move",
@@ -8199,7 +10137,11 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "430": {
     "resourceType": "move",
@@ -8218,7 +10160,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "431": {
     "resourceType": "move",
@@ -8237,7 +10183,12 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "432": {
     "resourceType": "move",
@@ -8256,7 +10207,13 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "authentic"
+    ]
   },
   "433": {
     "resourceType": "move",
@@ -8275,7 +10232,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "whole-field-effect",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "mirror"
+    ]
   },
   "434": {
     "resourceType": "move",
@@ -8294,7 +10254,11 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "435": {
     "resourceType": "move",
@@ -8313,7 +10277,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "436": {
     "resourceType": "move",
@@ -8332,7 +10300,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "437": {
     "resourceType": "move",
@@ -8351,7 +10323,11 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "438": {
     "resourceType": "move",
@@ -8370,7 +10346,12 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "439": {
     "resourceType": "move",
@@ -8389,7 +10370,13 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "recharge",
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "440": {
     "resourceType": "move",
@@ -8409,7 +10396,12 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "441": {
     "resourceType": "move",
@@ -8428,7 +10420,11 @@ export const GENERATED_MOVES = {
     "accuracy": 80,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "442": {
     "resourceType": "move",
@@ -8447,7 +10443,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "443": {
     "resourceType": "move",
@@ -8466,7 +10467,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "444": {
     "resourceType": "move",
@@ -8486,7 +10492,11 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "445": {
     "resourceType": "move",
@@ -8505,7 +10515,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "446": {
     "resourceType": "move",
@@ -8524,7 +10539,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "field-effect",
     "target": "opponents-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "reflectable"
+    ]
   },
   "447": {
     "resourceType": "move",
@@ -8543,7 +10561,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "448": {
     "resourceType": "move",
@@ -8562,7 +10586,14 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "sound",
+      "distance",
+      "authentic"
+    ]
   },
   "449": {
     "resourceType": "move",
@@ -8581,7 +10612,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "450": {
     "resourceType": "move",
@@ -8600,7 +10635,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "451": {
     "resourceType": "move",
@@ -8619,7 +10659,11 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "452": {
     "resourceType": "move",
@@ -8638,7 +10682,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "453": {
     "resourceType": "move",
@@ -8657,7 +10706,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "454": {
     "resourceType": "move",
@@ -8677,7 +10731,11 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "455": {
     "resourceType": "move",
@@ -8696,7 +10754,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "456": {
     "resourceType": "move",
@@ -8715,7 +10776,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "heal",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "heal"
+    ]
   },
   "457": {
     "resourceType": "move",
@@ -8734,7 +10799,12 @@ export const GENERATED_MOVES = {
     "accuracy": 80,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "458": {
     "resourceType": "move",
@@ -8755,7 +10825,12 @@ export const GENERATED_MOVES = {
     "maxHits": 2,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "459": {
     "resourceType": "move",
@@ -8774,7 +10849,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "recharge",
+      "protect",
+      "mirror"
+    ]
   },
   "460": {
     "resourceType": "move",
@@ -8794,7 +10874,11 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "461": {
     "resourceType": "move",
@@ -8813,7 +10897,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "heal",
+      "dance"
+    ]
   },
   "462": {
     "resourceType": "move",
@@ -8832,7 +10921,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "463": {
     "resourceType": "move",
@@ -8851,7 +10945,11 @@ export const GENERATED_MOVES = {
     "accuracy": 75,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "464": {
     "resourceType": "move",
@@ -8870,7 +10968,12 @@ export const GENERATED_MOVES = {
     "accuracy": 50,
     "damageKind": "ailment",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "465": {
     "resourceType": "move",
@@ -8889,7 +10992,11 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "466": {
     "resourceType": "move",
@@ -8908,7 +11015,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "467": {
     "resourceType": "move",
@@ -8927,7 +11038,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "charge",
+      "mirror"
+    ]
   },
   "468": {
     "resourceType": "move",
@@ -8946,7 +11062,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "469": {
     "resourceType": "move",
@@ -8965,7 +11084,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "field-effect",
     "target": "users-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "470": {
     "resourceType": "move",
@@ -8984,7 +11106,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect"
+    ]
   },
   "471": {
     "resourceType": "move",
@@ -9003,7 +11128,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect"
+    ]
   },
   "472": {
     "resourceType": "move",
@@ -9022,7 +11150,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "whole-field-effect",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "mirror"
+    ]
   },
   "473": {
     "resourceType": "move",
@@ -9041,7 +11172,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "474": {
     "resourceType": "move",
@@ -9060,7 +11195,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "475": {
     "resourceType": "move",
@@ -9079,7 +11218,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "476": {
     "resourceType": "move",
@@ -9098,7 +11240,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "powder"
+    ]
   },
   "477": {
     "resourceType": "move",
@@ -9117,7 +11262,13 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "gravity"
+    ]
   },
   "478": {
     "resourceType": "move",
@@ -9136,7 +11287,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "whole-field-effect",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "mirror"
+    ]
   },
   "479": {
     "resourceType": "move",
@@ -9155,7 +11309,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "480": {
     "resourceType": "move",
@@ -9175,7 +11334,12 @@ export const GENERATED_MOVES = {
     "critRate": 6,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "481": {
     "resourceType": "move",
@@ -9194,7 +11358,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "482": {
     "resourceType": "move",
@@ -9213,7 +11381,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "483": {
     "resourceType": "move",
@@ -9232,7 +11404,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "dance"
+    ]
   },
   "484": {
     "resourceType": "move",
@@ -9251,7 +11427,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "485": {
     "resourceType": "move",
@@ -9270,7 +11452,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "486": {
     "resourceType": "move",
@@ -9289,7 +11475,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "487": {
     "resourceType": "move",
@@ -9308,7 +11499,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "488": {
     "resourceType": "move",
@@ -9327,7 +11523,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "489": {
     "resourceType": "move",
@@ -9346,7 +11547,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "490": {
     "resourceType": "move",
@@ -9365,7 +11569,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "491": {
     "resourceType": "move",
@@ -9384,7 +11593,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "492": {
     "resourceType": "move",
@@ -9403,7 +11617,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "493": {
     "resourceType": "move",
@@ -9422,7 +11641,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "494": {
     "resourceType": "move",
@@ -9441,7 +11665,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "495": {
     "resourceType": "move",
@@ -9460,7 +11689,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "authentic"
+    ]
   },
   "496": {
     "resourceType": "move",
@@ -9479,7 +11711,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "497": {
     "resourceType": "move",
@@ -9498,7 +11736,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "498": {
     "resourceType": "move",
@@ -9517,7 +11761,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "499": {
     "resourceType": "move",
@@ -9536,7 +11785,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "500": {
     "resourceType": "move",
@@ -9555,7 +11808,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "501": {
     "resourceType": "move",
@@ -9574,7 +11831,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "field-effect",
     "target": "users-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "502": {
     "resourceType": "move",
@@ -9593,7 +11853,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "503": {
     "resourceType": "move",
@@ -9612,7 +11873,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "defrost"
+    ]
   },
   "504": {
     "resourceType": "move",
@@ -9631,7 +11897,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "505": {
     "resourceType": "move",
@@ -9650,7 +11919,14 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "heal",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "distance",
+      "heal",
+      "pulse"
+    ]
   },
   "506": {
     "resourceType": "move",
@@ -9669,7 +11945,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "507": {
     "resourceType": "move",
@@ -9688,7 +11968,15 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "charge",
+      "protect",
+      "mirror",
+      "gravity",
+      "distance"
+    ]
   },
   "508": {
     "resourceType": "move",
@@ -9707,7 +11995,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "509": {
     "resourceType": "move",
@@ -9726,7 +12017,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "510": {
     "resourceType": "move",
@@ -9745,7 +12041,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "511": {
     "resourceType": "move",
@@ -9764,7 +12064,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "512": {
     "resourceType": "move",
@@ -9783,7 +12087,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "distance"
+    ]
   },
   "513": {
     "resourceType": "move",
@@ -9802,7 +12112,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "authentic"
+    ]
   },
   "514": {
     "resourceType": "move",
@@ -9821,7 +12135,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "515": {
     "resourceType": "move",
@@ -9840,7 +12159,10 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect"
+    ]
   },
   "516": {
     "resourceType": "move",
@@ -9859,7 +12181,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "mirror",
+      "authentic"
+    ]
   },
   "517": {
     "resourceType": "move",
@@ -9878,7 +12204,11 @@ export const GENERATED_MOVES = {
     "accuracy": 50,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "518": {
     "resourceType": "move",
@@ -9897,7 +12227,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "519": {
     "resourceType": "move",
@@ -9916,7 +12251,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "520": {
     "resourceType": "move",
@@ -9935,7 +12275,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "521": {
     "resourceType": "move",
@@ -9954,7 +12299,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "522": {
     "resourceType": "move",
@@ -9973,7 +12322,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "523": {
     "resourceType": "move",
@@ -9992,7 +12345,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "524": {
     "resourceType": "move",
@@ -10012,7 +12370,11 @@ export const GENERATED_MOVES = {
     "critRate": 6,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "525": {
     "resourceType": "move",
@@ -10031,7 +12393,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "526": {
     "resourceType": "move",
@@ -10050,7 +12417,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "527": {
     "resourceType": "move",
@@ -10069,7 +12439,11 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage-lower",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "528": {
     "resourceType": "move",
@@ -10088,7 +12462,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "529": {
     "resourceType": "move",
@@ -10108,7 +12487,12 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "530": {
     "resourceType": "move",
@@ -10129,7 +12513,12 @@ export const GENERATED_MOVES = {
     "maxHits": 2,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "531": {
     "resourceType": "move",
@@ -10148,7 +12537,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "532": {
     "resourceType": "move",
@@ -10167,7 +12561,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-heal",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "heal"
+    ]
   },
   "533": {
     "resourceType": "move",
@@ -10186,7 +12586,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "534": {
     "resourceType": "move",
@@ -10205,7 +12610,12 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "535": {
     "resourceType": "move",
@@ -10224,7 +12634,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "536": {
     "resourceType": "move",
@@ -10243,7 +12659,11 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "537": {
     "resourceType": "move",
@@ -10262,7 +12682,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "538": {
     "resourceType": "move",
@@ -10281,7 +12706,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "539": {
     "resourceType": "move",
@@ -10300,7 +12728,11 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "540": {
     "resourceType": "move",
@@ -10319,7 +12751,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "541": {
     "resourceType": "move",
@@ -10340,7 +12776,12 @@ export const GENERATED_MOVES = {
     "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "542": {
     "resourceType": "move",
@@ -10359,7 +12800,12 @@ export const GENERATED_MOVES = {
     "accuracy": 70,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "distance"
+    ]
   },
   "543": {
     "resourceType": "move",
@@ -10378,7 +12824,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "544": {
     "resourceType": "move",
@@ -10399,7 +12850,12 @@ export const GENERATED_MOVES = {
     "maxHits": 2,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "545": {
     "resourceType": "move",
@@ -10418,7 +12874,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "546": {
     "resourceType": "move",
@@ -10437,7 +12898,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "547": {
     "resourceType": "move",
@@ -10456,7 +12921,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "548": {
     "resourceType": "move",
@@ -10475,7 +12946,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "549": {
     "resourceType": "move",
@@ -10494,7 +12969,11 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage-lower",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "550": {
     "resourceType": "move",
@@ -10513,7 +12992,12 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "551": {
     "resourceType": "move",
@@ -10532,7 +13016,11 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "552": {
     "resourceType": "move",
@@ -10551,7 +13039,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "dance"
+    ]
   },
   "553": {
     "resourceType": "move",
@@ -10570,7 +13063,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "charge",
+      "protect",
+      "mirror"
+    ]
   },
   "554": {
     "resourceType": "move",
@@ -10589,7 +13087,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "charge",
+      "protect",
+      "mirror"
+    ]
   },
   "555": {
     "resourceType": "move",
@@ -10608,7 +13111,13 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage-lower",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "556": {
     "resourceType": "move",
@@ -10627,7 +13136,11 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "557": {
     "resourceType": "move",
@@ -10646,7 +13159,12 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "558": {
     "resourceType": "move",
@@ -10665,7 +13183,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "defrost"
+    ]
   },
   "559": {
     "resourceType": "move",
@@ -10684,7 +13207,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "560": {
     "resourceType": "move",
@@ -10703,7 +13230,15 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "gravity",
+      "distance",
+      "non-sky-battle"
+    ]
   },
   "561": {
     "resourceType": "move",
@@ -10722,7 +13257,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "field-effect",
     "target": "users-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "non-sky-battle"
+    ]
   },
   "562": {
     "resourceType": "move",
@@ -10741,7 +13280,10 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect"
+    ]
   },
   "563": {
     "resourceType": "move",
@@ -10760,7 +13302,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "all-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "distance",
+      "non-sky-battle"
+    ]
   },
   "564": {
     "resourceType": "move",
@@ -10779,7 +13325,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "field-effect",
     "target": "opponents-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "reflectable"
+    ]
   },
   "565": {
     "resourceType": "move",
@@ -10798,7 +13347,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "566": {
     "resourceType": "move",
@@ -10817,7 +13371,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "charge",
+      "mirror"
+    ]
   },
   "567": {
     "resourceType": "move",
@@ -10836,7 +13395,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "568": {
     "resourceType": "move",
@@ -10855,7 +13419,14 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "569": {
     "resourceType": "move",
@@ -10874,7 +13445,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "whole-field-effect",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": []
   },
   "570": {
     "resourceType": "move",
@@ -10893,7 +13465,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-heal",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "heal"
+    ]
   },
   "571": {
     "resourceType": "move",
@@ -10912,7 +13489,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "572": {
     "resourceType": "move",
@@ -10931,7 +13513,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "573": {
     "resourceType": "move",
@@ -10950,7 +13536,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "574": {
     "resourceType": "move",
@@ -10969,7 +13559,13 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "575": {
     "resourceType": "move",
@@ -10988,7 +13584,14 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "576": {
     "resourceType": "move",
@@ -11007,7 +13610,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "577": {
     "resourceType": "move",
@@ -11026,7 +13634,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-heal",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "heal"
+    ]
   },
   "578": {
     "resourceType": "move",
@@ -11045,7 +13659,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "field-effect",
     "target": "users-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "579": {
     "resourceType": "move",
@@ -11064,7 +13679,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "all-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "distance"
+    ]
   },
   "580": {
     "resourceType": "move",
@@ -11083,7 +13701,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "whole-field-effect",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "non-sky-battle"
+    ]
   },
   "581": {
     "resourceType": "move",
@@ -11102,7 +13723,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "whole-field-effect",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "non-sky-battle"
+    ]
   },
   "582": {
     "resourceType": "move",
@@ -11121,7 +13745,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "583": {
     "resourceType": "move",
@@ -11140,7 +13768,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "584": {
     "resourceType": "move",
@@ -11159,7 +13792,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "585": {
     "resourceType": "move",
@@ -11178,7 +13815,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "586": {
     "resourceType": "move",
@@ -11197,7 +13838,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "587": {
     "resourceType": "move",
@@ -11216,7 +13863,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "whole-field-effect",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "mirror",
+      "authentic"
+    ]
   },
   "588": {
     "resourceType": "move",
@@ -11235,7 +13886,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "589": {
     "resourceType": "move",
@@ -11254,7 +13906,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "reflectable",
+      "mirror",
+      "authentic"
+    ]
   },
   "590": {
     "resourceType": "move",
@@ -11273,7 +13930,13 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "reflectable",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "591": {
     "resourceType": "move",
@@ -11292,7 +13955,11 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage-raise",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "592": {
     "resourceType": "move",
@@ -11311,7 +13978,12 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "defrost"
+    ]
   },
   "593": {
     "resourceType": "move",
@@ -11330,7 +14002,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "mirror",
+      "authentic"
+    ]
   },
   "594": {
     "resourceType": "move",
@@ -11351,7 +14027,11 @@ export const GENERATED_MOVES = {
     "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "595": {
     "resourceType": "move",
@@ -11370,7 +14050,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "596": {
     "resourceType": "move",
@@ -11389,7 +14073,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "597": {
     "resourceType": "move",
@@ -11408,7 +14093,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "ally",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "authentic"
+    ]
   },
   "598": {
     "resourceType": "move",
@@ -11427,7 +14115,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "599": {
     "resourceType": "move",
@@ -11446,7 +14139,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "600": {
     "resourceType": "move",
@@ -11465,7 +14163,14 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "authentic",
+      "powder"
+    ]
   },
   "601": {
     "resourceType": "move",
@@ -11484,7 +14189,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "charge",
+      "non-sky-battle"
+    ]
   },
   "602": {
     "resourceType": "move",
@@ -11503,7 +14212,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user-and-allies",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "distance",
+      "authentic"
+    ]
   },
   "603": {
     "resourceType": "move",
@@ -11522,7 +14236,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "users-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "604": {
     "resourceType": "move",
@@ -11541,7 +14256,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "whole-field-effect",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "non-sky-battle"
+    ]
   },
   "605": {
     "resourceType": "move",
@@ -11560,7 +14278,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "606": {
     "resourceType": "move",
@@ -11579,7 +14301,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "607": {
     "resourceType": "move",
@@ -11598,7 +14321,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "ally",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "authentic"
+    ]
   },
   "608": {
     "resourceType": "move",
@@ -11617,7 +14343,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "609": {
     "resourceType": "move",
@@ -11636,7 +14367,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "610": {
     "resourceType": "move",
@@ -11655,7 +14391,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "611": {
     "resourceType": "move",
@@ -11674,7 +14415,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "612": {
     "resourceType": "move",
@@ -11693,7 +14439,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch"
+    ]
   },
   "613": {
     "resourceType": "move",
@@ -11712,7 +14464,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-heal",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "distance",
+      "heal"
+    ]
   },
   "614": {
     "resourceType": "move",
@@ -11731,7 +14489,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "615": {
     "resourceType": "move",
@@ -11750,7 +14513,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "616": {
     "resourceType": "move",
@@ -11769,7 +14537,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "617": {
     "resourceType": "move",
@@ -11788,7 +14561,11 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "618": {
     "resourceType": "move",
@@ -11807,7 +14584,12 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "pulse"
+    ]
   },
   "619": {
     "resourceType": "move",
@@ -11826,7 +14608,12 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "non-sky-battle"
+    ]
   },
   "620": {
     "resourceType": "move",
@@ -11845,7 +14632,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "distance"
+    ]
   },
   "621": {
     "resourceType": "move",
@@ -11864,7 +14657,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "mirror",
+      "authentic"
+    ]
   },
   "622": {
     "resourceType": "move",
@@ -11883,7 +14680,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "623": {
     "resourceType": "move",
@@ -11902,7 +14700,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "624": {
     "resourceType": "move",
@@ -11921,7 +14720,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "625": {
     "resourceType": "move",
@@ -11940,7 +14740,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "626": {
     "resourceType": "move",
@@ -11959,7 +14760,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "627": {
     "resourceType": "move",
@@ -11978,7 +14780,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "628": {
     "resourceType": "move",
@@ -11997,7 +14800,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "629": {
     "resourceType": "move",
@@ -12016,7 +14820,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "630": {
     "resourceType": "move",
@@ -12035,7 +14840,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "631": {
     "resourceType": "move",
@@ -12054,7 +14860,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "632": {
     "resourceType": "move",
@@ -12073,7 +14880,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "633": {
     "resourceType": "move",
@@ -12092,7 +14900,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "634": {
     "resourceType": "move",
@@ -12111,7 +14920,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "635": {
     "resourceType": "move",
@@ -12130,7 +14940,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "636": {
     "resourceType": "move",
@@ -12149,7 +14960,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "637": {
     "resourceType": "move",
@@ -12168,7 +14980,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "638": {
     "resourceType": "move",
@@ -12187,7 +15000,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "639": {
     "resourceType": "move",
@@ -12206,7 +15020,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "640": {
     "resourceType": "move",
@@ -12225,7 +15040,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "641": {
     "resourceType": "move",
@@ -12244,7 +15060,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "642": {
     "resourceType": "move",
@@ -12263,7 +15080,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "643": {
     "resourceType": "move",
@@ -12282,7 +15100,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "644": {
     "resourceType": "move",
@@ -12301,7 +15120,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "645": {
     "resourceType": "move",
@@ -12320,7 +15140,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "646": {
     "resourceType": "move",
@@ -12339,7 +15160,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "647": {
     "resourceType": "move",
@@ -12358,7 +15180,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "648": {
     "resourceType": "move",
@@ -12377,7 +15200,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "649": {
     "resourceType": "move",
@@ -12396,7 +15220,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "650": {
     "resourceType": "move",
@@ -12415,7 +15240,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "651": {
     "resourceType": "move",
@@ -12434,7 +15260,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "652": {
     "resourceType": "move",
@@ -12453,7 +15280,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "653": {
     "resourceType": "move",
@@ -12472,7 +15300,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "654": {
     "resourceType": "move",
@@ -12491,7 +15320,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "655": {
     "resourceType": "move",
@@ -12510,7 +15340,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "656": {
     "resourceType": "move",
@@ -12529,7 +15360,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "657": {
     "resourceType": "move",
@@ -12548,7 +15380,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "658": {
     "resourceType": "move",
@@ -12567,7 +15400,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact"
+    ]
   },
   "659": {
     "resourceType": "move",
@@ -12586,7 +15422,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "heal",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "heal"
+    ]
   },
   "660": {
     "resourceType": "move",
@@ -12605,7 +15445,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "661": {
     "resourceType": "move",
@@ -12624,7 +15469,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "662": {
     "resourceType": "move",
@@ -12643,7 +15489,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "663": {
     "resourceType": "move",
@@ -12662,7 +15512,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "664": {
     "resourceType": "move",
@@ -12681,7 +15536,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "665": {
     "resourceType": "move",
@@ -12700,7 +15561,13 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch"
+    ]
   },
   "666": {
     "resourceType": "move",
@@ -12719,7 +15586,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "heal",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "heal"
+    ]
   },
   "667": {
     "resourceType": "move",
@@ -12738,7 +15610,12 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "668": {
     "resourceType": "move",
@@ -12757,7 +15634,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "heal"
+    ]
   },
   "669": {
     "resourceType": "move",
@@ -12776,7 +15659,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "charge",
+      "protect",
+      "mirror"
+    ]
   },
   "670": {
     "resourceType": "move",
@@ -12795,7 +15684,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "671": {
     "resourceType": "move",
@@ -12814,7 +15707,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable"
+    ]
   },
   "672": {
     "resourceType": "move",
@@ -12833,7 +15730,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "swagger",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "673": {
     "resourceType": "move",
@@ -12852,7 +15754,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "674": {
     "resourceType": "move",
@@ -12871,7 +15776,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user-and-allies",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "authentic"
+    ]
   },
   "675": {
     "resourceType": "move",
@@ -12890,7 +15799,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "676": {
     "resourceType": "move",
@@ -12909,7 +15823,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "ballistics"
+    ]
   },
   "677": {
     "resourceType": "move",
@@ -12928,7 +15847,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "678": {
     "resourceType": "move",
@@ -12947,7 +15871,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "whole-field-effect",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "non-sky-battle"
+    ]
   },
   "679": {
     "resourceType": "move",
@@ -12966,7 +15893,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "680": {
     "resourceType": "move",
@@ -12985,7 +15917,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "681": {
     "resourceType": "move",
@@ -13004,7 +15941,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "682": {
     "resourceType": "move",
@@ -13023,7 +15965,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "defrost"
+    ]
   },
   "683": {
     "resourceType": "move",
@@ -13042,7 +15989,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "authentic"
+    ]
   },
   "684": {
     "resourceType": "move",
@@ -13061,7 +16013,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "685": {
     "resourceType": "move",
@@ -13080,7 +16037,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "heal"
+    ]
   },
   "686": {
     "resourceType": "move",
@@ -13099,7 +16061,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "dance"
+    ]
   },
   "687": {
     "resourceType": "move",
@@ -13118,7 +16085,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "688": {
     "resourceType": "move",
@@ -13137,7 +16108,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "689": {
     "resourceType": "move",
@@ -13156,7 +16132,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "authentic"
+    ]
   },
   "690": {
     "resourceType": "move",
@@ -13175,7 +16155,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "ballistics"
+    ]
   },
   "691": {
     "resourceType": "move",
@@ -13194,7 +16178,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-raise",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "692": {
     "resourceType": "move",
@@ -13213,7 +16203,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "693": {
     "resourceType": "move",
@@ -13232,7 +16227,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "694": {
     "resourceType": "move",
@@ -13251,7 +16251,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "field-effect",
     "target": "users-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "695": {
     "resourceType": "move",
@@ -13270,7 +16273,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "696": {
     "resourceType": "move",
@@ -13289,7 +16293,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact"
+    ]
   },
   "697": {
     "resourceType": "move",
@@ -13308,7 +16315,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "698": {
     "resourceType": "move",
@@ -13327,7 +16335,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "699": {
     "resourceType": "move",
@@ -13346,7 +16355,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact"
+    ]
   },
   "700": {
     "resourceType": "move",
@@ -13365,7 +16377,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "701": {
     "resourceType": "move",
@@ -13384,7 +16397,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact"
+    ]
   },
   "702": {
     "resourceType": "move",
@@ -13403,7 +16419,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "703": {
     "resourceType": "move",
@@ -13422,7 +16439,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "704": {
     "resourceType": "move",
@@ -13441,7 +16459,10 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect"
+    ]
   },
   "705": {
     "resourceType": "move",
@@ -13460,7 +16481,11 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "706": {
     "resourceType": "move",
@@ -13479,7 +16504,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "bite"
+    ]
   },
   "707": {
     "resourceType": "move",
@@ -13498,7 +16529,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "708": {
     "resourceType": "move",
@@ -13517,7 +16553,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "709": {
     "resourceType": "move",
@@ -13536,7 +16576,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "710": {
     "resourceType": "move",
@@ -13555,7 +16600,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "711": {
     "resourceType": "move",
@@ -13574,7 +16624,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "recharge",
+      "protect",
+      "mirror"
+    ]
   },
   "712": {
     "resourceType": "move",
@@ -13593,7 +16648,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "authentic"
+    ]
   },
   "713": {
     "resourceType": "move",
@@ -13612,7 +16673,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "714": {
     "resourceType": "move",
@@ -13631,7 +16697,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "715": {
     "resourceType": "move",
@@ -13650,7 +16720,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "reflectable",
+      "mirror"
+    ]
   },
   "716": {
     "resourceType": "move",
@@ -13669,7 +16743,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "717": {
     "resourceType": "move",
@@ -13688,7 +16767,11 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "718": {
     "resourceType": "move",
@@ -13707,7 +16790,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "719": {
     "resourceType": "move",
@@ -13727,7 +16815,8 @@ export const GENERATED_MOVES = {
     "critRate": 2,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "720": {
     "resourceType": "move",
@@ -13746,7 +16835,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "721": {
     "resourceType": "move",
@@ -13765,7 +16858,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch"
+    ]
   },
   "722": {
     "resourceType": "move",
@@ -13784,7 +16883,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "723": {
     "resourceType": "move",
@@ -13803,7 +16906,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "724": {
     "resourceType": "move",
@@ -13822,7 +16926,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact"
+    ]
   },
   "725": {
     "resourceType": "move",
@@ -13841,7 +16948,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "726": {
     "resourceType": "move",
@@ -13860,7 +16968,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact"
+    ]
   },
   "727": {
     "resourceType": "move",
@@ -13879,7 +16990,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "728": {
     "resourceType": "move",
@@ -13898,7 +17010,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage-raise",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "sound",
+      "authentic"
+    ]
   },
   "729": {
     "resourceType": "move",
@@ -13917,7 +17033,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "730": {
     "resourceType": "move",
@@ -13936,7 +17057,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "731": {
     "resourceType": "move",
@@ -13955,7 +17080,13 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "gravity"
+    ]
   },
   "732": {
     "resourceType": "move",
@@ -13974,7 +17105,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "733": {
     "resourceType": "move",
@@ -13993,7 +17128,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-heal",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "heal"
+    ]
   },
   "734": {
     "resourceType": "move",
@@ -14012,7 +17152,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "735": {
     "resourceType": "move",
@@ -14031,7 +17175,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "defrost"
+    ]
   },
   "736": {
     "resourceType": "move",
@@ -14050,7 +17200,11 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "737": {
     "resourceType": "move",
@@ -14069,7 +17223,11 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "738": {
     "resourceType": "move",
@@ -14088,7 +17246,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "739": {
     "resourceType": "move",
@@ -14107,7 +17270,11 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "740": {
     "resourceType": "move",
@@ -14126,7 +17293,11 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "741": {
     "resourceType": "move",
@@ -14145,7 +17316,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "742": {
     "resourceType": "move",
@@ -14166,7 +17342,13 @@ export const GENERATED_MOVES = {
     "maxHits": 2,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch"
+    ]
   },
   "743": {
     "resourceType": "move",
@@ -14185,7 +17367,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "744": {
     "resourceType": "move",
@@ -14204,7 +17387,10 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect"
+    ]
   },
   "745": {
     "resourceType": "move",
@@ -14224,7 +17410,11 @@ export const GENERATED_MOVES = {
     "critRate": 1,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "746": {
     "resourceType": "move",
@@ -14243,7 +17433,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "bite"
+    ]
   },
   "747": {
     "resourceType": "move",
@@ -14262,7 +17458,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "748": {
     "resourceType": "move",
@@ -14281,7 +17480,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch"
+    ]
   },
   "749": {
     "resourceType": "move",
@@ -14300,7 +17502,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "swagger",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "750": {
     "resourceType": "move",
@@ -14319,7 +17526,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror",
+      "powder"
+    ]
   },
   "751": {
     "resourceType": "move",
@@ -14340,7 +17553,11 @@ export const GENERATED_MOVES = {
     "maxHits": 2,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "752": {
     "resourceType": "move",
@@ -14359,7 +17576,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "all-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "authentic"
+    ]
   },
   "753": {
     "resourceType": "move",
@@ -14378,7 +17598,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "754": {
     "resourceType": "move",
@@ -14397,7 +17621,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "755": {
     "resourceType": "move",
@@ -14416,7 +17645,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "bite"
+    ]
   },
   "756": {
     "resourceType": "move",
@@ -14435,7 +17670,10 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "mirror"
+    ]
   },
   "757": {
     "resourceType": "move",
@@ -14454,7 +17692,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon-me-first",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "758": {
     "resourceType": "move",
@@ -14473,7 +17712,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon-me-first",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "759": {
     "resourceType": "move",
@@ -14492,7 +17732,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon-me-first",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "760": {
     "resourceType": "move",
@@ -14511,7 +17752,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon-me-first",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "761": {
     "resourceType": "move",
@@ -14530,7 +17772,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon-me-first",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "762": {
     "resourceType": "move",
@@ -14549,7 +17792,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon-me-first",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "763": {
     "resourceType": "move",
@@ -14568,7 +17812,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon-me-first",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "764": {
     "resourceType": "move",
@@ -14587,7 +17832,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon-me-first",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "765": {
     "resourceType": "move",
@@ -14606,7 +17852,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon-me-first",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "766": {
     "resourceType": "move",
@@ -14625,7 +17872,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon-me-first",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "767": {
     "resourceType": "move",
@@ -14644,7 +17892,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon-me-first",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "768": {
     "resourceType": "move",
@@ -14663,7 +17912,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon-me-first",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "769": {
     "resourceType": "move",
@@ -14682,7 +17932,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon-me-first",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "770": {
     "resourceType": "move",
@@ -14701,7 +17952,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon-me-first",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "771": {
     "resourceType": "move",
@@ -14720,7 +17972,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon-me-first",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "772": {
     "resourceType": "move",
@@ -14739,7 +17992,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon-me-first",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "773": {
     "resourceType": "move",
@@ -14758,7 +18012,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon-me-first",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "774": {
     "resourceType": "move",
@@ -14777,7 +18032,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon-me-first",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "775": {
     "resourceType": "move",
@@ -14796,7 +18052,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "net-good-stats",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "sound",
+      "dance"
+    ]
   },
   "776": {
     "resourceType": "move",
@@ -14815,7 +18076,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "777": {
     "resourceType": "move",
@@ -14834,7 +18100,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "778": {
     "resourceType": "move",
@@ -14853,7 +18120,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "779": {
     "resourceType": "move",
@@ -14872,7 +18143,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "780": {
     "resourceType": "move",
@@ -14891,7 +18167,13 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "defrost",
+      "ballistics"
+    ]
   },
   "781": {
     "resourceType": "move",
@@ -14910,7 +18192,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "782": {
     "resourceType": "move",
@@ -14929,7 +18216,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "783": {
     "resourceType": "move",
@@ -14948,7 +18240,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-raise",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "784": {
     "resourceType": "move",
@@ -14967,7 +18263,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "785": {
     "resourceType": "move",
@@ -14986,7 +18287,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "786": {
     "resourceType": "move",
@@ -15005,7 +18311,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "787": {
     "resourceType": "move",
@@ -15024,7 +18336,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "788": {
     "resourceType": "move",
@@ -15043,7 +18359,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "789": {
     "resourceType": "move",
@@ -15062,7 +18382,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "790": {
     "resourceType": "move",
@@ -15081,7 +18406,11 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "791": {
     "resourceType": "move",
@@ -15100,7 +18429,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "heal",
     "target": "user-and-allies",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "snatch",
+      "heal",
+      "authentic"
+    ]
   },
   "792": {
     "resourceType": "move",
@@ -15119,7 +18453,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "793": {
     "resourceType": "move",
@@ -15138,7 +18473,12 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "794": {
     "resourceType": "move",
@@ -15157,7 +18497,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "recharge",
+      "protect",
+      "mirror"
+    ]
   },
   "795": {
     "resourceType": "move",
@@ -15176,7 +18521,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "recharge",
+      "protect",
+      "mirror"
+    ]
   },
   "796": {
     "resourceType": "move",
@@ -15195,7 +18545,11 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "797": {
     "resourceType": "move",
@@ -15214,7 +18568,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "798": {
     "resourceType": "move",
@@ -15233,7 +18591,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "799": {
     "resourceType": "move",
@@ -15254,7 +18617,11 @@ export const GENERATED_MOVES = {
     "maxHits": 5,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "800": {
     "resourceType": "move",
@@ -15273,7 +18640,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "charge",
+      "protect",
+      "mirror"
+    ]
   },
   "801": {
     "resourceType": "move",
@@ -15292,7 +18664,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "802": {
     "resourceType": "move",
@@ -15311,7 +18687,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "803": {
     "resourceType": "move",
@@ -15330,7 +18710,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "804": {
     "resourceType": "move",
@@ -15349,7 +18734,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "805": {
     "resourceType": "move",
@@ -15368,7 +18757,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "pulse"
+    ]
   },
   "806": {
     "resourceType": "move",
@@ -15387,7 +18781,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "807": {
     "resourceType": "move",
@@ -15406,7 +18805,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "808": {
     "resourceType": "move",
@@ -15425,7 +18828,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "809": {
     "resourceType": "move",
@@ -15444,7 +18852,11 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "810": {
     "resourceType": "move",
@@ -15463,7 +18875,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "all-other-pokemon",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "reflectable",
+      "mirror"
+    ]
   },
   "811": {
     "resourceType": "move",
@@ -15482,7 +18899,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "net-good-stats",
     "target": "user-and-allies",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "authentic"
+    ]
   },
   "812": {
     "resourceType": "move",
@@ -15501,7 +18921,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "813": {
     "resourceType": "move",
@@ -15522,7 +18947,12 @@ export const GENERATED_MOVES = {
     "maxHits": 3,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "814": {
     "resourceType": "move",
@@ -15543,7 +18973,12 @@ export const GENERATED_MOVES = {
     "maxHits": 2,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "815": {
     "resourceType": "move",
@@ -15562,7 +18997,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "defrost"
+    ]
   },
   "816": {
     "resourceType": "move",
@@ -15581,7 +19021,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user-and-allies",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "heal",
+      "authentic"
+    ]
   },
   "817": {
     "resourceType": "move",
@@ -15601,7 +19045,13 @@ export const GENERATED_MOVES = {
     "critRate": 6,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch"
+    ]
   },
   "818": {
     "resourceType": "move",
@@ -15623,7 +19073,13 @@ export const GENERATED_MOVES = {
     "critRate": 6,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror",
+      "punch"
+    ]
   },
   "819": {
     "resourceType": "move",
@@ -15642,7 +19098,11 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "820": {
     "resourceType": "move",
@@ -15661,7 +19121,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "821": {
     "resourceType": "move",
@@ -15680,7 +19144,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-ailment",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "822": {
     "resourceType": "move",
@@ -15699,7 +19167,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "823": {
     "resourceType": "move",
@@ -15718,7 +19190,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage-lower",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "824": {
     "resourceType": "move",
@@ -15737,7 +19214,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "825": {
     "resourceType": "move",
@@ -15756,7 +19237,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "826": {
     "resourceType": "move",
@@ -15775,7 +19260,13 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "damage",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "sound",
+      "authentic"
+    ]
   },
   "827": {
     "resourceType": "move",
@@ -15794,7 +19285,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "828": {
     "resourceType": "move",
@@ -15813,7 +19305,8 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "829": {
     "resourceType": "move",
@@ -15832,7 +19325,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "830": {
     "resourceType": "move",
@@ -15851,7 +19345,8 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "831": {
     "resourceType": "move",
@@ -15870,7 +19365,8 @@ export const GENERATED_MOVES = {
     "accuracy": 80,
     "damageKind": "unique",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": []
   },
   "832": {
     "resourceType": "move",
@@ -15889,7 +19385,8 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "833": {
     "resourceType": "move",
@@ -15908,7 +19405,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "random-opponent",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "834": {
     "resourceType": "move",
@@ -15927,7 +19425,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "835": {
     "resourceType": "move",
@@ -15946,7 +19445,8 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "836": {
     "resourceType": "move",
@@ -15965,7 +19465,8 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "837": {
     "resourceType": "move",
@@ -15984,7 +19485,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "838": {
     "resourceType": "move",
@@ -16003,7 +19505,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "839": {
     "resourceType": "move",
@@ -16022,7 +19525,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "840": {
     "resourceType": "move",
@@ -16041,7 +19545,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "841": {
     "resourceType": "move",
@@ -16060,7 +19565,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "842": {
     "resourceType": "move",
@@ -16079,7 +19585,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "843": {
     "resourceType": "move",
@@ -16098,7 +19605,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "844": {
     "resourceType": "move",
@@ -16117,7 +19625,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "845": {
     "resourceType": "move",
@@ -16136,7 +19645,8 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "846": {
     "resourceType": "move",
@@ -16155,7 +19665,8 @@ export const GENERATED_MOVES = {
     "accuracy": 80,
     "damageKind": "unique",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": []
   },
   "847": {
     "resourceType": "move",
@@ -16174,7 +19685,8 @@ export const GENERATED_MOVES = {
     "accuracy": 80,
     "damageKind": "unique",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": []
   },
   "848": {
     "resourceType": "move",
@@ -16193,7 +19705,8 @@ export const GENERATED_MOVES = {
     "accuracy": 80,
     "damageKind": "unique",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": []
   },
   "849": {
     "resourceType": "move",
@@ -16212,7 +19725,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "all-allies",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "850": {
     "resourceType": "move",
@@ -16231,7 +19745,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "all-allies",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "851": {
     "resourceType": "move",
@@ -16250,7 +19765,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "852": {
     "resourceType": "move",
@@ -16269,7 +19785,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "853": {
     "resourceType": "move",
@@ -16288,7 +19805,8 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "854": {
     "resourceType": "move",
@@ -16307,7 +19825,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "855": {
     "resourceType": "move",
@@ -16326,7 +19845,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "856": {
     "resourceType": "move",
@@ -16345,7 +19865,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "857": {
     "resourceType": "move",
@@ -16364,7 +19885,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "858": {
     "resourceType": "move",
@@ -16383,7 +19905,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "859": {
     "resourceType": "move",
@@ -16402,7 +19925,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "860": {
     "resourceType": "move",
@@ -16421,7 +19945,8 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "861": {
     "resourceType": "move",
@@ -16440,7 +19965,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "862": {
     "resourceType": "move",
@@ -16459,7 +19985,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "863": {
     "resourceType": "move",
@@ -16478,7 +20005,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "fainting-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "864": {
     "resourceType": "move",
@@ -16497,7 +20025,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "865": {
     "resourceType": "move",
@@ -16516,7 +20045,8 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "866": {
     "resourceType": "move",
@@ -16535,7 +20065,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": []
   },
   "867": {
     "resourceType": "move",
@@ -16554,7 +20085,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "868": {
     "resourceType": "move",
@@ -16573,7 +20105,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "869": {
     "resourceType": "move",
@@ -16592,7 +20125,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "870": {
     "resourceType": "move",
@@ -16611,7 +20145,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "871": {
     "resourceType": "move",
@@ -16630,7 +20165,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "872": {
     "resourceType": "move",
@@ -16649,7 +20185,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "873": {
     "resourceType": "move",
@@ -16668,7 +20205,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "874": {
     "resourceType": "move",
@@ -16687,7 +20225,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": []
   },
   "875": {
     "resourceType": "move",
@@ -16706,7 +20245,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "876": {
     "resourceType": "move",
@@ -16725,7 +20265,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "877": {
     "resourceType": "move",
@@ -16744,7 +20285,8 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "878": {
     "resourceType": "move",
@@ -16763,7 +20305,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "879": {
     "resourceType": "move",
@@ -16782,7 +20325,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "880": {
     "resourceType": "move",
@@ -16801,7 +20345,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "881": {
     "resourceType": "move",
@@ -16820,7 +20365,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": []
   },
   "882": {
     "resourceType": "move",
@@ -16839,7 +20385,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "883": {
     "resourceType": "move",
@@ -16858,7 +20405,8 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": []
   },
   "884": {
     "resourceType": "move",
@@ -16877,7 +20425,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "885": {
     "resourceType": "move",
@@ -16896,7 +20445,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "886": {
     "resourceType": "move",
@@ -16915,7 +20465,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "887": {
     "resourceType": "move",
@@ -16934,7 +20485,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "888": {
     "resourceType": "move",
@@ -16953,7 +20505,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "889": {
     "resourceType": "move",
@@ -16972,7 +20525,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "890": {
     "resourceType": "move",
@@ -16991,7 +20545,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "891": {
     "resourceType": "move",
@@ -17010,7 +20565,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "892": {
     "resourceType": "move",
@@ -17029,7 +20585,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "893": {
     "resourceType": "move",
@@ -17048,7 +20605,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "894": {
     "resourceType": "move",
@@ -17067,7 +20625,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "specific-move",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "895": {
     "resourceType": "move",
@@ -17086,7 +20645,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "896": {
     "resourceType": "move",
@@ -17105,7 +20665,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "897": {
     "resourceType": "move",
@@ -17124,7 +20685,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "898": {
     "resourceType": "move",
@@ -17143,7 +20705,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "899": {
     "resourceType": "move",
@@ -17162,7 +20725,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "900": {
     "resourceType": "move",
@@ -17181,7 +20745,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "901": {
     "resourceType": "move",
@@ -17200,7 +20765,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "902": {
     "resourceType": "move",
@@ -17219,7 +20785,8 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "903": {
     "resourceType": "move",
@@ -17238,7 +20805,8 @@ export const GENERATED_MOVES = {
     "accuracy": 85,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "904": {
     "resourceType": "move",
@@ -17257,7 +20825,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "905": {
     "resourceType": "move",
@@ -17276,7 +20845,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "906": {
     "resourceType": "move",
@@ -17295,7 +20865,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "all-opponents",
-    "isSpread": true
+    "isSpread": true,
+    "flags": []
   },
   "907": {
     "resourceType": "move",
@@ -17314,7 +20885,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "908": {
     "resourceType": "move",
@@ -17333,7 +20905,8 @@ export const GENERATED_MOVES = {
     "accuracy": 0,
     "damageKind": "unique",
     "target": "user",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "909": {
     "resourceType": "move",
@@ -17352,7 +20925,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "910": {
     "resourceType": "move",
@@ -17371,7 +20945,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "911": {
     "resourceType": "move",
@@ -17390,7 +20965,8 @@ export const GENERATED_MOVES = {
     "accuracy": 0,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "912": {
     "resourceType": "move",
@@ -17409,7 +20985,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "913": {
     "resourceType": "move",
@@ -17428,7 +21005,8 @@ export const GENERATED_MOVES = {
     "accuracy": 0,
     "damageKind": "unique",
     "target": "all-allies",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "914": {
     "resourceType": "move",
@@ -17447,7 +21025,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "915": {
     "resourceType": "move",
@@ -17466,7 +21045,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "916": {
     "resourceType": "move",
@@ -17485,7 +21065,8 @@ export const GENERATED_MOVES = {
     "accuracy": 95,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "917": {
     "resourceType": "move",
@@ -17504,7 +21085,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "918": {
     "resourceType": "move",
@@ -17523,7 +21105,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "919": {
     "resourceType": "move",
@@ -17542,7 +21125,8 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": []
   },
   "10001": {
     "resourceType": "move",
@@ -17561,7 +21145,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect"
+    ]
   },
   "10002": {
     "resourceType": "move",
@@ -17580,7 +21168,10 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect"
+    ]
   },
   "10003": {
     "resourceType": "move",
@@ -17599,7 +21190,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "10004": {
     "resourceType": "move",
@@ -17618,7 +21214,10 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect"
+    ]
   },
   "10005": {
     "resourceType": "move",
@@ -17637,7 +21236,12 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "10006": {
     "resourceType": "move",
@@ -17656,7 +21260,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "10007": {
     "resourceType": "move",
@@ -17675,7 +21283,12 @@ export const GENERATED_MOVES = {
     "accuracy": 60,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "contact",
+      "protect",
+      "mirror"
+    ]
   },
   "10008": {
     "resourceType": "move",
@@ -17694,7 +21307,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "selected-pokemon",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "10009": {
     "resourceType": "move",
@@ -17713,7 +21330,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "opponents-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "10010": {
     "resourceType": "move",
@@ -17732,7 +21353,10 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "opponents-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect"
+    ]
   },
   "10011": {
     "resourceType": "move",
@@ -17751,7 +21375,10 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "opponents-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect"
+    ]
   },
   "10012": {
     "resourceType": "move",
@@ -17770,7 +21397,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "opponents-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "10013": {
     "resourceType": "move",
@@ -17789,7 +21420,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "recharge",
+      "protect"
+    ]
   },
   "10014": {
     "resourceType": "move",
@@ -17808,7 +21443,11 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "opponents-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "10015": {
     "resourceType": "move",
@@ -17827,7 +21466,11 @@ export const GENERATED_MOVES = {
     "accuracy": 100,
     "damageKind": "unique",
     "target": "opponents-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror"
+    ]
   },
   "10016": {
     "resourceType": "move",
@@ -17846,7 +21489,12 @@ export const GENERATED_MOVES = {
     "accuracy": 90,
     "damageKind": "unique",
     "target": "opponents-field",
-    "isSpread": false
+    "isSpread": false,
+    "flags": [
+      "protect",
+      "mirror",
+      "sound"
+    ]
   },
   "10017": {
     "resourceType": "move",
@@ -17865,7 +21513,10 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect"
+    ]
   },
   "10018": {
     "resourceType": "move",
@@ -17884,6 +21535,9 @@ export const GENERATED_MOVES = {
     "accuracy": null,
     "damageKind": "unique",
     "target": "entire-field",
-    "isSpread": true
+    "isSpread": true,
+    "flags": [
+      "protect"
+    ]
   }
 } as const satisfies Record<UpstreamResourceId, NormalizedMove>

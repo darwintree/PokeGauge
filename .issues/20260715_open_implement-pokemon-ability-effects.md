@@ -6,7 +6,7 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-15T02:45:00Z"
-updated_at: "2026-08-05T10:31:00Z"
+updated_at: "2026-08-06T08:50:00Z"
 ---
 ## Goal
 
@@ -31,7 +31,7 @@ updated_at: "2026-08-05T10:31:00Z"
 
 - [[archive/20260805_closed_ability-track-none|Ability Track none]]
 - [[archive/20260805_closed_ability-init-projection-to-weather-terrain-stage|Ability init projection to Weather Terrain Stage]]
-- [[20260805_open_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]
+- [[archive/20260805_closed_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]
 - [[20260805_open_ability-critical-hit-and-accuracy-modifiers|Ability critical-hit and accuracy modifiers]]
 - [[20260805_open_ability-stage-and-screen-bypass|Ability stage and screen bypass]]
 - [[20260805_open_ability-contact-and-held-item-interactions|Ability contact and held-item interactions]]
@@ -81,7 +81,7 @@ updated_at: "2026-08-05T10:31:00Z"
 - [ ] Chlorophyll
 - [ ] Illuminate
 - [ ] Trace
-- [ ] Huge Power
+- [x] Huge Power
 - [ ] Poison Point
 - [ ] Inner Focus
 - [ ] Magma Armor
@@ -91,7 +91,7 @@ updated_at: "2026-08-05T10:31:00Z"
 - [ ] Rain Dish
 - [ ] Sand Stream
 - [ ] Pressure
-- [ ] Thick Fat
+- [x] Thick Fat
 - [ ] Early Bird
 - [ ] Flame Body
 - [x] Run Away — N/A: no competitive trainer-battle effect
@@ -118,7 +118,7 @@ updated_at: "2026-08-05T10:31:00Z"
 - [ ] Arena Trap
 - [ ] Vital Spirit
 - [ ] White Smoke
-- [ ] Pure Power
+- [x] Pure Power
 - [ ] Shell Armor
 - [ ] Air Lock
 
@@ -132,23 +132,23 @@ updated_at: "2026-08-05T10:31:00Z"
 - [ ] Gluttony
 - [ ] Anger Point
 - [ ] Unburden
-- [ ] Heatproof
+- [x] Heatproof
 - [ ] Simple
 - [ ] Dry Skin
 - [ ] Download
-- [ ] Iron Fist
+- [x] Iron Fist
 - [ ] Poison Heal
 - [x] Adaptability — implemented
 - [ ] Skill Link
 - [ ] Hydration
-- [ ] Solar Power
+- [x] Solar Power
 - [ ] Quick Feet
 - [ ] Normalize
 - [ ] Sniper
 - [ ] Magic Guard
 - [ ] No Guard
 - [ ] Stall
-- [ ] Technician
+- [x] Technician
 - [ ] Leaf Guard
 - [ ] Klutz
 - [ ] Mold Breaker
@@ -158,12 +158,12 @@ updated_at: "2026-08-05T10:31:00Z"
 - [ ] Forewarn
 - [ ] Unaware
 - [ ] Tinted Lens
-- [ ] Filter
+- [x] Filter
 - [ ] Slow Start
 - [ ] Scrappy
 - [ ] Storm Drain
 - [ ] Ice Body
-- [ ] Solid Rock
+- [x] Solid Rock
 - [ ] Snow Warning
 - [x] Honey Gather — N/A: no competitive trainer-battle effect
 - [ ] Frisk
@@ -209,7 +209,7 @@ updated_at: "2026-08-05T10:31:00Z"
 - [ ] Magic Bounce
 - [ ] Sap Sipper
 - [ ] Prankster
-- [ ] Sand Force
+- [x] Sand Force
 - [ ] Iron Barbs
 - [ ] Zen Mode
 - [ ] Victory Star
@@ -222,25 +222,25 @@ updated_at: "2026-08-05T10:31:00Z"
 - [ ] Flower Veil
 - [ ] Cheek Pouch
 - [ ] Protean
-- [ ] Fur Coat
+- [x] Fur Coat
 - [ ] Magician
 - [ ] Bulletproof
 - [ ] Competitive
-- [ ] Strong Jaw
+- [x] Strong Jaw
 - [ ] Refrigerate
 - [ ] Sweet Veil
 - [ ] Stance Change
 - [ ] Gale Wings
-- [ ] Mega Launcher
+- [x] Mega Launcher
 - [ ] Grass Pelt
 - [ ] Symbiosis
-- [ ] Tough Claws
+- [x] Tough Claws
 - [ ] Pixilate
 - [ ] Gooey
 - [ ] Aerilate
 - [ ] Parental Bond
 - [ ] Dark Aura
-- [ ] Fairy Aura
+- [x] Fairy Aura
 - [ ] Aura Break
 - [ ] Primordial Sea
 - [ ] Desolate Land
@@ -255,7 +255,7 @@ updated_at: "2026-08-05T10:31:00Z"
 - [ ] Merciless
 - [ ] Shields Down
 - [ ] Stakeout
-- [ ] Water Bubble
+- [x] Water Bubble
 - [ ] Steelworker
 - [ ] Berserk
 - [ ] Slush Rush
@@ -334,7 +334,7 @@ updated_at: "2026-08-05T10:31:00Z"
 - [ ] Seed Sower
 - [ ] Thermal Exchange
 - [ ] Anger Shell
-- [ ] Purifying Salt
+- [x] Purifying Salt
 - [ ] Well-Baked Body
 - [ ] Wind Rider
 - [ ] Guard Dog
@@ -375,7 +375,7 @@ updated_at: "2026-08-05T10:31:00Z"
 - [ ] Mega Sol
 - [ ] Spicy Spray
 - [ ] Eelevate
-- [ ] Fire Mane
+- [x] Fire Mane
 
 ## Deferred constraints
 

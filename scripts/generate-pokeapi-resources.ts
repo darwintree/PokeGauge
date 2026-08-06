@@ -179,6 +179,8 @@ async function main() {
     moveRows,
     moveNameRows,
     moveMetaRows,
+    moveFlagMapRows,
+    moveFlagRows,
     moveTargetRows,
     damageClassRows,
     metaCategoryRows,
@@ -200,6 +202,8 @@ async function main() {
     readCsv("moves"),
     readCsv("move_names"),
     readCsv("move_meta"),
+    readCsv("move_flag_map"),
+    readCsv("move_flags"),
     readCsv("move_targets"),
     readCsv("move_damage_classes"),
     readCsv("move_meta_categories"),
@@ -225,6 +229,8 @@ async function main() {
   const pokemonAbilitiesById = groupByNumber(pokemonAbilityRows, "pokemon_id")
   const moveNamesByMoveId = groupByNumber(moveNameRows, "move_id")
   const moveMetaByMoveId = groupByNumber(moveMetaRows, "move_id")
+  const moveFlagsByMoveId = groupByNumber(moveFlagMapRows, "move_id")
+  const moveFlagById = indexById(moveFlagRows)
   const moveTargetById = indexById(moveTargetRows)
 
   function evioliteEligible(pokemon: CsvRow): boolean {
@@ -328,6 +334,9 @@ async function main() {
         damageKind: META_CATEGORY_BY_ID[meta?.meta_category_id ?? ""] ?? "unique",
         target,
         isSpread: SPREAD_TARGETS.has(target),
+        flags: (moveFlagsByMoveId.get(id) ?? [])
+          .map((entry) => moveFlagById.get(requiredNumber(entry, "move_flag_id"))?.identifier)
+          .filter((flag): flag is string => Boolean(flag)),
       },
     ] as const]
   })

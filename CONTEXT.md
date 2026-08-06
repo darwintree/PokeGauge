@@ -26,6 +26,26 @@ _Avoid_: Filter, frontend component, configuration axis
 取值为离散集合的 Track；集合中的每个值各自形成一条组合分支。
 _Avoid_: Multi-select Track, option list
 
+**Track Selection Activation**:
+对于具有默认 Neutral Selection 的 Choice Track，表示一个 Selection 是否对最终结果有贡献。取值为 `active`、`inactive`、`unsupported` 或 `neutral`。
+_Avoid_: Source State, Effective
+
+**Active Selection（生效选择）**:
+对最终结果有贡献的 Selection。
+_Avoid_: Effective Selection
+
+**Inactive Selection（未生效选择）**:
+已支持，但最终效果等同于同 Track Neutral Selection 的 Selection。
+_Avoid_: Unsupported Selection, Neutral Selection
+
+**Unsupported Selection（暂未支持选择）**:
+当前仅作为占位并按同 Track Neutral Selection 等效处理的 Selection；它不表示已判断为未生效。
+_Avoid_: Inactive Selection
+
+**Neutral Selection（中性选择）**:
+Choice Track 中作为默认比较基准的 Selection。
+_Avoid_: Inactive Selection, Unsupported Selection
+
 **Range Track**:
 取值为一个闭合数值区间的 Track；整个区间是一条组合分支，用于表达结果边界，不枚举区间内的每个数值。
 _Avoid_: Slider, range filter
