@@ -2,6 +2,7 @@ import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest"
 
 import {
   setChampionsAbilityUsageFetcherForTest,
+  setChampionsItemUsageFetcherForTest,
   setChampionsMoveUsageFetcherForTest,
 } from "@/lib/champions"
 import * as damageKernel from "@/lib/damage-calculation"
@@ -83,14 +84,20 @@ function installChampionsAbilityUsageFixture() {
   })
 }
 
+function installChampionsItemUsageFixture() {
+  setChampionsItemUsageFetcherForTest(async () => [])
+}
+
 beforeAll(() => {
   installChampionsMoveUsageFixture()
   installChampionsAbilityUsageFixture()
+  installChampionsItemUsageFixture()
 })
 
 beforeEach(() => {
   installChampionsMoveUsageFixture()
   installChampionsAbilityUsageFixture()
+  installChampionsItemUsageFixture()
   vi.restoreAllMocks()
 })
 
