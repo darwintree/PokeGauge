@@ -2,15 +2,15 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "18b95ccd-1145-4def-b195-4179ba9eb479"
 title: "Ability init projection to Weather Terrain Stage"
-status: "open"
+status: "closed"
 priority: "high"
 labels: ["FEATURE-REQUEST", "READY-FOR-AGENT"]
 created_at: "2026-08-05T09:25:00Z"
-updated_at: "2026-08-05T10:08:00Z"
+updated_at: "2026-08-06T08:31:00Z"
 ---
 ## Parent issue
 
-[[20260715_open_implement-pokemon-ability-effects|Implement Pokémon ability effects]]
+[[../20260715_open_implement-pokemon-ability-effects|Implement Pokémon ability effects]]
 
 ## Goal
 
@@ -70,7 +70,7 @@ updated_at: "2026-08-05T10:08:00Z"
 
 - [[../docs/traces/discussion/2026-08-05-ability-effects-first-freeze-scope|特性效果首批冻结范围讨论记录]] §3–§6
 - [[../docs/traces/discussion/2026-08-05-ability-init-projection-contract|Ability 初始化投射契约讨论记录]]
-- 相关基建：[[archive/20260805_closed_ability-track-none|Ability Track none]]
+- 相关基建：[[20260805_closed_ability-track-none|Ability Track none]]
 
 ## Out of scope
 
@@ -81,13 +81,21 @@ updated_at: "2026-08-05T10:08:00Z"
 
 ## Acceptance criteria
 
-- [ ] 天气／场地名单在攻防双方均向对应 Track 追加候选；已有候选保留、去重并维持固定顺序。
-- [ ] 物理类别仅投射 Defender Intimidate 与 Attacker Defiant；特殊类别仅投射 Attacker Competitive；其他侧别和类别不误写 Stage。
-- [ ] Defiant 的 `+1`、`+2` 与既有 Stage 候选分别进入 row product，且不引入 Ability↔Stage 关联模型。
-- [ ] 手动选择、重新选择与 Ability Reset 均按契约幂等追加；取消、`none`、Unknown 与非投射类特性不清除目标 Track。
-- [ ] 新建场景与 Identity 变化只在最终默认确定后投射；临时 catalog 候选不投射，异步成功／失败回退、Mega 固定特性及 touched 保护行为可验证。
-- [ ] 恢复存档不重放投射；已保存的 Ability、Weather、Terrain 与 Stage 保持不变。
-- [ ] 切换招式类别仅重置双方 Stage、保留 Weather／Terrain，并按新类别重新应用当前 Stage 投射；切换 Identity 则重置全部目标 Track 后重新应用双方最终选择。
-- [ ] 名单内特性在适用与不适用位置都编译为 `neutral`，不显示状态点、不出现在结果 Ability 来源中；目标 Track 继续提供效果与 provenance。
-- [ ] 不新增投射提示 UI，现有 Track 信息层级不变。
-- [ ] 两份讨论记录中的相关决定均可逐条审计到实现与测试。
+- [x] 天气／场地名单在攻防双方均向对应 Track 追加候选；已有候选保留、去重并维持固定顺序。
+- [x] 物理类别仅投射 Defender Intimidate 与 Attacker Defiant；特殊类别仅投射 Attacker Competitive；其他侧别和类别不误写 Stage。
+- [x] Defiant 的 `+1`、`+2` 与既有 Stage 候选分别进入 row product，且不引入 Ability↔Stage 关联模型。
+- [x] 手动选择、重新选择与 Ability Reset 均按契约幂等追加；取消、`none`、Unknown 与非投射类特性不清除目标 Track。
+- [x] 新建场景与 Identity 变化只在最终默认确定后投射；临时 catalog 候选不投射，异步成功／失败回退、Mega 固定特性及 touched 保护行为可验证。
+- [x] 恢复存档不重放投射；已保存的 Ability、Weather、Terrain 与 Stage 保持不变。
+- [x] 切换招式类别仅重置双方 Stage、保留 Weather／Terrain，并按新类别重新应用当前 Stage 投射；切换 Identity 则重置全部目标 Track 后重新应用双方最终选择。
+- [x] 名单内特性在适用与不适用位置都编译为 `neutral`，不显示状态点、不出现在结果 Ability 来源中；目标 Track 继续提供效果与 provenance。
+- [x] 不新增投射提示 UI，现有 Track 信息层级不变。
+- [x] 两份讨论记录中的相关决定均可逐条审计到实现与测试。
+
+## Resolution
+
+- 新增单一纯投射入口，按既有 Weather／Terrain／Stage 枚举追加、去重和排序；Defiant 的 `+1`／`+2` 保持独立 Scenario 分支。
+- 手动新增、Ability Reset、最终异步默认、招式类别与 Identity transition 均接入投射生命周期；restore 与临时 catalog 候选不重放投射，touched 保护保持不变。
+- 投射名单在 Ability Track 与 compiler 中统一为 `neutral` 并从结果 Ability 来源隐藏；效果和 provenance 继续完全由目标 Track 表达，未新增提示 UI。
+- 79 个定向测试通过，`pnpm lint` 与 `pnpm build` 通过；完整 `pnpm test` 仅保留已知 `evaluate.test.ts` 的 15 个默认场景数量／held-item 基线失败，无新增失败。
+- 已完成桌面与 390×844 窄屏 review-and-correct；候选即时反馈、红点状态、reset、取消／重选与响应式布局均符合契约，无需视觉样式调整。

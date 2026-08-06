@@ -30,7 +30,7 @@ updated_at: "2026-08-05T10:31:00Z"
 ## Child issues
 
 - [[archive/20260805_closed_ability-track-none|Ability Track none]]
-- [[20260805_open_ability-init-projection-to-weather-terrain-stage|Ability init projection to Weather Terrain Stage]]
+- [[archive/20260805_closed_ability-init-projection-to-weather-terrain-stage|Ability init projection to Weather Terrain Stage]]
 - [[20260805_open_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]
 - [[20260805_open_ability-critical-hit-and-accuracy-modifiers|Ability critical-hit and accuracy modifiers]]
 - [[20260805_open_ability-stage-and-screen-bypass|Ability stage and screen bypass]]

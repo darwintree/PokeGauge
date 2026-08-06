@@ -7,10 +7,17 @@ import { listResources } from "@/lib/resources"
 import {
   defaultTrackState,
   expectedRowCount,
+  projectAbilitySelections,
   runScenarioPipeline,
 } from "@/lib/scenario"
 
-import { ADAPTABILITY_ABILITY_ID, NO_ABILITY_ID } from "@/lib/ability"
+import {
+  ADAPTABILITY_ABILITY_ID,
+  DEFIANT_ABILITY_ID,
+  DROUGHT_ABILITY_ID,
+  INTIMIDATE_ABILITY_ID,
+  NO_ABILITY_ID,
+} from "@/lib/ability"
 import { CALC_GEN, VGC_LEVEL } from "@/lib/damage-calculation"
 import * as damageKernel from "@/lib/damage-calculation"
 import { defenderStatValues, offenseStatValue } from "@/lib/stat-calculation"
@@ -172,6 +179,19 @@ describe("ability compiler", () => {
     ]))
   })
 
+  it("compiles projection abilities as neutral on either side", () => {
+    for (const abilityId of [DROUGHT_ABILITY_ID, INTIMIDATE_ABILITY_ID, DEFIANT_ABILITY_ID]) {
+      const outcome = calculable({
+        attackerAbilityId: abilityId,
+        defenderAbilityId: abilityId,
+      })
+      expect(outcome.sources).toEqual(expect.arrayContaining([
+        { track: "attacker-ability", optionId: String(abilityId), state: "neutral" },
+        { track: "defender-ability", optionId: String(abilityId), state: "neutral" },
+      ]))
+    }
+  })
+
   it("matches @smogon/calc Adaptability normal and critical rolls", () => {
     const offense = getAttackerStatSetups("physical")["neutral-max"]
     const defense = getDefenderSetups("physical")["standard-bulk"]
@@ -209,6 +229,33 @@ describe("ability compiler", () => {
 })
 
 describe("ability scenario product and provenance", () => {
+  it("keeps Defiant Stage choices independent in the row product", async () => {
+    const catalog = await getCatalogShell(133, 143, "en", "physical")
+    const tackle = catalog.moves.find((move) => move.id === TACKLE.moveId)
+    if (!tackle) throw new Error("Expected Tackle catalog option")
+    const state = defaultTrackState(catalog)
+    state.moveSnapshots = [createMoveSnapshot(tackle, TACKLE.id)]
+    state.selectedMoveSnapshotIds = [TACKLE.id]
+    state.offensePresetIds = ["neutral-max"]
+    state.defensePresetIds = ["standard-bulk"]
+    state.attackerItemIds = ["none"]
+    state.defenderItemIds = ["none"]
+    state.attackerAbilityIds = [DEFIANT_ABILITY_ID]
+    state.defenderAbilityIds = [NO_ABILITY_ID]
+    const projected = projectAbilitySelections(state, "physical")
+
+    const result = runScenarioPipeline(catalog, projected)
+
+    expect(projected.attackerStages).toEqual([0, 1, 2])
+    expect(expectedRowCount(projected)).toBe(3)
+    expect(result.rows).toHaveLength(3)
+    expect(result.rows.map((row) => row.provenance["attacker-stage"]?.active).flat())
+      .toEqual(["1", "2"])
+    expect(result.rows.every((row) =>
+      row.provenance["attacker-ability"]?.neutral.includes(String(DEFIANT_ABILITY_ID)),
+    )).toBe(true)
+  })
+
   it("splits dynamic-type Adaptability from ordinary STAB through the pipeline and oracle", async () => {
     const catalog = await getCatalogShell(133, 143, "en", "special")
     const revelationDance = catalog.moves.find((move) => move.id === 686)

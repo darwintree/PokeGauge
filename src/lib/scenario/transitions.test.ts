@@ -12,9 +12,31 @@ import {
   trackStateAfterCatalogTransition,
 } from "@/lib/scenario"
 import type { StatPreset } from "@/lib/stat-preset"
+import { DEFIANT_ABILITY_ID, DROUGHT_ABILITY_ID, INTIMIDATE_ABILITY_ID } from "@/lib/ability"
 
 
 describe("scenario identity transitions", () => {
+  it("resets projection targets to neutral until identity defaults resolve", async () => {
+    const baseCatalog = await getCatalogShell(6, 9, "en")
+    const state = defaultTrackState(baseCatalog)
+    state.weathers = ["none", "sun"]
+    state.terrains = ["none", "electric"]
+    state.attackerStages = [-1, 0, 2]
+    state.defenderStages = [0, 1]
+
+    const nextCatalog = await getCatalogShell(133, 143, "en")
+    const next = trackStateAfterCatalogTransition(state, nextCatalog, {
+      attackerOwnerChanged: true,
+      attackerChanged: true,
+      defenderChanged: true,
+    })
+
+    expect(next.weathers).toEqual(["none"])
+    expect(next.terrains).toEqual(["none"])
+    expect(next.attackerStages).toEqual([0])
+    expect(next.defenderStages).toEqual([0])
+  })
+
   it("applies both sides' locked Mega values through the ordinary identity reset", async () => {
     const baseCatalog = await getCatalogShell(6, 9, "en")
     const state = defaultTrackState(baseCatalog)
@@ -82,6 +104,32 @@ describe("scenario identity transitions", () => {
 })
 
 describe("scenario pure transitions", () => {
+  it("keeps Weather and Terrain while resetting and reprojecting Stage on category changes", async () => {
+    const physicalCatalog = await getCatalogShell(133, 143, "en", "physical")
+    const state = defaultTrackState(physicalCatalog)
+    state.attackerAbilityIds = [DEFIANT_ABILITY_ID, DROUGHT_ABILITY_ID]
+    state.defenderAbilityIds = [INTIMIDATE_ABILITY_ID]
+    state.weathers = ["none", "sun"]
+    state.terrains = ["none", "electric"]
+    state.attackerStages = [4]
+    state.defenderStages = [-2]
+
+    const next = trackStateAfterCatalogTransition(
+      state,
+      await getCatalogShell(133, 143, "en", "special"),
+      {
+        attackerOwnerChanged: true,
+        attackerChanged: false,
+        defenderChanged: false,
+      },
+    )
+
+    expect(next.weathers).toEqual(["none", "sun"])
+    expect(next.terrains).toEqual(["none", "electric"])
+    expect(next.attackerStages).toEqual([0])
+    expect(next.defenderStages).toEqual([0])
+  })
+
   it("normalizes an empty screen selection without changing populated selections", () => {
     expect(normalizeScreens([])).toEqual(["none"])
     expect(normalizeScreens(["reflect", "light-screen"])).toEqual([
