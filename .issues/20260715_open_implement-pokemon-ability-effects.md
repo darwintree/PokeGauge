@@ -32,7 +32,7 @@ updated_at: "2026-08-06T08:50:00Z"
 - [[archive/20260805_closed_ability-track-none|Ability Track none]]
 - [[archive/20260805_closed_ability-init-projection-to-weather-terrain-stage|Ability init projection to Weather Terrain Stage]]
 - [[archive/20260805_closed_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]
-- [[20260805_open_ability-critical-hit-and-accuracy-modifiers|Ability critical-hit and accuracy modifiers]]
+- [[archive/20260805_closed_ability-critical-hit-and-accuracy-modifiers|Ability critical-hit and accuracy modifiers]]
 - [[20260805_open_ability-stage-and-screen-bypass|Ability stage and screen bypass]]
 - [[20260805_open_ability-contact-and-held-item-interactions|Ability contact and held-item interactions]]
 - [[20260805_open_green-dot-conditional-ability-effects|Green-dot conditional ability effects]]
@@ -48,17 +48,17 @@ updated_at: "2026-08-06T08:50:00Z"
 - [ ] Stench
 - [ ] Drizzle
 - [ ] Speed Boost
-- [ ] Battle Armor
+- [x] Battle Armor
 - [ ] Sturdy
 - [ ] Damp
 - [ ] Limber
-- [ ] Sand Veil
+- [x] Sand Veil
 - [ ] Static
 - [ ] Volt Absorb
 - [ ] Water Absorb
 - [ ] Oblivious
 - [ ] Cloud Nine
-- [ ] Compound Eyes
+- [x] Compound Eyes
 - [ ] Insomnia
 - [ ] Color Change
 - [ ] Immunity
@@ -99,7 +99,7 @@ updated_at: "2026-08-06T08:50:00Z"
 - [ ] Hyper Cutter
 - [ ] Pickup
 - [ ] Truant
-- [ ] Hustle
+- [x] Hustle
 - [ ] Cute Charm
 - [ ] Plus
 - [ ] Minus
@@ -119,7 +119,7 @@ updated_at: "2026-08-06T08:50:00Z"
 - [ ] Vital Spirit
 - [ ] White Smoke
 - [x] Pure Power
-- [ ] Shell Armor
+- [x] Shell Armor
 - [ ] Air Lock
 
 ### Generation IV (47)
@@ -128,7 +128,7 @@ updated_at: "2026-08-06T08:50:00Z"
 - [ ] Motor Drive
 - [ ] Rivalry
 - [ ] Steadfast
-- [ ] Snow Cloak
+- [x] Snow Cloak
 - [ ] Gluttony
 - [ ] Anger Point
 - [ ] Unburden
@@ -144,15 +144,15 @@ updated_at: "2026-08-06T08:50:00Z"
 - [x] Solar Power
 - [ ] Quick Feet
 - [ ] Normalize
-- [ ] Sniper
+- [x] Sniper
 - [ ] Magic Guard
-- [ ] No Guard
+- [x] No Guard
 - [ ] Stall
 - [x] Technician
 - [ ] Leaf Guard
 - [ ] Klutz
 - [ ] Mold Breaker
-- [ ] Super Luck
+- [x] Super Luck
 - [ ] Aftermath
 - [ ] Anticipation
 - [ ] Forewarn

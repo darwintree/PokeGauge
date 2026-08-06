@@ -11,11 +11,18 @@ import { AbilityTrack } from "./ability-track"
 import { DamageResultRow } from "../../results/damage-result-row"
 import {
   DROUGHT_ABILITY_ID,
+  BATTLE_ARMOR_ABILITY_ID,
+  COMPOUND_EYES_ABILITY_ID,
   FIRE_MANE_ABILITY_ID,
+  HUSTLE_ABILITY_ID,
+  NO_GUARD_ABILITY_ID,
   NO_ABILITY_ID,
   SHARPNESS_ABILITY_ID,
   RECKLESS_ABILITY_ID,
   SHEER_FORCE_ABILITY_ID,
+  SHELL_ARMOR_ABILITY_ID,
+  SNIPER_ABILITY_ID,
+  SUPER_LUCK_ABILITY_ID,
 } from "@/lib/ability"
 
 it("marks only unsupported ability effects in the Track", () => {
@@ -27,6 +34,15 @@ it("marks only unsupported ability effects in the Track", () => {
       options: [
         { id: 91, label: "Adaptability", summary: "" },
         { id: FIRE_MANE_ABILITY_ID, label: "Fire Mane", summary: "" },
+        { id: BATTLE_ARMOR_ABILITY_ID, label: "Battle Armor", summary: "" },
+        { id: COMPOUND_EYES_ABILITY_ID, label: "Compound Eyes", summary: "" },
+        { id: HUSTLE_ABILITY_ID, label: "Hustle", summary: "" },
+        { id: NO_GUARD_ABILITY_ID, label: "No Guard", summary: "" },
+        { id: SHELL_ARMOR_ABILITY_ID, label: "Shell Armor", summary: "" },
+        { id: SNIPER_ABILITY_ID, label: "Sniper", summary: "" },
+        { id: SUPER_LUCK_ABILITY_ID, label: "Super Luck", summary: "" },
+        { id: 35, label: "Illuminate", summary: "" },
+        { id: 51, label: "Keen Eye", summary: "" },
         { id: NO_ABILITY_ID, label: "—", accessibleLabel: "No ability", summary: "" },
         { id: 50, label: "Run Away", summary: "" },
         { id: SHARPNESS_ABILITY_ID, label: "Sharpness", summary: "" },
@@ -47,7 +63,7 @@ it("marks only unsupported ability effects in the Track", () => {
   expect(markup).toContain("Reckless")
   expect(markup).toContain("Sheer Force")
   expect(markup).toContain("Drought")
-  expect(markup.match(/Effect not supported yet/g)).toHaveLength(4)
+  expect(markup.match(/Effect not supported yet/g)).toHaveLength(6)
   expect(markup.indexOf('aria-label="No ability"')).toBeLessThan(
     markup.indexOf('aria-label="Adaptability"'),
   )
@@ -86,7 +102,7 @@ it("renders active abilities inline and folds inactive and unsupported states", 
       basePower: 40,
       normal: { effectivePower: 40, phases: [] },
       critical: { effectivePower: 60, phases: [] },
-      hitFact: 100,
+      hitFact: "always-hits",
       hitProbability: 1,
     },
     minDamage: 20,
@@ -129,6 +145,7 @@ it("renders active abilities inline and folds inactive and unsupported states", 
         attackerStat: { id: "neutral-max", label: "Attack" },
         defender: { id: "standard-bulk", label: "Defense" },
         row,
+        showAccuracy: true,
       }),
     ),
   ))
@@ -141,4 +158,5 @@ it("renders active abilities inline and folds inactive and unsupported states", 
   expect(markup).not.toContain("No ability")
   expect(markup).not.toContain("Drought")
   expect(markup).toContain(">-1<")
+  expect(markup).toContain("Always hits")
 })

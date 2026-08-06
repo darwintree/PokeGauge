@@ -319,8 +319,8 @@ describe("matchup scenario pipeline", () => {
         provenance: {
           "attacker-ability": {
             active: [],
-            inactive: [],
-            unsupported: ["8"],
+            inactive: ["8"],
+            unsupported: [],
             neutral: [],
           },
           "attacker-stage": {

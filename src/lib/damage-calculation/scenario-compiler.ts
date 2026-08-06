@@ -299,16 +299,17 @@ function compileProbability(
   mode: ProbabilityMode,
   hitFact: HitFact,
   criticalStage: CriticalStage,
+  preventsCritical: boolean,
 ): ProbabilityInput {
   if (mode === "classic") {
     return {
       hitProbability: 1,
-      criticalHitProbability: criticalStage === 3 ? 1 : 0,
+      criticalHitProbability: !preventsCritical && criticalStage === 3 ? 1 : 0,
     }
   }
   return {
     hitProbability: hitFact === "always-hits" ? 1 : Math.min(1, hitFact / 100),
-    criticalHitProbability: criticalProbability(criticalStage),
+    criticalHitProbability: preventsCritical ? 0 : criticalProbability(criticalStage),
   }
 }
 
@@ -318,6 +319,7 @@ type BranchContext = {
   attackModifier: number
   defenseModifier: number
   finalModifiers: readonly number[]
+  criticalAttackerFinalModifier: number
   spread: boolean
   weatherModifier: number
   screenModifier: number
@@ -352,6 +354,7 @@ function compileBranch(
     typeEffectivenessModifier: context.typeEffectivenessModifier,
     finalModifier: chainModifiers([
       critical ? NEUTRAL_MODIFIER : context.screenModifier,
+      critical ? context.criticalAttackerFinalModifier : NEUTRAL_MODIFIER,
       ...context.finalModifiers,
     ]),
   }
@@ -401,11 +404,29 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     isGrounded(attacker?.types ?? [], raw.attackerAbilityId),
     isGrounded(defender?.types ?? [], raw.defenderAbilityId),
   )
-  const derivedCriticalStage = Math.min(
+  const hasOriginalTypeStab = Boolean(
+    attacker && moveType && attacker.types.includes(moveType),
+  )
+  const ability = compileAbilityEffect({
+    attackerAbilityId: raw.attackerAbilityId,
+    defenderAbilityId: raw.defenderAbilityId,
+    category: moveCategory,
+    moveType,
+    power,
+    moveFlags: move?.flags ?? [],
+    effectiveness,
+    weather: raw.weather,
+    hasStab: hasOriginalTypeStab,
+  })
+  const criticalStageWithoutAbility = Math.min(
     3,
     raw.snapshot.criticalStage + attackerItem.criticalStage,
   ) as CriticalStage
-  const criticalOnly = derivedCriticalStage === 3
+  const derivedCriticalStage = Math.min(
+    3,
+    criticalStageWithoutAbility + ability.criticalStage,
+  ) as CriticalStage
+  const criticalOnly = !ability.preventsCritical && derivedCriticalStage === 3
   const breaksScreensBeforeDamage = Boolean(
     move && moveBreaksScreensBeforeDamage(move.id),
   )
@@ -425,54 +446,72 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     : criticalOnly && raw.defenderStage > 0
       ? "inactive"
       : "active"
-  const hasOriginalTypeStab = Boolean(
-    attacker && moveType && attacker.types.includes(moveType),
-  )
-  const ability = compileAbilityEffect({
-    attackerAbilityId: raw.attackerAbilityId,
-    defenderAbilityId: raw.defenderAbilityId,
-    category: moveCategory,
-    moveType,
-    power,
-    moveFlags: move?.flags ?? [],
-    effectiveness,
-    weather: raw.weather,
-    hasStab: hasOriginalTypeStab,
-  })
-
   const numericAccuracyWith = (
+    includeAttackerAbility: boolean,
+    includeDefenderAbility: boolean,
     includeAttackerItem: boolean,
     includeDefenderItem: boolean,
   ): number => applyModifier(accuracy, chainModifiers([
+    includeAttackerAbility ? ability.attackerAccuracyModifier : NEUTRAL_MODIFIER,
+    includeDefenderAbility ? ability.defenderAccuracyModifier : NEUTRAL_MODIFIER,
     includeAttackerItem ? attackerItem.accuracyModifier : NEUTRAL_MODIFIER,
     includeDefenderItem
       ? defenderItem?.accuracyModifier ?? NEUTRAL_MODIFIER
       : NEUTRAL_MODIFIER,
   ]))
-  const itemModifiedAccuracy = raw.snapshot.alwaysHits
-    ? accuracy
-    : numericAccuracyWith(true, true)
-  const resolvedAccuracy = weather.accuracy ??
-    (raw.snapshot.alwaysHits ? "always-hits" : itemModifiedAccuracy)
-  const hitFact: HitFact = resolvedAccuracy === "always-hits"
-    ? resolvedAccuracy
-    : Math.min(100, resolvedAccuracy)
-  const normalizedItemAccuracy = (includeAttackerItem: boolean, includeDefenderItem: boolean) =>
-    Math.min(1, numericAccuracyWith(includeAttackerItem, includeDefenderItem) / 100)
+  const resolveHitFact = (
+    includeAttackerAbility: boolean,
+    includeDefenderAbility: boolean,
+    includeAttackerItem: boolean,
+    includeDefenderItem: boolean,
+  ): HitFact => {
+    const modifiedAccuracy = raw.snapshot.alwaysHits
+      ? accuracy
+      : numericAccuracyWith(
+          includeAttackerAbility,
+          includeDefenderAbility,
+          includeAttackerItem,
+          includeDefenderItem,
+        )
+    const resolved = weather.accuracy ??
+      (raw.snapshot.alwaysHits ? "always-hits" : modifiedAccuracy)
+    return ability.attackerNoGuard || ability.defenderNoGuard
+      ? "always-hits"
+      : resolved === "always-hits" ? resolved : Math.min(100, resolved)
+  }
+  const hitFact = resolveHitFact(true, true, true, true)
+  const effectiveHitProbability = (fact: HitFact) =>
+    fact === "always-hits" ? 1 : Math.min(1, fact / 100)
+  const hitProbabilityWithout = (
+    includeAttackerAbility: boolean,
+    includeDefenderAbility: boolean,
+    includeAttackerItem: boolean,
+    includeDefenderItem: boolean,
+  ) => effectiveHitProbability(resolveHitFact(
+    includeAttackerAbility,
+    includeDefenderAbility,
+    includeAttackerItem,
+    includeDefenderItem,
+  ))
+  const finalHitProbability = effectiveHitProbability(hitFact)
 
   let attackerItemState = attackerItem.source.state
   if (attackerItem.descriptor?.effect.kind === "accuracy") {
     attackerItemState = attackerItemState === "active" &&
       raw.probabilityMode === "battle-odds" &&
-      weather.accuracy === undefined &&
-      normalizedItemAccuracy(true, true) !== normalizedItemAccuracy(false, true)
+      finalHitProbability !== hitProbabilityWithout(true, true, false, true)
       ? "active"
       : "inactive"
   } else if (attackerItem.descriptor?.effect.kind === "critical-stage") {
+    const criticalStageWithoutItem = Math.min(
+      3,
+      raw.snapshot.criticalStage + ability.criticalStage,
+    )
     const visible = raw.probabilityMode === "battle-odds"
-      ? derivedCriticalStage !== raw.snapshot.criticalStage
-      : derivedCriticalStage === 3 && raw.snapshot.criticalStage < 3
+      ? derivedCriticalStage !== criticalStageWithoutItem
+      : derivedCriticalStage === 3 && criticalStageWithoutItem < 3
     attackerItemState = attackerItemState === "active" && visible
+      && !ability.preventsCritical
       ? "active"
       : "inactive"
   }
@@ -481,14 +520,47 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   if (defenderItem?.descriptor?.effect.kind === "accuracy") {
     defenderItemState = defenderItemState === "active" &&
       raw.probabilityMode === "battle-odds" &&
-      weather.accuracy === undefined &&
-      normalizedItemAccuracy(true, true) !== normalizedItemAccuracy(true, false)
+      finalHitProbability !== hitProbabilityWithout(true, true, true, false)
       ? "active"
       : "inactive"
   } else if (defenderItem?.descriptor?.effect.kind === "suppress-ordinary-weather-damage") {
     defenderItemState = defenderItemState === "active" && weather.ordinaryDamageSuppressed
       ? "active"
       : "inactive"
+  }
+
+  let attackerAbilityState = ability.attackerState
+  if (ability.attackerAccuracyModifier !== NEUTRAL_MODIFIER) {
+    const accuracyActive = raw.probabilityMode === "battle-odds" &&
+      finalHitProbability !== hitProbabilityWithout(false, true, true, true)
+    attackerAbilityState = attackerAbilityState === "active" || accuracyActive
+      ? "active"
+      : "inactive"
+  }
+  if (ability.criticalStage > 0) {
+    const visible = raw.probabilityMode === "battle-odds"
+      ? derivedCriticalStage !== criticalStageWithoutAbility
+      : derivedCriticalStage === 3 && criticalStageWithoutAbility < 3
+    attackerAbilityState = visible && !ability.preventsCritical ? "active" : "inactive"
+  }
+  if (ability.criticalFinalModifier !== NEUTRAL_MODIFIER) {
+    attackerAbilityState = ability.preventsCritical ? "inactive" : "active"
+  }
+  if (ability.attackerNoGuard) {
+    attackerAbilityState = raw.probabilityMode === "battle-odds" &&
+      !raw.snapshot.alwaysHits ? "active" : "inactive"
+  }
+
+  let defenderAbilityState = ability.defenderState
+  if (ability.defenderAccuracyModifier !== NEUTRAL_MODIFIER) {
+    defenderAbilityState = raw.probabilityMode === "battle-odds" &&
+      finalHitProbability !== hitProbabilityWithout(true, false, true, true)
+      ? "active"
+      : "inactive"
+  }
+  if (ability.defenderNoGuard) {
+    defenderAbilityState = raw.probabilityMode === "battle-odds" &&
+      !raw.snapshot.alwaysHits ? "active" : "inactive"
   }
 
   const sources: ScenarioSource[] = [
@@ -511,7 +583,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     {
       track: "attacker-ability",
       optionId: String(raw.attackerAbilityId),
-      state: ability.attackerState,
+      state: attackerAbilityState,
     },
     {
       track: "weather",
@@ -538,7 +610,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     {
       track: "defender-ability",
       optionId: String(raw.defenderAbilityId),
-      state: ability.defenderState,
+      state: defenderAbilityState,
     },
     {
       track: "screen",
@@ -613,6 +685,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       attackerItem.finalModifier,
       defenderItem?.finalModifier ?? NEUTRAL_MODIFIER,
     ],
+    criticalAttackerFinalModifier: ability.criticalFinalModifier,
     spread:
       (move.isSpread || terrain.makesSpread) &&
       raw.snapshot.spreadEligible &&
@@ -629,10 +702,12 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   const compilePoint = (point: RawScenarioPoint) => {
     return {
       defenderHp: point.defense.hp,
-      ...(derivedCriticalStage < 3
+      ...(ability.preventsCritical || derivedCriticalStage < 3
         ? { normal: compileBranch(point, context, false) }
         : {}),
-      critical: compileBranch(point, context, true),
+      ...(!ability.preventsCritical
+        ? { critical: compileBranch(point, context, true) }
+        : {}),
     }
   }
 
@@ -651,6 +726,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       raw.probabilityMode,
       hitFact,
       derivedCriticalStage,
+      ability.preventsCritical,
     ),
     hitFact,
     ko: { hitCounts: [1, 2] },

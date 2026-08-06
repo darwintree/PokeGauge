@@ -9,6 +9,7 @@ import {
   FUR_COAT_ABILITY_ID,
   HEATPROOF_ABILITY_ID,
   HUGE_POWER_ABILITY_ID,
+  HUSTLE_ABILITY_ID,
   IRON_FIST_ABILITY_ID,
   MEGA_LAUNCHER_ABILITY_ID,
   NO_ABILITY_ID,
@@ -18,6 +19,7 @@ import {
   SAND_FORCE_ABILITY_ID,
   SOLAR_POWER_ABILITY_ID,
   SOLID_ROCK_ABILITY_ID,
+  SNIPER_ABILITY_ID,
   SHARPNESS_ABILITY_ID,
   SHEER_FORCE_ABILITY_ID,
   STRONG_JAW_ABILITY_ID,
@@ -340,7 +342,7 @@ function oracleRolls(options: {
 }
 
 describe("16-roll oracles and deliberate differences", () => {
-  it("matches Huge Power, Mega Launcher, and Solid Rock normal/critical rolls", () => {
+  it("matches representative Ability normal/critical rolls", () => {
     oracleRolls({
       attacker: new Pokemon(CALC_GEN, "Azumarill", { level: VGC_LEVEL, ability: "Huge Power", nature: "Adamant", evs: { atk: 252 } }),
       defender: new Pokemon(CALC_GEN, "Snorlax", { level: VGC_LEVEL, nature: "Impish", evs: { hp: 252, def: 252 } }),
@@ -367,6 +369,24 @@ describe("16-roll oracles and deliberate differences", () => {
       attackerId: 9,
       defenderId: 464,
       defenderAbilityId: SOLID_ROCK_ABILITY_ID,
+    })
+    oracleRolls({
+      attacker: new Pokemon(CALC_GEN, "Durant", { level: VGC_LEVEL, ability: "Hustle", nature: "Adamant", evs: { atk: 252 } }),
+      defender: new Pokemon(CALC_GEN, "Snorlax", { level: VGC_LEVEL, nature: "Impish", evs: { hp: 252, def: 252 } }),
+      moveName: "X-Scissor",
+      moveId: 404,
+      attackerId: 632,
+      defenderId: 143,
+      attackerAbilityId: HUSTLE_ABILITY_ID,
+    })
+    oracleRolls({
+      attacker: new Pokemon(CALC_GEN, "Kingdra", { level: VGC_LEVEL, ability: "Sniper", nature: "Modest", evs: { spa: 252 } }),
+      defender: new Pokemon(CALC_GEN, "Snorlax", { level: VGC_LEVEL, nature: "Careful", evs: { hp: 252, spd: 252 } }),
+      moveName: "Dragon Pulse",
+      moveId: 406,
+      attackerId: 230,
+      defenderId: 143,
+      attackerAbilityId: SNIPER_ABILITY_ID,
     })
   })
 
