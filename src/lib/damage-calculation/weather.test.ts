@@ -129,7 +129,7 @@ describe("reviewed weather compiler", () => {
 
       expect(normalBranch(outcome).weatherModifier).toBe(expectedModifier)
       expect(weatherSource(outcome)?.state).toBe(
-        expectedModifier === 4096 ? "inactive" : "effective",
+        expectedModifier === 4096 ? "inactive" : "active",
       )
     },
   )
@@ -150,7 +150,7 @@ describe("reviewed weather compiler", () => {
 
       expect(normalBranch(outcome).basePowerModifier).toBe(expectedModifier)
       expect(weatherSource(outcome)?.state).toBe(
-        expectedModifier === 4096 ? "inactive" : "effective",
+        expectedModifier === 4096 ? "inactive" : "active",
       )
     },
   )
@@ -186,7 +186,7 @@ describe("reviewed weather compiler", () => {
       expect(weatherSource(outcome)?.state).toBe(
         expectedProbability === (moveSnapshot(moveId).accuracy / 100)
           ? "inactive"
-          : "effective",
+          : "active",
       )
     },
   )
@@ -209,7 +209,7 @@ describe("reviewed weather compiler", () => {
 
     expect(normalBranch(outcome).weatherModifier).toBe(expectedModifier)
     expect(weatherSource(outcome)?.state).toBe(
-      expectedModifier === 4096 ? "inactive" : "effective",
+      expectedModifier === 4096 ? "inactive" : "active",
     )
   })
 
@@ -328,7 +328,7 @@ describe("weather scenario product and provenance", () => {
 
     expect(result.rows).toHaveLength(1)
     expect(result.rows[0].provenance.weather).toEqual({
-      effective: [],
+      active: [],
       inactive: [],
       unsupported: [],
       neutral: ["none"],
@@ -339,7 +339,7 @@ describe("weather scenario product and provenance", () => {
       reasons: ["weather-type-change"],
       provenance: {
         weather: {
-          effective: [],
+          active: [],
           inactive: [],
           unsupported: ["sun", "rain", "sand", "snow"],
           neutral: [],
@@ -367,14 +367,14 @@ describe("weather scenario product and provenance", () => {
 
     expect(result.rows).toHaveLength(1)
     expect(result.rows[0].provenance.weather).toEqual({
-      effective: [],
+      active: [],
       inactive: ["rain"],
       unsupported: [],
       neutral: ["none"],
     })
   })
 
-  it("keeps accuracy weather effective in Battle Odds Mode even when edited accuracy merges", async () => {
+  it("keeps accuracy weather active in Battle Odds Mode even when edited accuracy merges", async () => {
     const catalog = await getCatalogShell(6, 143, "en", "special")
     const state = singleAbilityState(catalog)
     const thunder = createMoveSnapshot(
@@ -393,7 +393,7 @@ describe("weather scenario product and provenance", () => {
 
     expect(result.rows).toHaveLength(1)
     expect(result.rows[0].provenance.weather).toEqual({
-      effective: ["rain"],
+      active: ["rain"],
       inactive: [],
       unsupported: [],
       neutral: ["none"],

@@ -29,13 +29,13 @@ updated_at: "2026-08-05T10:30:00Z"
 
 - 规则依据为 Pokémon Showdown commit `71d77d3d47fd4fdc2551b7b3cf9a0cc4fd3f38fa` 及 Champions override。
 - 运行时使用本地 kernel、4096 整数修正和既有阶段顺序；`@smogon/calc` 仅作支持范围内的测试 oracle。
-- 名单内特性须从 `unsupported` 转为可审计的 `effective`／`inactive`。
+- 名单内特性须从 `unsupported` 转为可审计的 `active`／`inactive`。
 
 ## Open questions
 
 - Attacker／Defender Unaware 分别忽略哪一侧 Stage，以及普通与会心分支如何组合。
 - Infiltrator 对 Reflect／Light Screen／Aurora Veil 及破墙招式的 source state。
-- 被绕过的 Stage／Screen 来源在合并结果中的 effective／inactive provenance。
+- 被绕过的 Stage／Screen 来源在合并结果中的 active／inactive provenance。
 
 ## Out of scope
 

@@ -37,7 +37,7 @@ it("marks only unsupported ability effects in the Track", () => {
   expect(markup.match(/aria-label="No ability"/g)).toHaveLength(1)
 })
 
-it("renders effective abilities inline and folds inactive and unsupported states", () => {
+it("renders active abilities inline and folds inactive and unsupported states", () => {
   const row: ScenarioResult = {
     calculationIdentity: "ability-display",
     snapshotId: "ability-display",
@@ -46,19 +46,19 @@ it("renders effective abilities inline and folds inactive and unsupported states
     defenderId: "standard-bulk",
     provenance: {
       "attacker-stage": {
-        effective: ["-1"],
+        active: ["-1"],
         inactive: [],
         unsupported: [],
         neutral: [],
       },
       "attacker-ability": {
-        effective: ["91"],
+        active: ["91"],
         inactive: [],
         unsupported: [],
         neutral: [String(NO_ABILITY_ID)],
       },
       "defender-ability": {
-        effective: [],
+        active: [],
         inactive: ["91"],
         unsupported: ["50"],
         neutral: [],

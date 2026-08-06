@@ -83,7 +83,7 @@ export type KoInput = {
   hitCounts: readonly [1, 2]
 }
 
-export type SourceState = "effective" | "inactive" | "unsupported" | "neutral"
+export type TrackSelectionActivation = "active" | "inactive" | "unsupported" | "neutral"
 
 export type ScenarioTrack =
   | "attacker-stat"
@@ -101,7 +101,7 @@ export type ScenarioTrack =
 export type ScenarioSource = {
   track: ScenarioTrack
   optionId: string
-  state: SourceState
+  state: TrackSelectionActivation
 }
 
 export type CalculableScenario = {
@@ -254,11 +254,11 @@ function compileHeldItem(
   }
 
   const effect = descriptor.effect
-  let effective = true
+  let active = true
   const compiled: CompiledHeldItem = {
     ...neutral,
     descriptor,
-    source: { track, optionId: String(itemId), state: "effective" },
+    source: { track, optionId: String(itemId), state: "active" },
   }
   switch (effect.kind) {
     case "base-power":
@@ -266,28 +266,28 @@ function compileHeldItem(
       break
     case "battle-stat": {
       const stat = battleStatFor(side, context.category)
-      effective = stat !== undefined && effect.stats.includes(stat)
-      if (effective && side === "attacker") compiled.attackModifier = effect.modifier
-      if (effective && side === "defender") compiled.defenseModifier = effect.modifier
+      active = stat !== undefined && effect.stats.includes(stat)
+      if (active && side === "attacker") compiled.attackModifier = effect.modifier
+      if (active && side === "defender") compiled.defenseModifier = effect.modifier
       break
     }
     case "final-damage":
       compiled.finalModifier = effect.modifier
       break
     case "accuracy":
-      effective = effect.direction === (side === "attacker" ? "outgoing" : "incoming")
-      if (effective) compiled.accuracyModifier = effect.modifier
+      active = effect.direction === (side === "attacker" ? "outgoing" : "incoming")
+      if (active) compiled.accuracyModifier = effect.modifier
       break
     case "critical-stage":
-      effective = side === "attacker"
-      if (effective) compiled.criticalStage = effect.stage
+      active = side === "attacker"
+      if (active) compiled.criticalStage = effect.stage
       break
     case "suppress-ordinary-weather-damage":
-      effective = side === "defender"
-      compiled.suppressOrdinaryWeatherDamage = effective
+      active = side === "defender"
+      compiled.suppressOrdinaryWeatherDamage = active
       break
   }
-  if (!effective) compiled.source = { ...compiled.source, state: "inactive" }
+  if (!active) compiled.source = { ...compiled.source, state: "inactive" }
   return compiled
 }
 
@@ -415,28 +415,28 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     criticalOnly,
     breaksScreensBeforeDamage,
   )
-  const attackerStageState: SourceState = raw.attackerStage === 0
+  const attackerStageState: TrackSelectionActivation = raw.attackerStage === 0
     ? "neutral"
     : criticalOnly && raw.attackerStage < 0
       ? "inactive"
-      : "effective"
-  const defenderStageState: SourceState = raw.defenderStage === 0
+      : "active"
+  const defenderStageState: TrackSelectionActivation = raw.defenderStage === 0
     ? "neutral"
     : criticalOnly && raw.defenderStage > 0
       ? "inactive"
-      : "effective"
+      : "active"
   const hasOriginalTypeStab = Boolean(
     attacker && moveType && attacker.types.includes(moveType),
   )
   const attackerHasAdaptability =
     raw.attackerAbilityId === ADAPTABILITY_ABILITY_ID
-  const attackerAbilityState: SourceState =
+  const attackerAbilityState: TrackSelectionActivation =
     raw.attackerAbilityId === UNKNOWN_ABILITY_ID || raw.attackerAbilityId === NO_ABILITY_ID
     ? "neutral"
     : attackerHasAdaptability
-    ? hasOriginalTypeStab ? "effective" : "inactive"
+    ? hasOriginalTypeStab ? "active" : "inactive"
     : "unsupported"
-  const defenderAbilityState: SourceState =
+  const defenderAbilityState: TrackSelectionActivation =
     raw.defenderAbilityId === UNKNOWN_ABILITY_ID || raw.defenderAbilityId === NO_ABILITY_ID
       ? "neutral"
       : raw.defenderAbilityId === ADAPTABILITY_ABILITY_ID
@@ -465,32 +465,32 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
 
   let attackerItemState = attackerItem.source.state
   if (attackerItem.descriptor?.effect.kind === "accuracy") {
-    attackerItemState = attackerItemState === "effective" &&
+    attackerItemState = attackerItemState === "active" &&
       raw.probabilityMode === "battle-odds" &&
       weather.accuracy === undefined &&
       normalizedItemAccuracy(true, true) !== normalizedItemAccuracy(false, true)
-      ? "effective"
+      ? "active"
       : "inactive"
   } else if (attackerItem.descriptor?.effect.kind === "critical-stage") {
     const visible = raw.probabilityMode === "battle-odds"
       ? derivedCriticalStage !== raw.snapshot.criticalStage
       : derivedCriticalStage === 3 && raw.snapshot.criticalStage < 3
-    attackerItemState = attackerItemState === "effective" && visible
-      ? "effective"
+    attackerItemState = attackerItemState === "active" && visible
+      ? "active"
       : "inactive"
   }
 
   let defenderItemState = defenderItem?.source.state
   if (defenderItem?.descriptor?.effect.kind === "accuracy") {
-    defenderItemState = defenderItemState === "effective" &&
+    defenderItemState = defenderItemState === "active" &&
       raw.probabilityMode === "battle-odds" &&
       weather.accuracy === undefined &&
       normalizedItemAccuracy(true, true) !== normalizedItemAccuracy(true, false)
-      ? "effective"
+      ? "active"
       : "inactive"
   } else if (defenderItem?.descriptor?.effect.kind === "suppress-ordinary-weather-damage") {
-    defenderItemState = defenderItemState === "effective" && weather.ordinaryDamageSuppressed
-      ? "effective"
+    defenderItemState = defenderItemState === "active" && weather.ordinaryDamageSuppressed
+      ? "active"
       : "inactive"
   }
 
@@ -499,7 +499,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       ? [{
           track: "attacker-stat" as const,
           optionId: raw.sourceOptionIds.attackerStat,
-          state: "effective" as const,
+          state: "active" as const,
         }]
       : []),
     {
@@ -530,7 +530,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       ? [{
           track: "defender-stat" as const,
           optionId: raw.sourceOptionIds.defenderStat,
-          state: "effective" as const,
+          state: "active" as const,
         }]
       : []),
     {

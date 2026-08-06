@@ -24,7 +24,7 @@ export function isGrounded(
 type CompiledTerrainEffect = {
   basePowerModifier: number
   makesSpread: boolean
-  state: "effective" | "inactive" | "unsupported" | "neutral"
+  state: "active" | "inactive" | "unsupported" | "neutral"
   unavailable?: "terrain-required" | "terrain-type-change"
 }
 
@@ -76,7 +76,7 @@ export function compileTerrainEffect(
     makesSpread,
     state:
       basePowerModifier !== NEUTRAL_MODIFIER || makesSpread || moveId === 798
-        ? "effective"
+        ? "active"
         : "inactive",
   }
 }

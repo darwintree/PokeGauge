@@ -27,7 +27,7 @@ describe("Screen Track", () => {
     expect(normalizeScreens([])).toEqual(["none"])
   })
 
-  it("shows effective screens inline, folds inactive screens, and omits no screen", () => {
+  it("shows active screens inline, folds inactive screens, and omits no screen", () => {
     const row: ScenarioResult = {
       calculationIdentity: "screen-display",
       snapshotId: "screen-display",
@@ -36,7 +36,7 @@ describe("Screen Track", () => {
       defenderId: "standard-bulk",
       provenance: {
         screen: {
-          effective: ["reflect"],
+          active: ["reflect"],
           inactive: ["light-screen"],
           unsupported: [],
           neutral: ["none"],

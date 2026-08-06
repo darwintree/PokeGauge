@@ -25,7 +25,7 @@ type CompiledWeatherEffect = {
   damageModifier: number
   accuracy?: WeatherAccuracy
   ordinaryDamageSuppressed: boolean
-  state: "effective" | "inactive" | "unsupported" | "neutral"
+  state: "active" | "inactive" | "unsupported" | "neutral"
   unavailable?: "weather-type-change"
 }
 
@@ -84,7 +84,7 @@ export function compileWeatherEffect(
   const ordinaryDamage = damageModifier(moveId, moveType, weather, false)
   const damage = damageModifier(moveId, moveType, weather, suppressOrdinaryDamage)
   const accuracy = WEATHER_ACCURACY[moveId]?.[weather]
-  const effective =
+  const active =
     basePower !== NEUTRAL_MODIFIER ||
     damage !== NEUTRAL_MODIFIER ||
     (probabilityMode === "battle-odds" && accuracy !== undefined)
@@ -94,6 +94,6 @@ export function compileWeatherEffect(
     damageModifier: damage,
     ordinaryDamageSuppressed: suppressOrdinaryDamage && damage !== ordinaryDamage,
     ...(accuracy === undefined ? {} : { accuracy }),
-    state: effective ? "effective" : "inactive",
+    state: active ? "active" : "inactive",
   }
 }

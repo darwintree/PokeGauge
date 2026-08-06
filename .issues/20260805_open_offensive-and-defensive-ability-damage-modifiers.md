@@ -32,7 +32,7 @@ updated_at: "2026-08-05T10:30:00Z"
 
 - 规则依据为 Pokémon Showdown commit `71d77d3d47fd4fdc2551b7b3cf9a0cc4fd3f38fa` 及 Champions override。
 - 运行时使用本地 kernel、4096 整数修正和既有阶段顺序；`@smogon/calc` 仅作支持范围内的测试 oracle。
-- 名单内特性须从 `unsupported` 转为可审计的 `effective`／`inactive`，不得把未实现分支误报为未生效。
+- 名单内特性须从 `unsupported` 转为可审计的 `active`／`inactive`，不得把未实现分支误报为未生效。
 
 ## Open questions
 

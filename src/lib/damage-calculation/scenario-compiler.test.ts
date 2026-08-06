@@ -150,7 +150,7 @@ describe("scenario compiler", () => {
     ]))
     expect(outcome.sources).toEqual([
       { track: "attacker-stage", optionId: "0", state: "neutral" },
-      { track: "held-item", optionId: "197", state: "effective" },
+      { track: "held-item", optionId: "197", state: "active" },
       { track: "attacker-ability", optionId: "8", state: "unsupported" },
       { track: "weather", optionId: "none", state: "neutral" },
       { track: "terrain", optionId: "none", state: "neutral" },
@@ -188,10 +188,10 @@ describe("scenario compiler", () => {
         modifier: 4096,
       })
       expect(lifeOrbAndShuca.calculation.low.normal?.finalModifier).toBe(2662)
-      expect(heldItemSource(lifeOrbAndShuca)).toMatchObject({ optionId: "247", state: "effective" })
+      expect(heldItemSource(lifeOrbAndShuca)).toMatchObject({ optionId: "247", state: "active" })
       expect(heldItemSource(lifeOrbAndShuca, "defender-held-item")).toMatchObject({
         optionId: "168",
-        state: "effective",
+        state: "active",
       })
     })
 
@@ -270,7 +270,7 @@ describe("scenario compiler", () => {
       })
 
       expect(chilan.calculation.low.normal?.finalModifier).toBe(2048)
-      expect(heldItemSource(chilan, "defender-held-item")?.state).toBe("effective")
+      expect(heldItemSource(chilan, "defender-held-item")?.state).toBe("active")
       expect(nonMatchingBerry.calculation.low.normal?.finalModifier).toBe(4096)
       expect(heldItemSource(nonMatchingBerry, "defender-held-item")?.state).toBe("inactive")
     })
@@ -281,7 +281,7 @@ describe("scenario compiler", () => {
       const defenderMask = calculableScenario({ defenderId: 10273, defenderItemId: 2106 })
 
       expect(eligible.calculation.low.normal?.basePowerModifier).toBe(4915)
-      expect(heldItemSource(eligible)?.state).toBe("effective")
+      expect(heldItemSource(eligible)?.state).toBe("active")
       expect(wrongIdentity.calculation.low.normal?.basePowerModifier).toBe(4096)
       expect(heldItemSource(wrongIdentity)?.state).toBe("inactive")
       expect(heldItemSource(defenderMask, "defender-held-item")?.state).toBe("inactive")
@@ -297,10 +297,10 @@ describe("scenario compiler", () => {
 
       expect(projectMoveMechanics(outcome).hitFact).toBe(89)
       expect(outcome.probability.hitProbability).toBe(0.89)
-      expect(heldItemSource(outcome)).toMatchObject({ optionId: "242", state: "effective" })
+      expect(heldItemSource(outcome)).toMatchObject({ optionId: "242", state: "active" })
       expect(heldItemSource(outcome, "defender-held-item")).toMatchObject({
         optionId: "190",
-        state: "effective",
+        state: "active",
       })
     })
 
@@ -377,12 +377,12 @@ describe("scenario compiler", () => {
         finalModifier: 4096,
       })
       expect(guaranteed.probability.criticalHitProbability).toBe(1)
-      expect(heldItemSource(guaranteed)?.state).toBe("effective")
+      expect(heldItemSource(guaranteed)?.state).toBe("active")
       expect(guaranteed.sources.find((source) => source.track === "screen")?.state).toBe("inactive")
       expect(randomOnly.probability.criticalHitProbability).toBe(0)
       expect(heldItemSource(randomOnly)?.state).toBe("inactive")
       expect(battleOdds.probability.criticalHitProbability).toBe(1 / 8)
-      expect(heldItemSource(battleOdds)?.state).toBe("effective")
+      expect(heldItemSource(battleOdds)?.state).toBe("active")
       expect(heldItemSource(capped)?.state).toBe("inactive")
     })
 
@@ -418,7 +418,7 @@ describe("scenario compiler", () => {
       })
 
       expect(ordinary.calculation.low.normal?.weatherModifier).toBe(4096)
-      expect(heldItemSource(ordinary, "defender-held-item")?.state).toBe("effective")
+      expect(heldItemSource(ordinary, "defender-held-item")?.state).toBe("active")
       expect(unaffected.calculation.low.normal?.weatherModifier).toBe(4096)
       expect(heldItemSource(unaffected, "defender-held-item")?.state).toBe("inactive")
       expect(hydroSteam.calculation.low.normal?.weatherModifier).toBe(6144)

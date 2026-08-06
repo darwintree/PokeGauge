@@ -4,7 +4,7 @@ import type {
   ProbabilityMode,
   Screen,
   ScenarioTrack,
-  SourceState,
+  TrackSelectionActivation,
   StatStage,
   Terrain,
   UnavailableReason,
@@ -86,7 +86,7 @@ export type ScenarioResult = {
   koProbabilities?: KOProbabilities
 }
 
-export type ProvenanceOptionSets = Record<SourceState, string[]>
+export type ProvenanceOptionSets = Record<TrackSelectionActivation, string[]>
 
 export type ScenarioProvenance = Partial<
   Record<ScenarioTrack, ProvenanceOptionSets>

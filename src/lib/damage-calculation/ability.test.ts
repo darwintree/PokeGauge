@@ -100,7 +100,7 @@ describe("ability compiler", () => {
     expect(adaptability.sources).toContainEqual({
       track: "attacker-ability",
       optionId: String(ADAPTABILITY_ABILITY_ID),
-      state: "effective",
+      state: "active",
     })
   })
 
@@ -236,7 +236,7 @@ describe("ability scenario product and provenance", () => {
     expect(result.rows).toHaveLength(2)
     expect(kernel).toHaveBeenCalledTimes(2)
     expect(result.rows.some((row) =>
-      row.provenance["attacker-ability"]?.effective.includes("91"),
+      row.provenance["attacker-ability"]?.active.includes("91"),
     )).toBe(true)
     expect(result.rows.some((row) =>
       row.provenance["attacker-ability"]?.unsupported.includes("50"),
@@ -307,13 +307,13 @@ describe("ability scenario product and provenance", () => {
     expect(result.unavailable).toEqual([])
     expect(kernel).toHaveBeenCalledTimes(1)
     expect(result.rows[0].provenance["attacker-ability"]).toEqual({
-      effective: [],
+      active: [],
       inactive: [String(ADAPTABILITY_ABILITY_ID)],
       unsupported: ["50"],
       neutral: [],
     })
     expect(result.rows[0].provenance["defender-ability"]).toEqual({
-      effective: [],
+      active: [],
       inactive: [String(ADAPTABILITY_ABILITY_ID)],
       unsupported: ["50"],
       neutral: [],
@@ -338,13 +338,13 @@ describe("ability scenario product and provenance", () => {
     expect(expectedRowCount(state)).toBe(4)
     expect(result.rows).toHaveLength(1)
     expect(result.rows[0].provenance["attacker-ability"]).toEqual({
-      effective: [],
+      active: [],
       inactive: [],
       unsupported: ["50"],
       neutral: [String(NO_ABILITY_ID)],
     })
     expect(result.rows[0].provenance["defender-ability"]).toEqual({
-      effective: [],
+      active: [],
       inactive: [],
       unsupported: ["17"],
       neutral: [String(NO_ABILITY_ID)],

@@ -72,7 +72,7 @@ function ActiveTokens({
     ? ["attacker-stage", "held-item", "attacker-ability", "weather", "terrain"]
     : ["defender-stage", "defender-held-item", "defender-ability", "screen"]
   const values = tracks.flatMap((track) =>
-    (props.row.provenance[track]?.effective ?? [])
+    (props.row.provenance[track]?.active ?? [])
       .filter((id) => id !== "none" && id !== "0" && !abilitySourceIsHidden(track, id))
       .map((id) => ({ track, id })),
   )
