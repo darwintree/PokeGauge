@@ -3,9 +3,9 @@ import { FormattedMessage, useIntl } from "react-intl"
 
 import { Button } from "@/components/ui/button"
 import {
-  ADAPTABILITY_ABILITY_ID,
   NO_ABILITY_ID,
   UNKNOWN_ABILITY_ID,
+  abilityDamageModifierIsSupported,
   abilityIsProjectionNeutral,
 } from "@/lib/ability"
 import type { CatalogAbilityOption } from "@/lib/catalog"
@@ -77,7 +77,7 @@ export function AbilityTrack({
         {orderedOptions.map((option) => {
           // Projection abilities are handled by their target Tracks, not as Ability effects.
           const unsupported =
-            option.id !== ADAPTABILITY_ABILITY_ID &&
+            !abilityDamageModifierIsSupported(option.id) &&
             option.id !== UNKNOWN_ABILITY_ID &&
             option.id !== NO_ABILITY_ID &&
             !abilityIsProjectionNeutral(option.id)

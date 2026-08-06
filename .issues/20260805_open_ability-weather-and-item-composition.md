@@ -32,7 +32,7 @@ updated_at: "2026-08-05T10:31:00Z"
 ## Out of scope
 
 - 天气／场地 Track 的初始化投射
-- Sand Force／Solar Power，见 [[20260805_open_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]
+- Sand Force／Solar Power，见 [[archive/20260805_closed_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]
 
 ## Acceptance criteria
 

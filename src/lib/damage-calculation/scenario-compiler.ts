@@ -27,12 +27,7 @@ import {
   type NormalizedBattlePokemon,
 } from "@/lib/resources"
 
-import {
-  ADAPTABILITY_ABILITY_ID,
-  NO_ABILITY_ID,
-  UNKNOWN_ABILITY_ID,
-  abilityIsProjectionNeutral,
-} from "@/lib/ability"
+import { compileAbilityEffect } from "./ability"
 import {
   type CompiledDamageInput,
   type DamageFormulaBranch,
@@ -433,24 +428,17 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   const hasOriginalTypeStab = Boolean(
     attacker && moveType && attacker.types.includes(moveType),
   )
-  const attackerHasAdaptability =
-    raw.attackerAbilityId === ADAPTABILITY_ABILITY_ID
-  const attackerAbilityState: TrackSelectionActivation =
-    raw.attackerAbilityId === UNKNOWN_ABILITY_ID ||
-    raw.attackerAbilityId === NO_ABILITY_ID ||
-    abilityIsProjectionNeutral(raw.attackerAbilityId)
-    ? "neutral"
-    : attackerHasAdaptability
-    ? hasOriginalTypeStab ? "active" : "inactive"
-    : "unsupported"
-  const defenderAbilityState: TrackSelectionActivation =
-    raw.defenderAbilityId === UNKNOWN_ABILITY_ID ||
-    raw.defenderAbilityId === NO_ABILITY_ID ||
-    abilityIsProjectionNeutral(raw.defenderAbilityId)
-      ? "neutral"
-      : raw.defenderAbilityId === ADAPTABILITY_ABILITY_ID
-      ? "inactive"
-      : "unsupported"
+  const ability = compileAbilityEffect({
+    attackerAbilityId: raw.attackerAbilityId,
+    defenderAbilityId: raw.defenderAbilityId,
+    category: moveCategory,
+    moveType,
+    power,
+    moveFlags: move?.flags ?? [],
+    effectiveness,
+    weather: raw.weather,
+    hasStab: hasOriginalTypeStab,
+  })
 
   const numericAccuracyWith = (
     includeAttackerItem: boolean,
@@ -523,12 +511,12 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     {
       track: "attacker-ability",
       optionId: String(raw.attackerAbilityId),
-      state: attackerAbilityState,
+      state: ability.attackerState,
     },
     {
       track: "weather",
       optionId: raw.weather,
-      state: weather.state,
+      state: ability.activatesWeather ? "active" : weather.state,
     },
     {
       track: "terrain",
@@ -550,7 +538,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     {
       track: "defender-ability",
       optionId: String(raw.defenderAbilityId),
-      state: defenderAbilityState,
+      state: ability.defenderState,
     },
     {
       track: "screen",
@@ -606,13 +594,22 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   const context: BranchContext = {
     power,
     basePowerModifier: chainModifiers([
+      ability.basePowerModifier,
       attackerItem.basePowerModifier,
-      weather.basePowerModifier,
       terrain.basePowerModifier,
+      weather.basePowerModifier,
     ]),
-    attackModifier: attackerItem.attackModifier,
-    defenseModifier: defenderItem?.defenseModifier ?? NEUTRAL_MODIFIER,
+    attackModifier: chainModifiers([
+      ability.attackerAttackModifier,
+      ability.defenderAttackModifier,
+      attackerItem.attackModifier,
+    ]),
+    defenseModifier: chainModifiers([
+      ability.defenseModifier,
+      defenderItem?.defenseModifier ?? NEUTRAL_MODIFIER,
+    ]),
     finalModifiers: [
+      ability.finalModifier,
       attackerItem.finalModifier,
       defenderItem?.finalModifier ?? NEUTRAL_MODIFIER,
     ],
@@ -621,7 +618,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       raw.snapshot.spreadEligible &&
       raw.snapshot.spread,
     stabModifier: hasOriginalTypeStab
-      ? attackerHasAdaptability ? 8192 : 6144
+      ? ability.stabModifier === NEUTRAL_MODIFIER ? 6144 : ability.stabModifier
       : NEUTRAL_MODIFIER,
     typeEffectivenessModifier: Math.round(effectiveness * NEUTRAL_MODIFIER),
     attackerStage: raw.attackerStage,

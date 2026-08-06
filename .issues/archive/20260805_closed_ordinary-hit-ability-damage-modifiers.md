@@ -18,7 +18,7 @@ updated_at: "2026-08-05T10:32:00Z"
 
 ## Split result
 
-- [[../20260805_open_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]
+- [[20260805_closed_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]
 - [[../20260805_open_ability-critical-hit-and-accuracy-modifiers|Ability critical-hit and accuracy modifiers]]
 - [[../20260805_open_ability-stage-and-screen-bypass|Ability stage and screen bypass]]
 - [[../20260805_open_ability-contact-and-held-item-interactions|Ability contact and held-item interactions]]

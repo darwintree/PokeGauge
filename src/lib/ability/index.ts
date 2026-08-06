@@ -1,5 +1,52 @@
 /** PokeAPI's stable numeric identifier for Adaptability. */
 export const ADAPTABILITY_ABILITY_ID = 91
+export const HUGE_POWER_ABILITY_ID = 37
+export const THICK_FAT_ABILITY_ID = 47
+export const PURE_POWER_ABILITY_ID = 74
+export const HEATPROOF_ABILITY_ID = 85
+export const IRON_FIST_ABILITY_ID = 89
+export const SOLAR_POWER_ABILITY_ID = 94
+export const TECHNICIAN_ABILITY_ID = 101
+export const FILTER_ABILITY_ID = 111
+export const SOLID_ROCK_ABILITY_ID = 116
+export const RECKLESS_ABILITY_ID = 120
+export const SHEER_FORCE_ABILITY_ID = 125
+export const SAND_FORCE_ABILITY_ID = 159
+export const FUR_COAT_ABILITY_ID = 169
+export const STRONG_JAW_ABILITY_ID = 173
+export const MEGA_LAUNCHER_ABILITY_ID = 178
+export const TOUGH_CLAWS_ABILITY_ID = 181
+export const FAIRY_AURA_ABILITY_ID = 187
+export const WATER_BUBBLE_ABILITY_ID = 199
+export const PURIFYING_SALT_ABILITY_ID = 272
+export const SHARPNESS_ABILITY_ID = 292
+export const FIRE_MANE_ABILITY_ID = 313
+
+export const DAMAGE_MODIFIER_ABILITY_IDS = new Set([
+  ADAPTABILITY_ABILITY_ID,
+  HUGE_POWER_ABILITY_ID,
+  THICK_FAT_ABILITY_ID,
+  PURE_POWER_ABILITY_ID,
+  HEATPROOF_ABILITY_ID,
+  IRON_FIST_ABILITY_ID,
+  SOLAR_POWER_ABILITY_ID,
+  TECHNICIAN_ABILITY_ID,
+  FILTER_ABILITY_ID,
+  SOLID_ROCK_ABILITY_ID,
+  SAND_FORCE_ABILITY_ID,
+  FUR_COAT_ABILITY_ID,
+  STRONG_JAW_ABILITY_ID,
+  MEGA_LAUNCHER_ABILITY_ID,
+  TOUGH_CLAWS_ABILITY_ID,
+  FAIRY_AURA_ABILITY_ID,
+  WATER_BUBBLE_ABILITY_ID,
+  PURIFYING_SALT_ABILITY_ID,
+  FIRE_MANE_ABILITY_ID,
+])
+
+export function abilityDamageModifierIsSupported(id: number): boolean {
+  return DAMAGE_MODIFIER_ABILITY_IDS.has(id)
+}
 
 /** Local neutral identity distinct from PokeAPI ids and Unknown ability. */
 export const NO_ABILITY_ID = -1
