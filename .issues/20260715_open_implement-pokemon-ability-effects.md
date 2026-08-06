@@ -6,7 +6,7 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-15T02:45:00Z"
-updated_at: "2026-08-06T08:50:00Z"
+updated_at: "2026-08-06T10:20:00Z"
 ---
 ## Goal
 
@@ -37,7 +37,7 @@ updated_at: "2026-08-06T08:50:00Z"
 - [[20260805_open_ability-contact-and-held-item-interactions|Ability contact and held-item interactions]]
 - [[20260805_open_green-dot-conditional-ability-effects|Green-dot conditional ability effects]]
 - [[20260805_open_ability-immunities-and-type-exceptions|Ability immunities and type exceptions]]
-- [[20260805_open_result-side-move-type-rewrite-and-protean-stab|Result-side move-type rewrite and Protean STAB]]
+- [[20260805_open_scenario-move-type-rewriting-and-protean-family-stab|Scenario Move Type rewriting and Protean-family STAB]]
 - [[20260805_open_ability-weather-and-item-composition|Ability weather and item composition]]
 - [[20260805_open_defer-parental-bond-until-multi-hit|Defer Parental Bond until multi-hit]]
 

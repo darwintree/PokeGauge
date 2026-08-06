@@ -94,6 +94,10 @@ _Avoid_: Move Snapshot, selected Move
 由 Move Template 创建并与其解耦的独立、可编辑招式配置。相同 Template 可以创建多个 Snapshot，每个 Snapshot 都有独立身份与选择状态。
 _Avoid_: Move Template, selected Move, shared Move configuration
 
+**Scenario Move Type（场景招式属性）**:
+Move Template 的原始属性经身份相关语义与 Ability 规则后，当前 Scenario 用于结算和结果展示的最终招式属性；它不改写 Move Snapshot 或 Move Track。
+_Avoid_: Result Move Type, resolved move type, Move Snapshot type
+
 ### Scenario model
 
 **Scenario**:
