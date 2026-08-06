@@ -9,6 +9,7 @@ import {
 } from "@/lib/stat-preset"
 
 import { defaultTrackState } from "./state"
+import { projectAbilitySelections } from "./ability-projection"
 import type { DefenderStatRanges, TrackState } from "./types"
 
 function rangeEndpoints(min: number, max: number): number[] {
@@ -82,9 +83,14 @@ export function trackStateAfterCatalogTransition(
   },
 ): TrackState {
   const { attackerOwnerChanged, attackerChanged, defenderChanged } = changes
-  return {
+  const identityChanged = attackerChanged || defenderChanged
+  const next = {
     ...defaultTrackState(catalog),
     screens: state.screens,
+    ...(!identityChanged && {
+      weathers: state.weathers,
+      terrains: state.terrains,
+    }),
     ...(attackerChanged && catalog.attackerPreservesItem &&
       itemSelectionFits(state.attackerItemIds, catalog.attackerItems) && {
       attackerItemPoolIds: state.attackerItemPoolIds,
@@ -106,6 +112,9 @@ export function trackStateAfterCatalogTransition(
       selectedMoveSnapshotIds: state.selectedMoveSnapshotIds,
     }),
   }
+  return identityChanged
+    ? next
+    : projectAbilitySelections(next, catalog.moveCategory, undefined, undefined, true)
 }
 
 export function snapshotsForMoveIds(

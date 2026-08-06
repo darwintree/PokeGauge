@@ -4,6 +4,7 @@ import type { MatchupCatalog } from "@/lib/catalog"
 import type { HeldItemId } from "@/lib/held-item"
 import {
   selectedSnapshotMoveIds,
+  projectAbilitySelections,
   snapshotMoveIds,
   snapshotsForMoveIds,
   trackStateAfterCatalogTransition,
@@ -51,6 +52,7 @@ export function useCatalogTransitionSync(
   const defenderAbilitiesTouchedRef = useRef(restored)
   const attackerItemsTouchedRef = useRef(restored)
   const defenderItemsTouchedRef = useRef(restored)
+  const abilityProjectionPendingRef = useRef(!restored)
   const catalogTransitionPending =
     attackerKeyRef.current !==
       `${catalog.matchup.attackerId}:${catalog.moveCategory}` ||
@@ -82,6 +84,9 @@ export function useCatalogTransitionSync(
     if (defenderChanged) {
       defenderAbilitiesTouchedRef.current = false
       defenderItemsTouchedRef.current = false
+    }
+    if (attackerChanged || defenderChanged) {
+      abilityProjectionPendingRef.current = true
     }
     if (attackerOwnerChanged) {
       movesTouchedRef.current = false
@@ -140,24 +145,39 @@ export function useCatalogTransitionSync(
       previousDefenderIds,
       catalog.defaultDefenderAbilityIds,
     )
-    if (!attackerDefaultsChanged && !defenderDefaultsChanged) return
+    if (
+      !attackerDefaultsChanged &&
+      !defenderDefaultsChanged &&
+      !abilityProjectionPendingRef.current
+    ) return
     defaultAttackerAbilityIdsRef.current = [...catalog.defaultAttackerAbilityIds]
     defaultDefenderAbilityIdsRef.current = [...catalog.defaultDefenderAbilityIds]
-    setTrackState((state) => ({
-      ...state,
-      attackerAbilityIds:
+    const projectionPending = abilityProjectionPendingRef.current
+    setTrackState((state) => {
+      const applyAttackerDefaults =
         attackerDefaultsChanged &&
         !attackerAbilitiesTouchedRef.current &&
         sameIds(state.attackerAbilityIds, previousAttackerIds)
-          ? [...catalog.defaultAttackerAbilityIds]
-          : state.attackerAbilityIds,
-      defenderAbilityIds:
+      const applyDefenderDefaults =
         defenderDefaultsChanged &&
         !defenderAbilitiesTouchedRef.current &&
         sameIds(state.defenderAbilityIds, previousDefenderIds)
+      const next = {
+        ...state,
+        attackerAbilityIds: applyAttackerDefaults
+          ? [...catalog.defaultAttackerAbilityIds]
+          : state.attackerAbilityIds,
+        defenderAbilityIds: applyDefenderDefaults
           ? [...catalog.defaultDefenderAbilityIds]
           : state.defenderAbilityIds,
-    }))
+      }
+      return projectionPending ||
+        applyAttackerDefaults ||
+        applyDefenderDefaults
+        ? projectAbilitySelections(next, catalog.moveCategory)
+        : next
+    })
+    abilityProjectionPendingRef.current = false
   }, [
     catalog,
     catalog.defaultAttackerAbilityIds,

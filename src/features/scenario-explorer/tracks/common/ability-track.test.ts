@@ -9,7 +9,7 @@ import type { ScenarioResult } from "@/lib/scenario"
 
 import { AbilityTrack } from "./ability-track"
 import { DamageResultRow } from "../../results/damage-result-row"
-import { NO_ABILITY_ID } from "@/lib/ability"
+import { DROUGHT_ABILITY_ID, NO_ABILITY_ID } from "@/lib/ability"
 
 it("marks only unsupported ability effects in the Track", () => {
   const markup = renderToStaticMarkup(createElement(
@@ -21,6 +21,7 @@ it("marks only unsupported ability effects in the Track", () => {
         { id: 91, label: "Adaptability", summary: "" },
         { id: NO_ABILITY_ID, label: "—", accessibleLabel: "No ability", summary: "" },
         { id: 50, label: "Run Away", summary: "" },
+        { id: DROUGHT_ABILITY_ID, label: "Drought", summary: "" },
       ],
       selectedIds: [91, 50],
       onChange: () => {},
@@ -30,6 +31,7 @@ it("marks only unsupported ability effects in the Track", () => {
 
   expect(markup).toContain("Adaptability")
   expect(markup).toContain("Run Away")
+  expect(markup).toContain("Drought")
   expect(markup.match(/Effect not supported yet/g)).toHaveLength(1)
   expect(markup.indexOf('aria-label="No ability"')).toBeLessThan(
     markup.indexOf('aria-label="Adaptability"'),
@@ -55,7 +57,7 @@ it("renders active abilities inline and folds inactive and unsupported states", 
         active: ["91"],
         inactive: [],
         unsupported: [],
-        neutral: [String(NO_ABILITY_ID)],
+        neutral: [String(NO_ABILITY_ID), String(DROUGHT_ABILITY_ID)],
       },
       "defender-ability": {
         active: [],
@@ -87,6 +89,7 @@ it("renders active abilities inline and folds inactive and unsupported states", 
     { id: NO_ABILITY_ID, label: "—", accessibleLabel: "No ability", summary: "" },
     { id: 91, label: "Adaptability", summary: "" },
     { id: 50, label: "Run Away", summary: "" },
+    { id: DROUGHT_ABILITY_ID, label: "Drought", summary: "" },
   ]
   const markup = renderToStaticMarkup(createElement(
     IntlProvider,
@@ -121,5 +124,6 @@ it("renders active abilities inline and folds inactive and unsupported states", 
   expect(markup).toContain("Unsupported")
   expect(markup).toContain("Run Away")
   expect(markup).not.toContain("No ability")
+  expect(markup).not.toContain("Drought")
   expect(markup).toContain(">-1<")
 })

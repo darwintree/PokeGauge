@@ -155,7 +155,7 @@ describe("scenario compiler", () => {
       { track: "weather", optionId: "none", state: "neutral" },
       { track: "terrain", optionId: "none", state: "neutral" },
       { track: "defender-stage", optionId: "0", state: "neutral" },
-      { track: "defender-ability", optionId: "22", state: "unsupported" },
+      { track: "defender-ability", optionId: "22", state: "neutral" },
       { track: "screen", optionId: "none", state: "neutral" },
     ])
   })
@@ -737,7 +737,7 @@ describe("scenario compiler", () => {
       { track: "weather", optionId: "none", state: "neutral" },
       { track: "terrain", optionId: "none", state: "neutral" },
       { track: "defender-stage", optionId: "0", state: "neutral" },
-      { track: "defender-ability", optionId: "22", state: "unsupported" },
+      { track: "defender-ability", optionId: "22", state: "neutral" },
       { track: "screen", optionId: "none", state: "neutral" },
     ])
   })

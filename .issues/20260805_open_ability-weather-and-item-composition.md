@@ -27,7 +27,7 @@ updated_at: "2026-08-05T10:31:00Z"
 - [[../docs/traces/discussion/2026-08-05-ability-effects-first-freeze-scope|特性效果首批冻结范围讨论记录]] §7、§12、§13
 - [[../docs/traces/discussion/2026-08-05-ordinary-hit-ability-issue-split|普通命中特性 issue 拆分讨论记录]] §8
 - Held-item frozen-85 树果与 Utility Umbrella 先例
-- 天气／场地初始化投射见 [[20260805_open_ability-init-projection-to-weather-terrain-stage|Ability init projection to Weather Terrain Stage]]
+- 天气／场地初始化投射见 [[archive/20260805_closed_ability-init-projection-to-weather-terrain-stage|Ability init projection to Weather Terrain Stage]]
 
 ## Out of scope
 

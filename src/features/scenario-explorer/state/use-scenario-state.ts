@@ -35,6 +35,7 @@ import {
   defaultTrackState,
   normalizeScreens,
   offensePresetsForState,
+  projectAbilitySelections,
   reconcileDefenseFromRange,
   reconcileOffenseFromRange,
   runScenarioPipeline,
@@ -442,14 +443,24 @@ export function useScenarioState(
     setAttackerAbilityIds: (ids: number[]) => {
       if (ids.length === 0) return
       attackerAbilitiesTouchedRef.current = true
-      setTrackState((s) => ({ ...s, attackerAbilityIds: ids }))
+      setTrackState((s) => projectAbilitySelections(
+        { ...s, attackerAbilityIds: ids },
+        catalog.moveCategory,
+        ids.filter((id) => !s.attackerAbilityIds.includes(id)),
+        [],
+      ))
     },
     resetAttackerAbilities: () => {
       attackerAbilitiesTouchedRef.current = false
-      setTrackState((s) => ({
-        ...s,
-        attackerAbilityIds: [...catalog.defaultAttackerAbilityIds],
-      }))
+      setTrackState((s) => {
+        const next = {
+          ...s,
+          attackerAbilityIds: [...catalog.defaultAttackerAbilityIds],
+        }
+        return catalog.defaultAbilityPickStatus === "ready"
+          ? projectAbilitySelections(next, catalog.moveCategory)
+          : next
+      })
     },
     setWeathers: (weathers: TrackState["weathers"]) =>
       setTrackState((s) => ({
@@ -491,14 +502,24 @@ export function useScenarioState(
     setDefenderAbilityIds: (ids: number[]) => {
       if (ids.length === 0) return
       defenderAbilitiesTouchedRef.current = true
-      setTrackState((s) => ({ ...s, defenderAbilityIds: ids }))
+      setTrackState((s) => projectAbilitySelections(
+        { ...s, defenderAbilityIds: ids },
+        catalog.moveCategory,
+        [],
+        ids.filter((id) => !s.defenderAbilityIds.includes(id)),
+      ))
     },
     resetDefenderAbilities: () => {
       defenderAbilitiesTouchedRef.current = false
-      setTrackState((s) => ({
-        ...s,
-        defenderAbilityIds: [...catalog.defaultDefenderAbilityIds],
-      }))
+      setTrackState((s) => {
+        const next = {
+          ...s,
+          defenderAbilityIds: [...catalog.defaultDefenderAbilityIds],
+        }
+        return catalog.defaultAbilityPickStatus === "ready"
+          ? projectAbilitySelections(next, catalog.moveCategory)
+          : next
+      })
     },
     setProbabilityMode: (probabilityMode: TrackState["probabilityMode"]) =>
       setTrackState((s) => ({ ...s, probabilityMode })),

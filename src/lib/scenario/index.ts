@@ -1,4 +1,7 @@
 export {
+  projectAbilitySelections,
+} from "./ability-projection"
+export {
   runScenarioPipeline,
 } from "./evaluate"
 export {
