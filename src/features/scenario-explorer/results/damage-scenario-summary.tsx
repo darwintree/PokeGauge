@@ -235,7 +235,9 @@ export function DamageScenarioSummary(props: DamageScenarioSummaryProps) {
   const intl = useIntl()
   const mechanics = props.row.moveMechanics
   const branch = mechanics.normal ?? mechanics.critical
-  const accuracy = `${Math.round(mechanics.hitProbability * 100)}%`
+  const accuracy = mechanics.hitFact === "always-hits"
+    ? intl.formatMessage({ id: "damage.conditions.alwaysHits" })
+    : `${Math.round(mechanics.hitProbability * 100)}%`
 
   return (
     <article className="relative w-full rounded-[10px] border border-card-border bg-muted/60 md:w-[14.75rem]">

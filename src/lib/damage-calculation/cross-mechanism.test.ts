@@ -655,7 +655,7 @@ describe("cross-mechanism acceptance", () => {
     expect(result.rows[0].provenance).toMatchObject({
       "attacker-stage": { inactive: ["-1"], neutral: ["0"] },
       "held-item": { inactive: ["226"], neutral: ["none"] },
-      "attacker-ability": { unsupported: ["52", "75"] },
+      "attacker-ability": { inactive: ["75"], unsupported: ["52"] },
       weather: { inactive: ["sand"], neutral: ["none"] },
       "defender-stage": { inactive: ["1"], neutral: ["0"] },
       "defender-ability": { inactive: ["47"], unsupported: ["17"] },

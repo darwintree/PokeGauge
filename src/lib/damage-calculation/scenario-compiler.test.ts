@@ -151,7 +151,7 @@ describe("scenario compiler", () => {
     expect(outcome.sources).toEqual([
       { track: "attacker-stage", optionId: "0", state: "neutral" },
       { track: "held-item", optionId: "197", state: "active" },
-      { track: "attacker-ability", optionId: "8", state: "unsupported" },
+      { track: "attacker-ability", optionId: "8", state: "inactive" },
       { track: "weather", optionId: "none", state: "neutral" },
       { track: "terrain", optionId: "none", state: "neutral" },
       { track: "defender-stage", optionId: "0", state: "neutral" },
@@ -733,7 +733,7 @@ describe("scenario compiler", () => {
     expect(outcome.sources).toEqual([
       { track: "attacker-stage", optionId: "0", state: "neutral" },
       { track: "held-item", optionId: "226", state: "inactive" },
-      { track: "attacker-ability", optionId: "8", state: "unsupported" },
+      { track: "attacker-ability", optionId: "8", state: "inactive" },
       { track: "weather", optionId: "none", state: "neutral" },
       { track: "terrain", optionId: "none", state: "neutral" },
       { track: "defender-stage", optionId: "0", state: "neutral" },

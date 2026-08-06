@@ -126,6 +126,18 @@ _Avoid_: 16-roll mode, guaranteed damage
 在当前支持范围内，将命中、未命中与会心概率纳入伤害分布后计算击倒概率；未命中计为零伤害。
 _Avoid_: Battle Mode, Actual Probability Mode, Full Odds Mode, Realistic Mode
 
+**Hit Fact（命中事实）**:
+一个 Scenario 中招式的最终命中语义；取值为 Numeric Accuracy 或 Always-hit Fact。
+_Avoid_: Hit Probability, Move Snapshot Accuracy
+
+**Numeric Accuracy（数值命中）**:
+以百分比数值表达的 Hit Fact。数值 `100%` 与 Always-hit Fact 不是同一语义。
+_Avoid_: Always-hit Fact, Hit Probability
+
+**Always-hit Fact（必中事实）**:
+不再由数值命中判定的定性 Hit Fact；它与 Numeric Accuracy `100%` 区分。
+_Avoid_: 100% Numeric Accuracy, guaranteed damage
+
 **Damage Distribution（伤害分布）**:
 以伤害值及其发生概率构成的离散分布；它描述伤害结果，不依赖防守方的 HP。
 _Avoid_: Damage Range, KO Probability

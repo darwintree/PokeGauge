@@ -142,8 +142,9 @@ export function DamageResultRow({
   const tone = lethalTone(row)
   const box = pctSpan(row.minPercent, row.maxPercent)
   const crit = pctSpan(row.critMinPercent, row.critMaxPercent)
+  const hasReferenceCritical = !row.criticalOnly && row.moveMechanics.critical !== null
   const bridge =
-    !row.criticalOnly && row.critMinPercent > row.maxPercent
+    hasReferenceCritical && row.critMinPercent > row.maxPercent
       ? pctSpan(row.maxPercent, row.critMinPercent)
       : null
 
@@ -194,7 +195,7 @@ export function DamageResultRow({
             />
           )}
 
-          {!row.criticalOnly && (
+          {hasReferenceCritical && (
             <>
               <div
                 className="absolute top-1/2 h-[2px] -translate-y-1/2 bg-damage-critical"
@@ -241,7 +242,7 @@ export function DamageResultRow({
               <span className="tabular-nums">{row.avgPercent.toFixed(1)}%</span>
             </HoverRow>
           )}
-          {!row.criticalOnly && (
+          {hasReferenceCritical && (
             <HoverRow marker={<span className="inline-block size-2 rounded-full border-2 border-damage-critical bg-paper" />}>
               <HoverLabel>{intl.formatMessage({ id: "damage.critical" })}</HoverLabel>
               <span className="tabular-nums">

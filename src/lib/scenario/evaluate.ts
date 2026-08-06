@@ -228,6 +228,7 @@ type ScenarioResultContext = Pick<
 
 type CalculableGroup = {
   outcome: CalculableScenario
+  allAlwaysHits: boolean
   context: ScenarioResultContext
   provenance: ScenarioProvenance
 }
@@ -317,6 +318,7 @@ export function runScenarioPipeline(
                         const identity = calculationIdentity(outcome)
                         const group = calculableGroups.get(identity) ?? {
                           outcome,
+                          allAlwaysHits: true,
                           context: {
                             snapshotId: snapshot.id,
                             moveId: snapshot.moveId,
@@ -336,6 +338,7 @@ export function runScenarioPipeline(
                           },
                           provenance: {},
                         }
+                        group.allAlwaysHits &&= outcome.hitFact === "always-hits"
                         addSources(group.provenance, outcome.sources)
                         calculableGroups.set(identity, group)
                       }
@@ -356,12 +359,15 @@ export function runScenarioPipeline(
       calculateDamageRolls(group.outcome.calculation),
       group.outcome.probability,
     )
+    const hitFact = group.allAlwaysHits
+      ? "always-hits" as const
+      : group.outcome.probability.hitProbability * 100
     return {
       calculationIdentity: identity,
       ...group.context,
       provenance: group.provenance,
       criticalOnly: group.outcome.calculation.low.normal === undefined,
-      moveMechanics: projectMoveMechanics(group.outcome),
+      moveMechanics: projectMoveMechanics({ ...group.outcome, hitFact }),
       ...computed,
     }
   })
