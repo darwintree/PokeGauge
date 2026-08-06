@@ -23,7 +23,7 @@ export type {
   RawScenarioPoint,
   ScenarioSource,
   ScenarioTrack,
-  SourceState,
+  TrackSelectionActivation,
   UnavailableReason,
   UnavailableScenario,
 } from "./scenario-compiler"

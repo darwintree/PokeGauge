@@ -136,13 +136,13 @@ describe("cross-mechanism acceptance", () => {
       critMaxDamage: 224,
       provenance: {
         "held-item": {
-          effective: [],
+          active: [],
           inactive: ["226"],
           unsupported: [],
           neutral: ["none"],
         },
         "defender-held-item": {
-          effective: [],
+          active: [],
           inactive: ["1181"],
           unsupported: [],
           neutral: ["none"],
@@ -163,7 +163,7 @@ describe("cross-mechanism acceptance", () => {
       },
       provenance: {
         "held-item": {
-          effective: ["220", "276"],
+          active: ["220", "276"],
           inactive: [],
           unsupported: [],
           neutral: [],
@@ -189,8 +189,8 @@ describe("cross-mechanism acceptance", () => {
     })
     expect(result.rows[0]).toMatchObject({
       provenance: {
-        "held-item": { effective: ["247"] },
-        "defender-held-item": { effective: ["162"] },
+        "held-item": { active: ["247"] },
+        "defender-held-item": { active: ["162"] },
       },
     })
     expect(result.rows[0].koProbabilities?.ohko).toBe(0)
@@ -244,7 +244,7 @@ describe("cross-mechanism acceptance", () => {
         },
       },
       provenance: {
-        "held-item": { effective: ["236"] },
+        "held-item": { active: ["236"] },
         screen: { inactive: ["reflect"] },
       },
     })
@@ -283,7 +283,7 @@ describe("cross-mechanism acceptance", () => {
       maxDamage: 68,
       critMinDamage: 86,
       critMaxDamage: 102,
-      provenance: { "defender-held-item": { effective: ["204"] } },
+      provenance: { "defender-held-item": { active: ["204"] } },
     })
     expect(scaleResult.rows[0].koProbabilities?.ohko).toBe(0)
     expect(scaleResult.rows[0].koProbabilities?.twoHit).toBeCloseTo(0.06609375)
@@ -318,7 +318,7 @@ describe("cross-mechanism acceptance", () => {
       maxDamage: 168,
       critMinDamage: 208,
       critMaxDamage: 252,
-      provenance: { "defender-held-item": { effective: ["581"] } },
+      provenance: { "defender-held-item": { active: ["581"] } },
     })
     expect(evioliteResult.rows[0].koProbabilities?.ohko).toBeCloseTo(0.03515625)
     expect(evioliteResult.rows[0].koProbabilities?.twoHit).toBeCloseTo(0.81703125)
@@ -346,7 +346,7 @@ describe("cross-mechanism acceptance", () => {
           phases: expect.arrayContaining([{ kind: "type-effectiveness", modifier: 8192 }]),
         },
       },
-      provenance: { "held-item": { effective: ["245"] } },
+      provenance: { "held-item": { active: ["245"] } },
     })
     expect(positiveResult.rows[0].koProbabilities?.ohko).toBeCloseTo(0.0375)
     expect(positiveResult.rows[0].koProbabilities?.twoHit).toBeCloseTo(0.8175)
@@ -404,7 +404,7 @@ describe("cross-mechanism acceptance", () => {
       critical: [188, 192, 194, 198, 198, 200, 204, 206, 206, 210, 212, 216, 216, 218, 222, 224],
     })
     expect(battleOddsResult.rows[0].provenance).toMatchObject({
-      "held-item": { effective: ["209"] },
+      "held-item": { active: ["209"] },
     })
     expect(battleOddsResult.rows[0].koProbabilities?.ohko).toBeCloseTo(0.0703125)
     expect(battleOddsResult.rows[0].koProbabilities?.twoHit).toBeCloseTo(0.8240625)
@@ -436,7 +436,7 @@ describe("cross-mechanism acceptance", () => {
       criticalOnly: true,
       minDamage: 188,
       maxDamage: 224,
-      provenance: { "held-item": { effective: ["209"] } },
+      provenance: { "held-item": { active: ["209"] } },
     })
     expect(guaranteedClassic.rows[0].koProbabilities?.ohko).toBeCloseTo(0.625)
     expect(guaranteedClassic.rows[0].koProbabilities?.twoHit).toBe(1)
@@ -445,7 +445,7 @@ describe("cross-mechanism acceptance", () => {
     const guaranteedBattleOdds = runScenarioPipeline(catalog, state)
     expect(guaranteedBattleOdds.rows[0]).toMatchObject({
       criticalOnly: true,
-      provenance: { "held-item": { effective: ["209"] } },
+      provenance: { "held-item": { active: ["209"] } },
     })
   })
 
@@ -497,7 +497,7 @@ describe("cross-mechanism acceptance", () => {
           ]),
         },
       },
-      provenance: { "defender-held-item": { effective: ["1181"] } },
+      provenance: { "defender-held-item": { active: ["1181"] } },
     })
     expect(result.rows[1].koProbabilities?.ohko).toBeCloseTo(0.0234375)
     expect(result.rows[1].koProbabilities?.twoHit).toBeCloseTo(0.8146875)
@@ -557,13 +557,13 @@ describe("cross-mechanism acceptance", () => {
       finalModifier: 4096,
     })
     expect(presetResult.rows[0].provenance).toMatchObject({
-      "attacker-stage": { effective: ["1"] },
-      "held-item": { effective: ["197"] },
-      "attacker-ability": { effective: ["91"] },
-      weather: { effective: ["rain"] },
-      "defender-stage": { effective: ["1"] },
+      "attacker-stage": { active: ["1"] },
+      "held-item": { active: ["197"] },
+      "attacker-ability": { active: ["91"] },
+      weather: { active: ["rain"] },
+      "defender-stage": { active: ["1"] },
       "defender-ability": { unsupported: ["17"] },
-      screen: { effective: ["reflect"] },
+      screen: { active: ["reflect"] },
     })
 
     const offense = getAttackerStatSetups("physical")["neutral-max"]

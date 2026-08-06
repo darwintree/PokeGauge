@@ -201,7 +201,7 @@ function scenarioPoints(
 
 function emptyOptionSets(): ProvenanceOptionSets {
   return {
-    effective: [],
+    active: [],
     inactive: [],
     unsupported: [],
     neutral: [],

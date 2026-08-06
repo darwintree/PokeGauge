@@ -54,7 +54,7 @@ describe("DamageResultRow range envelopes", () => {
     defenderId: "standard-bulk",
     provenance: {
       "held-item": {
-        effective: [],
+        active: [],
         inactive: [],
         unsupported: [],
         neutral: ["none"],

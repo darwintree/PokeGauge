@@ -311,67 +311,67 @@ describe("matchup scenario pipeline", () => {
         missingFields: ["power", "accuracy"],
         provenance: {
           "attacker-ability": {
-            effective: [],
+            active: [],
             inactive: [],
             unsupported: ["8"],
             neutral: [],
           },
           "attacker-stage": {
-            effective: [],
+            active: [],
             inactive: [],
             unsupported: [],
             neutral: ["0"],
           },
           "attacker-stat": {
-            effective: ["neutral-max", "extreme"],
+            active: ["neutral-max", "extreme"],
             inactive: [],
             unsupported: [],
             neutral: [],
           },
           "held-item": {
-            effective: ["214"],
+            active: ["214"],
             inactive: ["226"],
             unsupported: [],
             neutral: ["none"],
           },
           "defender-held-item": {
-            effective: [],
+            active: [],
             inactive: [],
             unsupported: [],
             neutral: ["none"],
           },
           weather: {
-            effective: [],
+            active: [],
             inactive: [],
             unsupported: [],
             neutral: ["none"],
           },
           terrain: {
-            effective: [],
+            active: [],
             inactive: [],
             unsupported: [],
             neutral: ["none"],
           },
           "defender-stat": {
-            effective: ["hp-32"],
+            active: ["hp-32"],
             inactive: [],
             unsupported: [],
             neutral: [],
           },
           "defender-ability": {
-            effective: [],
+            active: [],
             inactive: [],
             unsupported: ["66"],
             neutral: [],
           },
           "defender-stage": {
-            effective: [],
+            active: [],
             inactive: [],
             unsupported: [],
             neutral: ["0"],
           },
           screen: {
-            effective: [],
+            active: [],
             inactive: [],
             unsupported: [],
             neutral: ["none"],
@@ -416,19 +416,19 @@ describe("matchup scenario pipeline", () => {
       ["test-2-89", "214"],
     ] as const) {
       const snapshotRows = rows.filter((row) => row.snapshotId === snapshotId)
-      const effective = snapshotRows.find((row) =>
-        row.provenance["held-item"]?.effective.includes(matchingItem))
+      const active = snapshotRows.find((row) =>
+        row.provenance["held-item"]?.active.includes(matchingItem))
       const neutral = snapshotRows.find((row) =>
         row.provenance["held-item"]?.neutral.includes("none"))
 
-      expect(effective?.provenance["held-item"]).toEqual({
-        effective: [matchingItem],
+      expect(active?.provenance["held-item"]).toEqual({
+        active: [matchingItem],
         inactive: [],
         unsupported: [],
         neutral: [],
       })
       expect(neutral?.provenance["held-item"]).toEqual({
-        effective: [],
+        active: [],
         inactive: state.attackerItemIds
           .map(String)
           .filter((itemId) => itemId !== "none" && itemId !== matchingItem),
@@ -451,7 +451,7 @@ describe("matchup scenario pipeline", () => {
     expect(expectedRowCount(state)).toBe(2)
     expect(rows).toHaveLength(1)
     expect(rows[0].provenance["defender-held-item"]).toEqual({
-      effective: [],
+      active: [],
       inactive: ["1181"],
       unsupported: [],
       neutral: ["none"],
@@ -492,20 +492,20 @@ describe("matchup scenario pipeline", () => {
     expect(kernel).toHaveBeenCalledTimes(1)
     expect(rows[0].criticalOnly).toBe(true)
     expect(rows[0].provenance["attacker-stage"]).toEqual({
-      effective: [],
+      active: [],
       inactive: ["-6", "-1"],
       unsupported: [],
       neutral: ["0"],
     })
     expect(rows[0].provenance["defender-stage"]).toEqual({
-      effective: [],
+      active: [],
       inactive: ["1", "6"],
       unsupported: [],
       neutral: ["0"],
     })
   })
 
-  it("keeps lower-critical stage choices distinct and effective", () => {
+  it("keeps lower-critical stage choices distinct and active", () => {
     const state = defaultTrackState(catalog)
     selectMoves(catalog, state, [89])
     state.moveSnapshots[0] = { ...state.moveSnapshots[0], criticalStage: 2 }
@@ -520,8 +520,8 @@ describe("matchup scenario pipeline", () => {
     expect(rows).toHaveLength(4)
     expect(rows.every((row) => !row.criticalOnly)).toBe(true)
     expect(rows.some((row) =>
-      row.provenance["attacker-stage"]?.effective.includes("-1") &&
-      row.provenance["defender-stage"]?.effective.includes("1")
+      row.provenance["attacker-stage"]?.active.includes("-1") &&
+      row.provenance["defender-stage"]?.active.includes("1")
     )).toBe(true)
     expect(rows.some((row) =>
       row.provenance["attacker-stage"]?.neutral.includes("0") &&

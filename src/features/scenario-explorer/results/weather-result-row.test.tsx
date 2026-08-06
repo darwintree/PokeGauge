@@ -12,7 +12,7 @@ import { defaultTrackState, runScenarioPipeline } from "@/lib/scenario"
 import { DamageResultRow } from "./damage-result-row"
 
 describe("weather damage result presentation", () => {
-  it("shows effective accuracy weather in Battle Odds Mode", async () => {
+  it("shows active accuracy weather in Battle Odds Mode", async () => {
     const catalog = await getCatalogShell(6, 143, "en", "special")
     const state = defaultTrackState(catalog)
     state.attackerAbilityIds = [catalog.attackerAbilities[0].id]
@@ -47,7 +47,7 @@ describe("weather damage result presentation", () => {
     ))
 
     expect(result.rows[0].provenance.weather).toEqual({
-      effective: ["rain"],
+      active: ["rain"],
       inactive: [],
       unsupported: [],
       neutral: ["none"],

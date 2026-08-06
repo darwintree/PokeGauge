@@ -155,9 +155,9 @@ beforeAll(async () => {
 
 describe("screen compiler", () => {
   it.each([
-    [{ attackerId: 133, attackerName: "Eevee", moveId: 33, screen: "reflect" }, 2732, "effective"],
+    [{ attackerId: 133, attackerName: "Eevee", moveId: 33, screen: "reflect" }, 2732, "active"],
     [{ attackerId: 133, attackerName: "Eevee", moveId: 33, screen: "light-screen" }, 4096, "inactive"],
-    [{ attackerId: 6, attackerName: "Charizard", moveId: 53, screen: "light-screen" }, 2732, "effective"],
+    [{ attackerId: 6, attackerName: "Charizard", moveId: 53, screen: "light-screen" }, 2732, "active"],
     [{ attackerId: 6, attackerName: "Charizard", moveId: 53, screen: "reflect" }, 4096, "inactive"],
   ] as const)(
     "compiles move %i under %s with exact normal and critical modifiers",
@@ -264,9 +264,9 @@ describe("screen scenario product and provenance", () => {
     expect(result.unavailable).toEqual([])
     expect(kernel).toHaveBeenCalledTimes(2)
     expect(result.rows.find((row) =>
-      row.provenance.screen?.effective.includes("reflect")
+      row.provenance.screen?.active.includes("reflect")
     )?.provenance.screen).toEqual({
-      effective: ["reflect"],
+      active: ["reflect"],
       inactive: [],
       unsupported: [],
       neutral: [],
@@ -274,7 +274,7 @@ describe("screen scenario product and provenance", () => {
     expect(result.rows.find((row) =>
       row.provenance.screen?.neutral.includes("none")
     )?.provenance.screen).toEqual({
-      effective: [],
+      active: [],
       inactive: ["light-screen"],
       unsupported: [],
       neutral: ["none"],
@@ -293,7 +293,7 @@ describe("screen scenario product and provenance", () => {
     expect(kernel).toHaveBeenCalledTimes(1)
     expect(result.rows[0].criticalOnly).toBe(true)
     expect(result.rows[0].provenance.screen).toEqual({
-      effective: [],
+      active: [],
       inactive: ["reflect", "light-screen"],
       unsupported: [],
       neutral: ["none"],
@@ -331,7 +331,7 @@ describe("screen scenario product and provenance", () => {
       expect(result.rows).toHaveLength(1)
       expect(kernel).toHaveBeenCalledTimes(1)
       expect(result.rows[0].provenance.screen).toEqual({
-        effective: [],
+        active: [],
         inactive: ["reflect", "light-screen"],
         unsupported: [],
         neutral: ["none"],
