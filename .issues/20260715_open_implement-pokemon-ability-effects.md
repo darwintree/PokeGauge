@@ -6,7 +6,7 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-15T02:45:00Z"
-updated_at: "2026-08-06T10:20:00Z"
+updated_at: "2026-08-07T10:37:00Z"
 ---
 ## Goal
 
@@ -39,7 +39,7 @@ updated_at: "2026-08-06T10:20:00Z"
 - [[20260805_open_ability-immunities-and-type-exceptions|Ability immunities and type exceptions]]
 - [[20260805_open_scenario-move-type-rewriting-and-protean-family-stab|Scenario Move Type rewriting and Protean-family STAB]]
 - [[20260805_open_ability-weather-and-item-composition|Ability weather and item composition]]
-- [[20260805_open_defer-parental-bond-until-multi-hit|Defer Parental Bond until multi-hit]]
+- [[20260805_open_implement-parental-bond|Implement Parental Bond]]
 
 ## Ability checklist (313)
 
@@ -387,4 +387,5 @@ updated_at: "2026-08-06T10:20:00Z"
 
 - Adaptability 已实现，作为历史基线直接勾选。
 - Run Away、Honey Gather、Ball Fetch 在竞技训练家战斗中无效果，记为 `N/A`。
-- 2026-08-05：伤害相关性调研见 Goal 中的 first-freeze 笔记；首批范围产品决策见 [[../docs/traces/discussion/2026-08-05-ability-effects-first-freeze-scope|特性效果首批冻结范围讨论记录]]。已按机制族开子 issue（见 Child issues）。Mold Breaker 族剔出首批；Parental Bond 见 defer 子 issue。
+- 2026-08-05：伤害相关性调研见 Goal 中的 first-freeze 笔记；首批范围产品决策见 [[../docs/traces/discussion/2026-08-05-ability-effects-first-freeze-scope|特性效果首批冻结范围讨论记录]]。已按机制族开子 issue（见 Child issues）。Mold Breaker 族剔出首批；Parental Bond 不进首批，实现见 [[20260805_open_implement-parental-bond|Implement Parental Bond]]（blocked by 多段伤害规格）。
+- 2026-08-07：原「Defer Parental Bond until multi-hit」误把 defer 记录当成票；已改写为实现票 [[20260805_open_implement-parental-bond|Implement Parental Bond]]，并在多段 issue 标明 downstream。

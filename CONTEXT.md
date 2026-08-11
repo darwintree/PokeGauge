@@ -46,6 +46,10 @@ _Avoid_: Inactive Selection
 Choice Track 中作为默认比较基准的 Selection。
 _Avoid_: Inactive Selection, Unsupported Selection
 
+**Assumed-Satisfied Ability Selection（假设条件已满足的特性选择）**:
+对缺少战斗条件输入（如 HP%、异常状态）的 Ability，选中该 Ability 即表示该条件在本 Scenario 中已满足；Track 可用独立披露提示这一假设，但 Track Selection Activation 仍只报告机械效果是否贡献。
+_Avoid_: abilityOn, charged Ability, green-dot Activation, Conditional Active state
+
 **Range Track**:
 取值为一个闭合数值区间的 Track；整个区间是一条组合分支，用于表达结果边界，不枚举区间内的每个数值。
 _Avoid_: Slider, range filter
