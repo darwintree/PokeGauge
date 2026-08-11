@@ -45,7 +45,7 @@ import {
 import type { MoveCategory } from "@/lib/catalog"
 import type { PokemonType } from "@/lib/pokemon"
 
-import { NEUTRAL_MODIFIER } from "./damage-kernel"
+import { chainModifiers, NEUTRAL_MODIFIER } from "./damage-kernel"
 import type { TrackSelectionActivation } from "./scenario-compiler"
 import type { Weather } from "./weather"
 
@@ -59,6 +59,8 @@ type AbilityContext = {
   effectiveness: number
   weather: Weather
   hasStab: boolean
+  typeRewriteBasePower?: number
+  typeRewriteActive?: boolean
 }
 
 export type CompiledAbilityEffect = {
@@ -91,7 +93,7 @@ function neutralState(id: number): TrackSelectionActivation | undefined {
 
 export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEffect {
   const attackerModifiers = {
-    basePower: NEUTRAL_MODIFIER,
+    basePower: context.typeRewriteBasePower ?? NEUTRAL_MODIFIER,
     attack: NEUTRAL_MODIFIER,
     stab: NEUTRAL_MODIFIER,
     accuracy: NEUTRAL_MODIFIER,
@@ -105,7 +107,7 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
     accuracy: NEUTRAL_MODIFIER,
   }
   let activatesWeather = false
-  let attackerActive = false
+  let attackerActive = Boolean(context.typeRewriteActive)
   let defenderActive = false
   const flags = new Set(context.moveFlags)
 
@@ -256,7 +258,7 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
   if (auraActive) {
     if (context.attackerAbilityId === FAIRY_AURA_ABILITY_ID) attackerActive = true
     if (context.defenderAbilityId === FAIRY_AURA_ABILITY_ID) defenderActive = true
-    attackerModifiers.basePower = 5448
+    attackerModifiers.basePower = chainModifiers([attackerModifiers.basePower, 5448])
   }
 
   const state = (id: number, active: boolean): TrackSelectionActivation =>

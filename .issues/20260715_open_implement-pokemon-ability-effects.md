@@ -6,7 +6,7 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-15T02:45:00Z"
-updated_at: "2026-08-11T02:22:00Z"
+updated_at: "2026-08-11T06:25:00Z"
 ---
 ## Goal
 
@@ -37,7 +37,7 @@ updated_at: "2026-08-11T02:22:00Z"
 - [[20260805_open_ability-contact-and-held-item-interactions|Ability contact and held-item interactions]]
 - [[archive/20260805_closed_green-dot-conditional-ability-effects|Green-dot conditional ability effects]]
 - [[20260805_open_ability-immunities-and-type-exceptions|Ability immunities and type exceptions]]
-- [[20260805_open_scenario-move-type-rewriting-and-protean-family-stab|Scenario Move Type rewriting and Protean-family STAB]]
+- [[archive/20260805_closed_scenario-move-type-rewriting-and-protean-family-stab|Scenario Move Type rewriting and Protean-family STAB]]
 - [[20260805_open_ability-weather-and-item-composition|Ability weather and item composition]]
 - [[20260805_open_implement-parental-bond|Implement Parental Bond]]
 
@@ -143,7 +143,7 @@ updated_at: "2026-08-11T02:22:00Z"
 - [ ] Hydration
 - [x] Solar Power
 - [ ] Quick Feet
-- [ ] Normalize
+- [x] Normalize
 - [x] Sniper
 - [ ] Magic Guard
 - [x] No Guard
@@ -221,13 +221,13 @@ updated_at: "2026-08-11T02:22:00Z"
 - [ ] Aroma Veil
 - [ ] Flower Veil
 - [ ] Cheek Pouch
-- [ ] Protean
+- [x] Protean
 - [x] Fur Coat
 - [ ] Magician
 - [ ] Bulletproof
 - [ ] Competitive
 - [x] Strong Jaw
-- [ ] Refrigerate
+- [x] Refrigerate
 - [ ] Sweet Veil
 - [ ] Stance Change
 - [ ] Gale Wings
@@ -235,9 +235,9 @@ updated_at: "2026-08-11T02:22:00Z"
 - [ ] Grass Pelt
 - [ ] Symbiosis
 - [x] Tough Claws
-- [ ] Pixilate
+- [x] Pixilate
 - [ ] Gooey
-- [ ] Aerilate
+- [x] Aerilate
 - [ ] Parental Bond
 - [ ] Dark Aura
 - [x] Fairy Aura
@@ -260,9 +260,9 @@ updated_at: "2026-08-11T02:22:00Z"
 - [ ] Berserk
 - [ ] Slush Rush
 - [ ] Long Reach
-- [ ] Liquid Voice
+- [x] Liquid Voice
 - [ ] Triage
-- [ ] Galvanize
+- [x] Galvanize
 - [ ] Surge Surfer
 - [ ] Schooling
 - [ ] Disguise
@@ -295,7 +295,7 @@ updated_at: "2026-08-11T02:22:00Z"
 
 - [ ] Intrepid Sword
 - [ ] Dauntless Shield
-- [ ] Libero
+- [x] Libero
 - [x] Ball Fetch — N/A: no competitive trainer-battle effect
 - [ ] Cotton Down
 - [ ] Propeller Tail
@@ -371,7 +371,7 @@ updated_at: "2026-08-11T02:22:00Z"
 - [ ] Teraform Zero
 - [ ] Poison Puppeteer
 - [ ] Piercing Drill
-- [ ] Dragonize
+- [x] Dragonize
 - [ ] Mega Sol
 - [ ] Spicy Spray
 - [ ] Eelevate

@@ -223,7 +223,7 @@ function addSources(
 
 type ScenarioResultContext = Pick<
   ScenarioResult,
-  "snapshotId" | "moveId" | "attackerStatId" | "defenderId"
+  "snapshotId" | "moveId" | "moveType" | "attackerStatId" | "defenderId"
 > & Pick<ScenarioResult, "statRange" | "defenderRanges">
 
 type CalculableGroup = {
@@ -322,6 +322,7 @@ export function runScenarioPipeline(
                           context: {
                             snapshotId: snapshot.id,
                             moveId: snapshot.moveId,
+                            moveType: outcome.move.type,
                             attackerStatId: offense.id,
                             defenderId: defense.id,
                             ...(offense.id === RANGE_STAT_ID

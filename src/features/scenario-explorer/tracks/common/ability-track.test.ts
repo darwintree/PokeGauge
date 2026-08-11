@@ -110,6 +110,7 @@ it("renders active abilities inline and folds inactive and unsupported states", 
     calculationIdentity: "ability-display",
     snapshotId: "ability-display",
     moveId: 33,
+    moveType: "normal",
     attackerStatId: "neutral-max",
     defenderId: "standard-bulk",
     provenance: {

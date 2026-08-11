@@ -50,6 +50,7 @@ describe("DamageResultRow range envelopes", () => {
     calculationIdentity: "range-envelope",
     snapshotId: "range-envelope",
     moveId: 33,
+    moveType: "normal",
     attackerStatId: "__range__",
     defenderId: "standard-bulk",
     provenance: {

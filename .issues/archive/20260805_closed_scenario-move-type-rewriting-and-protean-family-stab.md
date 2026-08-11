@@ -2,15 +2,15 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "1297980f-a56c-4dc7-907c-23d486c6c319"
 title: "Scenario Move Type rewriting and Protean-family STAB"
-status: "open"
+status: "closed"
 priority: "high"
 labels: ["FEATURE-REQUEST", "READY-FOR-AGENT"]
 created_at: "2026-08-05T09:25:00Z"
-updated_at: "2026-08-06T10:20:00Z"
+updated_at: "2026-08-11T06:25:00Z"
 ---
 ## Parent issue
 
-[[20260715_open_implement-pokemon-ability-effects|Implement Pokémon ability effects]]
+[[../20260715_open_implement-pokemon-ability-effects|Implement Pokémon ability effects]]
 
 ## Goal
 
@@ -63,7 +63,7 @@ Move Track／Picker 继续展示 catalog Move 属性；Move Snapshot 不新增�
 - 当前已全局排除的 Z／Max／Hidden Power 等 Move 不重新放入候选池。
 - 当前没有 Terastallization 状态，不新增 Tera 分支或推断。
 - Liquid Voice 只读取 `NormalizedMove.flags` 的 `sound` membership；不得增加本地 Move id fallback、Showdown／calc 生产数据依赖或效果文本解析。
-- PokeAPI 当前缺失的 recent `sound` mapping 按 gate 未命中处理，Selection 为 `inactive`；该数据缺口由 [[20260806_open_complete-missing-pokeapi-move-behavioral-metadata-upstream|Complete missing PokeAPI move behavioral metadata upstream]] 跟踪。
+- PokeAPI 当前缺失的 recent `sound` mapping 按 gate 未命中处理，Selection 为 `inactive`；该数据缺口由 [[../20260806_open_complete-missing-pokeapi-move-behavioral-metadata-upstream|Complete missing PokeAPI move behavioral metadata upstream]] 跟踪。
 
 ## Protean-family contract
 
@@ -114,13 +114,33 @@ Move Track／Picker 继续展示 catalog Move 属性；Move Snapshot 不新增�
 
 ## Acceptance criteria
 
-- [ ] 9 个 Ability 均有 active／inactive compiler 覆盖；Normalize 原生 Normal、Liquid Voice 原生 Water／PokeAPI 缺 flag、Protean／Libero 原生 STAB 均有边界用例。
-- [ ] Scenario Move Type 按固定顺序派生，并统一驱动 STAB、属性克制、type-gated Item／Weather／Terrain／Ability 与 compiler outcome；Move 列表、Move Snapshot、Identity 和 groundedness 不变。
-- [ ] pinned 的类型改写排除 Move 有回归覆盖；PokeAPI `sound` 是 Liquid Voice 唯一生产 gate，无 fallback。
-- [ ] Pixilate + defender Fairy Aura 证明 `4915` 与 `5448` 同时进入 Ability Base Power chain，且双方 activation 正确；至少一个代表 case 对支持范围内 normal／critical 全部 16 rolls 使用 `@smogon/calc` 作 oracle。
-- [ ] Protean／Libero 对 off-type Move 使用普通 `6144` STAB，对原生 STAB Move 为 `inactive`；不出现 `8192` 或跨 Snapshot 状态。
-- [ ] calculation identity 包含 Scenario Move Type；不同 type 的数值等价结果不合并，同 type 等价结果仍合并并保留 provenance。
-- [ ] Scenario Result 和结果卡展示 Scenario Move Type；9 个 Ability 无红色 unsupported 提示，且未新增绿色提示。
-- [ ] 结果 UI 完成 design-taste-frontend desktop／mobile review-and-correct，未改变既有结果信息层级。
-- [ ] 父 issue checklist 只勾选本 issue 已完成的 9 个 Ability。
-- [ ] 对 [[../docs/traces/discussion/2026-08-06-scenario-move-type-and-protean-stab|讨论记录]] 的每项决定逐行完成实现审计。
+- [x] 9 个 Ability 均有 active／inactive compiler 覆盖；Normalize 原生 Normal、Liquid Voice 原生 Water／PokeAPI 缺 flag、Protean／Libero 原生 STAB 均有边界用例。
+- [x] Scenario Move Type 按固定顺序派生，并统一驱动 STAB、属性克制、type-gated Item／Weather／Terrain／Ability 与 compiler outcome；Move 列表、Move Snapshot、Identity 和 groundedness 不变。
+- [x] pinned 的类型改写排除 Move 有回归覆盖；PokeAPI `sound` 是 Liquid Voice 唯一生产 gate，无 fallback。
+- [x] Pixilate + defender Fairy Aura 证明 `4915` 与 `5448` 同时进入 Ability Base Power chain，且双方 activation 正确；至少一个代表 case 对支持范围内 normal／critical 全部 16 rolls 使用 `@smogon/calc` 作 oracle。
+- [x] Protean／Libero 对 off-type Move 使用普通 `6144` STAB，对原生 STAB Move 为 `inactive`；不出现 `8192` 或跨 Snapshot 状态。
+- [x] calculation identity 包含 Scenario Move Type；不同 type 的数值等价结果不合并，同 type 等价结果仍合并并保留 provenance。
+- [x] Scenario Result 和结果卡展示 Scenario Move Type；9 个 Ability 无红色 unsupported 提示，且未新增绿色提示。
+- [x] 结果 UI 完成 design-taste-frontend desktop／mobile review-and-correct，未改变既有结果信息层级。
+- [x] 父 issue checklist 只勾选本 issue 已完成的 9 个 Ability。
+- [x] 对 [[../docs/traces/discussion/2026-08-06-scenario-move-type-and-protean-stab|讨论记录]] 的每项决定逐行完成实现审计。
+
+## Implementation audit (discussion 2026-08-06)
+
+1. 九个 Ability 一并实现 — done（Normalize／-ate／Dragonize／Liquid Voice／Protean／Libero）。
+2. Scenario Move Type 术语与派生顺序 — done（PokeAPI → identity → Ability rewrite；统一驱动 STAB／克制／item／weather／terrain／ability／badge）。
+3. Protean 家族仅普通 1.5× STAB — done（6144；无 8192）。
+4. Protean 不改 Identity／groundedness／跨 Snapshot 历史 — done。
+5. calculation identity 含 Scenario Move Type — done。
+6. Track Selection Activation 规则 — done（Normalize 原生 Normal active；Liquid Voice 原生 Water／缺 sound inactive；Protean 原生 STAB inactive）。
+7. Liquid Voice 只读 PokeAPI `sound` — done（无 fallback；Torch Song 缺 flag → inactive）。
+
+## Design review
+
+Reading this as: dense game-HUD Scenario Result card for competitive players, preserve existing HUD language.
+
+Changed only the TypeBadge source to `row.moveType` (catalog label unchanged). No hierarchy / green-hint / layout changes. Desktop and mobile share the same summary header; no visual corrections required after review.
+
+## Resolution
+
+Implemented Scenario Move Type rewriting and Protean-family STAB for the nine Abilities. Trace: [[../docs/traces/implementations/2026-08-11-scenario-move-type-rewriting|2026-08-11-scenario-move-type-rewriting]].
