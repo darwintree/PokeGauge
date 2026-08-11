@@ -14,7 +14,7 @@ updated_at: "2026-08-07T10:35:00Z"
 
 ## Motivation / highlight
 
-在 [[20260805_open_ability-contact-and-held-item-interactions|Ability contact and held-item interactions]] 的 grilling 中核对 Fluffy（火＋接触）时发现：
+在 [[archive/20260805_closed_ability-contact-and-held-item-interactions|Ability contact and held-item interactions]] 的 grilling 中核对 Fluffy（火＋接触）时发现：
 
 | 来源 | 火＋接触 |
 | --- | --- |

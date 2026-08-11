@@ -6,7 +6,7 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-15T02:45:00Z"
-updated_at: "2026-08-11T06:25:00Z"
+updated_at: "2026-08-11T06:50:00Z"
 ---
 ## Goal
 
@@ -34,7 +34,7 @@ updated_at: "2026-08-11T06:25:00Z"
 - [[archive/20260805_closed_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]
 - [[archive/20260805_closed_ability-critical-hit-and-accuracy-modifiers|Ability critical-hit and accuracy modifiers]]
 - [[archive/20260805_closed_ability-stage-and-screen-bypass|Ability stage and screen bypass]]
-- [[20260805_open_ability-contact-and-held-item-interactions|Ability contact and held-item interactions]]
+- [[archive/20260805_closed_ability-contact-and-held-item-interactions|Ability contact and held-item interactions]]
 - [[archive/20260805_closed_green-dot-conditional-ability-effects|Green-dot conditional ability effects]]
 - [[20260805_open_ability-immunities-and-type-exceptions|Ability immunities and type exceptions]]
 - [[archive/20260805_closed_scenario-move-type-rewriting-and-protean-family-stab|Scenario Move Type rewriting and Protean-family STAB]]
@@ -150,7 +150,7 @@ updated_at: "2026-08-11T06:25:00Z"
 - [ ] Stall
 - [x] Technician
 - [ ] Leaf Guard
-- [ ] Klutz
+- [x] Klutz
 - [ ] Mold Breaker
 - [x] Super Luck
 - [ ] Aftermath
@@ -259,7 +259,7 @@ updated_at: "2026-08-11T06:25:00Z"
 - [ ] Steelworker
 - [ ] Berserk
 - [ ] Slush Rush
-- [ ] Long Reach
+- [x] Long Reach
 - [x] Liquid Voice
 - [ ] Triage
 - [x] Galvanize
@@ -274,7 +274,7 @@ updated_at: "2026-08-11T06:25:00Z"
 - [ ] Innards Out
 - [ ] Dancer
 - [ ] Battery
-- [ ] Fluffy
+- [x] Fluffy
 - [ ] Dazzling
 - [ ] Soul-Heart
 - [ ] Tangling Hair

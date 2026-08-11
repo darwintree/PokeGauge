@@ -6,6 +6,7 @@ import {
   FAIRY_AURA_ABILITY_ID,
   FILTER_ABILITY_ID,
   FIRE_MANE_ABILITY_ID,
+  FLUFFY_ABILITY_ID,
   FUR_COAT_ABILITY_ID,
   GUTS_ABILITY_ID,
   HEATPROOF_ABILITY_ID,
@@ -13,6 +14,8 @@ import {
   HUSTLE_ABILITY_ID,
   INFILTRATOR_ABILITY_ID,
   IRON_FIST_ABILITY_ID,
+  KLUTZ_ABILITY_ID,
+  LONG_REACH_ABILITY_ID,
   MARVEL_SCALE_ABILITY_ID,
   MEGA_LAUNCHER_ABILITY_ID,
   MERCILESS_ABILITY_ID,
@@ -201,7 +204,18 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
     case MERCILESS_ABILITY_ID:
       attackerModifiers.criticalStage = 3
       break
+    case LONG_REACH_ABILITY_ID:
+      // Active only when cancelling defender Fluffy's contact facet.
+      attackerActive = flags.has("contact") &&
+        context.defenderAbilityId === FLUFFY_ABILITY_ID
+      break
+    case FLUFFY_ABILITY_ID:
+    case KLUTZ_ABILITY_ID:
+      break
   }
+
+  const effectiveContact = flags.has("contact") &&
+    context.attackerAbilityId !== LONG_REACH_ABILITY_ID
 
   switch (context.defenderAbilityId) {
     case BATTLE_ARMOR_ABILITY_ID:
@@ -248,6 +262,22 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
     case MARVEL_SCALE_ABILITY_ID:
       defenderActive = context.category === "physical"
       if (defenderActive) defenderModifiers.defense = 6144
+      break
+    case FLUFFY_ABILITY_ID: {
+      const contactFacet = effectiveContact
+      const fireFacet = context.moveType === "fire"
+      defenderActive = contactFacet || fireFacet
+      if (contactFacet && fireFacet) {
+        defenderModifiers.final = chainModifiers([2048, 8192])
+      } else if (contactFacet) {
+        defenderModifiers.final = 2048
+      } else if (fireFacet) {
+        defenderModifiers.final = 8192
+      }
+      break
+    }
+    case LONG_REACH_ABILITY_ID:
+    case KLUTZ_ABILITY_ID:
       break
   }
 
