@@ -430,22 +430,44 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   const breaksScreensBeforeDamage = Boolean(
     move && moveBreaksScreensBeforeDamage(move.id),
   )
-  const screen = compileScreenEffect(
+  const screenWithoutBypass = compileScreenEffect(
     raw.screen,
     moveCategory,
     criticalOnly,
     breaksScreensBeforeDamage,
   )
-  const attackerStageState: TrackSelectionActivation = raw.attackerStage === 0
-    ? "neutral"
-    : criticalOnly && raw.attackerStage < 0
-      ? "inactive"
-      : "active"
-  const defenderStageState: TrackSelectionActivation = raw.defenderStage === 0
-    ? "neutral"
-    : criticalOnly && raw.defenderStage > 0
-      ? "inactive"
-      : "active"
+  const infiltratorBypassesScreen = ability.bypassesScreens &&
+    screenWithoutBypass.state === "active"
+  const screen = infiltratorBypassesScreen
+    ? { modifier: NEUTRAL_MODIFIER, state: "inactive" as const }
+    : screenWithoutBypass
+  const attackerUnawareActive = ability.ignoresDefenderStage && (
+    criticalOnly ? raw.defenderStage < 0 : raw.defenderStage !== 0
+  )
+  const defenderUnawareActive = ability.ignoresAttackerStage && (
+    criticalOnly ? raw.attackerStage > 0 : raw.attackerStage !== 0
+  )
+  const effectiveAttackerStage = ability.ignoresAttackerStage ? 0 : raw.attackerStage
+  const effectiveDefenderStage = ability.ignoresDefenderStage ? 0 : raw.defenderStage
+  const stageState = (
+    stage: StatStage,
+    ignored: boolean,
+    criticalOnlySwallow: boolean,
+  ): TrackSelectionActivation => {
+    if (stage === 0) return "neutral"
+    if (ignored || criticalOnlySwallow) return "inactive"
+    return "active"
+  }
+  const attackerStageState = stageState(
+    raw.attackerStage,
+    ability.ignoresAttackerStage,
+    criticalOnly && raw.attackerStage < 0,
+  )
+  const defenderStageState = stageState(
+    raw.defenderStage,
+    ability.ignoresDefenderStage,
+    criticalOnly && raw.defenderStage > 0,
+  )
   const numericAccuracyWith = (
     includeAttackerAbility: boolean,
     includeDefenderAbility: boolean,
@@ -550,6 +572,12 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     attackerAbilityState = raw.probabilityMode === "battle-odds" &&
       !raw.snapshot.alwaysHits ? "active" : "inactive"
   }
+  if (ability.ignoresDefenderStage) {
+    attackerAbilityState = attackerUnawareActive ? "active" : "inactive"
+  }
+  if (ability.bypassesScreens) {
+    attackerAbilityState = infiltratorBypassesScreen ? "active" : "inactive"
+  }
 
   let defenderAbilityState = ability.defenderState
   if (ability.defenderAccuracyModifier !== NEUTRAL_MODIFIER) {
@@ -561,6 +589,9 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   if (ability.defenderNoGuard) {
     defenderAbilityState = raw.probabilityMode === "battle-odds" &&
       !raw.snapshot.alwaysHits ? "active" : "inactive"
+  }
+  if (ability.ignoresAttackerStage) {
+    defenderAbilityState = defenderUnawareActive ? "active" : "inactive"
   }
 
   const sources: ScenarioSource[] = [
@@ -694,8 +725,8 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       ? ability.stabModifier === NEUTRAL_MODIFIER ? 6144 : ability.stabModifier
       : NEUTRAL_MODIFIER,
     typeEffectivenessModifier: Math.round(effectiveness * NEUTRAL_MODIFIER),
-    attackerStage: raw.attackerStage,
-    defenderStage: raw.defenderStage,
+    attackerStage: effectiveAttackerStage,
+    defenderStage: effectiveDefenderStage,
     weatherModifier: weather.damageModifier,
     screenModifier: screen.modifier,
   }

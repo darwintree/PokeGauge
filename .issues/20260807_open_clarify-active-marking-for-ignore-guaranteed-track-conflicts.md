@@ -16,7 +16,7 @@ updated_at: "2026-08-07T10:08:00Z"
 
 ## Motivation
 
-在 [[20260805_open_ability-stage-and-screen-bypass|Ability stage and screen bypass]] 的 grilling 中，为 Unaware／Infiltrator 的 provenance 对照了现有实现。冲突场景已有多套局部规则，但缺少一条显式的总契约。
+在 [[archive/20260805_closed_ability-stage-and-screen-bypass|Ability stage and screen bypass]] 的 grilling 中，为 Unaware／Infiltrator 的 provenance 对照了现有实现。冲突场景已有多套局部规则，但缺少一条显式的总契约。
 
 ## Observed patterns（现状调查，非最终契约）
 
@@ -31,7 +31,7 @@ updated_at: "2026-08-07T10:08:00Z"
 | Utility Umbrella vs 普通晴雨火／水伤 | 天气在不再贡献时可 `inactive` | 伞在确实压制时 `active` |
 | No Guard 但招式已是 Always-hit | No Guard `inactive` | — |
 
-Unaware／Infiltrator 的 grilling 已按同一「贡献判定」采纳（见 [[../docs/traces/discussion/2026-08-07-ability-stage-and-screen-bypass|Ability Stage 与 Screen 绕过讨论记录]] §4 与 [[20260805_open_ability-stage-and-screen-bypass|Ability stage and screen bypass]]）；本 issue 负责把该规则升格为跨机制总契约，并扫清例外。stage／screen bypass **不阻塞**于本票。
+Unaware／Infiltrator 的 grilling 已按同一「贡献判定」采纳（见 [[../docs/traces/discussion/2026-08-07-ability-stage-and-screen-bypass|Ability Stage 与 Screen 绕过讨论记录]] §4 与 [[archive/20260805_closed_ability-stage-and-screen-bypass|Ability stage and screen bypass]]）；本 issue 负责把该规则升格为跨机制总契约，并扫清例外。stage／screen bypass **不阻塞**于本票。
 
 ## Questions to resolve
 
