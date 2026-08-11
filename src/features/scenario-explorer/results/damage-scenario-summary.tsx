@@ -242,7 +242,7 @@ export function DamageScenarioSummary(props: DamageScenarioSummaryProps) {
   return (
     <article className="relative w-full rounded-[10px] border border-card-border bg-muted/60 md:w-[14.75rem]">
       <div className="flex items-center gap-1 border-b border-card-border px-2 py-1">
-        <span className="flex min-w-0 items-center gap-1"><TypeBadge type={props.move.type} /><span className="truncate text-[12px] font-extrabold">{props.move.label}</span></span>
+        <span className="flex min-w-0 items-center gap-1"><TypeBadge type={props.row.moveType} /><span className="truncate text-[12px] font-extrabold">{props.move.label}</span></span>
         <strong title={intl.formatMessage({ id: "damage.conditions.effectivePower" })} className="ml-auto text-[13px] font-extrabold leading-4 tabular-nums">{branch?.effectivePower}</strong>
         {props.showAccuracy && <><span aria-hidden className="text-[10.5px] text-muted-foreground">·</span><span title={intl.formatMessage({ id: "damage.conditions.accuracy" })} className="text-[10.5px] tabular-nums">{accuracy}</span></>}
         <DamageFormulaTooltip {...props} />

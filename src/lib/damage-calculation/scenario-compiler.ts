@@ -35,6 +35,7 @@ import {
   chainModifiers,
   NEUTRAL_MODIFIER,
 } from "./damage-kernel"
+import { resolveAbilityScenarioMoveType } from "./scenario-move-type"
 import { compileScreenEffect, type Screen } from "./screen"
 import {
   compileTerrainEffect,
@@ -140,6 +141,7 @@ export type CompilerOutcome = CalculableScenario | UnavailableScenario
 export function calculationIdentity(outcome: CalculableScenario): string {
   return JSON.stringify([
     outcome.snapshotId,
+    outcome.move.type,
     outcome.calculation,
     outcome.probability,
     outcome.ko,
@@ -367,9 +369,27 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   const power = normalizeSnapshotPower(raw.snapshot.power)
   const accuracy = normalizeSnapshotAccuracy(raw.snapshot.accuracy)
   const moveCategory = move && isMoveCategory(move.category) ? move.category : undefined
-  const moveType = move && isPokemonType(move.type)
+  const identityMoveType = move && isPokemonType(move.type)
     ? resolveReviewedMoveType(move.id, raw.attackerId, move.type, attacker?.types)
     : undefined
+  const hasOriginalTypeStab = Boolean(
+    attacker && identityMoveType && attacker.types.includes(identityMoveType),
+  )
+  const typeRewrite = identityMoveType
+    ? resolveAbilityScenarioMoveType({
+        abilityId: raw.attackerAbilityId,
+        moveId: raw.snapshot.moveId,
+        moveType: identityMoveType,
+        moveFlags: move?.flags ?? [],
+        category: moveCategory,
+        hasOriginalTypeStab,
+      })
+    : undefined
+  const moveType = typeRewrite?.scenarioMoveType ?? identityMoveType
+  const hasScenarioStab = Boolean(
+    (attacker && moveType && attacker.types.includes(moveType)) ||
+      typeRewrite?.grantsScenarioStab,
+  )
   const effectiveness = moveType && defender
     ? typeEffectiveness(moveType, defender.types)
     : 1
@@ -404,9 +424,6 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     isGrounded(attacker?.types ?? [], raw.attackerAbilityId),
     isGrounded(defender?.types ?? [], raw.defenderAbilityId),
   )
-  const hasOriginalTypeStab = Boolean(
-    attacker && moveType && attacker.types.includes(moveType),
-  )
   const ability = compileAbilityEffect({
     attackerAbilityId: raw.attackerAbilityId,
     defenderAbilityId: raw.defenderAbilityId,
@@ -416,7 +433,9 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     moveFlags: move?.flags ?? [],
     effectiveness,
     weather: raw.weather,
-    hasStab: hasOriginalTypeStab,
+    hasStab: hasScenarioStab,
+    typeRewriteBasePower: typeRewrite?.basePowerModifier,
+    typeRewriteActive: typeRewrite?.active,
   })
   const criticalStageWithoutAbility = Math.min(
     3,
@@ -721,7 +740,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       (move.isSpread || terrain.makesSpread) &&
       raw.snapshot.spreadEligible &&
       raw.snapshot.spread,
-    stabModifier: hasOriginalTypeStab
+    stabModifier: hasScenarioStab
       ? ability.stabModifier === NEUTRAL_MODIFIER ? 6144 : ability.stabModifier
       : NEUTRAL_MODIFIER,
     typeEffectivenessModifier: Math.round(effectiveness * NEUTRAL_MODIFIER),

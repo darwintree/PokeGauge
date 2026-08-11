@@ -10,6 +10,7 @@ import type {
   UnavailableReason,
   Weather,
 } from "@/lib/damage-calculation"
+import type { PokemonType } from "@/lib/pokemon"
 import type { StatRange } from "@/lib/stat-calculation"
 import type { MoveSnapshot } from "@/lib/move"
 import type { StatPreset } from "@/lib/stat-preset"
@@ -66,6 +67,8 @@ export type ScenarioResult = {
   calculationIdentity: string
   snapshotId: string
   moveId: number
+  /** Scenario Move Type used for calculation and result badges. */
+  moveType: PokemonType
   attackerStatId: string
   defenderId: string
   provenance: ScenarioProvenance

@@ -32,6 +32,7 @@ describe("Screen Track", () => {
       calculationIdentity: "screen-display",
       snapshotId: "screen-display",
       moveId: 33,
+      moveType: "normal",
       attackerStatId: "neutral-max",
       defenderId: "standard-bulk",
       provenance: {
