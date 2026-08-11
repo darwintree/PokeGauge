@@ -12,6 +12,7 @@ colors:
   card-border: "#c9cede"
   token-bg: "#e8ebf6"
   signal-yellow: "#ffd23f"
+  signal-green: "#2f9e44"
   notice-bg: "#fff8e0"
   destructive: "#e0352f"
   appbar: "#33426e"
@@ -66,6 +67,7 @@ Colors are semantic. They communicate hierarchy or state, never decoration.
 | `hairline` | `#e3e6f2` | Quiet, non-interactive separators |
 | `card-border` | `#c9cede` | Perceptible interactive-control boundaries |
 | `signal-yellow` | `#ffd23f` | Selected states and high-salience signals |
+| `signal-green` | `#2f9e44` | Affirmative Track disclosure (assumed-satisfied conditions) |
 | `notice-bg` | `#fff8e0` | Notices |
 | `destructive` | `#e0352f` | Destructive and invalid states |
 | `appbar` | `#33426e` | Top application bar |
@@ -76,6 +78,7 @@ Pokémon types, effectiveness, stat tiers, HP, and damage use separate domain to
 
 - Primary information uses `ink`; supplementary information uses `hud-muted`.
 - `signal-yellow` is reserved for selection and high-salience state.
+- `signal-green` is reserved for affirmative Track disclosure such as Assumed-Satisfied Ability Selection.
 - Destructive state uses `destructive` and an additional text or icon cue.
 - Muted text must meet WCAG AA contrast on every surface where it appears.
 - New colors require a reusable semantic role. Do not add colors for a single component.

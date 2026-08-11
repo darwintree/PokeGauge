@@ -7,6 +7,7 @@ import {
   UNKNOWN_ABILITY_ID,
   abilityDamageModifierIsSupported,
   abilityIsProjectionNeutral,
+  assumedSatisfiedAbilityFamily,
 } from "@/lib/ability"
 import type { CatalogAbilityOption } from "@/lib/catalog"
 
@@ -22,6 +23,13 @@ type AbilityTrackProps = {
   expanded?: boolean
   onToggle?: () => void
 }
+
+const ASSUMED_FAMILY_MESSAGE = {
+  "full-hp": "track.ability.assumed.fullHp",
+  "low-hp": "track.ability.assumed.lowHp",
+  status: "track.ability.assumed.status",
+  poisoned: "track.ability.assumed.poisoned",
+} as const
 
 export function AbilityTrack({
   labelId,
@@ -81,23 +89,33 @@ export function AbilityTrack({
             option.id !== UNKNOWN_ABILITY_ID &&
             option.id !== NO_ABILITY_ID &&
             !abilityIsProjectionNeutral(option.id)
-          const unsupportedLabel = intl.formatMessage({ id: "track.ability.unsupported" })
+          const assumedFamily = !unsupported
+            ? assumedSatisfiedAbilityFamily(option.id)
+            : undefined
+          const disclosureLabel = unsupported
+            ? intl.formatMessage({ id: "track.ability.unsupported" })
+            : assumedFamily
+              ? intl.formatMessage({ id: ASSUMED_FAMILY_MESSAGE[assumedFamily] })
+              : null
           return (
             <TrackOption
               key={option.id}
               layout="text"
               pressed={selected.has(option.id)}
               onToggle={() => toggle(option.id)}
-              ariaLabel={unsupported
-                ? `${option.label} · ${unsupportedLabel}`
+              ariaLabel={disclosureLabel
+                ? `${option.label} · ${disclosureLabel}`
                 : option.accessibleLabel ?? option.label}
-              tooltip={[option.summary, unsupported ? unsupportedLabel : null].filter(Boolean).join("\n") || null}
+              tooltip={[option.summary, disclosureLabel].filter(Boolean).join("\n") || null}
               className="px-2"
             >
               <span>{option.label}</span>
               {unsupported && (
                 /* State also lives in the accessible name, never color alone. */
                 <span aria-hidden className="size-2 rounded-full border border-ink bg-destructive" />
+              )}
+              {assumedFamily && (
+                <span aria-hidden className="size-2 rounded-full border border-ink bg-signal-green" />
               )}
             </TrackOption>
           )

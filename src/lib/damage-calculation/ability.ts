@@ -1,19 +1,25 @@
 import {
   ADAPTABILITY_ABILITY_ID,
   BATTLE_ARMOR_ABILITY_ID,
+  BLAZE_ABILITY_ID,
   COMPOUND_EYES_ABILITY_ID,
   FAIRY_AURA_ABILITY_ID,
   FILTER_ABILITY_ID,
   FIRE_MANE_ABILITY_ID,
   FUR_COAT_ABILITY_ID,
+  GUTS_ABILITY_ID,
   HEATPROOF_ABILITY_ID,
   HUGE_POWER_ABILITY_ID,
   HUSTLE_ABILITY_ID,
   INFILTRATOR_ABILITY_ID,
   IRON_FIST_ABILITY_ID,
+  MARVEL_SCALE_ABILITY_ID,
   MEGA_LAUNCHER_ABILITY_ID,
+  MERCILESS_ABILITY_ID,
+  MULTISCALE_ABILITY_ID,
   NO_ABILITY_ID,
   NO_GUARD_ABILITY_ID,
+  OVERGROW_ABILITY_ID,
   PURE_POWER_ABILITY_ID,
   PURIFYING_SALT_ABILITY_ID,
   SAND_VEIL_ABILITY_ID,
@@ -24,8 +30,10 @@ import {
   SNIPER_ABILITY_ID,
   SNOW_CLOAK_ABILITY_ID,
   STRONG_JAW_ABILITY_ID,
+  SWARM_ABILITY_ID,
   TECHNICIAN_ABILITY_ID,
   THICK_FAT_ABILITY_ID,
+  TORRENT_ABILITY_ID,
   TOUGH_CLAWS_ABILITY_ID,
   SUPER_LUCK_ABILITY_ID,
   UNAWARE_ABILITY_ID,
@@ -168,6 +176,29 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
       activatesWeather = attackerActive
       if (attackerActive) attackerModifiers.basePower = 5325
       break
+    case OVERGROW_ABILITY_ID:
+      attackerActive = context.moveType === "grass"
+      if (attackerActive) attackerModifiers.basePower = 6144
+      break
+    case BLAZE_ABILITY_ID:
+      attackerActive = context.moveType === "fire"
+      if (attackerActive) attackerModifiers.basePower = 6144
+      break
+    case TORRENT_ABILITY_ID:
+      attackerActive = context.moveType === "water"
+      if (attackerActive) attackerModifiers.basePower = 6144
+      break
+    case SWARM_ABILITY_ID:
+      attackerActive = context.moveType === "bug"
+      if (attackerActive) attackerModifiers.basePower = 6144
+      break
+    case GUTS_ABILITY_ID:
+      attackerActive = context.category === "physical"
+      if (attackerActive) attackerModifiers.attack = 6144
+      break
+    case MERCILESS_ABILITY_ID:
+      attackerModifiers.criticalStage = 3
+      break
   }
 
   switch (context.defenderAbilityId) {
@@ -207,6 +238,14 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
     case SOLID_ROCK_ABILITY_ID:
       defenderActive = context.effectiveness > 1
       if (defenderActive) defenderModifiers.final = 3072
+      break
+    case MULTISCALE_ABILITY_ID:
+      defenderActive = true
+      defenderModifiers.final = 2048
+      break
+    case MARVEL_SCALE_ABILITY_ID:
+      defenderActive = context.category === "physical"
+      if (defenderActive) defenderModifiers.defense = 6144
       break
   }
 

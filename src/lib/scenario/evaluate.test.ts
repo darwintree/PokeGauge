@@ -367,8 +367,8 @@ describe("matchup scenario pipeline", () => {
           },
           "defender-ability": {
             active: [],
-            inactive: [],
-            unsupported: ["66"],
+            inactive: ["66"],
+            unsupported: [],
             neutral: [],
           },
           "defender-stage": {
