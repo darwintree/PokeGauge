@@ -40,6 +40,7 @@
     --color-card-border: var(--card-border);
     --color-token-bg: var(--token-bg);
     --color-signal-yellow: var(--signal-yellow);
+    --color-signal-green: var(--signal-green);
     --color-damage-critical: var(--damage-critical);
     --color-notice-bg: var(--notice-bg);
     --shadow-hud-chip: 2px 2px 0 0 color-mix(in srgb, var(--ink) 25%, transparent);
@@ -67,6 +68,7 @@
     --card-border: #c9cede;
     --token-bg: #e8ebf6;
     --signal-yellow: #ffd23f;
+    --signal-green: #2f9e44;
     --notice-bg: #fff8e0;
     --appbar: #33426e;
 

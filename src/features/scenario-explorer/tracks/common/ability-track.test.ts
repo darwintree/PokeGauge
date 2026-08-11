@@ -10,11 +10,15 @@ import type { ScenarioResult } from "@/lib/scenario"
 import { AbilityTrack } from "./ability-track"
 import { DamageResultRow } from "../../results/damage-result-row"
 import {
+  BLAZE_ABILITY_ID,
   DROUGHT_ABILITY_ID,
   BATTLE_ARMOR_ABILITY_ID,
   COMPOUND_EYES_ABILITY_ID,
   FIRE_MANE_ABILITY_ID,
+  GUTS_ABILITY_ID,
   HUSTLE_ABILITY_ID,
+  MERCILESS_ABILITY_ID,
+  MULTISCALE_ABILITY_ID,
   NO_GUARD_ABILITY_ID,
   NO_ABILITY_ID,
   SHARPNESS_ABILITY_ID,
@@ -68,6 +72,37 @@ it("marks only unsupported ability effects in the Track", () => {
     markup.indexOf('aria-label="Adaptability"'),
   )
   expect(markup.match(/aria-label="No ability"/g)).toHaveLength(1)
+})
+
+it("marks assumed-satisfied abilities with green disclosure and no red unsupported cue", () => {
+  const markup = renderToStaticMarkup(createElement(
+    IntlProvider,
+    { locale: "en", messages: localeMessages.en },
+    createElement(AbilityTrack, {
+      labelId: "track.attackerAbility",
+      options: [
+        { id: BLAZE_ABILITY_ID, label: "Blaze", summary: "" },
+        { id: GUTS_ABILITY_ID, label: "Guts", summary: "" },
+        { id: MULTISCALE_ABILITY_ID, label: "Multiscale", summary: "" },
+        { id: MERCILESS_ABILITY_ID, label: "Merciless", summary: "" },
+        { id: SHARPNESS_ABILITY_ID, label: "Sharpness", summary: "" },
+        { id: NO_ABILITY_ID, label: "—", accessibleLabel: "No ability", summary: "" },
+      ],
+      selectedIds: [BLAZE_ABILITY_ID],
+      onChange: () => {},
+      onReset: () => {},
+    }),
+  ))
+
+  expect(markup).toContain("Resolved at HP ≤ ⅓")
+  expect(markup).toContain("Resolved as statused")
+  expect(markup).toContain("Resolved at full HP")
+  expect(markup).toContain("Resolved as target poisoned")
+  expect(markup).toContain("bg-signal-green")
+  expect(markup).toContain("Effect not supported yet")
+  expect(markup.match(/Effect not supported yet/g)).toHaveLength(1)
+  expect(markup).not.toMatch(/Blaze[^"]*Effect not supported yet/)
+  expect(markup).not.toMatch(/bg-destructive[^"]*bg-signal-green|bg-signal-green[^"]*bg-destructive/)
 })
 
 it("renders active abilities inline and folds inactive and unsupported states", () => {

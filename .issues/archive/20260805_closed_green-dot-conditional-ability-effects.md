@@ -2,15 +2,15 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "4d2d962d-955b-4c23-ab42-598e6f33a7bf"
 title: "Green-dot conditional ability effects"
-status: "open"
+status: "closed"
 priority: "high"
 labels: ["FEATURE-REQUEST", "READY-FOR-AGENT"]
 created_at: "2026-08-05T09:25:00Z"
-updated_at: "2026-08-07T08:40:00Z"
+updated_at: "2026-08-11T03:37:00Z"
 ---
 ## Parent issue
 
-[[20260715_open_implement-pokemon-ability-effects|Implement Pokémon ability effects]]
+[[../20260715_open_implement-pokemon-ability-effects|Implement Pokémon ability effects]]
 
 ## Goal
 
@@ -62,7 +62,7 @@ updated_at: "2026-08-07T08:40:00Z"
 
 - [[../docs/traces/discussion/2026-08-05-ability-effects-first-freeze-scope|特性效果首批冻结范围讨论记录]] §8
 - [[../docs/traces/discussion/2026-08-07-green-dot-conditional-ability-effects|绿点条件触发特性讨论记录]]
-- `none` Track 基建：[[archive/20260805_closed_ability-track-none|Ability Track none]]
+- `none` Track 基建：[[20260805_closed_ability-track-none|Ability Track none]]
 
 ## Out of scope
 
@@ -75,9 +75,32 @@ updated_at: "2026-08-07T08:40:00Z"
 
 ## Acceptance criteria
 
-- [ ] 八个 Ability 均有 active／inactive compiler 覆盖；类型／类别／防暴／错误侧等 gate 未命中边界有用例。
-- [ ] Multiscale 单次结算击 `final` `2048`；猛火族匹配属性时 `basePower` `6144`；Guts／Marvel Scale 在 `physical` 下分别为攻击／防御 `6144`；Merciless 为 `criticalStage = 3` 且遇防暴为 `inactive`。
-- [ ] 不新增 HP%／状态 Track；不实现灼伤交互；不实现 Multiscale 多段语义。
-- [ ] Ability Track 静态绿点 + 族级 hover；与红点互斥；结果侧无绿点。
-- [ ] 八个 Ability 无红色 unsupported 提示；父 issue checklist 对应项可勾选。
-- [ ] 对 [[../docs/traces/discussion/2026-08-07-green-dot-conditional-ability-effects|讨论记录]] 的每项决定逐行完成实现审计。
+- [x] 八个 Ability 均有 active／inactive compiler 覆盖；类型／类别／防暴／错误侧等 gate 未命中边界有用例。
+- [x] Multiscale 单次结算击 `final` `2048`；猛火族匹配属性时 `basePower` `6144`；Guts／Marvel Scale 在 `physical` 下分别为攻击／防御 `6144`；Merciless 为 `criticalStage = 3` 且遇防暴为 `inactive`。
+- [x] 不新增 HP%／状态 Track；不实现灼伤交互；不实现 Multiscale 多段语义。
+- [x] Ability Track 静态绿点 + 族级 hover；与红点互斥；结果侧无绿点。
+- [x] 八个 Ability 无红色 unsupported 提示；父 issue checklist 对应项可勾选。
+- [x] 对 [[../docs/traces/discussion/2026-08-07-green-dot-conditional-ability-effects|讨论记录]] 的每项决定逐行完成实现审计。
+
+## Resolution
+
+实现 Assumed-Satisfied Ability Selection：八个特性进入 `DAMAGE_MODIFIER_ABILITY_IDS`，选中即按假设条件编译；Ability Track 静态绿点 + 族级 hover；结果侧仍只用 `active`／`inactive`。
+
+### Discussion audit（2026-08-07）
+
+| § | Decision | Implementation |
+| --- | --- | --- |
+| 1 | 绿点是 Track UI 披露，不扩展 Activation | Activation 仍为四态；绿点仅 Track option 披露 |
+| 2 | 假设条件 ⊥ 机械 gate | 绿点始终在名单选项上；gate 未命中 → `inactive` |
+| 3 | 静态绿点 | 选项渲染时即显示，不依赖 Selection |
+| 4 | Merciless → `criticalStage = 3` | 对齐 Super Luck 路径 |
+| 5 | 效果矩阵 | `compileAbilityEffect` 按矩阵写入 |
+| 6 | 防暴 → Merciless `inactive` | 复用 scenario-compiler 会心 provenance |
+| 7 | 不实现灼伤 | 无 burn 模型；Guts 仅物理 `6144` |
+| 8 | 结果侧无绿点 | 未改 `DamageResultRow` |
+| 9 | 族级 hover | 四族 i18n key |
+| 10 | 错侧：绿点保留，Activation `inactive` | catalog 不过滤；compiler 错侧 `inactive` |
+| 11 | Multiscale 单次满 HP ×0.5 | 防守 `finalModifier` `2048`；无多段分支 |
+| 12 | 红绿互斥 | 进支持集后绿点；`unsupported` 才红点 |
+
+Trace: [[../docs/traces/implementations/2026-08-11-green-dot-conditional-ability-effects|2026-08-11 green-dot implementation]]

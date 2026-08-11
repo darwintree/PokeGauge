@@ -3,16 +3,21 @@ import { beforeAll, describe, expect, it } from "vitest"
 
 import {
   ADAPTABILITY_ABILITY_ID,
+  BLAZE_ABILITY_ID,
   FAIRY_AURA_ABILITY_ID,
   FILTER_ABILITY_ID,
   FIRE_MANE_ABILITY_ID,
   FUR_COAT_ABILITY_ID,
+  GUTS_ABILITY_ID,
   HEATPROOF_ABILITY_ID,
   HUGE_POWER_ABILITY_ID,
   HUSTLE_ABILITY_ID,
   IRON_FIST_ABILITY_ID,
+  MARVEL_SCALE_ABILITY_ID,
   MEGA_LAUNCHER_ABILITY_ID,
+  MULTISCALE_ABILITY_ID,
   NO_ABILITY_ID,
+  OVERGROW_ABILITY_ID,
   PURE_POWER_ABILITY_ID,
   PURIFYING_SALT_ABILITY_ID,
   RECKLESS_ABILITY_ID,
@@ -23,8 +28,10 @@ import {
   SHARPNESS_ABILITY_ID,
   SHEER_FORCE_ABILITY_ID,
   STRONG_JAW_ABILITY_ID,
+  SWARM_ABILITY_ID,
   TECHNICIAN_ABILITY_ID,
   THICK_FAT_ABILITY_ID,
+  TORRENT_ABILITY_ID,
   TOUGH_CLAWS_ABILITY_ID,
   WATER_BUBBLE_ABILITY_ID,
 } from "@/lib/ability"
@@ -126,6 +133,11 @@ describe("ability modifier gates", () => {
     [MEGA_LAUNCHER_ABILITY_ID, { moveFlags: ["pulse"] }, { moveFlags: [] }, "basePowerModifier", 6144],
     [SAND_FORCE_ABILITY_ID, { moveType: "ground", weather: "sand" }, { moveType: "ground", weather: "none" }, "basePowerModifier", 5325],
     [FAIRY_AURA_ABILITY_ID, { moveType: "fairy" }, { moveType: "normal" }, "basePowerModifier", 5448],
+    [OVERGROW_ABILITY_ID, { moveType: "grass" }, { moveType: "fire" }, "basePowerModifier", 6144],
+    [BLAZE_ABILITY_ID, { moveType: "fire" }, { moveType: "water" }, "basePowerModifier", 6144],
+    [TORRENT_ABILITY_ID, { moveType: "water" }, { moveType: "grass" }, "basePowerModifier", 6144],
+    [SWARM_ABILITY_ID, { moveType: "bug" }, { moveType: "normal" }, "basePowerModifier", 6144],
+    [GUTS_ABILITY_ID, { category: "physical" }, { category: "special" }, "attackerAttackModifier", 6144],
   ] as const)("marks attacker Ability %i active and inactive", (id, active, inactive, field, modifier) => {
     const yes = compileAbilityEffect({ ...base, ...active, attackerAbilityId: id })
     const no = compileAbilityEffect({ ...base, ...inactive, attackerAbilityId: id })
@@ -144,6 +156,7 @@ describe("ability modifier gates", () => {
     [FILTER_ABILITY_ID, { effectiveness: 2 }, { effectiveness: 1 }, "finalModifier", 3072],
     [SOLID_ROCK_ABILITY_ID, { effectiveness: 2 }, { effectiveness: 1 }, "finalModifier", 3072],
     [FAIRY_AURA_ABILITY_ID, { moveType: "fairy" }, { moveType: "normal" }, "basePowerModifier", 5448],
+    [MARVEL_SCALE_ABILITY_ID, { category: "physical" }, { category: "special" }, "defenseModifier", 6144],
   ] as const)("marks defender Ability %i active and inactive", (id, active, inactive, field, modifier) => {
     const yes = compileAbilityEffect({ ...base, ...active, defenderAbilityId: id })
     const no = compileAbilityEffect({ ...base, ...inactive, defenderAbilityId: id })
@@ -151,6 +164,34 @@ describe("ability modifier gates", () => {
     expect(yes[field]).toBe(modifier)
     expect(no.defenderState).toBe("inactive")
     expect(no[field]).toBe(N)
+  })
+
+  it("marks Multiscale active on defender with final 2048 and inactive on attacker", () => {
+    const yes = compileAbilityEffect({ ...base, defenderAbilityId: MULTISCALE_ABILITY_ID })
+    expect(yes.defenderState).toBe("active")
+    expect(yes.finalModifier).toBe(2048)
+
+    const wrongSide = compileAbilityEffect({ ...base, attackerAbilityId: MULTISCALE_ABILITY_ID })
+    expect(wrongSide.attackerState).toBe("inactive")
+    expect(wrongSide.finalModifier).toBe(N)
+  })
+
+  it("keeps assumed-satisfied abilities inactive on the wrong side", () => {
+    expect(compileAbilityEffect({
+      ...base,
+      moveType: "fire",
+      defenderAbilityId: BLAZE_ABILITY_ID,
+    }).defenderState).toBe("inactive")
+    expect(compileAbilityEffect({
+      ...base,
+      category: "physical",
+      defenderAbilityId: GUTS_ABILITY_ID,
+    }).defenderState).toBe("inactive")
+    expect(compileAbilityEffect({
+      ...base,
+      category: "physical",
+      attackerAbilityId: MARVEL_SCALE_ABILITY_ID,
+    }).attackerState).toBe("inactive")
   })
 })
 

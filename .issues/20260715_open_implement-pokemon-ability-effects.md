@@ -35,7 +35,7 @@ updated_at: "2026-08-11T02:22:00Z"
 - [[archive/20260805_closed_ability-critical-hit-and-accuracy-modifiers|Ability critical-hit and accuracy modifiers]]
 - [[archive/20260805_closed_ability-stage-and-screen-bypass|Ability stage and screen bypass]]
 - [[20260805_open_ability-contact-and-held-item-interactions|Ability contact and held-item interactions]]
-- [[20260805_open_green-dot-conditional-ability-effects|Green-dot conditional ability effects]]
+- [[archive/20260805_closed_green-dot-conditional-ability-effects|Green-dot conditional ability effects]]
 - [[20260805_open_ability-immunities-and-type-exceptions|Ability immunities and type exceptions]]
 - [[20260805_open_scenario-move-type-rewriting-and-protean-family-stab|Scenario Move Type rewriting and Protean-family STAB]]
 - [[20260805_open_ability-weather-and-item-composition|Ability weather and item composition]]
@@ -106,13 +106,13 @@ updated_at: "2026-08-11T02:22:00Z"
 - [ ] Forecast
 - [ ] Sticky Hold
 - [ ] Shed Skin
-- [ ] Guts
-- [ ] Marvel Scale
+- [x] Guts
+- [x] Marvel Scale
 - [ ] Liquid Ooze
-- [ ] Overgrow
-- [ ] Blaze
-- [ ] Torrent
-- [ ] Swarm
+- [x] Overgrow
+- [x] Blaze
+- [x] Torrent
+- [x] Swarm
 - [ ] Rock Head
 - [ ] Drought
 - [ ] Arena Trap
@@ -186,7 +186,7 @@ updated_at: "2026-08-11T02:22:00Z"
 - [ ] Weak Armor
 - [ ] Heavy Metal
 - [ ] Light Metal
-- [ ] Multiscale
+- [x] Multiscale
 - [ ] Toxic Boost
 - [ ] Flare Boost
 - [ ] Harvest
@@ -252,7 +252,7 @@ updated_at: "2026-08-11T02:22:00Z"
 - [ ] Wimp Out
 - [ ] Emergency Exit
 - [ ] Water Compaction
-- [ ] Merciless
+- [x] Merciless
 - [ ] Shields Down
 - [ ] Stakeout
 - [x] Water Bubble

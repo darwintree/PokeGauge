@@ -4,6 +4,7 @@ import {
   BATTLE_ARMOR_ABILITY_ID,
   COMPOUND_EYES_ABILITY_ID,
   HUSTLE_ABILITY_ID,
+  MERCILESS_ABILITY_ID,
   NO_ABILITY_ID,
   NO_GUARD_ABILITY_ID,
   FILTER_ABILITY_ID,
@@ -159,6 +160,28 @@ describe("critical-hit abilities", () => {
     })
     expect(state(blockedLuck, "attacker-ability")).toBe("inactive")
     expect(state(blockedLuck, "held-item")).toBe("inactive")
+  })
+
+  it("writes Merciless as criticalStage 3 and marks inactive when preventsCritical", () => {
+    for (const probabilityMode of ["classic", "battle-odds"] as const) {
+      const merciless = calculable({
+        attackerAbilityId: MERCILESS_ABILITY_ID,
+        probabilityMode,
+      })
+      expect(merciless.calculation.low.normal).toBeUndefined()
+      expect(merciless.probability.criticalHitProbability).toBe(1)
+      expect(state(merciless, "attacker-ability")).toBe("active")
+    }
+
+    const blocked = calculable({
+      attackerAbilityId: MERCILESS_ABILITY_ID,
+      defenderAbilityId: SHELL_ARMOR_ABILITY_ID,
+    })
+    expect(blocked.calculation.low.critical).toBeUndefined()
+    expect(state(blocked, "attacker-ability")).toBe("inactive")
+
+    const wrongSide = calculable({ defenderAbilityId: MERCILESS_ABILITY_ID })
+    expect(state(wrongSide, "defender-ability")).toBe("inactive")
   })
 
   it("chains critical Final as attacker Ability, defender Ability, attacker item, defender item", () => {
