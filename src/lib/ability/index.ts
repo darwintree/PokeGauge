@@ -1,6 +1,7 @@
 /** PokeAPI's stable numeric identifier for Adaptability. */
 export const ADAPTABILITY_ABILITY_ID = 91
 export const BATTLE_ARMOR_ABILITY_ID = 4
+export const CLOUD_NINE_ABILITY_ID = 13
 export const SAND_VEIL_ABILITY_ID = 8
 export const COMPOUND_EYES_ABILITY_ID = 14
 export const HUSTLE_ABILITY_ID = 55
@@ -11,6 +12,7 @@ export const BLAZE_ABILITY_ID = 66
 export const TORRENT_ABILITY_ID = 67
 export const SWARM_ABILITY_ID = 68
 export const SHELL_ARMOR_ABILITY_ID = 75
+export const AIR_LOCK_ABILITY_ID = 76
 export const SNOW_CLOAK_ABILITY_ID = 81
 export const SNIPER_ABILITY_ID = 97
 export const NO_GUARD_ABILITY_ID = 99
@@ -29,6 +31,7 @@ export const FILTER_ABILITY_ID = 111
 export const SOLID_ROCK_ABILITY_ID = 116
 export const RECKLESS_ABILITY_ID = 120
 export const SHEER_FORCE_ABILITY_ID = 125
+export const UNNERVE_ABILITY_ID = 127
 export const MULTISCALE_ABILITY_ID = 136
 export const INFILTRATOR_ABILITY_ID = 151
 export const SAND_FORCE_ABILITY_ID = 159
@@ -51,10 +54,12 @@ export const LIBERO_ABILITY_ID = 236
 export const PURIFYING_SALT_ABILITY_ID = 272
 export const SHARPNESS_ABILITY_ID = 292
 export const DRAGONIZE_ABILITY_ID = 309
+export const MEGA_SOL_ABILITY_ID = 310
 export const FIRE_MANE_ABILITY_ID = 313
 
 export const DAMAGE_MODIFIER_ABILITY_IDS = new Set([
   BATTLE_ARMOR_ABILITY_ID,
+  CLOUD_NINE_ABILITY_ID,
   SAND_VEIL_ABILITY_ID,
   COMPOUND_EYES_ABILITY_ID,
   HUSTLE_ABILITY_ID,
@@ -65,6 +70,7 @@ export const DAMAGE_MODIFIER_ABILITY_IDS = new Set([
   TORRENT_ABILITY_ID,
   SWARM_ABILITY_ID,
   SHELL_ARMOR_ABILITY_ID,
+  AIR_LOCK_ABILITY_ID,
   SNOW_CLOAK_ABILITY_ID,
   SNIPER_ABILITY_ID,
   NO_GUARD_ABILITY_ID,
@@ -104,6 +110,8 @@ export const DAMAGE_MODIFIER_ABILITY_IDS = new Set([
   PURIFYING_SALT_ABILITY_ID,
   DRAGONIZE_ABILITY_ID,
   FIRE_MANE_ABILITY_ID,
+  UNNERVE_ABILITY_ID,
+  MEGA_SOL_ABILITY_ID,
 ])
 
 /** Assumed-Satisfied Ability Selection: Track green-dot disclosure only. */

@@ -2,15 +2,15 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "21a56f0a-d719-42c9-843b-45775f885211"
 title: "Ability weather and item composition"
-status: "open"
+status: "closed"
 priority: "medium"
 labels: ["FEATURE-REQUEST", "READY-FOR-AGENT"]
 created_at: "2026-08-05T09:25:00Z"
-updated_at: "2026-08-11T15:08:00Z"
+updated_at: "2026-08-11T15:42:00Z"
 ---
 ## Parent issue
 
-[[20260715_open_implement-pokemon-ability-effects|Implement Pokémon ability effects]]
+[[../20260715_open_implement-pokemon-ability-effects|Implement Pokémon ability effects]]
 
 ## Goal
 
@@ -42,21 +42,27 @@ updated_at: "2026-08-11T15:08:00Z"
 - [[../docs/traces/discussion/2026-08-05-ability-effects-first-freeze-scope|特性效果首批冻结范围讨论记录]] §7、§12、§13
 - [[../docs/traces/discussion/2026-08-05-ordinary-hit-ability-issue-split|普通命中特性 issue 拆分讨论记录]] §8
 - Held-item frozen-85 树果与 Utility Umbrella 先例
-- 天气／场地初始化投射见 [[archive/20260805_closed_ability-init-projection-to-weather-terrain-stage|Ability init projection to Weather Terrain Stage]]
+- 天气／场地初始化投射见 [[20260805_closed_ability-init-projection-to-weather-terrain-stage|Ability init projection to Weather Terrain Stage]]
 
 ## Out of scope
 
 - 天气／场地 Track 的初始化投射
 - 树果消耗、未暴露天气与 Weather Ball 天气属性／威力机制
-- 重新实现 Sand Force／Solar Power；二者只作为既有 Weather consumer 参与组合，见 [[archive/20260805_closed_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]
+- 重新实现 Sand Force／Solar Power；二者只作为既有 Weather consumer 参与组合，见 [[20260805_closed_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]
 - 新增领域术语或 ADR
 
 ## Acceptance criteria
 
-- [ ] Cloud Nine／Air Lock 覆盖全部已支持 raw Weather consumer，Weather Ball suppression 与 Weather provenance 符合冻结契约。
-- [ ] Mega Sol 的有效晴天替换、优先级、Electro Shot 例外、Weather Ball unavailable 与 activation 符合冻结契约。
-- [ ] Unnerve 覆盖全部 18 枚 resistance berries，方向、Chilan 例外、Berry provenance 与 Klutz 组合可测。
-- [ ] 多个独立充分抑制来源均为 `active`，不受 compiler 排列顺序影响。
-- [ ] 四个 Ability 去除红色 unsupported 提示；无绿点、开关或 partial-support 披露。
-- [ ] 逐条审计讨论记录中的每项决定均已实现并由代表性 active／inactive、双方 Ability 与组合测试覆盖。
-- [ ] 父 issue checklist 对应项可勾选。
+- [x] Cloud Nine／Air Lock 覆盖全部已支持 raw Weather consumer，Weather Ball suppression 与 Weather provenance 符合冻结契约。
+- [x] Mega Sol 的有效晴天替换、优先级、Electro Shot 例外、Weather Ball unavailable 与 activation 符合冻结契约。
+- [x] Unnerve 覆盖全部 18 枚 resistance berries，方向、Chilan 例外、Berry provenance 与 Klutz 组合可测。
+- [x] 多个独立充分抑制来源均为 `active`，不受 compiler 排列顺序影响。
+- [x] 四个 Ability 去除红色 unsupported 提示；无绿点、开关或 partial-support 披露。
+- [x] 逐条审计讨论记录中的每项决定均已实现并由代表性 active／inactive、双方 Ability 与组合测试覆盖。
+- [x] 父 issue checklist 对应项可勾选。
+
+## Resolution
+
+已实现 Cloud Nine／Air Lock 对 raw Weather consumer 的压制、Mega Sol 的 effective sun 替换与 Electro Shot 例外，以及 attacker Unnerve 对全部 18 枚 frozen resistance Berry 的压制。Weather、Ability 与 Held item 来源状态按独立充分贡献记录，并覆盖 Utility Umbrella、Klutz、Weather Ball、Solar Power、Sand Force 与 Sand Veil 组合。
+
+四个 Ability 已进入支持集，Track 不再显示红色 unsupported 提示，且未新增绿点或开关。验证：`pnpm test` (47 files / 501 tests)、`pnpm build`、`pnpm lint`。
