@@ -44,7 +44,7 @@ PokeLens 以 PokeAPI 作为 Move 资源与行为语义的 source of truth，但 
 ## Related work
 
 - [[archive/20260805_closed_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]
-- [[20260805_open_ability-contact-and-held-item-interactions|Ability contact and held-item interactions]]
+- [[archive/20260805_closed_ability-contact-and-held-item-interactions|Ability contact and held-item interactions]]
 - [[archive/20260805_closed_scenario-move-type-rewriting-and-protean-family-stab|Scenario Move Type rewriting and Protean-family STAB]]
 - [[../docs/research/2026-08-06-pokeapi-move-trait-coverage|PokeAPI move-trait coverage for ability gates]]
 

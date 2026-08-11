@@ -21,7 +21,7 @@ updated_at: "2026-08-05T10:32:00Z"
 - [[20260805_closed_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]
 - [[20260805_closed_ability-critical-hit-and-accuracy-modifiers|Ability critical-hit and accuracy modifiers]]
 - [[20260805_closed_ability-stage-and-screen-bypass|Ability stage and screen bypass]]
-- [[../20260805_open_ability-contact-and-held-item-interactions|Ability contact and held-item interactions]]
+- [[20260805_closed_ability-contact-and-held-item-interactions|Ability contact and held-item interactions]]
 
 四个新 issue 直接挂到总父 issue；本 issue 不再作为中间 umbrella 或实现任务。
 

@@ -2,19 +2,19 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "43fafe38-886a-46cb-a5f9-d8c483e7e424"
 title: "Ability contact and held-item interactions"
-status: "open"
+status: "closed"
 priority: "medium"
 labels: ["FEATURE-REQUEST", "READY-FOR-AGENT"]
 created_at: "2026-08-05T10:30:00Z"
-updated_at: "2026-08-07T10:34:00Z"
+updated_at: "2026-08-11T06:50:00Z"
 ---
 ## Parent issue
 
-[[20260715_open_implement-pokemon-ability-effects|Implement Pokémon ability effects]]
+[[../20260715_open_implement-pokemon-ability-effects|Implement Pokémon ability effects]]
 
 ## Split from
 
-[[archive/20260805_closed_ordinary-hit-ability-damage-modifiers|Ordinary-hit ability damage modifiers]]
+[[20260805_closed_ordinary-hit-ability-damage-modifiers|Ordinary-hit ability damage modifiers]]
 
 ## Goal
 
@@ -60,8 +60,8 @@ updated_at: "2026-08-07T10:34:00Z"
 ### Shared rules
 
 - 运行时使用本地 kernel、4096 整数修正和既有阶段顺序。
-- 支持范围内数值与 `@smogon/calc` 对齐；Showdown 钉 commit 与 calc 的编码差异见 [[20260807_open_audit-showdown-vs-smogon-calc-damage-rule-mismatches|Audit Showdown vs @smogon/calc damage-rule mismatches]]，本票不阻塞于该审计。
-- 贡献判定对齐现有模式；跨机制总契约见 [[20260807_open_clarify-active-marking-for-ignore-guaranteed-track-conflicts|Clarify active marking for ignore/guaranteed Track conflicts]]，本票不阻塞。
+- 支持范围内数值与 `@smogon/calc` 对齐；Showdown 钉 commit 与 calc 的编码差异见 [[../20260807_open_audit-showdown-vs-smogon-calc-damage-rule-mismatches|Audit Showdown vs @smogon/calc damage-rule mismatches]]，本票不阻塞于该审计。
+- 贡献判定对齐现有模式；跨机制总契约见 [[../20260807_open_clarify-active-marking-for-ignore-guaranteed-track-conflicts|Clarify active marking for ignore/guaranteed Track conflicts]]，本票不阻塞。
 - 名单内特性从 `unsupported` 转为可审计的 `active`／`inactive`；无绿点；去红点。
 
 ## Out of scope
@@ -78,12 +78,18 @@ updated_at: "2026-08-07T10:34:00Z"
 - [[../docs/traces/discussion/2026-08-05-ordinary-hit-ability-issue-split|普通命中特性 issue 拆分讨论记录]]
 - [[../docs/traces/discussion/2026-08-07-ability-contact-and-held-item-interactions|Ability 接触与道具组合讨论记录]]
 - [[../docs/research/2026-08-05-champions-ability-damage-relevance-and-first-freeze|Champions ability damage-calc relevance and first freeze]]
-- [[20260807_open_audit-showdown-vs-smogon-calc-damage-rule-mismatches|Audit Showdown vs @smogon/calc damage-rule mismatches]]
+- [[../20260807_open_audit-showdown-vs-smogon-calc-damage-rule-mismatches|Audit Showdown vs @smogon/calc damage-rule mismatches]]
 
 ## Acceptance criteria
 
-- [ ] Fluffy：接触／火／双命中／Long Reach 去接触／错侧／非火非接触的 active／inactive 与 `finalModifier` 链有 compiler 覆盖；数值对齐 `@smogon/calc` 代表案例。
-- [ ] Long Reach：仅在挡下 Fluffy 接触 facet 时 `active`；不改 Snapshot；不改 Tough Claws。
-- [ ] Klutz：攻／守两侧压制全部普通命中 item hooks；贡献判定与 `none`／Mega／gate 未命中边界有覆盖；不改 Held Item Track 选项。
-- [ ] 三者无红色 unsupported、无绿点；父 issue checklist 可勾选。
-- [ ] 对 [[../docs/traces/discussion/2026-08-07-ability-contact-and-held-item-interactions|讨论记录]] 的每项决定逐行完成实现审计。
+- [x] Fluffy：接触／火／双命中／Long Reach 去接触／错侧／非火非接触的 active／inactive 与 `finalModifier` 链有 compiler 覆盖；数值对齐 `@smogon/calc` 代表案例。
+- [x] Long Reach：仅在挡下 Fluffy 接触 facet 时 `active`；不改 Snapshot；不改 Tough Claws。
+- [x] Klutz：攻／守两侧压制全部普通命中 item hooks；贡献判定与 `none`／Mega／gate 未命中边界有覆盖；不改 Held Item Track 选项。
+- [x] 三者无红色 unsupported、无绿点；父 issue checklist 可勾选。
+- [x] 对 [[../docs/traces/discussion/2026-08-07-ability-contact-and-held-item-interactions|讨论记录]] 的每项决定逐行完成实现审计。
+
+## Resolution
+
+Implemented Fluffy (contact `2048` + fire `8192`, chained), Long Reach (cancels only Fluffy contact facet; no Snapshot / Tough Claws rewrite), and Klutz (neutralizes own-side `compileHeldItem` ordinary-hit hooks; activation from would-be-active item state after accuracy / crit / umbrella refinement).
+
+Covered in `src/lib/damage-calculation/ability-contact-item.test.ts`. Parent checklist: Fluffy, Long Reach, Klutz.

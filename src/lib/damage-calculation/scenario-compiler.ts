@@ -1,5 +1,8 @@
 import type { MoveCategory } from "@/lib/catalog"
 import {
+  KLUTZ_ABILITY_ID,
+} from "@/lib/ability"
+import {
   FROZEN_HELD_ITEM_BY_ID,
   isMegaStone,
   type FrozenHeldItem,
@@ -293,6 +296,19 @@ function compileHeldItem(
   return compiled
 }
 
+function neutralizeHeldItem(item: CompiledHeldItem): CompiledHeldItem {
+  return {
+    ...item,
+    basePowerModifier: NEUTRAL_MODIFIER,
+    attackModifier: NEUTRAL_MODIFIER,
+    defenseModifier: NEUTRAL_MODIFIER,
+    finalModifier: NEUTRAL_MODIFIER,
+    accuracyModifier: NEUTRAL_MODIFIER,
+    criticalStage: 0,
+    suppressOrdinaryWeatherDamage: false,
+  }
+}
+
 function criticalProbability(stage: CriticalStage): number {
   return [1 / 24, 1 / 8, 1 / 2, 1][stage]
 }
@@ -400,16 +416,26 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     weather: raw.weather,
     numericAccuracy: !raw.snapshot.alwaysHits && accuracy > 0,
   }
-  const attackerItem = compileHeldItem(raw.attackerItemId, "attacker", {
+  const attackerItemRaw = compileHeldItem(raw.attackerItemId, "attacker", {
     ...commonItemContext,
     holder: attacker,
   })
-  const defenderItem = raw.defenderItemId === undefined
+  const defenderItemRaw = raw.defenderItemId === undefined
     ? undefined
     : compileHeldItem(raw.defenderItemId, "defender", {
         ...commonItemContext,
         holder: defender,
       })
+  const attackerHasKlutz = raw.attackerAbilityId === KLUTZ_ABILITY_ID
+  const defenderHasKlutz = raw.defenderAbilityId === KLUTZ_ABILITY_ID
+  const attackerItem = attackerHasKlutz
+    ? neutralizeHeldItem(attackerItemRaw)
+    : attackerItemRaw
+  const defenderItem = defenderItemRaw === undefined
+    ? undefined
+    : defenderHasKlutz
+      ? neutralizeHeldItem(defenderItemRaw)
+      : defenderItemRaw
   const weather = compileWeatherEffect(
     raw.snapshot.moveId,
     moveType,
@@ -490,29 +516,27 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   const numericAccuracyWith = (
     includeAttackerAbility: boolean,
     includeDefenderAbility: boolean,
-    includeAttackerItem: boolean,
-    includeDefenderItem: boolean,
+    attackerItemAccuracy: number,
+    defenderItemAccuracy: number,
   ): number => applyModifier(accuracy, chainModifiers([
     includeAttackerAbility ? ability.attackerAccuracyModifier : NEUTRAL_MODIFIER,
     includeDefenderAbility ? ability.defenderAccuracyModifier : NEUTRAL_MODIFIER,
-    includeAttackerItem ? attackerItem.accuracyModifier : NEUTRAL_MODIFIER,
-    includeDefenderItem
-      ? defenderItem?.accuracyModifier ?? NEUTRAL_MODIFIER
-      : NEUTRAL_MODIFIER,
+    attackerItemAccuracy,
+    defenderItemAccuracy,
   ]))
-  const resolveHitFact = (
+  const resolveHitFactWithItemMods = (
     includeAttackerAbility: boolean,
     includeDefenderAbility: boolean,
-    includeAttackerItem: boolean,
-    includeDefenderItem: boolean,
+    attackerItemAccuracy: number,
+    defenderItemAccuracy: number,
   ): HitFact => {
     const modifiedAccuracy = raw.snapshot.alwaysHits
       ? accuracy
       : numericAccuracyWith(
           includeAttackerAbility,
           includeDefenderAbility,
-          includeAttackerItem,
-          includeDefenderItem,
+          attackerItemAccuracy,
+          defenderItemAccuracy,
         )
     const resolved = weather.accuracy ??
       (raw.snapshot.alwaysHits ? "always-hits" : modifiedAccuracy)
@@ -520,6 +544,19 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       ? "always-hits"
       : resolved === "always-hits" ? resolved : Math.min(100, resolved)
   }
+  const resolveHitFact = (
+    includeAttackerAbility: boolean,
+    includeDefenderAbility: boolean,
+    includeAttackerItem: boolean,
+    includeDefenderItem: boolean,
+  ): HitFact => resolveHitFactWithItemMods(
+    includeAttackerAbility,
+    includeDefenderAbility,
+    includeAttackerItem ? attackerItem.accuracyModifier : NEUTRAL_MODIFIER,
+    includeDefenderItem
+      ? defenderItem?.accuracyModifier ?? NEUTRAL_MODIFIER
+      : NEUTRAL_MODIFIER,
+  )
   const hitFact = resolveHitFact(true, true, true, true)
   const effectiveHitProbability = (fact: HitFact) =>
     fact === "always-hits" ? 1 : Math.min(1, fact / 100)
@@ -536,36 +573,72 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   ))
   const finalHitProbability = effectiveHitProbability(hitFact)
 
-  let attackerItemState = attackerItem.source.state
-  if (attackerItem.descriptor?.effect.kind === "accuracy") {
+  // Item activation is judged as if Klutz were absent; Klutz then suppresses active hooks.
+  let attackerItemState = attackerItemRaw.source.state
+  if (attackerItemRaw.descriptor?.effect.kind === "accuracy") {
+    const withRawItem = effectiveHitProbability(resolveHitFactWithItemMods(
+      true,
+      true,
+      attackerItemRaw.accuracyModifier,
+      defenderItem?.accuracyModifier ?? NEUTRAL_MODIFIER,
+    ))
+    const withoutAttackerItem = effectiveHitProbability(resolveHitFactWithItemMods(
+      true,
+      true,
+      NEUTRAL_MODIFIER,
+      defenderItem?.accuracyModifier ?? NEUTRAL_MODIFIER,
+    ))
     attackerItemState = attackerItemState === "active" &&
       raw.probabilityMode === "battle-odds" &&
-      finalHitProbability !== hitProbabilityWithout(true, true, false, true)
+      withRawItem !== withoutAttackerItem
       ? "active"
       : "inactive"
-  } else if (attackerItem.descriptor?.effect.kind === "critical-stage") {
+  } else if (attackerItemRaw.descriptor?.effect.kind === "critical-stage") {
+    const criticalStageWithRawItem = Math.min(
+      3,
+      raw.snapshot.criticalStage + attackerItemRaw.criticalStage + ability.criticalStage,
+    )
     const criticalStageWithoutItem = Math.min(
       3,
       raw.snapshot.criticalStage + ability.criticalStage,
     )
     const visible = raw.probabilityMode === "battle-odds"
-      ? derivedCriticalStage !== criticalStageWithoutItem
-      : derivedCriticalStage === 3 && criticalStageWithoutItem < 3
+      ? criticalStageWithRawItem !== criticalStageWithoutItem
+      : criticalStageWithRawItem === 3 && criticalStageWithoutItem < 3
     attackerItemState = attackerItemState === "active" && visible
       && !ability.preventsCritical
       ? "active"
       : "inactive"
   }
 
-  let defenderItemState = defenderItem?.source.state
-  if (defenderItem?.descriptor?.effect.kind === "accuracy") {
+  let defenderItemState = defenderItemRaw?.source.state
+  if (defenderItemRaw?.descriptor?.effect.kind === "accuracy") {
+    const withRawItem = effectiveHitProbability(resolveHitFactWithItemMods(
+      true,
+      true,
+      attackerItem.accuracyModifier,
+      defenderItemRaw.accuracyModifier,
+    ))
+    const withoutDefenderItem = effectiveHitProbability(resolveHitFactWithItemMods(
+      true,
+      true,
+      attackerItem.accuracyModifier,
+      NEUTRAL_MODIFIER,
+    ))
     defenderItemState = defenderItemState === "active" &&
       raw.probabilityMode === "battle-odds" &&
-      finalHitProbability !== hitProbabilityWithout(true, true, true, false)
+      withRawItem !== withoutDefenderItem
       ? "active"
       : "inactive"
-  } else if (defenderItem?.descriptor?.effect.kind === "suppress-ordinary-weather-damage") {
-    defenderItemState = defenderItemState === "active" && weather.ordinaryDamageSuppressed
+  } else if (defenderItemRaw?.descriptor?.effect.kind === "suppress-ordinary-weather-damage") {
+    const wouldSuppress = compileWeatherEffect(
+      raw.snapshot.moveId,
+      moveType,
+      raw.weather,
+      raw.probabilityMode,
+      true,
+    ).ordinaryDamageSuppressed
+    defenderItemState = defenderItemState === "active" && wouldSuppress
       ? "active"
       : "inactive"
   }
@@ -597,6 +670,11 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   if (ability.bypassesScreens) {
     attackerAbilityState = infiltratorBypassesScreen ? "active" : "inactive"
   }
+  if (attackerHasKlutz) {
+    const klutzActive = attackerItemState === "active"
+    attackerAbilityState = klutzActive ? "active" : "inactive"
+    if (klutzActive) attackerItemState = "inactive"
+  }
 
   let defenderAbilityState = ability.defenderState
   if (ability.defenderAccuracyModifier !== NEUTRAL_MODIFIER) {
@@ -611,6 +689,11 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   }
   if (ability.ignoresAttackerStage) {
     defenderAbilityState = defenderUnawareActive ? "active" : "inactive"
+  }
+  if (defenderHasKlutz) {
+    const klutzActive = defenderItemState === "active"
+    defenderAbilityState = klutzActive ? "active" : "inactive"
+    if (klutzActive) defenderItemState = "inactive"
   }
 
   const sources: ScenarioSource[] = [

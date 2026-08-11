@@ -4,13 +4,15 @@ id: "0154c832-e946-40c6-81d1-d53feb27dee2"
 title: "Decide whether stat allocation internals should use native SP"
 status: "open"
 priority: "medium"
-labels: ["TECH-DEBT", "READY-FOR-AGENT"]
+labels: ["TECH-DEBT", "NEEDS-TRIAGE"]
 created_at: "2026-08-03T07:33:00Z"
-updated_at: "2026-08-03T08:24:00Z"
+updated_at: "2026-08-11T06:43:00Z"
 ---
 ## Context
 
 CONTEXT.md now defines Stat Allocation as Nature plus Pokémon Champions Stat Points (SP). The current implementation enumerates EV-shaped setups and derives SP labels from them. This may be an equivalent internal representation rather than a behavioral defect, so a rewrite is not assumed.
+
+> Triage note (2026-08-11): removed `READY-FOR-AGENT`. Acceptance asks the agent to *decide* retain vs migrate without a decision rule or deliverable boundary (analysis-only vs rename/docs). Needs triage to pin those before AFK work.
 
 Relevant paths:
 
