@@ -6,7 +6,7 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-15T02:45:00Z"
-updated_at: "2026-08-07T10:37:00Z"
+updated_at: "2026-08-11T02:22:00Z"
 ---
 ## Goal
 
@@ -33,7 +33,7 @@ updated_at: "2026-08-07T10:37:00Z"
 - [[archive/20260805_closed_ability-init-projection-to-weather-terrain-stage|Ability init projection to Weather Terrain Stage]]
 - [[archive/20260805_closed_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]
 - [[archive/20260805_closed_ability-critical-hit-and-accuracy-modifiers|Ability critical-hit and accuracy modifiers]]
-- [[20260805_open_ability-stage-and-screen-bypass|Ability stage and screen bypass]]
+- [[archive/20260805_closed_ability-stage-and-screen-bypass|Ability stage and screen bypass]]
 - [[20260805_open_ability-contact-and-held-item-interactions|Ability contact and held-item interactions]]
 - [[20260805_open_green-dot-conditional-ability-effects|Green-dot conditional ability effects]]
 - [[20260805_open_ability-immunities-and-type-exceptions|Ability immunities and type exceptions]]
@@ -156,7 +156,7 @@ updated_at: "2026-08-07T10:37:00Z"
 - [ ] Aftermath
 - [ ] Anticipation
 - [ ] Forewarn
-- [ ] Unaware
+- [x] Unaware
 - [ ] Tinted Lens
 - [x] Filter
 - [ ] Slow Start
@@ -201,7 +201,7 @@ updated_at: "2026-08-07T10:37:00Z"
 - [ ] Analytic
 - [ ] Illusion
 - [ ] Imposter
-- [ ] Infiltrator
+- [x] Infiltrator
 - [ ] Mummy
 - [ ] Moxie
 - [ ] Justified

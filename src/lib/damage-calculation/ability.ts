@@ -9,6 +9,7 @@ import {
   HEATPROOF_ABILITY_ID,
   HUGE_POWER_ABILITY_ID,
   HUSTLE_ABILITY_ID,
+  INFILTRATOR_ABILITY_ID,
   IRON_FIST_ABILITY_ID,
   MEGA_LAUNCHER_ABILITY_ID,
   NO_ABILITY_ID,
@@ -27,6 +28,7 @@ import {
   THICK_FAT_ABILITY_ID,
   TOUGH_CLAWS_ABILITY_ID,
   SUPER_LUCK_ABILITY_ID,
+  UNAWARE_ABILITY_ID,
   UNKNOWN_ABILITY_ID,
   WATER_BUBBLE_ABILITY_ID,
   abilityDamageModifierIsSupported,
@@ -62,6 +64,9 @@ export type CompiledAbilityEffect = {
   criticalStage: number
   criticalFinalModifier: number
   preventsCritical: boolean
+  ignoresAttackerStage: boolean
+  ignoresDefenderStage: boolean
+  bypassesScreens: boolean
   attackerNoGuard: boolean
   defenderNoGuard: boolean
   stabModifier: number
@@ -232,6 +237,9 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
     criticalFinalModifier: attackerModifiers.criticalFinal,
     preventsCritical: context.defenderAbilityId === BATTLE_ARMOR_ABILITY_ID ||
       context.defenderAbilityId === SHELL_ARMOR_ABILITY_ID,
+    ignoresAttackerStage: context.defenderAbilityId === UNAWARE_ABILITY_ID,
+    ignoresDefenderStage: context.attackerAbilityId === UNAWARE_ABILITY_ID,
+    bypassesScreens: context.attackerAbilityId === INFILTRATOR_ABILITY_ID,
     attackerNoGuard: context.attackerAbilityId === NO_GUARD_ABILITY_ID,
     defenderNoGuard: context.defenderAbilityId === NO_GUARD_ABILITY_ID,
     stabModifier: attackerModifiers.stab,
