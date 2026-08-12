@@ -1,6 +1,10 @@
 import type { MoveCategory } from "@/lib/catalog"
 import {
+  AIR_LOCK_ABILITY_ID,
+  CLOUD_NINE_ABILITY_ID,
   KLUTZ_ABILITY_ID,
+  MEGA_SOL_ABILITY_ID,
+  UNNERVE_ABILITY_ID,
 } from "@/lib/ability"
 import {
   FROZEN_HELD_ITEM_BY_ID,
@@ -378,6 +382,26 @@ function compileBranch(
   }
 }
 
+const ELECTRO_SHOT_MOVE_ID = 905
+
+function weatherMechanicsIdentity(
+  weather: ReturnType<typeof compileWeatherEffect>,
+  ability: ReturnType<typeof compileAbilityEffect>,
+  probabilityMode: ProbabilityMode,
+): string {
+  return JSON.stringify([
+    weather.basePowerModifier,
+    weather.damageModifier,
+    weather.unavailable,
+    probabilityMode === "battle-odds" ? weather.accuracy : undefined,
+    ability.basePowerModifier,
+    ability.attackerAttackModifier,
+    ability.defenderAttackModifier,
+    probabilityMode === "battle-odds" ? ability.attackerAccuracyModifier : undefined,
+    probabilityMode === "battle-odds" ? ability.defenderAccuracyModifier : undefined,
+  ])
+}
+
 export function compileScenario(raw: RawScenario): CompilerOutcome {
   const attacker = getBattlePokemonById(raw.attackerId)
   const defender = getBattlePokemonById(raw.defenderId)
@@ -428,20 +452,62 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       })
   const attackerHasKlutz = raw.attackerAbilityId === KLUTZ_ABILITY_ID
   const defenderHasKlutz = raw.defenderAbilityId === KLUTZ_ABILITY_ID
+  const attackerHasUnnerve = raw.attackerAbilityId === UNNERVE_ABILITY_ID
+  const defenderBerryEligible = Boolean(
+    defenderItemRaw?.descriptor?.warning === "persistent-berry" &&
+    defenderItemRaw.source.state === "active",
+  )
   const attackerItem = attackerHasKlutz
     ? neutralizeHeldItem(attackerItemRaw)
     : attackerItemRaw
   const defenderItem = defenderItemRaw === undefined
     ? undefined
-    : defenderHasKlutz
+    : defenderHasKlutz || (attackerHasUnnerve && defenderBerryEligible)
       ? neutralizeHeldItem(defenderItemRaw)
       : defenderItemRaw
+
+  const attackerNullifiesWeather = raw.attackerAbilityId === CLOUD_NINE_ABILITY_ID ||
+    raw.attackerAbilityId === AIR_LOCK_ABILITY_ID
+  const defenderNullifiesWeather = raw.defenderAbilityId === CLOUD_NINE_ABILITY_ID ||
+    raw.defenderAbilityId === AIR_LOCK_ABILITY_ID
+  const hasWeatherNullifier = attackerNullifiesWeather || defenderNullifiesWeather
+  const attackerHasMegaSol = raw.attackerAbilityId === MEGA_SOL_ABILITY_ID
+  const defenderHasMegaSol = raw.defenderAbilityId === MEGA_SOL_ABILITY_ID
+  const megaSolApplies = (attackerHasMegaSol || defenderHasMegaSol) &&
+    raw.snapshot.moveId !== ELECTRO_SHOT_MOVE_ID
+  let effectiveWeather: Weather = raw.weather
+  if (megaSolApplies) {
+    effectiveWeather = "sun"
+  } else if (hasWeatherNullifier) {
+    effectiveWeather = "none"
+  }
+
+  function compileAbilityForWeather(weather: Weather) {
+    return compileAbilityEffect({
+      attackerAbilityId: raw.attackerAbilityId,
+      defenderAbilityId: raw.defenderAbilityId,
+      category: moveCategory,
+      moveType,
+      power,
+      moveFlags: move?.flags ?? [],
+      effectiveness,
+      weather,
+      hasStab: hasScenarioStab,
+      typeRewriteBasePower: typeRewrite?.basePowerModifier,
+      typeRewriteActive: typeRewrite?.active,
+    })
+  }
+
+  // Mega Sol resolves before Utility Umbrella. A raw-weather nullifier is the
+  // counterfactual baseline only when Mega Sol is absent for this move.
+  const utilityUmbrellaSuppressesActual = !megaSolApplies &&
+    (defenderItem?.suppressOrdinaryWeatherDamage ?? false)
   const weather = compileWeatherEffect(
     raw.snapshot.moveId,
     moveType,
-    raw.weather,
+    effectiveWeather,
     raw.probabilityMode,
-    defenderItem?.suppressOrdinaryWeatherDamage ?? false,
+    utilityUmbrellaSuppressesActual,
   )
   const terrain = compileTerrainEffect(
     raw.snapshot.moveId,
@@ -450,19 +516,52 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     isGrounded(attacker?.types ?? [], raw.attackerAbilityId),
     isGrounded(defender?.types ?? [], raw.defenderAbilityId),
   )
-  const ability = compileAbilityEffect({
-    attackerAbilityId: raw.attackerAbilityId,
-    defenderAbilityId: raw.defenderAbilityId,
-    category: moveCategory,
+  const ability = compileAbilityForWeather(effectiveWeather)
+
+  const rawWeatherEffect = compileWeatherEffect(
+    raw.snapshot.moveId,
     moveType,
-    power,
-    moveFlags: move?.flags ?? [],
-    effectiveness,
-    weather: raw.weather,
-    hasStab: hasScenarioStab,
-    typeRewriteBasePower: typeRewrite?.basePowerModifier,
-    typeRewriteActive: typeRewrite?.active,
-  })
+    raw.weather,
+    raw.probabilityMode,
+  )
+  const noWeatherEffect = compileWeatherEffect(
+    raw.snapshot.moveId,
+    moveType,
+    "none",
+    raw.probabilityMode,
+  )
+  const rawWeatherAbility = compileAbilityForWeather(raw.weather)
+  const noWeatherAbility = compileAbilityForWeather("none")
+  const rawWeatherHasEffect = weatherMechanicsIdentity(
+    rawWeatherEffect,
+    rawWeatherAbility,
+    raw.probabilityMode,
+  ) !== weatherMechanicsIdentity(
+    noWeatherEffect,
+    noWeatherAbility,
+    raw.probabilityMode,
+  )
+  const weatherNullifierActive = !megaSolApplies && raw.weather !== "none" &&
+    rawWeatherHasEffect
+
+  const megaSolBaselineWeather: Weather = hasWeatherNullifier ? "none" : raw.weather
+  const megaSolBaselineEffect = compileWeatherEffect(
+    raw.snapshot.moveId,
+    moveType,
+    megaSolBaselineWeather,
+    raw.probabilityMode,
+    !hasWeatherNullifier && (defenderItem?.suppressOrdinaryWeatherDamage ?? false),
+  )
+  const megaSolBaselineAbility = compileAbilityForWeather(megaSolBaselineWeather)
+  const megaSolActive = megaSolApplies && weatherMechanicsIdentity(
+    weather,
+    ability,
+    raw.probabilityMode,
+  ) !== weatherMechanicsIdentity(
+    megaSolBaselineEffect,
+    megaSolBaselineAbility,
+    raw.probabilityMode,
+  )
   const criticalStageWithoutAbility = Math.min(
     3,
     raw.snapshot.criticalStage + attackerItem.criticalStage,
@@ -638,7 +737,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       raw.probabilityMode,
       true,
     ).ordinaryDamageSuppressed
-    defenderItemState = defenderItemState === "active" && wouldSuppress
+    defenderItemState = defenderItemState === "active" && wouldSuppress && !megaSolApplies
       ? "active"
       : "inactive"
   }
@@ -670,6 +769,12 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   if (ability.bypassesScreens) {
     attackerAbilityState = infiltratorBypassesScreen ? "active" : "inactive"
   }
+  if (attackerNullifiesWeather) {
+    attackerAbilityState = weatherNullifierActive ? "active" : "inactive"
+  }
+  if (attackerHasMegaSol) {
+    attackerAbilityState = megaSolActive ? "active" : "inactive"
+  }
   if (attackerHasKlutz) {
     const klutzActive = attackerItemState === "active"
     attackerAbilityState = klutzActive ? "active" : "inactive"
@@ -690,10 +795,37 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   if (ability.ignoresAttackerStage) {
     defenderAbilityState = defenderUnawareActive ? "active" : "inactive"
   }
+  if (defenderNullifiesWeather) {
+    defenderAbilityState = weatherNullifierActive ? "active" : "inactive"
+  }
+  if (defenderHasMegaSol) {
+    defenderAbilityState = megaSolActive ? "active" : "inactive"
+  }
+  if (raw.defenderAbilityId === UNNERVE_ABILITY_ID) {
+    defenderAbilityState = "inactive"
+  }
   if (defenderHasKlutz) {
     const klutzActive = defenderItemState === "active"
     defenderAbilityState = klutzActive ? "active" : "inactive"
     if (klutzActive) defenderItemState = "inactive"
+  }
+  if (attackerHasUnnerve) {
+    attackerAbilityState = defenderBerryEligible ? "active" : "inactive"
+    if (defenderBerryEligible) defenderItemState = "inactive"
+  }
+
+  const rawWeatherReplaced = raw.weather !== "none" && (
+    megaSolApplies
+      ? raw.weather !== "sun" || megaSolActive
+      : hasWeatherNullifier
+  )
+  let weatherState: TrackSelectionActivation = weather.state
+  if (raw.weather === "none") {
+    weatherState = "neutral"
+  } else if (rawWeatherReplaced) {
+    weatherState = "inactive"
+  } else if (ability.activatesWeather) {
+    weatherState = "active"
   }
 
   const sources: ScenarioSource[] = [
@@ -721,7 +853,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     {
       track: "weather",
       optionId: raw.weather,
-      state: ability.activatesWeather ? "active" : weather.state,
+      state: weatherState,
     },
     {
       track: "terrain",

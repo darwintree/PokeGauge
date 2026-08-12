@@ -10,7 +10,9 @@ import type { ScenarioResult } from "@/lib/scenario"
 import { AbilityTrack } from "./ability-track"
 import { DamageResultRow } from "../../results/damage-result-row"
 import {
+  AIR_LOCK_ABILITY_ID,
   BLAZE_ABILITY_ID,
+  CLOUD_NINE_ABILITY_ID,
   DROUGHT_ABILITY_ID,
   BATTLE_ARMOR_ABILITY_ID,
   COMPOUND_EYES_ABILITY_ID,
@@ -18,6 +20,7 @@ import {
   GUTS_ABILITY_ID,
   HUSTLE_ABILITY_ID,
   MERCILESS_ABILITY_ID,
+  MEGA_SOL_ABILITY_ID,
   MULTISCALE_ABILITY_ID,
   NO_GUARD_ABILITY_ID,
   NO_ABILITY_ID,
@@ -27,6 +30,7 @@ import {
   SHELL_ARMOR_ABILITY_ID,
   SNIPER_ABILITY_ID,
   SUPER_LUCK_ABILITY_ID,
+  UNNERVE_ABILITY_ID,
 } from "@/lib/ability"
 
 it("marks only unsupported ability effects in the Track", () => {
@@ -45,6 +49,10 @@ it("marks only unsupported ability effects in the Track", () => {
         { id: SHELL_ARMOR_ABILITY_ID, label: "Shell Armor", summary: "" },
         { id: SNIPER_ABILITY_ID, label: "Sniper", summary: "" },
         { id: SUPER_LUCK_ABILITY_ID, label: "Super Luck", summary: "" },
+        { id: CLOUD_NINE_ABILITY_ID, label: "Cloud Nine", summary: "" },
+        { id: AIR_LOCK_ABILITY_ID, label: "Air Lock", summary: "" },
+        { id: MEGA_SOL_ABILITY_ID, label: "Mega Sol", summary: "" },
+        { id: UNNERVE_ABILITY_ID, label: "Unnerve", summary: "" },
         { id: 35, label: "Illuminate", summary: "" },
         { id: 51, label: "Keen Eye", summary: "" },
         { id: NO_ABILITY_ID, label: "—", accessibleLabel: "No ability", summary: "" },
@@ -67,6 +75,10 @@ it("marks only unsupported ability effects in the Track", () => {
   expect(markup).toContain("Reckless")
   expect(markup).toContain("Sheer Force")
   expect(markup).toContain("Drought")
+  expect(markup).not.toMatch(/Cloud Nine[^"]*Effect not supported yet/)
+  expect(markup).not.toMatch(/Air Lock[^"]*Effect not supported yet/)
+  expect(markup).not.toMatch(/Mega Sol[^"]*Effect not supported yet/)
+  expect(markup).not.toMatch(/Unnerve[^"]*Effect not supported yet/)
   expect(markup.match(/Effect not supported yet/g)).toHaveLength(6)
   expect(markup.indexOf('aria-label="No ability"')).toBeLessThan(
     markup.indexOf('aria-label="Adaptability"'),
