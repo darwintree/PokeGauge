@@ -13,6 +13,7 @@ const N = NEUTRAL_MODIFIER
 
 function branch(overrides: Partial<DamageFormulaBranch> = {}): DamageFormulaBranch {
   return {
+    damageNegated: false,
     power: 80,
     basePowerModifier: N,
     attack: 100,
@@ -317,6 +318,23 @@ describe("fixed-point damage kernel", () => {
     expect(result.low.normal).toHaveLength(16)
     expect(result.low.critical).toBeUndefined()
     expect(result.high).toEqual({ defenderHp: 151, critical: Array(16).fill(0) })
+  })
+
+  it("returns zero rolls when the compiler negates damage without changing type effectiveness", () => {
+    const result = calculateDamageRolls({
+      low: {
+        defenderHp: 201,
+        normal: branch({ damageNegated: true, typeEffectivenessModifier: 8192 }),
+        critical: branch({
+          damageNegated: true,
+          typeEffectivenessModifier: 8192,
+          criticalModifier: 6144,
+        }),
+      },
+    }).low
+
+    expect(result.normal).toEqual(Array(16).fill(0))
+    expect(result.critical).toEqual(Array(16).fill(0))
   })
 
   it("matches all normal and critical rolls for type immunity", () => {

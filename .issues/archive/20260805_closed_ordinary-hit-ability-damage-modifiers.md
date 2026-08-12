@@ -27,7 +27,7 @@ updated_at: "2026-08-05T10:32:00Z"
 
 ## Boundary updates
 
-- Dry Skin 的 Water 免疫与 Fire 增伤整体归入 [[../20260805_open_ability-immunities-and-type-exceptions|Ability immunities and type exceptions]]。
+- Dry Skin 的 Water 免疫与 Fire 增伤整体归入 [[20260805_closed_ability-immunities-and-type-exceptions|Ability immunities and type exceptions]]。
 - Water Bubble 的 Water 进攻与 Fire 防守减伤归入 offensive／defensive modifiers issue。
 - Sand Force 与 Solar Power 归入 offensive／defensive modifiers issue，不再由 weather/item composition issue 兜底。
 - Mold Breaker、类型重写、绿点条件族、Track 初始化投射、Cloud Nine、Mega Sol 与 Unnerve 的既有 sibling 归属不变。

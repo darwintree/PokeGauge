@@ -1,9 +1,14 @@
 import {
   ADAPTABILITY_ABILITY_ID,
   BATTLE_ARMOR_ABILITY_ID,
+  BULLETPROOF_ABILITY_ID,
   BLAZE_ABILITY_ID,
   COMPOUND_EYES_ABILITY_ID,
+  DRY_SKIN_ABILITY_ID,
+  EARTH_EATER_ABILITY_ID,
+  EELEVATE_ABILITY_ID,
   FAIRY_AURA_ABILITY_ID,
+  FLASH_FIRE_ABILITY_ID,
   FILTER_ABILITY_ID,
   FIRE_MANE_ABILITY_ID,
   FLUFFY_ABILITY_ID,
@@ -15,10 +20,13 @@ import {
   INFILTRATOR_ABILITY_ID,
   IRON_FIST_ABILITY_ID,
   KLUTZ_ABILITY_ID,
+  LEVITATE_ABILITY_ID,
+  LIGHTNING_ROD_ABILITY_ID,
   LONG_REACH_ABILITY_ID,
   MARVEL_SCALE_ABILITY_ID,
   MEGA_LAUNCHER_ABILITY_ID,
   MERCILESS_ABILITY_ID,
+  MOTOR_DRIVE_ABILITY_ID,
   MULTISCALE_ABILITY_ID,
   NO_ABILITY_ID,
   NO_GUARD_ABILITY_ID,
@@ -26,12 +34,15 @@ import {
   PURE_POWER_ABILITY_ID,
   PURIFYING_SALT_ABILITY_ID,
   SAND_VEIL_ABILITY_ID,
+  SAP_SIPPER_ABILITY_ID,
+  SCRAPPY_ABILITY_ID,
   SAND_FORCE_ABILITY_ID,
   SOLAR_POWER_ABILITY_ID,
   SOLID_ROCK_ABILITY_ID,
   SHELL_ARMOR_ABILITY_ID,
   SNIPER_ABILITY_ID,
   SNOW_CLOAK_ABILITY_ID,
+  SOUNDPROOF_ABILITY_ID,
   STRONG_JAW_ABILITY_ID,
   SWARM_ABILITY_ID,
   TECHNICIAN_ABILITY_ID,
@@ -42,6 +53,8 @@ import {
   UNAWARE_ABILITY_ID,
   UNKNOWN_ABILITY_ID,
   WATER_BUBBLE_ABILITY_ID,
+  WATER_ABSORB_ABILITY_ID,
+  VOLT_ABSORB_ABILITY_ID,
   abilityDamageModifierIsSupported,
   abilityIsProjectionNeutral,
 } from "@/lib/ability"
@@ -67,6 +80,7 @@ type AbilityContext = {
 }
 
 export type CompiledAbilityEffect = {
+  damageNegated: boolean
   basePowerModifier: number
   attackerAttackModifier: number
   defenderAttackModifier: number
@@ -112,7 +126,12 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
   let activatesWeather = false
   let attackerActive = Boolean(context.typeRewriteActive)
   let defenderActive = false
+  let damageNegated = false
   const flags = new Set(context.moveFlags)
+  const activateImmunity = (matches: boolean) => {
+    defenderActive = matches && context.effectiveness > 0
+    damageNegated = defenderActive
+  }
 
   switch (context.attackerAbilityId) {
     case ADAPTABILITY_ABILITY_ID:
@@ -209,6 +228,9 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
       attackerActive = flags.has("contact") &&
         context.defenderAbilityId === FLUFFY_ABILITY_ID
       break
+    case SCRAPPY_ABILITY_ID:
+      // Effectiveness is resolved by the Scenario compiler before Held-item gates.
+      break
     case FLUFFY_ABILITY_ID:
     case KLUTZ_ABILITY_ID:
       break
@@ -218,6 +240,37 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
     context.attackerAbilityId !== LONG_REACH_ABILITY_ID
 
   switch (context.defenderAbilityId) {
+    case FLASH_FIRE_ABILITY_ID:
+      activateImmunity(context.moveType === "fire")
+      break
+    case VOLT_ABSORB_ABILITY_ID:
+    case LIGHTNING_ROD_ABILITY_ID:
+    case MOTOR_DRIVE_ABILITY_ID:
+      activateImmunity(context.moveType === "electric")
+      break
+    case WATER_ABSORB_ABILITY_ID:
+      activateImmunity(context.moveType === "water")
+      break
+    case SAP_SIPPER_ABILITY_ID:
+      activateImmunity(context.moveType === "grass")
+      break
+    case LEVITATE_ABILITY_ID:
+    case EELEVATE_ABILITY_ID:
+    case EARTH_EATER_ABILITY_ID:
+      activateImmunity(context.moveType === "ground")
+      break
+    case DRY_SKIN_ABILITY_ID:
+      defenderActive = (context.moveType === "water" && context.effectiveness > 0) ||
+        context.moveType === "fire"
+      if (context.moveType === "water" && context.effectiveness > 0) damageNegated = true
+      if (context.moveType === "fire") attackerModifiers.basePower = 5120
+      break
+    case SOUNDPROOF_ABILITY_ID:
+      activateImmunity(flags.has("sound"))
+      break
+    case BULLETPROOF_ABILITY_ID:
+      activateImmunity(flags.has("ballistics"))
+      break
     case BATTLE_ARMOR_ABILITY_ID:
     case SHELL_ARMOR_ABILITY_ID:
       defenderActive = true
@@ -297,6 +350,7 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
       : "unsupported")
 
   return {
+    damageNegated,
     basePowerModifier: attackerModifiers.basePower,
     attackerAttackModifier: attackerModifiers.attack,
     defenderAttackModifier: defenderModifiers.attack,

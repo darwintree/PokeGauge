@@ -12,15 +12,23 @@ import { DamageResultRow } from "../../results/damage-result-row"
 import {
   AIR_LOCK_ABILITY_ID,
   BLAZE_ABILITY_ID,
+  BULLETPROOF_ABILITY_ID,
   CLOUD_NINE_ABILITY_ID,
+  DRY_SKIN_ABILITY_ID,
+  EARTH_EATER_ABILITY_ID,
+  EELEVATE_ABILITY_ID,
   DROUGHT_ABILITY_ID,
   BATTLE_ARMOR_ABILITY_ID,
   COMPOUND_EYES_ABILITY_ID,
   FIRE_MANE_ABILITY_ID,
+  FLASH_FIRE_ABILITY_ID,
   GUTS_ABILITY_ID,
   HUSTLE_ABILITY_ID,
+  LEVITATE_ABILITY_ID,
+  LIGHTNING_ROD_ABILITY_ID,
   MERCILESS_ABILITY_ID,
   MEGA_SOL_ABILITY_ID,
+  MOTOR_DRIVE_ABILITY_ID,
   MULTISCALE_ABILITY_ID,
   NO_GUARD_ABILITY_ID,
   NO_ABILITY_ID,
@@ -28,9 +36,14 @@ import {
   RECKLESS_ABILITY_ID,
   SHEER_FORCE_ABILITY_ID,
   SHELL_ARMOR_ABILITY_ID,
+  SOUNDPROOF_ABILITY_ID,
+  SAP_SIPPER_ABILITY_ID,
+  SCRAPPY_ABILITY_ID,
   SNIPER_ABILITY_ID,
   SUPER_LUCK_ABILITY_ID,
   UNNERVE_ABILITY_ID,
+  VOLT_ABSORB_ABILITY_ID,
+  WATER_ABSORB_ABILITY_ID,
 } from "@/lib/ability"
 
 it("marks only unsupported ability effects in the Track", () => {
@@ -53,6 +66,19 @@ it("marks only unsupported ability effects in the Track", () => {
         { id: AIR_LOCK_ABILITY_ID, label: "Air Lock", summary: "" },
         { id: MEGA_SOL_ABILITY_ID, label: "Mega Sol", summary: "" },
         { id: UNNERVE_ABILITY_ID, label: "Unnerve", summary: "" },
+        { id: LEVITATE_ABILITY_ID, label: "Levitate", summary: "" },
+        { id: EELEVATE_ABILITY_ID, label: "Eelevate", summary: "" },
+        { id: FLASH_FIRE_ABILITY_ID, label: "Flash Fire", summary: "" },
+        { id: VOLT_ABSORB_ABILITY_ID, label: "Volt Absorb", summary: "" },
+        { id: WATER_ABSORB_ABILITY_ID, label: "Water Absorb", summary: "" },
+        { id: LIGHTNING_ROD_ABILITY_ID, label: "Lightning Rod", summary: "" },
+        { id: MOTOR_DRIVE_ABILITY_ID, label: "Motor Drive", summary: "" },
+        { id: SAP_SIPPER_ABILITY_ID, label: "Sap Sipper", summary: "" },
+        { id: EARTH_EATER_ABILITY_ID, label: "Earth Eater", summary: "" },
+        { id: SOUNDPROOF_ABILITY_ID, label: "Soundproof", summary: "" },
+        { id: BULLETPROOF_ABILITY_ID, label: "Bulletproof", summary: "" },
+        { id: SCRAPPY_ABILITY_ID, label: "Scrappy", summary: "" },
+        { id: DRY_SKIN_ABILITY_ID, label: "Dry Skin", summary: "" },
         { id: 35, label: "Illuminate", summary: "" },
         { id: 51, label: "Keen Eye", summary: "" },
         { id: NO_ABILITY_ID, label: "—", accessibleLabel: "No ability", summary: "" },
@@ -79,6 +105,24 @@ it("marks only unsupported ability effects in the Track", () => {
   expect(markup).not.toMatch(/Air Lock[^"]*Effect not supported yet/)
   expect(markup).not.toMatch(/Mega Sol[^"]*Effect not supported yet/)
   expect(markup).not.toMatch(/Unnerve[^"]*Effect not supported yet/)
+  for (const label of [
+    "Levitate",
+    "Eelevate",
+    "Flash Fire",
+    "Volt Absorb",
+    "Water Absorb",
+    "Lightning Rod",
+    "Motor Drive",
+    "Sap Sipper",
+    "Earth Eater",
+    "Soundproof",
+    "Bulletproof",
+    "Scrappy",
+    "Dry Skin",
+  ]) {
+    expect(markup).not.toMatch(new RegExp(`${label}[^"]*Effect not supported yet`))
+  }
+  expect(markup).not.toContain("bg-signal-green")
   expect(markup.match(/Effect not supported yet/g)).toHaveLength(6)
   expect(markup.indexOf('aria-label="No ability"')).toBeLessThan(
     markup.indexOf('aria-label="Adaptability"'),

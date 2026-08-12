@@ -816,11 +816,19 @@ describe("scenario compiler", () => {
 
       expect(calculationIdentity({ ...outcome, snapshotId: "another-snapshot" })).not.toBe(identity)
 
-      for (const field of Object.keys(outcome.calculation.low.normal!) as Array<keyof DamageFormulaBranch>) {
+      const numericFields = Object.keys(outcome.calculation.low.normal!).filter(
+        (field): field is Exclude<keyof DamageFormulaBranch, "damageNegated"> =>
+          field !== "damageNegated",
+      )
+      for (const field of numericFields) {
         const variant = structuredClone(outcome)
         variant.calculation.low.normal![field] += 1
         expect(calculationIdentity(variant), field).not.toBe(identity)
       }
+
+      const negated = structuredClone(outcome)
+      negated.calculation.low.normal!.damageNegated = true
+      expect(calculationIdentity(negated), "damageNegated").not.toBe(identity)
 
       for (const field of ["hitProbability", "criticalHitProbability"] as const) {
         const variant = structuredClone(outcome)

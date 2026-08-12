@@ -3,6 +3,7 @@ import { beforeAll, describe, expect, it } from "vitest"
 
 import type { MoveCategory } from "@/lib/catalog"
 import { createMoveSnapshot } from "@/lib/move"
+import { EELEVATE_ABILITY_ID, LEVITATE_ABILITY_ID } from "@/lib/ability"
 import { getMoveById, listResources } from "@/lib/resources"
 
 import { CALC_GEN, VGC_LEVEL } from "@/lib/damage-calculation"
@@ -17,7 +18,6 @@ import {
 import {
   compileTerrainEffect,
   isGrounded,
-  LEVITATE_ABILITY_ID,
   TERRAINS,
   type Terrain,
 } from "@/lib/damage-calculation"
@@ -92,6 +92,7 @@ describe("terrain compiler", () => {
     expect(isGrounded(["psychic"], 28)).toBe(true)
     expect(isGrounded(["flying", "electric"], 46)).toBe(false)
     expect(isGrounded(["electric"], LEVITATE_ABILITY_ID)).toBe(false)
+    expect(isGrounded(["electric"], EELEVATE_ABILITY_ID)).toBe(false)
   })
 
   it.each([

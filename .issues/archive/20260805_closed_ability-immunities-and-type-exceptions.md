@@ -2,15 +2,15 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "f806d623-07e0-4f83-9b08-5f6ec5881c69"
 title: "Ability immunities and type exceptions"
-status: "open"
+status: "closed"
 priority: "medium"
 labels: ["FEATURE-REQUEST", "READY-FOR-AGENT"]
 created_at: "2026-08-05T09:25:00Z"
-updated_at: "2026-08-11T15:01:00Z"
+updated_at: "2026-08-12T07:39:00Z"
 ---
 ## Parent issue
 
-[[20260715_open_implement-pokemon-ability-effects|Implement Pokémon ability effects]]
+[[../20260715_open_implement-pokemon-ability-effects|Implement Pokémon ability effects]]
 
 ## Goal
 
@@ -49,17 +49,23 @@ updated_at: "2026-08-11T15:01:00Z"
 - Flash Fire 等充能加攻状态
 - 吸收回血、能力提升与 Eelevate 的 KO 后效果
 - Mold Breaker 忽略防守方特性
-- Water Bubble 的 Water 进攻与 Fire 防守减伤，见 [[archive/20260805_closed_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]
+- Water Bubble 的 Water 进攻与 Fire 防守减伤，见 [[20260805_closed_offensive-and-defensive-ability-damage-modifiers|Offensive and defensive ability damage modifiers]]
 - Iron Ball、Gravity 等当前 Scenario 没有输入契约的接地变化
 - 为可计算的零伤害 Scenario 新增领域术语或修改 `CONTEXT.md`
 
 ## Acceptance criteria
 
-- [ ] 匹配属性／招式旗标时按免疫或约定例外结算。
-- [ ] 免疫结果保持 calculable，`damageNegated`、真实属性倍率、零伤害／零等效威力及 Hit Fact 均符合冻结契约。
-- [ ] Scrappy 在 Held item effectiveness gate 前解析，且不绕过 Ability immunity。
-- [ ] Levitate／Eelevate 的 Ground immunity、grounded 与 Terrain provenance 行为一致。
-- [ ] Dry Skin 的 Water 免疫与 Fire 增伤同批完成，不出现部分支持状态。
-- [ ] 13 个 Ability 去除红色 unsupported 提示；无充能 UI、绿点或 partial-support 披露。
-- [ ] 逐条审计讨论记录中的每项决定均已实现并由代表性 active／inactive 与组合测试覆盖。
-- [ ] 父 issue checklist 对应项可勾选。
+- [x] 匹配属性／招式旗标时按免疫或约定例外结算。
+- [x] 免疫结果保持 calculable，`damageNegated`、真实属性倍率、零伤害／零等效威力及 Hit Fact 均符合冻结契约。
+- [x] Scrappy 在 Held item effectiveness gate 前解析，且不绕过 Ability immunity。
+- [x] Levitate／Eelevate 的 Ground immunity、grounded 与 Terrain provenance 行为一致。
+- [x] Dry Skin 的 Water 免疫与 Fire 增伤同批完成，不出现部分支持状态。
+- [x] 13 个 Ability 去除红色 unsupported 提示；无充能 UI、绿点或 partial-support 披露。
+- [x] 逐条审计讨论记录中的每项决定均已实现并由代表性 active／inactive 与组合测试覆盖。
+- [x] 父 issue checklist 对应项可勾选。
+
+## Resolution
+
+已实现 13 个冻结 Ability 的免疫、属性例外与 grounded 语义。Scenario compiler 使用通用 `damageNegated` 保留真实属性倍率与 Hit Fact，kernel、等效威力及 KO 概率统一输出零；Scrappy 在 Held item effectiveness gate 前解析，Levitate／Eelevate 通过单侧反事实判断 Terrain grounded 贡献，Dry Skin 的 Fire 分支位于 Base Power 阶段。
+
+验证：`pnpm test`（48 files / 526 tests）、`pnpm build`、`pnpm lint`、`git diff --check`；Standards 与 Spec 双轴 review 复核均无未解决 finding。

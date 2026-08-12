@@ -2,8 +2,12 @@ import type { MoveCategory } from "@/lib/catalog"
 import {
   AIR_LOCK_ABILITY_ID,
   CLOUD_NINE_ABILITY_ID,
+  EELEVATE_ABILITY_ID,
   KLUTZ_ABILITY_ID,
+  LEVITATE_ABILITY_ID,
   MEGA_SOL_ABILITY_ID,
+  NO_ABILITY_ID,
+  SCRAPPY_ABILITY_ID,
   UNNERVE_ABILITY_ID,
 } from "@/lib/ability"
 import {
@@ -336,6 +340,7 @@ function compileProbability(
 }
 
 type BranchContext = {
+  damageNegated: boolean
   power: number
   basePowerModifier: number
   attackModifier: number
@@ -357,6 +362,7 @@ function compileBranch(
   critical: boolean,
 ): DamageFormulaBranch {
   return {
+    damageNegated: context.damageNegated,
     power: context.power,
     basePowerModifier: context.basePowerModifier,
     attack: point.offense,
@@ -430,9 +436,15 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     (attacker && moveType && attacker.types.includes(moveType)) ||
       typeRewrite?.grantsScenarioStab,
   )
-  const effectiveness = moveType && defender
+  const rawEffectiveness = moveType && defender
     ? typeEffectiveness(moveType, defender.types)
     : 1
+  const scrappyRemovesGhostImmunity = raw.attackerAbilityId === SCRAPPY_ABILITY_ID &&
+    defender?.types.includes("ghost") === true &&
+    (moveType === "normal" || moveType === "fighting")
+  const effectiveness = scrappyRemovesGhostImmunity && moveType && defender
+    ? typeEffectiveness(moveType, defender.types.filter((type) => type !== "ghost"))
+    : rawEffectiveness
   const commonItemContext = {
     category: moveCategory,
     moveType,
@@ -509,14 +521,37 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     raw.probabilityMode,
     utilityUmbrellaSuppressesActual,
   )
-  const terrain = compileTerrainEffect(
-    raw.snapshot.moveId,
-    moveType,
-    raw.terrain,
-    isGrounded(attacker?.types ?? [], raw.attackerAbilityId),
-    isGrounded(defender?.types ?? [], raw.defenderAbilityId),
-  )
+  function compileTerrainFor(attackerAbilityId: number, defenderAbilityId: number) {
+    return compileTerrainEffect(
+      raw.snapshot.moveId,
+      moveType,
+      raw.terrain,
+      isGrounded(attacker?.types ?? [], attackerAbilityId),
+      isGrounded(defender?.types ?? [], defenderAbilityId),
+    )
+  }
+  const terrain = compileTerrainFor(raw.attackerAbilityId, raw.defenderAbilityId)
+  const attackerAirborneAbility = raw.attackerAbilityId === LEVITATE_ABILITY_ID ||
+    raw.attackerAbilityId === EELEVATE_ABILITY_ID
+  const defenderAirborneAbility = raw.defenderAbilityId === LEVITATE_ABILITY_ID ||
+    raw.defenderAbilityId === EELEVATE_ABILITY_ID
+  const terrainMechanicsIdentity = (effect: ReturnType<typeof compileTerrainEffect>) =>
+    JSON.stringify([effect.basePowerModifier, effect.makesSpread, effect.unavailable])
+  const terrainWithoutAttackerAirborne = attackerAirborneAbility
+    ? compileTerrainFor(NO_ABILITY_ID, raw.defenderAbilityId)
+    : terrain
+  const terrainWithoutDefenderAirborne = defenderAirborneAbility
+    ? compileTerrainFor(raw.attackerAbilityId, NO_ABILITY_ID)
+    : terrain
   const ability = compileAbilityForWeather(effectiveWeather)
+  const attackerAirborneActive = attackerAirborneAbility &&
+    effectiveness > 0 &&
+    !ability.damageNegated
+    && terrainMechanicsIdentity(terrain) !== terrainMechanicsIdentity(terrainWithoutAttackerAirborne)
+  const defenderAirborneActive = defenderAirborneAbility &&
+    effectiveness > 0 &&
+    !ability.damageNegated
+    && terrainMechanicsIdentity(terrain) !== terrainMechanicsIdentity(terrainWithoutDefenderAirborne)
 
   const rawWeatherEffect = compileWeatherEffect(
     raw.snapshot.moveId,
@@ -769,6 +804,18 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   if (ability.bypassesScreens) {
     attackerAbilityState = infiltratorBypassesScreen ? "active" : "inactive"
   }
+  if (raw.attackerAbilityId === SCRAPPY_ABILITY_ID) {
+    attackerAbilityState = scrappyRemovesGhostImmunity &&
+      effectiveness !== rawEffectiveness &&
+      !ability.damageNegated
+      ? "active"
+      : "inactive"
+  }
+  if (attackerAirborneAbility) {
+    attackerAbilityState = attackerAbilityState === "active" || attackerAirborneActive
+      ? "active"
+      : "inactive"
+  }
   if (attackerNullifiesWeather) {
     attackerAbilityState = weatherNullifierActive ? "active" : "inactive"
   }
@@ -794,6 +841,11 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   }
   if (ability.ignoresAttackerStage) {
     defenderAbilityState = defenderUnawareActive ? "active" : "inactive"
+  }
+  if (defenderAirborneAbility) {
+    defenderAbilityState = defenderAbilityState === "active" || defenderAirborneActive
+      ? "active"
+      : "inactive"
   }
   if (defenderNullifiesWeather) {
     defenderAbilityState = weatherNullifierActive ? "active" : "inactive"
@@ -929,6 +981,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   }
 
   const context: BranchContext = {
+    damageNegated: ability.damageNegated,
     power,
     basePowerModifier: chainModifiers([
       ability.basePowerModifier,

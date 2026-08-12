@@ -36,7 +36,7 @@ updated_at: "2026-08-11T15:42:00Z"
 - [[archive/20260805_closed_ability-stage-and-screen-bypass|Ability stage and screen bypass]]
 - [[archive/20260805_closed_ability-contact-and-held-item-interactions|Ability contact and held-item interactions]]
 - [[archive/20260805_closed_green-dot-conditional-ability-effects|Green-dot conditional ability effects]]
-- [[20260805_open_ability-immunities-and-type-exceptions|Ability immunities and type exceptions]]
+- [[archive/20260805_closed_ability-immunities-and-type-exceptions|Ability immunities and type exceptions]]
 - [[archive/20260805_closed_scenario-move-type-rewriting-and-protean-family-stab|Scenario Move Type rewriting and Protean-family STAB]]
 - [[archive/20260805_closed_ability-weather-and-item-composition|Ability weather and item composition]]
 - [[20260805_open_implement-parental-bond|Implement Parental Bond]]
@@ -54,15 +54,15 @@ updated_at: "2026-08-11T15:42:00Z"
 - [ ] Limber
 - [x] Sand Veil
 - [ ] Static
-- [ ] Volt Absorb
-- [ ] Water Absorb
+- [x] Volt Absorb
+- [x] Water Absorb
 - [ ] Oblivious
 - [x] Cloud Nine
 - [x] Compound Eyes
 - [ ] Insomnia
 - [ ] Color Change
 - [ ] Immunity
-- [ ] Flash Fire
+- [x] Flash Fire
 - [ ] Shield Dust
 - [ ] Own Tempo
 - [ ] Suction Cups
@@ -70,12 +70,12 @@ updated_at: "2026-08-11T15:42:00Z"
 - [ ] Shadow Tag
 - [ ] Rough Skin
 - [ ] Wonder Guard
-- [ ] Levitate
+- [x] Levitate
 - [ ] Effect Spore
 - [ ] Synchronize
 - [ ] Clear Body
 - [ ] Natural Cure
-- [ ] Lightning Rod
+- [x] Lightning Rod
 - [ ] Serene Grace
 - [ ] Swift Swim
 - [ ] Chlorophyll
@@ -87,7 +87,7 @@ updated_at: "2026-08-11T15:42:00Z"
 - [ ] Magma Armor
 - [ ] Water Veil
 - [ ] Magnet Pull
-- [ ] Soundproof
+- [x] Soundproof
 - [ ] Rain Dish
 - [ ] Sand Stream
 - [ ] Pressure
@@ -125,7 +125,7 @@ updated_at: "2026-08-11T15:42:00Z"
 ### Generation IV (47)
 
 - [ ] Tangled Feet
-- [ ] Motor Drive
+- [x] Motor Drive
 - [ ] Rivalry
 - [ ] Steadfast
 - [x] Snow Cloak
@@ -134,7 +134,7 @@ updated_at: "2026-08-11T15:42:00Z"
 - [ ] Unburden
 - [x] Heatproof
 - [ ] Simple
-- [ ] Dry Skin
+- [x] Dry Skin
 - [ ] Download
 - [x] Iron Fist
 - [ ] Poison Heal
@@ -160,7 +160,7 @@ updated_at: "2026-08-11T15:42:00Z"
 - [ ] Tinted Lens
 - [x] Filter
 - [ ] Slow Start
-- [ ] Scrappy
+- [x] Scrappy
 - [ ] Storm Drain
 - [ ] Ice Body
 - [x] Solid Rock
@@ -207,7 +207,7 @@ updated_at: "2026-08-11T15:42:00Z"
 - [ ] Justified
 - [ ] Rattled
 - [ ] Magic Bounce
-- [ ] Sap Sipper
+- [x] Sap Sipper
 - [ ] Prankster
 - [x] Sand Force
 - [ ] Iron Barbs
@@ -224,7 +224,7 @@ updated_at: "2026-08-11T15:42:00Z"
 - [x] Protean
 - [x] Fur Coat
 - [ ] Magician
-- [ ] Bulletproof
+- [x] Bulletproof
 - [ ] Competitive
 - [x] Strong Jaw
 - [x] Refrigerate
@@ -359,7 +359,7 @@ updated_at: "2026-08-11T15:42:00Z"
 - [ ] Costar
 - [ ] Toxic Debris
 - [ ] Armor Tail
-- [ ] Earth Eater
+- [x] Earth Eater
 - [ ] Mycelium Might
 - [ ] Mind’s Eye
 - [ ] Supersweet Syrup
@@ -374,7 +374,7 @@ updated_at: "2026-08-11T15:42:00Z"
 - [x] Dragonize
 - [x] Mega Sol
 - [ ] Spicy Spray
-- [ ] Eelevate
+- [x] Eelevate
 - [x] Fire Mane
 
 ## Deferred constraints

@@ -44,7 +44,7 @@ function branchPhases(branch: DamageFormulaBranch): MechanicsPhase[] {
 }
 
 function branchEffectivePower(branch: DamageFormulaBranch): number {
-  if (branch.typeEffectivenessModifier === 0) return 0
+  if (branch.damageNegated || branch.typeEffectivenessModifier === 0) return 0
   let power = Math.max(1, applyModifier(branch.power, branch.basePowerModifier))
   power = applyModifier(power, branch.spreadModifier)
   power = applyModifier(power, branch.weatherModifier)

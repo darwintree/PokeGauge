@@ -3,6 +3,7 @@ import { VGC_LEVEL } from "./calc-constants"
 export const NEUTRAL_MODIFIER = 4096
 
 export type DamageFormulaBranch = {
+  damageNegated: boolean
   power: number
   basePowerModifier: number
   attack: number
@@ -59,7 +60,7 @@ function applyStage(stat: number, stage: number): number {
 }
 
 function calculateBranchRolls(branch: DamageFormulaBranch): number[] {
-  if (branch.typeEffectivenessModifier === 0) return Array(16).fill(0)
+  if (branch.damageNegated || branch.typeEffectivenessModifier === 0) return Array(16).fill(0)
 
   const power = Math.max(1, applyModifier(branch.power, branch.basePowerModifier))
   const attack = Math.max(

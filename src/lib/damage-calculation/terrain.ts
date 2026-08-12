@@ -1,4 +1,7 @@
 import type { PokemonType } from "@/lib/pokemon"
+import { EELEVATE_ABILITY_ID, LEVITATE_ABILITY_ID } from "@/lib/ability"
+
+export { LEVITATE_ABILITY_ID }
 
 import { chainModifiers, NEUTRAL_MODIFIER } from "./damage-kernel"
 
@@ -12,13 +15,13 @@ export const TERRAINS = [
 
 export type Terrain = (typeof TERRAINS)[number]
 
-export const LEVITATE_ABILITY_ID = 26
-
 export function isGrounded(
   types: readonly PokemonType[],
   abilityId: number,
 ): boolean {
-  return !types.includes("flying") && abilityId !== LEVITATE_ABILITY_ID
+  return !types.includes("flying") &&
+    abilityId !== LEVITATE_ABILITY_ID &&
+    abilityId !== EELEVATE_ABILITY_ID
 }
 
 type CompiledTerrainEffect = {
