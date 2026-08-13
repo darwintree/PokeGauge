@@ -18,7 +18,7 @@ import type { StatValueChipModel } from "@/lib/stat-preset"
 import { cn } from "@/lib/utils"
 
 import { formatKOProbability } from "./format-ko-probability"
-import { DamageScenarioSummary } from "./damage-scenario-summary"
+import { ChildScenarioDiff, DamageScenarioSummary } from "./damage-scenario-summary"
 
 // Non-linear axis: 0–100% linear over 72% of width, 100–200% sqrt-compressed
 // into the remaining 28%. Hard cap 200%.
@@ -139,6 +139,8 @@ type DamageResultRowProps = {
   row: ScenarioResult
   isRangeEnvelope?: boolean
   showAccuracy?: boolean
+  /** Child of an expanded Range parent: only these axes differ from the parent. */
+  diff?: { offense: boolean; defense: boolean }
 }
 
 export function DamageResultRow({
@@ -150,6 +152,7 @@ export function DamageResultRow({
   row,
   isRangeEnvelope = false,
   showAccuracy = false,
+  diff,
 }: DamageResultRowProps) {
   const intl = useIntl()
   const tone = lethalTone(row)
@@ -163,16 +166,20 @@ export function DamageResultRow({
 
   return (
     <div className="grid min-h-[4.5rem] gap-3 md:grid-cols-[14.75rem_minmax(0,1fr)_9rem] md:items-center">
-      <DamageScenarioSummary
-        move={move}
-        row={row}
-        attackerStat={attackerStat}
-        defender={defender}
-        attackerAbilities={attackerAbilities}
-        defenderAbilities={defenderAbilities}
-        isRangeEnvelope={isRangeEnvelope}
-        showAccuracy={showAccuracy}
-      />
+      {diff ? (
+        <ChildScenarioDiff attackerStat={attackerStat} defender={defender} diff={diff} />
+      ) : (
+        <DamageScenarioSummary
+          move={move}
+          row={row}
+          attackerStat={attackerStat}
+          defender={defender}
+          attackerAbilities={attackerAbilities}
+          defenderAbilities={defenderAbilities}
+          isRangeEnvelope={isRangeEnvelope}
+          showAccuracy={showAccuracy}
+        />
+      )}
 
       <Tooltip>
         <TooltipTrigger

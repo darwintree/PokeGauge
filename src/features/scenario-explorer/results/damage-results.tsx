@@ -187,13 +187,18 @@ export function DamageResults({
       <div className="rounded-[16px] border-2 border-ink bg-paper shadow-hud-board">
         <DamagePercentAxis />
         <ul className="pb-2">
-          {blocks.flatMap((block) => [
-            { row: block.parent, role: "parent" as const },
-            ...block.children.map((row) => ({ row, role: "child" as const })),
-          ]).map((item, index, displayRows) => {
-            const { row, role } = item
+          {blocks.flatMap((block) => {
+            const expansion = expanded[block.parent.calculationIdentity] ?? {
+              offense: false,
+              defense: false,
+            }
+            return [
+              { row: block.parent, role: "parent" as const, expansion },
+              ...block.children.map((row) => ({ row, role: "child" as const, expansion })),
+            ]
+          }).map((item, index, displayRows) => {
+            const { row, role, expansion } = item
             const identity = rowIdentity(catalog, row, trackState, statNameStrategy, rowLabelPresets)
-            const expansion = expanded[row.calculationIdentity] ?? { offense: false, defense: false }
             const offenseExpandable = role === "parent" && row.attackerStatId === RANGE_STAT_ID
             const defenseExpandable = role === "parent" && row.defenderId === RANGE_DEFENDER_ID
             const isRangeEnvelope =
@@ -244,6 +249,7 @@ export function DamageResults({
                   row={row}
                   isRangeEnvelope={isRangeEnvelope}
                   showAccuracy={trackState.probabilityMode === "battle-odds"}
+                  diff={role === "child" ? expansion : undefined}
                 />
               </li>
             )

@@ -128,6 +128,39 @@ describe("DamageResultRow range envelopes", () => {
     expect(markup).not.toContain("Average damage")
   })
 
+  it("shows only the changed Stat axis on an expanded child row", () => {
+    const markup = renderToStaticMarkup(createElement(
+      IntlProvider,
+      { locale: "en", messages: localeMessages.en },
+      createElement(
+        TooltipProvider,
+        null,
+        createElement(DamageResultRow, {
+          move: {
+            id: 33,
+            label: "Tackle",
+            summary: "40 / 100",
+            moveName: "Tackle",
+            type: "normal",
+            category: "physical",
+            power: 40,
+            accuracy: 100,
+            isSpread: false,
+          },
+          attackerStat: { id: "extreme", chips: [{ label: "EX", actual: "204", sp: "32", nature: "plus", band: "ex", temporary: false }] },
+          defender: { id: "__def_range__", chips: [{ label: "0H0B", actual: "176 / 121", sp: "0 / 0", nature: "none", band: "none", temporary: false }] },
+          row,
+          diff: { offense: true, defense: false },
+        }),
+      ),
+    ))
+
+    expect(markup).not.toContain("Tackle")
+    expect(markup).toContain("EX")
+    expect(markup).not.toContain("0H0B")
+    expect(markup).toContain("10.0% ~ 20.0%")
+  })
+
   it("shows accuracy only in Battle Odds Mode", () => {
     row.moveMechanics.hitFact = 85
     row.moveMechanics.hitProbability = 0.85

@@ -270,6 +270,39 @@ function ScenarioIdentityLine({
   )
 }
 
+export function ChildScenarioDiff({
+  attackerStat,
+  defender,
+  diff,
+}: {
+  attackerStat: DamageScenarioSummaryProps["attackerStat"]
+  defender: DamageScenarioSummaryProps["defender"]
+  diff: { offense: boolean; defense: boolean }
+}) {
+  const intl = useIntl()
+  return (
+    <div className="flex min-w-0 items-stretch gap-2 md:w-[14.75rem]">
+      <span className="w-1 shrink-0 rounded-full bg-ink/25" aria-hidden />
+      <div className="min-w-0 space-y-0.5">
+        {diff.offense && (
+          <ScenarioIdentityLine
+            label={intl.formatMessage({ id: "damage.row.attack" })}
+            chips={attackerStat.chips}
+            showActual={attackerStat.showActual}
+          />
+        )}
+        {diff.defense && (
+          <ScenarioIdentityLine
+            label={intl.formatMessage({ id: "damage.row.defense" })}
+            chips={defender.chips}
+            showActual={defender.showActual}
+          />
+        )}
+      </div>
+    </div>
+  )
+}
+
 export function DamageScenarioSummary(props: DamageScenarioSummaryProps) {
   const intl = useIntl()
   const mechanics = props.row.moveMechanics
