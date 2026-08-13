@@ -134,9 +134,9 @@ function AdditionalConditionDetails(props: DamageScenarioSummaryProps) {
   if (count === 0) return null
 
   return (
-    <details className="border-t border-dashed border-card-border px-2 py-1 text-[10px] text-muted-foreground">
-      <summary className="flex min-h-6 cursor-pointer list-none items-center gap-1 text-[9px] font-bold text-hud-muted hover:text-ink focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none [&::-webkit-details-marker]:hidden [&::marker]:hidden">
-        <MoreHorizontal className="size-3 shrink-0" aria-hidden />
+    <details className="border-t border-dashed border-card-border px-2 py-0.5 text-[10px] text-muted-foreground">
+      <summary className="flex cursor-pointer list-none items-center gap-1 text-[9px] leading-none font-bold text-hud-muted hover:text-ink focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none [&::-webkit-details-marker]:hidden [&::marker]:hidden">
+        <MoreHorizontal className="size-2.5 shrink-0" aria-hidden />
         {intl.formatMessage({ id: "damage.conditions.other" }, { count })}
       </summary>
       <div className="space-y-1 pt-1 text-ink">
