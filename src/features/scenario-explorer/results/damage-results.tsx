@@ -166,16 +166,16 @@ export function DamageResults({
           className="gap-0 rounded-[10px] border-2 border-ink bg-paper p-0.5 shadow-hud-chip"
         >
           <ToggleGroupItem
-            value="classic"
-            className="rounded-[7px] px-2.5 text-[11px] font-extrabold text-ink hover:bg-token-bg aria-pressed:bg-signal-yellow aria-pressed:text-ink aria-pressed:shadow-none"
-          >
-            <FormattedMessage id="probability.mode.classic" />
-          </ToggleGroupItem>
-          <ToggleGroupItem
             value="battle-odds"
             className="rounded-[7px] px-2.5 text-[11px] font-extrabold text-ink hover:bg-token-bg aria-pressed:bg-signal-yellow aria-pressed:text-ink aria-pressed:shadow-none"
           >
             <FormattedMessage id="probability.mode.battleOdds" />
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="classic"
+            className="rounded-[7px] px-2.5 text-[11px] font-extrabold text-ink hover:bg-token-bg aria-pressed:bg-signal-yellow aria-pressed:text-ink aria-pressed:shadow-none"
+          >
+            <FormattedMessage id="probability.mode.classic" />
           </ToggleGroupItem>
         </ToggleGroup>
         <ShowStatValuesSwitch

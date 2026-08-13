@@ -647,12 +647,17 @@ describe("matchup scenario pipeline", () => {
     expect(sandRows[0].maxDamage).toBeGreaterThan(noneRows[0].maxDamage)
   })
 
+  it("defaults new Track State to Battle Odds Mode", () => {
+    expect(defaultTrackState(catalog).probabilityMode).toBe("battle-odds")
+  })
+
   it("compiles Classic and Battle Odds fixed-build KO Probabilities", () => {
     const state = withChoiceStats(defaultTrackState(catalog))
     selectMoves(catalog, state, [667])
     state.offensePresetIds = ["extreme"]
     state.attackerItemIds = [197]
     state.defensePresetIds = ["min-bulk"]
+    state.probabilityMode = "classic"
 
     const [classicResult] = scenarioResults(catalog, state)
     expect(classicResult.koProbabilities).toEqual({ ohko: 1, twoHit: 1 })
