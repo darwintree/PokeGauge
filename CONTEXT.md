@@ -55,8 +55,8 @@ _Avoid_: abilityOn, charged Ability, green-dot Activation, Conditional Active st
 _Avoid_: Slider, range filter
 
 **Stat Track（能力值 Track）**:
-以伤害计算实际使用的最终能力值为分支的一类 Track；分为 Offense Stat Track 与 Defense Stat Track，不把性格、SP 分配或能力阶级本身作为分支。
-_Avoid_: EV Track, Build Track, Stat Stage Track
+以伤害计算实际使用的最终能力值为分支的一类 Track；分为 Offense Stat Track 与 Defense Stat Track，不把性格、SP 分配或能力阶级本身作为分支。一条 Stat Track 只有一组选中的 Stat Value（即该 Track 作为 Choice Track 时的已选中值），且至少含一个，按 Stat Value 去重；Choice 与 Range 是这组值的两种模式。选中集合与 Stat Preset 正交。
+_Avoid_: EV Track, Build Track, Stat Stage Track, dual stat stores
 
 **Offense Stat Track（进攻能力值 Track）**:
 攻击方的 Stat Track；其值是当前招式类别所使用的最终攻击或特攻。
@@ -71,12 +71,16 @@ Stat Track 中的一个确定值；Offense Stat Value 是攻击或特攻的单�
 _Avoid_: Base Stat, EV spread, Stat Allocation
 
 **Stat Preset（能力值预设）**:
-可复用的固定 Stat Value；在 Choice Track 中，每个已选 Preset 构成一条分支。
-_Avoid_: Stat Value Template, preset spread
+可复用的固定 Stat Value（系统或用户保存）；它是 Choice 池里的选项来源，不是选中集合的身份，也不是与 Range 对位的模式名。
+_Avoid_: Stat Value Template, preset spread, mode name for Choice, selected-stat identity
+
+**Temporary Stat Value（临时能力实数值）**:
+没有对应 Stat Preset 的选中 Stat Value。取消选中即删除；仅当需要某个 Stat Value 且不存在对应 Preset 时才创建。
+_Avoid_: Temporary Stat Preset, temporary range store, unsaved draft interval
 
 **Stat Range（能力值区间）**:
-由两个 Stat Value 端点界定的闭区间，整个区间是 Range Track 的一条分支。Defense Stat Range 的每个端点都是一个完整的 Defense Stat Value。
-_Avoid_: Enumerated Stat Values, independent HP and Defense Tracks
+当前选中 Stat Value 的轴对齐包络。进攻端点是最小与最大实数；防守端点是 `(min HP, min Def)` 与 `(max HP, max Def)` 两个完整 Defense Stat Value。仍落在包络内的选中值保持选中；缺的端点补 Temporary Stat Value。不是四个角的笛卡尔积。
+_Avoid_: Enumerated Stat Values, independent HP and Defense Tracks, four-corner writeback
 
 **Stat Allocation（能力分配）**:
 能够产生某个 Stat Value 的性格与 SP 分配组合；它解释 Stat Value 如何实现，但不构成独立的 Scenario 分支。

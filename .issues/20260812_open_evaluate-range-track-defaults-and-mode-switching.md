@@ -6,28 +6,21 @@ status: "open"
 priority: "high"
 labels: ["FEATURE-REQUEST", "WAYFINDER:MAP"]
 created_at: "2026-08-12T07:49:00Z"
-updated_at: "2026-08-13T08:57:00Z"
+updated_at: "2026-08-13T09:54:00Z"
 ---
 ## Destination
 
-让 Range / Preset 切换符合「先看区间、再按需展开某一行的配置」的心智：Range 母行可就地展开对应 Choice，折叠 Stat Track 可直接切模式。视觉细节拆成子票，按顺序处理。
+让 Range / Choice 切换符合「先看区间、再按需展开某一行的配置」的心智：一条 Stat Track 只有一组选中 Stat Value；Range 是其包络，Choice 是同一集合的离散分支；Range 母行可只读展开对应 Choice；折叠 Stat Track 可直接切模式。
 
 ## Discussion Trace
 
 [`docs/traces/discussion/2026-08-13-stat-range-choice-mode-switching.md`](../docs/traces/discussion/2026-08-13-stat-range-choice-mode-switching.md)
 
+ADR: [`docs/adr/0003-stat-track-one-selected-value-set.md`](../docs/adr/0003-stat-track-one-selected-value-set.md)
+
 ## Problem
 
-Stat Track 当前默认展示 Preset，并通过 Track 内的 `Preset / Range` tabs 切换。Range 是 Scenario 模型中的一等分支，但默认呈现、模式命名和值继承规则是否符合用户心智尚未经过 release 前评估。
-
-当前切换包含不明显的状态转换：
-
-- 首次从 Preset 切到 Range 时，若 Range 尚未 touched，会从当前已选 Preset 推导区间。
-- Range 一旦被编辑，后续切换会保留旧 Range，不再随 Preset 变化自动重算。
-- 从 Range 切回 Preset 时，进攻方把区间端点转成一个或两个 Preset；防守方把 HP 与 Defense 两轴端点转成最多四个角点 Preset，并可能生成 temporary presets。
-- 默认折叠摘要只显示当前模式的结果，用户无法在切换前预知上述转换或旧状态是否仍被保留。
-
-行级展开与折叠态切换的交互契约已经定稿；默认模式与值继承仍待处理。
+Stat Track 当前仍是两套库：`statMode` / `defenderMode` 各带独立区间、`touched` 保护，以及 Range → Choice 的端点和解（防守最多四个角点、Temporary Preset）。产品契约已改为单选中集合，代码尚未跟上。
 
 ## Tickets
 
@@ -37,22 +30,31 @@ Stat Track 当前默认展示 Preset，并通过 Track 内的 `Preset / Range` t
 
 ## Decisions so far
 
+交互与视觉（trace 1–8）：
+
 - Range 模式下原始结果行是母行。点击母行中的 Range 区间，只在该母行下展开子行；其他母行不变。
 - 点进攻只展开进攻 Choice，点防守只展开防守 Choice。两项都可展开时都可以点；都展开时子行是该母行两轴 Choice 的组合。
 - 子行不可展开。
 - 行内展开不改变 Stat Track 的全局模式。
 - 折叠 Stat Track 上有可从外部点击的切换控件，点击后直接切换该轴的全局模式。
-- 交互定稿；视觉拆成上面三张子票，按 Tickets 顺序处理。
-- [[archive/20260813_closed_unify-stat-value-chip-display|Unify stat value chip display]]：Stat Value 默认身份是 Label chip（结果行 / 折叠摘要 / Choice 共用）；Range 为两端点 chip；色按相对 0 修正加值分四档。
-- [[archive/20260813_closed_style-expandable-range-items-on-parent-result-rows|Style expandable range items on parent result rows]]：母行 Range 展开示能是 chip 旁独立 chevron；已进入产品结果表。
-- [[archive/20260813_closed_style-collapsed-stat-track-mode-switch|Style collapsed Stat Track mode switch]]：折叠 well + tick（点浅井切、点 chip 不切）；展开用黄底分段。
+- [[archive/20260813_closed_unify-stat-value-chip-display|Unify stat value chip display]]：Stat Value 默认身份是 Label chip；Range 为两端点 chip。
+- [[archive/20260813_closed_style-expandable-range-items-on-parent-result-rows|Style expandable range items on parent result rows]]：母行 Range 展开示能是 chip 旁独立 chevron。
+- [[archive/20260813_closed_style-collapsed-stat-track-mode-switch|Style collapsed Stat Track mode switch]]：折叠 well + tick（点浅井切、点 chip 不切）。
+
+值模型（trace 9–21）：
+
+- 一条 Stat Track 只有一组选中 Stat Value；Choice 与 Range 是这组值的两种模式。选中的是 Stat Value，与 Stat Preset 正交，按值去重。
+- 防守 Range 端点是 `(min HP, min Def)` 与 `(max HP, max Def)`，不是四角笛卡尔积。
+- 进入 Range 或拖边界时，缺的包络端点有对应 Preset 则选中，否则补 Temporary Stat Value。展开只读，不写选中集合。
+- 包络内的选中值保持选中；扩大时旧端点留作内部点；落到包络外的取消选中。Temporary Stat Value 取消即删，可保存成用户 Preset。
+- 不允许 0 个选中。单值可把两个手柄向两边拖，交叉换角色。Choice 不能取消最后一个值。
+- 新对阵默认 Range。进攻选中 `0A`、`EX` 及该 Identity 全部用户进攻 Preset；防守选中 `0H0B`、`32H0B` 及全部用户防守 Preset。
+- 换 Identity 重置为上述默认。恢复已保存 Matchup 以保存的模式和选中为准。
+- 母行展开子行 = 当前整组选中值。
 
 ## Not yet specified
 
-- 初次进入时默认 Preset、Range，还是依据任务／历史偏好。
-- 切换 Track 模式时如何转换／保留／重置值，touched 与 temporary presets 的可见语义。
-- 防守方二维 Range 回切为最多四个角点是否保留。
-- 能力值 chip、母行展开示能、折叠 Stat Track 切换视觉已收口，见 Decisions so far。
+- 实现尚未开始。伤害计算端点与 Scenario Merge 仍见 [[20260717_open_define-range-endpoint-identity-and-merge-semantics|Define Range endpoint identity and merge semantics]]，本票不改。
 
 ## Related issues
 
@@ -67,14 +69,14 @@ Stat Track 当前默认展示 Preset，并通过 Track 内的 `Preset / Range` t
 
 ## Verification Checklist
 
-- [ ] 对照讨论记录逐条确认：每条决定已实现，或已明确推迟到对应子票。
-- [ ] 记录当前 offense／defense 在 untouched／touched 下双向切换的完整状态矩阵。
-- [ ] 默认模式、切换时的转换／保留规则、重置行为形成明确产品契约，或拆出后续票。
-- [ ] 与 Range endpoint identity／merge issue 的边界和依赖明确。
+- [ ] 逐条核对 [`docs/traces/discussion/2026-08-13-stat-range-choice-mode-switching.md`](../docs/traces/discussion/2026-08-13-stat-range-choice-mode-switching.md) 每一条决定已实现，或已明确推迟。
+- [ ] 去掉两套库、`touched` 保护、以及 Range → Choice 四角覆盖。
+- [ ] 新对阵默认 Range，选中集合符合第 17 条。
+- [ ] 与 Range endpoint identity／merge issue 的边界仍成立：本票不改计算端点语义。
 
 ## Progress Log
 
 - 2026-08-12：release 讨论将 Range Track 默认展示与模式切换列为必须评估的体验问题。
-- 2026-08-13：grilling 定稿行内展开与折叠 Track 切换交互；记录见讨论 trace。视觉拆成三张子票。交互原型留在工作区 `src/features/scenario-explorer/tracks/stats/prototype/`，不进主分支。
-- 2026-08-13：Stat Value Label chip 契约落地产品；见 Decisions so far。
-- 2026-08-13：母行展开示能定为 sibling chevron；记在展开样式子票，不进 spec。
+- 2026-08-13：grilling 定稿行内展开与折叠 Track 切换交互；记录见讨论 trace。视觉拆成三张子票。
+- 2026-08-13：Stat Value Label chip、母行 chevron、折叠 well + tick 进入产品；相关子票归档。
+- 2026-08-13：grilling 定稿单选中集合、默认 Range、包络端点与 Temporary Stat Value 生命周期；trace 第 9–21 条。实现未开始。

@@ -49,3 +49,81 @@
 问题：折叠 Stat Track 切换视觉已进产品后，这张子票是否立刻归档。
 
 决定：先更新 issue，不立刻归档。母行 chevron 进入产品后，再收视觉并归档。
+
+## 9. Choice 与 Range 是否各有一套值
+
+问题：切全局模式时，Choice 选中与 Range 区间是两套独立配置、每次和解，还是同一套值的两种体现。
+
+决定：一条 Stat Track 只有一组选中 Stat Value。Choice 与 Range 是这组值的两种模式，不是两套库。
+
+## 10. 选中集合与 Stat Preset 的关系
+
+问题：选中集合的成员是 Stat Preset 身份，还是与 Preset 正交的 Stat Value。
+
+决定：选中的是 Stat Value，即该 Track 作为 Choice Track 时的已选中值。与 Stat Preset 正交。按 Stat Value 去重。
+
+## 11. 防守 Range 的端点是什么
+
+问题：Defense Stat Range 是两个完整 Defense Stat Value，还是 HP×Def 矩形的四个角。
+
+决定：两个完整端点，取当前选中值的轴对齐包络：`(min HP, min Def)` 与 `(max HP, max Def)`。不是四个角的笛卡尔积。
+
+## 12. 缺的包络端点何时写入选中集合
+
+问题：包络角不在选中集合里时，何时补 Temporary Stat Value；母行展开是否也补。
+
+决定：进入 Range 或拖边界时，缺的端点若无对应 Preset 则补 Temporary Stat Value，有对应值则直接选中。母行展开只读，不写选中集合。
+
+## 13. 拖动包络时如何改选中集合
+
+问题：拖边界是取消旧端点再造 temp，还是只取消落到包络外的值。
+
+决定：仍落在包络内的选中值保持选中；扩大包络时旧端点留作内部点。落到包络外的值取消选中。
+
+## 14. Temporary Stat Value 的生命周期
+
+问题：无对应 Preset 的选中值如何创建、删除、能否保存。
+
+决定：仅当需要某个 Stat Value 且不存在对应 Preset 时创建。取消选中即删除。可以保存成用户 Stat Preset；保存后仍选中，取消不再删除。
+
+## 15. 选中集合可否为空；单值如何拖成区间
+
+问题：0 个或 1 个选中时 Range 如何表现；单值两个手柄能否向两边拖。
+
+决定：不允许 0 个。1 个时 Range 显示一枚 chip。拖任一手柄向任一方向：保留该值，在新位置补 Temporary Stat Value；手柄交叉即换角色。
+
+## 16. 新对阵默认模式
+
+问题：初次进入默认 Choice、Range，还是记住上次模式。
+
+决定：默认 Range。
+
+## 17. 新对阵默认选中哪些值
+
+问题：默认 Range 的选中集合用现有 Choice 默认、物种最小～最大，还是系统端点加用户 Preset。
+
+决定：进攻选中 `0A`、`EX` 以及该 Identity 下全部用户进攻 Preset。防守选中 `0H0B`、`32H0B` 以及该 Identity 下全部用户防守 Preset。用户 Preset 在端点外则撑开包络，在内则为内部点。本次会话新增或保存的用户 Preset 同样进入选中集合。
+
+## 18. 母行展开的子行是什么
+
+问题：Range 母行展开后，子行是整组选中值、只有端点，还是包络内全部池成员。
+
+决定：当前整组选中值（含内部点）。展开只读。
+
+## 19. Choice 能否取消最后一个值
+
+问题：0 个已禁止时，Choice 里点掉最后一项如何处理。
+
+决定：不能取消最后一个。点掉最后一项是空操作。
+
+## 20. 换 Battle Pokémon Identity 时 Stat Track 怎么办
+
+问题：换 Identity 是重置为默认，还是尽量保留选中值。
+
+决定：重置为默认 Range 与第 17 条的默认选中。
+
+## 21. 恢复已保存 Matchup
+
+问题：打开旧档是沿用保存状态，还是一律改写成默认 Range。
+
+决定：以保存的模式和选中集合为准，不改写成默认 Range。
