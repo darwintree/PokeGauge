@@ -168,4 +168,42 @@ describe("DamageResultRow range envelopes", () => {
     expect(render(false)).not.toContain("85%")
     expect(render(false, true)).toContain("85%")
   })
+
+  it("shows active stat stages in a left rail", () => {
+    const staged: ScenarioResult = {
+      ...row,
+      provenance: {
+        ...row.provenance,
+        "attacker-stage": { active: ["2"], inactive: [], unsupported: [], neutral: [] },
+        "defender-stage": { active: ["-1"], inactive: [], unsupported: [], neutral: [] },
+      },
+    }
+    const markup = renderToStaticMarkup(createElement(
+      IntlProvider,
+      { locale: "en", messages: localeMessages.en },
+      createElement(
+        TooltipProvider,
+        null,
+        createElement(DamageResultRow, {
+          move: {
+            id: 33,
+            label: "Tackle",
+            summary: "40 / 100",
+            moveName: "Tackle",
+            type: "normal",
+            category: "physical",
+            power: 40,
+            accuracy: 100,
+            isSpread: false,
+          },
+          attackerStat: { id: "__range__", chips: [{ label: "0A", actual: "152", sp: "0", nature: "none", band: "none", temporary: false }] },
+          defender: { id: "standard-bulk", chips: [{ label: "EX", actual: "341 / 251", sp: "32H / 32B", nature: "plus", band: "ex", temporary: false }] },
+          row: staged,
+        }),
+      ),
+    ))
+
+    expect(markup).toContain("+2")
+    expect(markup).toContain("-1")
+  })
 })

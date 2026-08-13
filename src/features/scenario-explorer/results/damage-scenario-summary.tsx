@@ -83,8 +83,8 @@ function ActiveTokens({
 }: DamageScenarioSummaryProps & { side: "attack" | "defense" }) {
   const intl = useIntl()
   const tracks: ScenarioTrack[] = side === "attack"
-    ? ["attacker-stage", "held-item", "attacker-ability", "weather", "terrain"]
-    : ["defender-stage", "defender-held-item", "defender-ability", "screen"]
+    ? ["held-item", "attacker-ability", "weather", "terrain"]
+    : ["defender-held-item", "defender-ability", "screen"]
   const values = tracks.flatMap((track) =>
     (props.row.provenance[track]?.active ?? [])
       .filter((id) => id !== "none" && id !== "0" && !abilitySourceIsHidden(track, id))
@@ -268,6 +268,29 @@ function ScenarioIdentityLine({
   )
 }
 
+function activeStage(
+  row: ScenarioResult,
+  track: "attacker-stage" | "defender-stage",
+): number {
+  const id = (row.provenance[track]?.active ?? []).find((value) => value !== "none")
+  return Number(id ?? 0)
+}
+
+function stageLabel(value: number): string {
+  return value > 0 ? `+${value}` : String(value)
+}
+
+function StageRailCell({ value, title }: { value: number; title: string }) {
+  return (
+    <span
+      title={title}
+      className="flex flex-1 items-center justify-center text-[12px] font-extrabold tabular-nums text-ink"
+    >
+      {value === 0 ? <span className="sr-only">{title}</span> : stageLabel(value)}
+    </span>
+  )
+}
+
 export function ChildScenarioDiff({
   attackerStat,
   defender,
@@ -308,6 +331,10 @@ export function DamageScenarioSummary(props: DamageScenarioSummaryProps) {
   const accuracy = mechanics.hitFact === "always-hits"
     ? intl.formatMessage({ id: "damage.conditions.alwaysHits" })
     : `${Math.round(mechanics.hitProbability * 100)}%`
+  const attackStage = activeStage(props.row, "attacker-stage")
+  const defenseStage = activeStage(props.row, "defender-stage")
+  const attackLabel = intl.formatMessage({ id: "damage.row.attack" })
+  const defenseLabel = intl.formatMessage({ id: "damage.row.defense" })
 
   return (
     <article className="w-full rounded-[10px] border border-card-border bg-muted/60 md:w-[14.75rem]">
@@ -317,33 +344,45 @@ export function DamageScenarioSummary(props: DamageScenarioSummaryProps) {
         {props.showAccuracy && <><span aria-hidden className="text-[10.5px] text-muted-foreground">·</span><span title={intl.formatMessage({ id: "damage.conditions.accuracy" })} className="text-[10.5px] tabular-nums">{accuracy}</span></>}
         <DamageFormulaTooltip {...props} />
       </div>
-      <div className="space-y-0.5 px-2 py-1">
-        <ScenarioIdentityLine
-          label={intl.formatMessage({ id: "damage.row.attack" })}
-          chips={props.attackerStat.chips}
-          showActual={props.attackerStat.showActual}
-          expandable={props.attackerStat.expandable}
-          expanded={props.attackerStat.expanded}
-          onToggle={props.attackerStat.onToggle}
-          toggleLabel={intl.formatMessage({
-            id: props.attackerStat.expanded ? "damage.row.collapseOffense" : "damage.row.expandOffense",
-          })}
-        >
-          <ActiveTokens {...props} side="attack" />
-        </ScenarioIdentityLine>
-        <ScenarioIdentityLine
-          label={intl.formatMessage({ id: "damage.row.defense" })}
-          chips={props.defender.chips}
-          showActual={props.defender.showActual}
-          expandable={props.defender.expandable}
-          expanded={props.defender.expanded}
-          onToggle={props.defender.onToggle}
-          toggleLabel={intl.formatMessage({
-            id: props.defender.expanded ? "damage.row.collapseDefense" : "damage.row.expandDefense",
-          })}
-        >
-          <ActiveTokens {...props} side="defense" />
-        </ScenarioIdentityLine>
+      <div className="grid grid-cols-[1.5rem_minmax(0,1fr)]">
+        <div className="flex h-full flex-col border-r border-hairline">
+          <StageRailCell
+            value={attackStage}
+            title={`${attackLabel} ${stageLabel(attackStage)}`}
+          />
+          <StageRailCell
+            value={defenseStage}
+            title={`${defenseLabel} ${stageLabel(defenseStage)}`}
+          />
+        </div>
+        <div className="space-y-0.5 px-2 py-1">
+          <ScenarioIdentityLine
+            label={attackLabel}
+            chips={props.attackerStat.chips}
+            showActual={props.attackerStat.showActual}
+            expandable={props.attackerStat.expandable}
+            expanded={props.attackerStat.expanded}
+            onToggle={props.attackerStat.onToggle}
+            toggleLabel={intl.formatMessage({
+              id: props.attackerStat.expanded ? "damage.row.collapseOffense" : "damage.row.expandOffense",
+            })}
+          >
+            <ActiveTokens {...props} side="attack" />
+          </ScenarioIdentityLine>
+          <ScenarioIdentityLine
+            label={defenseLabel}
+            chips={props.defender.chips}
+            showActual={props.defender.showActual}
+            expandable={props.defender.expandable}
+            expanded={props.defender.expanded}
+            onToggle={props.defender.onToggle}
+            toggleLabel={intl.formatMessage({
+              id: props.defender.expanded ? "damage.row.collapseDefense" : "damage.row.expandDefense",
+            })}
+          >
+            <ActiveTokens {...props} side="defense" />
+          </ScenarioIdentityLine>
+        </div>
       </div>
       <AdditionalConditionDetails {...props} />
     </article>
