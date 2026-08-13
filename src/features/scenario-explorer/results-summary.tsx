@@ -17,23 +17,14 @@ export function ResultSetSummary({
           { id: "summary.statsPreset" },
           { count: trackState.offensePresetIds.length },
         )
-      : intl.formatMessage(
-          { id: "summary.statsRange" },
-          { min: trackState.statRange.min, max: trackState.statRange.max },
-        )
+      : intl.formatMessage({ id: "summary.statsRange" })
   const defenders =
     trackState.defenderMode === "preset"
       ? intl.formatMessage(
           { id: "summary.defendersPreset" },
           { count: trackState.defensePresetIds.length },
         )
-      : intl.formatMessage(
-          { id: "summary.defendersRange" },
-          {
-            min: trackState.defenderRanges.hp.min,
-            max: trackState.defenderRanges.hp.max,
-          },
-        )
+      : intl.formatMessage({ id: "summary.defendersRange" })
   return (
     <div className="flex flex-wrap items-center justify-between gap-2">
       <div className="flex flex-wrap gap-1.5">

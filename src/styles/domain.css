@@ -37,7 +37,7 @@
     --pokemon-type-steel-foreground: #171717;
     --pokemon-type-fairy-foreground: #171717;
 
-    /* Stat tier domain tokens — gray / blue / purple (domain, not chrome) */
+    /* Stat tier domain tokens — gray / blue / purple (axis snaps; domain, not chrome) */
     --stat-tier-0-fg: #4d4d4d;
     --stat-tier-0-bg: #f2f2f2;
     --stat-tier-0-border: #ebebeb;
@@ -54,6 +54,12 @@
     --stat-tier-ex-bg: #faf0ff;
     --stat-tier-ex-border: #f2d9ff;
     --stat-tier-ex-muted: #793b9e;
+
+    /* Stat Value Label chip — bonus vs 0-investment (domain, not chrome) */
+    --stat-invest-some-fg: #0a5c50;
+    --stat-invest-some-bg: #c8e8e1;
+    --stat-invest-heavy-fg: #1d4ed8;
+    --stat-invest-heavy-bg: #c9d9ff;
 
     /* Damage domain tokens */
     --damage-cool-start: #ffd98a;
@@ -212,6 +218,69 @@
 
   .stat-axis-tick.stat-axis-snap--ex {
     background-color: var(--stat-tier-ex-muted);
+  }
+
+  .stat-value-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    min-height: 1.5rem;
+    padding: 0 0.375rem;
+    border: 2px solid var(--chip-fg);
+    border-radius: 9px;
+    background: var(--chip-bg);
+    color: var(--chip-fg);
+    cursor: help;
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    box-shadow: none;
+  }
+
+  .stat-value-chip:hover {
+    border-color: var(--ink);
+  }
+
+  .stat-value-chip:focus-visible {
+    border-color: var(--ink);
+    outline: 2px solid var(--ink);
+    outline-offset: 1px;
+  }
+
+  .stat-value-chip--compact {
+    font-size: 10px;
+  }
+
+  .stat-value-chip--none {
+    --chip-fg: var(--stat-tier-0-fg);
+    --chip-bg: var(--stat-tier-0-bg);
+  }
+
+  .stat-value-chip--some {
+    --chip-fg: var(--stat-invest-some-fg);
+    --chip-bg: var(--stat-invest-some-bg);
+  }
+
+  .stat-value-chip--heavy {
+    --chip-fg: var(--stat-invest-heavy-fg);
+    --chip-bg: var(--stat-invest-heavy-bg);
+  }
+
+  .stat-value-chip--ex {
+    --chip-fg: var(--stat-tier-ex-fg);
+    --chip-bg: var(--stat-tier-ex-bg);
+  }
+
+  .stat-value-chip--temporary {
+    border-style: dashed;
+  }
+
+  .stat-value-chip-actual {
+    font-size: 9px;
+    font-weight: 400;
+    opacity: 0.75;
+    font-variant-numeric: tabular-nums;
   }
 
 }

@@ -43,6 +43,8 @@ it("keeps type and stat-tier text colors at WCAG AA contrast", () => {
         [`${tier}-bg`, `${tier}-muted`],
       ],
     ),
+    ["stat-invest-some-bg", "stat-invest-some-fg"],
+    ["stat-invest-heavy-bg", "stat-invest-heavy-fg"],
   ]
 
   for (const [background, foreground] of pairs) {

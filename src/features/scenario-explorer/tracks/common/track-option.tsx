@@ -10,12 +10,14 @@ import {
   statTierModifierClass,
   type StatTierTokenSet,
 } from "../stats/stat-tier-colors"
+import type { InvestBand } from "@/lib/stat-preset"
 import { cn } from "@/lib/utils"
 
 type TrackOptionLayout = "text" | "icon"
 
 export type TrackOptionModifier =
   | { kind: "tier"; tier: StatTierTokenSet }
+  | { kind: "invest"; band: InvestBand }
   | { kind: "temporary" }
   | { kind: "user" }
   | { kind: "stab-boost" }
@@ -42,7 +44,7 @@ type TrackOptionProps = {
   modifier?: TrackOptionModifier
   actions?: TrackOptionAction[]
   className?: string
-  tooltip?: string | null
+  tooltip?: ReactNode
   disabled?: boolean
 }
 
@@ -65,11 +67,20 @@ const CORNER_POSITION: Record<TrackOptionAction["position"], string> = {
   "bottom-right": "track-option-action--bottom-right",
 }
 
+const INVEST_MODIFIER_CLASS: Record<InvestBand, string> = {
+  none: "track-option-mod-invest-none",
+  some: "track-option-mod-invest-some",
+  heavy: "track-option-mod-invest-heavy",
+  ex: "track-option-mod-invest-ex",
+}
+
 function modifierClass(modifier: TrackOptionModifier | undefined): string | undefined {
   if (!modifier) return undefined
   switch (modifier.kind) {
     case "tier":
       return statTierModifierClass(modifier.tier)
+    case "invest":
+      return INVEST_MODIFIER_CLASS[modifier.band]
     case "temporary":
       return "track-option-mod-temporary"
     case "user":
@@ -161,7 +172,7 @@ export function TrackOption({
       >
         {children}
       </TooltipTrigger>
-      <TooltipContent side="top" className="max-w-xs text-xs whitespace-pre-line">
+      <TooltipContent side="top" className="max-w-xs rounded-xl border-2 border-ink bg-paper p-2 text-xs shadow-hud-panel">
         {tooltip}
       </TooltipContent>
     </Tooltip>

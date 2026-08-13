@@ -14,6 +14,7 @@ import type {
   CatalogOption,
 } from "@/lib/catalog"
 import type { ScenarioResult } from "@/lib/scenario"
+import type { StatValueChipModel } from "@/lib/stat-preset"
 import { cn } from "@/lib/utils"
 
 import { formatKOProbability } from "./format-ko-probability"
@@ -121,8 +122,8 @@ type DamageResultRowProps = {
   move: CatalogMoveOption
   attackerAbilities?: CatalogAbilityOption[]
   defenderAbilities?: CatalogAbilityOption[]
-  attackerStat: Pick<CatalogOption<string>, "id" | "label"> & { statValue?: string | null }
-  defender: Pick<CatalogOption<string>, "id" | "label"> & { statValue?: string | null }
+  attackerStat: Pick<CatalogOption<string>, "id"> & { chips: StatValueChipModel[]; showActual?: boolean }
+  defender: Pick<CatalogOption<string>, "id"> & { chips: StatValueChipModel[]; showActual?: boolean }
   row: ScenarioResult
   isRangeEnvelope?: boolean
   showAccuracy?: boolean

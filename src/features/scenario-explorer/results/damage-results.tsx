@@ -27,7 +27,7 @@ import {
   DamageResultRow,
 } from "./damage-result-row"
 import { ShowStatValuesSwitch } from "../tracks/common/show-stat-values-switch"
-import { rowLabels } from "./row-labels"
+import { rowIdentity } from "./row-labels"
 
 type DamageResultsProps = {
   catalog: MatchupCatalog
@@ -160,7 +160,7 @@ export function DamageResults({
         <DamagePercentAxis />
         <ul className="pb-2">
           {rows.map((row, index) => {
-            const labels = rowLabels(catalog, row, trackState, statNameStrategy, rowLabelPresets)
+            const identity = rowIdentity(catalog, row, trackState, statNameStrategy, rowLabelPresets)
             const isRangeEnvelope =
               row.attackerStatId === RANGE_STAT_ID || row.defenderId === RANGE_DEFENDER_ID
             const startsMoveGroup = index === 0 || rows[index - 1].snapshotId !== row.snapshotId
@@ -187,13 +187,13 @@ export function DamageResults({
                   defenderAbilities={catalog.defenderAbilities}
                   attackerStat={{
                     id: row.attackerStatId,
-                    label: labels.stat,
-                    statValue: labels.offenseStatValueLabel,
+                    chips: identity.offenseChips,
+                    showActual: trackState.showResultStatValue,
                   }}
                   defender={{
                     id: row.defenderId,
-                    label: labels.defender,
-                    statValue: labels.defenseStatValueLabel,
+                    chips: identity.defenseChips,
+                    showActual: trackState.showResultStatValue,
                   }}
                   row={row}
                   isRangeEnvelope={isRangeEnvelope}

@@ -5,10 +5,14 @@ import {
   offensePresetsForState,
 } from "@/lib/scenario"
 import {
-  formatStatPresetValue,
-  statPresetLabel,
+  fallbackStatValueChip,
+  resolveDefenseChip,
+  resolveOffenseChip,
+  resolvePresetChip,
+  uniqueEndpointChips,
   type StatNameStrategy,
   type StatPreset,
+  type StatValueChipModel,
 } from "@/lib/stat-preset"
 
 export type RowLabelPresets = {
@@ -16,7 +20,7 @@ export type RowLabelPresets = {
   defense: StatPreset[]
 }
 
-export function rowLabels(
+export function rowIdentity(
   catalog: MatchupCatalog,
   row: ScenarioResult,
   trackState: TrackState,
@@ -24,67 +28,82 @@ export function rowLabels(
   presets?: RowLabelPresets,
 ): {
   move: string
-  stat: string
-  offenseStatValueLabel: string | null
-  defender: string
-  defenseStatValueLabel: string | null
+  offenseChips: StatValueChipModel[]
+  defenseChips: StatValueChipModel[]
 } {
   const findItem = (options: { id: string | number; label: string }[], id: string | number) =>
-    options.find((option) => option.id === id)?.label ?? id
+    options.find((option) => option.id === id)?.label ?? String(id)
   const offensePresets = presets?.offense ?? offensePresetsForState(catalog, trackState)
   const defensePresets = presets?.defense ?? defensePresetsForState(catalog, trackState)
+  const category = catalog.moveCategory
 
-  let statLabel: string
-  let offenseStatValueLabel: string | null = null
+  let offenseChips: StatValueChipModel[]
   if (row.attackerStatId === RANGE_STAT_ID && row.statRange) {
-    statLabel = `${catalog.offenseStatLabel} ${row.statRange.min}-${row.statRange.max}`
+    offenseChips = uniqueEndpointChips(
+      resolveOffenseChip({
+        calcName: catalog.matchup.attackerCalcName,
+        category,
+        stat: row.statRange.min,
+        strategy: statNameStrategy,
+      }),
+      resolveOffenseChip({
+        calcName: catalog.matchup.attackerCalcName,
+        category,
+        stat: row.statRange.max,
+        strategy: statNameStrategy,
+      }),
+    )
   } else {
     const preset = offensePresets.find((candidate) => candidate.id === row.attackerStatId)
-    if (preset) {
-      statLabel = statPresetLabel(
-        preset,
-        catalog.matchup.attackerCalcName,
-        catalog.moveCategory,
-        trackState.offenseAllocationIndices[preset.id] ?? 0,
-        statNameStrategy,
-      )
-      if (trackState.showResultStatValue) {
-        const statValueText = formatStatPresetValue(preset)
-        offenseStatValueLabel = statValueText === statLabel ? null : statValueText
-      }
-    } else {
-      statLabel = row.attackerStatId
-    }
+    offenseChips = [
+      preset
+        ? resolvePresetChip(
+            preset,
+            catalog.matchup.attackerCalcName,
+            category,
+            trackState.offenseAllocationIndices[preset.id] ?? 0,
+            statNameStrategy,
+          )
+        : fallbackStatValueChip(row.attackerStatId),
+    ]
   }
 
-  let defenderLabel: string
-  let defenseStatValueLabel: string | null = null
+  let defenseChips: StatValueChipModel[]
   if (row.defenderId === RANGE_DEFENDER_ID && row.defenderRanges) {
-    defenderLabel = `HP ${row.defenderRanges.hp.min}-${row.defenderRanges.hp.max} · ${catalog.defenseStatLabel} ${row.defenderRanges.def.min}-${row.defenderRanges.def.max}`
+    defenseChips = uniqueEndpointChips(
+      resolveDefenseChip({
+        calcName: catalog.matchup.defenderCalcName,
+        category,
+        hp: row.defenderRanges.hp.min,
+        def: row.defenderRanges.def.min,
+        strategy: statNameStrategy,
+      }),
+      resolveDefenseChip({
+        calcName: catalog.matchup.defenderCalcName,
+        category,
+        hp: row.defenderRanges.hp.max,
+        def: row.defenderRanges.def.max,
+        strategy: statNameStrategy,
+      }),
+    )
   } else {
     const preset = defensePresets.find((candidate) => candidate.id === row.defenderId)
-    if (preset) {
-      defenderLabel = statPresetLabel(
-        preset,
-        catalog.matchup.defenderCalcName,
-        catalog.moveCategory,
-        trackState.defenseAllocationIndices[preset.id] ?? 0,
-        statNameStrategy,
-      )
-      if (trackState.showResultStatValue) {
-        const statValueText = formatStatPresetValue(preset)
-        defenseStatValueLabel = statValueText === defenderLabel ? null : statValueText
-      }
-    } else {
-      defenderLabel = row.defenderId
-    }
+    defenseChips = [
+      preset
+        ? resolvePresetChip(
+            preset,
+            catalog.matchup.defenderCalcName,
+            category,
+            trackState.defenseAllocationIndices[preset.id] ?? 0,
+            statNameStrategy,
+          )
+        : fallbackStatValueChip(row.defenderId),
+    ]
   }
 
   return {
-    move: String(findItem(catalog.moves, row.moveId)),
-    stat: statLabel,
-    offenseStatValueLabel,
-    defender: defenderLabel,
-    defenseStatValueLabel,
+    move: findItem(catalog.moves, row.moveId),
+    offenseChips,
+    defenseChips,
   }
 }

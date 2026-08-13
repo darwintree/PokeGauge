@@ -39,8 +39,8 @@ describe("weather damage result presentation", () => {
         null,
         createElement(DamageResultRow, {
           move,
-          attackerStat: { id: "neutral-max", label: "Sp. Atk" },
-          defender: { id: "standard-bulk", label: "Sp. Def" },
+          attackerStat: { id: "neutral-max", chips: [{ label: "32A", actual: "172", sp: "32", nature: "none", band: "some", temporary: false }] },
+          defender: { id: "standard-bulk", chips: [{ label: "EX", actual: "341 / 251", sp: "32H / 32B", nature: "plus", band: "ex", temporary: false }] },
           row: result.rows[0],
         }),
       ),

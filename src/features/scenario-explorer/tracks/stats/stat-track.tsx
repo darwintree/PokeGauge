@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import { Gauge } from "lucide-react"
 import { FormattedMessage, useIntl } from "react-intl"
 
@@ -8,7 +9,14 @@ import {
   offensePresetsForState,
   type StatSelectMode,
 } from "@/lib/scenario"
-import { statPresetLabel } from "@/lib/stat-preset"
+import {
+  fallbackStatValueChip,
+  resolveDefenseChip,
+  resolveOffenseChip,
+  resolvePresetChip,
+  uniqueEndpointChips,
+  type StatValueChipModel,
+} from "@/lib/stat-preset"
 
 import { StatRangeInput } from "./stat-range-input"
 import {
@@ -16,6 +24,7 @@ import {
   AddOffensePresetPanel,
   StatPresetChoices,
 } from "./stat-preset-choices"
+import { StatValueChip, StatValueChipPair } from "./stat-value-chip"
 import { ShowStatValuesSwitch } from "../common/show-stat-values-switch"
 import { TrackPanel } from "../common/track-panel"
 import type { ScenarioState } from "../../state/use-scenario-state"
@@ -28,48 +37,116 @@ type StatTrackProps = {
   onToggle: () => void
 }
 
-function offenseSummary(catalog: MatchupCatalog, state: ScenarioState): string {
-  const { trackState } = state
-  if (trackState.statMode === "range") {
-    return `${trackState.statRange.min}-${trackState.statRange.max}`
+function ChipSummary({
+  chips,
+  ranged,
+  showActual,
+}: {
+  chips: StatValueChipModel[]
+  ranged: boolean
+  showActual: boolean
+}): ReactNode {
+  if (ranged) {
+    return <StatValueChipPair chips={chips} showActual={showActual} compact />
   }
-  const presets = offensePresetsForState(catalog, trackState)
-  return trackState.offensePresetIds
-    .map((id) => {
-      const preset = presets.find((candidate) => candidate.id === id)
-      return preset
-        ? statPresetLabel(
-            preset,
-            catalog.matchup.attackerCalcName,
-            catalog.moveCategory,
-            trackState.offenseAllocationIndices[id] ?? 0,
-            state.statNameStrategy,
-          )
-        : id
-    })
-    .join(", ")
+  return (
+    <span className="inline-flex min-w-0 flex-wrap items-center gap-1">
+      {chips.map((chip, index) => (
+        <StatValueChip
+          key={`${chip.label}:${chip.actual}:${index}`}
+          chip={chip}
+          showActual={showActual}
+          compact
+        />
+      ))}
+    </span>
+  )
 }
 
-function defenseSummary(catalog: MatchupCatalog, state: ScenarioState): string {
+function offenseSummary(catalog: MatchupCatalog, state: ScenarioState): ReactNode {
   const { trackState } = state
+  const category = catalog.moveCategory
+  const showActual = trackState.showOffenseStatValue
+  if (trackState.statMode === "range") {
+    return (
+      <ChipSummary
+        ranged
+        showActual={showActual}
+        chips={uniqueEndpointChips(
+          resolveOffenseChip({
+            calcName: catalog.matchup.attackerCalcName,
+            category,
+            stat: trackState.statRange.min,
+            strategy: state.statNameStrategy,
+          }),
+          resolveOffenseChip({
+            calcName: catalog.matchup.attackerCalcName,
+            category,
+            stat: trackState.statRange.max,
+            strategy: state.statNameStrategy,
+          }),
+        )}
+      />
+    )
+  }
+  const presets = offensePresetsForState(catalog, trackState)
+  const chips = trackState.offensePresetIds.map((id) => {
+    const preset = presets.find((candidate) => candidate.id === id)
+    return preset
+      ? resolvePresetChip(
+          preset,
+          catalog.matchup.attackerCalcName,
+          category,
+          trackState.offenseAllocationIndices[id] ?? 0,
+          state.statNameStrategy,
+        )
+      : fallbackStatValueChip(id)
+  })
+  return <ChipSummary chips={chips} ranged={false} showActual={showActual} />
+}
+
+function defenseSummary(catalog: MatchupCatalog, state: ScenarioState): ReactNode {
+  const { trackState } = state
+  const category = catalog.moveCategory
+  const showActual = trackState.showDefenseStatValue
   if (trackState.defenderMode === "range") {
-    return `HP ${trackState.defenderRanges.hp.min}-${trackState.defenderRanges.hp.max}, ${catalog.defenseStatLabel} ${trackState.defenderRanges.def.min}-${trackState.defenderRanges.def.max}`
+    return (
+      <ChipSummary
+        ranged
+        showActual={showActual}
+        chips={uniqueEndpointChips(
+          resolveDefenseChip({
+            calcName: catalog.matchup.defenderCalcName,
+            category,
+            hp: trackState.defenderRanges.hp.min,
+            def: trackState.defenderRanges.def.min,
+            strategy: state.statNameStrategy,
+          }),
+          resolveDefenseChip({
+            calcName: catalog.matchup.defenderCalcName,
+            category,
+            hp: trackState.defenderRanges.hp.max,
+            def: trackState.defenderRanges.def.max,
+            strategy: state.statNameStrategy,
+          }),
+        )}
+      />
+    )
   }
   const presets = defensePresetsForState(catalog, trackState)
-  return trackState.defensePresetIds
-    .map((id) => {
-      const preset = presets.find((candidate) => candidate.id === id)
-      return preset
-        ? statPresetLabel(
-            preset,
-            catalog.matchup.defenderCalcName,
-            catalog.moveCategory,
-            trackState.defenseAllocationIndices[id] ?? 0,
-            state.statNameStrategy,
-          )
-        : id
-    })
-    .join(", ")
+  const chips = trackState.defensePresetIds.map((id) => {
+    const preset = presets.find((candidate) => candidate.id === id)
+    return preset
+      ? resolvePresetChip(
+          preset,
+          catalog.matchup.defenderCalcName,
+          category,
+          trackState.defenseAllocationIndices[id] ?? 0,
+          state.statNameStrategy,
+        )
+      : fallbackStatValueChip(id)
+  })
+  return <ChipSummary chips={chips} ranged={false} showActual={showActual} />
 }
 
 export function StatTrack({
@@ -103,7 +180,7 @@ export function StatTrack({
       >
         <TabsList className="h-7">
           <TabsTrigger value="preset" className="px-2.5 text-xs">
-            <FormattedMessage id="track.preset" />
+            <FormattedMessage id="track.choice" />
           </TabsTrigger>
           <TabsTrigger value="range" className="px-2.5 text-xs">
             <FormattedMessage id="track.range" />

@@ -16,14 +16,16 @@ import {
 } from "@/lib/held-item"
 import type { SupportedLocale } from "@/lib/i18n"
 import type { ScenarioResult } from "@/lib/scenario"
+import type { StatValueChipModel } from "@/lib/stat-preset"
 
 import { HeldItemSpriteIcon } from "../tracks/held-item/held-item-sprite-icon"
+import { StatValueChipPair } from "../tracks/stats/stat-value-chip"
 
 type DamageScenarioSummaryProps = {
   move: CatalogMoveOption
   row: ScenarioResult
-  attackerStat: { label: string; statValue?: string | null }
-  defender: { label: string; statValue?: string | null }
+  attackerStat: { chips: StatValueChipModel[]; showActual?: boolean }
+  defender: { chips: StatValueChipModel[]; showActual?: boolean }
   attackerAbilities: CatalogAbilityOption[]
   defenderAbilities: CatalogAbilityOption[]
   isRangeEnvelope: boolean
@@ -220,12 +222,21 @@ function FormulaDetailRow({ label, value }: { label: string; value: string | num
   return <div className="flex items-start justify-between gap-4 text-xs"><span className="text-muted-foreground">{label}</span><span className="text-right tabular-nums">{value}</span></div>
 }
 
-function ScenarioIdentityLine({ label, value, statValue, children }: { label: string; value: string; statValue?: string | null; children?: React.ReactNode }) {
+function ScenarioIdentityLine({
+  label,
+  chips,
+  showActual,
+  children,
+}: {
+  label: string
+  chips: StatValueChipModel[]
+  showActual?: boolean
+  children?: React.ReactNode
+}) {
   return (
     <div className="flex min-w-0 items-center gap-1.5 text-[10.5px]">
       <span className="w-[26px] shrink-0 text-[8.5px] text-muted-foreground">{label}</span>
-      <span className="truncate font-bold">{value}</span>
-      {statValue && <span className="text-[9px] text-muted-foreground tabular-nums">{statValue}</span>}
+      <StatValueChipPair chips={chips} showActual={showActual} compact />
       <span className="ml-auto flex shrink-0 items-center gap-1">{children}</span>
     </div>
   )
@@ -248,8 +259,8 @@ export function DamageScenarioSummary(props: DamageScenarioSummaryProps) {
         <DamageFormulaTooltip {...props} />
       </div>
       <div className="space-y-0.5 px-2 py-1">
-        <ScenarioIdentityLine label={intl.formatMessage({ id: "damage.row.attack" })} value={props.attackerStat.label} statValue={props.attackerStat.statValue}><ActiveTokens {...props} side="attack" /></ScenarioIdentityLine>
-        <ScenarioIdentityLine label={intl.formatMessage({ id: "damage.row.defense" })} value={props.defender.label} statValue={props.defender.statValue}><ActiveTokens {...props} side="defense" /><AdditionalConditionDetails {...props} /></ScenarioIdentityLine>
+        <ScenarioIdentityLine label={intl.formatMessage({ id: "damage.row.attack" })} chips={props.attackerStat.chips} showActual={props.attackerStat.showActual}><ActiveTokens {...props} side="attack" /></ScenarioIdentityLine>
+        <ScenarioIdentityLine label={intl.formatMessage({ id: "damage.row.defense" })} chips={props.defender.chips} showActual={props.defender.showActual}><ActiveTokens {...props} side="defense" /><AdditionalConditionDetails {...props} /></ScenarioIdentityLine>
       </div>
     </article>
   )

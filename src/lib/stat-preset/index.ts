@@ -25,6 +25,17 @@ export {
   type StatPresetDisplay,
 } from "./stat-value-labels"
 export {
+  fallbackStatValueChip,
+  investBand,
+  resolveDefenseChip,
+  resolveOffenseChip,
+  resolvePresetChip,
+  uniqueEndpointChips,
+  type InvestBand,
+  type NatureAdj,
+  type StatValueChipModel,
+} from "./stat-value-chip"
+export {
   buildSystemDefensePresets,
   buildSystemOffensePresets,
   defaultDefensePresetSelection,

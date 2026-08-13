@@ -8,16 +8,12 @@ import { StatRangeInput } from "./stat-range-input"
 import type { StatAxisBounds, StatRange } from "@/lib/stat-calculation"
 import type { MoveCategory } from "@/lib/catalog"
 import {
-  formatStatPresetValue,
+  resolvePresetChip,
   resolveStatPresetDisplay,
   type StatNameStrategy,
   type StatPreset,
+  type StatValueChipModel,
 } from "@/lib/stat-preset"
-import {
-  defenderBulkTier,
-  offenseStatTier,
-  type StatTierTokenSet,
-} from "./stat-tier-colors"
 
 import {
   TrackOption,
@@ -27,6 +23,7 @@ import {
   type TrackOptionAction,
   type TrackOptionModifier,
 } from "../common/track-option"
+import { StatValueChipTooltipBody } from "./stat-value-chip"
 
 type StatPresetChoicesProps = {
   presets: StatPreset[]
@@ -48,25 +45,21 @@ type StatPresetChoicesProps = {
 type StatPresetChoiceProps = {
   preset: StatPreset
   selected: boolean
-  label: string
-  statValueText: string
-  tooltip: string | null
+  chip: StatValueChipModel
   showStatValue: boolean
   allocationCount: number
   onToggle: () => void
   onCycleAllocation: () => void
   onDelete?: () => void
   onPersist?: () => void
-  tier: StatTierTokenSet | null
 }
 
-function statPresetModifier(
-  preset: StatPreset,
-  tier: StatTierTokenSet | null,
-): TrackOptionModifier | undefined {
-  if (tier) return { kind: "tier", tier }
-  if (preset.kind === "temporary") return { kind: "temporary" }
-  return undefined
+function statPresetModifier(chip: StatValueChipModel): TrackOptionModifier {
+  return { kind: "invest", band: chip.band }
+}
+
+function temporaryClass(preset: StatPreset): string | undefined {
+  return preset.kind === "temporary" ? "track-option-mod-temporary" : undefined
 }
 
 function statPresetActions({
@@ -119,25 +112,22 @@ function statPresetActions({
 function StatPresetChoice({
   preset,
   selected,
-  label,
-  statValueText,
-  tooltip,
+  chip,
   showStatValue,
   allocationCount,
   onToggle,
   onCycleAllocation,
   onDelete,
   onPersist,
-  tier,
 }: StatPresetChoiceProps) {
   const intl = useIntl()
   const hasNoSpAllocation = allocationCount === 0
   const noSpAllocationMessage = intl.formatMessage({ id: "statPreset.noSpAllocation" })
-  let ariaLabel = `${label} ${intl.formatMessage({ id: "statPreset.label" })}`
+  let ariaLabel = `${chip.label} ${intl.formatMessage({ id: "statPreset.label" })}`
   if (hasNoSpAllocation) {
-    ariaLabel = `${label} ${noSpAllocationMessage}`
+    ariaLabel = `${chip.label} ${noSpAllocationMessage}`
   } else if (showStatValue) {
-    ariaLabel = `${label} ${statValueText} ${intl.formatMessage({ id: "statPreset.label" })}`
+    ariaLabel = `${chip.label} ${chip.actual} ${intl.formatMessage({ id: "statPreset.label" })}`
   }
 
   return (
@@ -145,8 +135,9 @@ function StatPresetChoice({
       layout="text"
       pressed={selected}
       ariaLabel={ariaLabel}
-      modifier={statPresetModifier(preset, tier)}
-      tooltip={hasNoSpAllocation ? noSpAllocationMessage : tooltip}
+      modifier={statPresetModifier(chip)}
+      className={temporaryClass(preset)}
+      tooltip={<StatValueChipTooltipBody chip={chip} />}
       actions={statPresetActions({
         preset,
         allocationCount,
@@ -162,13 +153,13 @@ function StatPresetChoice({
       onToggle={onToggle}
     >
       <span className="inline-flex items-center gap-1">
-        {label}
+        {chip.label}
         {hasNoSpAllocation ? (
           <CircleAlert aria-hidden="true" className="text-hud-muted size-3" />
         ) : null}
       </span>
       {showStatValue && !hasNoSpAllocation ? (
-        <TrackOptionSummary>{statValueText}</TrackOptionSummary>
+        <TrackOptionSummary>{chip.actual}</TrackOptionSummary>
       ) : null}
     </TrackOption>
   )
@@ -196,6 +187,13 @@ export function StatPresetChoices({
       {presets.map((preset) => {
         const selected = selectedIds.includes(preset.id)
         const allocIndex = allocationIndices[preset.id] ?? 0
+        const chip = resolvePresetChip(
+          preset,
+          calcName,
+          category,
+          allocIndex,
+          statNameStrategy,
+        )
         const display = resolveStatPresetDisplay(
           preset,
           calcName,
@@ -203,23 +201,19 @@ export function StatPresetChoices({
           allocIndex,
           statNameStrategy,
         )
-        const statValueText = formatStatPresetValue(preset)
 
         return (
           <StatPresetChoice
             key={preset.id}
             preset={preset}
             selected={selected}
-            label={display.primary}
-            statValueText={statValueText}
-            tooltip={display.tooltip}
+            chip={chip}
             showStatValue={showStatValue}
             allocationCount={display.allocations.length}
             onToggle={() => onToggle(preset.id)}
             onCycleAllocation={() => onCycleAllocation(preset.id)}
             onDelete={onDelete ? () => onDelete(preset.id) : undefined}
             onPersist={onPersist ? () => onPersist(preset.id) : undefined}
-            tier={preset.values.kind === "offense" ? offenseStatTier(preset.id) : defenderBulkTier(preset.id)}
           />
         )
       })}

@@ -72,7 +72,22 @@ Colors are semantic. They communicate hierarchy or state, never decoration.
 | `destructive` | `#e0352f` | Destructive and invalid states |
 | `appbar` | `#33426e` | Top application bar |
 
-Pokémon types, effectiveness, stat tiers, HP, and damage use separate domain tokens. Domain colors must not be reused as general HUD chrome.
+Pokémon types, effectiveness, Stat Value Label chips, HP, and damage use separate domain tokens. Domain colors must not be reused as general HUD chrome.
+
+### Stat Value Label chip
+
+The Stat Value Label chip is domain data ink: a compact pill whose face is the Stat Value Label. Color encodes that Stat Value's actual-stat bonus relative to the Pokémon's 0-investment Stat Value (0 SP, no nature modifier). Defense bonus is HP bonus plus Defense bonus. Nature does not choose the band by itself.
+
+| Band | Foreground | Background | When |
+| --- | --- | --- | --- |
+| EX | `#9800ec` | `#faf0ff` | Existing EX Allocation (offense 32 SP and `+`; defense 32 HP SP + 32 Defense SP and `+`) |
+| Gray | `#4d4d4d` | `#f2f2f2` | Bonus ≤ 4, including negative |
+| Teal | `#0a5c50` | `#c8e8e1` | Bonus 5–31 |
+| Cobalt | `#1d4ed8` | `#c9d9ff` | Bonus ≥ 32 and not EX |
+
+Fill encoding: background, border, and text share the band hue. Temporary Stat Values add a dashed border only. Hover or keyboard focus turns the chip border to `ink` and reveals actual stat, SP allocation, and nature adjustment (none / `+` / `-`).
+
+Result-row chips are data marks and do not use Choice selected yellow. A Stat Range is two endpoint chips, not one interval block, and does not assign a single band color to an envelope row. HUD yellow, green, red, and damage orange are not used for these bands.
 
 ### Usage rules
 

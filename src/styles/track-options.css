@@ -233,6 +233,37 @@
     color: var(--mod-muted);
   }
 
+  .track-option-mod-invest-none {
+    --mod-fg: var(--stat-tier-0-fg);
+    --mod-bg: var(--stat-tier-0-bg);
+  }
+
+  .track-option-mod-invest-some {
+    --mod-fg: var(--stat-invest-some-fg);
+    --mod-bg: var(--stat-invest-some-bg);
+  }
+
+  .track-option-mod-invest-heavy {
+    --mod-fg: var(--stat-invest-heavy-fg);
+    --mod-bg: var(--stat-invest-heavy-bg);
+  }
+
+  .track-option-mod-invest-ex {
+    --mod-fg: var(--stat-tier-ex-fg);
+    --mod-bg: var(--stat-tier-ex-bg);
+  }
+
+  .track-option[class*="track-option-mod-invest-"]:not([aria-pressed="true"]) {
+    border-color: var(--mod-fg);
+    background: var(--mod-bg);
+    color: var(--mod-fg);
+  }
+
+  .track-option[class*="track-option-mod-invest-"]:not([aria-pressed="true"]):hover,
+  .track-option[class*="track-option-mod-invest-"]:not([aria-pressed="true"]):focus-visible {
+    border-color: var(--ink);
+  }
+
   /* Dashed modifiers */
   .track-option-mod-temporary,
   .track-option-mod-stab-boost,
