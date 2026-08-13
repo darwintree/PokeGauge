@@ -1,4 +1,4 @@
-import { Info } from "lucide-react"
+import { Info, MoreHorizontal } from "lucide-react"
 import { useIntl } from "react-intl"
 
 import { TypeBadge } from "@/components/pokemon/type-badge"
@@ -134,14 +134,12 @@ function AdditionalConditionDetails(props: DamageScenarioSummaryProps) {
   if (count === 0) return null
 
   return (
-    <details className="relative text-[10px] text-muted-foreground">
-      <summary
-        aria-label={intl.formatMessage({ id: "damage.conditions.other" }, { count })}
-        className="cursor-pointer list-none rounded-[5px] border border-dashed border-hud-muted px-1 text-[9px] font-bold leading-4 text-hud-muted hover:border-ink hover:text-ink"
-      >
-        +{count}
+    <details className="border-t border-dashed border-card-border px-2 py-1 text-[10px] text-muted-foreground">
+      <summary className="flex min-h-6 cursor-pointer list-none items-center gap-1 text-[9px] font-bold text-hud-muted hover:text-ink focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none [&::-webkit-details-marker]:hidden [&::marker]:hidden">
+        <MoreHorizontal className="size-3 shrink-0" aria-hidden />
+        {intl.formatMessage({ id: "damage.conditions.other" }, { count })}
       </summary>
-      <div className="absolute top-full right-0 z-30 mt-1 w-40 space-y-1 rounded-xl border-2 border-ink bg-paper p-2 text-popover-foreground shadow-hud-panel">
+      <div className="space-y-1 pt-1 text-ink">
         {props.isRangeEnvelope && <p>{intl.formatMessage({ id: "damage.rangeEnvelope" })}</p>}
         {entries.map(({ track, state, id }) => (
           <p key={`${track}:${state}:${id}`}>
@@ -312,7 +310,7 @@ export function DamageScenarioSummary(props: DamageScenarioSummaryProps) {
     : `${Math.round(mechanics.hitProbability * 100)}%`
 
   return (
-    <article className="relative w-full rounded-[10px] border border-card-border bg-muted/60 md:w-[14.75rem]">
+    <article className="w-full rounded-[10px] border border-card-border bg-muted/60 md:w-[14.75rem]">
       <div className="flex items-center gap-1 border-b border-card-border px-2 py-1">
         <span className="flex min-w-0 items-center gap-1"><TypeBadge type={props.row.moveType} /><span className="truncate text-[12px] font-extrabold">{props.move.label}</span></span>
         <strong title={intl.formatMessage({ id: "damage.conditions.effectivePower" })} className="ml-auto text-[13px] font-extrabold leading-4 tabular-nums">{branch?.effectivePower}</strong>
@@ -345,9 +343,9 @@ export function DamageScenarioSummary(props: DamageScenarioSummaryProps) {
           })}
         >
           <ActiveTokens {...props} side="defense" />
-          <AdditionalConditionDetails {...props} />
         </ScenarioIdentityLine>
       </div>
+      <AdditionalConditionDetails {...props} />
     </article>
   )
 }

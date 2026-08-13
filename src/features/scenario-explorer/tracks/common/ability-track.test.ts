@@ -244,6 +244,7 @@ it("renders active abilities inline and folds inactive and unsupported states", 
 
   expect(markup).toContain("Adaptability")
   expect(markup).toContain("Other conditions (2)")
+  expect(markup).not.toContain(">+2<")
   expect(markup).toContain("Inactive")
   expect(markup).toContain("Unsupported")
   expect(markup).toContain("Run Away")
