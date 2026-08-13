@@ -1,8 +1,8 @@
 import type { ReactNode } from "react"
 import { Gauge } from "lucide-react"
-import { FormattedMessage, useIntl } from "react-intl"
+import { useIntl } from "react-intl"
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsContent } from "@/components/ui/tabs"
 import type { MatchupCatalog } from "@/lib/catalog"
 import {
   defensePresetsForState,
@@ -25,6 +25,7 @@ import {
   StatPresetChoices,
 } from "./stat-preset-choices"
 import { StatValueChip, StatValueChipPair } from "./stat-value-chip"
+import { StatModeTabs, StatModeWell } from "./stat-mode-switch"
 import { ShowStatValuesSwitch } from "../common/show-stat-values-switch"
 import { TrackPanel } from "../common/track-panel"
 import type { ScenarioState } from "../../state/use-scenario-state"
@@ -50,7 +51,7 @@ function ChipSummary({
     return <StatValueChipPair chips={chips} showActual={showActual} compact />
   }
   return (
-    <span className="inline-flex min-w-0 flex-wrap items-center gap-1">
+    <span className="flex w-full min-w-0 flex-wrap items-center gap-1">
       {chips.map((chip, index) => (
         <StatValueChip
           key={`${chip.label}:${chip.actual}:${index}`}
@@ -160,15 +161,11 @@ export function StatTrack({
   const { trackState } = state
   const offense = side === "offense"
   const mode = offense ? trackState.statMode : trackState.defenderMode
-
-  return (
-    <TrackPanel
-      icon={Gauge}
-      label={offense ? catalog.offenseStatLabel : `HP / ${catalog.defenseStatLabel}`}
-      summary={offense ? offenseSummary(catalog, state) : defenseSummary(catalog, state)}
-      expanded={expanded}
-      onToggle={onToggle}
-    >
+  const label = offense ? catalog.offenseStatLabel : `HP / ${catalog.defenseStatLabel}`
+  const summary = offense ? offenseSummary(catalog, state) : defenseSummary(catalog, state)
+  const onMode = (next: StatSelectMode) =>
+    offense ? state.setStatMode(next) : state.setDefenderMode(next)
+  const editor = (
       <Tabs
         value={mode}
         onValueChange={(value) =>
@@ -178,14 +175,7 @@ export function StatTrack({
         }
         className="gap-3"
       >
-        <TabsList className="h-7">
-          <TabsTrigger value="preset" className="px-2.5 text-xs">
-            <FormattedMessage id="track.choice" />
-          </TabsTrigger>
-          <TabsTrigger value="range" className="px-2.5 text-xs">
-            <FormattedMessage id="track.range" />
-          </TabsTrigger>
-        </TabsList>
+        <StatModeTabs mode={mode} onMode={onMode} />
         <TabsContent value="preset" className="mt-0 space-y-2">
           {offense ? (
             <>
@@ -282,6 +272,22 @@ export function StatTrack({
           )}
         </TabsContent>
       </Tabs>
+  )
+
+  return (
+    <TrackPanel
+      icon={Gauge}
+      label={label}
+      summary={
+        <StatModeWell mode={mode} onMode={onMode}>
+          {summary}
+        </StatModeWell>
+      }
+      summaryLayout="stack"
+      expanded={expanded}
+      onToggle={onToggle}
+    >
+      {editor}
     </TrackPanel>
   )
 }

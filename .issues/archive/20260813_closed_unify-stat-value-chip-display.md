@@ -14,7 +14,7 @@ updated_at: "2026-08-13T06:05:00Z"
 
 ## Blocked by
 
-- [[../20260813_working_style-expandable-range-items-on-parent-result-rows|Style expandable range items on parent result rows]]
+- [[20260813_closed_style-expandable-range-items-on-parent-result-rows|Style expandable range items on parent result rows]]
 
 ## Problem
 
@@ -28,7 +28,7 @@ updated_at: "2026-08-13T06:05:00Z"
 
 ## Out of scope
 
-- 母行可展开入口的展开/收起示能，见 [[../20260813_working_style-expandable-range-items-on-parent-result-rows|Style expandable range items on parent result rows]]。
+- 母行可展开入口的展开/收起示能，见 [[20260813_closed_style-expandable-range-items-on-parent-result-rows|Style expandable range items on parent result rows]]。
 - 折叠 Stat Track 模式切换按钮。
 - 改变 Preset / Range 的数据契约。
 

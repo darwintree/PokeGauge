@@ -24,8 +24,20 @@ import { StatValueChipPair } from "../tracks/stats/stat-value-chip"
 type DamageScenarioSummaryProps = {
   move: CatalogMoveOption
   row: ScenarioResult
-  attackerStat: { chips: StatValueChipModel[]; showActual?: boolean }
-  defender: { chips: StatValueChipModel[]; showActual?: boolean }
+  attackerStat: {
+    chips: StatValueChipModel[]
+    showActual?: boolean
+    expandable?: boolean
+    expanded?: boolean
+    onToggle?: () => void
+  }
+  defender: {
+    chips: StatValueChipModel[]
+    showActual?: boolean
+    expandable?: boolean
+    expanded?: boolean
+    onToggle?: () => void
+  }
   attackerAbilities: CatalogAbilityOption[]
   defenderAbilities: CatalogAbilityOption[]
   isRangeEnvelope: boolean
@@ -226,17 +238,33 @@ function ScenarioIdentityLine({
   label,
   chips,
   showActual,
+  expandable,
+  expanded,
+  onToggle,
+  toggleLabel,
   children,
 }: {
   label: string
   chips: StatValueChipModel[]
   showActual?: boolean
+  expandable?: boolean
+  expanded?: boolean
+  onToggle?: () => void
+  toggleLabel?: string
   children?: React.ReactNode
 }) {
   return (
     <div className="flex min-w-0 items-center gap-1.5 text-[10.5px]">
       <span className="w-[26px] shrink-0 text-[8.5px] text-muted-foreground">{label}</span>
-      <StatValueChipPair chips={chips} showActual={showActual} compact />
+      <StatValueChipPair
+        chips={chips}
+        showActual={showActual}
+        compact
+        expandable={expandable}
+        expanded={expanded}
+        onToggle={onToggle}
+        toggleLabel={toggleLabel}
+      />
       <span className="ml-auto flex shrink-0 items-center gap-1">{children}</span>
     </div>
   )
@@ -259,8 +287,33 @@ export function DamageScenarioSummary(props: DamageScenarioSummaryProps) {
         <DamageFormulaTooltip {...props} />
       </div>
       <div className="space-y-0.5 px-2 py-1">
-        <ScenarioIdentityLine label={intl.formatMessage({ id: "damage.row.attack" })} chips={props.attackerStat.chips} showActual={props.attackerStat.showActual}><ActiveTokens {...props} side="attack" /></ScenarioIdentityLine>
-        <ScenarioIdentityLine label={intl.formatMessage({ id: "damage.row.defense" })} chips={props.defender.chips} showActual={props.defender.showActual}><ActiveTokens {...props} side="defense" /><AdditionalConditionDetails {...props} /></ScenarioIdentityLine>
+        <ScenarioIdentityLine
+          label={intl.formatMessage({ id: "damage.row.attack" })}
+          chips={props.attackerStat.chips}
+          showActual={props.attackerStat.showActual}
+          expandable={props.attackerStat.expandable}
+          expanded={props.attackerStat.expanded}
+          onToggle={props.attackerStat.onToggle}
+          toggleLabel={intl.formatMessage({
+            id: props.attackerStat.expanded ? "damage.row.collapseOffense" : "damage.row.expandOffense",
+          })}
+        >
+          <ActiveTokens {...props} side="attack" />
+        </ScenarioIdentityLine>
+        <ScenarioIdentityLine
+          label={intl.formatMessage({ id: "damage.row.defense" })}
+          chips={props.defender.chips}
+          showActual={props.defender.showActual}
+          expandable={props.defender.expandable}
+          expanded={props.defender.expanded}
+          onToggle={props.defender.onToggle}
+          toggleLabel={intl.formatMessage({
+            id: props.defender.expanded ? "damage.row.collapseDefense" : "damage.row.expandDefense",
+          })}
+        >
+          <ActiveTokens {...props} side="defense" />
+          <AdditionalConditionDetails {...props} />
+        </ScenarioIdentityLine>
       </div>
     </article>
   )

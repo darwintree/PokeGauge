@@ -122,8 +122,20 @@ type DamageResultRowProps = {
   move: CatalogMoveOption
   attackerAbilities?: CatalogAbilityOption[]
   defenderAbilities?: CatalogAbilityOption[]
-  attackerStat: Pick<CatalogOption<string>, "id"> & { chips: StatValueChipModel[]; showActual?: boolean }
-  defender: Pick<CatalogOption<string>, "id"> & { chips: StatValueChipModel[]; showActual?: boolean }
+  attackerStat: Pick<CatalogOption<string>, "id"> & {
+    chips: StatValueChipModel[]
+    showActual?: boolean
+    expandable?: boolean
+    expanded?: boolean
+    onToggle?: () => void
+  }
+  defender: Pick<CatalogOption<string>, "id"> & {
+    chips: StatValueChipModel[]
+    showActual?: boolean
+    expandable?: boolean
+    expanded?: boolean
+    onToggle?: () => void
+  }
   row: ScenarioResult
   isRangeEnvelope?: boolean
   showAccuracy?: boolean

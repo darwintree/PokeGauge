@@ -1,5 +1,5 @@
 import { TriangleAlert } from "lucide-react"
-import { useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import {
@@ -13,7 +13,9 @@ import {
   RANGE_DEFENDER_ID,
   RANGE_STAT_ID,
   defensePresetsForState,
+  expandRangeParentBlocks,
   offensePresetsForState,
+  type RangeAxisExpansion,
   type ScenarioResult,
   type TrackState,
   type UnavailableScenarioGroup,
@@ -102,6 +104,32 @@ export function DamageResults({
     }),
     [catalog, trackState],
   )
+  const [expanded, setExpanded] = useState<Record<string, RangeAxisExpansion>>({})
+
+  useEffect(() => {
+    setExpanded({})
+  }, [trackState.statMode, trackState.defenderMode])
+
+  const blocks = useMemo(
+    () => expandRangeParentBlocks(catalog, trackState, rows, expanded),
+    [catalog, trackState, rows, expanded],
+  )
+
+  function toggleAxis(parentId: string, axis: keyof RangeAxisExpansion) {
+    setExpanded((current) => {
+      const nextAxis = {
+        offense: current[parentId]?.offense ?? false,
+        defense: current[parentId]?.defense ?? false,
+        [axis]: !(current[parentId]?.[axis] ?? false),
+      }
+      if (!nextAxis.offense && !nextAxis.defense) {
+        const rest = { ...current }
+        delete rest[parentId]
+        return rest
+      }
+      return { ...current, [parentId]: nextAxis }
+    })
+  }
 
   if (rows.length === 0) {
     return (
@@ -159,15 +187,23 @@ export function DamageResults({
       <div className="rounded-[16px] border-2 border-ink bg-paper shadow-hud-board">
         <DamagePercentAxis />
         <ul className="pb-2">
-          {rows.map((row, index) => {
+          {blocks.flatMap((block) => [
+            { row: block.parent, role: "parent" as const },
+            ...block.children.map((row) => ({ row, role: "child" as const })),
+          ]).map((item, index, displayRows) => {
+            const { row, role } = item
             const identity = rowIdentity(catalog, row, trackState, statNameStrategy, rowLabelPresets)
+            const expansion = expanded[row.calculationIdentity] ?? { offense: false, defense: false }
+            const offenseExpandable = role === "parent" && row.attackerStatId === RANGE_STAT_ID
+            const defenseExpandable = role === "parent" && row.defenderId === RANGE_DEFENDER_ID
             const isRangeEnvelope =
               row.attackerStatId === RANGE_STAT_ID || row.defenderId === RANGE_DEFENDER_ID
-            const startsMoveGroup = index === 0 || rows[index - 1].snapshotId !== row.snapshotId
+            const startsMoveGroup =
+              index === 0 || displayRows[index - 1].row.snapshotId !== row.snapshotId
 
             return (
               <li
-                key={row.calculationIdentity}
+                key={`${role}:${row.calculationIdentity}`}
                 className={cn(
                   /* Rest rhythm: pt/pb give the hairline separators air on both
                      sides and contain the percent labels hanging below the plot. */
@@ -189,11 +225,21 @@ export function DamageResults({
                     id: row.attackerStatId,
                     chips: identity.offenseChips,
                     showActual: trackState.showResultStatValue,
+                    expandable: offenseExpandable,
+                    expanded: offenseExpandable && expansion.offense,
+                    onToggle: offenseExpandable
+                      ? () => toggleAxis(row.calculationIdentity, "offense")
+                      : undefined,
                   }}
                   defender={{
                     id: row.defenderId,
                     chips: identity.defenseChips,
                     showActual: trackState.showResultStatValue,
+                    expandable: defenseExpandable,
+                    expanded: defenseExpandable && expansion.defense,
+                    onToggle: defenseExpandable
+                      ? () => toggleAxis(row.calculationIdentity, "defense")
+                      : undefined,
                   }}
                   row={row}
                   isRangeEnvelope={isRangeEnvelope}
@@ -204,10 +250,13 @@ export function DamageResults({
           })}
         </ul>
         <DamageRangeLegend
-          showAverage={rows.some(
-            (row) =>
-              row.attackerStatId !== RANGE_STAT_ID &&
-              row.defenderId !== RANGE_DEFENDER_ID,
+          showAverage={blocks.some(
+            (block) =>
+              [block.parent, ...block.children].some(
+                (row) =>
+                  row.attackerStatId !== RANGE_STAT_ID &&
+                  row.defenderId !== RANGE_DEFENDER_ID,
+              ),
           )}
         />
       </div>

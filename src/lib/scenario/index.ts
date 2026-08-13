@@ -5,6 +5,11 @@ export {
   runScenarioPipeline,
 } from "./evaluate"
 export {
+  childBelongsToExpandedParent,
+  expandRangeParentBlocks,
+} from "./expand-range-rows"
+export type { RangeAxisExpansion, RangeParentBlock } from "./expand-range-rows"
+export {
   defaultTrackState,
   defensePresetsForState,
   expectedRowCount,

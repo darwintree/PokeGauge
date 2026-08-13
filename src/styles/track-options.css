@@ -255,13 +255,20 @@
 
   .track-option[class*="track-option-mod-invest-"]:not([aria-pressed="true"]) {
     border-color: var(--mod-fg);
-    background: var(--mod-bg);
+    background: var(--paper);
     color: var(--mod-fg);
   }
 
   .track-option[class*="track-option-mod-invest-"]:not([aria-pressed="true"]):hover,
   .track-option[class*="track-option-mod-invest-"]:not([aria-pressed="true"]):focus-visible {
     border-color: var(--ink);
+  }
+
+  .track-option[class*="track-option-mod-invest-"][aria-pressed="true"] {
+    border-color: var(--ink);
+    background: var(--mod-bg);
+    color: var(--mod-fg);
+    box-shadow: 2px 2px 0 0 color-mix(in srgb, var(--ink) 25%, transparent);
   }
 
   /* Dashed modifiers */

@@ -1,3 +1,4 @@
+import { ChevronDown } from "lucide-react"
 import { useIntl } from "react-intl"
 
 import {
@@ -68,12 +69,20 @@ export function StatValueChipPair({
   chips,
   showActual = false,
   compact = false,
+  expandable = false,
+  expanded = false,
+  onToggle,
+  toggleLabel,
 }: {
   chips: StatValueChipModel[]
   showActual?: boolean
   compact?: boolean
+  expandable?: boolean
+  expanded?: boolean
+  onToggle?: () => void
+  toggleLabel?: string
 }) {
-  return (
+  const items = (
     <span className="inline-flex min-w-0 flex-wrap items-center gap-1">
       {chips.map((chip, index) => (
         <span key={`${chip.label}:${chip.actual}:${index}`} className="inline-flex items-center gap-1">
@@ -81,6 +90,34 @@ export function StatValueChipPair({
           <StatValueChip chip={chip} showActual={showActual} compact={compact} />
         </span>
       ))}
+    </span>
+  )
+
+  if (!expandable || !onToggle) return items
+
+  return (
+    <span
+      className={cn(
+        "-mx-0.5 inline-flex min-w-0 flex-wrap items-center gap-0.5 rounded-[8px] px-0.5 py-0.5",
+        expanded && "bg-token-bg",
+      )}
+    >
+      {items}
+      <button
+        type="button"
+        aria-expanded={expanded}
+        aria-label={toggleLabel}
+        onClick={onToggle}
+        className="hover:bg-token-bg focus-visible:ring-ring grid size-6 shrink-0 place-items-center rounded-[6px] focus-visible:ring-2 focus-visible:outline-none"
+      >
+        <ChevronDown
+          className={cn(
+            "size-3.5 text-muted-foreground transition-transform",
+            expanded && "rotate-180 text-ink",
+          )}
+          strokeWidth={2}
+        />
+      </button>
     </span>
   )
 }

@@ -37,3 +37,19 @@ Reason:
 
 Follow-up:
 None.
+
+### 3. 折叠 Stat Track 的 chip 摘要改成第二行
+
+Type: deviation
+
+Context:
+契约只要求折叠摘要用 Label chip，没规定放在标题行还是另起一行。实现当时把 chip 放在 TrackPanel 标题行右侧。用户对照 Move Track：标题一行、选中项单独一行并可换行。同一行放 chip 会挤掉轴名，也让折叠模式切换没位置。Held Item 的精灵图摘要仍适合同一行。
+
+Decision:
+Stat Track 使用 `summaryLayout="stack"`：折叠时标题行只放轴名（与 Move Track 同级的 `text-xs font-extrabold`），chip 在 `border-t` 第二行并可换行；展开后第二行收起，编辑区接手。点 chip 仍不展开 Track。其他 Track 的字符串摘要、Held Item 同行图标不变。
+
+Reason:
+复用 Move Track 已有的折叠信息分层，而不是给 Stat 另做一套头。标题行空出来之后，模式切换可以像招式物攻/特攻一样待在第一行。
+
+Follow-up:
+None.

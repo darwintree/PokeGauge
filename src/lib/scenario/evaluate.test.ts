@@ -19,6 +19,7 @@ import {
   defensePresetsForState,
   defaultTrackState,
   expectedRowCount,
+  expandRangeParentBlocks,
   offensePresetsForState,
   RANGE_DEFENDER_ID,
   RANGE_STAT_ID,
@@ -813,5 +814,46 @@ describe("matchup scenario pipeline - range mode", () => {
       ohko: { min: Math.min(...ohkoEndpoints), max: Math.max(...ohkoEndpoints) },
       twoHit: { min: Math.min(...twoHitEndpoints), max: Math.max(...twoHitEndpoints) },
     })
+  })
+})
+
+describe("range parent expand", () => {
+  let catalog: MatchupCatalog
+
+  beforeAll(async () => {
+    catalog = await getCatalog(445, 727, LOCALE)
+  })
+
+  it("expands one Range parent into that axis's selected Choice values", () => {
+    const state = defaultTrackState(catalog)
+    state.statMode = "range"
+    state.defenderMode = "range"
+    selectMoves(catalog, state, [89])
+    state.attackerItemIds = ["none"]
+    const parents = scenarioResults(catalog, state)
+    expect(parents).toHaveLength(1)
+
+    const [block] = expandRangeParentBlocks(catalog, state, parents, {
+      [parents[0].calculationIdentity]: { offense: true, defense: false },
+    })
+    expect(block.children).toHaveLength(state.offensePresetIds.length)
+    expect(block.children.every((child) => child.attackerStatId !== RANGE_STAT_ID)).toBe(true)
+    expect(block.children.every((child) => child.defenderId === RANGE_DEFENDER_ID)).toBe(true)
+  })
+
+  it("does not attach those children to another parent", () => {
+    const state = defaultTrackState(catalog)
+    state.statMode = "range"
+    selectMoves(catalog, state, [89, 157])
+    state.attackerItemIds = ["none"]
+    state.defensePresetIds = ["min-bulk"]
+    const parents = scenarioResults(catalog, state)
+    expect(parents.length).toBeGreaterThan(1)
+
+    const blocks = expandRangeParentBlocks(catalog, state, parents, {
+      [parents[0].calculationIdentity]: { offense: true, defense: false },
+    })
+    expect(blocks[0].children.length).toBe(state.offensePresetIds.length)
+    expect(blocks.slice(1).every((block) => block.children.length === 0)).toBe(true)
   })
 })
