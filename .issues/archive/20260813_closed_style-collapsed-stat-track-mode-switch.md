@@ -10,7 +10,7 @@ updated_at: "2026-08-13T08:57:00Z"
 ---
 ## Parent map
 
-[[../20260812_open_evaluate-range-track-defaults-and-mode-switching|Evaluate Range Track defaults and mode switching]]
+[[20260812_closed_evaluate-range-track-defaults-and-mode-switching|Evaluate Range Track defaults and mode switching]]
 
 ## Blocked by
 
