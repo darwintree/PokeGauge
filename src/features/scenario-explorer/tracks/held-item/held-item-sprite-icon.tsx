@@ -1,7 +1,7 @@
-import { Gem } from "lucide-react"
+import { CircleSlash, Gem } from "lucide-react"
 import { useState } from "react"
 
-import { itemSpriteUrl } from "@/lib/held-item"
+import { EXPLICIT_NO_ITEM_ID, itemSpriteUrl } from "@/lib/held-item"
 import { cn } from "@/lib/utils"
 
 type HeldItemSpriteIconProps = {
@@ -17,6 +17,15 @@ export function HeldItemSpriteIcon({
 }: HeldItemSpriteIconProps) {
   const url = itemSpriteUrl(id)
   const [failedUrl, setFailedUrl] = useState<string | null>(null)
+
+  if (id === EXPLICIT_NO_ITEM_ID) {
+    return (
+      <CircleSlash
+        className={cn("size-6 text-hud-muted/60", className)}
+        aria-hidden
+      />
+    )
+  }
 
   if (!url || failedUrl === url) {
     return (

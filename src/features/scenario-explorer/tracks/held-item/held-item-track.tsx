@@ -124,14 +124,15 @@ export function HeldItemTrack({
           />
         }
         summary={
-          <span className="flex items-center gap-1">
+          <span className="flex w-full min-w-0 flex-wrap items-center gap-1.5">
             {selectedIds.map((id) => (
               <span key={String(id)} title={itemAriaLabel(id, locale)}>
-                <HeldItemSpriteIcon id={id} className="size-4" />
+                <HeldItemSpriteIcon id={id} />
               </span>
             ))}
           </span>
         }
+        summaryLayout="stack"
         expanded={expanded}
         onToggle={onToggle}
       >

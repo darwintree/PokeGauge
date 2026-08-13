@@ -87,6 +87,28 @@ describe("held-item Tracks", () => {
     expect(onChange).not.toHaveBeenCalled()
   })
 
+  it("collapses selected items onto a second row", async () => {
+    const catalog = await getCatalogShell(445, 727, "en")
+
+    await renderTrack({
+      catalog,
+      poolIds: ["none", 247],
+      selectedIds: ["none", 247],
+      selectableIds: new Set([445, 727]),
+      expanded: false,
+      onChange: vi.fn(),
+      onAdd: vi.fn(),
+      onFormTriggerConfirm: vi.fn(),
+    })
+
+    const section = container.querySelector("section")
+    expect(section?.querySelectorAll(":scope > div")).toHaveLength(2)
+    expect(container.querySelector("button.track-option")).toBeNull()
+    expect(container.querySelector('button[aria-label="Add held item"]')).toBeNull()
+    expect(container.querySelector('img[src*="life-orb"]')).not.toBeNull()
+    expect(container.querySelector(".lucide-circle-slash")).not.toBeNull()
+  })
+
   it("renders the usage/manual pool rather than the full frozen catalog", async () => {
     const catalog = await getCatalogShell(445, 727, "en")
 
