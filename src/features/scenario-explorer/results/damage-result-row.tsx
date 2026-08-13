@@ -1,5 +1,6 @@
 /** Box = main 16 rolls; whiskers = critical range when a normal branch exists. */
 
+import { ChevronDown } from "lucide-react"
 import { useIntl } from "react-intl"
 
 import {
@@ -200,11 +201,15 @@ export function DamageResultRow({
           />
 
           {!isRangeEnvelope && (
+            // ponytail: perch on the pill rim so the mark stays inside h-10.
+            // A fully-above notch collides with the previous row's hanging % labels.
             <div
               data-damage-average-marker
-              className="absolute top-1/2 z-10 w-[3px] -translate-y-1/2 rounded-full bg-ink"
-              style={{ left: pctToLeft(row.avgPercent), height: "2.25rem" }}
-            />
+              className="absolute z-10 -translate-x-1/2"
+              style={{ left: pctToLeft(row.avgPercent), top: "calc(50% - 0.875rem - 6px)" }}
+            >
+              <AverageMarkGlyph />
+            </div>
           )}
 
           {bridge && (
@@ -257,7 +262,7 @@ export function DamageResultRow({
             </span>
           </HoverRow>
           {!isRangeEnvelope && (
-            <HoverRow marker={<span className="inline-block h-3.5 w-[3px] rounded-full bg-ink" />}>
+            <HoverRow marker={<AverageMarkGlyph />}>
               <HoverLabel>{intl.formatMessage({ id: "damage.average" })}</HoverLabel>
               <span className="tabular-nums">{row.avgPercent.toFixed(1)}%</span>
             </HoverRow>
@@ -295,6 +300,10 @@ function HoverRow({ marker, children }: HoverRowProps) {
 
 function HoverLabel({ children }: { children: React.ReactNode }) {
   return <span className="text-muted-foreground text-[10px]">{children}</span>
+}
+
+function AverageMarkGlyph() {
+  return <ChevronDown className="size-3.5 text-ink" strokeWidth={3} aria-hidden />
 }
 
 export function DamagePercentAxis() {
@@ -349,7 +358,7 @@ export function DamageRangeLegend({ showAverage = true }: { showAverage?: boolea
       </span>
       {showAverage && (
         <span className="inline-flex items-center gap-1.5">
-          <span className="inline-block h-3.5 w-[3px] rounded-full bg-ink" />
+          <AverageMarkGlyph />
           {intl.formatMessage({ id: "damage.legend.average" })}
         </span>
       )}
