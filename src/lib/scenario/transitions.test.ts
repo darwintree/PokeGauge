@@ -3,16 +3,25 @@ import { describe, expect, it } from "vitest"
 import { getCatalogShell } from "@/lib/catalog"
 import {
   defaultTrackState,
+  defensePresetsForState,
   normalizeScreens,
-  reconcileDefenseFromRange,
-  reconcileOffenseFromRange,
+  offensePresetsForState,
+  restorePersistedTrackState,
   selectedSnapshotMoveIds,
   snapshotMoveIds,
   snapshotsForMoveIds,
   trackStateAfterCatalogTransition,
+  trackStateAfterDefenseMode,
+  trackStateAfterOffenseMode,
+  trackStateAfterOffenseRange,
+  trackStateAfterRemoveDefense,
+  trackStateAfterRemoveOffense,
+  trackStateAfterToggleDefense,
+  trackStateAfterToggleOffense,
+  type PersistedTrackState,
 } from "@/lib/scenario"
-import type { StatPreset } from "@/lib/stat-preset"
 import { DEFIANT_ABILITY_ID, DROUGHT_ABILITY_ID, INTIMIDATE_ABILITY_ID } from "@/lib/ability"
+import { defaultOffensePresetSelection, type StatPreset } from "@/lib/stat-preset"
 
 
 describe("scenario identity transitions", () => {
@@ -138,38 +147,274 @@ describe("scenario pure transitions", () => {
     ])
   })
 
-  it("reconciles offense ranges to existing and temporary presets", () => {
-    const system: StatPreset = {
-      id: "neutral-zero",
-      kind: "system",
-      values: { kind: "offense", stat: 100 },
-    }
-    const existingTemporary: StatPreset = {
-      id: "temp-existing",
-      kind: "temporary",
-      values: { kind: "offense", stat: 200 },
-    }
+  it("defaults a new Matchup to Range with 0A+EX and 0H0B+32H0B", async () => {
+    const catalog = await getCatalogShell(6, 9, "en")
+    const state = defaultTrackState(catalog)
 
-    const result = reconcileOffenseFromRange(
-      [system],
-      { min: 100, max: 200 },
-      [existingTemporary],
-    )
-
-    expect(result.selectedIds).toEqual(["neutral-zero", "temp-existing"])
-    expect(result.temporary).toEqual([existingTemporary])
+    expect(state.statMode).toBe("range")
+    expect(state.defenderMode).toBe("range")
+    expect(state.offensePresetIds).toEqual(["neutral-zero", "extreme"])
+    expect(state.defensePresetIds).toEqual(["min-bulk", "hp-32"])
+    expect(state.offenseTemporaryPresets).toEqual([])
+    expect(state.defenseTemporaryPresets).toEqual([])
+    expect(
+      defaultOffensePresetSelection(
+        [{ id: "neutral-zero" }, { id: "extreme" }, { id: "neutral-max" }] as StatPreset[],
+        [{ id: "user-offense" }] as StatPreset[],
+      ),
+    ).toEqual(["neutral-zero", "extreme", "user-offense"])
   })
 
-  it("creates one temporary preset per missing defense range corner", () => {
-    const result = reconcileDefenseFromRange(
-      [],
-      { hp: { min: 100, max: 120 }, def: { min: 200, max: 220 } },
-      [],
+  it("keeps the same selected set when switching Stat Track mode", async () => {
+    const catalog = await getCatalogShell(6, 9, "en")
+    const state = defaultTrackState(catalog)
+    const presets = offensePresetsForState(catalog, state)
+    const choice = trackStateAfterOffenseMode(state, "preset", presets)
+    const back = trackStateAfterOffenseMode(choice, "range", presets)
+
+    expect(choice.statMode).toBe("preset")
+    expect(choice.offensePresetIds).toEqual(state.offensePresetIds)
+    expect(back.statMode).toBe("range")
+    expect(back.offensePresetIds).toEqual(state.offensePresetIds)
+    expect(back.offenseTemporaryPresets).toEqual([])
+  })
+
+  it("writes two defense envelope endpoints, not four corners", async () => {
+    const catalog = await getCatalogShell(6, 9, "en")
+    const state = defaultTrackState(catalog)
+    state.defenderMode = "preset"
+    state.defensePresetIds = ["min-bulk", "standard-bulk"]
+    state.defenseTemporaryPresets = []
+    const presets = defensePresetsForState(catalog, state)
+    const min = presets.find((preset) => preset.id === "min-bulk")
+    const max = presets.find((preset) => preset.id === "standard-bulk")
+    if (min?.values.kind !== "defense" || max?.values.kind !== "defense") {
+      throw new Error("Expected system Defense Stat Presets")
+    }
+
+    const ranged = trackStateAfterDefenseMode(state, "range", presets)
+    const selected = ranged.defensePresetIds.map((id) =>
+      [...presets, ...ranged.defenseTemporaryPresets].find((preset) => preset.id === id),
     )
 
-    expect(result.selectedIds).toHaveLength(4)
-    expect(result.temporary).toHaveLength(4)
-    expect(result.temporary.every((preset) => preset.kind === "temporary")).toBe(true)
+    expect(ranged.defensePresetIds).toHaveLength(2)
+    expect(selected).toEqual([
+      expect.objectContaining({
+        values: { kind: "defense", hp: min.values.hp, def: min.values.def },
+      }),
+      expect.objectContaining({
+        values: { kind: "defense", hp: max.values.hp, def: max.values.def },
+      }),
+    ])
+  })
+
+  it("does not deselect the last remaining Stat Value", async () => {
+    const catalog = await getCatalogShell(6, 9, "en")
+    const state = defaultTrackState(catalog)
+    state.statMode = "preset"
+    state.offensePresetIds = ["extreme"]
+    const presets = offensePresetsForState(catalog, state)
+
+    expect(trackStateAfterToggleOffense(state, "extreme", presets)).toBe(state)
+    expect(trackStateAfterRemoveOffense(state, "extreme", presets)).toBeNull()
+
+    state.defenderMode = "preset"
+    state.defensePresetIds = ["hp-32"]
+    const defensePresets = defensePresetsForState(catalog, state)
+    expect(trackStateAfterToggleDefense(state, "hp-32", defensePresets)).toBe(state)
+    expect(trackStateAfterRemoveDefense(state, "hp-32", defensePresets)).toBeNull()
+  })
+
+  it("keeps interior points when a Range boundary is dragged outward", async () => {
+    const catalog = await getCatalogShell(6, 9, "en")
+    const state = defaultTrackState(catalog)
+    const presets = offensePresetsForState(catalog, state)
+    const choice = trackStateAfterToggleOffense(state, "neutral-max", presets)
+    const grown = trackStateAfterOffenseRange(
+      choice,
+      { min: choice.statRange.min - 10, max: choice.statRange.max },
+      offensePresetsForState(catalog, choice),
+    )
+
+    expect(grown.offensePresetIds).toEqual(
+      expect.arrayContaining(["neutral-zero", "neutral-max", "extreme"]),
+    )
+    expect(grown.offenseTemporaryPresets).toHaveLength(1)
+    expect(grown.offenseTemporaryPresets[0]?.values).toEqual({
+      kind: "offense",
+      stat: choice.statRange.min - 10,
+    })
+  })
+
+  it("deselects outliers and deletes Temporary Stat Values when dragged inward", async () => {
+    const catalog = await getCatalogShell(6, 9, "en")
+    const state = defaultTrackState(catalog)
+    const presets = offensePresetsForState(catalog, state)
+    const grown = trackStateAfterOffenseRange(
+      state,
+      { min: state.statRange.min - 10, max: state.statRange.max },
+      presets,
+    )
+    const shrunk = trackStateAfterOffenseRange(
+      grown,
+      state.statRange,
+      offensePresetsForState(catalog, grown),
+    )
+
+    expect(shrunk.offensePresetIds).toEqual(["neutral-zero", "extreme"])
+    expect(shrunk.offenseTemporaryPresets).toEqual([])
+  })
+
+  it("grows a one-member Range by keeping the original and adding a Temporary Stat Value", async () => {
+    const catalog = await getCatalogShell(6, 9, "en")
+    const state = defaultTrackState(catalog)
+    state.statMode = "preset"
+    state.offensePresetIds = ["extreme"]
+    const presets = offensePresetsForState(catalog, state)
+    const extreme = presets.find((preset) => preset.id === "extreme")
+    if (extreme?.values.kind !== "offense") throw new Error("Expected EX")
+
+    const grown = trackStateAfterOffenseRange(
+      state,
+      { min: extreme.values.stat, max: extreme.values.stat + 12 },
+      presets,
+    )
+
+    expect(grown.offensePresetIds).toContain("extreme")
+    expect(grown.offenseTemporaryPresets).toHaveLength(1)
+    expect(grown.offenseTemporaryPresets[0]?.values).toEqual({
+      kind: "offense",
+      stat: extreme.values.stat + 12,
+    })
+  })
+
+  it("orders crossed Range handles without clearing the selected set", async () => {
+    const catalog = await getCatalogShell(6, 9, "en")
+    const state = defaultTrackState(catalog)
+    const presets = offensePresetsForState(catalog, state)
+    const crossed = trackStateAfterOffenseRange(
+      state,
+      { min: state.statRange.max, max: state.statRange.min },
+      presets,
+    )
+
+    expect(crossed.statRange).toEqual(state.statRange)
+    expect(crossed.offensePresetIds).toEqual(state.offensePresetIds)
+  })
+
+  it("resets Stat Tracks to the new-Matchup Range defaults on Identity change", async () => {
+    const baseCatalog = await getCatalogShell(6, 9, "en")
+    const state = defaultTrackState(baseCatalog)
+    state.statMode = "preset"
+    state.offensePresetIds = ["neutral-max"]
+
+    const next = trackStateAfterCatalogTransition(
+      state,
+      await getCatalogShell(133, 9, "en"),
+      {
+        attackerOwnerChanged: true,
+        attackerChanged: true,
+        defenderChanged: false,
+      },
+    )
+
+    expect(next.statMode).toBe("range")
+    expect(next.defenderMode).toBe("range")
+    expect(next.offensePresetIds).toEqual(["neutral-zero", "extreme"])
+    expect(next.defensePresetIds).toEqual(["min-bulk", "hp-32"])
+  })
+
+  it("restores a dual-store Range snapshot from the saved interval plus in-envelope picks", async () => {
+    const catalog = await getCatalogShell(6, 9, "en")
+    const fresh = defaultTrackState(catalog)
+    const presets = offensePresetsForState(catalog, fresh)
+    const extreme = presets.find((preset) => preset.id === "extreme")
+    if (extreme?.values.kind !== "offense") {
+      throw new Error("Expected system Offense Stat Presets")
+    }
+
+    const raw: PersistedTrackState = {
+      ...fresh,
+      statMode: "range",
+      offensePresetIds: ["neutral-zero", "neutral-max", "extreme"],
+      statRange: { min: extreme.values.stat, max: extreme.values.stat },
+      statRangeTouched: true,
+      defenderRangeTouched: false,
+    }
+    const restored = restorePersistedTrackState(raw, catalog)
+
+    expect(restored.statMode).toBe("range")
+    expect(restored.offensePresetIds).toEqual(["extreme"])
+    expect(restored.statRange).toEqual(raw.statRange)
+  })
+
+  it("restores a dual-store Choice snapshot from saved IDs, not the dormant interval", async () => {
+    const catalog = await getCatalogShell(6, 9, "en")
+    const fresh = defaultTrackState(catalog)
+    const presets = offensePresetsForState(catalog, fresh)
+    const extreme = presets.find((preset) => preset.id === "extreme")
+    if (extreme?.values.kind !== "offense") {
+      throw new Error("Expected system Offense Stat Presets")
+    }
+
+    const raw: PersistedTrackState = {
+      ...fresh,
+      statMode: "preset",
+      offensePresetIds: ["neutral-max"],
+      statRange: { min: extreme.values.stat, max: extreme.values.stat },
+      statRangeTouched: true,
+      defenderRangeTouched: false,
+    }
+    const restored = restorePersistedTrackState(raw, catalog)
+    const envelope = presets.find((preset) => preset.id === "neutral-max")
+    if (envelope?.values.kind !== "offense") {
+      throw new Error("Expected system Offense Stat Presets")
+    }
+
+    expect(restored.statMode).toBe("preset")
+    expect(restored.offensePresetIds).toEqual(["neutral-max"])
+    expect(restored.statRange).toEqual({ min: envelope.values.stat, max: envelope.values.stat })
+  })
+
+  it("restores a dual-store Defense Range snapshot from the saved interval plus in-envelope picks", async () => {
+    const catalog = await getCatalogShell(6, 9, "en")
+    const fresh = defaultTrackState(catalog)
+    const presets = defensePresetsForState(catalog, fresh)
+    const hp32 = presets.find((preset) => preset.id === "hp-32")
+    if (hp32?.values.kind !== "defense") {
+      throw new Error("Expected system Defense Stat Presets")
+    }
+
+    const raw: PersistedTrackState = {
+      ...fresh,
+      defenderMode: "range",
+      defensePresetIds: ["min-bulk", "hp-32", "standard-bulk"],
+      defenderRanges: {
+        hp: { min: hp32.values.hp, max: hp32.values.hp },
+        def: { min: hp32.values.def, max: hp32.values.def },
+      },
+      statRangeTouched: false,
+      defenderRangeTouched: true,
+    }
+    const restored = restorePersistedTrackState(raw, catalog)
+
+    expect(restored.defenderMode).toBe("range")
+    expect(restored.defensePresetIds).toEqual(["hp-32"])
+    expect(restored.defenderRanges).toEqual(raw.defenderRanges)
+  })
+
+  it("restores a current-model snapshot without rewriting it to new-Matchup defaults", async () => {
+    const catalog = await getCatalogShell(6, 9, "en")
+    const fresh = defaultTrackState(catalog)
+    const raw: PersistedTrackState = {
+      ...fresh,
+      statMode: "preset",
+      offensePresetIds: ["neutral-max"],
+    }
+    const restored = restorePersistedTrackState(raw, catalog)
+
+    expect(restored.statMode).toBe("preset")
+    expect(restored.offensePresetIds).toEqual(["neutral-max"])
   })
 
   it("converts move ids and selected snapshot ids through the same snapshot list", async () => {

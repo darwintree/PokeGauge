@@ -38,7 +38,6 @@ export type TrackState = {
   offensePresetIds: string[]
   offenseTemporaryPresets: StatPreset[]
   statRange: StatRange
-  statRangeTouched: boolean
   showOffenseStatValue: boolean
   offenseAllocationIndices: Record<string, number>
   attackerStages: StatStage[]
@@ -53,7 +52,6 @@ export type TrackState = {
   defensePresetIds: string[]
   defenseTemporaryPresets: StatPreset[]
   defenderRanges: DefenderStatRanges
-  defenderRangeTouched: boolean
   showDefenseStatValue: boolean
   showResultStatValue: boolean
   defenseAllocationIndices: Record<string, number>

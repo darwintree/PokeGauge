@@ -16,9 +16,24 @@ export {
   offensePresetsForState,
 } from "./state"
 export {
+  defenseEnvelopeOf,
+  offenseEnvelopeOf,
+  trackStateAfterAddDefense,
+  trackStateAfterAddOffense,
+  trackStateAfterDefenseMode,
+  trackStateAfterDefenseRanges,
+  trackStateAfterOffenseMode,
+  trackStateAfterOffenseRange,
+  trackStateAfterPersistDefense,
+  trackStateAfterPersistOffense,
+  trackStateAfterRemoveDefense,
+  trackStateAfterRemoveOffense,
+  trackStateAfterToggleDefense,
+  trackStateAfterToggleOffense,
+} from "./stat-selection"
+export type { PersistedTrackState } from "./stat-selection"
+export {
   normalizeScreens,
-  reconcileDefenseFromRange,
-  reconcileOffenseFromRange,
   selectedSnapshotMoveIds,
   snapshotMoveIds,
   snapshotsForMoveIds,
@@ -39,6 +54,7 @@ export { RANGE_STAT_ID, RANGE_DEFENDER_ID } from "./types"
 export {
   discardScenarioSnapshot,
   loadScenarioSnapshot,
+  restorePersistedTrackState,
   saveScenarioSnapshot,
   scenarioSnapshotMatchesCatalog,
   SCENARIO_STORAGE_KEY,

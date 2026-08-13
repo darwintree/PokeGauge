@@ -234,6 +234,8 @@ describe("ability scenario product and provenance", () => {
     const tackle = catalog.moves.find((move) => move.id === TACKLE.moveId)
     if (!tackle) throw new Error("Expected Tackle catalog option")
     const state = defaultTrackState(catalog)
+    state.statMode = "preset"
+    state.defenderMode = "preset"
     state.moveSnapshots = [createMoveSnapshot(tackle, TACKLE.id)]
     state.selectedMoveSnapshotIds = [TACKLE.id]
     state.offensePresetIds = ["neutral-max"]
@@ -261,6 +263,8 @@ describe("ability scenario product and provenance", () => {
     const revelationDance = catalog.moves.find((move) => move.id === 686)
     if (!revelationDance) throw new Error("Expected Revelation Dance catalog option")
     const state = defaultTrackState(catalog)
+    state.statMode = "preset"
+    state.defenderMode = "preset"
     state.moveSnapshots = [createMoveSnapshot(
       revelationDance,
       "pipeline-revelation-dance",
@@ -335,6 +339,8 @@ describe("ability scenario product and provenance", () => {
     const waterGun = catalog.moves.find((move) => move.id === 55)
     if (!waterGun) throw new Error("Expected Water Gun catalog option")
     const state = defaultTrackState(catalog)
+    state.statMode = "preset"
+    state.defenderMode = "preset"
     state.moveSnapshots = [createMoveSnapshot(waterGun, "pipeline-water-gun")]
     state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
     state.offensePresetIds = ["neutral-max"]
@@ -371,6 +377,8 @@ describe("ability scenario product and provenance", () => {
   it("merges no ability with effect-equivalent unsupported branches", async () => {
     const catalog = await getCatalogShell(133, 143, "en", "physical")
     const state = defaultTrackState(catalog)
+    state.statMode = "preset"
+    state.defenderMode = "preset"
     const tackle = catalog.moves.find((move) => move.id === TACKLE.moveId)
     if (!tackle) throw new Error("Expected Tackle catalog option")
     state.moveSnapshots = [createMoveSnapshot(tackle, TACKLE.id)]

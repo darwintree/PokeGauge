@@ -13,8 +13,8 @@ import type { StatPreset } from "./types"
 const OFFENSE_SYSTEM_IDS = ["neutral-zero", "neutral-max", "extreme"] as const
 const DEFENSE_SYSTEM_IDS = ["min-bulk", "hp-32", "standard-bulk"] as const
 
-export const OFFENSE_DEFAULT_SELECTED: OffensePresetId[] = ["neutral-max", "extreme"]
-export const DEFENSE_DEFAULT_SELECTED: DefensePresetId[] = ["hp-32"]
+export const OFFENSE_DEFAULT_SELECTED: OffensePresetId[] = ["neutral-zero", "extreme"]
+export const DEFENSE_DEFAULT_SELECTED: DefensePresetId[] = ["min-bulk", "hp-32"]
 
 function offenseSystemPreset(
   id: OffensePresetId,

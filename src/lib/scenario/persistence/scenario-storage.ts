@@ -10,6 +10,15 @@ import {
   defensePresetsForState,
   offensePresetsForState,
 } from "../state"
+import {
+  isDualStoreTrackState,
+  stripTouched,
+  trackStateAfterDefenseRanges,
+  trackStateAfterOffenseRange,
+  withDefenseEnvelope,
+  withOffenseEnvelope,
+  type PersistedTrackState,
+} from "../stat-selection"
 import type { TrackState } from "../types"
 
 export const SCENARIO_STORAGE_KEY = "pokemon-damage-calc:scenario"
@@ -132,7 +141,7 @@ function isTrackState(value: unknown): value is TrackState {
       isTemporaryPreset(preset, "offense"),
     ) &&
     isNumberRange(value.statRange) &&
-    isBoolean(value.statRangeTouched) &&
+    (value.statRangeTouched === undefined || isBoolean(value.statRangeTouched)) &&
     isBoolean(value.showOffenseStatValue) &&
     isAllocationIndices(value.offenseAllocationIndices) &&
     isArrayOf(value.attackerStages, (stage): stage is TrackState["attackerStages"][number] =>
@@ -158,7 +167,7 @@ function isTrackState(value: unknown): value is TrackState {
     ) &&
     isNumberRange(value.defenderRanges.hp) &&
     isNumberRange(value.defenderRanges.def) &&
-    isBoolean(value.defenderRangeTouched) &&
+    (value.defenderRangeTouched === undefined || isBoolean(value.defenderRangeTouched)) &&
     isBoolean(value.showDefenseStatValue) &&
     isBoolean(value.showResultStatValue) &&
     isAllocationIndices(value.defenseAllocationIndices) &&
@@ -293,6 +302,30 @@ function rangeFits(
   bounds: { min: number; max: number },
 ): boolean {
   return range.min >= bounds.min && range.max <= bounds.max
+}
+
+export function restorePersistedTrackState(
+  raw: PersistedTrackState,
+  catalog: MatchupCatalog,
+): TrackState {
+  const dualStore = isDualStoreTrackState(raw)
+  let state = stripTouched(raw)
+  const offensePresets = offensePresetsForState(catalog, state)
+  const defensePresets = defensePresetsForState(catalog, state)
+
+  if (dualStore && raw.statMode === "range") {
+    state = trackStateAfterOffenseRange(state, raw.statRange, offensePresets)
+  } else {
+    state = withOffenseEnvelope(state, offensePresets)
+  }
+
+  if (dualStore && raw.defenderMode === "range") {
+    state = trackStateAfterDefenseRanges(state, raw.defenderRanges, defensePresets)
+  } else {
+    state = withDefenseEnvelope(state, defensePresets)
+  }
+
+  return state
 }
 
 export function scenarioSnapshotMatchesCatalog(

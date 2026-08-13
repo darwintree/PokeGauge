@@ -67,6 +67,8 @@ async function exactHeldItemFixture({
   const move = catalog.moves.find((candidate) => candidate.id === moveId)
   if (!move) throw new Error(`Expected move ${moveId} in the ${category} move catalog`)
   const state = defaultTrackState(catalog)
+  state.statMode = "preset"
+  state.defenderMode = "preset"
   state.moveSnapshots = [{
     ...createMoveSnapshot(move, snapshotId),
     power,
@@ -508,6 +510,8 @@ describe("cross-mechanism acceptance", () => {
     const crabhammer = catalog.moves.find((move) => move.id === MOVE_ID)
     if (!crabhammer) throw new Error("Expected Crabhammer in the physical move catalog")
     const state = defaultTrackState(catalog)
+    state.statMode = "preset"
+    state.defenderMode = "preset"
     state.moveSnapshots = [{
       ...createMoveSnapshot(crabhammer, "cross-mechanism-crabhammer"),
       criticalStage: 0,
@@ -628,6 +632,8 @@ describe("cross-mechanism acceptance", () => {
     const crabhammer = catalog.moves.find((move) => move.id === MOVE_ID)
     if (!crabhammer) throw new Error("Expected Crabhammer in the physical move catalog")
     const state = defaultTrackState(catalog)
+    state.statMode = "preset"
+    state.defenderMode = "preset"
     state.moveSnapshots = [{
       ...createMoveSnapshot(crabhammer, "cross-mechanism-critical-only"),
       criticalStage: 3,

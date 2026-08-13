@@ -3,9 +3,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { getCatalogShell } from "@/lib/catalog"
 import {
   loadScenarioSnapshot,
+  restorePersistedTrackState,
   saveScenarioSnapshot,
   SCENARIO_STORAGE_KEY,
   scenarioSnapshotMatchesCatalog,
+  type PersistedTrackState,
   type ScenarioSnapshotInput,
 } from "@/lib/scenario"
 import { defaultTrackState } from "@/lib/scenario"
@@ -32,7 +34,6 @@ function scenario(): ScenarioSnapshotInput {
       offensePresetIds: [],
       offenseTemporaryPresets: [],
       statRange: { min: 130, max: 182 },
-      statRangeTouched: false,
       showOffenseStatValue: false,
       offenseAllocationIndices: {},
       attackerStages: [0],
@@ -50,7 +51,6 @@ function scenario(): ScenarioSnapshotInput {
         hp: { min: 170, max: 202 },
         def: { min: 110, max: 156 },
       },
-      defenderRangeTouched: false,
       showDefenseStatValue: false,
       showResultStatValue: true,
       defenseAllocationIndices: {},
@@ -257,6 +257,40 @@ describe("scenario storage", () => {
         catalog,
       ),
     ).toBe(true)
+  })
+
+  it("loads a dual-store snapshot that still has touched flags", () => {
+    const input = scenario()
+    data[SCENARIO_STORAGE_KEY] = JSON.stringify({
+      version: 4,
+      ...input,
+      trackState: {
+        ...input.trackState,
+        statRangeTouched: true,
+        defenderRangeTouched: false,
+      },
+    })
+
+    const loaded = loadScenarioSnapshot()
+    expect(loaded?.trackState.statMode).toBe("preset")
+    expect((loaded?.trackState as PersistedTrackState).statRangeTouched).toBe(true)
+  })
+
+  it("rebuilds a dual-store Range selected set from the saved interval", async () => {
+    const { currentCatalog, snapshot } = await compatibleScenario()
+    const extreme = snapshot.trackState.statRange.max
+    const raw: PersistedTrackState = {
+      ...snapshot.trackState,
+      statMode: "range",
+      offensePresetIds: ["neutral-zero", "neutral-max", "extreme"],
+      statRange: { min: extreme, max: extreme },
+      statRangeTouched: true,
+      defenderRangeTouched: false,
+    }
+    const restored = restorePersistedTrackState(raw, currentCatalog)
+
+    expect(restored.statMode).toBe("range")
+    expect(restored.offensePresetIds).toEqual(["extreme"])
   })
 
   it("accepts every allowed restored Mega ability selection", async () => {

@@ -162,7 +162,6 @@ export function StatRangeInput({
             )}
 
             {(["min", "max"] as const).map((handle) => {
-              if (collapsed && handle === "max") return null
               if (singlePoint && handle === "max") return null
               return (
               <button
@@ -177,7 +176,6 @@ export function StatRangeInput({
                 className={cn(
                   "border-primary bg-background absolute top-1/2 z-10 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 shadow-sm",
                   "focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none",
-                  collapsed && handle === "max" && "hidden",
                   fineTune === handle && "ring-primary/40 ring-2",
                   drag.activeHandle === handle && "scale-110",
                 )}
@@ -193,8 +191,8 @@ export function StatRangeInput({
 
           <div className="relative mx-1 h-4">
             {(["min", "max"] as const).map((handle) => {
-              if (collapsed && handle === "max") return null
               if (singlePoint && handle === "max") return null
+              if (value.min === value.max && handle === "max") return null
               const endpoint = handle === "min" ? value.min : value.max
               const pct = pctForValue(endpoint, bounds.min, bounds.max)
               return (

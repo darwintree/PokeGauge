@@ -16,10 +16,12 @@ import {
 } from "@/lib/catalog"
 import { createMoveSnapshot } from "@/lib/move"
 import {
+  defenseEnvelopeOf,
   defensePresetsForState,
   defaultTrackState,
   expectedRowCount,
   expandRangeParentBlocks,
+  offenseEnvelopeOf,
   offensePresetsForState,
   RANGE_DEFENDER_ID,
   RANGE_STAT_ID,
@@ -45,6 +47,12 @@ function scenarioResults(
   state: ReturnType<typeof defaultTrackState>,
 ) {
   return runScenarioPipeline(catalog, state).rows
+}
+
+function withChoiceStats(state: ReturnType<typeof defaultTrackState>) {
+  state.statMode = "preset"
+  state.defenderMode = "preset"
+  return state
 }
 
 function installChampionsMoveUsageFixture() {
@@ -262,15 +270,19 @@ describe("matchup scenario pipeline", () => {
     catalog = await getCatalog(445, 727, LOCALE)
   })
 
-  it("returns 10 rows for the default selected moves", () => {
+  it("returns 5 Range rows for the default selected moves", () => {
     const state = defaultTrackState(catalog)
     const rows = scenarioResults(catalog, state)
-    expect(rows).toHaveLength(10)
-    expect(expectedRowCount(state)).toBe(10)
+    expect(state.statMode).toBe("range")
+    expect(state.defenderMode).toBe("range")
+    expect(rows).toHaveLength(5)
+    expect(expectedRowCount(state)).toBe(5)
     expect(state.offensePresetIds).toEqual(
-      expect.arrayContaining(["neutral-max", "extreme"]),
+      expect.arrayContaining(["neutral-zero", "extreme"]),
     )
-    expect(state.defensePresetIds).toEqual(["hp-32"])
+    expect(state.defensePresetIds).toEqual(
+      expect.arrayContaining(["min-bulk", "hp-32"]),
+    )
   })
 
   it("reduces row count when a move is deselected", () => {
@@ -279,7 +291,7 @@ describe("matchup scenario pipeline", () => {
     state.selectedMoveSnapshotIds = [state.moveSnapshots[0].id]
     const rows = scenarioResults(catalog, state)
     expect(state.moveSnapshots).toHaveLength(2)
-    expect(rows).toHaveLength(2)
+    expect(rows).toHaveLength(1)
     expect(rows.every((r) => r.moveId === 89)).toBe(true)
   })
 
@@ -287,23 +299,23 @@ describe("matchup scenario pipeline", () => {
     const state = defaultTrackState(catalog)
     selectMoves(catalog, state, [89, 89])
     const rows = scenarioResults(catalog, state)
-    expect(rows).toHaveLength(4)
-    expect(expectedRowCount(state)).toBe(4)
+    expect(rows).toHaveLength(2)
+    expect(expectedRowCount(state)).toBe(2)
     expect(rows.every((r) => r.moveId === 89)).toBe(true)
     expect(new Set(rows.map((row) => row.snapshotId))).toEqual(
       new Set(["test-0-89", "test-1-89"]),
     )
     expect(rows.map((row) => row.snapshotId)).toEqual([
       "test-0-89",
-      "test-0-89",
-      "test-1-89",
       "test-1-89",
     ])
-    expect(new Set(rows.map((row) => row.calculationIdentity)).size).toBe(4)
+    expect(new Set(rows.map((row) => row.calculationIdentity)).size).toBe(2)
   })
 
   it("groups an unconfigured snapshot once before kernel execution", () => {
-    const state = defaultTrackState(catalog)
+    const state = withChoiceStats(defaultTrackState(catalog))
+    state.offensePresetIds = ["neutral-max", "extreme"]
+    state.defensePresetIds = ["hp-32"]
     selectMoves(catalog, state, [89])
     state.moveSnapshots[0] = { ...state.moveSnapshots[0], power: 0, accuracy: 0 }
     state.attackerItemIds = ["none", 226, 214]
@@ -391,7 +403,7 @@ describe("matchup scenario pipeline", () => {
   })
 
   it("merges 12 raw held-item scenarios into 6 identities with provenance", () => {
-    const state = defaultTrackState(catalog)
+    const state = withChoiceStats(defaultTrackState(catalog))
     selectMoves(catalog, state, [424, 127, 89])
     state.offensePresetIds = ["extreme"]
     state.defensePresetIds = ["hp-32"]
@@ -447,7 +459,7 @@ describe("matchup scenario pipeline", () => {
   })
 
   it("expands defender items and merges their neutral damage inputs", () => {
-    const state = defaultTrackState(catalog)
+    const state = withChoiceStats(defaultTrackState(catalog))
     selectMoves(catalog, state, [89])
     state.offensePresetIds = ["extreme"]
     state.defensePresetIds = ["hp-32"]
@@ -467,7 +479,7 @@ describe("matchup scenario pipeline", () => {
   })
 
   it("defaults both stage tracks to zero and includes them in the row product", () => {
-    const state = defaultTrackState(catalog)
+    const state = withChoiceStats(defaultTrackState(catalog))
     expect(state.attackerStages).toEqual([0])
     expect(state.defenderStages).toEqual([0])
 
@@ -483,7 +495,7 @@ describe("matchup scenario pipeline", () => {
   })
 
   it("merges critical-only ignored stages and retains inactive provenance", () => {
-    const state = defaultTrackState(catalog)
+    const state = withChoiceStats(defaultTrackState(catalog))
     selectMoves(catalog, state, [89])
     state.moveSnapshots[0] = { ...state.moveSnapshots[0], criticalStage: 3 }
     state.offensePresetIds = ["extreme"]
@@ -514,7 +526,7 @@ describe("matchup scenario pipeline", () => {
   })
 
   it("keeps lower-critical stage choices distinct and active", () => {
-    const state = defaultTrackState(catalog)
+    const state = withChoiceStats(defaultTrackState(catalog))
     selectMoves(catalog, state, [89])
     state.moveSnapshots[0] = { ...state.moveSnapshots[0], criticalStage: 2 }
     state.offensePresetIds = ["extreme"]
@@ -538,15 +550,16 @@ describe("matchup scenario pipeline", () => {
   })
 
   it("filters preset results when an Offense Stat Preset is deselected", () => {
-    const state = defaultTrackState(catalog)
+    const state = withChoiceStats(defaultTrackState(catalog))
     state.offensePresetIds = ["extreme"]
+    state.defensePresetIds = ["hp-32"]
     const rows = scenarioResults(catalog, state)
     expect(rows).toHaveLength(5)
     expect(rows.every((r) => r.attackerStatId === "extreme")).toBe(true)
   })
 
   it("uses stored preset values unchanged and ignores allocation label indices", () => {
-    const state = defaultTrackState(catalog)
+    const state = withChoiceStats(defaultTrackState(catalog))
     selectMoves(catalog, state, [89])
     state.attackerItemIds = ["none"]
     state.offensePresetIds = ["off-grid-offense"]
@@ -581,7 +594,7 @@ describe("matchup scenario pipeline", () => {
   })
 
   it("keeps reachable system preset values unchanged", () => {
-    const state = defaultTrackState(catalog)
+    const state = withChoiceStats(defaultTrackState(catalog))
     selectMoves(catalog, state, [89])
     state.attackerItemIds = ["none"]
     state.offensePresetIds = ["neutral-max"]
@@ -615,7 +628,7 @@ describe("matchup scenario pipeline", () => {
   })
 
   it("applies type-boost item modifier for matching move type", () => {
-    const state = defaultTrackState(catalog)
+    const state = withChoiceStats(defaultTrackState(catalog))
     selectMoves(catalog, state, [89])
     state.offensePresetIds = ["extreme"]
     state.defensePresetIds = ["hp-32"]
@@ -635,7 +648,7 @@ describe("matchup scenario pipeline", () => {
   })
 
   it("compiles Classic and Battle Odds fixed-build KO Probabilities", () => {
-    const state = defaultTrackState(catalog)
+    const state = withChoiceStats(defaultTrackState(catalog))
     selectMoves(catalog, state, [667])
     state.offensePresetIds = ["extreme"]
     state.attackerItemIds = [197]
@@ -651,7 +664,7 @@ describe("matchup scenario pipeline", () => {
   })
 
   it("compiles Battle Odds KO Probabilities for fixed-power high-critical moves", () => {
-    const state = defaultTrackState(catalog)
+    const state = withChoiceStats(defaultTrackState(catalog))
     selectMoves(catalog, state, [2])
     state.offensePresetIds = ["extreme"]
     state.attackerItemIds = ["none"]
@@ -732,7 +745,7 @@ describe("matchup scenario pipeline - range mode", () => {
   })
 
   it("defender range mode: row count = moves × stats × items (defender track = 1)", () => {
-    const state = defaultTrackState(catalog)
+    const state = withChoiceStats(defaultTrackState(catalog))
     state.defenderMode = "range"
     const rows = scenarioResults(catalog, state)
     expect(rows).toHaveLength(10)
@@ -753,7 +766,7 @@ describe("matchup scenario pipeline - range mode", () => {
   })
 
   it("exposes ordered endpoint KO probability ranges instead of averaging", () => {
-    const state = defaultTrackState(catalog)
+    const state = withChoiceStats(defaultTrackState(catalog))
     selectMoves(catalog, state, [89])
     state.attackerItemIds = ["none"]
     state.defensePresetIds = ["min-bulk"]
@@ -762,6 +775,7 @@ describe("matchup scenario pipeline - range mode", () => {
     const endpointRows = ["neutral-zero", "extreme"].map((offensePresetId) => {
       const [row] = scenarioResults(catalog, {
         ...state,
+        statMode: "preset",
         offensePresetIds: [offensePresetId],
       })
       return row.koProbabilities
@@ -788,7 +802,12 @@ describe("matchup scenario pipeline - range mode", () => {
       { offensePresetIds: ["neutral-zero"], defensePresetIds: ["standard-bulk"] },
       { offensePresetIds: ["extreme"], defensePresetIds: ["min-bulk"] },
     ].map((selection) => {
-      const [row] = scenarioResults(catalog, { ...state, ...selection })
+      const [row] = scenarioResults(catalog, {
+        ...state,
+        statMode: "preset",
+        defenderMode: "preset",
+        ...selection,
+      })
       return row
     })
 
@@ -796,6 +815,16 @@ describe("matchup scenario pipeline - range mode", () => {
       ...state,
       statMode: "range",
       defenderMode: "range",
+      offensePresetIds: ["neutral-zero", "extreme"],
+      defensePresetIds: ["min-bulk", "standard-bulk"],
+      statRange: offenseEnvelopeOf(
+        offensePresetsForState(catalog, state),
+        ["neutral-zero", "extreme"],
+      ) ?? state.statRange,
+      defenderRanges: defenseEnvelopeOf(
+        defensePresetsForState(catalog, state),
+        ["min-bulk", "standard-bulk"],
+      ) ?? state.defenderRanges,
     })
     const ohkoEndpoints = oppositeEndpoints.map((row) => row.koProbabilities?.ohko as number)
     const twoHitEndpoints = oppositeEndpoints.map((row) => row.koProbabilities?.twoHit as number)

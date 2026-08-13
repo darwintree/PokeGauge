@@ -286,6 +286,8 @@ describe("reviewed weather compiler", () => {
 describe("weather scenario product and provenance", () => {
   function singleAbilityState(catalog: Awaited<ReturnType<typeof getCatalogShell>>) {
     const state = defaultTrackState(catalog)
+    state.statMode = "preset"
+    state.defenderMode = "preset"
     state.attackerAbilityIds = [catalog.attackerAbilities[0].id]
     state.defenderAbilityIds = [catalog.defenderAbilities[0].id]
     return state

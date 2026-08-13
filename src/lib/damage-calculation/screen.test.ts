@@ -235,6 +235,8 @@ describe("screen scenario product and provenance", () => {
     const earthquake = catalog.moves.find((move) => move.id === 89)
     if (!earthquake) throw new Error("Expected Earthquake catalog option")
     const state = defaultTrackState(catalog)
+    state.statMode = "preset"
+    state.defenderMode = "preset"
     state.moveSnapshots = [{
       ...createMoveSnapshot(earthquake, "pipeline-screen-earthquake"),
       criticalStage,
@@ -312,6 +314,8 @@ describe("screen scenario product and provenance", () => {
       const move = catalog.moves.find((candidate) => candidate.id === moveId)
       if (!move) throw new Error(`Expected screen breaker ${moveId}`)
       const state = defaultTrackState(catalog)
+      state.statMode = "preset"
+      state.defenderMode = "preset"
       state.moveSnapshots = [createMoveSnapshot(move, `pipeline-breaker-${moveId}`)]
       state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
       state.offensePresetIds = ["neutral-max"]

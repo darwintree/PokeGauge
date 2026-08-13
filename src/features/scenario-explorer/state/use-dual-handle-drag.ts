@@ -50,12 +50,12 @@ export function useDualHandleDrag({
     const next =
       handle === "min"
         ? {
-            min: clampStat(snapped, boundsMin, value.max),
+            min: clampStat(snapped, boundsMin, boundsMax),
             max: value.max,
           }
         : {
             min: value.min,
-            max: clampStat(snapped, value.min, boundsMax),
+            max: clampStat(snapped, boundsMin, boundsMax),
           }
     if (!sameStatRange(next, value)) onChange(next)
   }

@@ -371,6 +371,8 @@ describe("scenario move type compiler coverage", () => {
     const tackle = catalog.moves.find((move) => move.id === 33)
     if (!tackle) throw new Error("Expected Tackle")
     const state = defaultTrackState(catalog)
+    state.statMode = "preset"
+    state.defenderMode = "preset"
     state.moveSnapshots = [createMoveSnapshot(tackle, "merge-pixilate")]
     state.selectedMoveSnapshotIds = ["merge-pixilate"]
     state.offensePresetIds = ["neutral-max"]
@@ -465,6 +467,8 @@ describe("scenario move type compiler coverage", () => {
     const tackle = catalog.moves.find((move) => move.id === 33)
     if (!tackle) throw new Error("Expected Tackle")
     const state = defaultTrackState(catalog)
+    state.statMode = "preset"
+    state.defenderMode = "preset"
     state.moveSnapshots = [createMoveSnapshot(tackle, "pixilate-row")]
     state.selectedMoveSnapshotIds = ["pixilate-row"]
     state.offensePresetIds = ["neutral-max"]

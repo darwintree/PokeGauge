@@ -314,6 +314,8 @@ describe("phase order, critical, and provenance", () => {
     const moonblast = catalog.moves.find((move) => move.id === 585)
     if (!moonblast) throw new Error("Expected Moonblast")
     const state = defaultTrackState(catalog)
+    state.statMode = "preset"
+    state.defenderMode = "preset"
     state.moveSnapshots = [createMoveSnapshot(moonblast, "fairy-aura-product")]
     state.selectedMoveSnapshotIds = ["fairy-aura-product"]
     state.offensePresetIds = ["neutral-max"]

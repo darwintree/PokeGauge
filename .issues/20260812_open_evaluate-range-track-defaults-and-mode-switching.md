@@ -6,7 +6,7 @@ status: "open"
 priority: "high"
 labels: ["FEATURE-REQUEST", "WAYFINDER:MAP"]
 created_at: "2026-08-12T07:49:00Z"
-updated_at: "2026-08-13T09:54:00Z"
+updated_at: "2026-08-13T14:20:00Z"
 ---
 ## Destination
 
@@ -20,13 +20,14 @@ ADR: [`docs/adr/0003-stat-track-one-selected-value-set.md`](../docs/adr/0003-sta
 
 ## Problem
 
-Stat Track 当前仍是两套库：`statMode` / `defenderMode` 各带独立区间、`touched` 保护，以及 Range → Choice 的端点和解（防守最多四个角点、Temporary Preset）。产品契约已改为单选中集合，代码尚未跟上。
+Stat Track 值模型已改为单选中集合：Choice 与 Range 是同一组 Stat Value 的两种模式。剩余开放工作是 Range 端点身份与 Scenario Merge（见 Related），不是再拆一套库。
 
 ## Tickets
 
 - [[archive/20260813_closed_style-expandable-range-items-on-parent-result-rows|Style expandable range items on parent result rows]]
 - [[archive/20260813_closed_unify-stat-value-chip-display|Unify stat value chip display]]
 - [[archive/20260813_closed_style-collapsed-stat-track-mode-switch|Style collapsed Stat Track mode switch]]
+- [[archive/20260813_closed_unify-stat-track-onto-one-selected-stat-value-set|Unify Stat Track onto one selected Stat Value set]]
 
 ## Decisions so far
 
@@ -54,7 +55,7 @@ Stat Track 当前仍是两套库：`statMode` / `defenderMode` 各带独立区�
 
 ## Not yet specified
 
-- 实现尚未开始。伤害计算端点与 Scenario Merge 仍见 [[20260717_open_define-range-endpoint-identity-and-merge-semantics|Define Range endpoint identity and merge semantics]]，本票不改。
+- 值模型已实现，见 [[archive/20260813_closed_unify-stat-track-onto-one-selected-stat-value-set|Unify Stat Track onto one selected Stat Value set]]。伤害计算端点与 Scenario Merge 仍见 [[20260717_open_define-range-endpoint-identity-and-merge-semantics|Define Range endpoint identity and merge semantics]]，本票不改。
 
 ## Related issues
 
@@ -69,10 +70,10 @@ Stat Track 当前仍是两套库：`statMode` / `defenderMode` 各带独立区�
 
 ## Verification Checklist
 
-- [ ] 逐条核对 [`docs/traces/discussion/2026-08-13-stat-range-choice-mode-switching.md`](../docs/traces/discussion/2026-08-13-stat-range-choice-mode-switching.md) 每一条决定已实现，或已明确推迟。
-- [ ] 去掉两套库、`touched` 保护、以及 Range → Choice 四角覆盖。
-- [ ] 新对阵默认 Range，选中集合符合第 17 条。
-- [ ] 与 Range endpoint identity／merge issue 的边界仍成立：本票不改计算端点语义。
+- [x] 逐条核对 [`docs/traces/discussion/2026-08-13-stat-range-choice-mode-switching.md`](../docs/traces/discussion/2026-08-13-stat-range-choice-mode-switching.md) 每一条决定已实现，或已明确推迟。
+- [x] 去掉两套库、`touched` 保护、以及 Range → Choice 四角覆盖。
+- [x] 新对阵默认 Range，选中集合符合第 17 条。
+- [x] 与 Range endpoint identity／merge issue 的边界仍成立：本票不改计算端点语义。
 
 ## Progress Log
 
@@ -80,3 +81,5 @@ Stat Track 当前仍是两套库：`statMode` / `defenderMode` 各带独立区�
 - 2026-08-13：grilling 定稿行内展开与折叠 Track 切换交互；记录见讨论 trace。视觉拆成三张子票。
 - 2026-08-13：Stat Value Label chip、母行 chevron、折叠 well + tick 进入产品；相关子票归档。
 - 2026-08-13：grilling 定稿单选中集合、默认 Range、包络端点与 Temporary Stat Value 生命周期；trace 第 9–21 条。实现未开始。
+- 2026-08-13：值模型写成 `READY-FOR-AGENT` 实现票 [[archive/20260813_closed_unify-stat-track-onto-one-selected-stat-value-set|Unify Stat Track onto one selected Stat Value set]]。
+- 2026-08-13：值模型实现完成；Stat Track 只有一组选中 Stat Value，新对阵默认 Range。

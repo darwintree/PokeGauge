@@ -184,6 +184,8 @@ describe("Unaware", () => {
     const move = catalog.moves.find((candidate) => candidate.id === 33)
     if (!move) throw new Error("Expected Tackle")
     const trackState = defaultTrackState(catalog)
+    trackState.statMode = "preset"
+    trackState.defenderMode = "preset"
     trackState.moveSnapshots = [createMoveSnapshot(move, "unaware-merge")]
     trackState.selectedMoveSnapshotIds = trackState.moveSnapshots.map((snapshot) => snapshot.id)
     trackState.offensePresetIds = ["neutral-max"]
@@ -287,6 +289,8 @@ describe("Infiltrator", () => {
     const move = catalog.moves.find((candidate) => candidate.id === 33)
     if (!move) throw new Error("Expected Tackle")
     const trackState = defaultTrackState(catalog)
+    trackState.statMode = "preset"
+    trackState.defenderMode = "preset"
     trackState.moveSnapshots = [createMoveSnapshot(move, "infiltrator-merge")]
     trackState.selectedMoveSnapshotIds = trackState.moveSnapshots.map((snapshot) => snapshot.id)
     trackState.offensePresetIds = ["neutral-max"]

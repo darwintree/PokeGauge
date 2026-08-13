@@ -1,8 +1,3 @@
-import {
-  defaultDefenderDefRange,
-  defaultDefenderHpRange,
-  defaultOffenseStatRange,
-} from "@/lib/stat-calculation"
 import type { MatchupCatalog } from "@/lib/catalog"
 import { createMoveSnapshot } from "@/lib/move"
 import {
@@ -16,6 +11,12 @@ import {
   type StatPreset,
 } from "@/lib/stat-preset"
 
+import {
+  defenseEnvelopeOf,
+  withDefenseRangeEndpoints,
+  withOffenseRangeEndpoints,
+  offenseEnvelopeOf,
+} from "./stat-selection"
 import type { TrackState } from "./types"
 
 export function offensePresetsForState(
@@ -48,17 +49,25 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
     const move = catalog.moves.find((candidate) => candidate.id === moveId)
     return move ? [createMoveSnapshot(move)] : []
   })
+  const offensePresetIds = defaultOffensePresetSelection(offenseSystem, offenseUser)
+  const defensePresetIds = defaultDefensePresetSelection(defenseSystem, defenseUser)
+  const offensePresets = mergeStatPresets(offenseSystem, offenseUser, [])
+  const defensePresets = mergeStatPresets(defenseSystem, defenseUser, [])
+  const statRange = offenseEnvelopeOf(offensePresets, offensePresetIds)
+  const defenderRanges = defenseEnvelopeOf(defensePresets, defensePresetIds)
+  if (!statRange || !defenderRanges) {
+    throw new Error("Default Stat Track selection must yield an envelope")
+  }
 
-  return {
+  const base: TrackState = {
     moveSnapshots,
     selectedMoveSnapshotIds: moveSnapshots
       .filter((snapshot) => catalog.defaultMoveIds.includes(snapshot.moveId))
       .map((snapshot) => snapshot.id),
-    statMode: "preset",
-    offensePresetIds: defaultOffensePresetSelection(offenseSystem, offenseUser),
+    statMode: "range",
+    offensePresetIds,
     offenseTemporaryPresets: [],
-    statRange: defaultOffenseStatRange(attackerCalcName, catalog.moveCategory),
-    statRangeTouched: false,
+    statRange,
     showOffenseStatValue: false,
     offenseAllocationIndices: {},
     attackerStages: [0],
@@ -69,14 +78,10 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
     attackerAbilityIds: [...catalog.defaultAttackerAbilityIds],
     weathers: ["none"],
     terrains: ["none"],
-    defenderMode: "preset",
-    defensePresetIds: defaultDefensePresetSelection(defenseSystem, defenseUser),
+    defenderMode: "range",
+    defensePresetIds,
     defenseTemporaryPresets: [],
-    defenderRanges: {
-      hp: defaultDefenderHpRange(defenderCalcName),
-      def: defaultDefenderDefRange(defenderCalcName, catalog.moveCategory),
-    },
-    defenderRangeTouched: false,
+    defenderRanges,
     showDefenseStatValue: false,
     showResultStatValue: false,
     defenseAllocationIndices: {},
@@ -85,6 +90,11 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
     screens: ["none"],
     probabilityMode: "classic",
   }
+
+  return withDefenseRangeEndpoints(
+    withOffenseRangeEndpoints(base, offensePresets),
+    defensePresets,
+  )
 }
 
 export function expectedRowCount(trackState: TrackState): number {
