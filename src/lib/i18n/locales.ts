@@ -3,7 +3,7 @@ export const SUPPORTED_LOCALES = ["zh-hans", "zh-hant", "en", "ja"] as const
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number]
 
 export const DEFAULT_LOCALE: SupportedLocale = "zh-hans"
-export const LOCALE_STORAGE_KEY = "pokemon-damage-calc.locale"
+export const LOCALE_STORAGE_KEY = "pokegauge.locale"
 
 export function isSupportedLocale(value: string): value is SupportedLocale {
   return SUPPORTED_LOCALES.includes(value as SupportedLocale)

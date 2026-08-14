@@ -1,5 +1,5 @@
 export const zhHansMessages: Record<string, string> = {
-    "app.name": "PokeLens",
+    "app.name": "PokeGauge",
     "app.title": "伤害对比",
     "app.empty": "请至少各选一维配置以展示伤害对比",
     "app.setup": "参数",

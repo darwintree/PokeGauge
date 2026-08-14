@@ -1,5 +1,5 @@
 export const zhHantMessages: Record<string, string> = {
-    "app.name": "PokeLens",
+    "app.name": "PokeGauge",
     "app.title": "傷害對比",
     "app.empty": "請至少各選一維配置以展示傷害對比",
     "app.setup": "參數",

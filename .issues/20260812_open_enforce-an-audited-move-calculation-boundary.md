@@ -6,7 +6,7 @@ status: "open"
 priority: "high"
 labels: ["BUG", "NEEDS-TRIAGE"]
 created_at: "2026-08-12T07:49:00Z"
-updated_at: "2026-08-12T10:30:00Z"
+updated_at: "2026-08-14T13:43:00Z"
 ---
 ## Problem
 
@@ -29,7 +29,7 @@ Release 前必须建立 fail-closed 的 Move Calculation Support 边界：一个
 
 ## Confirmed contract
 
-- Move Calculation Support 只判定影响 PokeLens 当前输出的单次 Move 使用直接伤害语义，不以实现完整战斗模拟为前提。
+- Move Calculation Support 只判定影响 PokeGauge 当前输出的单次 Move 使用直接伤害语义，不以实现完整战斗模拟为前提。
 - 同一次使用的段数、逐段威力、命中与会心属于支持判定；不改变当前直接伤害输出的回复、反伤、状态、场地、换人与回合末效果不单独导致 unsupported。
 - 跨多次使用或多回合的后续效果不单独导致 unsupported；对这类 Move，`<=2HKO` 仍按当前状态下两个相同 Atomic Damage Distribution 计算，并在该数值处用 Tooltip 披露这一假设。
 - 仅对支持矩阵标记为「跨使用语义会变化」的 Move 显示上述 `<=2HKO` Tooltip；普通 Move 不增加该噪声。

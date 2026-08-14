@@ -21,7 +21,7 @@ import {
 } from "../stat-selection"
 import type { TrackState } from "../types"
 
-export const SCENARIO_STORAGE_KEY = "pokemon-damage-calc:scenario"
+export const SCENARIO_STORAGE_KEY = "pokegauge:scenario"
 
 const SCENARIO_STORAGE_VERSION = 4
 const LEGACY_SCENARIO_STORAGE_VERSION = 3

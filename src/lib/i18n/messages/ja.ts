@@ -1,5 +1,5 @@
 export const jaMessages: Record<string, string> = {
-    "app.name": "PokeLens",
+    "app.name": "PokeGauge",
     "app.title": "ダメージ比較",
     "app.empty": "各項目を少なくとも1つ選ぶとダメージ行を表示します",
     "app.setup": "設定",

@@ -22,7 +22,7 @@ import {
 export const HELD_ITEM_SPRITES_COMMIT =
   "8dfa3d97e953caaafaafd4963eff7621811af08e"
 
-export const HELD_ITEM_STORAGE_KEY = "pokemon-damage-calc:held-item-added-boosts"
+export const HELD_ITEM_STORAGE_KEY = "pokegauge:held-item-added-boosts"
 
 export const MASK_BY_BATTLE_POKEMON_ID: Readonly<Record<number, number>> = {
   10273: 2106,

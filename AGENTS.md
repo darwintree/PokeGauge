@@ -1,4 +1,4 @@
-# PokeLens
+# PokeGauge
 
 Pokémon battle damage calculator.
 

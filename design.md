@@ -1,7 +1,7 @@
 ---
 version: alpha
-name: PokeLens Game HUD
-description: "PokeLens light-only design system. Direction decision: docs/adr/0002-game-hud-design-direction.md."
+name: PokeGauge Game HUD
+description: "PokeGauge light-only design system. Direction decision: docs/adr/0002-game-hud-design-direction.md."
 colors:
   ink: "#1f2430"
   primary: "{colors.ink}"
@@ -35,15 +35,15 @@ typography:
     fontFeature: '"tnum"'
 ---
 
-# PokeLens Game HUD
+# PokeGauge Game HUD
 
 ## Purpose
 
-This document defines the current product-wide visual system for PokeLens. It is for designers and frontend implementers making or reviewing product UI.
+This document defines the current product-wide visual system for PokeGauge. It is for designers and frontend implementers making or reviewing product UI.
 
 It records durable principles, semantic roles, reusable patterns, and accessibility requirements. Feature behavior, page composition, component fields, interaction details, algorithms, and implementation values belong with their feature specifications or code. Important design-direction decisions and their rationale belong in `docs/adr/`.
 
-PokeLens uses one light theme. The design direction is recorded in [`docs/adr/0002-game-hud-design-direction.md`](docs/adr/0002-game-hud-design-direction.md), and runtime tokens live in `src/index.css`. ADRs preserve the context of past decisions; references in them do not expand the current scope of this document.
+PokeGauge uses one light theme. The design direction is recorded in [`docs/adr/0002-game-hud-design-direction.md`](docs/adr/0002-game-hud-design-direction.md), and runtime tokens live in `src/index.css`. ADRs preserve the context of past decisions; references in them do not expand the current scope of this document.
 
 ## Principles
 

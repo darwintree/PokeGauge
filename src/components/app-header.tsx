@@ -210,7 +210,7 @@ export function AppHeader({
         <div className="flex min-w-0 items-center gap-3">
           <img
             src="/favicon-32x32.png"
-            srcSet="/pokelens-icon-64.png 2x, /pokelens-icon-96.png 3x"
+            srcSet="/pokegauge-icon-64.png 2x, /pokegauge-icon-96.png 3x"
             alt=""
             width={32}
             height={32}

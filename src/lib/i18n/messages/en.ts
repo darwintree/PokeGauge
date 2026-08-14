@@ -1,5 +1,5 @@
 export const enMessages: Record<string, string> = {
-    "app.name": "PokeLens",
+    "app.name": "PokeGauge",
     "app.title": "Damage comparison",
     "app.empty": "Select at least one option in each dimension to show damage rows",
     "app.setup": "Setup",

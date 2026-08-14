@@ -1,7 +1,6 @@
 import type { StoredUserStatPresets, StatPreset } from "./types"
 
-// Keep the original namespace so existing user presets survive the terminology change.
-const STORAGE_KEY = "pokemon-damage-calc:stat-value-templates"
+const STORAGE_KEY = "pokegauge:stat-value-templates"
 
 function emptyStore(): StoredUserStatPresets {
   return { offense: {}, defense: {} }

@@ -2,7 +2,7 @@ export type StatNameStrategy = "habcds" | "english" | "chinese"
 
 export type StatKey = "hp" | "atk" | "def" | "spa" | "spd" | "spe"
 
-const STORAGE_KEY = "pokemon-damage-calc:stat-name-display-strategy"
+const STORAGE_KEY = "pokegauge:stat-name-display-strategy"
 
 const STAT_NAMES: Record<StatNameStrategy, Record<StatKey, string>> = {
   habcds: { hp: "H", atk: "A", def: "B", spa: "C", spd: "D", spe: "S" },
