@@ -6,11 +6,11 @@ status: "closed"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-30T02:55:00Z"
-updated_at: "2026-07-30T03:18:00Z"
+updated_at: "2026-08-14T03:50:00Z"
 ---
 ## Parent feature
 
-[[../20260721_open_share-and-restore-scenario-explorer-configurations-by-url|Share and restore Scenario Explorer configurations by URL]]
+[[../20260721_open_share-and-restore-scenario-setup-by-url|Share and restore Scenario Setup by URL]]
 
 ## Problem
 

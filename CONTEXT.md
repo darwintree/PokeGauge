@@ -108,6 +108,10 @@ _Avoid_: Result Move Type, resolved move type, Move Snapshot type
 
 ### Scenario model
 
+**Scenario Setup（情景设定）**:
+由一个 Matchup、Move side、各 Track 当前已选语义与 Probability Mode 构成的可重建计算输入；它生成 Scenario set，但不包含未选候选、纯展示偏好或计算结果。
+_Avoid_: Scenario, full Track state, saved UI session, frozen result
+
 **Scenario**:
 从每条 Track 各取一条当前分支后构成的一个计算情景。
 _Avoid_: Result row, chart row, template
