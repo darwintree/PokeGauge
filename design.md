@@ -112,7 +112,8 @@ Result-row chips are data marks and do not use Choice selected yellow. A Stat Ra
 - Responsive layouts preserve task order and legibility without shrinking controls or data below usable sizes.
 - Spacing follows a 4px scale with three levels: tight within a group, looser between groups, and loosest between sections.
 - Dense repeated content uses alignment, whitespace, and quiet separators before cards.
-- Responsive changes may reflow presentation, but must not hide required information or remove keyboard access.
+- Result rows reflow by breakpoint. Desktop keeps the per-row Damage Conditions Card beside the plot. Below `md`, that card becomes one caption line (type, move, attack/defense chips and active tokens) above a full-width plot and a KO rail, so plots stay aligned. Effective power, accuracy, formula, and other-conditions remain on the desktop card.
+- Do not remove keyboard access to remaining controls.
 - Concrete breakpoints, widths, grid assignments, and sticky behavior are implementation decisions.
 
 ## Elevation and depth

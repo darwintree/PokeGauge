@@ -161,6 +161,15 @@ describe("DamageResultRow range envelopes", () => {
     expect(markup).toContain("10.0% ~ 20.0%")
   })
 
+  it("places the range percent under the damage box", () => {
+    const markup = render(true)
+    const left = `${pctToFraction(10) * 100}%`
+    const width = `${(pctToFraction(20) - pctToFraction(10)) * 100}%`
+    expect(markup).toContain("data-damage-range-label")
+    expect(markup).toContain(`left:${left}`)
+    expect(markup).toContain(`width:${width}`)
+  })
+
   it("shows accuracy only in Battle Odds Mode", () => {
     row.moveMechanics.hitFact = 85
     row.moveMechanics.hitProbability = 0.85

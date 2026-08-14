@@ -148,6 +148,87 @@ export function DamageResults({
     )
   }
 
+  const board = (
+    <div className="rounded-[16px] border-2 border-ink bg-paper shadow-hud-board">
+      <DamagePercentAxis />
+      <ul className="pb-2">
+        {blocks.flatMap((block) => {
+          const expansion = expanded[block.parent.calculationIdentity] ?? {
+            offense: false,
+            defense: false,
+          }
+          return [
+            { row: block.parent, role: "parent" as const, expansion },
+            ...block.children.map((row) => ({ row, role: "child" as const, expansion })),
+          ]
+        }).map((item, index, displayRows) => {
+          const { row, role, expansion } = item
+          const identity = rowIdentity(catalog, row, trackState, statNameStrategy, rowLabelPresets)
+          const offenseExpandable = role === "parent" && row.attackerStatId === RANGE_STAT_ID
+          const defenseExpandable = role === "parent" && row.defenderId === RANGE_DEFENDER_ID
+          const isRangeEnvelope =
+            row.attackerStatId === RANGE_STAT_ID || row.defenderId === RANGE_DEFENDER_ID
+          const startsMoveGroup =
+            index === 0 || displayRows[index - 1].row.snapshotId !== row.snapshotId
+          const rowProps = {
+            move: catalogOption(catalog.moves, row.moveId),
+            attackerAbilities: catalog.attackerAbilities,
+            defenderAbilities: catalog.defenderAbilities,
+            attackerStat: {
+              id: row.attackerStatId,
+              chips: identity.offenseChips,
+              showActual: trackState.showResultStatValue,
+              expandable: offenseExpandable,
+              expanded: offenseExpandable && expansion.offense,
+              onToggle: offenseExpandable
+                ? () => toggleAxis(row.calculationIdentity, "offense")
+                : undefined,
+            },
+            defender: {
+              id: row.defenderId,
+              chips: identity.defenseChips,
+              showActual: trackState.showResultStatValue,
+              expandable: defenseExpandable,
+              expanded: defenseExpandable && expansion.defense,
+              onToggle: defenseExpandable
+                ? () => toggleAxis(row.calculationIdentity, "defense")
+                : undefined,
+            },
+            row,
+            isRangeEnvelope,
+            showAccuracy: trackState.probabilityMode === "battle-odds",
+            diff: role === "child" ? expansion : undefined,
+          }
+
+          return (
+            <li
+              key={`${role}:${row.calculationIdentity}`}
+              className={cn(
+                "px-2 py-0.5 hover:bg-token-bg/55 md:rounded-[10px] md:px-3 md:pt-2.5 md:pb-3 lg:px-4",
+                index > 0 &&
+                  (startsMoveGroup
+                    ? "mt-1 border-t border-dashed border-ink/30 pt-1 md:mt-3 md:border-t-2 md:border-ink/35 md:pt-3"
+                    : "border-t border-hairline"),
+              )}
+            >
+              <DamageResultRow {...rowProps} />
+            </li>
+          )
+        })}
+      </ul>
+      <DamageRangeLegend
+        showAverage={blocks.some(
+          (block) =>
+            [block.parent, ...block.children].some(
+              (row) =>
+                row.attackerStatId !== RANGE_STAT_ID &&
+                row.defenderId !== RANGE_DEFENDER_ID,
+            ),
+        )}
+      />
+    </div>
+  )
+
   return (
     <>
       <UnavailableScenarioNotices catalog={catalog} unavailable={unavailable} />
@@ -183,89 +264,7 @@ export function DamageResults({
           onCheckedChange={onShowResultStatValueChange}
         />
       </div>
-      {/* The board is the only chunky container in the results area. */}
-      <div className="rounded-[16px] border-2 border-ink bg-paper shadow-hud-board">
-        <DamagePercentAxis />
-        <ul className="pb-2">
-          {blocks.flatMap((block) => {
-            const expansion = expanded[block.parent.calculationIdentity] ?? {
-              offense: false,
-              defense: false,
-            }
-            return [
-              { row: block.parent, role: "parent" as const, expansion },
-              ...block.children.map((row) => ({ row, role: "child" as const, expansion })),
-            ]
-          }).map((item, index, displayRows) => {
-            const { row, role, expansion } = item
-            const identity = rowIdentity(catalog, row, trackState, statNameStrategy, rowLabelPresets)
-            const offenseExpandable = role === "parent" && row.attackerStatId === RANGE_STAT_ID
-            const defenseExpandable = role === "parent" && row.defenderId === RANGE_DEFENDER_ID
-            const isRangeEnvelope =
-              row.attackerStatId === RANGE_STAT_ID || row.defenderId === RANGE_DEFENDER_ID
-            const startsMoveGroup =
-              index === 0 || displayRows[index - 1].row.snapshotId !== row.snapshotId
-
-            return (
-              <li
-                key={`${role}:${row.calculationIdentity}`}
-                className={cn(
-                  /* Rest rhythm: pt/pb give the hairline separators air on both
-                     sides and contain the percent labels hanging below the plot. */
-                  "rounded-[10px] px-3 pt-2.5 pb-3 sm:px-4",
-                  /* Keep the row flat and separators visible; hover adds only a
-                     quiet token wash so dense comparisons remain one board. */
-                  "hover:bg-token-bg/55",
-                  index > 0 &&
-                    (startsMoveGroup
-                      ? "mt-3 border-t-2 border-dashed border-ink/35 pt-3"
-                      : "border-t border-hairline"),
-                )}
-              >
-                <DamageResultRow
-                  move={catalogOption(catalog.moves, row.moveId)}
-                  attackerAbilities={catalog.attackerAbilities}
-                  defenderAbilities={catalog.defenderAbilities}
-                  attackerStat={{
-                    id: row.attackerStatId,
-                    chips: identity.offenseChips,
-                    showActual: trackState.showResultStatValue,
-                    expandable: offenseExpandable,
-                    expanded: offenseExpandable && expansion.offense,
-                    onToggle: offenseExpandable
-                      ? () => toggleAxis(row.calculationIdentity, "offense")
-                      : undefined,
-                  }}
-                  defender={{
-                    id: row.defenderId,
-                    chips: identity.defenseChips,
-                    showActual: trackState.showResultStatValue,
-                    expandable: defenseExpandable,
-                    expanded: defenseExpandable && expansion.defense,
-                    onToggle: defenseExpandable
-                      ? () => toggleAxis(row.calculationIdentity, "defense")
-                      : undefined,
-                  }}
-                  row={row}
-                  isRangeEnvelope={isRangeEnvelope}
-                  showAccuracy={trackState.probabilityMode === "battle-odds"}
-                  diff={role === "child" ? expansion : undefined}
-                />
-              </li>
-            )
-          })}
-        </ul>
-        <DamageRangeLegend
-          showAverage={blocks.some(
-            (block) =>
-              [block.parent, ...block.children].some(
-                (row) =>
-                  row.attackerStatId !== RANGE_STAT_ID &&
-                  row.defenderId !== RANGE_DEFENDER_ID,
-              ),
-          )}
-        />
-      </div>
+      {board}
     </>
   )
 }

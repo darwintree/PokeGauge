@@ -1,4 +1,4 @@
-import { Info, MoreHorizontal } from "lucide-react"
+import { ChevronDown, Info, MoreHorizontal } from "lucide-react"
 import { useIntl } from "react-intl"
 
 import { TypeBadge } from "@/components/pokemon/type-badge"
@@ -17,6 +17,7 @@ import {
 import type { SupportedLocale } from "@/lib/i18n"
 import type { ScenarioResult } from "@/lib/scenario"
 import type { StatValueChipModel } from "@/lib/stat-preset"
+import { cn } from "@/lib/utils"
 
 import { HeldItemSpriteIcon } from "../tracks/held-item/held-item-sprite-icon"
 import { StatValueChipPair } from "../tracks/stats/stat-value-chip"
@@ -287,6 +288,203 @@ function StageRailCell({ value, title }: { value: number; title: string }) {
       className="flex flex-1 items-center justify-center text-[12px] font-extrabold tabular-nums text-ink"
     >
       {value === 0 ? <span className="sr-only">{title}</span> : stageLabel(value)}
+    </span>
+  )
+}
+
+function CaptionTypeMark({ type }: { type: DamageScenarioSummaryProps["row"]["moveType"] }) {
+  const intl = useIntl()
+  return (
+    <span
+      className="inline-flex h-3.5 shrink-0 items-center rounded-[4px] border border-ink px-0.5 text-[8px] font-extrabold leading-none"
+      style={{
+        backgroundColor: `var(--pokemon-type-${type})`,
+        color: `var(--pokemon-type-${type}-foreground)`,
+      }}
+    >
+      {intl.formatMessage({ id: `type.${type}` })}
+    </span>
+  )
+}
+
+function CaptionChip({
+  chip,
+  showActual,
+}: {
+  chip: StatValueChipModel
+  showActual?: boolean
+}) {
+  return (
+    <span
+      className={cn(
+        "inline-flex h-3.5 items-center px-0.5 text-[8px] font-extrabold leading-none tabular-nums",
+        `stat-value-chip--${chip.band}`,
+        chip.temporary && "border-dashed",
+      )}
+      style={{
+        color: "var(--chip-fg)",
+        background: "var(--chip-bg)",
+        border: "1px solid var(--chip-fg)",
+        borderRadius: 4,
+      }}
+    >
+      {chip.label}
+      {showActual ? (
+        <span className="ml-0.5 font-medium opacity-70">{chip.actual}</span>
+      ) : null}
+    </span>
+  )
+}
+
+function CaptionChips({
+  chips,
+  showActual,
+  expandable,
+  expanded,
+  onToggle,
+  toggleLabel,
+}: {
+  chips: StatValueChipModel[]
+  showActual?: boolean
+  expandable?: boolean
+  expanded?: boolean
+  onToggle?: () => void
+  toggleLabel?: string
+}) {
+  return (
+    <span className="inline-flex min-w-0 flex-nowrap items-center gap-px">
+      <span className="inline-flex min-w-0 flex-nowrap items-center gap-px overflow-hidden">
+        {chips.map((chip, index) => (
+          <span key={`${chip.label}:${chip.actual}:${index}`} className="inline-flex items-center gap-px">
+            {index > 0 ? <span className="text-[8px] font-bold leading-none text-muted-foreground">~</span> : null}
+            <CaptionChip chip={chip} showActual={showActual} />
+          </span>
+        ))}
+      </span>
+      {expandable && onToggle ? (
+        <button
+          type="button"
+          aria-expanded={expanded}
+          aria-label={toggleLabel}
+          onClick={onToggle}
+          className="hover:bg-token-bg focus-visible:ring-ring grid size-3.5 shrink-0 place-items-center rounded-[4px] focus-visible:ring-2 focus-visible:outline-none"
+        >
+          <ChevronDown
+            className={cn(
+              "size-2.5 text-muted-foreground transition-transform",
+              expanded && "rotate-180 text-ink",
+            )}
+            strokeWidth={2.5}
+          />
+        </button>
+      ) : null}
+    </span>
+  )
+}
+
+function CaptionTokens({
+  side,
+  ...props
+}: DamageScenarioSummaryProps & { side: "attack" | "defense" }) {
+  const intl = useIntl()
+  const tracks: ScenarioTrack[] = side === "attack"
+    ? ["held-item", "attacker-ability", "weather", "terrain"]
+    : ["defender-held-item", "defender-ability", "screen"]
+  const values = tracks.flatMap((track) =>
+    (props.row.provenance[track]?.active ?? [])
+      .filter((id) =>
+        id !== "none" &&
+        id !== "0" &&
+        !abilitySourceIsHidden(track, id) &&
+        !((track === "held-item" || track === "defender-held-item") &&
+          itemIsHiddenNeutral(id)),
+      )
+      .map((id) => ({ track, id })),
+  )
+  const shown = values.slice(0, 2)
+  const extra = values.length - shown.length
+
+  return (
+    <>
+      {shown.map(({ track, id }) => {
+        if (track === "held-item" || track === "defender-held-item") {
+          return (
+            <span
+              key={`${track}:${id}`}
+              className="grid size-3 shrink-0 place-items-center rounded-[4px] border border-ink bg-paper"
+              title={itemAriaLabel(id, intl.locale as SupportedLocale)}
+            >
+              <HeldItemSpriteIcon id={id} className="size-2" />
+            </span>
+          )
+        }
+        return (
+          <span
+            key={`${track}:${id}`}
+            className="max-w-[2.4rem] truncate rounded-[4px] bg-token-bg px-0.5 text-[8px] font-extrabold leading-none text-ink"
+            title={sourceLabel(track, id, props, intl)}
+          >
+            {sourceLabel(track, id, props, intl)}
+          </span>
+        )
+      })}
+      {extra > 0 ? (
+        <span className="text-[8px] font-extrabold text-hud-muted">+{extra}</span>
+      ) : null}
+    </>
+  )
+}
+
+/** Mobile identity line: type, move, attack/defense chips. Desktop keeps the full card. */
+export function DamageRowCaption(props: DamageScenarioSummaryProps) {
+  const intl = useIntl()
+  const attackStage = activeStage(props.row, "attacker-stage")
+  const defenseStage = activeStage(props.row, "defender-stage")
+  return (
+    <span className="flex h-3.5 min-w-0 items-center gap-0.5 overflow-hidden whitespace-nowrap">
+      <span className="flex shrink-0 items-center gap-0.5">
+        <CaptionTypeMark type={props.row.moveType} />
+        <span className="max-w-[6.5rem] truncate text-[12px] font-extrabold leading-none">
+          {props.move.label}
+        </span>
+        {attackStage !== 0 && (
+          <span className="text-[9px] font-extrabold leading-none tabular-nums">
+            {stageLabel(attackStage)}
+          </span>
+        )}
+      </span>
+      <span className="flex min-w-0 items-center gap-px overflow-hidden">
+        <CaptionChips
+          chips={props.attackerStat.chips}
+          showActual={props.attackerStat.showActual}
+          expandable={props.attackerStat.expandable}
+          expanded={props.attackerStat.expanded}
+          onToggle={props.attackerStat.onToggle}
+          toggleLabel={intl.formatMessage({
+            id: props.attackerStat.expanded ? "damage.row.collapseOffense" : "damage.row.expandOffense",
+          })}
+        />
+        <CaptionTokens {...props} side="attack" />
+      </span>
+      <span className="shrink-0 text-[9px] leading-none text-hud-muted">/</span>
+      <span className="flex min-w-0 items-center gap-px overflow-hidden">
+        {defenseStage !== 0 && (
+          <span className="text-[9px] font-extrabold leading-none tabular-nums">
+            {stageLabel(defenseStage)}
+          </span>
+        )}
+        <CaptionChips
+          chips={props.defender.chips}
+          showActual={props.defender.showActual}
+          expandable={props.defender.expandable}
+          expanded={props.defender.expanded}
+          onToggle={props.defender.onToggle}
+          toggleLabel={intl.formatMessage({
+            id: props.defender.expanded ? "damage.row.collapseDefense" : "damage.row.expandDefense",
+          })}
+        />
+        <CaptionTokens {...props} side="defense" />
+      </span>
     </span>
   )
 }
