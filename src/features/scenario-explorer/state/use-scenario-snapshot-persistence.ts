@@ -7,6 +7,7 @@ import type { TrackState } from "@/lib/scenario"
 const SCENARIO_SAVE_DELAY_MS = 150
 
 export function useScenarioSnapshotPersistence({
+  enabled = true,
   catalog,
   trackState,
   catalogTransitionPending,
@@ -16,6 +17,7 @@ export function useScenarioSnapshotPersistence({
   attackerItemsTouchedRef,
   defenderItemsTouchedRef,
 }: {
+  enabled?: boolean
   catalog: MatchupCatalog
   trackState: TrackState
   catalogTransitionPending: boolean
@@ -28,7 +30,7 @@ export function useScenarioSnapshotPersistence({
   const pendingScenarioSnapshotRef = useRef<ScenarioSnapshotInput | null>(null)
 
   useEffect(() => {
-    if (catalogTransitionPending) return
+    if (!enabled || catalogTransitionPending) return
     const untouchedDefaultsPending =
       (catalog.defaultMovePickStatus === "loading" && !movesTouchedRef.current) ||
       (catalog.defaultAbilityPickStatus === "loading" &&
@@ -65,6 +67,7 @@ export function useScenarioSnapshotPersistence({
     defenderAbilitiesTouchedRef,
     attackerItemsTouchedRef,
     defenderItemsTouchedRef,
+    enabled,
   ])
 
   useEffect(() => {

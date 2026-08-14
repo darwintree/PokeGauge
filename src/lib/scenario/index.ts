@@ -60,3 +60,23 @@ export {
   SCENARIO_STORAGE_KEY,
 } from "./persistence"
 export type { ScenarioSnapshot, ScenarioSnapshotInput } from "./persistence"
+export {
+  createScenarioSetupUrl,
+  decodeScenarioSetupToken,
+  encodeScenarioSetupToken,
+  PORTABLE_SHARE_URL_LIMIT,
+  readScenarioSetupUrl,
+  scenarioSetupFromTrackState,
+  scenarioSetupTokenFromTrackState,
+  SCENARIO_SHARE_PARAM,
+  SCENARIO_SHARE_VERSION,
+  SHARE_INPUT_LIMIT,
+  trackStateFromScenarioSetup,
+} from "./share"
+export type {
+  ScenarioShareFailure,
+  ScenarioShareResult,
+  ScenarioShareUrlState,
+  SharedMoveSnapshot,
+  SharedScenarioSetup,
+} from "./share"

@@ -2,7 +2,7 @@
 
 import { act } from "react"
 import { createRoot, type Root } from "react-dom/client"
-import { afterEach, beforeEach, describe, expect, it } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import {
   DEFIANT_ABILITY_ID,
@@ -12,7 +12,12 @@ import {
   NO_ABILITY_ID,
 } from "@/lib/ability"
 import { getCatalogShell, type MatchupCatalog } from "@/lib/catalog"
-import { defaultTrackState, type TrackState } from "@/lib/scenario"
+import {
+  defaultTrackState,
+  scenarioSetupTokenFromTrackState,
+  SCENARIO_STORAGE_KEY,
+  type TrackState,
+} from "@/lib/scenario"
 
 import { useScenarioState, type ScenarioState } from "./use-scenario-state"
 
@@ -21,28 +26,39 @@ let current: ScenarioState
 function Harness({
   catalog,
   restored,
+  sharedToken,
+  onSharedEdited,
 }: {
   catalog: MatchupCatalog
   restored?: TrackState
+  sharedToken?: string
+  onSharedEdited?: () => void
 }) {
-  current = useScenarioState(catalog, restored)
+  current = useScenarioState(
+    catalog,
+    restored,
+    sharedToken && onSharedEdited
+      ? { token: sharedToken, onEdited: onSharedEdited }
+      : undefined,
+  )
   return null
 }
 
 describe("ability projection lifecycle", () => {
   let root: Root
   let container: HTMLDivElement
+  let storedValues: Map<string, string>
 
   beforeEach(() => {
     Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })
-    const values = new Map<string, string>()
+    storedValues = new Map<string, string>()
     Object.defineProperty(globalThis, "localStorage", {
       configurable: true,
       value: {
-        getItem: (key: string) => values.get(key) ?? null,
-        setItem: (key: string, value: string) => values.set(key, value),
-        removeItem: (key: string) => values.delete(key),
-        clear: () => values.clear(),
+        getItem: (key: string) => storedValues.get(key) ?? null,
+        setItem: (key: string, value: string) => storedValues.set(key, value),
+        removeItem: (key: string) => storedValues.delete(key),
+        clear: () => storedValues.clear(),
       },
     })
     container = document.createElement("div")
@@ -159,5 +175,35 @@ describe("ability projection lifecycle", () => {
     await render({ ...nextShell, defaultAbilityPickStatus: "ready" }, restored)
     expect(current.trackState.weathers).toEqual(["none", "rain"])
     expect(current.trackState.attackerStages).toEqual([-1, 0])
+  })
+
+  it("keeps a shared import transient until its first semantic edit", async () => {
+    vi.useFakeTimers()
+    const catalog = await getCatalogShell(445, 727, "en", "physical")
+    const restored = defaultTrackState(catalog)
+    const token = scenarioSetupTokenFromTrackState(catalog, restored)
+    if (!token.ok) throw new Error("Shared fixture must encode")
+    const onSharedEdited = vi.fn()
+
+    await act(async () => {
+      root.render(
+        <Harness
+          catalog={catalog}
+          restored={restored}
+          sharedToken={token.value}
+          onSharedEdited={onSharedEdited}
+        />,
+      )
+      await Promise.resolve()
+    })
+    await act(async () => current.setShowResultStatValue(true))
+    await act(async () => vi.advanceTimersByTime(200))
+    expect(onSharedEdited).not.toHaveBeenCalled()
+    expect(storedValues.has(SCENARIO_STORAGE_KEY)).toBe(false)
+
+    await act(async () => current.setAttackerStages([0, 1]))
+    await act(async () => vi.advanceTimersByTime(200))
+    expect(onSharedEdited).toHaveBeenCalledOnce()
+    expect(storedValues.has(SCENARIO_STORAGE_KEY)).toBe(true)
   })
 })

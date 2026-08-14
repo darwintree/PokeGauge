@@ -50,6 +50,7 @@ import {
   type PersistedTrackState,
   type StatSelectMode,
   type TrackState,
+  scenarioSetupTokenFromTrackState,
 } from "@/lib/scenario"
 
 import { useCatalogTransitionSync } from "./use-catalog-transition-sync"
@@ -81,6 +82,10 @@ function appendHeldItemId(
 export function useScenarioState(
   catalog: MatchupCatalog,
   restoredTrackState?: TrackState,
+  sharedImport?: {
+    token: string
+    onEdited: () => void
+  },
 ) {
   const { attackerCalcName, defenderCalcName } = catalog.matchup
   const restored = restoredTrackState !== undefined
@@ -111,6 +116,7 @@ export function useScenarioState(
   const [addingOffense, setAddingOffense] = useState(false)
   const [addingDefense, setAddingDefense] = useState(false)
   const [statNameStrategy, setStatNameStrategyState] = useState<StatNameStrategy>(loadStatNameStrategy)
+  const [sharedImportUntouched, setSharedImportUntouched] = useState(sharedImport !== undefined)
 
   const {
     catalogTransitionPending,
@@ -128,6 +134,7 @@ export function useScenarioState(
   )
 
   useScenarioSnapshotPersistence({
+    enabled: !sharedImportUntouched,
     catalog,
     trackState,
     catalogTransitionPending,
@@ -137,6 +144,14 @@ export function useScenarioState(
     attackerItemsTouchedRef,
     defenderItemsTouchedRef,
   })
+
+  useEffect(() => {
+    if (!sharedImportUntouched || !sharedImport) return
+    const current = scenarioSetupTokenFromTrackState(catalog, trackState)
+    if (!current.ok || current.value === sharedImport.token) return
+    setSharedImportUntouched(false)
+    sharedImport.onEdited()
+  }, [catalog, sharedImport, sharedImportUntouched, trackState])
 
   const setStatNameStrategy = useCallback((strategy: StatNameStrategy) => {
     saveStatNameStrategy(strategy)

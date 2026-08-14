@@ -1,10 +1,11 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
+import { Check, Share2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import type { BattlePokemonOption, MatchupCatalog, MoveCategory } from "@/lib/catalog"
 import type { BattlePokemonId } from "@/lib/resources"
-import type { ScenarioSnapshot } from "@/lib/scenario"
+import { createScenarioSetupUrl, type TrackState } from "@/lib/scenario"
 import { cn } from "@/lib/utils"
 
 import { DamageResults } from "./results/damage-results"
@@ -24,25 +25,57 @@ export function ScenarioWorkspace({
   defenders,
   attackerId,
   defenderId,
-  restoredScenario,
+  restoredTrackState,
+  sharedSetupToken,
+  onSharedSetupEdited,
   onAttackerChange,
   onDefenderChange,
   onMoveCategoryChange,
 }: LocalizedCatalogState & {
   attackerId: BattlePokemonId
   defenderId: BattlePokemonId
-  restoredScenario: ScenarioSnapshot | null
+  restoredTrackState: TrackState | null
+  sharedSetupToken: string | null
+  onSharedSetupEdited: () => void
   onAttackerChange: (id: BattlePokemonId) => void
   onDefenderChange: (id: BattlePokemonId) => void
   onMoveCategoryChange: (category: MoveCategory) => void
 }) {
   const intl = useIntl()
-  const state = useScenarioState(catalog, restoredScenario?.trackState)
+  const state = useScenarioState(
+    catalog,
+    restoredTrackState ?? undefined,
+    sharedSetupToken
+      ? { token: sharedSetupToken, onEdited: onSharedSetupEdited }
+      : undefined,
+  )
   const [mobileView, setMobileView] = useState<"setup" | "results">("results")
+  const [shareStatus, setShareStatus] = useState<"idle" | "copied" | "error">("idle")
+
+  useEffect(() => setShareStatus("idle"), [state.trackState])
 
   function changeMobileView(view: "setup" | "results") {
     setMobileView(view)
     window.scrollTo({ top: 0 })
+  }
+
+  async function shareSetup() {
+    const result = createScenarioSetupUrl(window.location.href, catalog, state.trackState)
+    if (!result.ok) {
+      setShareStatus("error")
+      return
+    }
+    try {
+      if (!navigator.clipboard) throw new Error("clipboard-unavailable")
+      await navigator.clipboard.writeText(result.value)
+      setShareStatus("copied")
+    } catch {
+      const copied = window.prompt(
+        intl.formatMessage({ id: "share.copyPrompt" }),
+        result.value,
+      )
+      setShareStatus(copied === null ? "error" : "copied")
+    }
   }
 
   return (
@@ -118,9 +151,27 @@ export function ScenarioWorkspace({
           )}
         >
           <header className="space-y-2">
-            <h1 className="text-[19px] font-extrabold tracking-tight [text-shadow:1px_1px_0_var(--paper)]">
-              {catalog.matchup.attackerLabel} → {catalog.matchup.defenderLabel}
-            </h1>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h1 className="text-[19px] font-extrabold tracking-tight [text-shadow:1px_1px_0_var(--paper)]">
+                {catalog.matchup.attackerLabel} → {catalog.matchup.defenderLabel}
+              </h1>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={shareSetup}
+              >
+                {shareStatus === "copied" ? <Check /> : <Share2 />}
+                <span aria-live="polite">
+                  <FormattedMessage id={shareStatus === "copied" ? "share.copied" : "share.action"} />
+                </span>
+              </Button>
+            </div>
+            {shareStatus === "error" ? (
+              <p role="status" className="text-destructive text-xs font-medium">
+                <FormattedMessage id="share.copyError" />
+              </p>
+            ) : null}
             <ResultSetSummary trackState={state.trackState} rowCount={state.rows.length} />
           </header>
           <DamageResults

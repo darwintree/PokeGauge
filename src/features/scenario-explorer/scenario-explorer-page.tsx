@@ -20,7 +20,13 @@ import type { BattlePokemonId } from "@/lib/resources"
 import {
   discardScenarioSnapshot,
   loadScenarioSnapshot,
+  readScenarioSetupUrl,
   scenarioSnapshotMatchesCatalog,
+  SCENARIO_SHARE_PARAM,
+  trackStateFromScenarioSetup,
+  type ScenarioShareFailure,
+  type SharedScenarioSetup,
+  type TrackState,
 } from "@/lib/scenario"
 import { cn } from "@/lib/utils"
 
@@ -43,30 +49,53 @@ function catalogKey(catalog: MatchupCatalog): string {
 
 export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
   const intl = useIntl()
-  const [initialRestoredScenario] = useState(loadScenarioSnapshot)
+  const [initialUrlState] = useState(() => readScenarioSetupUrl(window.location.href))
+  const [initialRestoredScenario] = useState(() =>
+    initialUrlState.kind === "none" ? loadScenarioSnapshot() : null,
+  )
   const restoredScenarioRef = useRef(initialRestoredScenario)
-  const restorePendingRef = useRef(initialRestoredScenario !== null)
+  const restoredTrackStateRef = useRef<TrackState | null>(
+    initialRestoredScenario?.trackState ?? null,
+  )
+  const sharedSetupRef = useRef<SharedScenarioSetup | null>(
+    initialUrlState.kind === "valid" ? initialUrlState.setup : null,
+  )
+  const sharedTokenRef = useRef(
+    initialUrlState.kind === "valid" ? initialUrlState.token : null,
+  )
+  const restorePendingRef = useRef(
+    initialRestoredScenario !== null || initialUrlState.kind === "valid",
+  )
+  const [shareFailures, setShareFailures] = useState<ScenarioShareFailure[] | null>(
+    initialUrlState.kind === "invalid" ? initialUrlState.failures : null,
+  )
   const availableMatchupIdsRef = useRef<{
     attackers: Set<BattlePokemonId>
     defenders: Set<BattlePokemonId>
   } | null>(null)
   const [attackerId, setAttackerId] = useState<BattlePokemonId | null>(
-    restoredScenarioRef.current?.attackerId ?? null,
+    sharedSetupRef.current?.attackerId ??
+      restoredScenarioRef.current?.attackerId ??
+      null,
   )
   const [defenderId, setDefenderId] = useState<BattlePokemonId | null>(
-    restoredScenarioRef.current?.defenderId ?? null,
+    sharedSetupRef.current?.defenderId ??
+      restoredScenarioRef.current?.defenderId ??
+      null,
   )
   const [moveCategory, setMoveCategory] = useState<MoveCategory>(
-    restoredScenarioRef.current?.moveCategory ?? "physical",
+    sharedSetupRef.current?.moveCategory ??
+      restoredScenarioRef.current?.moveCategory ??
+      "physical",
   )
   const [localizedOptions, setLocalizedOptions] = useState<LocalizedOptionsState | null>(null)
   const [catalog, setCatalog] = useState<MatchupCatalog | null>(null)
   const [loadError, setLoadError] = useState(false)
   const [showExplorer, setShowExplorer] = useState(
-    restoredScenarioRef.current !== null,
+    restorePendingRef.current,
   )
   const [restoring, setRestoring] = useState(
-    restoredScenarioRef.current !== null,
+    restorePendingRef.current,
   )
   const [leavingHome, setLeavingHome] = useState(false)
 
@@ -77,12 +106,29 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
     discardScenarioSnapshot()
     restorePendingRef.current = false
     restoredScenarioRef.current = null
+    restoredTrackStateRef.current = null
     setAttackerId(null)
     setDefenderId(null)
     setMoveCategory("physical")
     setCatalog(null)
     setShowExplorer(false)
     setRestoring(false)
+  }
+
+  function rejectSharedSetup(failures: ScenarioShareFailure[]) {
+    restorePendingRef.current = false
+    restoredTrackStateRef.current = null
+    setCatalog(null)
+    setRestoring(false)
+    setShowExplorer(false)
+    setShareFailures(failures)
+  }
+
+  function removeShareParam(reload = false) {
+    const url = new URL(window.location.href)
+    url.searchParams.delete(SCENARIO_SHARE_PARAM)
+    if (reload) window.location.assign(url)
+    else window.history.replaceState(null, "", url)
   }
 
   useEffect(() => {
@@ -120,15 +166,18 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
       return
     }
     const restoredScenario = restoredScenarioRef.current
-    const restoringSnapshot =
-      restorePendingRef.current && restoredScenario !== null
+    const sharedSetup = sharedSetupRef.current
+    const restoringSnapshot = restorePendingRef.current && restoredScenario !== null
+    const restoringShare = restorePendingRef.current && sharedSetup !== null
     const availableMatchupIds = availableMatchupIdsRef.current
     if (
-      restoringSnapshot &&
+      (restoringSnapshot || restoringShare) &&
       (!availableMatchupIds?.attackers.has(attackerId) ||
         !availableMatchupIds.defenders.has(defenderId))
     ) {
-      discardRestore()
+      if (restoringShare) {
+        rejectSharedSetup([{ stage: "domain", code: "unknown-matchup", field: "matchup" }])
+      } else discardRestore()
       return
     }
     let cancelled = false
@@ -143,14 +192,26 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
           discardRestore()
           return
         }
+        if (restoringShare) {
+          const restored = trackStateFromScenarioSetup(sharedSetup, nextCatalog)
+          if (!restored.ok) {
+            rejectSharedSetup(restored.failures)
+            return
+          }
+          restoredTrackStateRef.current = restored.value
+        }
         setCatalog(nextCatalog)
-        if (restoringSnapshot) {
+        if (restoringSnapshot || restoringShare) {
           restorePendingRef.current = false
           setRestoring(false)
         }
       })
       .catch(() => {
         if (cancelled) return
+        if (restoringShare) {
+          rejectSharedSetup([{ stage: "domain", code: "catalog-unavailable" }])
+          return
+        }
         if (restoringSnapshot) {
           discardRestore()
           return
@@ -193,7 +254,7 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
       return
     }
     if (!catalog) return
-    if (restoredScenarioRef.current) {
+    if (restoredTrackStateRef.current) {
       setLeavingHome(false)
       setShowExplorer(true)
       return
@@ -211,6 +272,24 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
   function changeAttacker(id: BattlePokemonId) {
     setAttackerId(id)
     setMoveCategory(getDefaultMoveCategory(id))
+  }
+
+  if (shareFailures) {
+    return (
+      <main className="grid min-h-[calc(100dvh-3.5rem)] place-items-center p-6">
+        <div className="max-w-md space-y-4 rounded-2xl border-2 border-ink bg-paper p-6 text-center shadow-hud-board">
+          <h1 className="text-xl font-extrabold tracking-tight">
+            <FormattedMessage id="share.invalidTitle" />
+          </h1>
+          <p className="text-muted-foreground text-sm">
+            <FormattedMessage id="share.invalidDescription" />
+          </p>
+          <Button type="button" onClick={() => removeShareParam(true)}>
+            <FormattedMessage id="share.returnLocal" />
+          </Button>
+        </div>
+      </main>
+    )
   }
 
   if (loadError) {
@@ -271,7 +350,9 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
         catalog={catalog}
         attackerId={attackerId}
         defenderId={defenderId}
-        restoredScenario={restoredScenarioRef.current}
+        restoredTrackState={restoredTrackStateRef.current}
+        sharedSetupToken={sharedTokenRef.current}
+        onSharedSetupEdited={() => removeShareParam()}
         onAttackerChange={changeAttacker}
         onDefenderChange={setDefenderId}
         onMoveCategoryChange={setMoveCategory}

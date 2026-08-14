@@ -10,7 +10,7 @@ updated_at: "2026-08-14T03:50:00Z"
 ---
 ## Parent feature
 
-[[../20260721_open_share-and-restore-scenario-setup-by-url|Share and restore Scenario Setup by URL]]
+[[20260721_closed_share-and-restore-scenario-setup-by-url|Share and restore Scenario Setup by URL]]
 
 ## Problem
 
