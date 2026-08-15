@@ -61,7 +61,7 @@ Stat Track 值模型已改为单选中集合：Choice 与 Range 是同一组 Sta
 
 - [[../20260717_open_define-range-endpoint-identity-and-merge-semantics|Define Range endpoint identity and merge semantics]]：Range 端点与 Scenario Merge 的领域契约。
 - [[../20260803_open_decide-whether-stat-allocation-internals-should-use-native-sp|Decide whether stat allocation internals should use native SP]]：数值与 SP allocation 的内部等价性。
-- [[../20260717_open_scenario-brief-adopt-inline-expand-sidebar-interaction-c|Scenario Brief: adopt inline-expand sidebar interaction (C)]]：侧栏整体展开交互。
+- [[20260717_closed_scenario-brief-adopt-inline-expand-sidebar-interaction-c|Scenario Brief: adopt inline-expand sidebar interaction (C)]]：侧栏整体展开交互。
 
 ## Out of scope
 

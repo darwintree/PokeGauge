@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "852c847c-5b09-4e86-a449-56e73bb977b6"
 title: "Scenario Brief: adopt inline-expand sidebar interaction (C)"
-status: "open"
+status: "closed"
 priority: "medium"
 labels: ["FEATURE-REQUEST", "READY-FOR-HUMAN"]
 created_at: "2026-07-17T10:30:00Z"
-updated_at: "2026-08-03T08:24:00Z"
+updated_at: "2026-08-15T02:02:00Z"
 ---
 ## Context
 
@@ -52,7 +52,7 @@ These are intentionally unresolved; next work should grill / prototype them befo
 - [ ] Cross-row context while editing: does the collapsed map stay dense enough, or do we need lighter “peek” values while one row is open.
 - [ ] Mobile / narrow width: two-column Atk|Def symmetry may need a stacked fallback.
 - [ ] Which tracks belong in the map vs stay elsewhere (locale, display options, etc. are out of the brief map unless explicitly pulled in).
-- [ ] Rename / harden `brief-prototype/` into product module naming once deepen pass lands.
+- [x] Rename / harden `brief-prototype/` into product module naming once deepen pass lands.
 - [x] Remove A/B switcher and unused interaction hosts (done; C is the only shell).
 
 ## Out of scope (for now)
@@ -69,3 +69,9 @@ When deepened and shipped:
 - All current tracks remain reachable from the brief without the old monolithic stacked controls as the primary IA.
 - Atk/Def symmetry is preserved at the map level.
 - Deepen open items above to product-quality polish (vertical budget, affordances, narrow width).
+
+## Resolution
+
+C is the live Scenario Explorer setup: `ScenarioSetupPanel` keeps the Atk/Def map visible, expands one track inline, and pairs attacker/defender columns with weather as a shared row. A/B shells and `brief-prototype/` are gone.
+
+Leftover deepening (vertical budget, expand affordance, collapsed peek values, narrow-width stacking) is not tracked here. Reopen or file a new ticket if that polish is wanted.
