@@ -16,10 +16,12 @@
     width: 2.5rem;
   }
 
-  .track-option-action {
-    width: 2rem;
-    height: 2rem;
-    min-width: 2rem;
+  /* Visible badge stays 1rem; keep the old 2rem tap target. */
+  .track-option-action::before {
+    content: "";
+    position: absolute;
+    inset: -0.5rem;
+    pointer-events: inherit;
   }
 }
 

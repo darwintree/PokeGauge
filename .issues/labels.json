@@ -2,6 +2,7 @@
   "labels": [
     "BUG",
     "FEATURE-REQUEST",
+    "NEEDS-INFO",
     "NEEDS-TRIAGE",
     "READY-FOR-AGENT",
     "READY-FOR-HUMAN",
