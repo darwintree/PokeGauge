@@ -60,6 +60,12 @@ function inOffenseEnvelope(preset: StatPreset, range: StatRange): boolean {
   return value >= range.min && value <= range.max
 }
 
+function isOffenseRangeEndpoint(preset: StatPreset, range: StatRange): boolean {
+  if (preset.values.kind !== "offense") return false
+  const value = offenseValueOf(preset)
+  return value === range.min || value === range.max
+}
+
 function inDefenseEnvelope(preset: StatPreset, ranges: DefenderStatRanges): boolean {
   if (preset.values.kind !== "defense") return false
   const value = defenseValuesOf(preset)
@@ -68,6 +74,15 @@ function inDefenseEnvelope(preset: StatPreset, ranges: DefenderStatRanges): bool
     value.hp <= ranges.hp.max &&
     value.def >= ranges.def.min &&
     value.def <= ranges.def.max
+  )
+}
+
+function isDefenseRangeEndpoint(preset: StatPreset, ranges: DefenderStatRanges): boolean {
+  if (preset.values.kind !== "defense") return false
+  const value = defenseValuesOf(preset)
+  return (
+    (value.hp === ranges.hp.min && value.def === ranges.def.min) ||
+    (value.hp === ranges.hp.max && value.def === ranges.def.max)
   )
 }
 
@@ -301,6 +316,7 @@ export function trackStateAfterOffenseRange(
   const range = orderedStatRange(requested)
   const kept = selectedPresets(presets, state.offensePresetIds)
     .filter((preset) => inOffenseEnvelope(preset, range))
+    .filter((preset) => preset.kind !== "temporary" || isOffenseRangeEndpoint(preset, range))
     .map((preset) => preset.id)
   let selectedIds = kept
   let temporary = dropUnselectedTemps(kept, state.offenseTemporaryPresets)
@@ -325,6 +341,7 @@ export function trackStateAfterDefenseRanges(
   const ranges = orderedDefenderRanges(requested)
   const kept = selectedPresets(presets, state.defensePresetIds)
     .filter((preset) => inDefenseEnvelope(preset, ranges))
+    .filter((preset) => preset.kind !== "temporary" || isDefenseRangeEndpoint(preset, ranges))
     .map((preset) => preset.id)
   let selectedIds = kept
   let temporary = dropUnselectedTemps(kept, state.defenseTemporaryPresets)

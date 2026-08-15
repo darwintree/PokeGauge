@@ -2,7 +2,6 @@ import type { ReactNode } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import type { StatSelectMode } from "@/lib/scenario"
-import { cn } from "@/lib/utils"
 
 function flipMode(mode: StatSelectMode): StatSelectMode {
   return mode === "range" ? "preset" : "range"
@@ -65,44 +64,5 @@ export function StatModeWell({
         </span>
       </span>
     </span>
-  )
-}
-
-export function StatModeTabs({
-  mode,
-  onMode,
-}: {
-  mode: StatSelectMode
-  onMode: (mode: StatSelectMode) => void
-}) {
-  return (
-    <div
-      role="group"
-      aria-label="stat mode"
-      className="grid h-7 grid-cols-2 rounded-[9px] border-2 border-ink bg-paper p-0.5 shadow-hud-chip"
-    >
-      <button
-        type="button"
-        aria-pressed={mode === "preset"}
-        onClick={() => onMode("preset")}
-        className={cn(
-          "rounded-[6px] text-[10px] font-extrabold",
-          mode === "preset" ? "bg-signal-yellow text-ink" : "text-ink hover:bg-token-bg",
-        )}
-      >
-        <FormattedMessage id="track.choice" />
-      </button>
-      <button
-        type="button"
-        aria-pressed={mode === "range"}
-        onClick={() => onMode("range")}
-        className={cn(
-          "rounded-[6px] text-[10px] font-extrabold",
-          mode === "range" ? "bg-signal-yellow text-ink" : "text-ink hover:bg-token-bg",
-        )}
-      >
-        <FormattedMessage id="track.range" />
-      </button>
-    </div>
   )
 }

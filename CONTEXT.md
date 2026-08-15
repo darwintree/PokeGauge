@@ -75,7 +75,7 @@ _Avoid_: Base Stat, EV spread, Stat Allocation
 _Avoid_: Stat Value Template, preset spread, mode name for Choice, selected-stat identity
 
 **Temporary Stat Value（临时能力实数值）**:
-没有对应 Stat Preset 的选中 Stat Value。取消选中即删除；仅当需要某个 Stat Value 且不存在对应 Preset 时才创建。
+没有对应 Stat Preset 的选中 Stat Value。仅当当前包络端点缺少对应 Preset 时创建；不再作为当前端点、或被取消选中，即删除。
 _Avoid_: Temporary Stat Preset, temporary range store, unsaved draft interval
 
 **Stat Range（能力值区间）**:

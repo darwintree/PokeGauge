@@ -12,6 +12,7 @@ import {
   snapshotsForMoveIds,
   trackStateAfterCatalogTransition,
   trackStateAfterDefenseMode,
+  trackStateAfterDefenseRanges,
   trackStateAfterOffenseMode,
   trackStateAfterOffenseRange,
   trackStateAfterRemoveDefense,
@@ -244,6 +245,62 @@ describe("scenario pure transitions", () => {
       kind: "offense",
       stat: choice.statRange.min - 10,
     })
+  })
+
+  it("drops a previous Temporary endpoint once it is no longer on the envelope", async () => {
+    const catalog = await getCatalogShell(6, 9, "en")
+    const state = defaultTrackState(catalog)
+    const presets = offensePresetsForState(catalog, state)
+    const first = trackStateAfterOffenseRange(
+      state,
+      { min: state.statRange.min - 10, max: state.statRange.max },
+      presets,
+    )
+    const second = trackStateAfterOffenseRange(
+      first,
+      { min: state.statRange.min - 20, max: state.statRange.max },
+      offensePresetsForState(catalog, first),
+    )
+
+    expect(second.offenseTemporaryPresets).toHaveLength(1)
+    expect(second.offenseTemporaryPresets[0]?.values).toEqual({
+      kind: "offense",
+      stat: state.statRange.min - 20,
+    })
+    expect(second.offensePresetIds).toEqual(
+      expect.arrayContaining(["neutral-zero", "extreme"]),
+    )
+    expect(second.offensePresetIds).not.toContain(first.offenseTemporaryPresets[0]?.id)
+  })
+
+  it("drops a previous Temporary Defense endpoint once it is no longer on the envelope", async () => {
+    const catalog = await getCatalogShell(6, 9, "en")
+    const state = defaultTrackState(catalog)
+    const presets = defensePresetsForState(catalog, state)
+    const first = trackStateAfterDefenseRanges(
+      state,
+      {
+        hp: { min: state.defenderRanges.hp.min - 10, max: state.defenderRanges.hp.max },
+        def: state.defenderRanges.def,
+      },
+      presets,
+    )
+    const second = trackStateAfterDefenseRanges(
+      first,
+      {
+        hp: { min: state.defenderRanges.hp.min - 20, max: state.defenderRanges.hp.max },
+        def: state.defenderRanges.def,
+      },
+      defensePresetsForState(catalog, first),
+    )
+
+    expect(second.defenseTemporaryPresets).toHaveLength(1)
+    expect(second.defenseTemporaryPresets[0]?.values).toEqual({
+      kind: "defense",
+      hp: state.defenderRanges.hp.min - 20,
+      def: state.defenderRanges.def.min,
+    })
+    expect(second.defensePresetIds).not.toContain(first.defenseTemporaryPresets[0]?.id)
   })
 
   it("deselects outliers and deletes Temporary Stat Values when dragged inward", async () => {

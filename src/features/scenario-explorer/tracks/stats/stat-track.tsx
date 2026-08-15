@@ -1,8 +1,7 @@
 import type { ReactNode } from "react"
 import { Gauge } from "lucide-react"
-import { useIntl } from "react-intl"
+import { FormattedMessage, useIntl } from "react-intl"
 
-import { Tabs, TabsContent } from "@/components/ui/tabs"
 import type { MatchupCatalog } from "@/lib/catalog"
 import {
   defensePresetsForState,
@@ -17,6 +16,7 @@ import {
   uniqueEndpointChips,
   type StatValueChipModel,
 } from "@/lib/stat-preset"
+import { cn } from "@/lib/utils"
 
 import { StatRangeInput } from "./stat-range-input"
 import {
@@ -25,7 +25,7 @@ import {
   StatPresetChoices,
 } from "./stat-preset-choices"
 import { StatValueChip, StatValueChipPair } from "./stat-value-chip"
-import { StatModeTabs, StatModeWell } from "./stat-mode-switch"
+import { StatModeWell } from "./stat-mode-switch"
 import { ShowStatValuesSwitch } from "../common/show-stat-values-switch"
 import { TrackPanel } from "../common/track-panel"
 import type { ScenarioState } from "../../state/use-scenario-state"
@@ -150,6 +150,25 @@ function defenseSummary(catalog: MatchupCatalog, state: ScenarioState): ReactNod
   return <ChipSummary chips={chips} ranged={false} showActual={showActual} />
 }
 
+function StatEditorSection({
+  labelId,
+  className,
+  children,
+}: {
+  labelId: "track.choice" | "track.range"
+  className?: string
+  children: ReactNode
+}) {
+  return (
+    <div className={cn("space-y-2", className)}>
+      <p className="text-[10px] font-extrabold leading-none text-hud-muted">
+        <FormattedMessage id={labelId} />
+      </p>
+      {children}
+    </div>
+  )
+}
+
 export function StatTrack({
   side,
   catalog,
@@ -166,112 +185,101 @@ export function StatTrack({
   const onMode = (next: StatSelectMode) =>
     offense ? state.setStatMode(next) : state.setDefenderMode(next)
   const editor = (
-      <Tabs
-        value={mode}
-        onValueChange={(value) =>
-          offense
-            ? state.setStatMode(value as StatSelectMode)
-            : state.setDefenderMode(value as StatSelectMode)
-        }
-        className="gap-3"
-      >
-        <StatModeTabs mode={mode} onMode={onMode} />
-        <TabsContent value="preset" className="mt-0 space-y-2">
-          {offense ? (
-            <>
-              <StatPresetChoices
-                presets={state.offensePresets}
-                selectedIds={trackState.offensePresetIds}
-                calcName={catalog.matchup.attackerCalcName}
-                category={catalog.moveCategory}
-                statNameStrategy={state.statNameStrategy}
-                showStatValue={trackState.showOffenseStatValue}
-                allocationIndices={trackState.offenseAllocationIndices}
-                onToggle={state.toggleOffensePreset}
-                onCycleAllocation={state.cycleOffenseAllocation}
-                onDelete={state.deleteOffensePreset}
-                onPersist={state.persistOffensePreset}
-                adding={state.addingOffense}
-                onAddClick={() => state.setAddingOffense((value) => !value)}
-                addAriaLabel={intl.formatMessage({ id: "statPreset.addAttacker" })}
-              />
-              <ShowStatValuesSwitch
-                checked={trackState.showOffenseStatValue}
-                onCheckedChange={state.setShowOffenseStatValue}
-              />
-              {state.addingOffense && (
-                <AddOffensePresetPanel
-                  statLabel={catalog.offenseStatLabel}
-                  bounds={state.offenseBounds}
-                  onConfirm={state.confirmAddOffense}
-                  onCancel={() => state.setAddingOffense(false)}
-                />
-              )}
-            </>
-          ) : (
-            <>
-              <StatPresetChoices
-                presets={state.defensePresets}
-                selectedIds={trackState.defensePresetIds}
-                calcName={catalog.matchup.defenderCalcName}
-                category={catalog.moveCategory}
-                statNameStrategy={state.statNameStrategy}
-                showStatValue={trackState.showDefenseStatValue}
-                allocationIndices={trackState.defenseAllocationIndices}
-                onToggle={state.toggleDefensePreset}
-                onCycleAllocation={state.cycleDefenseAllocation}
-                onDelete={state.deleteDefensePreset}
-                onPersist={state.persistDefensePreset}
-                adding={state.addingDefense}
-                onAddClick={() => state.setAddingDefense((value) => !value)}
-                addAriaLabel={intl.formatMessage({ id: "statPreset.addDefender" })}
-              />
-              <ShowStatValuesSwitch
-                checked={trackState.showDefenseStatValue}
-                onCheckedChange={state.setShowDefenseStatValue}
-              />
-              {state.addingDefense && (
-                <AddDefensePresetPanel
-                  hpBounds={state.defenderHpBounds}
-                  defBounds={state.defenderDefBounds}
-                  defStatLabel={catalog.defenseStatLabel}
-                  onConfirm={state.confirmAddDefense}
-                  onCancel={() => state.setAddingDefense(false)}
-                />
-              )}
-            </>
-          )}
-        </TabsContent>
-        <TabsContent value="range" className="mt-0 space-y-2">
-          {offense ? (
-            <StatRangeInput
-              statLabel={catalog.offenseStatLabel}
-              bounds={state.offenseBounds}
-              value={trackState.statRange}
-              onChange={state.setStatRange}
+    <div>
+      <StatEditorSection labelId="track.choice">
+        {offense ? (
+          <>
+            <StatPresetChoices
+              presets={state.offensePresets}
+              selectedIds={trackState.offensePresetIds}
+              calcName={catalog.matchup.attackerCalcName}
+              category={catalog.moveCategory}
+              statNameStrategy={state.statNameStrategy}
+              showStatValue={trackState.showOffenseStatValue}
+              allocationIndices={trackState.offenseAllocationIndices}
+              onToggle={state.toggleOffensePreset}
+              onCycleAllocation={state.cycleOffenseAllocation}
+              onDelete={state.deleteOffensePreset}
+              onPersist={state.persistOffensePreset}
+              adding={state.addingOffense}
+              onAddClick={() => state.setAddingOffense((value) => !value)}
+              addAriaLabel={intl.formatMessage({ id: "statPreset.addAttacker" })}
             />
-          ) : (
-            <>
-              <StatRangeInput
-                statLabel="HP"
-                bounds={state.defenderHpBounds}
-                value={trackState.defenderRanges.hp}
-                onChange={(hp) =>
-                  state.setDefenderRanges({ hp, def: trackState.defenderRanges.def })
-                }
+            {state.addingOffense && (
+              <AddOffensePresetPanel
+                statLabel={catalog.offenseStatLabel}
+                bounds={state.offenseBounds}
+                onConfirm={state.confirmAddOffense}
+                onCancel={() => state.setAddingOffense(false)}
               />
-              <StatRangeInput
-                statLabel={catalog.defenseStatLabel}
-                bounds={state.defenderDefBounds}
-                value={trackState.defenderRanges.def}
-                onChange={(def) =>
-                  state.setDefenderRanges({ hp: trackState.defenderRanges.hp, def })
-                }
+            )}
+          </>
+        ) : (
+          <>
+            <StatPresetChoices
+              presets={state.defensePresets}
+              selectedIds={trackState.defensePresetIds}
+              calcName={catalog.matchup.defenderCalcName}
+              category={catalog.moveCategory}
+              statNameStrategy={state.statNameStrategy}
+              showStatValue={trackState.showDefenseStatValue}
+              allocationIndices={trackState.defenseAllocationIndices}
+              onToggle={state.toggleDefensePreset}
+              onCycleAllocation={state.cycleDefenseAllocation}
+              onDelete={state.deleteDefensePreset}
+              onPersist={state.persistDefensePreset}
+              adding={state.addingDefense}
+              onAddClick={() => state.setAddingDefense((value) => !value)}
+              addAriaLabel={intl.formatMessage({ id: "statPreset.addDefender" })}
+            />
+            {state.addingDefense && (
+              <AddDefensePresetPanel
+                hpBounds={state.defenderHpBounds}
+                defBounds={state.defenderDefBounds}
+                defStatLabel={catalog.defenseStatLabel}
+                onConfirm={state.confirmAddDefense}
+                onCancel={() => state.setAddingDefense(false)}
               />
-            </>
-          )}
-        </TabsContent>
-      </Tabs>
+            )}
+          </>
+        )}
+      </StatEditorSection>
+      <StatEditorSection labelId="track.range" className="mt-3 border-t border-hairline pt-3">
+        {offense ? (
+          <StatRangeInput
+            statLabel={catalog.offenseStatLabel}
+            bounds={state.offenseBounds}
+            value={trackState.statRange}
+            onChange={state.setStatRange}
+          />
+        ) : (
+          <>
+            <StatRangeInput
+              statLabel="HP"
+              bounds={state.defenderHpBounds}
+              value={trackState.defenderRanges.hp}
+              onChange={(hp) =>
+                state.setDefenderRanges({ hp, def: trackState.defenderRanges.def })
+              }
+            />
+            <StatRangeInput
+              statLabel={catalog.defenseStatLabel}
+              bounds={state.defenderDefBounds}
+              value={trackState.defenderRanges.def}
+              onChange={(def) =>
+                state.setDefenderRanges({ hp: trackState.defenderRanges.hp, def })
+              }
+            />
+          </>
+        )}
+      </StatEditorSection>
+      <div className="mt-3">
+        <ShowStatValuesSwitch
+          checked={offense ? trackState.showOffenseStatValue : trackState.showDefenseStatValue}
+          onCheckedChange={offense ? state.setShowOffenseStatValue : state.setShowDefenseStatValue}
+        />
+      </div>
+    </div>
   )
 
   return (
