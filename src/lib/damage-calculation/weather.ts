@@ -7,6 +7,15 @@ export const WEATHERS = ["none", "sun", "rain", "sand", "snow"] as const
 
 export type Weather = (typeof WEATHERS)[number]
 
+const WEATHER_BALL_MOVE_ID = 311
+
+const WEATHER_BALL_TYPES: Record<Exclude<Weather, "none">, PokemonType> = {
+  sun: "fire",
+  rain: "water",
+  sand: "rock",
+  snow: "ice",
+}
+
 type WeatherAccuracy = number | "always-hits"
 
 const WEATHER_ACCURACY: Partial<
@@ -26,10 +35,10 @@ type CompiledWeatherEffect = {
   accuracy?: WeatherAccuracy
   ordinaryDamageSuppressed: boolean
   state: "active" | "inactive" | "unsupported" | "neutral"
-  unavailable?: "weather-type-change"
 }
 
 function basePowerModifier(moveId: number, weather: Weather): number {
+  if (moveId === WEATHER_BALL_MOVE_ID && weather !== "none") return NEUTRAL_MODIFIER * 2
   return (moveId === 76 || moveId === 669) &&
     (weather === "rain" || weather === "sand" || weather === "snow")
     ? 2048
@@ -55,6 +64,15 @@ function damageModifier(
   return NEUTRAL_MODIFIER
 }
 
+export function resolveWeatherMoveType(
+  moveId: number,
+  weather: Weather,
+  fallback: PokemonType,
+): PokemonType {
+  if (moveId !== WEATHER_BALL_MOVE_ID || weather === "none") return fallback
+  return WEATHER_BALL_TYPES[weather]
+}
+
 export function compileWeatherEffect(
   moveId: number,
   moveType: PokemonType | undefined,
@@ -68,15 +86,6 @@ export function compileWeatherEffect(
       damageModifier: NEUTRAL_MODIFIER,
       ordinaryDamageSuppressed: false,
       state: "neutral",
-    }
-  }
-  if (moveId === 311) {
-    return {
-      basePowerModifier: NEUTRAL_MODIFIER,
-      damageModifier: NEUTRAL_MODIFIER,
-      ordinaryDamageSuppressed: false,
-      state: "unsupported",
-      unavailable: "weather-type-change",
     }
   }
 

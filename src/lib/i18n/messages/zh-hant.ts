@@ -221,7 +221,6 @@ export const zhHantMessages: Record<string, string> = {
     "damage.conditions.other": "其他條件（{count}）",
     "damage.unavailable.reason.unconfigured-move": "招式尚未配置完整",
     "damage.unavailable.reason.unsupported-move": "暫不支援計算該招式",
-    "damage.unavailable.reason.weather-type-change": "暫不計算天氣造成的招式屬性變化",
     "damage.unavailable.reason.terrain-required": "此招式需要場地才能使用",
     "damage.unavailable.reason.terrain-type-change": "暫不計算場地造成的招式屬性變化",
     "damage.rangeEnvelope": "能力實數值區間 × 16 roll",

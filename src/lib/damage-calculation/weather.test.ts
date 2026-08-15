@@ -1,7 +1,23 @@
 import { calculate, Field, Move, Pokemon } from "@smogon/calc"
 import { beforeAll, describe, expect, it, vi } from "vitest"
 
+import {
+  CLOUD_NINE_ABILITY_ID,
+  FLASH_FIRE_ABILITY_ID,
+  NORMALIZE_ABILITY_ID,
+  PIXILATE_ABILITY_ID,
+  SAND_FORCE_ABILITY_ID,
+} from "@/lib/ability"
 import { getCatalogShell, type MoveCategory } from "@/lib/catalog"
+import {
+  CALC_GEN,
+  VGC_LEVEL,
+  compileScenario,
+  NEUTRAL_MODIFIER,
+  type CalculableScenario,
+  type RawScenario,
+} from "@/lib/damage-calculation"
+import * as damageKernel from "@/lib/damage-calculation"
 import { createMoveSnapshot, type MoveSnapshot } from "@/lib/move"
 import { getMoveById, listResources } from "@/lib/resources"
 import {
@@ -9,16 +25,8 @@ import {
   expectedRowCount,
   runScenarioPipeline,
 } from "@/lib/scenario"
-
-import { CALC_GEN, VGC_LEVEL } from "@/lib/damage-calculation"
-import * as damageKernel from "@/lib/damage-calculation"
 import { defenderStatValues, offenseStatValue } from "@/lib/stat-calculation"
 import { getAttackerStatSetups, getDefenderSetups } from "@/lib/stat-calculation"
-import {
-  compileScenario,
-  type CalculableScenario,
-  type RawScenario,
-} from "@/lib/damage-calculation"
 import { WEATHERS, type Weather } from "."
 
 const ATTACKER = {
@@ -221,22 +229,92 @@ describe("reviewed weather compiler", () => {
     })
   })
 
-  it("keeps Weather Ball calculable only with no weather", () => {
-    expect(compileScenario(rawScenario(311, "none"))).toMatchObject({
-      kind: "calculable",
-      snapshotId: "weather-311",
+  it.each([
+    ["none", "normal", 4096, 4096, 4096] as const,
+    ["sun", "fire", 8192, 6144, 6144] as const,
+    ["rain", "water", 8192, 6144, 4096] as const,
+    ["sand", "rock", 8192, 4096, 4096] as const,
+    ["snow", "ice", 8192, 4096, 4096] as const,
+  ])(
+    "compiles Weather Ball in %s as %s with weather power and damage modifiers",
+    (weather, expectedType, basePower, weatherDamage, stab) => {
+      const outcome = calculable(311, weather)
+
+      expect(outcome.move.type).toBe(expectedType)
+      expect(normalBranch(outcome)).toMatchObject({
+        power: 50,
+        basePowerModifier: basePower,
+        weatherModifier: weatherDamage,
+        stabModifier: stab,
+        typeEffectivenessModifier: NEUTRAL_MODIFIER,
+      })
+      expect(weatherSource(outcome)?.state).toBe(
+        weather === "none" ? "neutral" : "active",
+      )
+    },
+  )
+
+  it("applies Weather Ball's doubled power to the edited snapshot power", () => {
+    const outcome = calculable(311, "sun", {
+      snapshot: moveSnapshot(311, { power: 80, accuracy: 90, criticalStage: 2 }),
     })
 
-    for (const weather of ["sun", "rain", "sand", "snow"] as const) {
-      expect(compileScenario(rawScenario(311, weather))).toMatchObject({
-        kind: "unavailable",
-        snapshotId: "weather-311",
-        reason: "weather-type-change",
-        sources: expect.arrayContaining([
-          { track: "weather", optionId: weather, state: "unsupported" },
-        ]),
-      })
-    }
+    expect(outcome.move.type).toBe("fire")
+    expect(normalBranch(outcome)).toMatchObject({
+      power: 80,
+      basePowerModifier: 8192,
+      weatherModifier: 6144,
+    })
+    expect(outcome.probability.hitProbability).toBe(0.9)
+  })
+
+  it("keeps Classic and Battle Odds on the same Weather Ball damage compilation", () => {
+    const classic = calculable(311, "rain", { probabilityMode: "classic" })
+    const battleOdds = calculable(311, "rain", { probabilityMode: "battle-odds" })
+
+    expect(classic.move).toEqual(battleOdds.move)
+    expect(classic.calculation).toEqual(battleOdds.calculation)
+    expect(classic.probability.hitProbability).toBe(1)
+    expect(battleOdds.probability.hitProbability).toBe(1)
+  })
+
+  it("does not let Normalize or Pixilate rewrite Weather Ball's weather type", () => {
+    const normalized = calculable(311, "sun", { attackerAbilityId: NORMALIZE_ABILITY_ID })
+    const pixilate = calculable(311, "rain", { attackerAbilityId: PIXILATE_ABILITY_ID })
+
+    expect(normalized.move.type).toBe("fire")
+    expect(normalBranch(normalized).basePowerModifier).toBe(8192)
+    expect(pixilate.move.type).toBe("water")
+    expect(normalBranch(pixilate).basePowerModifier).toBe(8192)
+  })
+
+  it("feeds Weather Ball's weather type into STAB, effectiveness, and type-gated abilities", () => {
+    const superEffective = calculable(311, "sun", { defenderId: 3 })
+    expect(superEffective.move.type).toBe("fire")
+    expect(normalBranch(superEffective).typeEffectivenessModifier).toBe(8192)
+
+    const flashFire = calculable(311, "sun", { defenderAbilityId: FLASH_FIRE_ABILITY_ID })
+    expect(flashFire.calculation.low.normal?.damageNegated).toBe(true)
+
+    const sandForce = calculable(311, "sand", { attackerAbilityId: SAND_FORCE_ABILITY_ID })
+    expect(sandForce.move.type).toBe("rock")
+    expect(normalBranch(sandForce).basePowerModifier).toBe(
+      damageKernel.chainModifiers([5325, 8192]),
+    )
+    expect(weatherSource(sandForce)?.state).toBe("active")
+  })
+
+  it("treats Cloud Nine Weather Ball as the no-weather move", () => {
+    const outcome = calculable(311, "rain", { attackerAbilityId: CLOUD_NINE_ABILITY_ID })
+
+    expect(outcome.move.type).toBe("normal")
+    expect(normalBranch(outcome)).toMatchObject({
+      power: 50,
+      basePowerModifier: NEUTRAL_MODIFIER,
+      weatherModifier: NEUTRAL_MODIFIER,
+      stabModifier: NEUTRAL_MODIFIER,
+    })
+    expect(weatherSource(outcome)?.state).toBe("inactive")
   })
 
   it.each([
@@ -245,6 +323,10 @@ describe("reviewed weather compiler", () => {
     [76, "Solar Beam", "rain", "Rain"],
     [669, "Solar Blade", "rain", "Rain"],
     [876, "Hydro Steam", "sun", "Sun"],
+    [311, "Weather Ball", "sun", "Sun"],
+    [311, "Weather Ball", "rain", "Rain"],
+    [311, "Weather Ball", "sand", "Sand"],
+    [311, "Weather Ball", "snow", "Snow"],
   ] as const)(
     "matches all @smogon/calc normal and critical rolls for %s in %s",
     (moveId, moveName, weather, calcWeather) => {
@@ -312,7 +394,7 @@ describe("weather scenario product and provenance", () => {
     expect(expectedRowCount(state)).toBe(5)
   })
 
-  it("groups Weather Ball's four local failures once and still calculates none", async () => {
+  it("calculates Weather Ball in every supported weather without merging types", async () => {
     const catalog = await getCatalogShell(6, 143, "en", "special")
     const state = singleAbilityState(catalog)
     state.moveSnapshots = [createMoveSnapshot(
@@ -328,27 +410,12 @@ describe("weather scenario product and provenance", () => {
 
     const result = runScenarioPipeline(catalog, state)
 
-    expect(result.rows).toHaveLength(1)
-    expect(result.rows[0].provenance.weather).toEqual({
-      active: [],
-      inactive: [],
-      unsupported: [],
-      neutral: ["none"],
-    })
-    expect(result.unavailable).toHaveLength(1)
-    expect(result.unavailable[0]).toMatchObject({
-      snapshotId: "pipeline-weather-ball",
-      reasons: ["weather-type-change"],
-      provenance: {
-        weather: {
-          active: [],
-          inactive: [],
-          unsupported: ["sun", "rain", "sand", "snow"],
-          neutral: [],
-        },
-      },
-    })
-    expect(kernel).toHaveBeenCalledTimes(1)
+    expect(result.unavailable).toEqual([])
+    expect(result.rows).toHaveLength(5)
+    expect(new Set(result.rows.map((row) => row.moveType))).toEqual(
+      new Set(["normal", "fire", "water", "rock", "ice"]),
+    )
+    expect(kernel).toHaveBeenCalledTimes(5)
   })
 
   it("merges accuracy-only weather in rolls mode and retains none only as neutral", async () => {

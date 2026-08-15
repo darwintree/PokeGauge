@@ -77,7 +77,7 @@ describe("unavailable Scenario display", () => {
       unavailable: [{
         snapshotId: snapshot.id,
         moveId: snapshot.moveId,
-        reasons: ["weather-type-change"],
+        reasons: ["terrain-type-change"],
         missingFields: [],
         provenance: {},
       }],
@@ -87,6 +87,6 @@ describe("unavailable Scenario display", () => {
       onProbabilityModeChange: () => {},
     }))
 
-    expect(markup).toContain("Weather-based move type changes are not calculated yet")
+    expect(markup).toContain("Terrain-based move type changes are not calculated yet")
   })
 })

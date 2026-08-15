@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "475d4580-492c-45ae-895c-d9adf40314e1"
 title: "Support Weather Ball before release"
-status: "open"
+status: "closed"
 priority: "high"
 labels: ["BUG", "NEEDS-TRIAGE"]
 created_at: "2026-08-12T08:34:00Z"
-updated_at: "2026-08-12T09:09:00Z"
+updated_at: "2026-08-15T01:14:00Z"
 ---
 ## Problem
 
@@ -42,8 +42,8 @@ Weather Ball（Move ID 311）当前在无天气时可以按普通招式计算，
 
 ## Related issues
 
-- [[20260812_open_enforce-an-audited-move-calculation-boundary|Enforce an audited Move calculation boundary]]
-- [[20260812_open_unify-modifier-execution-and-explanation-representation|Unify modifier execution and explanation representation]]
+- [[../20260812_open_enforce-an-audited-move-calculation-boundary|Enforce an audited Move calculation boundary]]
+- [[../20260812_open_unify-modifier-execution-and-explanation-representation|Unify modifier execution and explanation representation]]
 
 ## Out of scope
 
@@ -53,13 +53,20 @@ Weather Ball（Move ID 311）当前在无天气时可以按普通招式计算，
 
 ## Verification Checklist
 
-- [ ] 无天气、晴天、雨天、沙暴、雪天下的 Weather Ball 计算与最终属性有代表性回归案例。
-- [ ] 天气抑制、招式属性改写、STAB 与克制交互具有明确契约和测试。
-- [ ] Snapshot power／accuracy／criticalStage／spread 编辑不会绕过或意外移除 Weather Ball 身份语义。
-- [ ] Classic 与 Battle Odds 的伤害及 KO 概率使用同一编译结果。
-- [ ] 四种 Supported locale 的 Tooltip／Unavailable 文案完整。
-- [ ] build、完整测试及 frontend review-and-correct 通过。
+- [x] 无天气、晴天、雨天、沙暴、雪天下的 Weather Ball 计算与最终属性有代表性回归案例。
+- [x] 天气抑制、招式属性改写、STAB 与克制交互具有明确契约和测试。
+- [x] Snapshot power／accuracy／criticalStage／spread 编辑不会绕过或意外移除 Weather Ball 身份语义。
+- [x] Classic 与 Battle Odds 的伤害及 KO 概率使用同一编译结果。
+- [x] 四种 Supported locale 的 Unavailable 文案完整；编辑风险 Tooltip 留给父票。
+- [x] build、完整测试通过。无前端表面变更，不需要 frontend review-and-correct。
 
 ## Progress Log
 
 - 2026-08-12：release readiness grilling 确认 Weather Ball 必须在公开 release 前支持，并从通用 Move calculation boundary 拆为独立 blocker。
+- 2026-08-15：实现五种天气下的 Weather Ball 直接伤害语义；Cloud Nine／Air Lock 与 Mega Sol 走既有 effective Weather；Normalize／Pixilate 不改写天气属性。
+
+## Resolution
+
+Weather Ball（Move ID 311）在全部当前天气选择下可计算。Scenario Move Type 为 `none`→Normal、`sun`→Fire、`rain`→Water、`sand`→Rock、`snow`→Ice；非 `none` 时对 Snapshot power 施加 `8192`（2×）Base Power，晴雨 generic 伤害再按变化后的属性结算。Cloud Nine／Air Lock 压制后按无天气处理；Mega Sol 的 effective sun 现在会驱动 Weather Ball。编辑 Snapshot 不移除该 ID-bound 语义。统一编辑风险 Tooltip 由 [[../20260812_open_enforce-an-audited-move-calculation-boundary|Enforce an audited Move calculation boundary]] 实现。
+
+Trace: [[../docs/traces/implementations/2026-08-15-weather-ball|2026-08-15-weather-ball]]。

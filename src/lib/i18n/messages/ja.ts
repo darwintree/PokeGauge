@@ -221,7 +221,6 @@ export const jaMessages: Record<string, string> = {
     "damage.conditions.other": "その他の条件（{count}）",
     "damage.unavailable.reason.unconfigured-move": "わざの設定が未完了です",
     "damage.unavailable.reason.unsupported-move": "このわざはまだ計算できません",
-    "damage.unavailable.reason.weather-type-change": "天気によるわざタイプの変化はまだ計算できません",
     "damage.unavailable.reason.terrain-required": "このわざにはフィールドが必要です",
     "damage.unavailable.reason.terrain-type-change": "フィールドによるわざタイプの変化はまだ計算できません",
     "damage.rangeEnvelope": "能力実数値範囲 × 16 roll",

@@ -221,7 +221,6 @@ export const zhHansMessages: Record<string, string> = {
     "damage.conditions.other": "其他条件（{count}）",
     "damage.unavailable.reason.unconfigured-move": "招式尚未配置完整",
     "damage.unavailable.reason.unsupported-move": "暂不支持计算该招式",
-    "damage.unavailable.reason.weather-type-change": "暂不计算天气导致的招式属性变化",
     "damage.unavailable.reason.terrain-required": "该招式需要场地才能使用",
     "damage.unavailable.reason.terrain-type-change": "暂不计算场地导致的招式属性变化",
     "damage.rangeEnvelope": "能力实数值区间 × 16 roll",

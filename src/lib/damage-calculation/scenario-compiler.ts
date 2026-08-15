@@ -54,7 +54,7 @@ import {
   type Terrain,
 } from "./terrain"
 import type { ProbabilityMode, StatStage } from "./types"
-import { compileWeatherEffect, type Weather } from "./weather"
+import { compileWeatherEffect, resolveWeatherMoveType, type Weather } from "./weather"
 
 export type RawScenarioPoint = {
   offense: number
@@ -135,7 +135,6 @@ export type HitFact = number | "always-hits"
 export type UnavailableReason =
   | "unconfigured-move"
   | "unsupported-move"
-  | "weather-type-change"
   | "terrain-required"
   | "terrain-type-change"
 
@@ -398,7 +397,6 @@ function weatherMechanicsIdentity(
   return JSON.stringify([
     weather.basePowerModifier,
     weather.damageModifier,
-    weather.unavailable,
     probabilityMode === "battle-odds" ? weather.accuracy : undefined,
     ability.basePowerModifier,
     ability.attackerAttackModifier,
@@ -415,8 +413,27 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   const power = normalizeSnapshotPower(raw.snapshot.power)
   const accuracy = normalizeSnapshotAccuracy(raw.snapshot.accuracy)
   const moveCategory = move && isMoveCategory(move.category) ? move.category : undefined
+  const attackerNullifiesWeather = raw.attackerAbilityId === CLOUD_NINE_ABILITY_ID ||
+    raw.attackerAbilityId === AIR_LOCK_ABILITY_ID
+  const defenderNullifiesWeather = raw.defenderAbilityId === CLOUD_NINE_ABILITY_ID ||
+    raw.defenderAbilityId === AIR_LOCK_ABILITY_ID
+  const hasWeatherNullifier = attackerNullifiesWeather || defenderNullifiesWeather
+  const attackerHasMegaSol = raw.attackerAbilityId === MEGA_SOL_ABILITY_ID
+  const defenderHasMegaSol = raw.defenderAbilityId === MEGA_SOL_ABILITY_ID
+  const megaSolApplies = (attackerHasMegaSol || defenderHasMegaSol) &&
+    raw.snapshot.moveId !== ELECTRO_SHOT_MOVE_ID
+  let effectiveWeather: Weather = raw.weather
+  if (megaSolApplies) {
+    effectiveWeather = "sun"
+  } else if (hasWeatherNullifier) {
+    effectiveWeather = "none"
+  }
   const identityMoveType = move && isPokemonType(move.type)
-    ? resolveReviewedMoveType(move.id, raw.attackerId, move.type, attacker?.types)
+    ? resolveWeatherMoveType(
+        move.id,
+        effectiveWeather,
+        resolveReviewedMoveType(move.id, raw.attackerId, move.type, attacker?.types),
+      )
     : undefined
   const hasOriginalTypeStab = Boolean(
     attacker && identityMoveType && attacker.types.includes(identityMoveType),
@@ -477,22 +494,6 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     : defenderHasKlutz || (attackerHasUnnerve && defenderBerryEligible)
       ? neutralizeHeldItem(defenderItemRaw)
       : defenderItemRaw
-
-  const attackerNullifiesWeather = raw.attackerAbilityId === CLOUD_NINE_ABILITY_ID ||
-    raw.attackerAbilityId === AIR_LOCK_ABILITY_ID
-  const defenderNullifiesWeather = raw.defenderAbilityId === CLOUD_NINE_ABILITY_ID ||
-    raw.defenderAbilityId === AIR_LOCK_ABILITY_ID
-  const hasWeatherNullifier = attackerNullifiesWeather || defenderNullifiesWeather
-  const attackerHasMegaSol = raw.attackerAbilityId === MEGA_SOL_ABILITY_ID
-  const defenderHasMegaSol = raw.defenderAbilityId === MEGA_SOL_ABILITY_ID
-  const megaSolApplies = (attackerHasMegaSol || defenderHasMegaSol) &&
-    raw.snapshot.moveId !== ELECTRO_SHOT_MOVE_ID
-  let effectiveWeather: Weather = raw.weather
-  if (megaSolApplies) {
-    effectiveWeather = "sun"
-  } else if (hasWeatherNullifier) {
-    effectiveWeather = "none"
-  }
 
   function compileAbilityForWeather(weather: Weather) {
     return compileAbilityEffect({
@@ -944,14 +945,6 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       snapshotId: raw.snapshot.id,
       reason: "unconfigured-move",
       missingFields,
-      sources,
-    }
-  }
-  if (weather.unavailable) {
-    return {
-      kind: "unavailable",
-      snapshotId: raw.snapshot.id,
-      reason: weather.unavailable,
       sources,
     }
   }

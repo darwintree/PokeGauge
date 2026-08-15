@@ -51,7 +51,7 @@ Release 前必须建立 fail-closed 的 Move Calculation Support 边界：一个
 - [[20260806_open_complete-missing-pokeapi-move-behavioral-metadata-upstream|Complete missing PokeAPI move behavioral metadata upstream]]：上游 Move 行为元数据缺口。
 - [[20260717_open_define-ruleset-aware-move-candidate-pool-and-learnset-validation|Define ruleset-aware Move candidate pool and learnset validation]]：候选招式的 ruleset／learnset 合法性；与本票的「是否可可信计算」正交。
 - [[20260812_open_publish-auditable-calculation-cases-and-case-submission|Publish auditable calculation cases and case submission]]：将已审计案例公开给用户。
-- [[20260812_open_support-weather-ball-before-release|Support Weather Ball before release]]：公开 release 前支持 Weather Ball 在天气下的直接伤害语义。
+- [[archive/20260812_closed_support-weather-ball-before-release|Support Weather Ball before release]]：公开 release 前支持 Weather Ball 在天气下的直接伤害语义。
 
 ## Out of scope
 

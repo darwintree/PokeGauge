@@ -254,17 +254,20 @@ describe("Mega Sol", () => {
     expect(state(compiled, "defender-ability")).toBe("inactive")
   })
 
-  it("keeps the independent Weather Ball limitation", () => {
-    const compiled = outcome({
+  it("feeds effective sun into Weather Ball's type and power", () => {
+    const compiled = calculable({
       snapshot: snapshot(311, 50),
       attackerAbilityId: MEGA_SOL_ABILITY_ID,
     })
 
-    expect(compiled).toMatchObject({
-      kind: "unavailable",
-      reason: "weather-type-change",
+    expect(compiled.move.type).toBe("fire")
+    expect(normal(compiled)).toMatchObject({
+      power: 50,
+      basePowerModifier: 8192,
+      weatherModifier: 6144,
     })
     expect(state(compiled, "attacker-ability")).toBe("active")
+    expect(state(compiled, "weather")).toBe("neutral")
   })
 
   it("feeds effective sun to existing Solar Power consumers", () => {
