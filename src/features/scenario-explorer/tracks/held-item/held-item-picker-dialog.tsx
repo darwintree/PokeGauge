@@ -144,12 +144,8 @@ export function HeldItemPickerDialog({
             className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-3 border-b px-2 py-2.5 text-left last:border-b-0 hover:bg-muted/60 focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-ring"
             onClick={() => choose(option)}
           >
-            <span className="grid size-7 place-items-center rounded-md bg-token-bg">
-              <HeldItemSpriteIcon
-                id={option.id}
-                className="size-5"
-                imgClassName="[image-rendering:pixelated]"
-              />
+            <span className="grid size-9 place-items-center rounded-md bg-token-bg">
+              <HeldItemSpriteIcon id={option.id} />
             </span>
             <span className="min-w-0 truncate text-sm font-medium">{option.label}</span>
             {formTrigger ? (

@@ -172,7 +172,7 @@ export function HeldItemTrack({
                 )}
                 onToggle={() => toggle(id)}
               >
-                <HeldItemSpriteIcon id={id} />
+                <HeldItemSpriteIcon id={id} className="size-full" />
                 {warning && (
                   <span
                     aria-hidden

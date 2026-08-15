@@ -82,14 +82,14 @@
   }
 
   .track-option--icon {
-    width: 2.25rem;
-    height: 2.25rem;
-    padding: 0.25rem;
+    width: 2.375rem;
+    height: 2.375rem;
+    padding: 0.125rem;
   }
 
-  .track-option--icon img {
-    width: 1.5rem;
-    height: 1.5rem;
+  .track-option--icon :is(img, svg) {
+    width: 100%;
+    height: 100%;
     object-fit: contain;
   }
 

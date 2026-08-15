@@ -7,37 +7,37 @@ import { cn } from "@/lib/utils"
 type HeldItemSpriteIconProps = {
   id: string | number
   className?: string
-  imgClassName?: string
 }
 
 export function HeldItemSpriteIcon({
   id,
   className,
-  imgClassName,
 }: HeldItemSpriteIconProps) {
   const url = itemSpriteUrl(id)
   const [failedUrl, setFailedUrl] = useState<string | null>(null)
+  // ponytail: classic PokeAPI item PNGs are 30×30 pixel art — box to that canvas
+  // so 1×/2× DPR stays integer. gen8/gen9 are 160×160 illustrations in the same
+  // box; bilinear scale, no pixelated (nearest-neighbor would mosaic them).
+  const hiRes = url?.includes("/gen8/") === true || url?.includes("/gen9/") === true
+  const markClassName = cn(
+    "size-[30px] shrink-0 object-contain",
+    url && !hiRes && "[image-rendering:pixelated]",
+    className,
+  )
 
   if (id === EXPLICIT_NO_ITEM_ID) {
-    return (
-      <CircleSlash
-        className={cn("size-6 text-hud-muted/60", className)}
-        aria-hidden
-      />
-    )
+    return <CircleSlash className={cn(markClassName, "text-hud-muted/60")} aria-hidden />
   }
 
   if (!url || failedUrl === url) {
-    return (
-      <Gem className={cn("size-6 text-hud-muted/60", className)} aria-hidden />
-    )
+    return <Gem className={cn(markClassName, "text-hud-muted/60")} aria-hidden />
   }
 
   return (
     <img
       src={url}
       alt=""
-      className={cn("size-6 object-contain", imgClassName, className)}
+      className={markClassName}
       onError={() => setFailedUrl(url)}
     />
   )

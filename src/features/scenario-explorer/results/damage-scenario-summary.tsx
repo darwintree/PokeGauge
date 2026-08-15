@@ -97,10 +97,10 @@ function ActiveTokens({
       return (
         <span
           key={`${track}:${id}`}
-          className="grid size-[14px] place-items-center rounded-[4px] border border-ink bg-paper"
+          className="grid size-4 shrink-0 place-items-center"
           title={itemAriaLabel(id, intl.locale as SupportedLocale)}
         >
-          <HeldItemSpriteIcon id={id} className="size-3" />
+          <HeldItemSpriteIcon id={id} className="size-4" />
         </span>
       )
     }
@@ -411,10 +411,10 @@ function CaptionTokens({
           return (
             <span
               key={`${track}:${id}`}
-              className="grid size-3 shrink-0 place-items-center rounded-[4px] border border-ink bg-paper"
+              className="grid size-3.5 shrink-0 place-items-center"
               title={itemAriaLabel(id, intl.locale as SupportedLocale)}
             >
-              <HeldItemSpriteIcon id={id} className="size-2" />
+              <HeldItemSpriteIcon id={id} className="size-3.5" />
             </span>
           )
         }
