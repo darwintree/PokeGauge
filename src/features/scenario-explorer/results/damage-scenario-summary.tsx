@@ -78,43 +78,84 @@ function sourceLabel(
   return id
 }
 
-function ActiveTokens({
-  side,
-  ...props
-}: DamageScenarioSummaryProps & { side: "attack" | "defense" }) {
-  const intl = useIntl()
-  const tracks: ScenarioTrack[] = side === "attack"
-    ? ["held-item", "attacker-ability", "weather", "terrain"]
-    : ["defender-held-item", "defender-ability", "screen"]
-  const values = tracks.flatMap((track) =>
+function activeTokens(props: DamageScenarioSummaryProps, tracks: ScenarioTrack[]) {
+  return tracks.flatMap((track) =>
     (props.row.provenance[track]?.active ?? [])
       .filter((id) => id !== "none" && id !== "0" && !abilitySourceIsHidden(track, id))
       .map((id) => ({ track, id })),
   )
-
-  return values.map(({ track, id }) => {
-    if (track === "held-item" || track === "defender-held-item") {
-      return (
-        <span
-          key={`${track}:${id}`}
-          className="grid size-4 shrink-0 place-items-center"
-          title={itemAriaLabel(id, intl.locale as SupportedLocale)}
-        >
-          <HeldItemSpriteIcon id={id} className="size-4" />
-        </span>
-      )
-    }
-    return (
-      <span key={`${track}:${id}`} className="rounded-[5px] bg-token-bg px-1 text-[9px] font-extrabold leading-4 text-ink">
-        {sourceLabel(track, id, props, intl)}
-      </span>
-    )
-  })
 }
 
-function AdditionalConditionDetails(props: DamageScenarioSummaryProps) {
+/** 单位(攻/防)生效条件:道具 + 特性。战场条件归 ConditionsStrip。 */
+function sideTokens(props: DamageScenarioSummaryProps, side: "attack" | "defense") {
+  return activeTokens(props, side === "attack"
+    ? ["held-item", "attacker-ability"]
+    : ["defender-held-item", "defender-ability"])
+}
+
+function TextTokenChip({ label }: { label: string }) {
+  return (
+    <span className="max-w-[5rem] truncate rounded-[5px] bg-token-bg px-1 text-[9px] font-extrabold leading-4 text-ink" title={label}>
+      {label}
+    </span>
+  )
+}
+
+/** 攻/防一栏:行首 = 标签 + 道具 icon + 特性 + 阶级(右锚),次行 = 数值 chip 组。 */
+function UnitPanel({
+  side,
+  label,
+  stage,
+  stat,
+  ...props
+}: DamageScenarioSummaryProps & {
+  side: "attack" | "defense"
+  label: string
+  stage: number
+  stat: DamageScenarioSummaryProps["attackerStat"]
+}) {
   const intl = useIntl()
-  const entries = (Object.entries(props.row.provenance) as Array<[
+  const tokens = sideTokens(props, side)
+  const item = tokens.find(({ track }) => track === "held-item" || track === "defender-held-item")
+  const abilities = tokens.filter(({ track }) => track === "attacker-ability" || track === "defender-ability")
+  return (
+    <div className="min-w-0 space-y-0.5 px-1.5 py-1">
+      <div className="flex h-4 items-center gap-1">
+        <span className="shrink-0 text-[8.5px] text-muted-foreground">{label}</span>
+        {item && (
+          <span
+            className="grid size-4 shrink-0 place-items-center"
+            title={itemAriaLabel(item.id, intl.locale as SupportedLocale)}
+          >
+            <HeldItemSpriteIcon id={item.id} className="size-4" />
+          </span>
+        )}
+        {abilities.map(({ track, id }) => (
+          <TextTokenChip key={`${track}:${id}`} label={sourceLabel(track, id, props, intl)} />
+        ))}
+        {stage !== 0 && (
+          <b className="ml-auto text-[10px] font-extrabold tabular-nums text-ink">{stageLabel(stage)}</b>
+        )}
+      </div>
+      <StatValueChipPair
+        chips={stat.chips}
+        showActual={stat.showActual}
+        compact
+        expandable={stat.expandable}
+        expanded={stat.expanded}
+        onToggle={stat.onToggle}
+        toggleLabel={intl.formatMessage({
+          id: side === "attack"
+            ? stat.expanded ? "damage.row.collapseOffense" : "damage.row.expandOffense"
+            : stat.expanded ? "damage.row.collapseDefense" : "damage.row.expandDefense",
+        })}
+      />
+    </div>
+  )
+}
+
+function additionalEntries(props: DamageScenarioSummaryProps) {
+  return (Object.entries(props.row.provenance) as Array<[
     ScenarioTrack,
     ScenarioResult["provenance"][ScenarioTrack],
   ]>).flatMap(([track, sets]) =>
@@ -130,17 +171,40 @@ function AdditionalConditionDetails(props: DamageScenarioSummaryProps) {
         .map((id) => ({ track, state, id })),
     ),
   )
+}
+
+/** 卡底条:战场条件(天气/场地/墙)与「其他条件」折叠同一行。无状态:details + flex,summary 右锚,chips 不占点击区。 */
+function ConditionsStrip(props: DamageScenarioSummaryProps) {
+  const intl = useIntl()
+  const field = activeTokens(props, ["weather", "terrain", "screen"])
+  const entries = additionalEntries(props)
   const count = entries.length + Number(props.isRangeEnvelope)
 
-  if (count === 0) return null
+  if (field.length === 0 && count === 0) return null
+
+  const chips = field.map(({ track, id }) => (
+    <TextTokenChip key={`${track}:${id}`} label={sourceLabel(track, id, props, intl)} />
+  ))
+
+  if (count === 0) {
+    return (
+      <div className="flex flex-wrap items-center gap-1 border-t border-dashed border-card-border px-2 py-0.5">
+        {chips}
+      </div>
+    )
+  }
 
   return (
-    <details className="border-t border-dashed border-card-border px-2 py-0.5 text-[10px] text-muted-foreground">
-      <summary className="flex cursor-pointer list-none items-center gap-1 text-[9px] leading-none font-bold text-hud-muted hover:text-ink focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none [&::-webkit-details-marker]:hidden [&::marker]:hidden">
+    <details className="group flex flex-wrap items-center gap-1 border-t border-dashed border-card-border px-2 py-0.5 text-[10px] text-muted-foreground">
+      <summary className="order-2 ml-auto flex shrink-0 cursor-pointer list-none items-center gap-1 text-[9px] leading-none font-bold text-hud-muted hover:text-ink focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none [&::-webkit-details-marker]:hidden [&::marker]:hidden">
         <MoreHorizontal className="size-2.5 shrink-0" aria-hidden />
         {intl.formatMessage({ id: "damage.conditions.other" }, { count })}
+        <ChevronDown className="size-2.5 transition-transform group-open:rotate-180" aria-hidden />
       </summary>
-      <div className="space-y-1 pt-1 text-ink">
+      {chips.length > 0 && (
+        <span className="order-1 flex min-w-0 flex-wrap items-center gap-1">{chips}</span>
+      )}
+      <div className="order-3 w-full space-y-1 pt-1 text-ink">
         {props.isRangeEnvelope && <p>{intl.formatMessage({ id: "damage.rangeEnvelope" })}</p>}
         {entries.map(({ track, state, id }) => (
           <p key={`${track}:${state}:${id}`}>
@@ -279,17 +343,6 @@ function activeStage(
 
 function stageLabel(value: number): string {
   return value > 0 ? `+${value}` : String(value)
-}
-
-function StageRailCell({ value, title }: { value: number; title: string }) {
-  return (
-    <span
-      title={title}
-      className="flex flex-1 items-center justify-center text-[12px] font-extrabold tabular-nums text-ink"
-    >
-      {value === 0 ? <span className="sr-only">{title}</span> : stageLabel(value)}
-    </span>
-  )
 }
 
 function CaptionTypeMark({ type }: { type: DamageScenarioSummaryProps["row"]["moveType"] }) {
@@ -529,10 +582,6 @@ export function DamageScenarioSummary(props: DamageScenarioSummaryProps) {
   const accuracy = mechanics.hitFact === "always-hits"
     ? intl.formatMessage({ id: "damage.conditions.alwaysHits" })
     : `${Math.round(mechanics.hitProbability * 100)}%`
-  const attackStage = activeStage(props.row, "attacker-stage")
-  const defenseStage = activeStage(props.row, "defender-stage")
-  const attackLabel = intl.formatMessage({ id: "damage.row.attack" })
-  const defenseLabel = intl.formatMessage({ id: "damage.row.defense" })
 
   return (
     <article className="w-full rounded-[10px] border border-card-border bg-muted/60 md:w-[14.75rem]">
@@ -542,47 +591,23 @@ export function DamageScenarioSummary(props: DamageScenarioSummaryProps) {
         {props.showAccuracy && <><span aria-hidden className="text-[10.5px] text-muted-foreground">·</span><span title={intl.formatMessage({ id: "damage.conditions.accuracy" })} className="text-[10.5px] tabular-nums">{accuracy}</span></>}
         <DamageFormulaTooltip {...props} />
       </div>
-      <div className="grid grid-cols-[1.5rem_minmax(0,1fr)]">
-        <div className="flex h-full flex-col border-r border-hairline">
-          <StageRailCell
-            value={attackStage}
-            title={`${attackLabel} ${stageLabel(attackStage)}`}
-          />
-          <StageRailCell
-            value={defenseStage}
-            title={`${defenseLabel} ${stageLabel(defenseStage)}`}
-          />
-        </div>
-        <div className="space-y-0.5 px-2 py-1">
-          <ScenarioIdentityLine
-            label={attackLabel}
-            chips={props.attackerStat.chips}
-            showActual={props.attackerStat.showActual}
-            expandable={props.attackerStat.expandable}
-            expanded={props.attackerStat.expanded}
-            onToggle={props.attackerStat.onToggle}
-            toggleLabel={intl.formatMessage({
-              id: props.attackerStat.expanded ? "damage.row.collapseOffense" : "damage.row.expandOffense",
-            })}
-          >
-            <ActiveTokens {...props} side="attack" />
-          </ScenarioIdentityLine>
-          <ScenarioIdentityLine
-            label={defenseLabel}
-            chips={props.defender.chips}
-            showActual={props.defender.showActual}
-            expandable={props.defender.expandable}
-            expanded={props.defender.expanded}
-            onToggle={props.defender.onToggle}
-            toggleLabel={intl.formatMessage({
-              id: props.defender.expanded ? "damage.row.collapseDefense" : "damage.row.expandDefense",
-            })}
-          >
-            <ActiveTokens {...props} side="defense" />
-          </ScenarioIdentityLine>
-        </div>
+      <div className="grid grid-cols-2 divide-x divide-hairline">
+        <UnitPanel
+          {...props}
+          side="attack"
+          label={intl.formatMessage({ id: "damage.row.attack" })}
+          stage={activeStage(props.row, "attacker-stage")}
+          stat={props.attackerStat}
+        />
+        <UnitPanel
+          {...props}
+          side="defense"
+          label={intl.formatMessage({ id: "damage.row.defense" })}
+          stage={activeStage(props.row, "defender-stage")}
+          stat={props.defender}
+        />
       </div>
-      <AdditionalConditionDetails {...props} />
+      <ConditionsStrip {...props} />
     </article>
   )
 }

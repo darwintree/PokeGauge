@@ -108,11 +108,15 @@ export function StatValueChipPair({
         aria-expanded={expanded}
         aria-label={toggleLabel}
         onClick={onToggle}
-        className="hover:bg-token-bg focus-visible:ring-ring grid size-6 shrink-0 place-items-center rounded-[6px] focus-visible:ring-2 focus-visible:outline-none"
+        className={cn(
+          "hover:bg-token-bg focus-visible:ring-ring grid shrink-0 place-items-center rounded-[6px] focus-visible:ring-2 focus-visible:outline-none",
+          compact ? "size-[1.125rem]" : "size-6",
+        )}
       >
         <ChevronDown
           className={cn(
-            "size-3.5 text-muted-foreground transition-transform",
+            "text-muted-foreground transition-transform",
+            compact ? "size-3" : "size-3.5",
             expanded && "rotate-180 text-ink",
           )}
           strokeWidth={2}

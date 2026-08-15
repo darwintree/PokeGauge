@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { IntlProvider } from "react-intl"
 
 import { AppHeader } from "@/components/app-header"
+import { ConditionCardPrototype } from "@/features/scenario-explorer/results/prototype/condition-card.prototype"
 import { HeldItemPickerPrototype } from "@/features/scenario-explorer/tracks/held-item/prototype/held-item-picker.prototype"
 import { MoveTrackCollapsedChipsPrototype } from "@/features/scenario-explorer/tracks/move/prototype/move-track-collapsed-chips.prototype"
 import { ScenarioExplorerPage } from "@/features/scenario-explorer/scenario-explorer-page"
@@ -32,6 +33,8 @@ function App() {
               <MoveTrackCollapsedChipsPrototype />
             ) : PROTOTYPE === "held-item-picker" ? (
               <HeldItemPickerPrototype />
+            ) : PROTOTYPE === "condition-card" ? (
+              <ConditionCardPrototype />
             ) : (
               <ScenarioExplorerPage locale={locale} />
             )}
