@@ -6,5 +6,7 @@ export function formatKOProbability(value: KOProbabilityValue, locale: string): 
     maximumFractionDigits: 1,
   })
   if (typeof value === "number") return formatter.format(value)
-  return `${formatter.format(value.min)}-${formatter.format(value.max)}`
+  const min = formatter.format(value.min)
+  const max = formatter.format(value.max)
+  return min === max ? min : `${min}-${max}`
 }

@@ -43,6 +43,11 @@ describe("formatKOProbability", () => {
   it("keeps range endpoints instead of averaging them", () => {
     expect(formatKOProbability({ min: 0.0625, max: 0.875 }, "en")).toBe("6.3%-87.5%")
   })
+
+  it("collapses identical formatted endpoints to a single value", () => {
+    expect(formatKOProbability({ min: 1, max: 1 }, "en")).toBe("100%")
+    expect(formatKOProbability({ min: 0.1614, max: 0.1614 }, "en")).toBe("16.1%")
+  })
 })
 
 describe("DamageResultRow range envelopes", () => {
@@ -166,6 +171,15 @@ describe("DamageResultRow range envelopes", () => {
     expect(markup).toContain("EX")
     expect(markup).not.toContain("0H0B")
     expect(markup).toContain("10.0% ~ 20.0%")
+  })
+
+  it("renders KO ranges without a highlight chip and collapses identical endpoints", () => {
+    row.koProbabilities = { ohko: { min: 0.042, max: 0.161 }, twoHit: { min: 1, max: 1 } }
+    const markup = render(false)
+
+    expect(markup).toContain("4.2%-16.1%")
+    expect(markup).not.toContain("100%-100%")
+    expect(markup).not.toContain("bg-signal-yellow")
   })
 
   it("places the range percent under the damage box", () => {

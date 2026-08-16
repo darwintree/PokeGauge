@@ -72,7 +72,7 @@ const TONE_DOT_CLASS = {
   lethal: "damage-tone-marker--lethal",
 } as const
 
-/** Peak of a KO probability value (number or range), for zero/hot states. */
+/** Peak of a KO probability value (number or range), for the zero/muted state. */
 function koPeak(value: KOProbabilityValue): number {
   return typeof value === "number" ? value : value.max
 }
@@ -80,7 +80,6 @@ function koPeak(value: KOProbabilityValue): number {
 function KOProbabilitySummary({ row }: { row: ScenarioResult }) {
   const intl = useIntl()
   const unavailable = intl.formatMessage({ id: "damage.ko.unavailable" })
-  const ohkoHot = row.koProbabilities != null && koPeak(row.koProbabilities.ohko) > 0
 
   return (
     <dl className="flex w-12 shrink-0 flex-col items-end justify-center gap-0.5 overflow-hidden whitespace-nowrap text-[9px] leading-none font-extrabold tabular-nums md:grid md:w-36 md:grid-cols-2 md:gap-0 md:overflow-visible md:text-center md:text-[12px] md:leading-normal">
@@ -88,16 +87,9 @@ function KOProbabilitySummary({ row }: { row: ScenarioResult }) {
         <dt className="sr-only">OHKO</dt>
         <dd>
           {row.koProbabilities ? (
-            ohkoHot ? (
-              /* Yellow is reserved for a non-zero OHKO Probability. */
-              <span className="inline-block rounded-[5px] border border-ink bg-signal-yellow px-0.5 shadow-hud-chip md:rounded-[8px] md:border-2 md:px-1.5 md:py-px">
-                {formatKOProbability(row.koProbabilities.ohko, intl.locale)}
-              </span>
-            ) : (
-              <span className={koPeak(row.koProbabilities.ohko) === 0 ? "text-hud-muted" : undefined}>
-                {formatKOProbability(row.koProbabilities.ohko, intl.locale)}
-              </span>
-            )
+            <span className={koPeak(row.koProbabilities.ohko) === 0 ? "text-hud-muted" : undefined}>
+              {formatKOProbability(row.koProbabilities.ohko, intl.locale)}
+            </span>
           ) : (
             <span className="text-hud-muted">{unavailable}</span>
           )}
