@@ -62,17 +62,25 @@
     --stat-invest-heavy-bg: #c9d9ff;
 
     /* Damage domain tokens */
+    --damage-safe-start: #c6e35a;
+    --damage-safe-end: #5f9f2c;
     --damage-cool-start: #ffd98a;
     --damage-cool-end: #f5b73f;
     --damage-warm-start: #ffb066;
     --damage-warm-end: #f58023;
     --damage-lethal-start: #ff7a6e;
     --damage-lethal-end: #e0352f;
+    --damage-guaranteed-start: #c42b28;
+    --damage-guaranteed-end: #7a1210;
     --damage-critical: #8b5cf6;
 }
 
 @layer components {
   /* Damage-domain gradients and matching tooltip markers */
+  .damage-tone--safe {
+    background: linear-gradient(180deg, var(--damage-safe-start), var(--damage-safe-end));
+  }
+
   .damage-tone--cool {
     background: linear-gradient(180deg, var(--damage-cool-start), var(--damage-cool-end));
   }
@@ -85,6 +93,24 @@
     background: linear-gradient(180deg, var(--damage-lethal-start), var(--damage-lethal-end));
   }
 
+  .damage-tone--guaranteed {
+    background: linear-gradient(180deg, var(--damage-guaranteed-start), var(--damage-guaranteed-end));
+  }
+
+  .damage-tone-envelope {
+    background-image:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--paper) 38%, transparent),
+        color-mix(in srgb, var(--ink) 14%, transparent)
+      ),
+      linear-gradient(90deg, var(--damage-tone-left), var(--damage-tone-right));
+  }
+
+  .damage-tone-marker--safe {
+    background-color: var(--damage-safe-end);
+  }
+
   .damage-tone-marker--cool {
     background-color: var(--damage-cool-end);
   }
@@ -95,6 +121,10 @@
 
   .damage-tone-marker--lethal {
     background-color: var(--damage-lethal-end);
+  }
+
+  .damage-tone-marker--guaranteed {
+    background-color: var(--damage-guaranteed-end);
   }
 
   .stat-tier-chip--0 {

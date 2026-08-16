@@ -74,6 +74,22 @@ Colors are semantic. They communicate hierarchy or state, never decoration.
 
 Pokémon types, effectiveness, Stat Value Label chips, HP, and damage use separate domain tokens. Domain colors must not be reused as general HUD chrome.
 
+### Damage box tone
+
+The damage pill is domain data ink. Crit whiskers stay `--damage-critical` and do not choose the fill.
+
+Discrete Stat Value rows use one vertical-gradient fill from the 16-roll box, matching from the top:
+
+| Tone | When |
+| --- | --- |
+| Guaranteed | min ≥ 100% |
+| Lethal | max ≥ 100% |
+| Warm | min > 2/3 |
+| Safe | max < 40% |
+| Cool | otherwise |
+
+A Stat Range row is still one envelope pill (low-end min to high-end max). It does not draw endpoint boxes. Fill is a lit two-stop horizontal gradient from the low-end box tone to the high-end box tone. Damage-domain green is not `signal-green`.
+
 ### Stat Value Label chip
 
 The Stat Value Label chip is domain data ink: a compact pill whose face is the Stat Value Label. Color encodes that Stat Value's actual-stat bonus relative to the Pokémon's 0-investment Stat Value (0 SP, no nature modifier). Defense bonus is HP bonus plus Defense bonus. Nature does not choose the band by itself.

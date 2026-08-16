@@ -182,6 +182,53 @@ describe("DamageResultRow range envelopes", () => {
     expect(markup).not.toContain("bg-signal-yellow")
   })
 
+  it("paints a discrete box with the safe tone when max is under 40%", () => {
+    const markup = render(false)
+    expect(markup).toContain("damage-tone--safe")
+    expect(markup).not.toContain("damage-tone-envelope")
+  })
+
+  it("paints a range envelope as one lit two-stop pill from endpoint box tones", () => {
+    const ranged: ScenarioResult = {
+      ...row,
+      minPercent: 24,
+      maxPercent: 118,
+      rangeEndpoints: {
+        low: { minPercent: 24, maxPercent: 36 },
+        high: { minPercent: 101, maxPercent: 118 },
+      },
+    }
+    const markup = renderToStaticMarkup(createElement(
+      IntlProvider,
+      { locale: "en", messages: localeMessages.en },
+      createElement(
+        TooltipProvider,
+        null,
+        createElement(DamageResultRow, {
+          move: {
+            id: 33,
+            label: "Tackle",
+            summary: "40 / 100",
+            moveName: "Tackle",
+            type: "normal",
+            category: "physical",
+            power: 40,
+            accuracy: 100,
+            isSpread: false,
+          },
+          attackerStat: { id: "__range__", chips: [{ label: "0A", actual: "152", sp: "0", nature: "none", band: "none", temporary: false }] },
+          defender: { id: "standard-bulk", chips: [{ label: "EX", actual: "341 / 251", sp: "32H / 32B", nature: "plus", band: "ex", temporary: false }] },
+          row: ranged,
+          isRangeEnvelope: true,
+        }),
+      ),
+    ))
+    expect(markup).toContain("damage-tone-envelope")
+    expect(markup).toContain("--damage-tone-left:var(--damage-safe-end)")
+    expect(markup).toContain("--damage-tone-right:var(--damage-guaranteed-end)")
+    expect(markup).not.toContain("damage-tone--safe")
+  })
+
   it("places the range percent under the damage box", () => {
     const markup = render(true)
     const left = `${pctToFraction(10) * 100}%`

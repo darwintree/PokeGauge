@@ -81,6 +81,10 @@ function fixedKOProbabilities(
   }
 }
 
+function percentOf(damage: number, hp: number): number {
+  return (damage / hp) * 100
+}
+
 function summarizeDamage(
   result: DamageKernelResult,
   probability: ProbabilityInput,
@@ -100,20 +104,29 @@ function summarizeDamage(
   const critMinDamage = Math.min(...lowCritical)
   const critMaxDamage = Math.max(...highCritical)
   const avgDamage = result.high ? (lowAverage + highAverage) / 2 : lowAverage
+  const lowBox = {
+    minPercent: percentOf(minDamage, low.defenderHp),
+    maxPercent: percentOf(Math.max(...lowMain), low.defenderHp),
+  }
+  const highBox = {
+    minPercent: percentOf(Math.min(...highMain), high.defenderHp),
+    maxPercent: percentOf(maxDamage, high.defenderHp),
+  }
 
   return {
     minDamage,
     maxDamage,
     avgDamage,
-    minPercent: (minDamage / low.defenderHp) * 100,
-    maxPercent: (maxDamage / high.defenderHp) * 100,
+    minPercent: lowBox.minPercent,
+    maxPercent: highBox.maxPercent,
+    ...(result.high ? { rangeEndpoints: { low: lowBox, high: highBox } } : {}),
     avgPercent: result.high
-      ? ((lowAverage / low.defenderHp) * 100 + (highAverage / high.defenderHp) * 100) / 2
-      : (avgDamage / low.defenderHp) * 100,
+      ? (percentOf(lowAverage, low.defenderHp) + percentOf(highAverage, high.defenderHp)) / 2
+      : percentOf(avgDamage, low.defenderHp),
     critMinDamage,
     critMaxDamage,
-    critMinPercent: (critMinDamage / low.defenderHp) * 100,
-    critMaxPercent: (critMaxDamage / high.defenderHp) * 100,
+    critMinPercent: percentOf(critMinDamage, low.defenderHp),
+    critMaxPercent: percentOf(critMaxDamage, high.defenderHp),
     koProbabilities: result.high
       ? {
           ohko: {

@@ -843,6 +843,16 @@ describe("matchup scenario pipeline - range mode", () => {
       maxPercent: oppositeEndpoints[1].maxPercent,
       critMaxDamage: oppositeEndpoints[1].critMaxDamage,
       critMaxPercent: oppositeEndpoints[1].critMaxPercent,
+      rangeEndpoints: {
+        low: {
+          minPercent: oppositeEndpoints[0].minPercent,
+          maxPercent: oppositeEndpoints[0].maxPercent,
+        },
+        high: {
+          minPercent: oppositeEndpoints[1].minPercent,
+          maxPercent: oppositeEndpoints[1].maxPercent,
+        },
+      },
     })
     expect(rangeRow.koProbabilities).toEqual({
       ohko: { min: Math.min(...ohkoEndpoints), max: Math.max(...ohkoEndpoints) },

@@ -80,6 +80,11 @@ export type ScenarioResult = {
   minPercent: number
   maxPercent: number
   avgPercent: number
+  /** Present when the row is a Stat Range envelope: each endpoint is its own 16-roll box. */
+  rangeEndpoints?: {
+    low: { minPercent: number; maxPercent: number }
+    high: { minPercent: number; maxPercent: number }
+  }
   critMinDamage: number
   critMaxDamage: number
   critMinPercent: number

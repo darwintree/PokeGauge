@@ -18,8 +18,15 @@ import type { ScenarioResult } from "@/lib/scenario"
 import type { StatValueChipModel } from "@/lib/stat-preset"
 import { cn } from "@/lib/utils"
 
-import { formatKOProbability } from "./format-ko-probability"
 import { ChildScenarioDiff, DamageRowCaption, DamageScenarioSummary } from "./damage-scenario-summary"
+import {
+  DAMAGE_TONE_CLASS,
+  DAMAGE_TONE_END,
+  DAMAGE_TONE_MARKER_CLASS,
+  DAMAGE_TONES,
+  damageToneOf,
+} from "./damage-tone"
+import { formatKOProbability } from "./format-ko-probability"
 
 // Non-linear axis: 0–100% linear over 72% of width, 100–200% sqrt-compressed
 // into the remaining 28%. Hard cap 200%.
@@ -51,26 +58,45 @@ function pctSpan(minPct: number, maxPct: number): { left: string; width: string 
   }
 }
 
-type Tone = "lethal" | "warm" | "cool"
-
-function lethalTone(row: ScenarioResult): Tone {
-  const peak = Math.max(row.maxPercent, row.critMaxPercent)
-  if (peak >= 100) return "lethal"
-  if (peak >= 75) return "warm"
-  return "cool"
+function envelopeVars(endpoints: NonNullable<ScenarioResult["rangeEndpoints"]>): React.CSSProperties {
+  return {
+    "--damage-tone-left": DAMAGE_TONE_END[
+      damageToneOf(endpoints.low.minPercent, endpoints.low.maxPercent)
+    ],
+    "--damage-tone-right": DAMAGE_TONE_END[
+      damageToneOf(endpoints.high.minPercent, endpoints.high.maxPercent)
+    ],
+  } as React.CSSProperties
 }
 
-const TONE_CLASS = {
-  cool: "damage-tone--cool",
-  warm: "damage-tone--warm",
-  lethal: "damage-tone--lethal",
-} as const
+function boxStyle(row: ScenarioResult): { className: string; style: React.CSSProperties } {
+  const span = pctSpan(row.minPercent, row.maxPercent)
+  const endpoints = row.rangeEndpoints
+  if (!endpoints) {
+    return {
+      className: DAMAGE_TONE_CLASS[damageToneOf(row.minPercent, row.maxPercent)],
+      style: span,
+    }
+  }
+  return {
+    className: "damage-tone-envelope",
+    style: { ...span, ...envelopeVars(endpoints) },
+  }
+}
 
-const TONE_DOT_CLASS = {
-  cool: "damage-tone-marker--cool",
-  warm: "damage-tone-marker--warm",
-  lethal: "damage-tone-marker--lethal",
-} as const
+function toneMarker(row: ScenarioResult) {
+  const endpoints = row.rangeEndpoints
+  if (!endpoints) {
+    const tone = damageToneOf(row.minPercent, row.maxPercent)
+    return <span className={cn("inline-block size-2 rounded-sm", DAMAGE_TONE_MARKER_CLASS[tone])} />
+  }
+  return (
+    <span
+      className="damage-tone-envelope inline-block size-2 rounded-sm"
+      style={envelopeVars(endpoints)}
+    />
+  )
+}
 
 /** Peak of a KO probability value (number or range), for the zero/muted state. */
 function koPeak(value: KOProbabilityValue): number {
@@ -148,7 +174,7 @@ export function DamageResultRow({
   diff,
 }: DamageResultRowProps) {
   const intl = useIntl()
-  const tone = lethalTone(row)
+  const fill = boxStyle(row)
   const box = pctSpan(row.minPercent, row.maxPercent)
   const crit = pctSpan(row.critMinPercent, row.critMaxPercent)
   const hasReferenceCritical = !row.criticalOnly && row.moveMechanics.critical !== null
@@ -197,9 +223,9 @@ export function DamageResultRow({
           <div
             className={cn(
               "absolute top-1/2 h-3.5 -translate-y-1/2 rounded-full border border-ink md:h-7",
-              TONE_CLASS[tone],
+              fill.className,
             )}
-            style={{ left: box.left, width: box.width }}
+            style={fill.style}
           />
 
           {!isRangeEnvelope && (
@@ -254,7 +280,7 @@ export function DamageResultRow({
           align="center"
           className="flex-col items-stretch gap-1.5 max-w-[18rem] rounded-xl border-2 border-ink bg-paper px-3 py-2 shadow-hud-panel"
         >
-          <HoverRow marker={<span className={cn("inline-block size-2 rounded-sm", TONE_DOT_CLASS[tone])} />}>
+          <HoverRow marker={toneMarker(row)}>
             <HoverLabel>
               {intl.formatMessage({
                 id: row.criticalOnly ? "damage.critical" : "damage.normal",
@@ -352,7 +378,11 @@ export function DamageRangeLegend({ showAverage = true }: { showAverage?: boolea
   return (
     <div className="mt-2 flex flex-wrap gap-4 border-t border-hairline px-3 py-3 text-[10.5px] font-extrabold text-hud-muted sm:px-4">
       <span className="inline-flex items-center gap-1.5">
-        <span className="damage-tone--warm inline-block h-3 w-6 rounded-full border border-ink" />
+        <span className="inline-flex overflow-hidden rounded-full border border-ink">
+          {DAMAGE_TONES.map((tone) => (
+            <span key={tone} className={cn("inline-block h-3 w-3.5", DAMAGE_TONE_CLASS[tone])} />
+          ))}
+        </span>
         {intl.formatMessage({ id: "damage.legend.normal" })}
       </span>
       <span className="inline-flex items-center gap-1.5">
