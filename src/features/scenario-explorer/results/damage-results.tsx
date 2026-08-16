@@ -7,7 +7,6 @@ import {
   EmptyDescription,
   EmptyHeader,
 } from "@/components/ui/empty"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import type { MatchupCatalog } from "@/lib/catalog"
 import {
   RANGE_DEFENDER_ID,
@@ -28,6 +27,7 @@ import {
   DamageRangeLegend,
   DamageResultRow,
 } from "./damage-result-row"
+import { ProbabilityModeSwitch } from "./probability-mode-switch"
 import { ShowStatValuesSwitch } from "../tracks/common/show-stat-values-switch"
 import { rowIdentity } from "./row-labels"
 
@@ -232,38 +232,15 @@ export function DamageResults({
   return (
     <>
       <UnavailableScenarioNotices catalog={catalog} unavailable={unavailable} />
-      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <ToggleGroup
-          value={[trackState.probabilityMode]}
-          onValueChange={(value) => {
-            if (value[0] === "classic" || value[0] === "battle-odds") {
-              onProbabilityModeChange(value[0])
-            }
-          }}
-          variant="default"
-          size="sm"
-          spacing={0}
-          aria-label="KO probability mode"
-          className="gap-0 rounded-[10px] border-2 border-ink bg-paper p-0.5 shadow-hud-chip"
+        <ProbabilityModeSwitch
+          mode={trackState.probabilityMode}
+          onChange={onProbabilityModeChange}
         >
-          <ToggleGroupItem
-            value="battle-odds"
-            className="rounded-[7px] px-2.5 text-[11px] font-extrabold text-ink hover:bg-token-bg aria-pressed:bg-signal-yellow aria-pressed:text-ink aria-pressed:shadow-none"
-          >
-            <FormattedMessage id="probability.mode.battleOdds" />
-          </ToggleGroupItem>
-          <ToggleGroupItem
-            value="classic"
-            className="rounded-[7px] px-2.5 text-[11px] font-extrabold text-ink hover:bg-token-bg aria-pressed:bg-signal-yellow aria-pressed:text-ink aria-pressed:shadow-none"
-          >
-            <FormattedMessage id="probability.mode.classic" />
-          </ToggleGroupItem>
-        </ToggleGroup>
-        <ShowStatValuesSwitch
-          checked={trackState.showResultStatValue}
-          onCheckedChange={onShowResultStatValueChange}
-        />
-      </div>
+          <ShowStatValuesSwitch
+            checked={trackState.showResultStatValue}
+            onCheckedChange={onShowResultStatValueChange}
+          />
+        </ProbabilityModeSwitch>
       {board}
     </>
   )
