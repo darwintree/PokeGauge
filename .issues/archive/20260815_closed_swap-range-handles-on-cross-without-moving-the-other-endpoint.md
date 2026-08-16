@@ -26,7 +26,7 @@ updated_at: "2026-08-16T02:58:00Z"
 
 ## Related
 
-- [[../20260815_open_drag-either-coincident-range-endpoint-while-the-other-stays|Drag either coincident Range endpoint while the other stays]]：重合后再拉开，是同一套换角色拖法的另一端。
+- [[20260815_closed_drag-either-coincident-range-endpoint-while-the-other-stays|Drag either coincident Range endpoint while the other stays]]：重合后再拉开，是同一套换角色拖法的另一端。
 - [[20260815_closed_mark-selected-stat-values-on-the-stat-axis|Mark selected Stat Values on the stat axis]]
 - [[20260815_closed_add-a-new-stat-value-by-dragging-on-the-existing-range-axis|Add a new Stat Value by dragging on the existing Range axis]]
 

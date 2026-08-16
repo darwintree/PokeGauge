@@ -27,7 +27,7 @@ The same chip language is used for:
 - the collapsed Stat Track summary
 - Stat Track Choice options
 
-TrackOption is the clickable form of the same chip (unselected / selected). Result-row chips are data marks and do not use Choice selected yellow.
+TrackOption is the clickable form of the same chip (unselected / selected). Selected Choice uses `signal-yellow` fill, an ink frame, and a left tab in the investment-band foreground. Unselected Choice keeps paper fill with band border and text. Result-row chips are data marks and do not use Choice selected yellow.
 
 Optional “show actual values” is an annotation beside the chip. It does not replace the chip and does not restore a numeric interval as Range identity.
 
@@ -50,6 +50,8 @@ Band order:
 
 Nature does not choose the band by itself. Encoding is fill: background, border, and text share the band hue. Temporary Stat Values add a dashed border only.
 
+Selected Choice is inclusion chrome, not a fifth band: `signal-yellow` fill with a left tab in the band foreground. Unselected Choice and result-row chips keep fill encoding.
+
 HUD yellow, green, red, and damage orange are not used for these bands.
 
 Missing Stat Allocation keeps the existing Label fallback. This spec does not redefine Allocation internals.
@@ -70,5 +72,5 @@ Missing Stat Allocation keeps the existing Label fallback. This spec does not re
 - A Stat Range displays as two endpoint Label chips, or one chip when the endpoints are the same Stat Value. Numeric interval identity does not appear on the surfaces in Scope.
 - With “show actual values” on, the chip face remains the Label; the actual is annotation only.
 - Hover or focus on a chip shows actual stat, SP allocation, and nature adjustment; each Range endpoint has its own tooltip.
-- Color follows the four bonus bands, fill encoding, dashed temporary overlay, and non-selected result chips.
+- Color follows the four bonus bands, fill encoding on unselected Choice and result-row chips, selected Choice yellow with a band tab, dashed temporary overlay, and non-selected result chips.
 - Stat Track mode pairing in this contract is Choice and Range.

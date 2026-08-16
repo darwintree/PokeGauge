@@ -87,7 +87,7 @@ The Stat Value Label chip is domain data ink: a compact pill whose face is the S
 
 Fill encoding: background, border, and text share the band hue. Temporary Stat Values add a dashed border only. Hover or keyboard focus turns the chip border to `ink` and reveals actual stat, SP allocation, and nature adjustment (none / `+` / `-`).
 
-Result-row chips are data marks and do not use Choice selected yellow. A Stat Range is two endpoint chips, not one interval block, and does not assign a single band color to an envelope row. HUD yellow, green, red, and damage orange are not used for these bands.
+Result-row chips are data marks and do not use Choice selected yellow. Choice TrackOption selected state uses `signal-yellow` fill, an `ink` frame, and a hard chip shadow; the investment band stays on a left tab in the band foreground. Unselected Choice keeps paper fill with band border and text. A Stat Range is two endpoint chips, not one interval block, and does not assign a single band color to an envelope row. HUD yellow, green, red, and damage orange are not used for these bands.
 
 ### Usage rules
 

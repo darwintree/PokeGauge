@@ -266,11 +266,29 @@
     border-color: var(--ink);
   }
 
+  /* Selected = HUD yellow; band stays on a left tab so inclusion and invest stay orthogonal. */
   .track-option[class*="track-option-mod-invest-"][aria-pressed="true"] {
+    gap: 0.5rem;
     border-color: var(--ink);
-    background: var(--mod-bg);
-    color: var(--mod-fg);
+    background: var(--signal-yellow);
+    color: var(--ink);
     box-shadow: 2px 2px 0 0 color-mix(in srgb, var(--ink) 25%, transparent);
+  }
+
+  .track-option[class*="track-option-mod-invest-"][aria-pressed="true"]::before {
+    content: "";
+    align-self: stretch;
+    width: 0.3125rem;
+    margin: 0.15rem 0;
+    flex-shrink: 0;
+    border-radius: 99px;
+    background: var(--mod-fg);
+  }
+
+  .track-option[class*="track-option-mod-invest-"][aria-pressed="true"]
+    .track-option-summary {
+    color: var(--ink);
+    opacity: 1;
   }
 
   /* Dashed modifiers */
