@@ -24,7 +24,7 @@ describe("Pokemon option ranking", () => {
     expect(fetchUsage).not.toHaveBeenCalled()
   })
 
-  it("applies Champions usage order in the background", async () => {
+  it("applies Champions usage order when ranking is requested", async () => {
     setChampionsPokemonUsageFetcherForTest(async () => [727, 445])
     const options = await listAttackers("en")
 
@@ -41,5 +41,20 @@ describe("Pokemon option ranking", () => {
 
     expect(ranked.slice(0, 3).map((option) => option.id)).toEqual([6, 10034, 10035])
     expect(ranked.filter((option) => option.id === 10034)).toHaveLength(1)
+  })
+
+  it("keeps default order when usage is empty", async () => {
+    setChampionsPokemonUsageFetcherForTest(async () => [])
+    const options = await listAttackers("en")
+    const ranked = await rankPokemonOptionsByChampionsUsage(options)
+    expect(ranked.map((option) => option.id)).toEqual(options.map((option) => option.id))
+  })
+
+  it("rejects when Champions usage fails", async () => {
+    setChampionsPokemonUsageFetcherForTest(async () => {
+      throw new Error("offline")
+    })
+    const options = await listAttackers("en")
+    await expect(rankPokemonOptionsByChampionsUsage(options)).rejects.toThrow("offline")
   })
 })

@@ -45,6 +45,8 @@ export const jaMessages: Record<string, string> = {
     "matchup.priority.forms": "同種フォルム優先",
     "matchup.priority.mega": "メガ優先",
     "matchup.form.base": "基本",
+    "matchup.ranking.loading": "使用率順を読み込み中",
+    "matchup.ranking.skip": "デフォルト順で表示",
     "matchup.context": "Pokémon Champions、VGC ダブル、レベル50",
     "home.action": "攻撃側と防御側を選ぶ",
     "home.needAttacker": "攻撃側を選ぶ",

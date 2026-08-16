@@ -38,7 +38,7 @@ export async function rankPokemonOptionsByChampionsUsage(
   const usageIds = await withTimeout(
     listChampionsPokemonUsageIds(),
     DEFAULT_USAGE_TIMEOUT_MS,
-  ).catch(() => [])
+  )
   if (usageIds.length === 0) return options
 
   const byId = new Map(options.map((option) => [option.id, option]))

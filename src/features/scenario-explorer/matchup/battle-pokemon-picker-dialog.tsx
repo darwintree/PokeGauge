@@ -2,6 +2,7 @@ import { useMemo } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { TypeBadge, TypeBadgeList } from "@/components/pokemon/type-badge"
+import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import type { BattlePokemonOption } from "@/lib/catalog"
@@ -88,6 +89,8 @@ export function BattlePokemonPickerDialog({
   onSameSpeciesFirstChange,
   megaFirst,
   onMegaFirstChange,
+  rankingPending,
+  onSkipRanking,
   onSelect,
 }: {
   open: boolean
@@ -103,6 +106,8 @@ export function BattlePokemonPickerDialog({
   onSameSpeciesFirstChange: (checked: boolean) => void
   megaFirst: boolean
   onMegaFirstChange: (checked: boolean) => void
+  rankingPending?: boolean
+  onSkipRanking?: () => void
   onSelect: (id: BattlePokemonId) => void
 }) {
   const intl = useIntl()
@@ -126,7 +131,8 @@ export function BattlePokemonPickerDialog({
   const listOptions = sameSpeciesOptions.length > 0
     ? filteredOptions.filter((option) => option.speciesId !== selected?.speciesId)
     : filteredOptions
-  const showList = sameSpeciesOptions.length === 0 || listOptions.length > 0
+  const showList =
+    rankingPending || sameSpeciesOptions.length === 0 || listOptions.length > 0
 
   return (
     <PickerDialog
@@ -176,7 +182,7 @@ export function BattlePokemonPickerDialog({
               )
             })}
           </div>
-          {sameSpeciesOptions.length > 0 && (
+          {!rankingPending && sameSpeciesOptions.length > 0 && (
             <div className="shrink-0 overflow-x-auto overscroll-x-contain">
               <div className="flex gap-2 pb-1">
                 {sameSpeciesOptions.map((option) => (
@@ -195,16 +201,37 @@ export function BattlePokemonPickerDialog({
         </>
       }
       bodyClassName={cn("rounded-lg border border-card-border", !showList && "hidden")}
-      empty={listOptions.length === 0 ? <FormattedMessage id="matchup.noMatches" /> : undefined}
+      empty={
+        rankingPending || listOptions.length > 0
+          ? undefined
+          : <FormattedMessage id="matchup.noMatches" />
+      }
     >
-      {listOptions.map((option) => (
-        <BattlePokemonPickerItem
-          key={option.id}
-          option={option}
-          current={option.id === value}
-          onSelect={() => onSelect(option.id)}
-        />
-      ))}
+      {rankingPending ? (
+        <div className="m-3 flex flex-col items-center gap-3 rounded-[10px] border-2 border-ink bg-notice-bg p-4 text-center">
+          <p aria-live="polite" className="text-sm font-bold">
+            <FormattedMessage id="matchup.ranking.loading" />
+          </p>
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            className="border-2 border-ink bg-paper font-bold shadow-hud-chip hover:bg-token-bg/60"
+            onClick={onSkipRanking}
+          >
+            <FormattedMessage id="matchup.ranking.skip" />
+          </Button>
+        </div>
+      ) : (
+        listOptions.map((option) => (
+          <BattlePokemonPickerItem
+            key={option.id}
+            option={option}
+            current={option.id === value}
+            onSelect={() => onSelect(option.id)}
+          />
+        ))
+      )}
     </PickerDialog>
   )
 }

@@ -45,6 +45,8 @@ export const zhHantMessages: Record<string, string> = {
     "matchup.priority.forms": "同種形態優先",
     "matchup.priority.mega": "Mega 優先",
     "matchup.form.base": "基礎",
+    "matchup.ranking.loading": "正在讀取使用率順序",
+    "matchup.ranking.skip": "顯示預設順序",
     "matchup.context": "Pokémon Champions，VGC 雙打，50 級",
     "home.action": "選擇進攻方與防守方",
     "home.needAttacker": "選擇進攻方",

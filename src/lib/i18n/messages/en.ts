@@ -45,6 +45,8 @@ export const enMessages: Record<string, string> = {
     "matchup.priority.forms": "Same-species forms",
     "matchup.priority.mega": "Mega first",
     "matchup.form.base": "Base",
+    "matchup.ranking.loading": "Loading usage order",
+    "matchup.ranking.skip": "Show default order",
     "matchup.context": "Pokémon Champions, VGC doubles, Level 50",
     "home.action": "Choose attacker and defender",
     "home.needAttacker": "Choose attacker",

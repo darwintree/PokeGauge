@@ -1,16 +1,24 @@
 import { Layers3, Plus } from "lucide-react"
-import { useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useIntl } from "react-intl"
 
 import { TypeBadgeList } from "@/components/pokemon/type-badge"
 import { Button } from "@/components/ui/button"
-import type { BattlePokemonOption } from "@/lib/catalog"
-import { speciesHasMultipleBattlePokemonIdentities } from "@/lib/catalog"
+import {
+  rankPokemonOptionsByChampionsUsage,
+  speciesHasMultipleBattlePokemonIdentities,
+  type BattlePokemonOption,
+} from "@/lib/catalog"
 import type { PokemonType } from "@/lib/pokemon"
 import type { BattlePokemonId } from "@/lib/resources"
 import { cn } from "@/lib/utils"
 
 import { BattlePokemonPickerDialog } from "./battle-pokemon-picker-dialog"
+import {
+  initialRankingLoadState,
+  orderOptionsByIds,
+  reduceRankingLoad,
+} from "./ranking-load"
 
 type BattlePokemonPickerProps = {
   label: string
@@ -41,27 +49,56 @@ export function BattlePokemonPicker({
   awaiting = false,
 }: BattlePokemonPickerProps) {
   const intl = useIntl()
-  const [open, setOpen] = useState(false)
   const [query, setQuery] = useState("")
   const [typeFilters, setTypeFilters] = useState<PokemonType[]>([])
   const [sameSpeciesFirst, setSameSpeciesFirst] = useState(false)
   const [megaFirst, setMegaFirst] = useState(false)
-  const optionsAtOpen = useRef(options)
-  const visibleOptions = open ? optionsAtOpen.current : options
+  const [load, setLoad] = useState(initialRankingLoadState)
+  const [rankedIds, setRankedIds] = useState<BattlePokemonId[] | null>(null)
+  const rankingGeneration = useRef(0)
   const selected = useMemo(
     () => (value == null ? null : (options.find((option) => option.id === value) ?? null)),
     [options, value],
   )
+  const visibleOptions = useMemo(() => {
+    if (load.list === "usageOrder" && rankedIds) {
+      return orderOptionsByIds(options, rankedIds)
+    }
+    return options
+  }, [load.list, options, rankedIds])
+
+  useEffect(() => {
+    if (load.query !== "inFlight") return
+    const generation = rankingGeneration.current
+    let ignore = false
+    rankPokemonOptionsByChampionsUsage(options)
+      .then((ranked) => {
+        if (ignore || generation !== rankingGeneration.current) return
+        setRankedIds(ranked.map((option) => option.id))
+        setLoad((current) => reduceRankingLoad(current, "queryOk"))
+      })
+      .catch(() => {
+        if (ignore || generation !== rankingGeneration.current) return
+        setLoad((current) => reduceRankingLoad(current, "queryFail"))
+      })
+    return () => {
+      ignore = true
+    }
+  }, [load.query, options])
 
   function changeOpen(nextOpen: boolean) {
     if (disabled) return
-    if (nextOpen) optionsAtOpen.current = options
-    setOpen(nextOpen)
+    setLoad((current) => reduceRankingLoad(current, nextOpen ? "open" : "close"))
+  }
+
+  function skipRanking() {
+    rankingGeneration.current += 1
+    setLoad((current) => reduceRankingLoad(current, "skip"))
   }
 
   function select(id: BattlePokemonId) {
     onChange(id)
-    setOpen(false)
+    changeOpen(false)
   }
 
   const spriteFile =
@@ -175,10 +212,12 @@ export function BattlePokemonPicker({
       )}
 
       <BattlePokemonPickerDialog
-        open={open}
+        open={load.picker === "open"}
         onOpenChange={changeOpen}
         label={label}
         options={visibleOptions}
+        rankingPending={load.picker === "open" && load.list === "hidden"}
+        onSkipRanking={skipRanking}
         value={value}
         query={query}
         onQueryChange={setQuery}

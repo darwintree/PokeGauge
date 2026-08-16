@@ -9,7 +9,6 @@ import {
   getDefaultMoveCategory,
   listAttackers,
   listDefenders,
-  rankPokemonOptionsByChampionsUsage,
   resolveCatalogDefaultMovePick,
   type BattlePokemonOption,
   type MatchupCatalog,
@@ -141,15 +140,6 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
           attackers: new Set(attackers.map((option) => option.id)),
           defenders: new Set(defenders.map((option) => option.id)),
         }
-        setLocalizedOptions({ attackers, defenders })
-        return Promise.all([
-          rankPokemonOptionsByChampionsUsage(attackers),
-          rankPokemonOptionsByChampionsUsage(defenders),
-        ])
-      })
-      .then((ranked) => {
-        if (cancelled || !ranked) return
-        const [attackers, defenders] = ranked
         setLocalizedOptions({ attackers, defenders })
       })
       .catch(() => {
