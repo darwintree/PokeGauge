@@ -41,7 +41,6 @@ type DamageScenarioSummaryProps = {
   }
   attackerAbilities: CatalogAbilityOption[]
   defenderAbilities: CatalogAbilityOption[]
-  isRangeEnvelope: boolean
   showAccuracy: boolean
 }
 
@@ -178,7 +177,7 @@ function ConditionsStrip(props: DamageScenarioSummaryProps) {
   const intl = useIntl()
   const field = activeTokens(props, ["weather", "terrain", "screen"])
   const entries = additionalEntries(props)
-  const count = entries.length + Number(props.isRangeEnvelope)
+  const count = entries.length
 
   if (field.length === 0 && count === 0) return null
 
@@ -205,7 +204,6 @@ function ConditionsStrip(props: DamageScenarioSummaryProps) {
         <span className="order-1 flex min-w-0 flex-wrap items-center gap-1">{chips}</span>
       )}
       <div className="order-3 w-full space-y-1 pt-1 text-ink">
-        {props.isRangeEnvelope && <p>{intl.formatMessage({ id: "damage.rangeEnvelope" })}</p>}
         {entries.map(({ track, state, id }) => (
           <p key={`${track}:${state}:${id}`}>
             {intl.formatMessage({ id: `damage.sources.${state}` })}

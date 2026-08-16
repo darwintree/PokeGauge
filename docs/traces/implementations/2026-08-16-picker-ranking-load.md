@@ -85,3 +85,19 @@ Reason:
 
 Follow-up:
 None.
+
+### 6. 选择器 ranking 不等待默认招式超时
+
+Type: deviation
+
+Context:
+`rankPokemonOptionsByChampionsUsage` / `rankMoveOptionsByChampionsUsage` 共用默认招式 5s `withTimeout`。超时走 `queryFail`，闸门结束并展开默认顺序；迟到的使用率被忽略，且 `failed` 下次打开仍是默认。用户看到的是「加载完成还是默认顺序」。选择器已有「显示默认顺序」。
+
+Decision:
+这两个 ranking 函数不再套 `withTimeout`，一直等到 Champions 返回或真正失败。`resolveDefaultMovePick` 等默认挑选路径仍用 5s。
+
+Reason:
+跳过是用户主动放弃；自动超时把慢查询伪装成加载成功。
+
+Follow-up:
+None.

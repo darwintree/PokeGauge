@@ -172,7 +172,6 @@ export function DamageResultRow({
     defender,
     attackerAbilities,
     defenderAbilities,
-    isRangeEnvelope,
     showAccuracy,
   }
 

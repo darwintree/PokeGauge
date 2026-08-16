@@ -244,7 +244,6 @@ export const jaMessages: Record<string, string> = {
     "damage.unavailable.reason.unsupported-move": "このわざはまだ計算できません",
     "damage.unavailable.reason.terrain-required": "このわざにはフィールドが必要です",
     "damage.unavailable.reason.terrain-type-change": "フィールドによるわざタイプの変化はまだ計算できません",
-    "damage.rangeEnvelope": "能力実数値範囲 × 16 roll",
     "damage.ko.ohko": "OHKO",
     "damage.ko.twoHit": "≤2HKO",
     "damage.ko.unavailable": "利用不可",

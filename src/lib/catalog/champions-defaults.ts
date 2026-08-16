@@ -35,10 +35,8 @@ export function withTimeout<T>(
 export async function rankPokemonOptionsByChampionsUsage(
   options: BattlePokemonOption[],
 ): Promise<BattlePokemonOption[]> {
-  const usageIds = await withTimeout(
-    listChampionsPokemonUsageIds(),
-    DEFAULT_USAGE_TIMEOUT_MS,
-  )
+  // ponytail: picker ranking has an explicit skip; do not share default-pick's 5s timeout
+  const usageIds = await listChampionsPokemonUsageIds()
   if (usageIds.length === 0) return options
 
   const byId = new Map(options.map((option) => [option.id, option]))
@@ -77,10 +75,8 @@ export async function rankMoveOptionsByChampionsUsage(
   attackerId: BattlePokemonId,
   options: CatalogMoveOption[],
 ): Promise<CatalogMoveOption[]> {
-  const records = await withTimeout(
-    listChampionsMoveUsageRecords(attackerId),
-    DEFAULT_USAGE_TIMEOUT_MS,
-  )
+  // ponytail: picker ranking has an explicit skip; do not share default-pick's 5s timeout
+  const records = await listChampionsMoveUsageRecords(attackerId)
   if (records.length === 0) return options
 
   const byId = new Map(options.map((option) => [option.id, option]))

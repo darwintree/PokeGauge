@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 
-import { act } from "react"
+import { act, StrictMode } from "react"
 import { createRoot, type Root } from "react-dom/client"
 import { IntlProvider } from "react-intl"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
@@ -66,6 +66,7 @@ describe("Move picker interactions", () => {
   })
 
   afterEach(async () => {
+    vi.useRealTimers()
     await act(async () => root.unmount())
     container.remove()
     document.body.innerHTML = ""
@@ -159,6 +160,89 @@ describe("Move picker interactions", () => {
 
     expect(document.body.textContent).not.toContain("正在读取使用率顺序")
     expect(rowLabels()).toEqual(["Low", "High"])
+  })
+
+  it("keeps waiting past the default-pick timeout and then uses usage order", async () => {
+    vi.useFakeTimers()
+    let resolveUsage!: (records: ChampionsMoveUsageRecord[]) => void
+    setChampionsMoveUsageFetcherForTest(
+      () =>
+        new Promise((resolve) => {
+          resolveUsage = resolve
+        }),
+    )
+    await renderPicker({ options: [low, high] })
+    expect(document.body.textContent).toContain("正在读取使用率顺序")
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(6_000)
+    })
+    expect(document.body.textContent).toContain("正在读取使用率顺序")
+    expect(rowLabels()).toEqual([])
+
+    await act(async () => {
+      resolveUsage([usage(1, 1), usage(2, 2)])
+      await Promise.resolve()
+      await Promise.resolve()
+    })
+    await flush()
+
+    expect(document.body.textContent).not.toContain("正在读取使用率顺序")
+    expect(rowLabels()).toEqual(["Low", "High"])
+    vi.useRealTimers()
+  })
+
+  it("keeps usage order when catalog.moves rewrites after ranking arrives", async () => {
+    let resolveUsage!: (records: ChampionsMoveUsageRecord[]) => void
+    setChampionsMoveUsageFetcherForTest(
+      () =>
+        new Promise((resolve) => {
+          resolveUsage = resolve
+        }),
+    )
+    function Harness({
+      open,
+      options,
+    }: {
+      open: boolean
+      options: CatalogMoveOption[]
+    }) {
+      return (
+        <StrictMode>
+          <IntlProvider locale="zh-hans" messages={localeMessages["zh-hans"]}>
+            <MovePickerDialog
+              open={open}
+              onOpenChange={() => {}}
+              attackerId={445}
+              moveCategory="physical"
+              attackerTypes={["dragon", "ground"]}
+              defenderTypes={["fire", "dark"]}
+              options={options}
+              onSelect={() => {}}
+            />
+          </IntlProvider>
+        </StrictMode>
+      )
+    }
+
+    await act(async () => {
+      root.render(<Harness open={false} options={[low, mid, high]} />)
+    })
+    await act(async () => {
+      root.render(<Harness open options={[low, mid, high]} />)
+    })
+    expect(document.body.textContent).toContain("正在读取使用率顺序")
+
+    await act(async () => {
+      resolveUsage([usage(3, 1), usage(1, 2), usage(2, 3)])
+      root.render(<Harness open options={[mid, low, high]} />)
+      await Promise.resolve()
+      await Promise.resolve()
+    })
+    await flush()
+
+    expect(document.body.textContent).not.toContain("正在读取使用率顺序")
+    expect(rowLabels()).toEqual(["Mid", "Low", "High"])
   })
 
   it("skip shows power order and ignores a late ranking result and a catalog rewrite", async () => {

@@ -244,7 +244,6 @@ export const enMessages: Record<string, string> = {
     "damage.unavailable.reason.unsupported-move": "This move is not supported yet",
     "damage.unavailable.reason.terrain-required": "This move requires terrain",
     "damage.unavailable.reason.terrain-type-change": "Terrain-based move type changes are not calculated yet",
-    "damage.rangeEnvelope": "Stat Value range x 16 rolls",
     "damage.ko.ohko": "OHKO",
     "damage.ko.twoHit": "≤2HKO",
     "damage.ko.unavailable": "Unavailable",

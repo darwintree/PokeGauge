@@ -244,7 +244,6 @@ export const zhHansMessages: Record<string, string> = {
     "damage.unavailable.reason.unsupported-move": "暂不支持计算该招式",
     "damage.unavailable.reason.terrain-required": "该招式需要场地才能使用",
     "damage.unavailable.reason.terrain-type-change": "暂不计算场地导致的招式属性变化",
-    "damage.rangeEnvelope": "能力实数值区间 × 16 roll",
     "damage.ko.ohko": "OHKO",
     "damage.ko.twoHit": "≤2HKO",
     "damage.ko.unavailable": "不可用",

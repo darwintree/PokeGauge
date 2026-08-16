@@ -118,6 +118,13 @@ describe("DamageResultRow range envelopes", () => {
     expect(render(false)).toContain("data-damage-average-marker")
   })
 
+  it("does not put a range envelope into other conditions", () => {
+    const markup = render(true)
+
+    expect(markup).not.toContain("Other conditions")
+    expect(markup).not.toContain("Stat Value range")
+  })
+
   it("omits the average legend when every displayed row is a range envelope", () => {
     const markup = renderToStaticMarkup(createElement(
       IntlProvider,

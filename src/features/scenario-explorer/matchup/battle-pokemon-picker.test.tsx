@@ -69,6 +69,7 @@ describe("Pokemon selector interactions", () => {
   })
 
   afterEach(async () => {
+    vi.useRealTimers()
     await act(async () => root.unmount())
     container.remove()
     document.body.innerHTML = ""
@@ -195,6 +196,37 @@ describe("Pokemon selector interactions", () => {
     const imgs = dialogImgSrcs()
     expect(imgs[0]?.endsWith("/3.png")).toBe(true)
     expect(imgs[1]?.endsWith("/1.png")).toBe(true)
+  })
+
+  it("keeps waiting past the default-pick timeout and then uses usage order", async () => {
+    vi.useFakeTimers()
+    let resolveUsage!: (ids: number[]) => void
+    setChampionsPokemonUsageFetcherForTest(
+      () =>
+        new Promise((resolve) => {
+          resolveUsage = resolve
+        }),
+    )
+    await renderPicker(formOptions)
+    await click(container.querySelector('[data-slot="button"]'))
+    expect(document.body.textContent).toContain("正在读取使用率顺序")
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(6_000)
+    })
+    expect(document.body.textContent).toContain("正在读取使用率顺序")
+    expect(dialogImgSrcs()).toEqual([])
+
+    await act(async () => {
+      resolveUsage([3, 1])
+      await Promise.resolve()
+      await Promise.resolve()
+    })
+    await flush()
+
+    expect(document.body.textContent).not.toContain("正在读取使用率顺序")
+    expect(dialogImgSrcs()[0]?.endsWith("/3.png")).toBe(true)
+    vi.useRealTimers()
   })
 
   it("skip shows default order and ignores a late ranking result", async () => {
