@@ -128,6 +128,8 @@ export const jaMessages: Record<string, string> = {
     "track.range": "レンジ",
     "track.addMove": "わざを追加",
     "track.move.search": "わざを検索",
+    "track.move.filter.stab": "STAB",
+    "track.move.filter.superEffective": "効果抜群",
     "track.move.back": "わざ一覧に戻る",
     "track.move.power": "威力",
     "track.move.accuracy": "命中",

@@ -49,6 +49,9 @@ describe("unavailable Scenario display", () => {
     }))
     const trackMarkup = withEnglish(createElement(MoveTrack, {
       label: "Moves",
+      attackerId: catalog.matchup.attackerId,
+      attackerTypes: catalog.attackerTypes,
+      defenderTypes: catalog.defenderTypes,
       options: catalog.moves,
       snapshots: [snapshot],
       selectedSnapshotIds: [snapshot.id],

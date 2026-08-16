@@ -1,39 +1,143 @@
+import { useEffect, useMemo, useRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { TypeBadge } from "@/components/pokemon/type-badge"
-import type { CatalogMoveOption } from "@/lib/catalog"
+import { Button } from "@/components/ui/button"
+import {
+  rankMoveOptionsByChampionsUsage,
+  type CatalogMoveOption,
+  type MoveCategory,
+} from "@/lib/catalog"
+import { POKEMON_TYPES, typeEffectiveness, type PokemonType } from "@/lib/pokemon"
+import type { BattlePokemonId } from "@/lib/resources"
+import { cn } from "@/lib/utils"
 
+import {
+  initialRankingLoadState,
+  orderOptionsByIds,
+  reduceRankingLoad,
+} from "../../matchup/ranking-load"
 import { PickerDialog } from "../../pickers/picker-dialog"
 
-function moveMatches(option: CatalogMoveOption, query: string) {
+function sameTypeSet(left: readonly PokemonType[], right: readonly PokemonType[]) {
+  if (left.length !== right.length) return false
+  const rightSet = new Set(right)
+  return left.every((type) => rightSet.has(type))
+}
+
+function superEffectiveTypes(defenderTypes: readonly PokemonType[]): PokemonType[] {
+  return POKEMON_TYPES.filter((type) => typeEffectiveness(type, defenderTypes) > 1)
+}
+
+function sortMovesByPower(options: CatalogMoveOption[]) {
+  return options.toSorted((a, b) => b.power - a.power || a.id - b.id)
+}
+
+function moveMatches(
+  option: CatalogMoveOption,
+  query: string,
+  typeFilters: PokemonType[],
+) {
   const q = query.trim().toLowerCase()
-  return (
+  const matchesQuery =
     !q ||
     option.label.toLowerCase().includes(q) ||
     option.moveName.toLowerCase().includes(q) ||
     String(option.id).includes(q)
-  )
+  const matchesTypes = typeFilters.length === 0 || typeFilters.includes(option.type)
+  return matchesQuery && matchesTypes
+}
+
+function toggleType(filters: PokemonType[], type: PokemonType): PokemonType[] {
+  return filters.includes(type) ? filters.filter((item) => item !== type) : [...filters, type]
+}
+
+function applyShortcut(current: PokemonType[], target: readonly PokemonType[]): PokemonType[] {
+  if (target.length === 0 || sameTypeSet(current, target)) return current
+  return [...target]
 }
 
 export function MovePickerDialog({
   open,
   onOpenChange,
-  label,
+  attackerId,
+  moveCategory,
+  attackerTypes,
+  defenderTypes,
   options,
-  query,
-  onQueryChange,
   onSelect,
 }: {
   open: boolean
   onOpenChange: (open: boolean) => void
-  label: string
+  attackerId: BattlePokemonId
+  moveCategory: MoveCategory
+  attackerTypes: readonly PokemonType[]
+  defenderTypes: readonly PokemonType[]
   options: CatalogMoveOption[]
-  query: string
-  onQueryChange: (query: string) => void
   onSelect: (moveId: number) => void
 }) {
   const intl = useIntl()
-  const filteredOptions = options.filter((option) => moveMatches(option, query))
+  const [query, setQuery] = useState("")
+  const [typeFilters, setTypeFilters] = useState<PokemonType[]>([])
+  const [load, setLoad] = useState(initialRankingLoadState)
+  const [rankedIds, setRankedIds] = useState<number[] | null>(null)
+  const rankingGeneration = useRef(0)
+  const openRef = useRef(open)
+  openRef.current = open
+
+  const powerOrdered = useMemo(() => sortMovesByPower(options), [options])
+  const seTypes = useMemo(() => superEffectiveTypes(defenderTypes), [defenderTypes])
+  const stabOn = sameTypeSet(typeFilters, attackerTypes) && attackerTypes.length > 0
+  const seOn = sameTypeSet(typeFilters, seTypes) && seTypes.length > 0
+  const rankingPending = open && load.list === "hidden"
+  const visibleOptions = useMemo(() => {
+    const ordered =
+      load.list === "usageOrder" && rankedIds
+        ? orderOptionsByIds(powerOrdered, rankedIds)
+        : powerOrdered
+    return ordered.filter((option) => moveMatches(option, query, typeFilters))
+  }, [load.list, powerOrdered, rankedIds, query, typeFilters])
+
+  useEffect(() => {
+    rankingGeneration.current += 1
+    setRankedIds(null)
+    setLoad(() => {
+      const reset = initialRankingLoadState()
+      return openRef.current ? reduceRankingLoad(reset, "open") : reset
+    })
+  }, [attackerId, moveCategory])
+
+  useEffect(() => {
+    setLoad((current) => reduceRankingLoad(current, open ? "open" : "close"))
+    if (!open) {
+      setQuery("")
+      setTypeFilters([])
+    }
+  }, [open])
+
+  useEffect(() => {
+    if (load.query !== "inFlight") return
+    const generation = rankingGeneration.current
+    let ignore = false
+    rankMoveOptionsByChampionsUsage(attackerId, powerOrdered)
+      .then((ranked) => {
+        if (ignore || generation !== rankingGeneration.current) return
+        setRankedIds(ranked.map((option) => option.id))
+        setLoad((current) => reduceRankingLoad(current, "queryOk"))
+      })
+      .catch(() => {
+        if (ignore || generation !== rankingGeneration.current) return
+        setLoad((current) => reduceRankingLoad(current, "queryFail"))
+      })
+    return () => {
+      ignore = true
+    }
+  }, [load.query, attackerId, powerOrdered])
+
+  function skipRanking() {
+    rankingGeneration.current += 1
+    setLoad((current) => reduceRankingLoad(current, "skip"))
+  }
 
   return (
     <PickerDialog
@@ -43,41 +147,101 @@ export function MovePickerDialog({
       searchLabel={intl.formatMessage({ id: "track.move.search" })}
       searchPlaceholder={intl.formatMessage({ id: "track.move.search" })}
       query={query}
-      onQueryChange={onQueryChange}
-      bodyClassName="p-3 pt-1"
+      onQueryChange={setQuery}
+      beforeList={
+        <>
+          <div className="grid shrink-0 grid-cols-2 gap-3 border-y border-hairline py-3">
+            <button
+              type="button"
+              aria-pressed={stabOn}
+              className={cn(
+                "flex min-h-8 items-center justify-center rounded-[9px] border-2 px-2 text-xs font-extrabold outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                stabOn
+                  ? "border-ink bg-signal-yellow shadow-hud-chip"
+                  : "border-card-border bg-paper hover:bg-token-bg/60",
+              )}
+              onClick={() => setTypeFilters((current) => applyShortcut(current, attackerTypes))}
+            >
+              <FormattedMessage id="track.move.filter.stab" />
+            </button>
+            <button
+              type="button"
+              aria-pressed={seOn}
+              className={cn(
+                "flex min-h-8 items-center justify-center rounded-[9px] border-2 px-2 text-xs font-extrabold outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                seOn
+                  ? "border-ink bg-signal-yellow shadow-hud-chip"
+                  : "border-card-border bg-paper hover:bg-token-bg/60",
+              )}
+              onClick={() => setTypeFilters((current) => applyShortcut(current, seTypes))}
+            >
+              <FormattedMessage id="track.move.filter.superEffective" />
+            </button>
+          </div>
+          <div className="flex shrink-0 flex-wrap gap-1">
+            {POKEMON_TYPES.map((type) => {
+              const pressed = typeFilters.includes(type)
+              return (
+                <button
+                  key={type}
+                  type="button"
+                  aria-pressed={pressed}
+                  className={cn(
+                    "rounded-[9px] border-2 border-card-border bg-paper px-1.5 py-1 transition-colors hover:bg-token-bg/60",
+                    pressed && "border-ink bg-signal-yellow shadow-hud-chip",
+                  )}
+                  onClick={() => setTypeFilters((filters) => toggleType(filters, type))}
+                >
+                  <TypeBadge type={type} />
+                </button>
+              )
+            })}
+          </div>
+        </>
+      }
+      bodyClassName="rounded-lg border border-card-border"
       empty={
-        filteredOptions.length === 0 ? (
+        rankingPending || visibleOptions.length > 0 ? undefined : (
           <FormattedMessage id="matchup.noMatches" />
-        ) : undefined
+        )
       }
     >
-      <div className="sticky top-0 z-10 grid grid-cols-[auto_1fr_auto] items-center gap-3 border-b bg-background/95 px-1 py-1.5 text-[10px] text-muted-foreground backdrop-blur-sm">
-        <span />
-        <span>{label}</span>
-        <span className="tabular-nums">
-          {intl.formatMessage({ id: "track.move.power" })} /{" "}
-          {intl.formatMessage({ id: "track.move.accuracy" })}
-        </span>
-      </div>
-      {filteredOptions.map((option) => (
-        <button
-          key={option.id}
-          type="button"
-          className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-3 border-b px-1 py-2.5 text-left last:border-b-0 hover:bg-muted/60 focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-ring"
-          onClick={() => onSelect(option.id)}
-        >
-          <TypeBadge type={option.type} />
-          <span className="min-w-0">
-            <span className="block truncate text-sm font-medium">{option.label}</span>
-            <span className="block truncate text-xs text-muted-foreground">
-              {option.moveName}
+      {rankingPending ? (
+        <div className="m-3 flex flex-col items-center gap-3 rounded-[10px] border-2 border-ink bg-notice-bg p-4 text-center">
+          <p aria-live="polite" className="text-sm font-bold">
+            <FormattedMessage id="matchup.ranking.loading" />
+          </p>
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            className="border-2 border-ink bg-paper font-bold shadow-hud-chip hover:bg-token-bg/60"
+            onClick={skipRanking}
+          >
+            <FormattedMessage id="matchup.ranking.skip" />
+          </Button>
+        </div>
+      ) : (
+        visibleOptions.map((option) => (
+          <button
+            key={option.id}
+            type="button"
+            className="hover:bg-token-bg/60 flex w-full items-center gap-3 border-b px-3 py-2 text-left last:border-b-0 outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            onClick={() => onSelect(option.id)}
+          >
+            <TypeBadge type={option.type} />
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-sm font-bold">{option.label}</span>
+              <span className="text-muted-foreground block truncate text-xs">
+                {option.moveName}
+              </span>
             </span>
-          </span>
-          <span className="text-xs tabular-nums text-muted-foreground">
-            {option.power || "-"} / {option.accuracy ?? "-"}
-          </span>
-        </button>
-      ))}
+            <span className="text-muted-foreground shrink-0 text-xs tabular-nums">
+              {option.power || "-"} / {option.accuracy ?? "-"}
+            </span>
+          </button>
+        ))
+      )}
     </PickerDialog>
   )
 }

@@ -130,31 +130,42 @@ describe("Pokemon selector interactions", () => {
     { ...option(4, 2, true), label: "Other Mega" },
   ]
 
-  it("keeps priorities across reopen and enables forms from the badge", async () => {
+  it("clears picker filters on close and opens forms-first from the badge", async () => {
     const onChange = await renderPicker(formOptions)
 
     await click(container.querySelector('[data-slot="button"]'))
     await flush()
-    let switches = [...document.querySelectorAll('[data-slot="switch"]')]
-    expect(switches).toHaveLength(2)
-    expect(switches[0].hasAttribute("data-unchecked")).toBe(true)
-    expect(switches[1].hasAttribute("data-unchecked")).toBe(true)
-
+    const search = document.querySelector('[data-slot="input"]') as HTMLInputElement
+    await act(async () => {
+      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set
+      setter?.call(search, "Mega")
+      search.dispatchEvent(new Event("input", { bubbles: true }))
+    })
     await click(document.querySelectorAll('input[type="checkbox"]')[1])
-    switches = [...document.querySelectorAll('[data-slot="switch"]')]
+    let switches = [...document.querySelectorAll('[data-slot="switch"]')]
     expect(switches[1].hasAttribute("data-checked")).toBe(true)
+    const normalChip = [...document.querySelectorAll('[data-slot="dialog-content"] button')].find(
+      (button) => button.textContent === "一般",
+    )
+    await click(normalChip ?? null)
+    expect(normalChip?.getAttribute("aria-pressed")).toBe("true")
     await click(document.querySelector('[data-slot="dialog-close"]'))
 
     await click(container.querySelector('[data-slot="button"]'))
     switches = [...document.querySelectorAll('[data-slot="switch"]')]
     expect(switches[0].hasAttribute("data-unchecked")).toBe(true)
-    expect(switches[1].hasAttribute("data-checked")).toBe(true)
+    expect(switches[1].hasAttribute("data-unchecked")).toBe(true)
+    expect((document.querySelector('[data-slot="input"]') as HTMLInputElement).value).toBe("")
+    const reopenedChip = [...document.querySelectorAll('[data-slot="dialog-content"] button')].find(
+      (button) => button.textContent === "一般",
+    )
+    expect(reopenedChip?.getAttribute("aria-pressed")).toBe("false")
     await click(document.querySelector('[data-slot="dialog-close"]'))
 
     await click(container.querySelector('button[aria-label="选择其他形态"]'))
     switches = [...document.querySelectorAll('[data-slot="switch"]')]
     expect(switches[0].hasAttribute("data-checked")).toBe(true)
-    expect(switches[1].hasAttribute("data-checked")).toBe(true)
+    expect(switches[1].hasAttribute("data-unchecked")).toBe(true)
 
     await click(document.querySelector('img[src$="/3.png"]')?.closest("button") ?? null)
     expect(onChange).toHaveBeenCalledWith(3)

@@ -43,7 +43,10 @@ const DEFAULT_MATCHUP = {
 } as const
 
 export { listAttackers, listDefenders } from "./resource-options"
-export { rankPokemonOptionsByChampionsUsage } from "./champions-defaults"
+export {
+  rankMoveOptionsByChampionsUsage,
+  rankPokemonOptionsByChampionsUsage,
+} from "./champions-defaults"
 
 export function getDefaultMatchupIds() {
   return { ...DEFAULT_MATCHUP }

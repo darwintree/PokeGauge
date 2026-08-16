@@ -6,6 +6,8 @@ import { TypeBadge } from "@/components/pokemon/type-badge"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import type { CatalogMoveOption, MoveCategory } from "@/lib/catalog"
 import type { MoveSnapshot } from "@/lib/move"
+import type { PokemonType } from "@/lib/pokemon"
+import type { BattlePokemonId } from "@/lib/resources"
 import { MovePickerDialog } from "./move-picker-dialog"
 import type { MoveSnapshotPatch } from "./move-snapshot-row"
 import { MoveSnapshotRow } from "./move-snapshot-row"
@@ -16,6 +18,9 @@ const collapsedSelectedMoveChipClass =
 
 export type MoveTrackProps = {
   label: string
+  attackerId: BattlePokemonId
+  attackerTypes: readonly PokemonType[]
+  defenderTypes: readonly PokemonType[]
   options: CatalogMoveOption[]
   snapshots: MoveSnapshot[]
   selectedSnapshotIds: string[]
@@ -74,6 +79,9 @@ function MoveCategoryControl({
 
 export function MoveTrack({
   label,
+  attackerId,
+  attackerTypes,
+  defenderTypes,
   options,
   snapshots,
   selectedSnapshotIds,
@@ -89,7 +97,6 @@ export function MoveTrack({
   const intl = useIntl()
   const [open, setOpen] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
-  const [query, setQuery] = useState("")
   const optionById = useMemo(
     () => new Map(options.map((option) => [option.id, option])),
     [options],
@@ -244,10 +251,11 @@ export function MoveTrack({
       <MovePickerDialog
         open={open}
         onOpenChange={setOpen}
-        label={label}
+        attackerId={attackerId}
+        moveCategory={category}
+        attackerTypes={attackerTypes}
+        defenderTypes={defenderTypes}
         options={options}
-        query={query}
-        onQueryChange={setQuery}
         onSelect={add}
       />
     </section>

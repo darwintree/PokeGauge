@@ -6,6 +6,7 @@
   "packageManager": "pnpm@10.32.1",
   "scripts": {
     "dev": "vite",
+    "prototype:move-picker-rows": "vite --open '/?prototype=move-picker-rows&variant=A'",
     "build": "tsc -b && vite build",
     "generate:pokeapi": "tsx scripts/generate-pokeapi-resources.ts",
     "lint": "oxlint",

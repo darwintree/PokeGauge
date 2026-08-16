@@ -60,6 +60,41 @@ export async function rankPokemonOptionsByChampionsUsage(
   ]
 }
 
+function compareMoveUsageRecords(
+  a: { rank: number; percentage: number | null; championsMoveName: string; moveId: number },
+  b: { rank: number; percentage: number | null; championsMoveName: string; moveId: number },
+) {
+  const byRank = a.rank - b.rank
+  if (byRank !== 0) return byRank
+  const byUsage = (b.percentage ?? Number.NEGATIVE_INFINITY) - (a.percentage ?? Number.NEGATIVE_INFINITY)
+  if (byUsage !== 0) return byUsage
+  const byMoveName = a.championsMoveName.localeCompare(b.championsMoveName)
+  if (byMoveName !== 0) return byMoveName
+  return a.moveId - b.moveId
+}
+
+export async function rankMoveOptionsByChampionsUsage(
+  attackerId: BattlePokemonId,
+  options: CatalogMoveOption[],
+): Promise<CatalogMoveOption[]> {
+  const records = await withTimeout(
+    listChampionsMoveUsageRecords(attackerId),
+    DEFAULT_USAGE_TIMEOUT_MS,
+  )
+  if (records.length === 0) return options
+
+  const byId = new Map(options.map((option) => [option.id, option]))
+  const ranked: CatalogMoveOption[] = []
+  const rankedIds = new Set<number>()
+  for (const record of records.toSorted(compareMoveUsageRecords)) {
+    const option = byId.get(record.moveId)
+    if (!option || rankedIds.has(option.id)) continue
+    rankedIds.add(option.id)
+    ranked.push(option)
+  }
+  return [...ranked, ...options.filter((option) => !rankedIds.has(option.id))]
+}
+
 async function resolveUsageMoves(
   attackerId: BattlePokemonId,
   activeMoveCategory: MoveCategory,
@@ -67,15 +102,7 @@ async function resolveUsageMoves(
 ): Promise<Array<{ moveId: UpstreamResourceId; percentage: number | null }>> {
   const moveById = new Map(moves.map((move) => [move.id, move]))
   const ranked = (await listChampionsMoveUsageRecords(attackerId))
-    .toSorted((a, b) => {
-      const byRank = a.rank - b.rank
-      if (byRank !== 0) return byRank
-      const byUsage = (b.percentage ?? Number.NEGATIVE_INFINITY) - (a.percentage ?? Number.NEGATIVE_INFINITY)
-      if (byUsage !== 0) return byUsage
-      const byMoveName = a.championsMoveName.localeCompare(b.championsMoveName)
-      if (byMoveName !== 0) return byMoveName
-      return a.moveId - b.moveId
-    })
+    .toSorted(compareMoveUsageRecords)
     .slice(0, 10)
     .filter((record) => moveById.get(record.moveId)?.category === activeMoveCategory)
 

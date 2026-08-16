@@ -128,6 +128,8 @@ export const enMessages: Record<string, string> = {
     "track.range": "Range",
     "track.addMove": "Add move",
     "track.move.search": "Search moves",
+    "track.move.filter.stab": "STAB",
+    "track.move.filter.superEffective": "SE",
     "track.move.back": "Back to moves",
     "track.move.power": "Power",
     "track.move.accuracy": "Accuracy",

@@ -76,6 +76,9 @@ export function ScenarioSetupPanel({
     moves: (
       <MoveTrack
         label={intl.formatMessage({ id: "track.moves" })}
+        attackerId={catalog.matchup.attackerId}
+        attackerTypes={catalog.attackerTypes}
+        defenderTypes={catalog.defenderTypes}
         options={catalog.moves}
         snapshots={trackState.moveSnapshots}
         selectedSnapshotIds={trackState.selectedMoveSnapshotIds}

@@ -86,8 +86,16 @@ export function BattlePokemonPicker({
     }
   }, [load.query, options])
 
+  function resetPickerFilter(sameSpeciesFirst = false) {
+    setQuery("")
+    setTypeFilters([])
+    setSameSpeciesFirst(sameSpeciesFirst)
+    setMegaFirst(false)
+  }
+
   function changeOpen(nextOpen: boolean) {
     if (disabled) return
+    if (!nextOpen) resetPickerFilter()
     setLoad((current) => reduceRankingLoad(current, nextOpen ? "open" : "close"))
   }
 
@@ -203,7 +211,7 @@ export function BattlePokemonPicker({
             isRail ? "-top-2 -right-2" : "-top-2 -right-2",
           )}
           onClick={() => {
-            setSameSpeciesFirst(true)
+            resetPickerFilter(true)
             changeOpen(true)
           }}
         >

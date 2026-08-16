@@ -20,7 +20,11 @@ _Avoid_: Pokémon Species, form configuration, localized name
 
 **Track**:
 参与 Scenario 生成的一个比较维度；它提供当前参与比较的取值。
-_Avoid_: Filter, frontend component, configuration axis
+_Avoid_: Filter, frontend component, configuration axis, Picker Filter
+
+**Picker Filter（选择器筛选）**:
+Picker 内对候选目录的临时收窄；关闭 Picker 即丢弃。不是 Track，也不写入 Scenario Setup。
+_Avoid_: Track, Filter (as Track), Scenario Setup preference
 
 **Choice Track**:
 取值为离散集合的 Track；集合中的每个值各自形成一条组合分支。

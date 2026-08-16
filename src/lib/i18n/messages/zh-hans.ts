@@ -128,6 +128,8 @@ export const zhHansMessages: Record<string, string> = {
     "track.range": "区间",
     "track.addMove": "添加招式",
     "track.move.search": "搜索招式",
+    "track.move.filter.stab": "STAB",
+    "track.move.filter.superEffective": "克制",
     "track.move.back": "返回招式列表",
     "track.move.power": "威力",
     "track.move.accuracy": "命中",

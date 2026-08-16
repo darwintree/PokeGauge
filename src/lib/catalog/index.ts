@@ -5,6 +5,7 @@ export {
   getDefaultMoveCategory,
   listAttackers,
   listDefenders,
+  rankMoveOptionsByChampionsUsage,
   rankPokemonOptionsByChampionsUsage,
   resolveCatalogDefaultMovePick,
 } from "./registry"
