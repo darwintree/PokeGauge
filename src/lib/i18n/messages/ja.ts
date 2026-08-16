@@ -147,6 +147,7 @@ export const jaMessages: Record<string, string> = {
     "stat.showValue": "能力実数値を表示",
     "stat.range.min": "最小値 {stat}",
     "stat.range.max": "最大値 {stat}",
+    "stat.range.draft": "新しい {stat}",
     "stat.range.decrement": "1 減らす",
     "stat.range.increment": "1 増やす",
     "stat.display": "Stat 表示",

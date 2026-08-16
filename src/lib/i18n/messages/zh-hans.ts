@@ -147,6 +147,7 @@ export const zhHansMessages: Record<string, string> = {
     "stat.showValue": "显示能力实数值",
     "stat.range.min": "下限 {stat}",
     "stat.range.max": "上限 {stat}",
+    "stat.range.draft": "新的 {stat}",
     "stat.range.decrement": "减 1",
     "stat.range.increment": "加 1",
     "stat.display": "Stat 名展示",

@@ -30,6 +30,8 @@ export {
   trackStateAfterRemoveOffense,
   trackStateAfterToggleDefense,
   trackStateAfterToggleOffense,
+  trackStatePreviewingDefense,
+  trackStatePreviewingOffense,
 } from "./stat-selection"
 export type { PersistedTrackState } from "./stat-selection"
 export {

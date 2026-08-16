@@ -471,6 +471,57 @@ export function trackStateAfterAddDefense(
   )
 }
 
+export function trackStatePreviewingOffense(
+  state: TrackState,
+  presets: StatPreset[],
+  stat: number,
+  draftId: string,
+): TrackState {
+  const existing = findPresetByOffenseValue(presets, stat)
+  if (existing) {
+    return { ...state, statMode: "preset", offensePresetIds: [existing.id] }
+  }
+  return {
+    ...state,
+    statMode: "preset",
+    offensePresetIds: [draftId],
+    offenseTemporaryPresets: [
+      ...state.offenseTemporaryPresets.filter((preset) => preset.id !== draftId),
+      {
+        id: draftId,
+        kind: "temporary",
+        values: { kind: "offense", stat },
+      },
+    ],
+  }
+}
+
+export function trackStatePreviewingDefense(
+  state: TrackState,
+  presets: StatPreset[],
+  hp: number,
+  def: number,
+  draftId: string,
+): TrackState {
+  const existing = findPresetByDefenseValues(presets, hp, def)
+  if (existing) {
+    return { ...state, defenderMode: "preset", defensePresetIds: [existing.id] }
+  }
+  return {
+    ...state,
+    defenderMode: "preset",
+    defensePresetIds: [draftId],
+    defenseTemporaryPresets: [
+      ...state.defenseTemporaryPresets.filter((preset) => preset.id !== draftId),
+      {
+        id: draftId,
+        kind: "temporary",
+        values: { kind: "defense", hp, def },
+      },
+    ],
+  }
+}
+
 export type PersistedTrackState = TrackState & {
   statRangeTouched?: boolean
   defenderRangeTouched?: boolean

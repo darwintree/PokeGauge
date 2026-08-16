@@ -147,6 +147,7 @@ export const enMessages: Record<string, string> = {
     "stat.showValue": "Show Stat Values",
     "stat.range.min": "Min {stat}",
     "stat.range.max": "Max {stat}",
+    "stat.range.draft": "New {stat}",
     "stat.range.decrement": "Decrease by 1",
     "stat.range.increment": "Increase by 1",
     "stat.display": "Stat display",

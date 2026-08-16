@@ -178,7 +178,7 @@ export function ScenarioWorkspace({
             catalog={catalog}
             rows={state.rows}
             unavailable={state.unavailable}
-            trackState={state.trackState}
+            trackState={state.pipelineTrackState}
             statNameStrategy={state.statNameStrategy}
             onShowResultStatValueChange={state.setShowResultStatValue}
             onProbabilityModeChange={state.setProbabilityMode}

@@ -19,8 +19,8 @@ export function useCatalogTransitionSync(
   catalog: MatchupCatalog,
   restored: boolean,
   setTrackState: Dispatch<SetStateAction<TrackState>>,
-  setAddingOffense: Dispatch<SetStateAction<boolean>>,
-  setAddingDefense: Dispatch<SetStateAction<boolean>>,
+  setAddingOffense: () => void,
+  setAddingDefense: () => void,
 ) {
   const attackerKeyRef = useRef(
     `${catalog.matchup.attackerId}:${catalog.moveCategory}`,
@@ -98,8 +98,8 @@ export function useCatalogTransitionSync(
         defenderChanged,
       }),
     )
-    setAddingOffense(false)
-    setAddingDefense(false)
+    setAddingOffense()
+    setAddingDefense()
   }, [catalog, setTrackState, setAddingOffense, setAddingDefense])
 
   useEffect(() => {

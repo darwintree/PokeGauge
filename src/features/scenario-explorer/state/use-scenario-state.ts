@@ -5,6 +5,7 @@ import {
   getDefenderHpBounds,
   getOffenseStatBounds,
   warmDefenderSpreadCache,
+  type StatAxisBounds,
 } from "@/lib/stat-calculation"
 import type { StatStage } from "@/lib/damage-calculation"
 import type { MatchupCatalog } from "@/lib/catalog"
@@ -20,6 +21,8 @@ import {
   findPresetByOffenseValue,
   newUserDefensePreset,
   newUserOffensePreset,
+  resolveDefenseChip,
+  resolveOffenseChip,
   saveUserDefensePreset,
   saveUserOffensePreset,
   loadStatNameStrategy,
@@ -46,6 +49,8 @@ import {
   trackStateAfterRemoveOffense,
   trackStateAfterToggleDefense,
   trackStateAfterToggleOffense,
+  trackStatePreviewingDefense,
+  trackStatePreviewingOffense,
   type DefenderStatRanges,
   type PersistedTrackState,
   type StatSelectMode,
@@ -55,6 +60,40 @@ import {
 
 import { useCatalogTransitionSync } from "./use-catalog-transition-sync"
 import { useScenarioSnapshotPersistence } from "./use-scenario-snapshot-persistence"
+
+function defaultAxisPoint(bounds: StatAxisBounds): number {
+  return bounds.snapPoints[1]?.value ?? Math.round((bounds.min + bounds.max) / 2)
+}
+
+function offenseDraftLabel(
+  catalog: MatchupCatalog,
+  strategy: StatNameStrategy,
+  stat: number,
+): string {
+  return resolveOffenseChip({
+    calcName: catalog.matchup.attackerCalcName,
+    category: catalog.moveCategory,
+    stat,
+    strategy,
+    temporary: true,
+  }).label
+}
+
+function defenseDraftLabel(
+  catalog: MatchupCatalog,
+  strategy: StatNameStrategy,
+  hp: number,
+  def: number,
+): string {
+  return resolveDefenseChip({
+    calcName: catalog.matchup.defenderCalcName,
+    category: catalog.moveCategory,
+    hp,
+    def,
+    strategy,
+    temporary: true,
+  }).label
+}
 
 function cycleAllocationIndex(
   indices: Record<string, number>,
@@ -113,8 +152,8 @@ export function useScenarioState(
   )
   const [userOffenseVersion, setUserOffenseVersion] = useState(0)
   const [userDefenseVersion, setUserDefenseVersion] = useState(0)
-  const [addingOffense, setAddingOffense] = useState(false)
-  const [addingDefense, setAddingDefense] = useState(false)
+  const [offenseDraft, setOffenseDraft] = useState<number | null>(null)
+  const [defenseDraft, setDefenseDraft] = useState<{ hp: number; def: number } | null>(null)
   const [statNameStrategy, setStatNameStrategyState] = useState<StatNameStrategy>(loadStatNameStrategy)
   const [sharedImportUntouched, setSharedImportUntouched] = useState(sharedImport !== undefined)
 
@@ -129,8 +168,8 @@ export function useScenarioState(
     catalog,
     restored,
     setTrackState,
-    setAddingOffense,
-    setAddingDefense,
+    () => setOffenseDraft(null),
+    () => setDefenseDraft(null),
   )
 
   useScenarioSnapshotPersistence({
@@ -175,15 +214,42 @@ export function useScenarioState(
     return defensePresetsForState(catalog, trackState)
   }, [catalog, trackState, userDefenseVersion])
 
-  const pipelineResult = useMemo(
-    () =>
-      catalogTransitionPending
-        ? { rows: [], unavailable: [] }
-        : measureInteractionWork("runScenarioPipeline", () =>
-            runScenarioPipeline(catalog, trackState),
-          ),
-    [catalog, catalogTransitionPending, trackState],
-  )
+  const pipelineTrackState = useMemo(() => {
+    let preview = trackState
+    if (offenseDraft != null) {
+      preview = trackStatePreviewingOffense(
+        preview,
+        offensePresets,
+        offenseDraft,
+        offenseDraftLabel(catalog, statNameStrategy, offenseDraft),
+      )
+    }
+    if (defenseDraft != null) {
+      preview = trackStatePreviewingDefense(
+        preview,
+        defensePresets,
+        defenseDraft.hp,
+        defenseDraft.def,
+        defenseDraftLabel(catalog, statNameStrategy, defenseDraft.hp, defenseDraft.def),
+      )
+    }
+    return preview
+  }, [
+    catalog,
+    defenseDraft,
+    defensePresets,
+    offenseDraft,
+    offensePresets,
+    statNameStrategy,
+    trackState,
+  ])
+
+  const pipelineResult = useMemo(() => {
+    if (catalogTransitionPending) return { rows: [], unavailable: [] }
+    return measureInteractionWork("runScenarioPipeline", () =>
+      runScenarioPipeline(catalog, pipelineTrackState),
+    )
+  }, [catalog, catalogTransitionPending, pipelineTrackState])
   const { rows, unavailable } = pipelineResult
 
   function setStatMode(mode: StatSelectMode) {
@@ -275,7 +341,7 @@ export function useScenarioState(
       setTrackState((s) =>
         trackStateAfterAddOffense(s, existing, offensePresetsForState(catalog, s)),
       )
-      setAddingOffense(false)
+      setOffenseDraft(null)
       return
     }
     const user = newUserOffensePreset(stat)
@@ -284,7 +350,7 @@ export function useScenarioState(
       trackStateAfterAddOffense(s, user, offensePresetsForState(catalog, s)),
     )
     setUserOffenseVersion((v) => v + 1)
-    setAddingOffense(false)
+    setOffenseDraft(null)
   }
 
   function confirmAddDefense(hp: number, def: number) {
@@ -293,7 +359,7 @@ export function useScenarioState(
       setTrackState((s) =>
         trackStateAfterAddDefense(s, existing, defensePresetsForState(catalog, s)),
       )
-      setAddingDefense(false)
+      setDefenseDraft(null)
       return
     }
     const user = newUserDefensePreset(hp, def)
@@ -302,7 +368,24 @@ export function useScenarioState(
       trackStateAfterAddDefense(s, user, defensePresetsForState(catalog, s)),
     )
     setUserDefenseVersion((v) => v + 1)
-    setAddingDefense(false)
+    setDefenseDraft(null)
+  }
+
+  function toggleAddingOffense() {
+    setOffenseDraft((current) =>
+      current == null ? defaultAxisPoint(offenseBounds) : null,
+    )
+  }
+
+  function toggleAddingDefense() {
+    setDefenseDraft((current) =>
+      current == null
+        ? {
+            hp: defaultAxisPoint(defenderHpBounds),
+            def: defaultAxisPoint(defenderDefBounds),
+          }
+        : null,
+    )
   }
 
   function addMoveSnapshot(moveId: number) {
@@ -353,6 +436,7 @@ export function useScenarioState(
 
   return {
     trackState,
+    pipelineTrackState,
     rows,
     unavailable,
     offensePresets,
@@ -360,8 +444,14 @@ export function useScenarioState(
     offenseBounds,
     defenderHpBounds,
     defenderDefBounds,
-    addingOffense,
-    addingDefense,
+    addingOffense: offenseDraft != null,
+    addingDefense: defenseDraft != null,
+    offenseDraft,
+    defenseDraft,
+    setOffenseDraft,
+    setDefenseDraft,
+    toggleAddingOffense,
+    toggleAddingDefense,
     addMoveSnapshot,
     updateMoveSnapshot,
     removeMoveSnapshot,
@@ -378,7 +468,6 @@ export function useScenarioState(
     persistOffensePreset,
     deleteOffensePreset,
     confirmAddOffense,
-    setAddingOffense,
     setAttackerItemIds: (ids: TrackState["attackerItemIds"]) => {
       if (catalog.attackerLockedItemId !== null) return
       attackerItemsTouchedRef.current = true
@@ -504,7 +593,6 @@ export function useScenarioState(
     persistDefensePreset,
     deleteDefensePreset,
     confirmAddDefense,
-    setAddingDefense,
     statNameStrategy,
     setStatNameStrategy,
   }

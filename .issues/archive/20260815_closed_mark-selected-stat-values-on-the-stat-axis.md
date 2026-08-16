@@ -24,14 +24,14 @@ updated_at: "2026-08-16T02:05:00Z"
 ## Out of scope
 
 - 不改选中集合或包络写入规则。
-- 不在数轴上直接增删点，见 [[../20260815_open_add-a-new-stat-value-by-dragging-on-the-existing-range-axis|Add a new Stat Value by dragging on the existing Range axis]]。
+- 不在数轴上直接增删点，见 [[20260815_closed_add-a-new-stat-value-by-dragging-on-the-existing-range-axis|Add a new Stat Value by dragging on the existing Range axis]]。
 
 ## Related
 
 - [[20260815_closed_cap-stat-value-chip-corner-action-size-across-viewports|Cap Stat Value chip corner-action size across viewports]]
 - [[../20260815_open_swap-range-handles-on-cross-without-moving-the-other-endpoint|Swap Range handles on cross without moving the other endpoint]]
 - [[../20260815_open_drag-either-coincident-range-endpoint-while-the-other-stays|Drag either coincident Range endpoint while the other stays]]
-- [[../20260815_open_add-a-new-stat-value-by-dragging-on-the-existing-range-axis|Add a new Stat Value by dragging on the existing Range axis]]
+- [[20260815_closed_add-a-new-stat-value-by-dragging-on-the-existing-range-axis|Add a new Stat Value by dragging on the existing Range axis]]
 
 ## Verification Checklist
 
