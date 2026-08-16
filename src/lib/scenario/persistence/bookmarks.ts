@@ -167,3 +167,27 @@ export async function restoreSetupBookmark(
     return { ok: false }
   }
 }
+
+export function setupBookmarkPageSize(listHeightPx: number, rowHeightPx: number): number {
+  if (!Number.isFinite(listHeightPx) || !Number.isFinite(rowHeightPx) || listHeightPx < 1 || rowHeightPx < 1) {
+    return 1
+  }
+  return Math.max(1, Math.floor(listHeightPx / rowHeightPx))
+}
+
+export function paginateSetupBookmarks<T>(
+  items: readonly T[],
+  page: number,
+  pageSize: number,
+): { page: number; pageCount: number; items: T[] } {
+  const size = Number.isFinite(pageSize) && pageSize >= 1 ? Math.floor(pageSize) : 1
+  if (items.length === 0) return { page: 1, pageCount: 1, items: [] }
+  const pageCount = Math.ceil(items.length / size)
+  const safePage = Math.min(Math.max(1, page), pageCount)
+  const start = (safePage - 1) * size
+  return {
+    page: safePage,
+    pageCount,
+    items: items.slice(start, start + size),
+  }
+}

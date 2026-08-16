@@ -7,12 +7,14 @@ import {
   decodeSetupBookmarkToken,
   deleteSetupBookmark,
   loadSetupBookmarks,
+  paginateSetupBookmarks,
   renameSetupBookmark,
   restoreSetupBookmark,
   saveSetupBookmark,
   SETUP_BOOKMARK_LIMIT,
   SETUP_BOOKMARK_STORAGE_KEY,
   setupBookmarkIsLoadable,
+  setupBookmarkPageSize,
 } from "./bookmarks"
 
 describe("setup bookmarks", () => {
@@ -123,5 +125,26 @@ describe("setup bookmarks", () => {
       .toEqual({ ok: false })
     expect(await restoreSetupBookmark("not-a-token", "en", new Set([445]), new Set([727])))
       .toEqual({ ok: false })
+  })
+
+  it("fits as many rows as the list height allows", () => {
+    expect(setupBookmarkPageSize(400, 64)).toBe(6)
+    expect(setupBookmarkPageSize(63, 64)).toBe(1)
+    expect(setupBookmarkPageSize(0, 64)).toBe(1)
+    expect(setupBookmarkPageSize(400, 0)).toBe(1)
+    expect(setupBookmarkPageSize(576 - 4 - 77 - 73, 56)).toBe(7)
+  })
+
+  it("pages newest-first lists and clamps out-of-range pages", () => {
+    const items = Array.from({ length: 13 }, (_, index) => index)
+    expect(paginateSetupBookmarks(items, 1, 4)).toEqual({
+      page: 1,
+      pageCount: 4,
+      items: [0, 1, 2, 3],
+    })
+    expect(paginateSetupBookmarks(items, 4, 4).items).toEqual([12])
+    expect(paginateSetupBookmarks(items, 99, 4).page).toBe(4)
+    expect(paginateSetupBookmarks(items, 0, 4).page).toBe(1)
+    expect(paginateSetupBookmarks([], 2, 4)).toEqual({ page: 1, pageCount: 1, items: [] })
   })
 })

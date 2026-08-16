@@ -13,8 +13,10 @@ export {
   loadSetupBookmarks,
   renameSetupBookmark,
   restoreSetupBookmark,
+  paginateSetupBookmarks,
   saveSetupBookmark,
   setupBookmarkIsLoadable,
+  setupBookmarkPageSize,
   SETUP_BOOKMARK_LIMIT,
   SETUP_BOOKMARK_STORAGE_KEY,
 } from "./bookmarks"
