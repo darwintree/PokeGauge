@@ -15,7 +15,7 @@ import { STAT_AXIS_SNAP_CLASS } from "./stat-tier-colors"
 import type { StatAxisMark } from "./stat-axis-marks"
 import { cn } from "@/lib/utils"
 
-import { useDualHandleDrag } from "../../state/use-dual-handle-drag"
+import { useDualHandleDrag, type RangeHandle } from "../../state/use-dual-handle-drag"
 
 const STAT_AXIS_MARK_BAND_CLASS: Record<InvestBand, string> = {
   none: "stat-axis-mark--none",
@@ -33,8 +33,6 @@ type StatRangeInputProps = {
   draftValue?: number
   onDraftChange?: (value: number) => void
 }
-
-type FineTuneHandle = "min" | "max" | null
 
 function pctForValue(value: number, min: number, max: number): number {
   const span = max - min || 1
@@ -62,15 +60,23 @@ export function StatRangeInput({
   const intl = useIntl()
   const rootRef = useRef<HTMLDivElement>(null)
   const fineTuneId = useId()
-  const [fineTune, setFineTune] = useState<FineTuneHandle>(null)
+  const [fineTune, setFineTune] = useState<RangeHandle | null>(null)
   const snapValues = bounds.snapPoints.map((snap) => snap.value)
   const drafting = draftValue != null && onDraftChange != null
   const collapsed = value.min === value.max
   const leftPct = pctForValue(value.min, bounds.min, bounds.max)
   const widthPct = collapsed ? 0.8 : pctForValue(value.max, bounds.min, bounds.max) - leftPct
 
-  function toggleFineTune(handle: "min" | "max") {
+  function toggleFineTune(handle: RangeHandle) {
     setFineTune((current) => (current === handle ? null : handle))
+  }
+
+  function swapFineTuneRoles() {
+    setFineTune((current) => {
+      if (current === "min") return "max"
+      if (current === "max") return "min"
+      return current
+    })
   }
 
   const drag = useDualHandleDrag({
@@ -80,6 +86,7 @@ export function StatRangeInput({
     snapValues,
     onChange: drafting ? (next) => onDraftChange(next.min) : onChange,
     onHandleTap: toggleFineTune,
+    onRolesSwapped: swapFineTuneRoles,
     singlePoint: drafting,
   })
 
@@ -97,7 +104,7 @@ export function StatRangeInput({
     if (!drafting) setFineTune(null)
   }, [drafting])
 
-  function nudge(handle: "min" | "max", delta: number) {
+  function nudge(handle: RangeHandle, delta: number) {
     if (drafting) {
       onDraftChange(clampStat(draftValue + delta, bounds.min, bounds.max))
       return

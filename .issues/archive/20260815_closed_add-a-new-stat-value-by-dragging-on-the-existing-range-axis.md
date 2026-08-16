@@ -31,7 +31,7 @@ updated_at: "2026-08-16T02:24:00Z"
 ## Related
 
 - [[20260815_closed_mark-selected-stat-values-on-the-stat-axis|Mark selected Stat Values on the stat axis]]：添加完成后，新点应出现在轴上。
-- [[../20260815_open_swap-range-handles-on-cross-without-moving-the-other-endpoint|Swap Range handles on cross without moving the other endpoint]]
+- [[20260815_closed_swap-range-handles-on-cross-without-moving-the-other-endpoint|Swap Range handles on cross without moving the other endpoint]]
 - [[../20260815_open_drag-either-coincident-range-endpoint-while-the-other-stays|Drag either coincident Range endpoint while the other stays]]
 
 ## Resolution
