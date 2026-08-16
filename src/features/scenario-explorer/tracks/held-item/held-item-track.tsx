@@ -127,7 +127,7 @@ export function HeldItemTrack({
           <span className="flex w-full min-w-0 flex-wrap items-center gap-1.5">
             {selectedIds.map((id) => (
               <span key={String(id)} title={itemAriaLabel(id, locale)}>
-                <HeldItemSpriteIcon id={id} />
+                <HeldItemSpriteIcon id={id} className="size-5" />
               </span>
             ))}
           </span>
