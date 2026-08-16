@@ -14,10 +14,12 @@ import {
   resolveOffenseChip,
   resolvePresetChip,
   uniqueEndpointChips,
+  type StatPreset,
   type StatValueChipModel,
 } from "@/lib/stat-preset"
 import { cn } from "@/lib/utils"
 
+import { defenseAxisMarks, offenseAxisMarks } from "./stat-axis-marks"
 import { StatRangeInput } from "./stat-range-input"
 import {
   AddDefensePresetPanel,
@@ -184,9 +186,66 @@ export function StatTrack({
   const summary = offense ? offenseSummary(catalog, state) : defenseSummary(catalog, state)
   const onMode = (next: StatSelectMode) =>
     offense ? state.setStatMode(next) : state.setDefenderMode(next)
+  function bandOf(preset: StatPreset) {
+    return resolvePresetChip(
+      preset,
+      offense ? catalog.matchup.attackerCalcName : catalog.matchup.defenderCalcName,
+      catalog.moveCategory,
+      (offense
+        ? trackState.offenseAllocationIndices
+        : trackState.defenseAllocationIndices)[preset.id] ?? 0,
+      state.statNameStrategy,
+    ).band
+  }
   const editor = (
     <div>
-      <StatEditorSection labelId="track.choice">
+      <StatEditorSection labelId="track.range">
+        {offense ? (
+          <StatRangeInput
+            statLabel={catalog.offenseStatLabel}
+            bounds={state.offenseBounds}
+            value={trackState.statRange}
+            onChange={state.setStatRange}
+            marks={offenseAxisMarks(
+              state.offensePresets,
+              trackState.offensePresetIds,
+              bandOf,
+            )}
+          />
+        ) : (
+          <>
+            <StatRangeInput
+              statLabel="HP"
+              bounds={state.defenderHpBounds}
+              value={trackState.defenderRanges.hp}
+              onChange={(hp) =>
+                state.setDefenderRanges({ hp, def: trackState.defenderRanges.def })
+              }
+              marks={defenseAxisMarks(
+                state.defensePresets,
+                trackState.defensePresetIds,
+                "hp",
+                bandOf,
+              )}
+            />
+            <StatRangeInput
+              statLabel={catalog.defenseStatLabel}
+              bounds={state.defenderDefBounds}
+              value={trackState.defenderRanges.def}
+              onChange={(def) =>
+                state.setDefenderRanges({ hp: trackState.defenderRanges.hp, def })
+              }
+              marks={defenseAxisMarks(
+                state.defensePresets,
+                trackState.defensePresetIds,
+                "def",
+                bandOf,
+              )}
+            />
+          </>
+        )}
+      </StatEditorSection>
+      <StatEditorSection labelId="track.choice" className="mt-3 border-t border-hairline pt-3">
         {offense ? (
           <>
             <StatPresetChoices
@@ -241,35 +300,6 @@ export function StatTrack({
                 onCancel={() => state.setAddingDefense(false)}
               />
             )}
-          </>
-        )}
-      </StatEditorSection>
-      <StatEditorSection labelId="track.range" className="mt-3 border-t border-hairline pt-3">
-        {offense ? (
-          <StatRangeInput
-            statLabel={catalog.offenseStatLabel}
-            bounds={state.offenseBounds}
-            value={trackState.statRange}
-            onChange={state.setStatRange}
-          />
-        ) : (
-          <>
-            <StatRangeInput
-              statLabel="HP"
-              bounds={state.defenderHpBounds}
-              value={trackState.defenderRanges.hp}
-              onChange={(hp) =>
-                state.setDefenderRanges({ hp, def: trackState.defenderRanges.def })
-              }
-            />
-            <StatRangeInput
-              statLabel={catalog.defenseStatLabel}
-              bounds={state.defenderDefBounds}
-              value={trackState.defenderRanges.def}
-              onChange={(def) =>
-                state.setDefenderRanges({ hp: trackState.defenderRanges.hp, def })
-              }
-            />
           </>
         )}
       </StatEditorSection>

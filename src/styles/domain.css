@@ -287,4 +287,33 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /* Interior selected Stat Values on the range axis. Fill = option invest fg. */
+  .stat-axis-mark {
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+    width: 0.375rem;
+    height: 0.375rem;
+    translate: -50% -50%;
+    border-radius: 9999px;
+    background: var(--stat-tier-0-fg);
+  }
+
+  .stat-axis-mark--none {
+    background: var(--stat-tier-0-fg);
+  }
+
+  .stat-axis-mark--some {
+    background: var(--stat-invest-some-fg);
+  }
+
+  .stat-axis-mark--heavy {
+    background: var(--stat-invest-heavy-fg);
+  }
+
+  .stat-axis-mark--ex {
+    background: var(--stat-tier-ex-fg);
+  }
+
 }

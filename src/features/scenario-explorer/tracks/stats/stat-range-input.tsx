@@ -10,10 +10,19 @@ import {
 } from "@/lib/catalog"
 import type { StatAxisBounds, StatRange } from "@/lib/stat-calculation"
 import { clampStat } from "@/lib/stat-calculation"
+import type { InvestBand } from "@/lib/stat-preset"
 import { STAT_AXIS_SNAP_CLASS } from "./stat-tier-colors"
+import type { StatAxisMark } from "./stat-axis-marks"
 import { cn } from "@/lib/utils"
 
 import { useDualHandleDrag } from "../../state/use-dual-handle-drag"
+
+const STAT_AXIS_MARK_BAND_CLASS: Record<InvestBand, string> = {
+  none: "stat-axis-mark--none",
+  some: "stat-axis-mark--some",
+  heavy: "stat-axis-mark--heavy",
+  ex: "stat-axis-mark--ex",
+}
 
 type StatRangeInputProps = {
   statLabel: string
@@ -22,6 +31,7 @@ type StatRangeInputProps = {
   onChange: (value: StatRange) => void
   /** single = one point (min === max); range = band with one or two endpoints */
   mode?: "single" | "range"
+  marks?: readonly StatAxisMark[]
 }
 
 type FineTuneHandle = "min" | "max" | null
@@ -43,6 +53,7 @@ export function StatRangeInput({
   value,
   onChange,
   mode = "range",
+  marks = [],
 }: StatRangeInputProps) {
   const intl = useIntl()
   const rootRef = useRef<HTMLDivElement>(null)
@@ -110,13 +121,20 @@ export function StatRangeInput({
     return { left: `${pct}%` }
   }
 
+  function isEndpoint(markValue: number): boolean {
+    return markValue === value.min || markValue === value.max
+  }
+
+  const interiorMarks = marks.filter((mark) => !isEndpoint(mark.value))
+  const unlabeledInterior = interiorMarks.filter((mark) => !snapValues.includes(mark.value))
+
   return (
     <div ref={rootRef} className="space-y-1.5">
       <div className="grid grid-cols-[2.25rem_minmax(0,1fr)] items-start gap-x-2">
         <span className="text-muted-foreground pt-0.5 text-[11px] leading-none">{statLabel}</span>
 
-        <div className="space-y-1">
-          <div className="relative mx-1 h-4">
+        <div className="relative space-y-1 px-1">
+          <div className="relative h-4">
             {bounds.snapPoints.map((snap) => {
               const pct = pctForValue(snap.value, bounds.min, bounds.max)
               const tierClass = STAT_AXIS_SNAP_CLASS[snap.tier]
@@ -134,7 +152,7 @@ export function StatRangeInput({
             })}
           </div>
 
-          <div ref={drag.railRef} className="relative mx-1 h-8 touch-none">
+          <div ref={drag.railRef} className="relative h-8 touch-none">
             <div className="bg-muted absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-full" />
 
             {bounds.snapPoints.map((snap) => {
@@ -160,6 +178,18 @@ export function StatRangeInput({
                 }}
               />
             )}
+
+            {interiorMarks.map((mark) => {
+              const pct = pctForValue(mark.value, bounds.min, bounds.max)
+              return (
+                <div
+                  key={mark.value}
+                  aria-hidden
+                  className={cn("stat-axis-mark", STAT_AXIS_MARK_BAND_CLASS[mark.band])}
+                  style={{ left: `${pct}%` }}
+                />
+              )
+            })}
 
             {(["min", "max"] as const).map((handle) => {
               if (singlePoint && handle === "max") return null
@@ -189,7 +219,7 @@ export function StatRangeInput({
             })}
           </div>
 
-          <div className="relative mx-1 h-4">
+          <div className="relative h-4">
             {(["min", "max"] as const).map((handle) => {
               if (singlePoint && handle === "max") return null
               if (value.min === value.max && handle === "max") return null
@@ -202,6 +232,18 @@ export function StatRangeInput({
                   style={{ left: `${pct}%` }}
                 >
                   {endpoint}
+                </span>
+              )
+            })}
+            {unlabeledInterior.map((mark) => {
+              const pct = pctForValue(mark.value, bounds.min, bounds.max)
+              return (
+                <span
+                  key={`mark-${mark.value}`}
+                  className="text-muted-foreground absolute -translate-x-1/2 text-[10px] tabular-nums"
+                  style={{ left: `${pct}%` }}
+                >
+                  {mark.value}
                 </span>
               )
             })}
