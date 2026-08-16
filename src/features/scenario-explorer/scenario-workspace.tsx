@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils"
 import { DamageResults } from "./results/damage-results"
 import { ScenarioSetupPanel } from "./scenario-setup-panel"
 import { ResultSetSummary } from "./results-summary"
+import { SetupBookmarkControls } from "./setup-bookmarks"
 import { useScenarioState } from "./state/use-scenario-state"
 
 type LocalizedCatalogState = {
@@ -28,6 +29,7 @@ export function ScenarioWorkspace({
   restoredTrackState,
   sharedSetupToken,
   onSharedSetupEdited,
+  onApplySetupBookmark,
   onAttackerChange,
   onDefenderChange,
   onMoveCategoryChange,
@@ -37,6 +39,7 @@ export function ScenarioWorkspace({
   restoredTrackState: TrackState | null
   sharedSetupToken: string | null
   onSharedSetupEdited: () => void
+  onApplySetupBookmark: (token: string) => Promise<"ok" | "unloadable">
   onAttackerChange: (id: BattlePokemonId) => void
   onDefenderChange: (id: BattlePokemonId) => void
   onMoveCategoryChange: (category: MoveCategory) => void
@@ -155,17 +158,26 @@ export function ScenarioWorkspace({
               <h1 className="text-[19px] font-extrabold tracking-tight [text-shadow:1px_1px_0_var(--paper)]">
                 {catalog.matchup.attackerLabel} → {catalog.matchup.defenderLabel}
               </h1>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={shareSetup}
-              >
-                {shareStatus === "copied" ? <Check /> : <Share2 />}
-                <span aria-live="polite">
-                  <FormattedMessage id={shareStatus === "copied" ? "share.copied" : "share.action"} />
-                </span>
-              </Button>
+              <div className="flex flex-wrap items-center justify-end gap-2">
+                <SetupBookmarkControls
+                  catalog={catalog}
+                  trackState={state.trackState}
+                  attackers={attackers}
+                  defenders={defenders}
+                  onApplyToken={onApplySetupBookmark}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={shareSetup}
+                >
+                  {shareStatus === "copied" ? <Check /> : <Share2 />}
+                  <span aria-live="polite">
+                    <FormattedMessage id={shareStatus === "copied" ? "share.copied" : "share.action"} />
+                  </span>
+                </Button>
+              </div>
             </div>
             {shareStatus === "error" ? (
               <p role="status" className="text-destructive text-xs font-medium">

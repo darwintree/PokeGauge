@@ -54,14 +54,28 @@ export type {
 } from "./types"
 export { RANGE_STAT_ID, RANGE_DEFENDER_ID } from "./types"
 export {
+  decodeSetupBookmarkToken,
+  deleteSetupBookmark,
   discardScenarioSnapshot,
   loadScenarioSnapshot,
+  loadSetupBookmarks,
+  renameSetupBookmark,
   restorePersistedTrackState,
+  restoreSetupBookmark,
   saveScenarioSnapshot,
+  saveSetupBookmark,
   scenarioSnapshotMatchesCatalog,
+  setupBookmarkIsLoadable,
   SCENARIO_STORAGE_KEY,
+  SETUP_BOOKMARK_LIMIT,
+  SETUP_BOOKMARK_STORAGE_KEY,
 } from "./persistence"
-export type { ScenarioSnapshot, ScenarioSnapshotInput } from "./persistence"
+export type {
+  SaveSetupBookmarkResult,
+  ScenarioSnapshot,
+  ScenarioSnapshotInput,
+  SetupBookmark,
+} from "./persistence"
 export {
   createScenarioSetupUrl,
   decodeScenarioSetupToken,

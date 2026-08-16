@@ -112,6 +112,14 @@ _Avoid_: Result Move Type, resolved move type, Move Snapshot type
 由一个 Matchup、Move side、各 Track 当前已选语义与 Probability Mode 构成的可重建计算输入；它生成 Scenario set，但不包含未选候选、纯展示偏好或计算结果。
 _Avoid_: Scenario, full Track state, saved UI session, frozen result
 
+**Setup Bookmark（情景书签）**:
+用户主动留下的一份 Scenario Setup，用于之后复制回当前工作区继续编辑。与当前工作区不是同一对象；载入后的修改不写回该书签。
+_Avoid_: History, frozen result, saved UI session, saved calculation
+
+**Unloadable Bookmark（失效书签）**:
+无法按当前资源与规则应用为 Scenario Setup 的 Setup Bookmark。它仍是列表中的一条书签，不是部分设定，也不是过期的计算结果。
+_Avoid_: stale result, expired calculation, partial Setup
+
 **Scenario**:
 从每条 Track 各取一条当前分支后构成的一个计算情景。
 _Avoid_: Result row, chart row, template

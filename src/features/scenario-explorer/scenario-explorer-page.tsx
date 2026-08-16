@@ -20,6 +20,7 @@ import {
   discardScenarioSnapshot,
   loadScenarioSnapshot,
   readScenarioSetupUrl,
+  restoreSetupBookmark,
   scenarioSnapshotMatchesCatalog,
   SCENARIO_SHARE_PARAM,
   trackStateFromScenarioSetup,
@@ -97,6 +98,7 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
     restorePendingRef.current,
   )
   const [leavingHome, setLeavingHome] = useState(false)
+  const [workspaceEpoch, setWorkspaceEpoch] = useState(0)
 
   const bothSelected = attackerId != null && defenderId != null
   const optionsReady = localizedOptions !== null
@@ -264,6 +266,30 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
     setMoveCategory(getDefaultMoveCategory(id))
   }
 
+  async function applySetupBookmark(token: string): Promise<"ok" | "unloadable"> {
+    const availableMatchupIds = availableMatchupIdsRef.current
+    if (!availableMatchupIds) return "unloadable"
+    const restored = await restoreSetupBookmark(
+      token,
+      locale,
+      availableMatchupIds.attackers,
+      availableMatchupIds.defenders,
+    )
+    if (!restored.ok) return "unloadable"
+    removeShareParam()
+    sharedSetupRef.current = null
+    sharedTokenRef.current = null
+    restoredTrackStateRef.current = restored.trackState
+    restorePendingRef.current = false
+    setAttackerId(restored.catalog.matchup.attackerId)
+    setDefenderId(restored.catalog.matchup.defenderId)
+    setMoveCategory(restored.catalog.moveCategory)
+    setCatalog(restored.catalog)
+    setShowExplorer(true)
+    setWorkspaceEpoch((epoch) => epoch + 1)
+    return "ok"
+  }
+
   if (shareFailures) {
     return (
       <main className="grid min-h-[calc(100dvh-3.5rem)] place-items-center p-6">
@@ -335,6 +361,7 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
   return (
     <div className="motion-safe:animate-[home-rise_500ms_cubic-bezier(0.16,1,0.3,1)_both]">
       <ScenarioWorkspace
+        key={workspaceEpoch}
         attackers={localizedOptions.attackers}
         defenders={localizedOptions.defenders}
         catalog={catalog}
@@ -343,6 +370,7 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
         restoredTrackState={restoredTrackStateRef.current}
         sharedSetupToken={sharedTokenRef.current}
         onSharedSetupEdited={() => removeShareParam()}
+        onApplySetupBookmark={applySetupBookmark}
         onAttackerChange={changeAttacker}
         onDefenderChange={setDefenderId}
         onMoveCategoryChange={setMoveCategory}
