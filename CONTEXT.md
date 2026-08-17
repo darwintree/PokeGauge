@@ -34,6 +34,10 @@ _Avoid_: Multi-select Track, option list
 对于具有默认 Neutral Selection 的 Choice Track，表示一个 Selection 是否对最终结果有贡献。取值为 `active`、`inactive`、`unsupported` 或 `neutral`。
 _Avoid_: Source State, Effective
 
+**Semi-supported Scenario（部分支持 Scenario）**:
+当前计算只覆盖部分结果相关语义、仍可产出结果但必须披露缺失语义的 Scenario。
+_Avoid_: Semi-supported Track Value, Unsupported Selection, partially active Scenario
+
 **Active Selection（生效选择）**:
 对最终结果有贡献的 Selection。
 _Avoid_: Effective Selection
