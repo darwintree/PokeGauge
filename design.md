@@ -88,7 +88,7 @@ Discrete Stat Value rows use one vertical-gradient fill from the 16-roll box, ma
 | Safe | max < 40% |
 | Cool | otherwise |
 
-A Stat Range row is still one envelope pill (low-end min to high-end max). It does not draw endpoint boxes. Fill is a lit two-stop horizontal gradient from the low-end box tone to the high-end box tone. Damage-domain green is not `signal-green`.
+A Stat Range row is still one envelope pill (low-end min to high-end max). It does not draw endpoint boxes. Fill is one two-stop horizontal gradient from the low-end box tone's start color to the high-end box tone's end color. When both endpoints share a tone, the same formula naturally becomes that tone's start-to-end gradient; it does not use a separate same-tone branch. Damage-domain green is not `signal-green`.
 
 ### Stat Value Label chip
 

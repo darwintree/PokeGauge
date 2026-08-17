@@ -98,13 +98,7 @@
   }
 
   .damage-tone-envelope {
-    background-image:
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--paper) 38%, transparent),
-        color-mix(in srgb, var(--ink) 14%, transparent)
-      ),
-      linear-gradient(90deg, var(--damage-tone-left), var(--damage-tone-right));
+    background-image: linear-gradient(90deg, var(--damage-tone-left), var(--damage-tone-right));
   }
 
   .damage-tone-marker--safe {
@@ -280,7 +274,7 @@
 
   .stat-value-chip--compact {
     min-height: 1.125rem;
-    padding: 0 0.25rem;
+    padding: 0 0.125rem;
     border-width: 1.5px;
     border-radius: 6px;
     font-size: 10px;

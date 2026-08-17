@@ -22,6 +22,7 @@ import {
   DAMAGE_TONE_CLASS,
   DAMAGE_TONE_END,
   DAMAGE_TONE_MARKER_CLASS,
+  DAMAGE_TONE_START,
   DAMAGE_TONES,
   damageToneOf,
 } from "./damage-tone"
@@ -33,6 +34,7 @@ const LINEAR_MAX = 100
 const AXIS_MAX = 200
 const LINEAR_FRACTION = 0.72
 const TICKS = [0, 25, 50, 75, 100, 200]
+const DESKTOP_RESULT_GRID = "md:grid-cols-[14.75rem_minmax(0,1fr)_9rem] md:gap-3"
 
 function clampPct(pct: number): number {
   return Math.min(Math.max(pct, 0), AXIS_MAX)
@@ -57,14 +59,18 @@ function pctSpan(minPct: number, maxPct: number): { left: string; width: string 
   }
 }
 
-function envelopeVars(endpoints: NonNullable<ScenarioResult["rangeEndpoints"]>): React.CSSProperties {
+function endpointTones(endpoints: NonNullable<ScenarioResult["rangeEndpoints"]>) {
   return {
-    "--damage-tone-left": DAMAGE_TONE_END[
-      damageToneOf(endpoints.low.minPercent, endpoints.low.maxPercent)
-    ],
-    "--damage-tone-right": DAMAGE_TONE_END[
-      damageToneOf(endpoints.high.minPercent, endpoints.high.maxPercent)
-    ],
+    low: damageToneOf(endpoints.low.minPercent, endpoints.low.maxPercent),
+    high: damageToneOf(endpoints.high.minPercent, endpoints.high.maxPercent),
+  }
+}
+
+function envelopeVars(endpoints: NonNullable<ScenarioResult["rangeEndpoints"]>): React.CSSProperties {
+  const tones = endpointTones(endpoints)
+  return {
+    "--damage-tone-left": DAMAGE_TONE_START[tones.low],
+    "--damage-tone-right": DAMAGE_TONE_END[tones.high],
   } as React.CSSProperties
 }
 
@@ -191,7 +197,10 @@ export function DamageResultRow({
   }
 
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)_3rem] items-center gap-x-1 gap-y-0.5 md:min-h-[4.5rem] md:grid-cols-[14.75rem_minmax(0,1fr)_9rem] md:gap-3">
+    <div className={cn(
+      "grid grid-cols-[minmax(0,1fr)_3rem] items-center gap-x-1 gap-y-0.5 md:min-h-[4.5rem]",
+      DESKTOP_RESULT_GRID,
+    )}>
       {diff ? (
         <div className="col-span-2 md:col-span-1">
           <ChildScenarioDiff attackerStat={attackerStat} defender={defender} diff={diff} />
@@ -313,8 +322,12 @@ function HoverLabel({ children }: { children: React.ReactNode }) {
 export function DamagePercentAxis() {
   const intl = useIntl()
   return (
-    <div className="sticky top-[6.25rem] z-10 grid grid-cols-[minmax(0,1fr)_3rem] items-end gap-1 border-b border-hairline bg-paper px-2 py-0.5 md:mb-2 md:flex md:rounded-t-[14px] md:px-3 md:py-1.5 md:pl-[16.5rem] lg:top-14 lg:px-4">
-      <div className="relative h-5 min-w-0 flex-1 md:h-6">
+    <div className={cn(
+      "sticky top-[6.25rem] z-10 grid grid-cols-[minmax(0,1fr)_3rem] items-end gap-1 border-b border-hairline bg-paper px-2 py-0.5 md:mb-2 md:grid md:rounded-t-[14px] md:px-3 md:py-1.5 lg:top-14 lg:px-4",
+      DESKTOP_RESULT_GRID,
+    )}>
+      <div className="hidden md:block" aria-hidden />
+      <div className="relative h-5 min-w-0 md:h-6">
         {TICKS.map((tick) => (
           <div
             key={tick}
@@ -337,7 +350,7 @@ export function DamagePercentAxis() {
           aria-hidden
         />
       </div>
-      <div className="text-right text-[8px] font-extrabold leading-none text-hud-muted md:ml-3 md:grid md:w-36 md:shrink-0 md:grid-cols-2 md:text-center md:text-[11px] md:leading-normal">
+      <div className="text-right text-[8px] font-extrabold leading-none text-hud-muted md:grid md:w-36 md:shrink-0 md:grid-cols-2 md:text-center md:text-[11px] md:leading-normal">
         <span className="md:contents">
           {intl.formatMessage({ id: "damage.ko.ohko" })}
           <br className="md:hidden" />

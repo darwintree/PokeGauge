@@ -7,7 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 import { localeMessages } from "@/lib/i18n"
 import type { ScenarioResult } from "@/lib/scenario"
 
-import { DamageResultRow, pctToFraction } from "./damage-result-row"
+import { DamagePercentAxis, DamageResultRow, pctToFraction } from "./damage-result-row"
 import { formatKOProbability } from "./format-ko-probability"
 
 describe("damage result row non-linear axis mapping", () => {
@@ -31,6 +31,21 @@ describe("damage result row non-linear axis mapping", () => {
   it("stays monotonic across the scale break", () => {
     expect(pctToFraction(99)).toBeLessThan(pctToFraction(100))
     expect(pctToFraction(100)).toBeLessThan(pctToFraction(101))
+  })
+})
+
+describe("DamagePercentAxis desktop alignment", () => {
+  it("uses the same three-column grid as result rows", () => {
+    const markup = renderToStaticMarkup(createElement(
+      IntlProvider,
+      { locale: "en", messages: localeMessages.en },
+      createElement(DamagePercentAxis),
+    ))
+
+    expect(markup).toContain("md:grid-cols-[14.75rem_minmax(0,1fr)_9rem]")
+    expect(markup).toContain("md:gap-3")
+    expect(markup).toContain("md:px-3")
+    expect(markup).toContain("lg:px-4")
   })
 })
 
@@ -211,9 +226,50 @@ describe("DamageResultRow range envelopes", () => {
       ),
     ))
     expect(markup).toContain("damage-tone-envelope")
-    expect(markup).toContain("--damage-tone-left:var(--damage-safe-end)")
+    expect(markup).toContain("--damage-tone-left:var(--damage-safe-start)")
     expect(markup).toContain("--damage-tone-right:var(--damage-guaranteed-end)")
     expect(markup).not.toContain("damage-tone--safe")
+  })
+
+  it("uses one gradient formula when both range endpoints share a tone", () => {
+    const sameTone: ScenarioResult = {
+      ...row,
+      minPercent: 24,
+      maxPercent: 39,
+      rangeEndpoints: {
+        low: { minPercent: 24, maxPercent: 36 },
+        high: { minPercent: 30, maxPercent: 39 },
+      },
+    }
+    const markup = renderToStaticMarkup(createElement(
+      IntlProvider,
+      { locale: "en", messages: localeMessages.en },
+      createElement(
+        TooltipProvider,
+        null,
+        createElement(DamageResultRow, {
+          move: {
+            id: 33,
+            label: "Tackle",
+            summary: "40 / 100",
+            moveName: "Tackle",
+            type: "normal",
+            category: "physical",
+            power: 40,
+            accuracy: 100,
+            isSpread: false,
+          },
+          attackerStat: { id: "__range__", chips: [{ label: "0A", actual: "152", sp: "0", nature: "none", band: "none", temporary: false }] },
+          defender: { id: "standard-bulk", chips: [{ label: "EX", actual: "341 / 251", sp: "32H / 32B", nature: "plus", band: "ex", temporary: false }] },
+          row: sameTone,
+        }),
+      ),
+    ))
+
+    expect(markup).toContain("damage-tone-envelope")
+    expect(markup).toContain("--damage-tone-left:var(--damage-safe-start)")
+    expect(markup).toContain("--damage-tone-right:var(--damage-safe-end)")
+    expect(markup).not.toContain("damage-tone-envelope--same")
   })
 
   it("places the range percent under the damage box", () => {

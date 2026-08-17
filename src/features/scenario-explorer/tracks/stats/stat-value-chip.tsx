@@ -83,9 +83,9 @@ export function StatValueChipPair({
   toggleLabel?: string
 }) {
   const items = (
-    <span className="inline-flex min-w-0 flex-wrap items-center gap-1">
+    <span className={cn("inline-flex min-w-0 flex-nowrap items-center", compact ? "gap-0.5" : "gap-1")}>
       {chips.map((chip, index) => (
-        <span key={`${chip.label}:${chip.actual}:${index}`} className="inline-flex items-center gap-1">
+        <span key={`${chip.label}:${chip.actual}:${index}`} className={cn("inline-flex items-center", compact ? "gap-0.5" : "gap-1")}>
           {index > 0 ? <span className="text-muted-foreground font-bold">~</span> : null}
           <StatValueChip chip={chip} showActual={showActual} compact={compact} />
         </span>
@@ -98,7 +98,8 @@ export function StatValueChipPair({
   return (
     <span
       className={cn(
-        "-mx-0.5 inline-flex min-w-0 flex-wrap items-center gap-0.5 rounded-[8px] px-0.5 py-0.5",
+        "-mx-0.5 inline-flex min-w-0 flex-nowrap items-center rounded-[8px] px-0.5 py-0.5",
+        compact ? "gap-0" : "gap-0.5",
         expanded && "bg-token-bg",
       )}
     >

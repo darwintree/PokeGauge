@@ -36,4 +36,12 @@ export const DAMAGE_TONE_END: Record<DamageTone, string> = {
   guaranteed: "var(--damage-guaranteed-end)",
 }
 
+export const DAMAGE_TONE_START: Record<DamageTone, string> = {
+  safe: "var(--damage-safe-start)",
+  cool: "var(--damage-cool-start)",
+  warm: "var(--damage-warm-start)",
+  lethal: "var(--damage-lethal-start)",
+  guaranteed: "var(--damage-guaranteed-start)",
+}
+
 export const DAMAGE_TONES: DamageTone[] = ["safe", "cool", "warm", "lethal", "guaranteed"]
