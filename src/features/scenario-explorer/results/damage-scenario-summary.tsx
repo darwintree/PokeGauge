@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils"
 
 import { HeldItemSpriteIcon } from "../tracks/held-item/held-item-sprite-icon"
 import { StatValueChipPair } from "../tracks/stats/stat-value-chip"
+import { visibleFormulaPhases } from "./formula-details"
 
 type DamageScenarioSummaryProps = {
   move: CatalogMoveOption
@@ -245,10 +246,7 @@ function DamageFormulaTooltip(props: DamageScenarioSummaryProps) {
     "type-effectiveness": intl.formatMessage({ id: "damage.conditions.effectiveness" }),
     final: intl.formatMessage({ id: "damage.conditions.final" }),
   }
-  const phases = branch.phases
-  const criticalPhase = mechanics.critical?.phases.find(
-    (phase) => phase.kind === "critical",
-  )
+  const phases = visibleFormulaPhases(branch.phases, props.row.criticalOnly)
   const criticalLabel = intl.formatMessage({ id: "damage.critical" })
   const effectivePower = mechanics.normal && mechanics.critical
     ? (
@@ -276,9 +274,6 @@ function DamageFormulaTooltip(props: DamageScenarioSummaryProps) {
         {phases.map((phase) => (
           <FormulaDetailRow key={phase.kind} label={phaseLabels[phase.kind]} value={modifierLabel(phase.modifier)} />
         ))}
-        {mechanics.normal && criticalPhase && (
-          <FormulaDetailRow label={phaseLabels.critical} value={modifierLabel(criticalPhase.modifier)} />
-        )}
         <div className="mt-1 flex justify-between border-t pt-1.5 font-medium">
           <span>{intl.formatMessage({ id: "damage.conditions.effectivePower" })}{props.showAccuracy && ` / ${intl.formatMessage({ id: "damage.conditions.accuracy" })}`}</span>
           <span className="tabular-nums">{effectivePower}{props.showAccuracy && ` / ${accuracy}`}</span>

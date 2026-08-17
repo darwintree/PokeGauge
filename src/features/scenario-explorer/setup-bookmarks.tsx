@@ -41,6 +41,8 @@ import {
 } from "@/lib/scenario"
 import { cn } from "@/lib/utils"
 
+type SaveStatus = "idle" | "saved" | "unencodable" | "full" | "quota"
+
 function pageSizeFromDialog(
   dialog: HTMLElement,
   header: HTMLElement,

@@ -219,7 +219,7 @@ export function DamageResultRow({
           {/* Data ink: pill box, ink frame, and damage-domain gradient. */}
           <div
             className={cn(
-              "absolute top-1/2 h-3.5 -translate-y-1/2 rounded-full border border-ink md:h-7",
+              "absolute top-1/2 h-3.5 -translate-y-1/2 rounded-sm border border-ink md:h-7",
               fill.className,
             )}
             style={fill.style}
