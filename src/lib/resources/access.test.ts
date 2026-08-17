@@ -8,6 +8,7 @@ import {
   getMoveByCalcName,
   getResource,
   getResourceDiagnostics,
+  listHistoricalLearnableMoveIds,
   ResourceLookupError,
 } from "@/lib/resources"
 
@@ -139,6 +140,8 @@ describe("localized resource access", () => {
     expect(diagnostics.source).toBe("pokeapi")
     expect(diagnostics.pokemonIds).toContain(445)
     expect(diagnostics.moveIds).toContain(89)
+    expect(diagnostics.historicalLearnsetPokemonCount).toBeGreaterThan(1_200)
+    expect(diagnostics.historicalLearnsetPairCount).toBeGreaterThan(60_000)
     expect(diagnostics.abilityIds).toContain(91)
     expect(diagnostics.heldItemIds).toHaveLength(85)
     expect(diagnostics.megaStoneIds).toHaveLength(47)
@@ -152,5 +155,13 @@ describe("localized resource access", () => {
         }),
       ]),
     )
+  })
+
+  it("unions damaging learnset relations across version groups", async () => {
+    const moveIds = await listHistoricalLearnableMoveIds(1)
+
+    expect(moveIds).toEqual([...new Set(moveIds)].toSorted((a, b) => a - b))
+    expect(moveIds).toContain(29)
+    expect(moveIds).toContain(885)
   })
 })

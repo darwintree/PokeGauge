@@ -42,6 +42,8 @@ export type MatchupCatalog = {
   offenseStatLabel: string
   defenseStatLabel: string
   moves: CatalogMoveOption[]
+  /** Historical-Learnset subset used by the Move Picker's default display filter. */
+  moveCandidates: CatalogMoveOption[]
   attackerItems: CatalogOption<HeldItemId>[]
   defenderItems: CatalogOption<HeldItemId>[]
   attackerAbilities: CatalogAbilityOption[]

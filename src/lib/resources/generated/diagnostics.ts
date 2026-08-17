@@ -2293,6 +2293,8 @@ export const RESOURCE_DIAGNOSTICS = {
     10017,
     10018
   ],
+  "historicalLearnsetPokemonCount": 1288,
+  "historicalLearnsetPairCount": 62507,
   "abilityIds": [
     1,
     2,

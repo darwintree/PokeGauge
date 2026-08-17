@@ -129,6 +129,7 @@ export const enMessages: Record<string, string> = {
     "track.addMove": "Add move",
     "track.move.search": "Search moves",
     "track.move.filter.stab": "STAB",
+    "track.move.filter.learnable": "Learnable",
     "track.move.filter.superEffective": "SE",
     "track.move.back": "Back to moves",
     "track.move.power": "Power",

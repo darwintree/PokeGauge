@@ -73,10 +73,17 @@ export type NormalizedMove = {
   flags: string[]
 }
 
+export type HistoricalLearnsetIndex = Record<
+  BattlePokemonId,
+  readonly UpstreamResourceId[]
+>
+
 export type GeneratedResourceDiagnostics = {
   source: "pokeapi"
   pokemonIds: BattlePokemonId[]
   moveIds: UpstreamResourceId[]
+  historicalLearnsetPokemonCount: number
+  historicalLearnsetPairCount: number
   abilityIds: UpstreamResourceId[]
   itemIds: UpstreamResourceId[]
   heldItemIds: UpstreamResourceId[]

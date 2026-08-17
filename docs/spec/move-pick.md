@@ -32,7 +32,7 @@ The selected set is the union of both conditions. Remaining initial snapshots ar
 
 ## Error Rules
 
-Missing, empty, failed, or timed-out Champions usage data produces no initial Move snapshots. The global Move search remains available.
+Missing, empty, failed, or timed-out Champions usage data produces no initial Move snapshots. Manual Move search remains available. Its default display filter contains the selected Battle Pokémon Identity's Snapshot-capable historical Learnset: the union of its PokeAPI Move relations across every version group. The user may disable that display filter to inspect the global Snapshot-capable pool; neither state is a legality check.
 
 A Mega identity without an upstream base species entry is missing usage data and produces no initial Move snapshots.
 
@@ -43,3 +43,4 @@ A Mega identity without an upstream base species entry is missing usage data and
 - Super effectiveness uses the same type chart and combined-defender-type calculation as damage compilation.
 - Default selection never introduces a Move absent from the initial Champions Move snapshots.
 - A Mega Battle Pokémon Identity with an upstream base species entry exposes the same usage rows as that species; without one, it produces no usage rows.
+- While its default display filter is enabled, manual Move search includes a Snapshot-capable Move exactly when the selected Battle Pokémon Identity can learn it in at least one PokeAPI version group.

@@ -80,6 +80,7 @@ export function ScenarioSetupPanel({
         attackerTypes={catalog.attackerTypes}
         defenderTypes={catalog.defenderTypes}
         options={catalog.moves}
+        learnableOptions={catalog.moveCandidates}
         snapshots={trackState.moveSnapshots}
         selectedSnapshotIds={trackState.selectedMoveSnapshotIds}
         onAdd={state.addMoveSnapshot}

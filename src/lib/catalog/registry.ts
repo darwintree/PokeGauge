@@ -9,7 +9,11 @@ import {
 import { UNKNOWN_ABILITY_ID } from "@/lib/ability"
 import type { SupportedLocale } from "@/lib/i18n"
 import { resolveReviewedMoveType } from "@/lib/move"
-import { getResource, type BattlePokemonId } from "@/lib/resources"
+import {
+  getResource,
+  listHistoricalLearnableMoveIds,
+  type BattlePokemonId,
+} from "@/lib/resources"
 import type {
   MatchupCatalog,
   MoveCategory,
@@ -63,9 +67,11 @@ export async function getCatalogShell(
   moveCategory?: MoveCategory,
 ): Promise<MatchupCatalog> {
   const activeMoveCategory = moveCategory ?? getDefaultMoveCategory(attackerId)
-  const [attackerResource, defenderResource] = await Promise.all([
+  const [attackerResource, defenderResource, snapshotCapableMoves, learnableMoveIds] = await Promise.all([
     getResource("pokemon", attackerId, locale),
     getResource("pokemon", defenderId, locale),
+    snapshotCapableMoveOptions(locale, activeMoveCategory),
+    listHistoricalLearnableMoveIds(attackerId),
   ])
   const [allAttackerAbilities, allDefenderAbilities] = await Promise.all([
     abilityOptions(attackerResource.abilityIds, locale),
@@ -80,7 +86,7 @@ export async function getCatalogShell(
   const attackerAbilities = [noAbilityOption(locale), ...attackerIdentityAbilities]
   const defenderAbilities = [noAbilityOption(locale), ...defenderIdentityAbilities]
 
-  const moves = (await snapshotCapableMoveOptions(locale, activeMoveCategory)).map(
+  const moves = snapshotCapableMoves.map(
     (move) => ({
       ...move,
       type: resolveReviewedMoveType(
@@ -91,6 +97,8 @@ export async function getCatalogShell(
       ),
     }),
   )
+  const learnableMoveIdSet = new Set(learnableMoveIds)
+  const moveCandidates = moves.filter((move) => learnableMoveIdSet.has(move.id))
 
   const labels = statLabels(activeMoveCategory, locale)
   const attackerLockedItemId = lockedHeldItemFor(attackerResource.battlePokemonId) ??
@@ -118,6 +126,7 @@ export async function getCatalogShell(
     moveCategory: activeMoveCategory,
     ...labels,
     moves,
+    moveCandidates,
     attackerItems,
     defenderItems,
     attackerAbilities,

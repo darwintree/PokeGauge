@@ -53,7 +53,8 @@ function toggleType(filters: PokemonType[], type: PokemonType): PokemonType[] {
 }
 
 function applyShortcut(current: PokemonType[], target: readonly PokemonType[]): PokemonType[] {
-  if (target.length === 0 || sameTypeSet(current, target)) return current
+  if (target.length === 0) return current
+  if (sameTypeSet(current, target)) return []
   return [...target]
 }
 
@@ -65,6 +66,7 @@ export function MovePickerDialog({
   attackerTypes,
   defenderTypes,
   options,
+  learnableMoveIds = options.map((option) => option.id),
   onSelect,
 }: {
   open: boolean
@@ -74,11 +76,13 @@ export function MovePickerDialog({
   attackerTypes: readonly PokemonType[]
   defenderTypes: readonly PokemonType[]
   options: CatalogMoveOption[]
+  learnableMoveIds?: readonly number[]
   onSelect: (moveId: number) => void
 }) {
   const intl = useIntl()
   const [query, setQuery] = useState("")
   const [typeFilters, setTypeFilters] = useState<PokemonType[]>([])
+  const [learnableOnly, setLearnableOnly] = useState(true)
   const [load, setLoad] = useState(initialRankingLoadState)
   const [rankedIds, setRankedIds] = useState<number[] | null>(null)
   const rankingGeneration = useRef(0)
@@ -86,6 +90,7 @@ export function MovePickerDialog({
   openRef.current = open
 
   const powerOrdered = useMemo(() => sortMovesByPower(options), [options])
+  const learnableMoveIdSet = useMemo(() => new Set(learnableMoveIds), [learnableMoveIds])
   const seTypes = useMemo(() => superEffectiveTypes(defenderTypes), [defenderTypes])
   const stabOn = sameTypeSet(typeFilters, attackerTypes) && attackerTypes.length > 0
   const seOn = sameTypeSet(typeFilters, seTypes) && seTypes.length > 0
@@ -95,11 +100,16 @@ export function MovePickerDialog({
       load.list === "usageOrder" && rankedIds
         ? orderOptionsByIds(powerOrdered, rankedIds)
         : powerOrdered
-    return ordered.filter((option) => moveMatches(option, query, typeFilters))
-  }, [load.list, powerOrdered, rankedIds, query, typeFilters])
+    return ordered.filter(
+      (option) =>
+        (!learnableOnly || learnableMoveIdSet.has(option.id)) &&
+        moveMatches(option, query, typeFilters),
+    )
+  }, [learnableMoveIdSet, learnableOnly, load.list, powerOrdered, rankedIds, query, typeFilters])
 
   useEffect(() => {
     rankingGeneration.current += 1
+    setLearnableOnly(true)
     setRankedIds(null)
     setLoad(() => {
       const reset = initialRankingLoadState()
@@ -112,6 +122,7 @@ export function MovePickerDialog({
     if (!open) {
       setQuery("")
       setTypeFilters([])
+      setLearnableOnly(true)
     }
   }, [open])
 
@@ -150,7 +161,20 @@ export function MovePickerDialog({
       onQueryChange={setQuery}
       beforeList={
         <>
-          <div className="grid shrink-0 grid-cols-2 gap-3 border-y border-hairline py-3">
+          <div className="grid shrink-0 grid-cols-3 gap-2 border-y border-hairline py-3">
+            <button
+              type="button"
+              aria-pressed={learnableOnly}
+              className={cn(
+                "flex min-h-8 items-center justify-center rounded-[9px] border-2 px-2 text-xs font-extrabold outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                learnableOnly
+                  ? "border-ink bg-signal-yellow shadow-hud-chip"
+                  : "border-card-border bg-paper hover:bg-token-bg/60",
+              )}
+              onClick={() => setLearnableOnly((current) => !current)}
+            >
+              <FormattedMessage id="track.move.filter.learnable" />
+            </button>
             <button
               type="button"
               aria-pressed={stabOn}

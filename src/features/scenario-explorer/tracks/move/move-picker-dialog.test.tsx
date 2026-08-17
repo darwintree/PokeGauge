@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 
-import { act, StrictMode } from "react"
+import { act, StrictMode, type ComponentProps } from "react"
 import { createRoot, type Root } from "react-dom/client"
 import { IntlProvider } from "react-intl"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
@@ -115,10 +115,11 @@ describe("Move picker interactions", () => {
     options = [low, high, mid],
     attackerTypes = ["dragon", "ground"] as PokemonType[],
     defenderTypes = ["fire", "dark"] as PokemonType[],
+    learnableMoveIds,
     open = true,
     onOpenChange = vi.fn(),
     onSelect = vi.fn(),
-  } = {}) {
+  }: Partial<ComponentProps<typeof MovePickerDialog>> = {}) {
     await act(async () => {
       root.render(
         <IntlProvider locale="zh-hans" messages={localeMessages["zh-hans"]}>
@@ -130,6 +131,7 @@ describe("Move picker interactions", () => {
             attackerTypes={attackerTypes}
             defenderTypes={defenderTypes}
             options={options}
+            learnableMoveIds={learnableMoveIds}
             onSelect={onSelect}
           />
         </IntlProvider>,
@@ -294,6 +296,18 @@ describe("Move picker interactions", () => {
     expect(rowLabels()).toEqual(["High", "Low"])
   })
 
+  it("applies the learnset display filter by default and allows showing all moves", async () => {
+    await renderPicker({ learnableMoveIds: [high.id] })
+    await settleRanking()
+
+    expect(shortcut("可习得")?.getAttribute("aria-pressed")).toBe("true")
+    expect(rowLabels()).toEqual(["High"])
+
+    await click(shortcut("可习得") ?? null)
+    expect(shortcut("可习得")?.getAttribute("aria-pressed")).toBe("false")
+    expect(rowLabels()).toEqual(["High", "Mid", "Low"])
+  })
+
   it("STAB and super-effective shortcuts replace type chips; empty target is a no-op", async () => {
     await renderPicker()
     await settleRanking()
@@ -305,6 +319,13 @@ describe("Move picker interactions", () => {
     expect(typeChip("水")?.getAttribute("aria-pressed")).toBe("false")
     expect(rowLabels()).toEqual(["High", "Mid"])
 
+    await click(shortcut("STAB") ?? null)
+    expect(shortcut("STAB")?.getAttribute("aria-pressed")).toBe("false")
+    expect(typeChip("龙")?.getAttribute("aria-pressed")).toBe("false")
+    expect(typeChip("地面")?.getAttribute("aria-pressed")).toBe("false")
+    expect(rowLabels()).toEqual(["High", "Mid", "Low"])
+
+    await click(shortcut("STAB") ?? null)
     await click(shortcut("克制") ?? null)
     expect(shortcut("STAB")?.getAttribute("aria-pressed")).toBe("false")
     expect(shortcut("克制")?.getAttribute("aria-pressed")).toBe("true")
@@ -313,8 +334,13 @@ describe("Move picker interactions", () => {
     expect(typeChip("岩石")?.getAttribute("aria-pressed")).toBe("true")
     expect(typeChip("龙")?.getAttribute("aria-pressed")).toBe("false")
 
-    await click(typeChip("龙") ?? null)
+    await click(shortcut("克制") ?? null)
     expect(shortcut("克制")?.getAttribute("aria-pressed")).toBe("false")
+    expect(typeChip("水")?.getAttribute("aria-pressed")).toBe("false")
+    expect(typeChip("地面")?.getAttribute("aria-pressed")).toBe("false")
+    expect(typeChip("岩石")?.getAttribute("aria-pressed")).toBe("false")
+
+    await click(typeChip("龙") ?? null)
     expect(typeChip("龙")?.getAttribute("aria-pressed")).toBe("true")
 
     await act(async () => {

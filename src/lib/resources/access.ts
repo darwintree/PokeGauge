@@ -3,6 +3,7 @@ import { GENERATED_HELD_ITEMS } from "./generated/held-items"
 import { GENERATED_MEGA_STONES } from "./generated/mega-stones"
 import type {
   GeneratedResourceDiagnostics,
+  HistoricalLearnsetIndex,
   LocalizedAbilityResource,
   LocalizedMoveResource,
   LocalizedPokemonResource,
@@ -29,6 +30,7 @@ let abilityResourcesPromise:
   | Promise<Record<UpstreamResourceId, NormalizedAbility>>
   | undefined
 let diagnosticsPromise: Promise<GeneratedResourceDiagnostics> | undefined
+let historicalLearnsetsPromise: Promise<HistoricalLearnsetIndex> | undefined
 let pokemonByCalcName: Map<string, NormalizedBattlePokemon> | undefined
 let moveByCalcName: Map<string, NormalizedMove> | undefined
 let moveIdByJoinName: Map<string, UpstreamResourceId> | undefined
@@ -101,6 +103,13 @@ async function loadResourceDiagnostics(): Promise<GeneratedResourceDiagnostics> 
     ({ RESOURCE_DIAGNOSTICS }) => RESOURCE_DIAGNOSTICS,
   )
   return diagnosticsPromise
+}
+
+async function loadHistoricalLearnsets(): Promise<HistoricalLearnsetIndex> {
+  historicalLearnsetsPromise ??= import("./generated/learnsets").then(
+    ({ GENERATED_HISTORICAL_LEARNSETS }) => GENERATED_HISTORICAL_LEARNSETS,
+  )
+  return historicalLearnsetsPromise
 }
 
 export async function getResource<TType extends ResourceType>(
@@ -214,6 +223,12 @@ export async function listResources<TType extends ResourceType>(
 
 export async function getResourceDiagnostics(): Promise<GeneratedResourceDiagnostics> {
   return loadResourceDiagnostics()
+}
+
+export async function listHistoricalLearnableMoveIds(
+  battlePokemonId: UpstreamResourceId,
+): Promise<readonly UpstreamResourceId[]> {
+  return (await loadHistoricalLearnsets())[battlePokemonId] ?? []
 }
 
 export function getBattlePokemonById(

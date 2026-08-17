@@ -22,6 +22,7 @@ export type MoveTrackProps = {
   attackerTypes: readonly PokemonType[]
   defenderTypes: readonly PokemonType[]
   options: CatalogMoveOption[]
+  learnableOptions?: CatalogMoveOption[]
   snapshots: MoveSnapshot[]
   selectedSnapshotIds: string[]
   onAdd: (moveId: number) => string | undefined
@@ -83,6 +84,7 @@ export function MoveTrack({
   attackerTypes,
   defenderTypes,
   options,
+  learnableOptions = options,
   snapshots,
   selectedSnapshotIds,
   onAdd,
@@ -256,6 +258,7 @@ export function MoveTrack({
         attackerTypes={attackerTypes}
         defenderTypes={defenderTypes}
         options={options}
+        learnableMoveIds={learnableOptions.map((option) => option.id)}
         onSelect={add}
       />
     </section>

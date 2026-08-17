@@ -30,6 +30,19 @@ beforeEach(() => {
 })
 
 describe("catalog move candidate ordering", () => {
+  it("limits picker candidates to the attacker's all-version historical learnset", async () => {
+    const [garchomp, bulbasaur] = await Promise.all([
+      getCatalogShell(445, 727, "en", "physical"),
+      getCatalogShell(1, 727, "en", "physical"),
+    ])
+
+    expect(garchomp.moves.some((move) => move.id === 1)).toBe(true)
+    expect(garchomp.moveCandidates.some((move) => move.id === 1)).toBe(false)
+    expect(garchomp.moveCandidates.some((move) => move.id === 89)).toBe(true)
+    expect(bulbasaur.moveCandidates.some((move) => move.id === 29)).toBe(true)
+    expect(bulbasaur.moveCandidates.some((move) => move.id === 885)).toBe(true)
+  })
+
   it.each([
     [741, "special", 686, "fire"],
     [445, "special", 686, "dragon"],

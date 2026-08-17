@@ -1,6 +1,7 @@
 export { GENERATED_ABILITIES } from "./abilities"
 export { RESOURCE_DIAGNOSTICS } from "./diagnostics"
 export { GENERATED_HELD_ITEMS } from "./held-items"
+export { GENERATED_HISTORICAL_LEARNSETS } from "./learnsets"
 export { GENERATED_MEGA_STONES } from "./mega-stones"
 export { GENERATED_MOVES } from "./moves"
 export { GENERATED_POKEMON } from "./pokemon"

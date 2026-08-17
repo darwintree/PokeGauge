@@ -177,6 +177,7 @@ async function main() {
     pokemonStatRows,
     typeRows,
     moveRows,
+    pokemonMoveRows,
     moveNameRows,
     moveMetaRows,
     moveFlagMapRows,
@@ -200,6 +201,7 @@ async function main() {
     readCsv("pokemon_stats"),
     readCsv("types"),
     readCsv("moves"),
+    readCsv("pokemon_moves"),
     readCsv("move_names"),
     readCsv("move_meta"),
     readCsv("move_flag_map"),
@@ -341,6 +343,24 @@ async function main() {
     ] as const]
   })
 
+  const damagingMoveIds = new Set(
+    moveEntries
+      .filter(([, move]) => move.category === "physical" || move.category === "special")
+      .map(([id]) => id),
+  )
+  const historicalLearnsets = new Map<number, Set<number>>()
+  for (const relation of pokemonMoveRows) {
+    const moveId = requiredNumber(relation, "move_id")
+    if (!damagingMoveIds.has(moveId)) continue
+    const pokemonId = requiredNumber(relation, "pokemon_id")
+    const moves = historicalLearnsets.get(pokemonId) ?? new Set<number>()
+    moves.add(moveId)
+    historicalLearnsets.set(pokemonId, moves)
+  }
+  const historicalLearnsetEntries = [...historicalLearnsets]
+    .sort(([a], [b]) => a - b)
+    .map(([pokemonId, moveIds]) => [pokemonId, [...moveIds].sort((a, b) => a - b)] as const)
+
   const abilityNamesByAbilityId = groupByNumber(abilityNameRows, "ability_id")
   const abilityEntries = abilityRows.map((ability) => {
     const id = requiredNumber(ability, "id")
@@ -399,6 +419,11 @@ async function main() {
     source: "pokeapi",
     pokemonIds: pokemonEntries.map(([id]) => id),
     moveIds: moveEntries.map(([id]) => id),
+    historicalLearnsetPokemonCount: historicalLearnsetEntries.length,
+    historicalLearnsetPairCount: historicalLearnsetEntries.reduce(
+      (count, [, moveIds]) => count + moveIds.length,
+      0,
+    ),
     abilityIds: abilityEntries.map(([id]) => id),
     itemIds: [
       ...heldItemEntries.map(([id]) => id),
@@ -421,6 +446,15 @@ async function main() {
       moduleWithImport(["NormalizedMove", "UpstreamResourceId"], "GENERATED_MOVES", Object.fromEntries(moveEntries), "Record<UpstreamResourceId, NormalizedMove>"),
     ),
     writeFile(
+      path.join(OUT_DIR, "learnsets.ts"),
+      moduleWithImport(
+        ["HistoricalLearnsetIndex"],
+        "GENERATED_HISTORICAL_LEARNSETS",
+        Object.fromEntries(historicalLearnsetEntries),
+        "HistoricalLearnsetIndex",
+      ),
+    ),
+    writeFile(
       path.join(OUT_DIR, "abilities.ts"),
       moduleWithImport(["NormalizedAbility", "UpstreamResourceId"], "GENERATED_ABILITIES", Object.fromEntries(abilityEntries), "Record<UpstreamResourceId, NormalizedAbility>"),
     ),
@@ -438,7 +472,7 @@ async function main() {
     ),
     writeFile(
       path.join(OUT_DIR, "index.ts"),
-      "export { GENERATED_ABILITIES } from \"./abilities\"\nexport { RESOURCE_DIAGNOSTICS } from \"./diagnostics\"\nexport { GENERATED_HELD_ITEMS } from \"./held-items\"\nexport { GENERATED_MEGA_STONES } from \"./mega-stones\"\nexport { GENERATED_MOVES } from \"./moves\"\nexport { GENERATED_POKEMON } from \"./pokemon\"\n",
+      "export { GENERATED_ABILITIES } from \"./abilities\"\nexport { RESOURCE_DIAGNOSTICS } from \"./diagnostics\"\nexport { GENERATED_HELD_ITEMS } from \"./held-items\"\nexport { GENERATED_HISTORICAL_LEARNSETS } from \"./learnsets\"\nexport { GENERATED_MEGA_STONES } from \"./mega-stones\"\nexport { GENERATED_MOVES } from \"./moves\"\nexport { GENERATED_POKEMON } from \"./pokemon\"\n",
     ),
   ])
 
