@@ -1,6 +1,5 @@
 /** Box = main 16 rolls; whiskers = critical range when a normal branch exists. */
 
-import { ChevronDown } from "lucide-react"
 import { useIntl } from "react-intl"
 
 import {
@@ -156,7 +155,6 @@ type DamageResultRowProps = {
     onToggle?: () => void
   }
   row: ScenarioResult
-  isRangeEnvelope?: boolean
   showAccuracy?: boolean
   /** Child of an expanded Range parent: only these axes differ from the parent. */
   diff?: { offense: boolean; defense: boolean }
@@ -169,7 +167,6 @@ export function DamageResultRow({
   attackerStat,
   defender,
   row,
-  isRangeEnvelope = false,
   showAccuracy = false,
   diff,
 }: DamageResultRowProps) {
@@ -228,18 +225,6 @@ export function DamageResultRow({
             style={fill.style}
           />
 
-          {!isRangeEnvelope && (
-            // ponytail: perch on the pill rim so the mark stays inside the plot.
-            // A fully-above notch collides with the previous row's hanging % labels.
-            <div
-              data-damage-average-marker
-              className="absolute z-10 -translate-x-1/2 top-[calc(50%-0.4375rem-2px)] md:top-[calc(50%-0.875rem-6px)]"
-              style={{ left: pctToLeft(row.avgPercent) }}
-            >
-              <AverageMarkGlyph className="size-2.5 md:size-3.5" />
-            </div>
-          )}
-
           {bridge && (
             <div
               className="absolute top-1/2 h-px -translate-y-1/2 border-t border-dashed border-ink/25"
@@ -290,12 +275,6 @@ export function DamageResultRow({
               {row.minPercent.toFixed(1)}% ~ {row.maxPercent.toFixed(1)}%
             </span>
           </HoverRow>
-          {!isRangeEnvelope && (
-            <HoverRow marker={<AverageMarkGlyph />}>
-              <HoverLabel>{intl.formatMessage({ id: "damage.average" })}</HoverLabel>
-              <span className="tabular-nums">{row.avgPercent.toFixed(1)}%</span>
-            </HoverRow>
-          )}
           {hasReferenceCritical && (
             <HoverRow marker={<span className="inline-block size-2 rounded-full border-2 border-damage-critical bg-paper" />}>
               <HoverLabel>{intl.formatMessage({ id: "damage.critical" })}</HoverLabel>
@@ -329,10 +308,6 @@ function HoverRow({ marker, children }: HoverRowProps) {
 
 function HoverLabel({ children }: { children: React.ReactNode }) {
   return <span className="text-muted-foreground text-[10px]">{children}</span>
-}
-
-function AverageMarkGlyph({ className }: { className?: string }) {
-  return <ChevronDown className={cn("size-3.5 text-ink", className)} strokeWidth={3} aria-hidden />
 }
 
 export function DamagePercentAxis() {
@@ -373,7 +348,7 @@ export function DamagePercentAxis() {
   )
 }
 
-export function DamageRangeLegend({ showAverage = true }: { showAverage?: boolean }) {
+export function DamageRangeLegend() {
   const intl = useIntl()
   return (
     <div className="mt-2 flex flex-wrap gap-4 border-t border-hairline px-3 py-3 text-[10.5px] font-extrabold text-hud-muted sm:px-4">
@@ -392,12 +367,6 @@ export function DamageRangeLegend({ showAverage = true }: { showAverage?: boolea
         </span>
         {intl.formatMessage({ id: "damage.legend.critical" })}
       </span>
-      {showAverage && (
-        <span className="inline-flex items-center gap-1.5">
-          <AverageMarkGlyph />
-          {intl.formatMessage({ id: "damage.legend.average" })}
-        </span>
-      )}
     </div>
   )
 }

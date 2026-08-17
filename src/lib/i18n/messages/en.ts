@@ -252,9 +252,7 @@ export const enMessages: Record<string, string> = {
     "damage.ko.twoHit": "≤2HKO",
     "damage.ko.unavailable": "Unavailable",
     "damage.normal": "Normal",
-    "damage.average": "Average",
     "damage.critical": "Critical",
     "damage.legend.normal": "Normal damage (16 rolls min ~ max)",
     "damage.legend.critical": "Critical damage (whisker endpoints)",
-    "damage.legend.average": "Average damage",
 }

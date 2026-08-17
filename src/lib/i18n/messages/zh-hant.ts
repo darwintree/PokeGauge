@@ -252,9 +252,7 @@ export const zhHantMessages: Record<string, string> = {
     "damage.ko.twoHit": "≤2HKO",
     "damage.ko.unavailable": "不可用",
     "damage.normal": "通常",
-    "damage.average": "平均",
     "damage.critical": "暴擊",
     "damage.legend.normal": "通常傷害（16 roll 最低 ~ 最高）",
     "damage.legend.critical": "暴擊傷害（鬚鬚端點）",
-    "damage.legend.average": "平均傷害",
 }

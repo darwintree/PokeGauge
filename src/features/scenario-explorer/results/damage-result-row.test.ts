@@ -7,7 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 import { localeMessages } from "@/lib/i18n"
 import type { ScenarioResult } from "@/lib/scenario"
 
-import { DamageRangeLegend, DamageResultRow, pctToFraction } from "./damage-result-row"
+import { DamageResultRow, pctToFraction } from "./damage-result-row"
 import { formatKOProbability } from "./format-ko-probability"
 
 describe("damage result row non-linear axis mapping", () => {
@@ -86,7 +86,7 @@ describe("DamageResultRow range envelopes", () => {
     critMaxPercent: 30,
   }
 
-  function render(isRangeEnvelope: boolean, showAccuracy = false): string {
+  function render(showAccuracy = false): string {
     return renderToStaticMarkup(createElement(
       IntlProvider,
       { locale: "en", messages: localeMessages.en },
@@ -108,36 +108,24 @@ describe("DamageResultRow range envelopes", () => {
           attackerStat: { id: "__range__", chips: [{ label: "0A", actual: "152", sp: "0", nature: "none", band: "none", temporary: false }] },
           defender: { id: "standard-bulk", chips: [{ label: "EX", actual: "341 / 251", sp: "32H / 32B", nature: "plus", band: "ex", temporary: false }] },
           row,
-          isRangeEnvelope,
           showAccuracy,
         }),
       ),
     ))
   }
 
-  it("omits the synthetic average marker for a range envelope", () => {
-    const markup = render(true)
+  it("does not render average damage", () => {
+    const markup = render()
 
     expect(markup).not.toContain("data-damage-average-marker")
-    expect(markup).not.toContain("无道具")
-    expect(render(false)).toContain("data-damage-average-marker")
+    expect(markup).not.toContain("Average")
   })
 
   it("does not put a range envelope into other conditions", () => {
-    const markup = render(true)
+    const markup = render()
 
     expect(markup).not.toContain("Other conditions")
     expect(markup).not.toContain("Stat Value range")
-  })
-
-  it("omits the average legend when every displayed row is a range envelope", () => {
-    const markup = renderToStaticMarkup(createElement(
-      IntlProvider,
-      { locale: "en", messages: localeMessages.en },
-      createElement(DamageRangeLegend, { showAverage: false }),
-    ))
-
-    expect(markup).not.toContain("Average damage")
   })
 
   it("shows only the changed Stat axis on an expanded child row", () => {
@@ -175,7 +163,7 @@ describe("DamageResultRow range envelopes", () => {
 
   it("renders KO ranges without a highlight chip and collapses identical endpoints", () => {
     row.koProbabilities = { ohko: { min: 0.042, max: 0.161 }, twoHit: { min: 1, max: 1 } }
-    const markup = render(false)
+    const markup = render()
 
     expect(markup).toContain("4.2%-16.1%")
     expect(markup).not.toContain("100%-100%")
@@ -183,7 +171,7 @@ describe("DamageResultRow range envelopes", () => {
   })
 
   it("paints a discrete box with the safe tone when max is under 40%", () => {
-    const markup = render(false)
+    const markup = render()
     expect(markup).toContain("damage-tone--safe")
     expect(markup).not.toContain("damage-tone-envelope")
   })
@@ -219,7 +207,6 @@ describe("DamageResultRow range envelopes", () => {
           attackerStat: { id: "__range__", chips: [{ label: "0A", actual: "152", sp: "0", nature: "none", band: "none", temporary: false }] },
           defender: { id: "standard-bulk", chips: [{ label: "EX", actual: "341 / 251", sp: "32H / 32B", nature: "plus", band: "ex", temporary: false }] },
           row: ranged,
-          isRangeEnvelope: true,
         }),
       ),
     ))
@@ -230,7 +217,7 @@ describe("DamageResultRow range envelopes", () => {
   })
 
   it("places the range percent under the damage box", () => {
-    const markup = render(true)
+    const markup = render()
     const left = `${pctToFraction(10) * 100}%`
     const width = `${(pctToFraction(20) - pctToFraction(10)) * 100}%`
     expect(markup).toContain("data-damage-range-label")
@@ -242,8 +229,8 @@ describe("DamageResultRow range envelopes", () => {
     row.moveMechanics.hitFact = 85
     row.moveMechanics.hitProbability = 0.85
 
-    expect(render(false)).not.toContain("85%")
-    expect(render(false, true)).toContain("85%")
+    expect(render()).not.toContain("85%")
+    expect(render(true)).toContain("85%")
   })
 
   it("shows active stat stages in a left rail", () => {

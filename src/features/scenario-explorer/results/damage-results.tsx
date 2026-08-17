@@ -166,8 +166,6 @@ export function DamageResults({
           const identity = rowIdentity(catalog, row, trackState, statNameStrategy, rowLabelPresets)
           const offenseExpandable = role === "parent" && row.attackerStatId === RANGE_STAT_ID
           const defenseExpandable = role === "parent" && row.defenderId === RANGE_DEFENDER_ID
-          const isRangeEnvelope =
-            row.attackerStatId === RANGE_STAT_ID || row.defenderId === RANGE_DEFENDER_ID
           const startsMoveGroup =
             index === 0 || displayRows[index - 1].row.snapshotId !== row.snapshotId
           const rowProps = {
@@ -195,7 +193,6 @@ export function DamageResults({
                 : undefined,
             },
             row,
-            isRangeEnvelope,
             showAccuracy: trackState.probabilityMode === "battle-odds",
             diff: role === "child" ? expansion : undefined,
           }
@@ -216,16 +213,7 @@ export function DamageResults({
           )
         })}
       </ul>
-      <DamageRangeLegend
-        showAverage={blocks.some(
-          (block) =>
-            [block.parent, ...block.children].some(
-              (row) =>
-                row.attackerStatId !== RANGE_STAT_ID &&
-                row.defenderId !== RANGE_DEFENDER_ID,
-            ),
-        )}
-      />
+      <DamageRangeLegend />
     </div>
   )
 

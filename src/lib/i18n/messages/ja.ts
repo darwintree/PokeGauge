@@ -252,9 +252,7 @@ export const jaMessages: Record<string, string> = {
     "damage.ko.twoHit": "≤2HKO",
     "damage.ko.unavailable": "利用不可",
     "damage.normal": "通常",
-    "damage.average": "平均",
     "damage.critical": "急所",
     "damage.legend.normal": "通常ダメージ（16 roll 最小 ~ 最大）",
     "damage.legend.critical": "急所ダメージ（ひげ端点）",
-    "damage.legend.average": "平均ダメージ",
 }
