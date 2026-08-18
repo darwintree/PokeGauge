@@ -35,7 +35,7 @@ updated_at: "2026-08-14T03:50:00Z"
 - [[20260812_open_unify-modifier-execution-and-explanation-representation|Unify modifier execution and explanation representation]]：为 case 与实际结果提供同源的阶段／modifier 解释。
 - [[20260807_open_audit-showdown-vs-smogon-calc-damage-rule-mismatches|Audit Showdown vs @smogon/calc damage-rule mismatches]]：已有 oracle 差异审计，后续应转为公开 case 而非一次性报告。
 - [[archive/20260721_closed_share-and-restore-scenario-setup-by-url|Share and restore Scenario Setup by URL]]：可复现 Scenario 编码可复用于 case 链接和提交。
-- [[20260812_open_enforce-an-audited-move-calculation-boundary|Enforce an audited Move calculation boundary]]：未审计 Move 必须 fail closed。
+- [[archive/20260812_closed_enforce-an-audited-move-calculation-boundary|Enforce an audited Move calculation boundary]]：未审计 Move 必须 fail closed。
 
 ## Decisions needed before implementation
 

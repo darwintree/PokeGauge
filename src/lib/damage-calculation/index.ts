@@ -23,6 +23,7 @@ export type {
   RawScenario,
   RawScenarioPoint,
   ScenarioSource,
+  ScenarioSupport,
   ScenarioTrack,
   TrackSelectionActivation,
   UnavailableReason,

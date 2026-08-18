@@ -6,6 +6,7 @@ import { childBelongsToExpandedParent } from "./expand-range-rows"
 
 function row(partial: Partial<ScenarioResult> & Pick<ScenarioResult, "calculationIdentity" | "snapshotId">): ScenarioResult {
   return {
+    support: "supported",
     moveId: 89,
     moveType: "ground",
     attackerStatId: RANGE_STAT_ID,

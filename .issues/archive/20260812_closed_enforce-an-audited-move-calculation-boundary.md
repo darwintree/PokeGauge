@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "16e68b3d-91d7-441c-a913-ac51290669c8"
 title: "Enforce an audited Move calculation boundary"
-status: "open"
+status: "closed"
 priority: "high"
 labels: ["BUG", "NEEDS-TRIAGE"]
 created_at: "2026-08-12T07:49:00Z"
-updated_at: "2026-08-17T15:15:00Z"
+updated_at: "2026-08-17T15:29:00Z"
 ---
 ## Problem
 
@@ -117,10 +117,10 @@ updated_at: "2026-08-17T15:15:00Z"
 
 ## Related issues
 
-- [[20260715_open_specify-random-multi-hit-and-accuracy-mechanics|Specify random multi-hit and accuracy mechanics]]：完整 Hit Composition 与 multi-hit 计算模型。
-- [[20260806_open_complete-missing-pokeapi-move-behavioral-metadata-upstream|Complete missing PokeAPI move behavioral metadata upstream]]：上游 Move 行为元数据缺口。
-- [[20260817_open_propagate-intrinsic-move-critical-rate-into-snapshots|Propagate intrinsic Move critical rate into snapshots]]：单独传递招式固有会心等级；不属于本票警告范围。
-- [[20260717_open_define-ruleset-aware-move-candidate-pool-and-learnset-validation|Define ruleset-aware Move candidate pool and learnset validation]]：候选招式的 ruleset／learnset 合法性；与本票的「是否可可信计算」正交。
+- [[../20260715_open_specify-random-multi-hit-and-accuracy-mechanics|Specify random multi-hit and accuracy mechanics]]：完整 Hit Composition 与 multi-hit 计算模型。
+- [[../20260806_open_complete-missing-pokeapi-move-behavioral-metadata-upstream|Complete missing PokeAPI move behavioral metadata upstream]]：上游 Move 行为元数据缺口。
+- [[../20260817_open_propagate-intrinsic-move-critical-rate-into-snapshots|Propagate intrinsic Move critical rate into snapshots]]：单独传递招式固有会心等级；不属于本票警告范围。
+- [[../20260717_open_define-ruleset-aware-move-candidate-pool-and-learnset-validation|Define ruleset-aware Move candidate pool and learnset validation]]：候选招式的 ruleset／learnset 合法性；与本票的「是否可可信计算」正交。
 
 ## Out of scope
 
@@ -133,18 +133,19 @@ updated_at: "2026-08-17T15:15:00Z"
 
 ## Verification Checklist
 
-- [ ] 31 个 multi-hit、23 个目标降防、18 个使用者攻击能力变化 Move identity 均映射到约定问题。
-- [ ] Move Snapshot 折叠态与展开态显示警告；picker 与结果区不显示。
-- [ ] Tooltip 支持 hover、focus、tap，并提供四种 Supported locale 文案。
-- [ ] 同一 Move Snapshot 只按约定优先级显示一个问题。
-- [ ] 编辑 Move Snapshot 后，Move identity 警告仍保留。
-- [ ] Grassy Terrain 显示未计算回合结束回复的警告，不扩大其他 Track 的浮游联动。
-- [ ] `semi-supported` 只作为 Scenario 描述，不成为 Track Value 或 Track Selection Activation 状态。
-- [ ] 代表性的支持、部分支持、不可计算与持久化恢复路径有回归覆盖。
-- [ ] 逐条核对 [[../docs/traces/discussion/2026-08-17-semi-supported-track-values|讨论记录]]，确认每项决定均已实现。
-- [ ] build、完整测试及 frontend review-and-correct 通过。
+- [x] 31 个 multi-hit、23 个目标降防、18 个使用者攻击能力变化 Move identity 均映射到约定问题。
+- [x] Move Snapshot 折叠态与展开态显示警告；picker 与结果区不显示。
+- [x] Tooltip 支持 hover、focus、tap，并提供四种 Supported locale 文案。
+- [x] 同一 Move Snapshot 只按约定优先级显示一个问题。
+- [x] 编辑 Move Snapshot 后，Move identity 警告仍保留。
+- [x] Grassy Terrain 显示未计算回合结束回复的警告，不扩大其他 Track 的浮游联动。
+- [x] `semi-supported` 只作为 Scenario 描述，不成为 Track Value 或 Track Selection Activation 状态。
+- [x] 代表性的支持、部分支持、不可计算与持久化恢复路径有回归覆盖。
+- [x] 逐条核对 [[../docs/traces/discussion/2026-08-17-semi-supported-track-values|讨论记录]]，确认每项决定均已实现。
+- [x] build、完整测试及 frontend review-and-correct 通过。
 
 ## Progress Log
 
 - 2026-08-12：release readiness 讨论确认该问题为公开发布前必须关闭的正确性边界。
 - 2026-08-17：废弃 fail-closed 方案，确认以受审核静态映射披露 Semi-supported Scenario 的缺失语义。
+- 2026-08-17：完成 Move 审核映射、Scenario support 元数据、Snapshot/Grassy Terrain Tooltip 与四语回归覆盖；warning/support 不写入 Snapshot 持久化结构，恢复后按 Move identity 与 Terrain 重新派生。

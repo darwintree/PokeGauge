@@ -66,7 +66,8 @@ describe("formatKOProbability", () => {
 })
 
 describe("DamageResultRow range envelopes", () => {
-  const row: ScenarioResult = {
+      const row: ScenarioResult = {
+        support: "supported",
     calculationIdentity: "range-envelope",
     snapshotId: "range-envelope",
     moveId: 33,

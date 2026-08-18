@@ -121,6 +121,14 @@ describe("scenario compiler", () => {
     })
   })
 
+  it("classifies audited Move identities and Grassy Terrain as semi-supported", () => {
+    expect(calculableScenario({ snapshot: { ...snapshot, moveId: 3 } }).support).toBe(
+      "semi-supported",
+    )
+    expect(calculableScenario({ terrain: "grassy" }).support).toBe("semi-supported")
+    expect(calculableScenario().support).toBe("supported")
+  })
+
   it("compiles exact item and branch inputs without names or float modifiers", () => {
     const outcome = compileScenario(scenario({ attackerItemId: 197 }))
     expect(outcome.kind).toBe("calculable")

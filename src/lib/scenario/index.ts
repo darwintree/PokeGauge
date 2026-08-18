@@ -47,6 +47,7 @@ export type {
   ScenarioPipelineResult,
   ScenarioProvenance,
   ScenarioResult,
+  ScenarioSupport,
   StatRange,
   StatSelectMode,
   TrackState,

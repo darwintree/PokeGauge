@@ -57,16 +57,23 @@ export function TerrainTrack({
         <TrackOptionGroup aria-label={intl.formatMessage({ id: "track.terrain" })}>
           {TERRAINS.map((terrain) => {
             const label = intl.formatMessage({ id: `track.terrain.${terrain}` })
+            const warning = terrain === "grassy"
+              ? intl.formatMessage({ id: "track.terrain.warning.grassy-recovery" })
+              : undefined
             return (
               <TrackOption
                 key={terrain}
                 layout="text"
                 pressed={selected.has(terrain)}
                 onToggle={() => toggle(terrain)}
-                ariaLabel={label}
+                ariaLabel={[label, warning].filter(Boolean).join(", ")}
+                tooltip={warning}
                 className="px-2"
               >
-                {label}
+                <span className="inline-flex items-center gap-1">
+                  {label}
+                  {warning ? <span aria-hidden className="size-1.5 rounded-full bg-destructive" /> : null}
+                </span>
               </TrackOption>
             )
           })}

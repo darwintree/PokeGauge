@@ -11,6 +11,7 @@ export type {
   MoveTemplateSnapshotDefaults,
 } from "./snapshot"
 export {
+  auditedMoveWarning,
   isMoveExplicitlyUnsupported,
   moveBreaksScreensBeforeDamage,
   moveCanBecomeSpread,
@@ -18,3 +19,4 @@ export {
   reviewedMoveSnapshotDefaults,
   reviewedVariablePowerDefault,
 } from "./semantics"
+export type { MoveAuditWarning } from "./semantics"

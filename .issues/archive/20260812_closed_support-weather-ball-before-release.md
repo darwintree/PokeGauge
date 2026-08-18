@@ -42,7 +42,7 @@ Weather Ball（Move ID 311）当前在无天气时可以按普通招式计算，
 
 ## Related issues
 
-- [[../20260812_open_enforce-an-audited-move-calculation-boundary|Enforce an audited Move calculation boundary]]
+- [[20260812_closed_enforce-an-audited-move-calculation-boundary|Enforce an audited Move calculation boundary]]
 - [[../20260812_open_unify-modifier-execution-and-explanation-representation|Unify modifier execution and explanation representation]]
 
 ## Out of scope
@@ -67,6 +67,6 @@ Weather Ball（Move ID 311）当前在无天气时可以按普通招式计算，
 
 ## Resolution
 
-Weather Ball（Move ID 311）在全部当前天气选择下可计算。Scenario Move Type 为 `none`→Normal、`sun`→Fire、`rain`→Water、`sand`→Rock、`snow`→Ice；非 `none` 时对 Snapshot power 施加 `8192`（2×）Base Power，晴雨 generic 伤害再按变化后的属性结算。Cloud Nine／Air Lock 压制后按无天气处理；Mega Sol 的 effective sun 现在会驱动 Weather Ball。编辑 Snapshot 不移除该 ID-bound 语义。统一编辑风险 Tooltip 由 [[../20260812_open_enforce-an-audited-move-calculation-boundary|Enforce an audited Move calculation boundary]] 实现。
+Weather Ball（Move ID 311）在全部当前天气选择下可计算。Scenario Move Type 为 `none`→Normal、`sun`→Fire、`rain`→Water、`sand`→Rock、`snow`→Ice；非 `none` 时对 Snapshot power 施加 `8192`（2×）Base Power，晴雨 generic 伤害再按变化后的属性结算。Cloud Nine／Air Lock 压制后按无天气处理；Mega Sol 的 effective sun 现在会驱动 Weather Ball。编辑 Snapshot 不移除该 ID-bound 语义。统一编辑风险 Tooltip 由 [[20260812_closed_enforce-an-audited-move-calculation-boundary|Enforce an audited Move calculation boundary]] 实现。
 
 Trace: [[../docs/traces/implementations/2026-08-15-weather-ball|2026-08-15-weather-ball]]。

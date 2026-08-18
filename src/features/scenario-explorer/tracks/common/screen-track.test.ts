@@ -29,6 +29,7 @@ describe("Screen Track", () => {
 
   it("shows active screens inline, folds inactive screens, and omits no screen", () => {
     const row: ScenarioResult = {
+      support: "supported",
       calculationIdentity: "screen-display",
       snapshotId: "screen-display",
       moveId: 33,

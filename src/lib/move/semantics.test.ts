@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import {
+  auditedMoveWarning,
   isMoveExplicitlyUnsupported,
   moveBreaksScreensBeforeDamage,
   resolveReviewedMoveType,
@@ -52,5 +53,28 @@ describe("reviewed move semantics", () => {
     expect(moveBreaksScreensBeforeDamage(873)).toBe(true)
     expect(moveBreaksScreensBeforeDamage(280)).toBe(true)
     expect(moveBreaksScreensBeforeDamage(706)).toBe(true)
+  })
+
+  it("maps every audited Move identity to one warning", () => {
+    const groups = {
+      "multi-hit": [
+        3, 4, 24, 31, 41, 42, 131, 140, 154, 155, 167, 198, 292, 331, 333, 350,
+        458, 530, 541, 544, 594, 742, 751, 799, 813, 814, 818, 860, 865, 888, 911,
+      ],
+      "target-stat-change": [
+        51, 94, 231, 242, 247, 249, 295, 306, 405, 411, 412, 414, 430, 465, 491,
+        534, 680, 708, 710, 787, 788, 823, 855,
+      ],
+      "attacker-stat-change": [
+        232, 246, 276, 309, 315, 318, 354, 434, 437, 451, 466, 552, 612, 705, 800,
+        871, 874, 905,
+      ],
+    } as const
+
+    expect(Object.values(groups).flat()).toHaveLength(72)
+    for (const [warning, moveIds] of Object.entries(groups)) {
+      for (const moveId of moveIds) expect(auditedMoveWarning(moveId)).toBe(warning)
+    }
+    expect(auditedMoveWarning(89)).toBeUndefined()
   })
 })

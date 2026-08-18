@@ -8,6 +8,7 @@ import {
   type ProbabilityInput,
   type RawScenarioPoint,
   type ScenarioSource,
+  type ScenarioSupport,
   compileScenario,
   projectMoveMechanics,
 } from "@/lib/damage-calculation"
@@ -241,6 +242,7 @@ type ScenarioResultContext = Pick<
 
 type CalculableGroup = {
   outcome: CalculableScenario
+  support: ScenarioSupport
   allAlwaysHits: boolean
   context: ScenarioResultContext
   provenance: ScenarioProvenance
@@ -331,6 +333,7 @@ export function runScenarioPipeline(
                         const identity = calculationIdentity(outcome)
                         const group = calculableGroups.get(identity) ?? {
                           outcome,
+                          support: outcome.support,
                           allAlwaysHits: true,
                           context: {
                             snapshotId: snapshot.id,
@@ -353,6 +356,7 @@ export function runScenarioPipeline(
                           provenance: {},
                         }
                         group.allAlwaysHits &&= outcome.hitFact === "always-hits"
+                        if (outcome.support === "semi-supported") group.support = outcome.support
                         addSources(group.provenance, outcome.sources)
                         calculableGroups.set(identity, group)
                       }
@@ -378,6 +382,7 @@ export function runScenarioPipeline(
       : group.outcome.probability.hitProbability * 100
     return {
       calculationIdentity: identity,
+      support: group.support,
       ...group.context,
       provenance: group.provenance,
       criticalOnly: group.outcome.calculation.low.normal === undefined,

@@ -102,4 +102,4 @@ Reason:
 最短路径只补计算语义。本票 verification 中的 locale 文案覆盖剩余 unavailable 原因；Weather Ball 不再产生 `weather-type-change`。
 
 Follow-up:
-由 [[../../.issues/20260812_open_enforce-an-audited-move-calculation-boundary|Enforce an audited Move calculation boundary]] 实现统一编辑风险 Tooltip。
+由 [[../../.issues/archive/20260812_closed_enforce-an-audited-move-calculation-boundary|Enforce an audited Move calculation boundary]] 实现统一编辑风险 Tooltip。

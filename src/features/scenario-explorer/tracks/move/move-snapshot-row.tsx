@@ -1,4 +1,4 @@
-import { Check, ChevronDown, Trash2 } from "lucide-react"
+import { Check, ChevronDown, CircleAlert, Trash2 } from "lucide-react"
 import { useState } from "react"
 import { useIntl } from "react-intl"
 
@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import type { CatalogMoveOption } from "@/lib/catalog"
-import type { MoveSnapshot } from "@/lib/move"
+import { auditedMoveWarning, type MoveSnapshot } from "@/lib/move"
 import { cn } from "@/lib/utils"
 
 export type MoveSnapshotPatch = Partial<
@@ -204,10 +205,11 @@ export function MoveSnapshotRow({
   onRemove: () => void
 }) {
   const intl = useIntl()
+  const warning = auditedMoveWarning(snapshot.moveId)
 
   return (
     <div className="border-t first:border-t-0">
-      <div className="grid min-h-11 grid-cols-[minmax(0,1fr)_auto] items-center sm:min-h-8">
+      <div className="grid min-h-11 grid-cols-[minmax(0,1fr)_auto_auto] items-center sm:min-h-8">
         <button
           type="button"
           aria-expanded={editing}
@@ -250,6 +252,27 @@ export function MoveSnapshotRow({
             )}
           />
         </button>
+        {warning ? (
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <button
+                  type="button"
+                  aria-label={intl.formatMessage(
+                    { id: "track.move.warning.label" },
+                    { move: option.label },
+                  )}
+                  className="grid size-8 place-items-center rounded-md text-destructive hover:bg-destructive/10 focus-visible:outline-2 focus-visible:outline-ring sm:size-6"
+                />
+              }
+            >
+              <CircleAlert aria-hidden="true" className="size-3.5" strokeWidth={2.5} />
+            </TooltipTrigger>
+            <TooltipContent side="top" className="max-w-xs rounded-xl border-2 border-ink bg-paper p-2 text-xs shadow-hud-panel">
+              {intl.formatMessage({ id: `track.move.warning.${warning}` })}
+            </TooltipContent>
+          </Tooltip>
+        ) : null}
         <MoveSelectionToggle
           option={option}
           selected={selected}

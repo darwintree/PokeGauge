@@ -25,6 +25,7 @@ import {
   normalizeSnapshotPower,
 } from "@/lib/move"
 import {
+  auditedMoveWarning,
   isMoveExplicitlyUnsupported,
   moveBreaksScreensBeforeDamage,
   resolveReviewedMoveType,
@@ -116,8 +117,11 @@ export type ScenarioSource = {
   state: TrackSelectionActivation
 }
 
+export type ScenarioSupport = "supported" | "semi-supported"
+
 export type CalculableScenario = {
   kind: "calculable"
+  support: ScenarioSupport
   snapshotId: string
   move: {
     type: PokemonType
@@ -1024,6 +1028,9 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
 
   return {
     kind: "calculable",
+    support: auditedMoveWarning(raw.snapshot.moveId) || raw.terrain === "grassy"
+      ? "semi-supported"
+      : "supported",
     snapshotId: raw.snapshot.id,
     move: {
       type: moveType,

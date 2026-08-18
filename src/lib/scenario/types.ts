@@ -4,6 +4,7 @@ import type {
   ProbabilityMode,
   Screen,
   ScenarioTrack,
+  ScenarioSupport,
   TrackSelectionActivation,
   StatStage,
   Terrain,
@@ -15,6 +16,8 @@ import type { StatRange } from "@/lib/stat-calculation"
 import type { MoveSnapshot } from "@/lib/move"
 import type { StatPreset } from "@/lib/stat-preset"
 import type { HeldItemId } from "@/lib/held-item"
+
+export type { ScenarioSupport } from "@/lib/damage-calculation"
 
 export type { StatRange } from "@/lib/stat-calculation"
 
@@ -62,6 +65,7 @@ export type TrackState = {
 }
 
 export type ScenarioResult = {
+  support: ScenarioSupport
   calculationIdentity: string
   snapshotId: string
   moveId: number

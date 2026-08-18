@@ -163,6 +163,7 @@ it("marks assumed-satisfied abilities with green disclosure and no red unsupport
 
 it("renders active abilities inline and folds inactive and unsupported states", () => {
   const row: ScenarioResult = {
+    support: "supported",
     calculationIdentity: "ability-display",
     snapshotId: "ability-display",
     moveId: 33,
