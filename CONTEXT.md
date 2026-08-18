@@ -196,6 +196,12 @@ _Avoid_: Average KO Probability, Probability Distribution
 由 Scenario 编译结果按 kernel 阶段顺序折算出的展示数值，用于估算伤害：`伤害 ≈ 攻击 × 等效威力 / 防御`；按普通／会心分支分别折算，属性免疫显示 0，不是 kernel 直接使用的数值。
 _Avoid_: 最终威力, effective power, kernel input power
 
+## 产品表面
+
+**Usage Tip（用法提示）**:
+由一份结构维护的若干条带标题与正文的产品用法说明；每次进入结果表面时从中随机展示一条。不在 Matchup 落地页出现。不是 Unavailable Scenario 的 Notice，也不是 Track 披露。产品名不用「每日」。
+_Avoid_: 每日提示, Daily Tip, Notice, Hint (as Track disclosure)
+
 ## 宝可梦游戏
 
 **Pokémon Species（宝可梦种类）**:

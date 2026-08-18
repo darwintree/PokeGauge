@@ -7,16 +7,14 @@ import { MovePickerRowsPrototype } from "@/features/scenario-explorer/tracks/mov
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { loadInitialLocale, localeMessages, saveLocale, type SupportedLocale } from "@/lib/i18n"
 
-function readMovePickerRowsPrototype() {
-  return (
-    import.meta.env.DEV &&
-    new URLSearchParams(window.location.search).get("prototype") === "move-picker-rows"
-  )
+function readPrototypeName() {
+  if (!import.meta.env.DEV) return null
+  return new URLSearchParams(window.location.search).get("prototype")
 }
 
 function App() {
   const [locale, setLocaleState] = useState<SupportedLocale>(loadInitialLocale)
-  const movePickerRowsPrototype = readMovePickerRowsPrototype()
+  const prototypeName = readPrototypeName()
 
   useEffect(() => {
     document.documentElement.lang = locale
@@ -33,7 +31,7 @@ function App() {
         <div className="min-h-dvh bg-bg-app">
           <AppHeader locale={locale} onLocaleChange={setLocale} />
           <div className="mx-auto max-w-7xl">
-            {movePickerRowsPrototype ? (
+            {prototypeName === "move-picker-rows" ? (
               <MovePickerRowsPrototype locale={locale} />
             ) : (
               <ScenarioExplorerPage locale={locale} />

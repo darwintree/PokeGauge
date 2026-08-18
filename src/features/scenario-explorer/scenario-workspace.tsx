@@ -13,6 +13,7 @@ import { ScenarioSetupPanel } from "./scenario-setup-panel"
 import { ResultSetSummary } from "./results-summary"
 import { SetupBookmarkControls } from "./setup-bookmarks"
 import { useScenarioState } from "./state/use-scenario-state"
+import { UsageTip } from "./usage-tip/usage-tip"
 
 type LocalizedCatalogState = {
   attackers: BattlePokemonOption[]
@@ -149,7 +150,8 @@ export function ScenarioWorkspace({
         <main
           id="damage-results"
           className={cn(
-            "min-w-0 flex-1 space-y-5 lg:block",
+            "flex min-h-[calc(100svh-8rem)] min-w-0 flex-1 flex-col lg:flex",
+            state.rows.length > 0 ? "space-y-5" : "gap-5",
             mobileView !== "results" && "hidden",
           )}
         >
@@ -195,6 +197,15 @@ export function ScenarioWorkspace({
             onShowResultStatValueChange={state.setShowResultStatValue}
             onProbabilityModeChange={state.setProbabilityMode}
           />
+          {state.rows.length > 0 ? (
+            <UsageTip key={`${attackerId}:${defenderId}`} attached />
+          ) : (
+            <div className="flex min-h-0 flex-1 items-center">
+              <div className="w-full">
+                <UsageTip key={`${attackerId}:${defenderId}`} />
+              </div>
+            </div>
+          )}
         </main>
       </div>
     </div>
