@@ -1,9 +1,11 @@
+import { Bookmark, MessageSquareWarning, Share2 } from "lucide-react"
+
 export const USAGE_TIP_MUTE_STORAGE_KEY = "pokegauge.usage-tip.mute-date"
 
 export const USAGE_TIPS = [
-  { id: "feedback", titleId: "usageTip.feedback.title", bodyId: "usageTip.feedback.body" },
-  { id: "share", titleId: "usageTip.share.title", bodyId: "usageTip.share.body" },
-  { id: "bookmark", titleId: "usageTip.bookmark.title", bodyId: "usageTip.bookmark.body" },
+  { id: "feedback", icon: MessageSquareWarning, titleId: "usageTip.feedback.title", bodyId: "usageTip.feedback.body" },
+  { id: "share", icon: Share2, titleId: "usageTip.share.title", bodyId: "usageTip.share.body" },
+  { id: "bookmark", icon: Bookmark, titleId: "usageTip.bookmark.title", bodyId: "usageTip.bookmark.body" },
 ] as const
 
 export type UsageTipId = (typeof USAGE_TIPS)[number]["id"]

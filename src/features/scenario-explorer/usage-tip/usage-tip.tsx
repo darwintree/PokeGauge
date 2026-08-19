@@ -1,4 +1,4 @@
-import { Lightbulb, X } from "lucide-react"
+import { X } from "lucide-react"
 import { useState } from "react"
 import { useIntl } from "react-intl"
 
@@ -17,6 +17,8 @@ export function UsageTip({ attached }: { attached?: boolean }) {
 
   if (muted || !tip) return null
 
+  const Icon = tip.icon
+
   function dismiss() {
     muteUsageTipsForLocalDay()
     setMuted(true)
@@ -24,13 +26,16 @@ export function UsageTip({ attached }: { attached?: boolean }) {
 
   return (
     <aside className={cn("flex items-start gap-3", attached && "border-t border-hairline pt-3")}>
-      <Lightbulb className="mt-0.5 size-4 shrink-0 text-ink" strokeWidth={2.5} aria-hidden />
+      <Icon className="mt-0.5 size-4 shrink-0 text-ink" strokeWidth={2.5} aria-hidden />
       <div className="min-w-0 flex-1">
         <p className="text-[11px] font-extrabold tracking-tight text-ink">
           {intl.formatMessage({ id: tip.titleId })}
         </p>
         <p className="mt-0.5 text-[12px] leading-snug font-medium text-hud-muted">
-          {intl.formatMessage({ id: tip.bodyId })}
+          {intl.formatMessage(
+            { id: tip.bodyId },
+            { b: (chunks) => <strong className="font-extrabold text-ink">{chunks}</strong> },
+          )}
         </p>
       </div>
       <button
