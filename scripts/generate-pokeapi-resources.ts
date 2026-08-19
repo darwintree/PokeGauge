@@ -1,6 +1,8 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises"
 import path from "node:path"
 
+import { Generations, toID } from "@smogon/calc"
+
 import { FROZEN_HELD_ITEMS } from "../src/lib/held-item/inventory"
 
 type SupportedLocale = "zh-hans" | "zh-hant" | "en" | "ja"
@@ -41,6 +43,131 @@ const ABILITY_IDS_WITHOUT_CALC = new Set([
   303, 308, 309, 310, 311, 312, 313,
 ])
 
+/**
+ * PokeAPI Battle Pokemon identity -> @smogon/calc species name for names that
+ * the generic merge rule cannot reproduce (name collisions, or PokeAPI forms
+ * whose calc counterpart drops the distinguishing token).
+ */
+const CALC_SPECIES_NAME_BY_ID: Record<number, string> = {
+  681: "Aegislash-Shield",
+  10034: "Charizard-Mega-X",
+  10035: "Charizard-Mega-Y",
+  10043: "Mewtwo-Mega-X",
+  10044: "Mewtwo-Mega-Y",
+  10080: "Pikachu",
+  10081: "Pikachu",
+  10082: "Pikachu",
+  10083: "Pikachu",
+  10084: "Pikachu",
+  10085: "Pikachu",
+  10086: "Hoopa-Unbound",
+  10119: "Zygarde",
+  10136: "Minior",
+  10137: "Minior",
+  10138: "Minior",
+  10139: "Minior",
+  10140: "Minior",
+  10141: "Minior",
+  10142: "Minior",
+  10178: "Darmanitan-Galar-Zen",
+  10184: "Toxtricity-Low-Key",
+  10228: "Toxtricity-Low-Key-Gmax",
+  10255: "Dudunsparce-Three-Segment",
+  10257: "Maushold",
+  10264: "Koraidon",
+  10265: "Koraidon",
+  10266: "Koraidon",
+  10267: "Koraidon",
+  10268: "Miraidon",
+  10269: "Miraidon",
+  10270: "Miraidon",
+  10271: "Miraidon",
+  10304: "Raichu-Mega-X",
+  10305: "Raichu-Mega-Y",
+  10307: "Absol-Mega-Z",
+  10309: "Garchomp-Mega-Z",
+  10310: "Lucario-Mega-Z",
+  10314: "Meowstic-M-Mega",
+  10318: "Magearna-Original-Mega",
+  10322: "Tatsugiri-Curly-Mega",
+  10323: "Tatsugiri-Droopy-Mega",
+  10324: "Tatsugiri-Stretchy-Mega",
+}
+
+/**
+ * Tokens in a PokeAPI form name that identify the calc form suffix rather than
+ * the species identity (e.g. "-Alolan Form", "-Mega Venusaur", "-Original Color").
+ */
+const CALC_SPECIES_DROP_TOKENS = new Set([
+  "form", "forme", "mode", "size", "cloak", "style", "core", "reversion",
+  "flower", "segment", "mask", "plumage", "build", "rider", "sword", "shield",
+  "cap", "breed", "color", "face", "family", "of", "key", "power", "construct",
+  "limited", "sprinting", "swimming", "gliding", "drive", "aquatic", "glide",
+  "low",
+])
+
+/**
+ * Color tokens dropped only when they terminate the name (Minior core,
+ * Oricorio style, Squawkabilly plumage). "Blue" inside "Basculin-Blue-Striped"
+ * is a species qualifier and must be kept.
+ */
+const CALC_SPECIES_SUFFIX_DROP_TOKENS = new Set([
+  "red", "orange", "yellow", "green", "blue", "indigo", "violet",
+])
+
+/** Token normalization aliases for PokeAPI name -> calc species name. */
+const CALC_SPECIES_TOKEN_ALIAS: Record<string, string> = {
+  alolan: "Alola",
+  galarian: "Galar",
+  hisuian: "Hisui",
+  paldean: "Paldea",
+  gigantamax: "Gmax",
+  "ph.d.": "PhD",
+  female: "F",
+  male: "M",
+  "10%": "10%",
+}
+
+/** Map a PokeAPI Battle Pokemon display name to the @smogon/calc species name. */
+function calcSpeciesNameFor(pokemonId: number, displayName: string): string {
+  const special = CALC_SPECIES_NAME_BY_ID[pokemonId]
+  if (special) return special
+  if (Generations.get(9).species.get(toID(displayName))) return displayName
+
+  let name = displayName
+    .normalize("NFKD")
+    .replace(/[♀♂]/g, (mark) => (mark === "♀" ? "-F" : "-M"))
+    .replace(/[’‘]/g, "'")
+    .replace(/pa(’|')u/gi, "Pa'u")
+    .replace(/ph.?d.?/gi, "PhD")
+    .replace(/low[ -]key/gi, "Low-key")
+    .replace(/power[ -]construct/gi, "Power-construct")
+    .replace(/family of three/gi, "Three")
+    .replace(/family of four/gi, "Four")
+    .replace(/[()]/g, " ")
+    .replace(/[^A-Za-z0-9%'-]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+
+  const rawTokens = name.split("-").filter(Boolean)
+  const tokens = rawTokens
+    .map((token, index) => {
+      const lower = token.toLowerCase()
+      if (CALC_SPECIES_DROP_TOKENS.has(lower)) return null
+      if (index === rawTokens.length - 1 && CALC_SPECIES_SUFFIX_DROP_TOKENS.has(lower)) {
+        return null
+      }
+      return CALC_SPECIES_TOKEN_ALIAS[lower] ?? token
+    })
+    .filter((token): token is string => token !== null)
+  const dedupedTrailingSpecies = tokens.length >= 2 &&
+    tokens[tokens.length - 1].toLowerCase() === tokens[0].toLowerCase()
+    ? tokens.slice(0, -1)
+    : tokens
+  const merged = dedupedTrailingSpecies.join("-")
+  return Generations.get(9).species.get(toID(merged))
+    ? merged
+    : displayName
+}
 
 const TYPE_BY_ID: Record<string, string> = {}
 const DAMAGE_CLASS_BY_ID: Record<string, string> = {}
@@ -320,7 +447,7 @@ async function main() {
         evioliteEligible: evioliteEligible(pokemon),
         pokemonSlug: pokemon.identifier,
         speciesSlug: species?.identifier ?? pokemon.identifier,
-        calcSpeciesName: names.en || pokemon.identifier,
+        calcSpeciesName: calcSpeciesNameFor(id, names.en || pokemon.identifier),
         names,
         speciesNames,
         formNames,

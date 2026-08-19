@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest"
 
+import { Generations, toID } from "@smogon/calc"
+
 import {
   getBattlePokemonById,
   getBattlePokemonByCalcName,
@@ -8,6 +10,7 @@ import {
   getMoveByCalcName,
   getResource,
   getResourceDiagnostics,
+  listResources,
   listHistoricalLearnableMoveIds,
   ResourceLookupError,
 } from "@/lib/resources"
@@ -126,6 +129,35 @@ describe("localized resource access", () => {
 
     expect(getBattlePokemonByCalcName("Raticate")?.id).toBe(20)
     expect(getMoveByCalcName("Breakneck Blitz")?.id).toBe(622)
+  })
+
+  it("merges every PokeAPI form to a @smogon/calc Gen 9 species name", async () => {
+    const pokemon = await listResources("pokemon", "en")
+    const gen = Generations.get(9)
+    const unresolvable = pokemon.filter(
+      (resource) => !gen.species.get(toID(resource.calcSpeciesName)),
+    )
+    expect(unresolvable).toEqual([])
+  })
+
+  it("maps representative form identities to their calc species", async () => {
+    const cases: Array<[number, string]> = [
+      [10008, "Rotom-Heat"],
+      [10033, "Venusaur-Mega"],
+      [10034, "Charizard-Mega-X"],
+      [10091, "Rattata-Alola"],
+      [10117, "Greninja-Ash"],
+      [10178, "Darmanitan-Galar-Zen"],
+      [10184, "Toxtricity-Low-Key"],
+      [10255, "Dudunsparce-Three-Segment"],
+      [10257, "Maushold"],
+      [10314, "Meowstic-M-Mega"],
+    ]
+    await Promise.all(cases.map(([id]) => getResource("pokemon", id, "en")))
+    for (const [id, expected] of cases) {
+      const resource = getBattlePokemonById(id)
+      expect(resource?.calcSpeciesName, String(id)).toBe(expected)
+    }
   })
 
   it("rejects unknown ids at the resource seam", async () => {
