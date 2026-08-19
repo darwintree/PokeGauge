@@ -1,5 +1,5 @@
-import { X } from "lucide-react"
-import { useState } from "react"
+import { Bookmark, Lightbulb, X, type LucideIcon } from "lucide-react"
+import { useState, type ReactNode } from "react"
 import { useIntl } from "react-intl"
 
 import { cn } from "@/lib/utils"
@@ -10,14 +10,21 @@ import {
   pickUsageTip,
 } from "./usage-tips"
 
+function TipPill({ icon: Icon, children }: { icon: LucideIcon; children: ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-1 align-middle font-extrabold text-ink">
+      <Icon className="size-3.5 shrink-0" strokeWidth={2.5} aria-hidden />
+      {children}
+    </span>
+  )
+}
+
 export function UsageTip({ attached }: { attached?: boolean }) {
   const intl = useIntl()
   const [muted, setMuted] = useState(isUsageTipMutedOn)
   const [tip] = useState(pickUsageTip)
 
   if (muted || !tip) return null
-
-  const Icon = tip.icon
 
   function dismiss() {
     muteUsageTipsForLocalDay()
@@ -26,15 +33,18 @@ export function UsageTip({ attached }: { attached?: boolean }) {
 
   return (
     <aside className={cn("flex items-start gap-3", attached && "border-t border-hairline pt-3")}>
-      <Icon className="mt-0.5 size-4 shrink-0 text-ink" strokeWidth={2.5} aria-hidden />
+      <Lightbulb className="mt-0.5 size-4 shrink-0 text-ink" strokeWidth={2.5} aria-hidden />
       <div className="min-w-0 flex-1">
-        <p className="text-[11px] font-extrabold tracking-tight text-ink">
+        <p className="text-xs font-extrabold tracking-tight text-ink">
           {intl.formatMessage({ id: tip.titleId })}
         </p>
-        <p className="mt-0.5 text-[12px] leading-snug font-medium text-hud-muted">
+        <p className="mt-0.5 text-[11px] leading-snug font-medium text-hud-muted">
           {intl.formatMessage(
             { id: tip.bodyId },
-            { b: (chunks) => <strong className="font-extrabold text-ink">{chunks}</strong> },
+            {
+              b: (chunks) => <TipPill icon={tip.icon}>{chunks}</TipPill>,
+              bookmark: (chunks) => <TipPill icon={Bookmark}>{chunks}</TipPill>,
+            },
           )}
         </p>
       </div>
