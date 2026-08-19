@@ -53717,9 +53717,7 @@ export const GENERATED_POKEMON = {
       "grass",
       "fairy"
     ],
-    "abilityIds": [
-      310
-    ],
+    "abilityIds": [],
     "baseStats": {
       "hp": 80,
       "atk": 92,
@@ -53761,9 +53759,7 @@ export const GENERATED_POKEMON = {
       "water",
       "dragon"
     ],
-    "abilityIds": [
-      309
-    ],
+    "abilityIds": [],
     "baseStats": {
       "hp": 85,
       "atk": 160,
@@ -53937,9 +53933,7 @@ export const GENERATED_POKEMON = {
       "ground",
       "steel"
     ],
-    "abilityIds": [
-      308
-    ],
+    "abilityIds": [],
     "baseStats": {
       "hp": 110,
       "atk": 165,
@@ -54068,9 +54062,7 @@ export const GENERATED_POKEMON = {
     "types": [
       "electric"
     ],
-    "abilityIds": [
-      312
-    ],
+    "abilityIds": [],
     "baseStats": {
       "hp": 85,
       "atk": 145,
@@ -54288,9 +54280,7 @@ export const GENERATED_POKEMON = {
       "fire",
       "normal"
     ],
-    "abilityIds": [
-      313
-    ],
+    "abilityIds": [],
     "baseStats": {
       "hp": 86,
       "atk": 88,
@@ -55360,9 +55350,7 @@ export const GENERATED_POKEMON = {
       "grass",
       "fire"
     ],
-    "abilityIds": [
-      311
-    ],
+    "abilityIds": [],
     "baseStats": {
       "hp": 65,
       "atk": 138,

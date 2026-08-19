@@ -21,6 +21,27 @@ const EVIOLITE_ELIGIBILITY_OVERRIDES = new Set([10027, 10028, 10029, 10263])
 const GEN_8_ITEM_SPRITES = new Set([1181])
 const GEN_9_ITEM_SPRITES = new Set([2105, 2106, 2107, 2108])
 
+/**
+ * PokeAPI ability -> Smogon calc ability name.
+ * Most match by toID of the English name. "As One" exists as two calc entries
+ * keyed by rider; PokeAPI ids 266/267 disambiguate. Entries with no calc
+ * counterpart (newer than @smogon/calc 0.11.0, or non-main-series XD) are dropped.
+ */
+const ABILITY_CALC_NAME_OVERRIDES: Record<number, string> = {
+  266: "As One (Glastrier)",
+  267: "As One (Spectrier)",
+}
+
+/**
+ * Abilities without a @smogon/calc 0.11.0 gen9 counterpart are excluded from
+ * generated resources: newer main-series entries (303, 308-313) and
+ * non-main-series XD entries (10002+).
+ */
+const ABILITY_IDS_WITHOUT_CALC = new Set([
+  303, 308, 309, 310, 311, 312, 313,
+])
+
+
 const TYPE_BY_ID: Record<string, string> = {}
 const DAMAGE_CLASS_BY_ID: Record<string, string> = {}
 const META_CATEGORY_BY_ID: Record<string, string> = {}
@@ -270,6 +291,7 @@ async function main() {
     const abilityIds = (pokemonAbilitiesById.get(id) ?? [])
       .toSorted((a, b) => Number(a.slot) - Number(b.slot) || Number(a.ability_id) - Number(b.ability_id))
       .map((entry) => requiredNumber(entry, "ability_id"))
+      .filter((abilityId) => !ABILITY_IDS_WITHOUT_CALC.has(abilityId) && abilityId <= 10000)
     const stats = Object.fromEntries(
       (pokemonStatsById.get(id) ?? []).map((entry) => [STAT_KEY_BY_ID[entry.stat_id], Number(entry.base_stat)]),
     )
@@ -362,17 +384,23 @@ async function main() {
     .map(([pokemonId, moveIds]) => [pokemonId, [...moveIds].sort((a, b) => a - b)] as const)
 
   const abilityNamesByAbilityId = groupByNumber(abilityNameRows, "ability_id")
-  const abilityEntries = abilityRows.map((ability) => {
+  const abilityEntries = abilityRows.flatMap((ability) => {
     const id = requiredNumber(ability, "id")
+    const names = namesByLocale("ability", id, abilityNamesByAbilityId.get(id) ?? [], "name")
+    const calcAbilityName = ABILITY_CALC_NAME_OVERRIDES[id] ?? names.en
+    if (ABILITY_IDS_WITHOUT_CALC.has(id) || id > 10000) return []
     return [
-      id,
-      {
-        resourceType: "ability",
+      [
         id,
-        slug: ability.identifier,
-        names: namesByLocale("ability", id, abilityNamesByAbilityId.get(id) ?? [], "name"),
-      },
-    ] as const
+        {
+          resourceType: "ability",
+          id,
+          slug: ability.identifier,
+          calcAbilityName,
+          names,
+        },
+      ] as const,
+    ]
   })
 
   const itemNamesByItemId = groupByNumber(itemNameRows, "item_id")
@@ -387,6 +415,7 @@ async function main() {
         resourceType: "item",
         id: inventoryItem.id,
         slug,
+        calcItemName: inventoryItem.calcItemName,
         names: namesByLocale(
           "item",
           inventoryItem.id,
@@ -409,6 +438,7 @@ async function main() {
           resourceType: "item",
           id,
           slug,
+          calcItemName: itemNamesByItemId.get(id)?.find((row) => row.local_language_id === "9")?.name ?? slug,
           names: namesByLocale("item", id, itemNamesByItemId.get(id) ?? [], "name"),
           spriteSourcePath: itemSpriteSourcePath(id, slug),
         },

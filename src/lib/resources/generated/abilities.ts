@@ -5,6 +5,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 1,
     "slug": "stench",
+    "calcAbilityName": "Stench",
     "names": {
       "zh-hans": "恶臭",
       "zh-hant": "惡臭",
@@ -16,6 +17,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 2,
     "slug": "drizzle",
+    "calcAbilityName": "Drizzle",
     "names": {
       "zh-hans": "降雨",
       "zh-hant": "降雨",
@@ -27,6 +29,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 3,
     "slug": "speed-boost",
+    "calcAbilityName": "Speed Boost",
     "names": {
       "zh-hans": "加速",
       "zh-hant": "加速",
@@ -38,6 +41,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 4,
     "slug": "battle-armor",
+    "calcAbilityName": "Battle Armor",
     "names": {
       "zh-hans": "战斗盔甲",
       "zh-hant": "戰鬥盔甲",
@@ -49,6 +53,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 5,
     "slug": "sturdy",
+    "calcAbilityName": "Sturdy",
     "names": {
       "zh-hans": "结实",
       "zh-hant": "結實",
@@ -60,6 +65,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 6,
     "slug": "damp",
+    "calcAbilityName": "Damp",
     "names": {
       "zh-hans": "湿气",
       "zh-hant": "濕氣",
@@ -71,6 +77,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 7,
     "slug": "limber",
+    "calcAbilityName": "Limber",
     "names": {
       "zh-hans": "柔软",
       "zh-hant": "柔軟",
@@ -82,6 +89,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 8,
     "slug": "sand-veil",
+    "calcAbilityName": "Sand Veil",
     "names": {
       "zh-hans": "沙隐",
       "zh-hant": "沙隱",
@@ -93,6 +101,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 9,
     "slug": "static",
+    "calcAbilityName": "Static",
     "names": {
       "zh-hans": "静电",
       "zh-hant": "靜電",
@@ -104,6 +113,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 10,
     "slug": "volt-absorb",
+    "calcAbilityName": "Volt Absorb",
     "names": {
       "zh-hans": "蓄电",
       "zh-hant": "蓄電",
@@ -115,6 +125,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 11,
     "slug": "water-absorb",
+    "calcAbilityName": "Water Absorb",
     "names": {
       "zh-hans": "储水",
       "zh-hant": "儲水",
@@ -126,6 +137,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 12,
     "slug": "oblivious",
+    "calcAbilityName": "Oblivious",
     "names": {
       "zh-hans": "迟钝",
       "zh-hant": "遲鈍",
@@ -137,6 +149,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 13,
     "slug": "cloud-nine",
+    "calcAbilityName": "Cloud Nine",
     "names": {
       "zh-hans": "无关天气",
       "zh-hant": "無關天氣",
@@ -148,6 +161,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 14,
     "slug": "compound-eyes",
+    "calcAbilityName": "Compound Eyes",
     "names": {
       "zh-hans": "复眼",
       "zh-hant": "複眼",
@@ -159,6 +173,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 15,
     "slug": "insomnia",
+    "calcAbilityName": "Insomnia",
     "names": {
       "zh-hans": "不眠",
       "zh-hant": "不眠",
@@ -170,6 +185,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 16,
     "slug": "color-change",
+    "calcAbilityName": "Color Change",
     "names": {
       "zh-hans": "变色",
       "zh-hant": "變色",
@@ -181,6 +197,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 17,
     "slug": "immunity",
+    "calcAbilityName": "Immunity",
     "names": {
       "zh-hans": "免疫",
       "zh-hant": "免疫",
@@ -192,6 +209,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 18,
     "slug": "flash-fire",
+    "calcAbilityName": "Flash Fire",
     "names": {
       "zh-hans": "引火",
       "zh-hant": "引火",
@@ -203,6 +221,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 19,
     "slug": "shield-dust",
+    "calcAbilityName": "Shield Dust",
     "names": {
       "zh-hans": "鳞粉",
       "zh-hant": "鱗粉",
@@ -214,6 +233,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 20,
     "slug": "own-tempo",
+    "calcAbilityName": "Own Tempo",
     "names": {
       "zh-hans": "我行我素",
       "zh-hant": "我行我素",
@@ -225,6 +245,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 21,
     "slug": "suction-cups",
+    "calcAbilityName": "Suction Cups",
     "names": {
       "zh-hans": "吸盘",
       "zh-hant": "吸盤",
@@ -236,6 +257,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 22,
     "slug": "intimidate",
+    "calcAbilityName": "Intimidate",
     "names": {
       "zh-hans": "威吓",
       "zh-hant": "威嚇",
@@ -247,6 +269,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 23,
     "slug": "shadow-tag",
+    "calcAbilityName": "Shadow Tag",
     "names": {
       "zh-hans": "踩影",
       "zh-hant": "踩影",
@@ -258,6 +281,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 24,
     "slug": "rough-skin",
+    "calcAbilityName": "Rough Skin",
     "names": {
       "zh-hans": "粗糙皮肤",
       "zh-hant": "粗糙皮膚",
@@ -269,6 +293,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 25,
     "slug": "wonder-guard",
+    "calcAbilityName": "Wonder Guard",
     "names": {
       "zh-hans": "神奇守护",
       "zh-hant": "神奇守護",
@@ -280,6 +305,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 26,
     "slug": "levitate",
+    "calcAbilityName": "Levitate",
     "names": {
       "zh-hans": "飘浮",
       "zh-hant": "飄浮",
@@ -291,6 +317,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 27,
     "slug": "effect-spore",
+    "calcAbilityName": "Effect Spore",
     "names": {
       "zh-hans": "孢子",
       "zh-hant": "孢子",
@@ -302,6 +329,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 28,
     "slug": "synchronize",
+    "calcAbilityName": "Synchronize",
     "names": {
       "zh-hans": "同步",
       "zh-hant": "同步",
@@ -313,6 +341,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 29,
     "slug": "clear-body",
+    "calcAbilityName": "Clear Body",
     "names": {
       "zh-hans": "恒净之躯",
       "zh-hant": "恆淨之軀",
@@ -324,6 +353,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 30,
     "slug": "natural-cure",
+    "calcAbilityName": "Natural Cure",
     "names": {
       "zh-hans": "自然回复",
       "zh-hant": "自然回復",
@@ -335,6 +365,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 31,
     "slug": "lightning-rod",
+    "calcAbilityName": "Lightning Rod",
     "names": {
       "zh-hans": "避雷针",
       "zh-hant": "避雷針",
@@ -346,6 +377,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 32,
     "slug": "serene-grace",
+    "calcAbilityName": "Serene Grace",
     "names": {
       "zh-hans": "天恩",
       "zh-hant": "天恩",
@@ -357,6 +389,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 33,
     "slug": "swift-swim",
+    "calcAbilityName": "Swift Swim",
     "names": {
       "zh-hans": "悠游自如",
       "zh-hant": "悠游自如",
@@ -368,6 +401,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 34,
     "slug": "chlorophyll",
+    "calcAbilityName": "Chlorophyll",
     "names": {
       "zh-hans": "叶绿素",
       "zh-hant": "葉綠素",
@@ -379,6 +413,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 35,
     "slug": "illuminate",
+    "calcAbilityName": "Illuminate",
     "names": {
       "zh-hans": "发光",
       "zh-hant": "發光",
@@ -390,6 +425,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 36,
     "slug": "trace",
+    "calcAbilityName": "Trace",
     "names": {
       "zh-hans": "复制",
       "zh-hant": "複製",
@@ -401,6 +437,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 37,
     "slug": "huge-power",
+    "calcAbilityName": "Huge Power",
     "names": {
       "zh-hans": "大力士",
       "zh-hant": "大力士",
@@ -412,6 +449,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 38,
     "slug": "poison-point",
+    "calcAbilityName": "Poison Point",
     "names": {
       "zh-hans": "毒刺",
       "zh-hant": "毒刺",
@@ -423,6 +461,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 39,
     "slug": "inner-focus",
+    "calcAbilityName": "Inner Focus",
     "names": {
       "zh-hans": "精神力",
       "zh-hant": "精神力",
@@ -434,6 +473,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 40,
     "slug": "magma-armor",
+    "calcAbilityName": "Magma Armor",
     "names": {
       "zh-hans": "熔岩铠甲",
       "zh-hant": "熔岩鎧甲",
@@ -445,6 +485,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 41,
     "slug": "water-veil",
+    "calcAbilityName": "Water Veil",
     "names": {
       "zh-hans": "水幕",
       "zh-hant": "水幕",
@@ -456,6 +497,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 42,
     "slug": "magnet-pull",
+    "calcAbilityName": "Magnet Pull",
     "names": {
       "zh-hans": "磁力",
       "zh-hant": "磁力",
@@ -467,6 +509,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 43,
     "slug": "soundproof",
+    "calcAbilityName": "Soundproof",
     "names": {
       "zh-hans": "隔音",
       "zh-hant": "隔音",
@@ -478,6 +521,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 44,
     "slug": "rain-dish",
+    "calcAbilityName": "Rain Dish",
     "names": {
       "zh-hans": "雨盘",
       "zh-hant": "雨盤",
@@ -489,6 +533,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 45,
     "slug": "sand-stream",
+    "calcAbilityName": "Sand Stream",
     "names": {
       "zh-hans": "扬沙",
       "zh-hant": "揚沙",
@@ -500,6 +545,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 46,
     "slug": "pressure",
+    "calcAbilityName": "Pressure",
     "names": {
       "zh-hans": "压迫感",
       "zh-hant": "壓迫感",
@@ -511,6 +557,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 47,
     "slug": "thick-fat",
+    "calcAbilityName": "Thick Fat",
     "names": {
       "zh-hans": "厚脂肪",
       "zh-hant": "厚脂肪",
@@ -522,6 +569,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 48,
     "slug": "early-bird",
+    "calcAbilityName": "Early Bird",
     "names": {
       "zh-hans": "早起",
       "zh-hant": "早起",
@@ -533,6 +581,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 49,
     "slug": "flame-body",
+    "calcAbilityName": "Flame Body",
     "names": {
       "zh-hans": "火焰之躯",
       "zh-hant": "火焰之軀",
@@ -544,6 +593,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 50,
     "slug": "run-away",
+    "calcAbilityName": "Run Away",
     "names": {
       "zh-hans": "逃跑",
       "zh-hant": "逃跑",
@@ -555,6 +605,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 51,
     "slug": "keen-eye",
+    "calcAbilityName": "Keen Eye",
     "names": {
       "zh-hans": "锐利目光",
       "zh-hant": "銳利目光",
@@ -566,6 +617,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 52,
     "slug": "hyper-cutter",
+    "calcAbilityName": "Hyper Cutter",
     "names": {
       "zh-hans": "怪力钳",
       "zh-hant": "怪力鉗",
@@ -577,6 +629,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 53,
     "slug": "pickup",
+    "calcAbilityName": "Pickup",
     "names": {
       "zh-hans": "捡拾",
       "zh-hant": "撿拾",
@@ -588,6 +641,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 54,
     "slug": "truant",
+    "calcAbilityName": "Truant",
     "names": {
       "zh-hans": "懒惰",
       "zh-hant": "懶惰",
@@ -599,6 +653,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 55,
     "slug": "hustle",
+    "calcAbilityName": "Hustle",
     "names": {
       "zh-hans": "活力",
       "zh-hant": "活力",
@@ -610,6 +665,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 56,
     "slug": "cute-charm",
+    "calcAbilityName": "Cute Charm",
     "names": {
       "zh-hans": "迷人之躯",
       "zh-hant": "迷人之軀",
@@ -621,6 +677,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 57,
     "slug": "plus",
+    "calcAbilityName": "Plus",
     "names": {
       "zh-hans": "正电",
       "zh-hant": "正電",
@@ -632,6 +689,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 58,
     "slug": "minus",
+    "calcAbilityName": "Minus",
     "names": {
       "zh-hans": "负电",
       "zh-hant": "負電",
@@ -643,6 +701,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 59,
     "slug": "forecast",
+    "calcAbilityName": "Forecast",
     "names": {
       "zh-hans": "阴晴不定",
       "zh-hant": "陰晴不定",
@@ -654,6 +713,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 60,
     "slug": "sticky-hold",
+    "calcAbilityName": "Sticky Hold",
     "names": {
       "zh-hans": "黏着",
       "zh-hant": "黏著",
@@ -665,6 +725,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 61,
     "slug": "shed-skin",
+    "calcAbilityName": "Shed Skin",
     "names": {
       "zh-hans": "蜕皮",
       "zh-hant": "蛻皮",
@@ -676,6 +737,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 62,
     "slug": "guts",
+    "calcAbilityName": "Guts",
     "names": {
       "zh-hans": "毅力",
       "zh-hant": "毅力",
@@ -687,6 +749,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 63,
     "slug": "marvel-scale",
+    "calcAbilityName": "Marvel Scale",
     "names": {
       "zh-hans": "神奇鳞片",
       "zh-hant": "神奇鱗片",
@@ -698,6 +761,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 64,
     "slug": "liquid-ooze",
+    "calcAbilityName": "Liquid Ooze",
     "names": {
       "zh-hans": "污泥浆",
       "zh-hant": "污泥漿",
@@ -709,6 +773,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 65,
     "slug": "overgrow",
+    "calcAbilityName": "Overgrow",
     "names": {
       "zh-hans": "茂盛",
       "zh-hant": "茂盛",
@@ -720,6 +785,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 66,
     "slug": "blaze",
+    "calcAbilityName": "Blaze",
     "names": {
       "zh-hans": "猛火",
       "zh-hant": "猛火",
@@ -731,6 +797,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 67,
     "slug": "torrent",
+    "calcAbilityName": "Torrent",
     "names": {
       "zh-hans": "激流",
       "zh-hant": "激流",
@@ -742,6 +809,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 68,
     "slug": "swarm",
+    "calcAbilityName": "Swarm",
     "names": {
       "zh-hans": "虫之预感",
       "zh-hant": "蟲之預感",
@@ -753,6 +821,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 69,
     "slug": "rock-head",
+    "calcAbilityName": "Rock Head",
     "names": {
       "zh-hans": "坚硬脑袋",
       "zh-hant": "堅硬腦袋",
@@ -764,6 +833,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 70,
     "slug": "drought",
+    "calcAbilityName": "Drought",
     "names": {
       "zh-hans": "日照",
       "zh-hant": "日照",
@@ -775,6 +845,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 71,
     "slug": "arena-trap",
+    "calcAbilityName": "Arena Trap",
     "names": {
       "zh-hans": "沙穴",
       "zh-hant": "沙穴",
@@ -786,6 +857,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 72,
     "slug": "vital-spirit",
+    "calcAbilityName": "Vital Spirit",
     "names": {
       "zh-hans": "干劲",
       "zh-hant": "幹勁",
@@ -797,6 +869,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 73,
     "slug": "white-smoke",
+    "calcAbilityName": "White Smoke",
     "names": {
       "zh-hans": "白色烟雾",
       "zh-hant": "白色煙霧",
@@ -808,6 +881,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 74,
     "slug": "pure-power",
+    "calcAbilityName": "Pure Power",
     "names": {
       "zh-hans": "瑜伽之力",
       "zh-hant": "瑜伽之力",
@@ -819,6 +893,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 75,
     "slug": "shell-armor",
+    "calcAbilityName": "Shell Armor",
     "names": {
       "zh-hans": "硬壳盔甲",
       "zh-hant": "硬殼盔甲",
@@ -830,6 +905,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 76,
     "slug": "air-lock",
+    "calcAbilityName": "Air Lock",
     "names": {
       "zh-hans": "气闸",
       "zh-hant": "氣閘",
@@ -841,6 +917,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 77,
     "slug": "tangled-feet",
+    "calcAbilityName": "Tangled Feet",
     "names": {
       "zh-hans": "蹒跚",
       "zh-hant": "蹣跚",
@@ -852,6 +929,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 78,
     "slug": "motor-drive",
+    "calcAbilityName": "Motor Drive",
     "names": {
       "zh-hans": "电气引擎",
       "zh-hant": "電氣引擎",
@@ -863,6 +941,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 79,
     "slug": "rivalry",
+    "calcAbilityName": "Rivalry",
     "names": {
       "zh-hans": "斗争心",
       "zh-hant": "鬥爭心",
@@ -874,6 +953,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 80,
     "slug": "steadfast",
+    "calcAbilityName": "Steadfast",
     "names": {
       "zh-hans": "不屈之心",
       "zh-hant": "不屈之心",
@@ -885,6 +965,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 81,
     "slug": "snow-cloak",
+    "calcAbilityName": "Snow Cloak",
     "names": {
       "zh-hans": "雪隐",
       "zh-hant": "雪隱",
@@ -896,6 +977,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 82,
     "slug": "gluttony",
+    "calcAbilityName": "Gluttony",
     "names": {
       "zh-hans": "贪吃鬼",
       "zh-hant": "貪吃鬼",
@@ -907,6 +989,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 83,
     "slug": "anger-point",
+    "calcAbilityName": "Anger Point",
     "names": {
       "zh-hans": "愤怒穴位",
       "zh-hant": "憤怒穴位",
@@ -918,6 +1001,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 84,
     "slug": "unburden",
+    "calcAbilityName": "Unburden",
     "names": {
       "zh-hans": "轻装",
       "zh-hant": "輕裝",
@@ -929,6 +1013,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 85,
     "slug": "heatproof",
+    "calcAbilityName": "Heatproof",
     "names": {
       "zh-hans": "耐热",
       "zh-hant": "耐熱",
@@ -940,6 +1025,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 86,
     "slug": "simple",
+    "calcAbilityName": "Simple",
     "names": {
       "zh-hans": "单纯",
       "zh-hant": "單純",
@@ -951,6 +1037,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 87,
     "slug": "dry-skin",
+    "calcAbilityName": "Dry Skin",
     "names": {
       "zh-hans": "干燥皮肤",
       "zh-hant": "乾燥皮膚",
@@ -962,6 +1049,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 88,
     "slug": "download",
+    "calcAbilityName": "Download",
     "names": {
       "zh-hans": "下载",
       "zh-hant": "下載",
@@ -973,6 +1061,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 89,
     "slug": "iron-fist",
+    "calcAbilityName": "Iron Fist",
     "names": {
       "zh-hans": "铁拳",
       "zh-hant": "鐵拳",
@@ -984,6 +1073,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 90,
     "slug": "poison-heal",
+    "calcAbilityName": "Poison Heal",
     "names": {
       "zh-hans": "毒疗",
       "zh-hant": "毒療",
@@ -995,6 +1085,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 91,
     "slug": "adaptability",
+    "calcAbilityName": "Adaptability",
     "names": {
       "zh-hans": "适应力",
       "zh-hant": "適應力",
@@ -1006,6 +1097,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 92,
     "slug": "skill-link",
+    "calcAbilityName": "Skill Link",
     "names": {
       "zh-hans": "连续攻击",
       "zh-hant": "連續攻擊",
@@ -1017,6 +1109,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 93,
     "slug": "hydration",
+    "calcAbilityName": "Hydration",
     "names": {
       "zh-hans": "湿润之躯",
       "zh-hant": "濕潤之軀",
@@ -1028,6 +1121,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 94,
     "slug": "solar-power",
+    "calcAbilityName": "Solar Power",
     "names": {
       "zh-hans": "太阳之力",
       "zh-hant": "太陽之力",
@@ -1039,6 +1133,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 95,
     "slug": "quick-feet",
+    "calcAbilityName": "Quick Feet",
     "names": {
       "zh-hans": "飞毛腿",
       "zh-hant": "飛毛腿",
@@ -1050,6 +1145,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 96,
     "slug": "normalize",
+    "calcAbilityName": "Normalize",
     "names": {
       "zh-hans": "一般皮肤",
       "zh-hant": "一般皮膚",
@@ -1061,6 +1157,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 97,
     "slug": "sniper",
+    "calcAbilityName": "Sniper",
     "names": {
       "zh-hans": "狙击手",
       "zh-hant": "狙擊手",
@@ -1072,6 +1169,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 98,
     "slug": "magic-guard",
+    "calcAbilityName": "Magic Guard",
     "names": {
       "zh-hans": "魔法防守",
       "zh-hant": "魔法防守",
@@ -1083,6 +1181,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 99,
     "slug": "no-guard",
+    "calcAbilityName": "No Guard",
     "names": {
       "zh-hans": "无防守",
       "zh-hant": "無防守",
@@ -1094,6 +1193,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 100,
     "slug": "stall",
+    "calcAbilityName": "Stall",
     "names": {
       "zh-hans": "慢出",
       "zh-hant": "慢出",
@@ -1105,6 +1205,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 101,
     "slug": "technician",
+    "calcAbilityName": "Technician",
     "names": {
       "zh-hans": "技术高手",
       "zh-hant": "技術高手",
@@ -1116,6 +1217,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 102,
     "slug": "leaf-guard",
+    "calcAbilityName": "Leaf Guard",
     "names": {
       "zh-hans": "叶子防守",
       "zh-hant": "葉子防守",
@@ -1127,6 +1229,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 103,
     "slug": "klutz",
+    "calcAbilityName": "Klutz",
     "names": {
       "zh-hans": "笨拙",
       "zh-hant": "笨拙",
@@ -1138,6 +1241,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 104,
     "slug": "mold-breaker",
+    "calcAbilityName": "Mold Breaker",
     "names": {
       "zh-hans": "破格",
       "zh-hant": "破格",
@@ -1149,6 +1253,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 105,
     "slug": "super-luck",
+    "calcAbilityName": "Super Luck",
     "names": {
       "zh-hans": "超幸运",
       "zh-hant": "超幸運",
@@ -1160,6 +1265,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 106,
     "slug": "aftermath",
+    "calcAbilityName": "Aftermath",
     "names": {
       "zh-hans": "引爆",
       "zh-hant": "引爆",
@@ -1171,6 +1277,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 107,
     "slug": "anticipation",
+    "calcAbilityName": "Anticipation",
     "names": {
       "zh-hans": "危险预知",
       "zh-hant": "危險預知",
@@ -1182,6 +1289,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 108,
     "slug": "forewarn",
+    "calcAbilityName": "Forewarn",
     "names": {
       "zh-hans": "预知梦",
       "zh-hant": "預知夢",
@@ -1193,6 +1301,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 109,
     "slug": "unaware",
+    "calcAbilityName": "Unaware",
     "names": {
       "zh-hans": "纯朴",
       "zh-hant": "純樸",
@@ -1204,6 +1313,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 110,
     "slug": "tinted-lens",
+    "calcAbilityName": "Tinted Lens",
     "names": {
       "zh-hans": "有色眼镜",
       "zh-hant": "有色眼鏡",
@@ -1215,6 +1325,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 111,
     "slug": "filter",
+    "calcAbilityName": "Filter",
     "names": {
       "zh-hans": "过滤",
       "zh-hant": "過濾",
@@ -1226,6 +1337,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 112,
     "slug": "slow-start",
+    "calcAbilityName": "Slow Start",
     "names": {
       "zh-hans": "慢启动",
       "zh-hant": "慢啟動",
@@ -1237,6 +1349,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 113,
     "slug": "scrappy",
+    "calcAbilityName": "Scrappy",
     "names": {
       "zh-hans": "胆量",
       "zh-hant": "膽量",
@@ -1248,6 +1361,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 114,
     "slug": "storm-drain",
+    "calcAbilityName": "Storm Drain",
     "names": {
       "zh-hans": "引水",
       "zh-hant": "引水",
@@ -1259,6 +1373,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 115,
     "slug": "ice-body",
+    "calcAbilityName": "Ice Body",
     "names": {
       "zh-hans": "冰冻之躯",
       "zh-hant": "冰凍之軀",
@@ -1270,6 +1385,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 116,
     "slug": "solid-rock",
+    "calcAbilityName": "Solid Rock",
     "names": {
       "zh-hans": "坚硬岩石",
       "zh-hant": "堅硬岩石",
@@ -1281,6 +1397,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 117,
     "slug": "snow-warning",
+    "calcAbilityName": "Snow Warning",
     "names": {
       "zh-hans": "降雪",
       "zh-hant": "降雪",
@@ -1292,6 +1409,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 118,
     "slug": "honey-gather",
+    "calcAbilityName": "Honey Gather",
     "names": {
       "zh-hans": "采蜜",
       "zh-hant": "採蜜",
@@ -1303,6 +1421,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 119,
     "slug": "frisk",
+    "calcAbilityName": "Frisk",
     "names": {
       "zh-hans": "察觉",
       "zh-hant": "察覺",
@@ -1314,6 +1433,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 120,
     "slug": "reckless",
+    "calcAbilityName": "Reckless",
     "names": {
       "zh-hans": "舍身",
       "zh-hant": "捨身",
@@ -1325,6 +1445,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 121,
     "slug": "multitype",
+    "calcAbilityName": "Multitype",
     "names": {
       "zh-hans": "多属性",
       "zh-hant": "多屬性",
@@ -1336,6 +1457,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 122,
     "slug": "flower-gift",
+    "calcAbilityName": "Flower Gift",
     "names": {
       "zh-hans": "花之礼",
       "zh-hant": "花之禮",
@@ -1347,6 +1469,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 123,
     "slug": "bad-dreams",
+    "calcAbilityName": "Bad Dreams",
     "names": {
       "zh-hans": "梦魇",
       "zh-hant": "夢魘",
@@ -1358,6 +1481,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 124,
     "slug": "pickpocket",
+    "calcAbilityName": "Pickpocket",
     "names": {
       "zh-hans": "顺手牵羊",
       "zh-hant": "順手牽羊",
@@ -1369,6 +1493,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 125,
     "slug": "sheer-force",
+    "calcAbilityName": "Sheer Force",
     "names": {
       "zh-hans": "强行",
       "zh-hant": "強行",
@@ -1380,6 +1505,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 126,
     "slug": "contrary",
+    "calcAbilityName": "Contrary",
     "names": {
       "zh-hans": "唱反调",
       "zh-hant": "唱反調",
@@ -1391,6 +1517,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 127,
     "slug": "unnerve",
+    "calcAbilityName": "Unnerve",
     "names": {
       "zh-hans": "紧张感",
       "zh-hant": "緊張感",
@@ -1402,6 +1529,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 128,
     "slug": "defiant",
+    "calcAbilityName": "Defiant",
     "names": {
       "zh-hans": "不服输",
       "zh-hant": "不服輸",
@@ -1413,6 +1541,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 129,
     "slug": "defeatist",
+    "calcAbilityName": "Defeatist",
     "names": {
       "zh-hans": "软弱",
       "zh-hant": "軟弱",
@@ -1424,6 +1553,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 130,
     "slug": "cursed-body",
+    "calcAbilityName": "Cursed Body",
     "names": {
       "zh-hans": "诅咒之躯",
       "zh-hant": "詛咒之軀",
@@ -1435,6 +1565,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 131,
     "slug": "healer",
+    "calcAbilityName": "Healer",
     "names": {
       "zh-hans": "治愈之心",
       "zh-hant": "治癒之心",
@@ -1446,6 +1577,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 132,
     "slug": "friend-guard",
+    "calcAbilityName": "Friend Guard",
     "names": {
       "zh-hans": "友情防守",
       "zh-hant": "友情防守",
@@ -1457,6 +1589,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 133,
     "slug": "weak-armor",
+    "calcAbilityName": "Weak Armor",
     "names": {
       "zh-hans": "碎裂铠甲",
       "zh-hant": "碎裂鎧甲",
@@ -1468,6 +1601,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 134,
     "slug": "heavy-metal",
+    "calcAbilityName": "Heavy Metal",
     "names": {
       "zh-hans": "重金属",
       "zh-hant": "重金屬",
@@ -1479,6 +1613,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 135,
     "slug": "light-metal",
+    "calcAbilityName": "Light Metal",
     "names": {
       "zh-hans": "轻金属",
       "zh-hant": "輕金屬",
@@ -1490,6 +1625,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 136,
     "slug": "multiscale",
+    "calcAbilityName": "Multiscale",
     "names": {
       "zh-hans": "多重鳞片",
       "zh-hant": "多重鱗片",
@@ -1501,6 +1637,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 137,
     "slug": "toxic-boost",
+    "calcAbilityName": "Toxic Boost",
     "names": {
       "zh-hans": "中毒激升",
       "zh-hant": "中毒激升",
@@ -1512,6 +1649,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 138,
     "slug": "flare-boost",
+    "calcAbilityName": "Flare Boost",
     "names": {
       "zh-hans": "受热激升",
       "zh-hant": "受熱激升",
@@ -1523,6 +1661,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 139,
     "slug": "harvest",
+    "calcAbilityName": "Harvest",
     "names": {
       "zh-hans": "收获",
       "zh-hant": "收穫",
@@ -1534,6 +1673,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 140,
     "slug": "telepathy",
+    "calcAbilityName": "Telepathy",
     "names": {
       "zh-hans": "心灵感应",
       "zh-hant": "心靈感應",
@@ -1545,6 +1685,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 141,
     "slug": "moody",
+    "calcAbilityName": "Moody",
     "names": {
       "zh-hans": "心情不定",
       "zh-hant": "心情不定",
@@ -1556,6 +1697,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 142,
     "slug": "overcoat",
+    "calcAbilityName": "Overcoat",
     "names": {
       "zh-hans": "防尘",
       "zh-hant": "防塵",
@@ -1567,6 +1709,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 143,
     "slug": "poison-touch",
+    "calcAbilityName": "Poison Touch",
     "names": {
       "zh-hans": "毒手",
       "zh-hant": "毒手",
@@ -1578,6 +1721,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 144,
     "slug": "regenerator",
+    "calcAbilityName": "Regenerator",
     "names": {
       "zh-hans": "再生力",
       "zh-hant": "再生力",
@@ -1589,6 +1733,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 145,
     "slug": "big-pecks",
+    "calcAbilityName": "Big Pecks",
     "names": {
       "zh-hans": "健壮胸肌",
       "zh-hant": "健壯胸肌",
@@ -1600,6 +1745,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 146,
     "slug": "sand-rush",
+    "calcAbilityName": "Sand Rush",
     "names": {
       "zh-hans": "拨沙",
       "zh-hant": "撥沙",
@@ -1611,6 +1757,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 147,
     "slug": "wonder-skin",
+    "calcAbilityName": "Wonder Skin",
     "names": {
       "zh-hans": "奇迹皮肤",
       "zh-hant": "奇跡皮膚",
@@ -1622,6 +1769,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 148,
     "slug": "analytic",
+    "calcAbilityName": "Analytic",
     "names": {
       "zh-hans": "分析",
       "zh-hant": "分析",
@@ -1633,6 +1781,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 149,
     "slug": "illusion",
+    "calcAbilityName": "Illusion",
     "names": {
       "zh-hans": "幻觉",
       "zh-hant": "幻覺",
@@ -1644,6 +1793,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 150,
     "slug": "imposter",
+    "calcAbilityName": "Imposter",
     "names": {
       "zh-hans": "变身者",
       "zh-hant": "變身者",
@@ -1655,6 +1805,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 151,
     "slug": "infiltrator",
+    "calcAbilityName": "Infiltrator",
     "names": {
       "zh-hans": "穿透",
       "zh-hant": "穿透",
@@ -1666,6 +1817,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 152,
     "slug": "mummy",
+    "calcAbilityName": "Mummy",
     "names": {
       "zh-hans": "木乃伊",
       "zh-hant": "木乃伊",
@@ -1677,6 +1829,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 153,
     "slug": "moxie",
+    "calcAbilityName": "Moxie",
     "names": {
       "zh-hans": "自信过度",
       "zh-hant": "自信過度",
@@ -1688,6 +1841,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 154,
     "slug": "justified",
+    "calcAbilityName": "Justified",
     "names": {
       "zh-hans": "正义之心",
       "zh-hant": "正義之心",
@@ -1699,6 +1853,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 155,
     "slug": "rattled",
+    "calcAbilityName": "Rattled",
     "names": {
       "zh-hans": "胆怯",
       "zh-hant": "膽怯",
@@ -1710,6 +1865,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 156,
     "slug": "magic-bounce",
+    "calcAbilityName": "Magic Bounce",
     "names": {
       "zh-hans": "魔法镜",
       "zh-hant": "魔法鏡",
@@ -1721,6 +1877,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 157,
     "slug": "sap-sipper",
+    "calcAbilityName": "Sap Sipper",
     "names": {
       "zh-hans": "食草",
       "zh-hant": "食草",
@@ -1732,6 +1889,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 158,
     "slug": "prankster",
+    "calcAbilityName": "Prankster",
     "names": {
       "zh-hans": "恶作剧之心",
       "zh-hant": "惡作劇之心",
@@ -1743,6 +1901,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 159,
     "slug": "sand-force",
+    "calcAbilityName": "Sand Force",
     "names": {
       "zh-hans": "沙之力",
       "zh-hant": "沙之力",
@@ -1754,6 +1913,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 160,
     "slug": "iron-barbs",
+    "calcAbilityName": "Iron Barbs",
     "names": {
       "zh-hans": "铁刺",
       "zh-hant": "鐵刺",
@@ -1765,6 +1925,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 161,
     "slug": "zen-mode",
+    "calcAbilityName": "Zen Mode",
     "names": {
       "zh-hans": "达摩模式",
       "zh-hant": "達摩模式",
@@ -1776,6 +1937,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 162,
     "slug": "victory-star",
+    "calcAbilityName": "Victory Star",
     "names": {
       "zh-hans": "胜利之星",
       "zh-hant": "勝利之星",
@@ -1787,6 +1949,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 163,
     "slug": "turboblaze",
+    "calcAbilityName": "Turboblaze",
     "names": {
       "zh-hans": "涡轮火焰",
       "zh-hant": "渦輪火焰",
@@ -1798,6 +1961,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 164,
     "slug": "teravolt",
+    "calcAbilityName": "Teravolt",
     "names": {
       "zh-hans": "兆级电压",
       "zh-hant": "兆級電壓",
@@ -1809,6 +1973,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 165,
     "slug": "aroma-veil",
+    "calcAbilityName": "Aroma Veil",
     "names": {
       "zh-hans": "芳香幕",
       "zh-hant": "芳香幕",
@@ -1820,6 +1985,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 166,
     "slug": "flower-veil",
+    "calcAbilityName": "Flower Veil",
     "names": {
       "zh-hans": "花幕",
       "zh-hant": "花幕",
@@ -1831,6 +1997,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 167,
     "slug": "cheek-pouch",
+    "calcAbilityName": "Cheek Pouch",
     "names": {
       "zh-hans": "颊囊",
       "zh-hant": "頰囊",
@@ -1842,6 +2009,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 168,
     "slug": "protean",
+    "calcAbilityName": "Protean",
     "names": {
       "zh-hans": "变幻自如",
       "zh-hant": "變幻自如",
@@ -1853,6 +2021,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 169,
     "slug": "fur-coat",
+    "calcAbilityName": "Fur Coat",
     "names": {
       "zh-hans": "毛皮大衣",
       "zh-hant": "毛皮大衣",
@@ -1864,6 +2033,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 170,
     "slug": "magician",
+    "calcAbilityName": "Magician",
     "names": {
       "zh-hans": "魔术师",
       "zh-hant": "魔術師",
@@ -1875,6 +2045,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 171,
     "slug": "bulletproof",
+    "calcAbilityName": "Bulletproof",
     "names": {
       "zh-hans": "防弹",
       "zh-hant": "防彈",
@@ -1886,6 +2057,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 172,
     "slug": "competitive",
+    "calcAbilityName": "Competitive",
     "names": {
       "zh-hans": "好胜",
       "zh-hant": "好勝",
@@ -1897,6 +2069,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 173,
     "slug": "strong-jaw",
+    "calcAbilityName": "Strong Jaw",
     "names": {
       "zh-hans": "强壮之颚",
       "zh-hant": "強壯之顎",
@@ -1908,6 +2081,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 174,
     "slug": "refrigerate",
+    "calcAbilityName": "Refrigerate",
     "names": {
       "zh-hans": "冰冻皮肤",
       "zh-hant": "冰凍皮膚",
@@ -1919,6 +2093,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 175,
     "slug": "sweet-veil",
+    "calcAbilityName": "Sweet Veil",
     "names": {
       "zh-hans": "甜幕",
       "zh-hant": "甜幕",
@@ -1930,6 +2105,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 176,
     "slug": "stance-change",
+    "calcAbilityName": "Stance Change",
     "names": {
       "zh-hans": "战斗切换",
       "zh-hant": "戰鬥切換",
@@ -1941,6 +2117,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 177,
     "slug": "gale-wings",
+    "calcAbilityName": "Gale Wings",
     "names": {
       "zh-hans": "疾风之翼",
       "zh-hant": "疾風之翼",
@@ -1952,6 +2129,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 178,
     "slug": "mega-launcher",
+    "calcAbilityName": "Mega Launcher",
     "names": {
       "zh-hans": "超级发射器",
       "zh-hant": "超級發射器",
@@ -1963,6 +2141,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 179,
     "slug": "grass-pelt",
+    "calcAbilityName": "Grass Pelt",
     "names": {
       "zh-hans": "草之毛皮",
       "zh-hant": "草之毛皮",
@@ -1974,6 +2153,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 180,
     "slug": "symbiosis",
+    "calcAbilityName": "Symbiosis",
     "names": {
       "zh-hans": "共生",
       "zh-hant": "共生",
@@ -1985,6 +2165,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 181,
     "slug": "tough-claws",
+    "calcAbilityName": "Tough Claws",
     "names": {
       "zh-hans": "硬爪",
       "zh-hant": "硬爪",
@@ -1996,6 +2177,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 182,
     "slug": "pixilate",
+    "calcAbilityName": "Pixilate",
     "names": {
       "zh-hans": "妖精皮肤",
       "zh-hant": "妖精皮膚",
@@ -2007,6 +2189,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 183,
     "slug": "gooey",
+    "calcAbilityName": "Gooey",
     "names": {
       "zh-hans": "黏滑",
       "zh-hant": "黏滑",
@@ -2018,6 +2201,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 184,
     "slug": "aerilate",
+    "calcAbilityName": "Aerilate",
     "names": {
       "zh-hans": "飞行皮肤",
       "zh-hant": "飛行皮膚",
@@ -2029,6 +2213,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 185,
     "slug": "parental-bond",
+    "calcAbilityName": "Parental Bond",
     "names": {
       "zh-hans": "亲子爱",
       "zh-hant": "親子愛",
@@ -2040,6 +2225,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 186,
     "slug": "dark-aura",
+    "calcAbilityName": "Dark Aura",
     "names": {
       "zh-hans": "暗黑气场",
       "zh-hant": "暗黑氣場",
@@ -2051,6 +2237,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 187,
     "slug": "fairy-aura",
+    "calcAbilityName": "Fairy Aura",
     "names": {
       "zh-hans": "妖精气场",
       "zh-hant": "妖精氣場",
@@ -2062,6 +2249,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 188,
     "slug": "aura-break",
+    "calcAbilityName": "Aura Break",
     "names": {
       "zh-hans": "气场破坏",
       "zh-hant": "氣場破壞",
@@ -2073,6 +2261,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 189,
     "slug": "primordial-sea",
+    "calcAbilityName": "Primordial Sea",
     "names": {
       "zh-hans": "始源之海",
       "zh-hant": "始源之海",
@@ -2084,6 +2273,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 190,
     "slug": "desolate-land",
+    "calcAbilityName": "Desolate Land",
     "names": {
       "zh-hans": "终结之地",
       "zh-hant": "終結之地",
@@ -2095,6 +2285,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 191,
     "slug": "delta-stream",
+    "calcAbilityName": "Delta Stream",
     "names": {
       "zh-hans": "德尔塔气流",
       "zh-hant": "德爾塔氣流",
@@ -2106,6 +2297,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 192,
     "slug": "stamina",
+    "calcAbilityName": "Stamina",
     "names": {
       "zh-hans": "持久力",
       "zh-hant": "持久力",
@@ -2117,6 +2309,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 193,
     "slug": "wimp-out",
+    "calcAbilityName": "Wimp Out",
     "names": {
       "zh-hans": "跃跃欲逃",
       "zh-hant": "躍躍欲逃",
@@ -2128,6 +2321,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 194,
     "slug": "emergency-exit",
+    "calcAbilityName": "Emergency Exit",
     "names": {
       "zh-hans": "危险回避",
       "zh-hant": "危險迴避",
@@ -2139,6 +2333,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 195,
     "slug": "water-compaction",
+    "calcAbilityName": "Water Compaction",
     "names": {
       "zh-hans": "遇水凝固",
       "zh-hant": "遇水凝固",
@@ -2150,6 +2345,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 196,
     "slug": "merciless",
+    "calcAbilityName": "Merciless",
     "names": {
       "zh-hans": "不仁不义",
       "zh-hant": "不仁不義",
@@ -2161,6 +2357,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 197,
     "slug": "shields-down",
+    "calcAbilityName": "Shields Down",
     "names": {
       "zh-hans": "界限盾壳",
       "zh-hant": "界限盾殼",
@@ -2172,6 +2369,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 198,
     "slug": "stakeout",
+    "calcAbilityName": "Stakeout",
     "names": {
       "zh-hans": "蹲守",
       "zh-hant": "監視",
@@ -2183,6 +2381,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 199,
     "slug": "water-bubble",
+    "calcAbilityName": "Water Bubble",
     "names": {
       "zh-hans": "水泡",
       "zh-hant": "水泡",
@@ -2194,6 +2393,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 200,
     "slug": "steelworker",
+    "calcAbilityName": "Steelworker",
     "names": {
       "zh-hans": "钢能力者",
       "zh-hant": "鋼能力者",
@@ -2205,6 +2405,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 201,
     "slug": "berserk",
+    "calcAbilityName": "Berserk",
     "names": {
       "zh-hans": "怒火冲天",
       "zh-hant": "怒火沖天",
@@ -2216,6 +2417,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 202,
     "slug": "slush-rush",
+    "calcAbilityName": "Slush Rush",
     "names": {
       "zh-hans": "拨雪",
       "zh-hant": "撥雪",
@@ -2227,6 +2429,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 203,
     "slug": "long-reach",
+    "calcAbilityName": "Long Reach",
     "names": {
       "zh-hans": "远隔",
       "zh-hant": "遠隔",
@@ -2238,6 +2441,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 204,
     "slug": "liquid-voice",
+    "calcAbilityName": "Liquid Voice",
     "names": {
       "zh-hans": "湿润之声",
       "zh-hant": "濕潤之聲",
@@ -2249,6 +2453,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 205,
     "slug": "triage",
+    "calcAbilityName": "Triage",
     "names": {
       "zh-hans": "先行治疗",
       "zh-hant": "先行治療",
@@ -2260,6 +2465,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 206,
     "slug": "galvanize",
+    "calcAbilityName": "Galvanize",
     "names": {
       "zh-hans": "电气皮肤",
       "zh-hant": "電氣皮膚",
@@ -2271,6 +2477,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 207,
     "slug": "surge-surfer",
+    "calcAbilityName": "Surge Surfer",
     "names": {
       "zh-hans": "冲浪之尾",
       "zh-hant": "衝浪之尾",
@@ -2282,6 +2489,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 208,
     "slug": "schooling",
+    "calcAbilityName": "Schooling",
     "names": {
       "zh-hans": "鱼群",
       "zh-hant": "魚群",
@@ -2293,6 +2501,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 209,
     "slug": "disguise",
+    "calcAbilityName": "Disguise",
     "names": {
       "zh-hans": "画皮",
       "zh-hant": "畫皮",
@@ -2304,6 +2513,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 210,
     "slug": "battle-bond",
+    "calcAbilityName": "Battle Bond",
     "names": {
       "zh-hans": "牵绊变身",
       "zh-hant": "牽絆變身",
@@ -2315,6 +2525,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 211,
     "slug": "power-construct",
+    "calcAbilityName": "Power Construct",
     "names": {
       "zh-hans": "群聚变形",
       "zh-hant": "群聚變形",
@@ -2326,6 +2537,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 212,
     "slug": "corrosion",
+    "calcAbilityName": "Corrosion",
     "names": {
       "zh-hans": "腐蚀",
       "zh-hant": "腐蝕",
@@ -2337,6 +2549,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 213,
     "slug": "comatose",
+    "calcAbilityName": "Comatose",
     "names": {
       "zh-hans": "绝对睡眠",
       "zh-hant": "絕對睡眠",
@@ -2348,6 +2561,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 214,
     "slug": "queenly-majesty",
+    "calcAbilityName": "Queenly Majesty",
     "names": {
       "zh-hans": "女王的威严",
       "zh-hant": "女王的威嚴",
@@ -2359,6 +2573,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 215,
     "slug": "innards-out",
+    "calcAbilityName": "Innards Out",
     "names": {
       "zh-hans": "飞出的内在物",
       "zh-hant": "飛出的內在物",
@@ -2370,6 +2585,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 216,
     "slug": "dancer",
+    "calcAbilityName": "Dancer",
     "names": {
       "zh-hans": "舞者",
       "zh-hant": "舞者",
@@ -2381,6 +2597,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 217,
     "slug": "battery",
+    "calcAbilityName": "Battery",
     "names": {
       "zh-hans": "蓄电池",
       "zh-hant": "蓄電池",
@@ -2392,6 +2609,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 218,
     "slug": "fluffy",
+    "calcAbilityName": "Fluffy",
     "names": {
       "zh-hans": "毛茸茸",
       "zh-hant": "毛茸茸",
@@ -2403,6 +2621,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 219,
     "slug": "dazzling",
+    "calcAbilityName": "Dazzling",
     "names": {
       "zh-hans": "鲜艳之躯",
       "zh-hant": "鮮艷之軀",
@@ -2414,6 +2633,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 220,
     "slug": "soul-heart",
+    "calcAbilityName": "Soul-Heart",
     "names": {
       "zh-hans": "魂心",
       "zh-hant": "魂心",
@@ -2425,6 +2645,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 221,
     "slug": "tangling-hair",
+    "calcAbilityName": "Tangling Hair",
     "names": {
       "zh-hans": "卷发",
       "zh-hant": "捲髮",
@@ -2436,6 +2657,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 222,
     "slug": "receiver",
+    "calcAbilityName": "Receiver",
     "names": {
       "zh-hans": "接球手",
       "zh-hant": "接球手",
@@ -2447,6 +2669,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 223,
     "slug": "power-of-alchemy",
+    "calcAbilityName": "Power of Alchemy",
     "names": {
       "zh-hans": "化学之力",
       "zh-hant": "化學之力",
@@ -2458,6 +2681,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 224,
     "slug": "beast-boost",
+    "calcAbilityName": "Beast Boost",
     "names": {
       "zh-hans": "异兽提升",
       "zh-hant": "異獸提升",
@@ -2469,6 +2693,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 225,
     "slug": "rks-system",
+    "calcAbilityName": "RKS System",
     "names": {
       "zh-hans": "ＡＲ系统",
       "zh-hant": "ＡＲ系統",
@@ -2480,6 +2705,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 226,
     "slug": "electric-surge",
+    "calcAbilityName": "Electric Surge",
     "names": {
       "zh-hans": "电气制造者",
       "zh-hant": "電氣製造者",
@@ -2491,6 +2717,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 227,
     "slug": "psychic-surge",
+    "calcAbilityName": "Psychic Surge",
     "names": {
       "zh-hans": "精神制造者",
       "zh-hant": "精神製造者",
@@ -2502,6 +2729,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 228,
     "slug": "misty-surge",
+    "calcAbilityName": "Misty Surge",
     "names": {
       "zh-hans": "薄雾制造者",
       "zh-hant": "薄霧製造者",
@@ -2513,6 +2741,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 229,
     "slug": "grassy-surge",
+    "calcAbilityName": "Grassy Surge",
     "names": {
       "zh-hans": "青草制造者",
       "zh-hant": "青草製造者",
@@ -2524,6 +2753,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 230,
     "slug": "full-metal-body",
+    "calcAbilityName": "Full Metal Body",
     "names": {
       "zh-hans": "金属防护",
       "zh-hant": "金屬防護",
@@ -2535,6 +2765,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 231,
     "slug": "shadow-shield",
+    "calcAbilityName": "Shadow Shield",
     "names": {
       "zh-hans": "幻影防守",
       "zh-hant": "幻影防守",
@@ -2546,6 +2777,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 232,
     "slug": "prism-armor",
+    "calcAbilityName": "Prism Armor",
     "names": {
       "zh-hans": "棱镜装甲",
       "zh-hant": "稜鏡裝甲",
@@ -2557,6 +2789,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 233,
     "slug": "neuroforce",
+    "calcAbilityName": "Neuroforce",
     "names": {
       "zh-hans": "脑核之力",
       "zh-hant": "腦核之力",
@@ -2568,6 +2801,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 234,
     "slug": "intrepid-sword",
+    "calcAbilityName": "Intrepid Sword",
     "names": {
       "zh-hans": "不挠之剑",
       "zh-hant": "不撓之劍",
@@ -2579,6 +2813,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 235,
     "slug": "dauntless-shield",
+    "calcAbilityName": "Dauntless Shield",
     "names": {
       "zh-hans": "不屈之盾",
       "zh-hant": "不屈之盾",
@@ -2590,6 +2825,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 236,
     "slug": "libero",
+    "calcAbilityName": "Libero",
     "names": {
       "zh-hans": "自由者",
       "zh-hant": "自由者",
@@ -2601,6 +2837,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 237,
     "slug": "ball-fetch",
+    "calcAbilityName": "Ball Fetch",
     "names": {
       "zh-hans": "捡球",
       "zh-hant": "撿球",
@@ -2612,6 +2849,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 238,
     "slug": "cotton-down",
+    "calcAbilityName": "Cotton Down",
     "names": {
       "zh-hans": "棉絮",
       "zh-hant": "棉絮",
@@ -2623,6 +2861,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 239,
     "slug": "propeller-tail",
+    "calcAbilityName": "Propeller Tail",
     "names": {
       "zh-hans": "螺旋尾鳍",
       "zh-hant": "螺旋尾鰭",
@@ -2634,6 +2873,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 240,
     "slug": "mirror-armor",
+    "calcAbilityName": "Mirror Armor",
     "names": {
       "zh-hans": "镜甲",
       "zh-hant": "鏡甲",
@@ -2645,6 +2885,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 241,
     "slug": "gulp-missile",
+    "calcAbilityName": "Gulp Missile",
     "names": {
       "zh-hans": "一口导弹",
       "zh-hant": "一口飛彈",
@@ -2656,6 +2897,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 242,
     "slug": "stalwart",
+    "calcAbilityName": "Stalwart",
     "names": {
       "zh-hans": "坚毅",
       "zh-hant": "堅毅",
@@ -2667,6 +2909,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 243,
     "slug": "steam-engine",
+    "calcAbilityName": "Steam Engine",
     "names": {
       "zh-hans": "蒸汽机",
       "zh-hant": "蒸汽機",
@@ -2678,6 +2921,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 244,
     "slug": "punk-rock",
+    "calcAbilityName": "Punk Rock",
     "names": {
       "zh-hans": "庞克摇滚",
       "zh-hant": "龐克搖滾",
@@ -2689,6 +2933,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 245,
     "slug": "sand-spit",
+    "calcAbilityName": "Sand Spit",
     "names": {
       "zh-hans": "吐沙",
       "zh-hant": "吐沙",
@@ -2700,6 +2945,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 246,
     "slug": "ice-scales",
+    "calcAbilityName": "Ice Scales",
     "names": {
       "zh-hans": "冰鳞粉",
       "zh-hant": "冰鱗粉",
@@ -2711,6 +2957,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 247,
     "slug": "ripen",
+    "calcAbilityName": "Ripen",
     "names": {
       "zh-hans": "熟成",
       "zh-hant": "熟成",
@@ -2722,6 +2969,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 248,
     "slug": "ice-face",
+    "calcAbilityName": "Ice Face",
     "names": {
       "zh-hans": "结冻头",
       "zh-hant": "結凍頭",
@@ -2733,6 +2981,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 249,
     "slug": "power-spot",
+    "calcAbilityName": "Power Spot",
     "names": {
       "zh-hans": "能量点",
       "zh-hant": "能量點",
@@ -2744,6 +2993,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 250,
     "slug": "mimicry",
+    "calcAbilityName": "Mimicry",
     "names": {
       "zh-hans": "拟态",
       "zh-hant": "擬態",
@@ -2755,6 +3005,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 251,
     "slug": "screen-cleaner",
+    "calcAbilityName": "Screen Cleaner",
     "names": {
       "zh-hans": "除障",
       "zh-hant": "除障",
@@ -2766,6 +3017,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 252,
     "slug": "steely-spirit",
+    "calcAbilityName": "Steely Spirit",
     "names": {
       "zh-hans": "钢之意志",
       "zh-hant": "鋼之意志",
@@ -2777,6 +3029,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 253,
     "slug": "perish-body",
+    "calcAbilityName": "Perish Body",
     "names": {
       "zh-hans": "灭亡之躯",
       "zh-hant": "滅亡之軀",
@@ -2788,6 +3041,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 254,
     "slug": "wandering-spirit",
+    "calcAbilityName": "Wandering Spirit",
     "names": {
       "zh-hans": "游魂",
       "zh-hant": "遊魂",
@@ -2799,6 +3053,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 255,
     "slug": "gorilla-tactics",
+    "calcAbilityName": "Gorilla Tactics",
     "names": {
       "zh-hans": "一猩一意",
       "zh-hant": "一猩一意",
@@ -2810,6 +3065,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 256,
     "slug": "neutralizing-gas",
+    "calcAbilityName": "Neutralizing Gas",
     "names": {
       "zh-hans": "化学变化气体",
       "zh-hant": "化學變化氣體",
@@ -2821,6 +3077,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 257,
     "slug": "pastel-veil",
+    "calcAbilityName": "Pastel Veil",
     "names": {
       "zh-hans": "粉彩护幕",
       "zh-hant": "粉彩護幕",
@@ -2832,6 +3089,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 258,
     "slug": "hunger-switch",
+    "calcAbilityName": "Hunger Switch",
     "names": {
       "zh-hans": "饱了又饿",
       "zh-hant": "飽了又餓",
@@ -2843,6 +3101,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 259,
     "slug": "quick-draw",
+    "calcAbilityName": "Quick Draw",
     "names": {
       "zh-hans": "速击",
       "zh-hant": "速擊",
@@ -2854,6 +3113,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 260,
     "slug": "unseen-fist",
+    "calcAbilityName": "Unseen Fist",
     "names": {
       "zh-hans": "无形拳",
       "zh-hant": "無形拳",
@@ -2865,6 +3125,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 261,
     "slug": "curious-medicine",
+    "calcAbilityName": "Curious Medicine",
     "names": {
       "zh-hans": "怪药",
       "zh-hant": "怪藥",
@@ -2876,6 +3137,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 262,
     "slug": "transistor",
+    "calcAbilityName": "Transistor",
     "names": {
       "zh-hans": "电晶体",
       "zh-hant": "電晶體",
@@ -2887,6 +3149,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 263,
     "slug": "dragons-maw",
+    "calcAbilityName": "Dragon’s Maw",
     "names": {
       "zh-hans": "龙颚",
       "zh-hant": "龍顎",
@@ -2898,6 +3161,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 264,
     "slug": "chilling-neigh",
+    "calcAbilityName": "Chilling Neigh",
     "names": {
       "zh-hans": "苍白嘶鸣",
       "zh-hant": "蒼白嘶鳴",
@@ -2909,6 +3173,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 265,
     "slug": "grim-neigh",
+    "calcAbilityName": "Grim Neigh",
     "names": {
       "zh-hans": "漆黑嘶鸣",
       "zh-hant": "漆黑嘶鳴",
@@ -2920,6 +3185,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 266,
     "slug": "as-one-glastrier",
+    "calcAbilityName": "As One (Glastrier)",
     "names": {
       "zh-hans": "人马一体",
       "zh-hant": "人馬一體",
@@ -2931,6 +3197,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 267,
     "slug": "as-one-spectrier",
+    "calcAbilityName": "As One (Spectrier)",
     "names": {
       "zh-hans": "人马一体",
       "zh-hant": "人馬一體",
@@ -2942,6 +3209,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 268,
     "slug": "lingering-aroma",
+    "calcAbilityName": "Lingering Aroma",
     "names": {
       "zh-hans": "甩不掉的气味",
       "zh-hant": "甩不掉的氣味",
@@ -2953,6 +3221,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 269,
     "slug": "seed-sower",
+    "calcAbilityName": "Seed Sower",
     "names": {
       "zh-hans": "掉出种子",
       "zh-hant": "掉出種子",
@@ -2964,6 +3233,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 270,
     "slug": "thermal-exchange",
+    "calcAbilityName": "Thermal Exchange",
     "names": {
       "zh-hans": "热交换",
       "zh-hant": "熱交換",
@@ -2975,6 +3245,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 271,
     "slug": "anger-shell",
+    "calcAbilityName": "Anger Shell",
     "names": {
       "zh-hans": "愤怒甲壳",
       "zh-hant": "憤怒甲殼",
@@ -2986,6 +3257,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 272,
     "slug": "purifying-salt",
+    "calcAbilityName": "Purifying Salt",
     "names": {
       "zh-hans": "洁净之盐",
       "zh-hant": "潔淨之鹽",
@@ -2997,6 +3269,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 273,
     "slug": "well-baked-body",
+    "calcAbilityName": "Well-Baked Body",
     "names": {
       "zh-hans": "焦香之躯",
       "zh-hant": "焦香之軀",
@@ -3008,6 +3281,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 274,
     "slug": "wind-rider",
+    "calcAbilityName": "Wind Rider",
     "names": {
       "zh-hans": "乘风",
       "zh-hant": "乘風",
@@ -3019,6 +3293,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 275,
     "slug": "guard-dog",
+    "calcAbilityName": "Guard Dog",
     "names": {
       "zh-hans": "看门犬",
       "zh-hant": "看門犬",
@@ -3030,6 +3305,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 276,
     "slug": "rocky-payload",
+    "calcAbilityName": "Rocky Payload",
     "names": {
       "zh-hans": "搬岩",
       "zh-hant": "搬岩",
@@ -3041,6 +3317,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 277,
     "slug": "wind-power",
+    "calcAbilityName": "Wind Power",
     "names": {
       "zh-hans": "风力发电",
       "zh-hant": "風力發電",
@@ -3052,6 +3329,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 278,
     "slug": "zero-to-hero",
+    "calcAbilityName": "Zero to Hero",
     "names": {
       "zh-hans": "全能变身",
       "zh-hant": "全能變身",
@@ -3063,6 +3341,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 279,
     "slug": "commander",
+    "calcAbilityName": "Commander",
     "names": {
       "zh-hans": "发号施令",
       "zh-hant": "發號施令",
@@ -3074,6 +3353,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 280,
     "slug": "electromorphosis",
+    "calcAbilityName": "Electromorphosis",
     "names": {
       "zh-hans": "电力转换",
       "zh-hant": "電力轉換",
@@ -3085,6 +3365,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 281,
     "slug": "protosynthesis",
+    "calcAbilityName": "Protosynthesis",
     "names": {
       "zh-hans": "古代活性",
       "zh-hant": "古代活性",
@@ -3096,6 +3377,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 282,
     "slug": "quark-drive",
+    "calcAbilityName": "Quark Drive",
     "names": {
       "zh-hans": "夸克充能",
       "zh-hant": "夸克充能",
@@ -3107,6 +3389,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 283,
     "slug": "good-as-gold",
+    "calcAbilityName": "Good as Gold",
     "names": {
       "zh-hans": "黄金之躯",
       "zh-hant": "黃金之軀",
@@ -3118,6 +3401,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 284,
     "slug": "vessel-of-ruin",
+    "calcAbilityName": "Vessel of Ruin",
     "names": {
       "zh-hans": "灾祸之鼎",
       "zh-hant": "災禍之鼎",
@@ -3129,6 +3413,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 285,
     "slug": "sword-of-ruin",
+    "calcAbilityName": "Sword of Ruin",
     "names": {
       "zh-hans": "灾祸之剑",
       "zh-hant": "災禍之劍",
@@ -3140,6 +3425,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 286,
     "slug": "tablets-of-ruin",
+    "calcAbilityName": "Tablets of Ruin",
     "names": {
       "zh-hans": "灾祸之简",
       "zh-hant": "災禍之簡",
@@ -3151,6 +3437,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 287,
     "slug": "beads-of-ruin",
+    "calcAbilityName": "Beads of Ruin",
     "names": {
       "zh-hans": "灾祸之玉",
       "zh-hant": "災禍之玉",
@@ -3162,6 +3449,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 288,
     "slug": "orichalcum-pulse",
+    "calcAbilityName": "Orichalcum Pulse",
     "names": {
       "zh-hans": "绯红脉动",
       "zh-hant": "緋紅脈動",
@@ -3173,6 +3461,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 289,
     "slug": "hadron-engine",
+    "calcAbilityName": "Hadron Engine",
     "names": {
       "zh-hans": "强子引擎",
       "zh-hant": "強子引擎",
@@ -3184,6 +3473,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 290,
     "slug": "opportunist",
+    "calcAbilityName": "Opportunist",
     "names": {
       "zh-hans": "跟风",
       "zh-hant": "跟風",
@@ -3195,6 +3485,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 291,
     "slug": "cud-chew",
+    "calcAbilityName": "Cud Chew",
     "names": {
       "zh-hans": "反刍",
       "zh-hant": "反芻",
@@ -3206,6 +3497,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 292,
     "slug": "sharpness",
+    "calcAbilityName": "Sharpness",
     "names": {
       "zh-hans": "锋锐",
       "zh-hant": "鋒銳",
@@ -3217,6 +3509,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 293,
     "slug": "supreme-overlord",
+    "calcAbilityName": "Supreme Overlord",
     "names": {
       "zh-hans": "大将",
       "zh-hant": "大將",
@@ -3228,6 +3521,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 294,
     "slug": "costar",
+    "calcAbilityName": "Costar",
     "names": {
       "zh-hans": "同台共演",
       "zh-hant": "同台共演",
@@ -3239,6 +3533,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 295,
     "slug": "toxic-debris",
+    "calcAbilityName": "Toxic Debris",
     "names": {
       "zh-hans": "毒满地",
       "zh-hant": "毒滿地",
@@ -3250,6 +3545,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 296,
     "slug": "armor-tail",
+    "calcAbilityName": "Armor Tail",
     "names": {
       "zh-hans": "尾甲",
       "zh-hant": "尾甲",
@@ -3261,6 +3557,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 297,
     "slug": "earth-eater",
+    "calcAbilityName": "Earth Eater",
     "names": {
       "zh-hans": "食土",
       "zh-hant": "食土",
@@ -3272,6 +3569,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 298,
     "slug": "mycelium-might",
+    "calcAbilityName": "Mycelium Might",
     "names": {
       "zh-hans": "菌丝之力",
       "zh-hant": "菌絲之力",
@@ -3283,6 +3581,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 299,
     "slug": "minds-eye",
+    "calcAbilityName": "Mind’s Eye",
     "names": {
       "zh-hans": "心眼",
       "zh-hant": "心眼",
@@ -3294,6 +3593,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 300,
     "slug": "supersweet-syrup",
+    "calcAbilityName": "Supersweet Syrup",
     "names": {
       "zh-hans": "甘露之蜜",
       "zh-hant": "甘露之蜜",
@@ -3305,6 +3605,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 301,
     "slug": "hospitality",
+    "calcAbilityName": "Hospitality",
     "names": {
       "zh-hans": "款待",
       "zh-hant": "款待",
@@ -3316,6 +3617,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 302,
     "slug": "toxic-chain",
+    "calcAbilityName": "Toxic Chain",
     "names": {
       "zh-hans": "毒锁链",
       "zh-hant": "毒鎖鏈",
@@ -3323,21 +3625,11 @@ export const GENERATED_ABILITIES = {
       "ja": "どくのくさり"
     }
   },
-  "303": {
-    "resourceType": "ability",
-    "id": 303,
-    "slug": "embody-aspect",
-    "names": {
-      "zh-hans": "面影辉映",
-      "zh-hant": "面影輝映",
-      "en": "Embody Aspect",
-      "ja": "おもかげやどし"
-    }
-  },
   "304": {
     "resourceType": "ability",
     "id": 304,
     "slug": "tera-shift",
+    "calcAbilityName": "Tera Shift",
     "names": {
       "zh-hans": "太晶变形",
       "zh-hant": "太晶變形",
@@ -3349,6 +3641,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 305,
     "slug": "tera-shell",
+    "calcAbilityName": "Tera Shell",
     "names": {
       "zh-hans": "太晶甲壳",
       "zh-hant": "太晶甲殼",
@@ -3360,6 +3653,7 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 306,
     "slug": "teraform-zero",
+    "calcAbilityName": "Teraform Zero",
     "names": {
       "zh-hans": "归零化境",
       "zh-hant": "歸零化境",
@@ -3371,737 +3665,12 @@ export const GENERATED_ABILITIES = {
     "resourceType": "ability",
     "id": 307,
     "slug": "poison-puppeteer",
+    "calcAbilityName": "Poison Puppeteer",
     "names": {
       "zh-hans": "毒傀儡",
       "zh-hant": "毒傀儡",
       "en": "Poison Puppeteer",
       "ja": "どくくぐつ"
-    }
-  },
-  "308": {
-    "resourceType": "ability",
-    "id": 308,
-    "slug": "piercing-drill",
-    "names": {
-      "zh-hans": "贯穿钻",
-      "zh-hant": "貫穿鑽",
-      "en": "Piercing Drill",
-      "ja": "かんつうドリル"
-    }
-  },
-  "309": {
-    "resourceType": "ability",
-    "id": 309,
-    "slug": "dragonize",
-    "names": {
-      "zh-hans": "龙皮肤",
-      "zh-hant": "龍皮膚",
-      "en": "Dragonize",
-      "ja": "ドラゴンスキン"
-    }
-  },
-  "310": {
-    "resourceType": "ability",
-    "id": 310,
-    "slug": "mega-sol",
-    "names": {
-      "zh-hans": "超级日光",
-      "zh-hant": "超級日光",
-      "en": "Mega Sol",
-      "ja": "メガソーラー"
-    }
-  },
-  "311": {
-    "resourceType": "ability",
-    "id": 311,
-    "slug": "spicy-spray",
-    "names": {
-      "zh-hans": "辣椒喷发",
-      "zh-hant": "辣椒噴發",
-      "en": "Spicy Spray",
-      "ja": "とびだすハバネロ"
-    }
-  },
-  "312": {
-    "resourceType": "ability",
-    "id": 312,
-    "slug": "eelevate",
-    "names": {
-      "zh-hans": "Eelevate",
-      "zh-hant": "Eelevate",
-      "en": "Eelevate",
-      "ja": "Eelevate"
-    }
-  },
-  "313": {
-    "resourceType": "ability",
-    "id": 313,
-    "slug": "fire-mane",
-    "names": {
-      "zh-hans": "Fire Mane",
-      "zh-hant": "Fire Mane",
-      "en": "Fire Mane",
-      "ja": "Fire Mane"
-    }
-  },
-  "10001": {
-    "resourceType": "ability",
-    "id": 10001,
-    "slug": "mountaineer",
-    "names": {
-      "zh-hans": "Mountaineer",
-      "zh-hant": "Mountaineer",
-      "en": "Mountaineer",
-      "ja": "Mountaineer"
-    }
-  },
-  "10002": {
-    "resourceType": "ability",
-    "id": 10002,
-    "slug": "wave-rider",
-    "names": {
-      "zh-hans": "Wave Rider",
-      "zh-hant": "Wave Rider",
-      "en": "Wave Rider",
-      "ja": "Wave Rider"
-    }
-  },
-  "10003": {
-    "resourceType": "ability",
-    "id": 10003,
-    "slug": "skater",
-    "names": {
-      "zh-hans": "Skater",
-      "zh-hant": "Skater",
-      "en": "Skater",
-      "ja": "Skater"
-    }
-  },
-  "10004": {
-    "resourceType": "ability",
-    "id": 10004,
-    "slug": "thrust",
-    "names": {
-      "zh-hans": "Thrust",
-      "zh-hant": "Thrust",
-      "en": "Thrust",
-      "ja": "Thrust"
-    }
-  },
-  "10005": {
-    "resourceType": "ability",
-    "id": 10005,
-    "slug": "perception",
-    "names": {
-      "zh-hans": "Perception",
-      "zh-hant": "Perception",
-      "en": "Perception",
-      "ja": "Perception"
-    }
-  },
-  "10006": {
-    "resourceType": "ability",
-    "id": 10006,
-    "slug": "parry",
-    "names": {
-      "zh-hans": "Parry",
-      "zh-hant": "Parry",
-      "en": "Parry",
-      "ja": "Parry"
-    }
-  },
-  "10007": {
-    "resourceType": "ability",
-    "id": 10007,
-    "slug": "instinct",
-    "names": {
-      "zh-hans": "Instinct",
-      "zh-hant": "Instinct",
-      "en": "Instinct",
-      "ja": "Instinct"
-    }
-  },
-  "10008": {
-    "resourceType": "ability",
-    "id": 10008,
-    "slug": "dodge",
-    "names": {
-      "zh-hans": "Dodge",
-      "zh-hant": "Dodge",
-      "en": "Dodge",
-      "ja": "Dodge"
-    }
-  },
-  "10009": {
-    "resourceType": "ability",
-    "id": 10009,
-    "slug": "jagged-edge",
-    "names": {
-      "zh-hans": "Jagged Edge",
-      "zh-hant": "Jagged Edge",
-      "en": "Jagged Edge",
-      "ja": "Jagged Edge"
-    }
-  },
-  "10010": {
-    "resourceType": "ability",
-    "id": 10010,
-    "slug": "frostbite",
-    "names": {
-      "zh-hans": "Frostbite",
-      "zh-hant": "Frostbite",
-      "en": "Frostbite",
-      "ja": "Frostbite"
-    }
-  },
-  "10011": {
-    "resourceType": "ability",
-    "id": 10011,
-    "slug": "tenacity",
-    "names": {
-      "zh-hans": "Tenacity",
-      "zh-hant": "Tenacity",
-      "en": "Tenacity",
-      "ja": "Tenacity"
-    }
-  },
-  "10012": {
-    "resourceType": "ability",
-    "id": 10012,
-    "slug": "pride",
-    "names": {
-      "zh-hans": "Pride",
-      "zh-hant": "Pride",
-      "en": "Pride",
-      "ja": "Pride"
-    }
-  },
-  "10013": {
-    "resourceType": "ability",
-    "id": 10013,
-    "slug": "deep-sleep",
-    "names": {
-      "zh-hans": "Deep Sleep",
-      "zh-hant": "Deep Sleep",
-      "en": "Deep Sleep",
-      "ja": "Deep Sleep"
-    }
-  },
-  "10014": {
-    "resourceType": "ability",
-    "id": 10014,
-    "slug": "power-nap",
-    "names": {
-      "zh-hans": "Power Nap",
-      "zh-hant": "Power Nap",
-      "en": "Power Nap",
-      "ja": "Power Nap"
-    }
-  },
-  "10015": {
-    "resourceType": "ability",
-    "id": 10015,
-    "slug": "spirit",
-    "names": {
-      "zh-hans": "Spirit",
-      "zh-hant": "Spirit",
-      "en": "Spirit",
-      "ja": "Spirit"
-    }
-  },
-  "10016": {
-    "resourceType": "ability",
-    "id": 10016,
-    "slug": "warm-blanket",
-    "names": {
-      "zh-hans": "Warm Blanket",
-      "zh-hant": "Warm Blanket",
-      "en": "Warm Blanket",
-      "ja": "Warm Blanket"
-    }
-  },
-  "10017": {
-    "resourceType": "ability",
-    "id": 10017,
-    "slug": "gulp",
-    "names": {
-      "zh-hans": "Gulp",
-      "zh-hant": "Gulp",
-      "en": "Gulp",
-      "ja": "Gulp"
-    }
-  },
-  "10018": {
-    "resourceType": "ability",
-    "id": 10018,
-    "slug": "herbivore",
-    "names": {
-      "zh-hans": "Herbivore",
-      "zh-hant": "Herbivore",
-      "en": "Herbivore",
-      "ja": "Herbivore"
-    }
-  },
-  "10019": {
-    "resourceType": "ability",
-    "id": 10019,
-    "slug": "sandpit",
-    "names": {
-      "zh-hans": "Sandpit",
-      "zh-hant": "Sandpit",
-      "en": "Sandpit",
-      "ja": "Sandpit"
-    }
-  },
-  "10020": {
-    "resourceType": "ability",
-    "id": 10020,
-    "slug": "hot-blooded",
-    "names": {
-      "zh-hans": "Hot Blooded",
-      "zh-hant": "Hot Blooded",
-      "en": "Hot Blooded",
-      "ja": "Hot Blooded"
-    }
-  },
-  "10021": {
-    "resourceType": "ability",
-    "id": 10021,
-    "slug": "medic",
-    "names": {
-      "zh-hans": "Medic",
-      "zh-hant": "Medic",
-      "en": "Medic",
-      "ja": "Medic"
-    }
-  },
-  "10022": {
-    "resourceType": "ability",
-    "id": 10022,
-    "slug": "life-force",
-    "names": {
-      "zh-hans": "Life Force",
-      "zh-hant": "Life Force",
-      "en": "Life Force",
-      "ja": "Life Force"
-    }
-  },
-  "10023": {
-    "resourceType": "ability",
-    "id": 10023,
-    "slug": "lunchbox",
-    "names": {
-      "zh-hans": "Lunchbox",
-      "zh-hant": "Lunchbox",
-      "en": "Lunchbox",
-      "ja": "Lunchbox"
-    }
-  },
-  "10024": {
-    "resourceType": "ability",
-    "id": 10024,
-    "slug": "nurse",
-    "names": {
-      "zh-hans": "Nurse",
-      "zh-hant": "Nurse",
-      "en": "Nurse",
-      "ja": "Nurse"
-    }
-  },
-  "10025": {
-    "resourceType": "ability",
-    "id": 10025,
-    "slug": "melee",
-    "names": {
-      "zh-hans": "Melee",
-      "zh-hant": "Melee",
-      "en": "Melee",
-      "ja": "Melee"
-    }
-  },
-  "10026": {
-    "resourceType": "ability",
-    "id": 10026,
-    "slug": "sponge",
-    "names": {
-      "zh-hans": "Sponge",
-      "zh-hant": "Sponge",
-      "en": "Sponge",
-      "ja": "Sponge"
-    }
-  },
-  "10027": {
-    "resourceType": "ability",
-    "id": 10027,
-    "slug": "bodyguard",
-    "names": {
-      "zh-hans": "Bodyguard",
-      "zh-hant": "Bodyguard",
-      "en": "Bodyguard",
-      "ja": "Bodyguard"
-    }
-  },
-  "10028": {
-    "resourceType": "ability",
-    "id": 10028,
-    "slug": "hero",
-    "names": {
-      "zh-hans": "Hero",
-      "zh-hant": "Hero",
-      "en": "Hero",
-      "ja": "Hero"
-    }
-  },
-  "10029": {
-    "resourceType": "ability",
-    "id": 10029,
-    "slug": "last-bastion",
-    "names": {
-      "zh-hans": "Last Bastion",
-      "zh-hant": "Last Bastion",
-      "en": "Last Bastion",
-      "ja": "Last Bastion"
-    }
-  },
-  "10030": {
-    "resourceType": "ability",
-    "id": 10030,
-    "slug": "stealth",
-    "names": {
-      "zh-hans": "Stealth",
-      "zh-hant": "Stealth",
-      "en": "Stealth",
-      "ja": "Stealth"
-    }
-  },
-  "10031": {
-    "resourceType": "ability",
-    "id": 10031,
-    "slug": "vanguard",
-    "names": {
-      "zh-hans": "Vanguard",
-      "zh-hant": "Vanguard",
-      "en": "Vanguard",
-      "ja": "Vanguard"
-    }
-  },
-  "10032": {
-    "resourceType": "ability",
-    "id": 10032,
-    "slug": "nomad",
-    "names": {
-      "zh-hans": "Nomad",
-      "zh-hant": "Nomad",
-      "en": "Nomad",
-      "ja": "Nomad"
-    }
-  },
-  "10033": {
-    "resourceType": "ability",
-    "id": 10033,
-    "slug": "sequence",
-    "names": {
-      "zh-hans": "Sequence",
-      "zh-hant": "Sequence",
-      "en": "Sequence",
-      "ja": "Sequence"
-    }
-  },
-  "10034": {
-    "resourceType": "ability",
-    "id": 10034,
-    "slug": "grass-cloak",
-    "names": {
-      "zh-hans": "Grass Cloak",
-      "zh-hant": "Grass Cloak",
-      "en": "Grass Cloak",
-      "ja": "Grass Cloak"
-    }
-  },
-  "10035": {
-    "resourceType": "ability",
-    "id": 10035,
-    "slug": "celebrate",
-    "names": {
-      "zh-hans": "Celebrate",
-      "zh-hant": "Celebrate",
-      "en": "Celebrate",
-      "ja": "Celebrate"
-    }
-  },
-  "10036": {
-    "resourceType": "ability",
-    "id": 10036,
-    "slug": "lullaby",
-    "names": {
-      "zh-hans": "Lullaby",
-      "zh-hant": "Lullaby",
-      "en": "Lullaby",
-      "ja": "Lullaby"
-    }
-  },
-  "10037": {
-    "resourceType": "ability",
-    "id": 10037,
-    "slug": "calming",
-    "names": {
-      "zh-hans": "Calming",
-      "zh-hant": "Calming",
-      "en": "Calming",
-      "ja": "Calming"
-    }
-  },
-  "10038": {
-    "resourceType": "ability",
-    "id": 10038,
-    "slug": "daze",
-    "names": {
-      "zh-hans": "Daze",
-      "zh-hant": "Daze",
-      "en": "Daze",
-      "ja": "Daze"
-    }
-  },
-  "10039": {
-    "resourceType": "ability",
-    "id": 10039,
-    "slug": "frighten",
-    "names": {
-      "zh-hans": "Frighten",
-      "zh-hant": "Frighten",
-      "en": "Frighten",
-      "ja": "Frighten"
-    }
-  },
-  "10040": {
-    "resourceType": "ability",
-    "id": 10040,
-    "slug": "interference",
-    "names": {
-      "zh-hans": "Interference",
-      "zh-hant": "Interference",
-      "en": "Interference",
-      "ja": "Interference"
-    }
-  },
-  "10041": {
-    "resourceType": "ability",
-    "id": 10041,
-    "slug": "mood-maker",
-    "names": {
-      "zh-hans": "Mood Maker",
-      "zh-hant": "Mood Maker",
-      "en": "Mood Maker",
-      "ja": "Mood Maker"
-    }
-  },
-  "10042": {
-    "resourceType": "ability",
-    "id": 10042,
-    "slug": "confidence",
-    "names": {
-      "zh-hans": "Confidence",
-      "zh-hant": "Confidence",
-      "en": "Confidence",
-      "ja": "Confidence"
-    }
-  },
-  "10043": {
-    "resourceType": "ability",
-    "id": 10043,
-    "slug": "fortune",
-    "names": {
-      "zh-hans": "Fortune",
-      "zh-hant": "Fortune",
-      "en": "Fortune",
-      "ja": "Fortune"
-    }
-  },
-  "10044": {
-    "resourceType": "ability",
-    "id": 10044,
-    "slug": "bonanza",
-    "names": {
-      "zh-hans": "Bonanza",
-      "zh-hant": "Bonanza",
-      "en": "Bonanza",
-      "ja": "Bonanza"
-    }
-  },
-  "10045": {
-    "resourceType": "ability",
-    "id": 10045,
-    "slug": "explode",
-    "names": {
-      "zh-hans": "Explode",
-      "zh-hant": "Explode",
-      "en": "Explode",
-      "ja": "Explode"
-    }
-  },
-  "10046": {
-    "resourceType": "ability",
-    "id": 10046,
-    "slug": "omnipotent",
-    "names": {
-      "zh-hans": "Omnipotent",
-      "zh-hant": "Omnipotent",
-      "en": "Omnipotent",
-      "ja": "Omnipotent"
-    }
-  },
-  "10047": {
-    "resourceType": "ability",
-    "id": 10047,
-    "slug": "share",
-    "names": {
-      "zh-hans": "Share",
-      "zh-hant": "Share",
-      "en": "Share",
-      "ja": "Share"
-    }
-  },
-  "10048": {
-    "resourceType": "ability",
-    "id": 10048,
-    "slug": "black-hole",
-    "names": {
-      "zh-hans": "Black Hole",
-      "zh-hant": "Black Hole",
-      "en": "Black Hole",
-      "ja": "Black Hole"
-    }
-  },
-  "10049": {
-    "resourceType": "ability",
-    "id": 10049,
-    "slug": "shadow-dash",
-    "names": {
-      "zh-hans": "Shadow Dash",
-      "zh-hant": "Shadow Dash",
-      "en": "Shadow Dash",
-      "ja": "Shadow Dash"
-    }
-  },
-  "10050": {
-    "resourceType": "ability",
-    "id": 10050,
-    "slug": "sprint",
-    "names": {
-      "zh-hans": "Sprint",
-      "zh-hant": "Sprint",
-      "en": "Sprint",
-      "ja": "Sprint"
-    }
-  },
-  "10051": {
-    "resourceType": "ability",
-    "id": 10051,
-    "slug": "disgust",
-    "names": {
-      "zh-hans": "Disgust",
-      "zh-hant": "Disgust",
-      "en": "Disgust",
-      "ja": "Disgust"
-    }
-  },
-  "10052": {
-    "resourceType": "ability",
-    "id": 10052,
-    "slug": "high-rise",
-    "names": {
-      "zh-hans": "High-rise",
-      "zh-hant": "High-rise",
-      "en": "High-rise",
-      "ja": "High-rise"
-    }
-  },
-  "10053": {
-    "resourceType": "ability",
-    "id": 10053,
-    "slug": "climber",
-    "names": {
-      "zh-hans": "Climber",
-      "zh-hant": "Climber",
-      "en": "Climber",
-      "ja": "Climber"
-    }
-  },
-  "10054": {
-    "resourceType": "ability",
-    "id": 10054,
-    "slug": "flame-boost",
-    "names": {
-      "zh-hans": "Flame Boost",
-      "zh-hant": "Flame Boost",
-      "en": "Flame Boost",
-      "ja": "Flame Boost"
-    }
-  },
-  "10055": {
-    "resourceType": "ability",
-    "id": 10055,
-    "slug": "aqua-boost",
-    "names": {
-      "zh-hans": "Aqua Boost",
-      "zh-hant": "Aqua Boost",
-      "en": "Aqua Boost",
-      "ja": "Aqua Boost"
-    }
-  },
-  "10056": {
-    "resourceType": "ability",
-    "id": 10056,
-    "slug": "run-up",
-    "names": {
-      "zh-hans": "Run Up",
-      "zh-hant": "Run Up",
-      "en": "Run Up",
-      "ja": "Run Up"
-    }
-  },
-  "10057": {
-    "resourceType": "ability",
-    "id": 10057,
-    "slug": "conqueror",
-    "names": {
-      "zh-hans": "Conqueror",
-      "zh-hant": "Conqueror",
-      "en": "Conqueror",
-      "ja": "Conqueror"
-    }
-  },
-  "10058": {
-    "resourceType": "ability",
-    "id": 10058,
-    "slug": "shackle",
-    "names": {
-      "zh-hans": "Shackle",
-      "zh-hant": "Shackle",
-      "en": "Shackle",
-      "ja": "Shackle"
-    }
-  },
-  "10059": {
-    "resourceType": "ability",
-    "id": 10059,
-    "slug": "decoy",
-    "names": {
-      "zh-hans": "Decoy",
-      "zh-hant": "Decoy",
-      "en": "Decoy",
-      "ja": "Decoy"
-    }
-  },
-  "10060": {
-    "resourceType": "ability",
-    "id": 10060,
-    "slug": "shield",
-    "names": {
-      "zh-hans": "Shield",
-      "zh-hant": "Shield",
-      "en": "Shield",
-      "ja": "Shield"
     }
   }
 } as const satisfies Record<UpstreamResourceId, NormalizedAbility>

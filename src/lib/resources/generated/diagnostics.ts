@@ -2598,77 +2598,10 @@ export const RESOURCE_DIAGNOSTICS = {
     300,
     301,
     302,
-    303,
     304,
     305,
     306,
-    307,
-    308,
-    309,
-    310,
-    311,
-    312,
-    313,
-    10001,
-    10002,
-    10003,
-    10004,
-    10005,
-    10006,
-    10007,
-    10008,
-    10009,
-    10010,
-    10011,
-    10012,
-    10013,
-    10014,
-    10015,
-    10016,
-    10017,
-    10018,
-    10019,
-    10020,
-    10021,
-    10022,
-    10023,
-    10024,
-    10025,
-    10026,
-    10027,
-    10028,
-    10029,
-    10030,
-    10031,
-    10032,
-    10033,
-    10034,
-    10035,
-    10036,
-    10037,
-    10038,
-    10039,
-    10040,
-    10041,
-    10042,
-    10043,
-    10044,
-    10045,
-    10046,
-    10047,
-    10048,
-    10049,
-    10050,
-    10051,
-    10052,
-    10053,
-    10054,
-    10055,
-    10056,
-    10057,
-    10058,
-    10059,
-    10060
+    307
   ],
   "itemIds": [
     247,
@@ -7080,6 +7013,26 @@ export const RESOURCE_DIAGNOSTICS = {
   ],
   "unsupportedBattleIdentities": [
     {
+      "id": 10282,
+      "reason": "pokemon/10282 has no current ability relation"
+    },
+    {
+      "id": 10283,
+      "reason": "pokemon/10283 has no current ability relation"
+    },
+    {
+      "id": 10287,
+      "reason": "pokemon/10287 has no current ability relation"
+    },
+    {
+      "id": 10290,
+      "reason": "pokemon/10290 has no current ability relation"
+    },
+    {
+      "id": 10295,
+      "reason": "pokemon/10295 has no current ability relation"
+    },
+    {
       "id": 10301,
       "reason": "pokemon/10301 has no current ability relation"
     },
@@ -7118,6 +7071,10 @@ export const RESOURCE_DIAGNOSTICS = {
     {
       "id": 10319,
       "reason": "pokemon/10319 has no current ability relation"
+    },
+    {
+      "id": 10320,
+      "reason": "pokemon/10320 has no current ability relation"
     },
     {
       "id": 10322,

@@ -1,4 +1,3 @@
-import { toID } from "@smogon/calc"
 import { describe, expect, it } from "vitest"
 
 import {
@@ -73,13 +72,11 @@ describe("generated Held-item resources", () => {
     expect(itemSpriteUrl("none")).toBeNull()
   })
 
-  it("joins each PokeAPI identity to its reviewed Showdown identity", () => {
+  it("propagates each frozen item's reviewed calc name into generated resources", () => {
+    expect(GENERATED_HELD_ITEMS[236].calcItemName).toBe("leek")
     for (const item of FROZEN_HELD_ITEMS) {
-      expect(item.showdown).toBe(
-        item.id === 236
-          ? "leek"
-          : toID((GENERATED_HELD_ITEMS as Record<number, { slug: string }>)[item.id].slug),
-      )
+      const generated = (GENERATED_HELD_ITEMS as Record<number, { calcItemName: string }>)[item.id]
+      expect(generated.calcItemName).toBe(item.calcItemName)
     }
   })
 

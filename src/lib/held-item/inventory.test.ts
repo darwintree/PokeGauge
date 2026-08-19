@@ -229,21 +229,21 @@ describe("frozen Held-item inventory", () => {
   it("contains exactly the unique 85 numeric identities and explicit Showdown joins", () => {
     expect(FROZEN_HELD_ITEMS).toHaveLength(85)
     expect(new Set(FROZEN_HELD_ITEM_IDS).size).toBe(85)
-    expect(new Set(FROZEN_HELD_ITEMS.map((entry) => entry.showdown)).size).toBe(85)
+    expect(new Set(FROZEN_HELD_ITEMS.map((entry) => entry.calcItemName)).size).toBe(85)
     expect(FROZEN_HELD_ITEMS.every((entry) => Number.isInteger(entry.id))).toBe(true)
-    expect(FROZEN_HELD_ITEMS.every((entry) => /^[a-z0-9]+$/.test(entry.showdown))).toBe(true)
+    expect(FROZEN_HELD_ITEMS.every((entry) => /^[a-z0-9]+$/.test(entry.calcItemName))).toBe(true)
     expect(FROZEN_HELD_ITEM_BY_ID.size).toBe(85)
-    expect(FROZEN_HELD_ITEM_BY_ID.get(236)?.showdown).toBe("leek")
+    expect(FROZEN_HELD_ITEM_BY_ID.get(236)?.calcItemName).toBe("leek")
     expect(isFrozenHeldItemId(247)).toBe(true)
     expect(isFrozenHeldItemId("247")).toBe(false)
     expect(FROZEN_HELD_ITEMS.every((entry) =>
-      Generations.get(9).items.get(toID(entry.showdown)) !== undefined
+      Generations.get(9).items.get(toID(entry.calcItemName)) !== undefined
     )).toBe(true)
   })
 
   it("matches the reviewed identity, pool, warning, and effect contract row by row", () => {
-    expect(FROZEN_HELD_ITEMS.map(({ id, showdown, pool, mb, warning, effect }) =>
-      [id, showdown, pool, mb ? "M" : "B", warning ?? "-", effectContract(effect)].join("|"),
+    expect(FROZEN_HELD_ITEMS.map(({ id, calcItemName, pool, mb, warning, effect }) =>
+      [id, calcItemName, pool, mb ? "M" : "B", warning ?? "-", effectContract(effect)].join("|"),
     ).join("\n")).toBe(FROZEN_85_CONTRACT.split("\n").map(semanticContractRow).join("\n"))
   })
 

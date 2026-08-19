@@ -5,6 +5,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 695,
     "slug": "gengarite",
+    "calcItemName": "Gengarite",
     "names": {
       "zh-hans": "耿鬼进化石",
       "zh-hant": "耿鬼進化石",
@@ -17,6 +18,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 696,
     "slug": "gardevoirite",
+    "calcItemName": "Gardevoirite",
     "names": {
       "zh-hans": "沙奈朵进化石",
       "zh-hant": "沙奈朵進化石",
@@ -29,6 +31,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 697,
     "slug": "ampharosite",
+    "calcItemName": "Ampharosite",
     "names": {
       "zh-hans": "电龙进化石",
       "zh-hant": "電龍進化石",
@@ -41,6 +44,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 698,
     "slug": "venusaurite",
+    "calcItemName": "Venusaurite",
     "names": {
       "zh-hans": "妙蛙花进化石",
       "zh-hant": "妙蛙花進化石",
@@ -53,6 +57,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 699,
     "slug": "charizardite-x",
+    "calcItemName": "Charizardite X",
     "names": {
       "zh-hans": "喷火龙进化石Ｘ",
       "zh-hant": "噴火龍進化石Ｘ",
@@ -65,6 +70,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 700,
     "slug": "blastoisinite",
+    "calcItemName": "Blastoisinite",
     "names": {
       "zh-hans": "水箭龟进化石",
       "zh-hant": "水箭龜進化石",
@@ -77,6 +83,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 701,
     "slug": "mewtwonite-x",
+    "calcItemName": "Mewtwonite X",
     "names": {
       "zh-hans": "超梦进化石Ｘ",
       "zh-hant": "超夢進化石Ｘ",
@@ -89,6 +96,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 702,
     "slug": "mewtwonite-y",
+    "calcItemName": "Mewtwonite Y",
     "names": {
       "zh-hans": "超梦进化石Ｙ",
       "zh-hant": "超夢進化石Ｙ",
@@ -101,6 +109,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 703,
     "slug": "blazikenite",
+    "calcItemName": "Blazikenite",
     "names": {
       "zh-hans": "火焰鸡进化石",
       "zh-hant": "火焰雞進化石",
@@ -113,6 +122,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 704,
     "slug": "medichamite",
+    "calcItemName": "Medichamite",
     "names": {
       "zh-hans": "恰雷姆进化石",
       "zh-hant": "恰雷姆進化石",
@@ -125,6 +135,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 705,
     "slug": "houndoominite",
+    "calcItemName": "Houndoominite",
     "names": {
       "zh-hans": "黑鲁加进化石",
       "zh-hant": "黑魯加進化石",
@@ -137,6 +148,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 706,
     "slug": "aggronite",
+    "calcItemName": "Aggronite",
     "names": {
       "zh-hans": "波士可多拉进化石",
       "zh-hant": "波士可多拉進化石",
@@ -149,6 +161,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 707,
     "slug": "banettite",
+    "calcItemName": "Banettite",
     "names": {
       "zh-hans": "诅咒娃娃进化石",
       "zh-hant": "詛咒娃娃進化石",
@@ -161,6 +174,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 708,
     "slug": "tyranitarite",
+    "calcItemName": "Tyranitarite",
     "names": {
       "zh-hans": "班基拉斯进化石",
       "zh-hant": "班基拉斯進化石",
@@ -173,6 +187,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 709,
     "slug": "scizorite",
+    "calcItemName": "Scizorite",
     "names": {
       "zh-hans": "巨钳螳螂进化石",
       "zh-hant": "巨鉗螳螂進化石",
@@ -185,6 +200,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 710,
     "slug": "pinsirite",
+    "calcItemName": "Pinsirite",
     "names": {
       "zh-hans": "凯罗斯进化石",
       "zh-hant": "凱羅斯進化石",
@@ -197,6 +213,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 711,
     "slug": "aerodactylite",
+    "calcItemName": "Aerodactylite",
     "names": {
       "zh-hans": "化石翼龙进化石",
       "zh-hant": "化石翼龍進化石",
@@ -209,6 +226,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 712,
     "slug": "lucarionite",
+    "calcItemName": "Lucarionite",
     "names": {
       "zh-hans": "路卡利欧进化石",
       "zh-hant": "路卡利歐進化石",
@@ -221,6 +239,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 713,
     "slug": "abomasite",
+    "calcItemName": "Abomasite",
     "names": {
       "zh-hans": "暴雪王进化石",
       "zh-hant": "暴雪王進化石",
@@ -233,6 +252,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 714,
     "slug": "kangaskhanite",
+    "calcItemName": "Kangaskhanite",
     "names": {
       "zh-hans": "袋兽进化石",
       "zh-hant": "袋獸進化石",
@@ -245,6 +265,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 715,
     "slug": "gyaradosite",
+    "calcItemName": "Gyaradosite",
     "names": {
       "zh-hans": "暴鲤龙进化石",
       "zh-hant": "暴鯉龍進化石",
@@ -257,6 +278,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 716,
     "slug": "absolite",
+    "calcItemName": "Absolite",
     "names": {
       "zh-hans": "阿勃梭鲁进化石",
       "zh-hant": "阿勃梭魯進化石",
@@ -269,6 +291,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 717,
     "slug": "charizardite-y",
+    "calcItemName": "Charizardite Y",
     "names": {
       "zh-hans": "喷火龙进化石Ｙ",
       "zh-hant": "噴火龍進化石Ｙ",
@@ -281,6 +304,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 718,
     "slug": "alakazite",
+    "calcItemName": "Alakazite",
     "names": {
       "zh-hans": "胡地进化石",
       "zh-hant": "胡地進化石",
@@ -293,6 +317,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 719,
     "slug": "heracronite",
+    "calcItemName": "Heracronite",
     "names": {
       "zh-hans": "赫拉克罗斯进化石",
       "zh-hant": "赫拉克羅斯進化石",
@@ -305,6 +330,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 720,
     "slug": "mawilite",
+    "calcItemName": "Mawilite",
     "names": {
       "zh-hans": "大嘴娃进化石",
       "zh-hant": "大嘴娃進化石",
@@ -317,6 +343,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 721,
     "slug": "manectite",
+    "calcItemName": "Manectite",
     "names": {
       "zh-hans": "雷电兽进化石",
       "zh-hant": "雷電獸進化石",
@@ -329,6 +356,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 722,
     "slug": "garchompite",
+    "calcItemName": "Garchompite",
     "names": {
       "zh-hans": "烈咬陆鲨进化石",
       "zh-hant": "烈咬陸鯊進化石",
@@ -341,6 +369,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 760,
     "slug": "latiasite",
+    "calcItemName": "Latiasite",
     "names": {
       "zh-hans": "拉帝亚斯进化石",
       "zh-hant": "拉帝亞斯進化石",
@@ -353,6 +382,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 761,
     "slug": "latiosite",
+    "calcItemName": "Latiosite",
     "names": {
       "zh-hans": "拉帝欧斯进化石",
       "zh-hant": "拉帝歐斯進化石",
@@ -365,6 +395,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 793,
     "slug": "swampertite",
+    "calcItemName": "Swampertite",
     "names": {
       "zh-hans": "巨沼怪进化石",
       "zh-hant": "巨沼怪進化石",
@@ -377,6 +408,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 794,
     "slug": "sceptilite",
+    "calcItemName": "Sceptilite",
     "names": {
       "zh-hans": "蜥蜴王进化石",
       "zh-hant": "蜥蜴王進化石",
@@ -389,6 +421,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 795,
     "slug": "sablenite",
+    "calcItemName": "Sablenite",
     "names": {
       "zh-hans": "勾魂眼进化石",
       "zh-hant": "勾魂眼進化石",
@@ -401,6 +434,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 796,
     "slug": "altarianite",
+    "calcItemName": "Altarianite",
     "names": {
       "zh-hans": "七夕青鸟进化石",
       "zh-hant": "七夕青鳥進化石",
@@ -413,6 +447,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 797,
     "slug": "galladite",
+    "calcItemName": "Galladite",
     "names": {
       "zh-hans": "艾路雷朵进化石",
       "zh-hant": "艾路雷朵進化石",
@@ -425,6 +460,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 798,
     "slug": "audinite",
+    "calcItemName": "Audinite",
     "names": {
       "zh-hans": "差不多娃娃进化石",
       "zh-hant": "差不多娃娃進化石",
@@ -437,6 +473,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 799,
     "slug": "metagrossite",
+    "calcItemName": "Metagrossite",
     "names": {
       "zh-hans": "巨金怪进化石",
       "zh-hant": "巨金怪進化石",
@@ -449,6 +486,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 800,
     "slug": "sharpedonite",
+    "calcItemName": "Sharpedonite",
     "names": {
       "zh-hans": "巨牙鲨进化石",
       "zh-hant": "巨牙鯊進化石",
@@ -461,6 +499,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 801,
     "slug": "slowbronite",
+    "calcItemName": "Slowbronite",
     "names": {
       "zh-hans": "呆壳兽进化石",
       "zh-hant": "呆殼獸進化石",
@@ -473,6 +512,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 802,
     "slug": "steelixite",
+    "calcItemName": "Steelixite",
     "names": {
       "zh-hans": "大钢蛇进化石",
       "zh-hant": "大鋼蛇進化石",
@@ -485,6 +525,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 803,
     "slug": "pidgeotite",
+    "calcItemName": "Pidgeotite",
     "names": {
       "zh-hans": "大比鸟进化石",
       "zh-hant": "大比鳥進化石",
@@ -497,6 +538,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 804,
     "slug": "glalitite",
+    "calcItemName": "Glalitite",
     "names": {
       "zh-hans": "冰鬼护进化石",
       "zh-hant": "冰鬼護進化石",
@@ -509,6 +551,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 805,
     "slug": "diancite",
+    "calcItemName": "Diancite",
     "names": {
       "zh-hans": "蒂安希进化石",
       "zh-hant": "蒂安希進化石",
@@ -521,6 +564,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 808,
     "slug": "cameruptite",
+    "calcItemName": "Cameruptite",
     "names": {
       "zh-hans": "喷火驼进化石",
       "zh-hant": "噴火駝進化石",
@@ -533,6 +577,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 809,
     "slug": "lopunnite",
+    "calcItemName": "Lopunnite",
     "names": {
       "zh-hans": "长耳兔进化石",
       "zh-hant": "長耳兔進化石",
@@ -545,6 +590,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 810,
     "slug": "salamencite",
+    "calcItemName": "Salamencite",
     "names": {
       "zh-hans": "暴飞龙进化石",
       "zh-hant": "暴飛龍進化石",
@@ -557,6 +603,7 @@ export const GENERATED_MEGA_STONES = {
     "resourceType": "item",
     "id": 811,
     "slug": "beedrillite",
+    "calcItemName": "Beedrillite",
     "names": {
       "zh-hans": "大针蜂进化石",
       "zh-hant": "大針蜂進化石",

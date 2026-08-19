@@ -5,6 +5,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 112,
     "slug": "adamant-orb",
+    "calcItemName": "adamantorb",
     "names": {
       "zh-hans": "金刚宝珠",
       "zh-hant": "金剛寶珠",
@@ -17,6 +18,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 113,
     "slug": "lustrous-orb",
+    "calcItemName": "lustrousorb",
     "names": {
       "zh-hans": "白玉宝珠",
       "zh-hant": "白玉寶珠",
@@ -29,6 +31,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 161,
     "slug": "occa-berry",
+    "calcItemName": "occaberry",
     "names": {
       "zh-hans": "巧可果",
       "zh-hant": "巧可果",
@@ -41,6 +44,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 162,
     "slug": "passho-berry",
+    "calcItemName": "passhoberry",
     "names": {
       "zh-hans": "千香果",
       "zh-hant": "千香果",
@@ -53,6 +57,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 163,
     "slug": "wacan-berry",
+    "calcItemName": "wacanberry",
     "names": {
       "zh-hans": "烛木果",
       "zh-hant": "燭木果",
@@ -65,6 +70,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 164,
     "slug": "rindo-berry",
+    "calcItemName": "rindoberry",
     "names": {
       "zh-hans": "罗子果",
       "zh-hant": "羅子果",
@@ -77,6 +83,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 165,
     "slug": "yache-berry",
+    "calcItemName": "yacheberry",
     "names": {
       "zh-hans": "番荔果",
       "zh-hant": "番荔果",
@@ -89,6 +96,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 166,
     "slug": "chople-berry",
+    "calcItemName": "chopleberry",
     "names": {
       "zh-hans": "莲蒲果",
       "zh-hant": "蓮蒲果",
@@ -101,6 +109,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 167,
     "slug": "kebia-berry",
+    "calcItemName": "kebiaberry",
     "names": {
       "zh-hans": "通通果",
       "zh-hant": "通通果",
@@ -113,6 +122,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 168,
     "slug": "shuca-berry",
+    "calcItemName": "shucaberry",
     "names": {
       "zh-hans": "腰木果",
       "zh-hant": "腰木果",
@@ -125,6 +135,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 169,
     "slug": "coba-berry",
+    "calcItemName": "cobaberry",
     "names": {
       "zh-hans": "棱瓜果",
       "zh-hant": "稜瓜果",
@@ -137,6 +148,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 170,
     "slug": "payapa-berry",
+    "calcItemName": "payapaberry",
     "names": {
       "zh-hans": "福禄果",
       "zh-hant": "福祿果",
@@ -149,6 +161,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 171,
     "slug": "tanga-berry",
+    "calcItemName": "tangaberry",
     "names": {
       "zh-hans": "扁樱果",
       "zh-hant": "扁櫻果",
@@ -161,6 +174,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 172,
     "slug": "charti-berry",
+    "calcItemName": "chartiberry",
     "names": {
       "zh-hans": "草蚕果",
       "zh-hant": "草蠶果",
@@ -173,6 +187,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 173,
     "slug": "kasib-berry",
+    "calcItemName": "kasibberry",
     "names": {
       "zh-hans": "佛柑果",
       "zh-hant": "佛柑果",
@@ -185,6 +200,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 174,
     "slug": "haban-berry",
+    "calcItemName": "habanberry",
     "names": {
       "zh-hans": "莓榴果",
       "zh-hant": "莓榴果",
@@ -197,6 +213,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 175,
     "slug": "colbur-berry",
+    "calcItemName": "colburberry",
     "names": {
       "zh-hans": "刺耳果",
       "zh-hant": "刺耳果",
@@ -209,6 +226,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 176,
     "slug": "babiri-berry",
+    "calcItemName": "babiriberry",
     "names": {
       "zh-hans": "霹霹果",
       "zh-hant": "霹霹果",
@@ -221,6 +239,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 177,
     "slug": "chilan-berry",
+    "calcItemName": "chilanberry",
     "names": {
       "zh-hans": "灯浆果",
       "zh-hant": "燈漿果",
@@ -233,6 +252,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 190,
     "slug": "bright-powder",
+    "calcItemName": "brightpowder",
     "names": {
       "zh-hans": "光粉",
       "zh-hant": "光粉",
@@ -245,6 +265,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 197,
     "slug": "choice-band",
+    "calcItemName": "choiceband",
     "names": {
       "zh-hans": "讲究头带",
       "zh-hant": "講究頭帶",
@@ -257,6 +278,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 199,
     "slug": "silver-powder",
+    "calcItemName": "silverpowder",
     "names": {
       "zh-hans": "银粉",
       "zh-hant": "銀粉",
@@ -269,6 +291,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 202,
     "slug": "soul-dew",
+    "calcItemName": "souldew",
     "names": {
       "zh-hans": "心之水滴",
       "zh-hant": "心之水滴",
@@ -281,6 +304,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 203,
     "slug": "deep-sea-tooth",
+    "calcItemName": "deepseatooth",
     "names": {
       "zh-hans": "深海之牙",
       "zh-hant": "深海之牙",
@@ -293,6 +317,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 204,
     "slug": "deep-sea-scale",
+    "calcItemName": "deepseascale",
     "names": {
       "zh-hans": "深海鳞片",
       "zh-hant": "深海鱗片",
@@ -305,6 +330,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 209,
     "slug": "scope-lens",
+    "calcItemName": "scopelens",
     "names": {
       "zh-hans": "焦点镜",
       "zh-hant": "焦點鏡",
@@ -317,6 +343,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 210,
     "slug": "metal-coat",
+    "calcItemName": "metalcoat",
     "names": {
       "zh-hans": "金属膜",
       "zh-hant": "金屬膜",
@@ -329,6 +356,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 213,
     "slug": "light-ball",
+    "calcItemName": "lightball",
     "names": {
       "zh-hans": "电气球",
       "zh-hant": "電氣球",
@@ -341,6 +369,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 214,
     "slug": "soft-sand",
+    "calcItemName": "softsand",
     "names": {
       "zh-hans": "柔软沙子",
       "zh-hant": "柔軟沙子",
@@ -353,6 +382,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 215,
     "slug": "hard-stone",
+    "calcItemName": "hardstone",
     "names": {
       "zh-hans": "硬石头",
       "zh-hant": "硬石頭",
@@ -365,6 +395,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 216,
     "slug": "miracle-seed",
+    "calcItemName": "miracleseed",
     "names": {
       "zh-hans": "奇迹种子",
       "zh-hant": "奇跡種子",
@@ -377,6 +408,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 217,
     "slug": "black-glasses",
+    "calcItemName": "blackglasses",
     "names": {
       "zh-hans": "黑色眼镜",
       "zh-hant": "黑色眼鏡",
@@ -389,6 +421,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 218,
     "slug": "black-belt",
+    "calcItemName": "blackbelt",
     "names": {
       "zh-hans": "黑带",
       "zh-hant": "黑帶",
@@ -401,6 +434,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 219,
     "slug": "magnet",
+    "calcItemName": "magnet",
     "names": {
       "zh-hans": "磁铁",
       "zh-hant": "磁鐵",
@@ -413,6 +447,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 220,
     "slug": "mystic-water",
+    "calcItemName": "mysticwater",
     "names": {
       "zh-hans": "神秘水滴",
       "zh-hant": "神秘水滴",
@@ -425,6 +460,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 221,
     "slug": "sharp-beak",
+    "calcItemName": "sharpbeak",
     "names": {
       "zh-hans": "锐利鸟嘴",
       "zh-hant": "銳利鳥嘴",
@@ -437,6 +473,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 222,
     "slug": "poison-barb",
+    "calcItemName": "poisonbarb",
     "names": {
       "zh-hans": "毒针",
       "zh-hant": "毒針",
@@ -449,6 +486,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 223,
     "slug": "never-melt-ice",
+    "calcItemName": "nevermeltice",
     "names": {
       "zh-hans": "不融冰",
       "zh-hant": "不融冰",
@@ -461,6 +499,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 224,
     "slug": "spell-tag",
+    "calcItemName": "spelltag",
     "names": {
       "zh-hans": "诅咒之符",
       "zh-hant": "詛咒之符",
@@ -473,6 +512,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 225,
     "slug": "twisted-spoon",
+    "calcItemName": "twistedspoon",
     "names": {
       "zh-hans": "弯曲的汤匙",
       "zh-hant": "彎曲的湯匙",
@@ -485,6 +525,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 226,
     "slug": "charcoal",
+    "calcItemName": "charcoal",
     "names": {
       "zh-hans": "木炭",
       "zh-hant": "木炭",
@@ -497,6 +538,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 227,
     "slug": "dragon-fang",
+    "calcItemName": "dragonfang",
     "names": {
       "zh-hans": "龙之牙",
       "zh-hant": "龍之牙",
@@ -509,6 +551,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 228,
     "slug": "silk-scarf",
+    "calcItemName": "silkscarf",
     "names": {
       "zh-hans": "丝绸围巾",
       "zh-hant": "絲綢圍巾",
@@ -521,6 +564,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 231,
     "slug": "sea-incense",
+    "calcItemName": "seaincense",
     "names": {
       "zh-hans": "海潮薰香",
       "zh-hant": "海潮薰香",
@@ -533,6 +577,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 232,
     "slug": "lax-incense",
+    "calcItemName": "laxincense",
     "names": {
       "zh-hans": "悠闲薰香",
       "zh-hant": "悠閒薰香",
@@ -545,6 +590,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 233,
     "slug": "lucky-punch",
+    "calcItemName": "luckypunch",
     "names": {
       "zh-hans": "吉利拳",
       "zh-hant": "吉利拳",
@@ -557,6 +603,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 235,
     "slug": "thick-club",
+    "calcItemName": "thickclub",
     "names": {
       "zh-hans": "粗骨头",
       "zh-hant": "粗骨頭",
@@ -569,6 +616,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 236,
     "slug": "stick",
+    "calcItemName": "leek",
     "names": {
       "zh-hans": "大葱",
       "zh-hant": "大蔥",
@@ -581,6 +629,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 242,
     "slug": "wide-lens",
+    "calcItemName": "widelens",
     "names": {
       "zh-hans": "广角镜",
       "zh-hant": "廣角鏡",
@@ -593,6 +642,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 243,
     "slug": "muscle-band",
+    "calcItemName": "muscleband",
     "names": {
       "zh-hans": "力量头带",
       "zh-hant": "力量頭帶",
@@ -605,6 +655,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 244,
     "slug": "wise-glasses",
+    "calcItemName": "wiseglasses",
     "names": {
       "zh-hans": "博识眼镜",
       "zh-hant": "博識眼鏡",
@@ -617,6 +668,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 245,
     "slug": "expert-belt",
+    "calcItemName": "expertbelt",
     "names": {
       "zh-hans": "达人带",
       "zh-hant": "達人帶",
@@ -629,6 +681,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 247,
     "slug": "life-orb",
+    "calcItemName": "lifeorb",
     "names": {
       "zh-hans": "生命宝珠",
       "zh-hant": "生命寶珠",
@@ -641,6 +694,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 274,
     "slug": "choice-specs",
+    "calcItemName": "choicespecs",
     "names": {
       "zh-hans": "讲究眼镜",
       "zh-hant": "講究眼鏡",
@@ -653,6 +707,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 275,
     "slug": "flame-plate",
+    "calcItemName": "flameplate",
     "names": {
       "zh-hans": "火球石板",
       "zh-hant": "火球石板",
@@ -665,6 +720,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 276,
     "slug": "splash-plate",
+    "calcItemName": "splashplate",
     "names": {
       "zh-hans": "水滴石板",
       "zh-hant": "水滴石板",
@@ -677,6 +733,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 277,
     "slug": "zap-plate",
+    "calcItemName": "zapplate",
     "names": {
       "zh-hans": "雷电石板",
       "zh-hant": "雷電石板",
@@ -689,6 +746,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 278,
     "slug": "meadow-plate",
+    "calcItemName": "meadowplate",
     "names": {
       "zh-hans": "碧绿石板",
       "zh-hant": "碧綠石板",
@@ -701,6 +759,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 279,
     "slug": "icicle-plate",
+    "calcItemName": "icicleplate",
     "names": {
       "zh-hans": "冰柱石板",
       "zh-hant": "冰柱石板",
@@ -713,6 +772,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 280,
     "slug": "fist-plate",
+    "calcItemName": "fistplate",
     "names": {
       "zh-hans": "拳头石板",
       "zh-hant": "拳頭石板",
@@ -725,6 +785,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 281,
     "slug": "toxic-plate",
+    "calcItemName": "toxicplate",
     "names": {
       "zh-hans": "剧毒石板",
       "zh-hant": "劇毒石板",
@@ -737,6 +798,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 282,
     "slug": "earth-plate",
+    "calcItemName": "earthplate",
     "names": {
       "zh-hans": "大地石板",
       "zh-hant": "大地石板",
@@ -749,6 +811,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 283,
     "slug": "sky-plate",
+    "calcItemName": "skyplate",
     "names": {
       "zh-hans": "蓝天石板",
       "zh-hant": "藍天石板",
@@ -761,6 +824,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 284,
     "slug": "mind-plate",
+    "calcItemName": "mindplate",
     "names": {
       "zh-hans": "神奇石板",
       "zh-hant": "神奇石板",
@@ -773,6 +837,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 285,
     "slug": "insect-plate",
+    "calcItemName": "insectplate",
     "names": {
       "zh-hans": "玉虫石板",
       "zh-hant": "玉蟲石板",
@@ -785,6 +850,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 286,
     "slug": "stone-plate",
+    "calcItemName": "stoneplate",
     "names": {
       "zh-hans": "岩石石板",
       "zh-hant": "岩石石板",
@@ -797,6 +863,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 287,
     "slug": "spooky-plate",
+    "calcItemName": "spookyplate",
     "names": {
       "zh-hans": "妖怪石板",
       "zh-hant": "妖怪石板",
@@ -809,6 +876,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 288,
     "slug": "draco-plate",
+    "calcItemName": "dracoplate",
     "names": {
       "zh-hans": "龙之石板",
       "zh-hant": "龍之石板",
@@ -821,6 +889,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 289,
     "slug": "dread-plate",
+    "calcItemName": "dreadplate",
     "names": {
       "zh-hans": "恶颜石板",
       "zh-hant": "惡顏石板",
@@ -833,6 +902,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 290,
     "slug": "iron-plate",
+    "calcItemName": "ironplate",
     "names": {
       "zh-hans": "钢铁石板",
       "zh-hant": "鋼鐵石板",
@@ -845,6 +915,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 291,
     "slug": "odd-incense",
+    "calcItemName": "oddincense",
     "names": {
       "zh-hans": "奇异薰香",
       "zh-hant": "奇異薰香",
@@ -857,6 +928,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 292,
     "slug": "rock-incense",
+    "calcItemName": "rockincense",
     "names": {
       "zh-hans": "岩石薰香",
       "zh-hant": "岩石薰香",
@@ -869,6 +941,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 294,
     "slug": "wave-incense",
+    "calcItemName": "waveincense",
     "names": {
       "zh-hans": "涟漪薰香",
       "zh-hant": "漣漪薰香",
@@ -881,6 +954,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 295,
     "slug": "rose-incense",
+    "calcItemName": "roseincense",
     "names": {
       "zh-hans": "花朵薰香",
       "zh-hant": "花朵薰香",
@@ -893,6 +967,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 303,
     "slug": "razor-claw",
+    "calcItemName": "razorclaw",
     "names": {
       "zh-hans": "锐利之爪",
       "zh-hant": "銳利之爪",
@@ -905,6 +980,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 442,
     "slug": "griseous-orb",
+    "calcItemName": "griseousorb",
     "names": {
       "zh-hans": "白金宝珠",
       "zh-hant": "白金寶珠",
@@ -917,6 +993,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 581,
     "slug": "eviolite",
+    "calcItemName": "eviolite",
     "names": {
       "zh-hans": "进化奇石",
       "zh-hant": "進化奇石",
@@ -929,6 +1006,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 683,
     "slug": "assault-vest",
+    "calcItemName": "assaultvest",
     "names": {
       "zh-hans": "突击背心",
       "zh-hant": "突擊背心",
@@ -941,6 +1019,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 684,
     "slug": "pixie-plate",
+    "calcItemName": "pixieplate",
     "names": {
       "zh-hans": "妖精石板",
       "zh-hant": "妖精石板",
@@ -953,6 +1032,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 723,
     "slug": "roseli-berry",
+    "calcItemName": "roseliberry",
     "names": {
       "zh-hans": "洛玫果",
       "zh-hant": "洛玫果",
@@ -965,6 +1045,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 1181,
     "slug": "utility-umbrella",
+    "calcItemName": "utilityumbrella",
     "names": {
       "zh-hans": "万能伞",
       "zh-hant": "萬能傘",
@@ -977,6 +1058,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 2105,
     "slug": "fairy-feather",
+    "calcItemName": "fairyfeather",
     "names": {
       "zh-hans": "Fairy Feather",
       "zh-hant": "Fairy Feather",
@@ -989,6 +1071,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 2106,
     "slug": "wellspring-mask",
+    "calcItemName": "wellspringmask",
     "names": {
       "zh-hans": "Wellspring Mask",
       "zh-hant": "Wellspring Mask",
@@ -1001,6 +1084,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 2107,
     "slug": "hearthflame-mask",
+    "calcItemName": "hearthflamemask",
     "names": {
       "zh-hans": "Hearthflame Mask",
       "zh-hant": "Hearthflame Mask",
@@ -1013,6 +1097,7 @@ export const GENERATED_HELD_ITEMS = {
     "resourceType": "item",
     "id": 2108,
     "slug": "cornerstone-mask",
+    "calcItemName": "cornerstonemask",
     "names": {
       "zh-hans": "Cornerstone Mask",
       "zh-hant": "Cornerstone Mask",

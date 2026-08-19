@@ -40,6 +40,7 @@ export type NormalizedAbility = {
   resourceType: "ability"
   id: UpstreamResourceId
   slug: string
+  calcAbilityName: string
   names: LocalizedNames
 }
 
@@ -47,6 +48,7 @@ export type NormalizedItem = {
   resourceType: "item"
   id: UpstreamResourceId
   slug: string
+  calcItemName: string
   names: LocalizedNames
 }
 

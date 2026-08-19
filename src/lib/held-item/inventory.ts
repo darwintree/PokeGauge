@@ -42,7 +42,7 @@ export type HeldItemEffect =
 
 export type FrozenHeldItem = {
   id: number
-  showdown: string
+  calcItemName: string
   pool: HeldItemPool
   mb: boolean
   effect: HeldItemEffect
@@ -105,34 +105,34 @@ const criticalStage = (
 
 function item(
   id: number,
-  showdown: string,
+  calcItemName: string,
   pool: HeldItemPool,
   mb: boolean,
   effect: HeldItemEffect,
   warning?: HeldItemWarning,
 ): FrozenHeldItem {
-  return { id, showdown, pool, mb, effect, ...(warning ? { warning } : {}) }
+  return { id, calcItemName, pool, mb, effect, ...(warning ? { warning } : {}) }
 }
 
 function typeBooster(
   id: number,
-  showdown: string,
+  calcItemName: string,
   type: PokemonType,
   mb: boolean,
 ): FrozenHeldItem {
-  return item(id, showdown, "attacker", mb, basePower(TWENTY_PERCENT, moveType(type)))
+  return item(id, calcItemName, "attacker", mb, basePower(TWENTY_PERCENT, moveType(type)))
 }
 
 function resistanceBerry(
   id: number,
-  showdown: string,
+  calcItemName: string,
   type: PokemonType,
   mb: boolean,
   requiresSuperEffective = true,
 ): FrozenHeldItem {
   return item(
     id,
-    showdown,
+    calcItemName,
     "defender",
     mb,
     finalDamage(
