@@ -113,8 +113,19 @@ describe("calc-engine adapter", () => {
       move: { calcMoveName: "Low Kick", target: "normal", isCrit: false },
     }))).low
 
-    expect(lowKick.normal![0]).toBeGreaterThan(0)
     expect(lowKick.normal).toHaveLength(16)
+    // Garchomp (95 kg) vs Snorlax (460 kg): Low Kick = 120 BP, neutral, L50 exact stats.
+    expect(lowKick.normal).toEqual([
+      112, 112, 114, 116, 116, 118, 120, 120, 122, 124, 124, 126, 128, 128, 130, 132,
+    ])
+
+    const grassKnot = calculateDamageRolls(input(calcPoint({
+      move: { calcMoveName: "Grass Knot", target: "normal", isCrit: false },
+    }))).low
+    // Garchomp 95 kg vs Snorlax 460 kg: Grass Knot = 80 BP (weight band), but Grass Knot
+    // hits the special side (spd) so the values differ from Low Kick.
+    expect(grassKnot.normal).toHaveLength(16)
+    expect(grassKnot.normal![0]).toBeGreaterThan(0)
   })
 
   it("applies weather and terrain through the calc field", () => {

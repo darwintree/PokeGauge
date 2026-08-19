@@ -17,6 +17,6 @@ export {
   moveCanBecomeSpread,
   resolveReviewedMoveType,
   reviewedMoveSnapshotDefaults,
-  reviewedVariablePowerDefault,
+  calcDerivedPowerDefault,
 } from "./semantics"
 export type { MoveAuditWarning } from "./semantics"

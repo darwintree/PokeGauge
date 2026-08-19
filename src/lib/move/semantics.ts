@@ -8,10 +8,6 @@ type SnapshotDefaults = {
   criticalStage: CriticalStage
 }
 
-type VariablePowerConfig = {
-  initialPower: number
-}
-
 export type MoveAuditWarning =
   | "multi-hit"
   | "target-stat-change"
@@ -44,15 +40,26 @@ const REVIEWED_SNAPSHOT_DEFAULTS: Partial<
   870: { alwaysHits: true, criticalStage: 3 },
 }
 
-const REVIEWED_VARIABLE_POWER: Partial<
-  Record<UpstreamResourceId, VariablePowerConfig>
-> = {
-  284: { initialPower: 150 },
-  323: { initialPower: 150 },
-  360: { initialPower: 0 },
-  484: { initialPower: 0 },
-  486: { initialPower: 0 },
-  500: { initialPower: 20 },
+
+/**
+ * Moves whose base power @smogon/calc derives from battle state the product
+ * already feeds (weight, speed, stat boosts, HP fraction). The value is the
+ * display default power for the picker/snapshot; the calc engine computes the
+ * actual power, so this value never reaches the damage formula.
+ */
+const CALC_DERIVED_POWER_MOVES: Partial<Record<UpstreamResourceId, number>> = {
+  67: 50, // Low Kick
+  284: 150, // Eruption
+  323: 150, // Water Spout
+  360: 0, // Gyro Ball
+  378: 60, // Wring Out
+  386: 60, // Punishment
+  447: 60, // Grass Knot
+  462: 60, // Crush Grip
+  484: 0, // Heavy Slam
+  486: 0, // Electro Ball
+  500: 20, // Stored Power
+  535: 60, // Heat Crash
 }
 
 const IDENTITY_MOVE_TYPES: Partial<
@@ -108,10 +115,10 @@ export function isMoveExplicitlyUnsupported(moveId: UpstreamResourceId): boolean
   return UNSUPPORTED_MOVE_IDS.has(moveId) || isZMove(moveId) || isMaxMove(moveId)
 }
 
-export function reviewedVariablePowerDefault(
+export function calcDerivedPowerDefault(
   moveId: UpstreamResourceId,
 ): number | undefined {
-  return REVIEWED_VARIABLE_POWER[moveId]?.initialPower
+  return CALC_DERIVED_POWER_MOVES[moveId]
 }
 
 export function reviewedMoveSnapshotDefaults(

@@ -27,10 +27,10 @@ import {
 } from "@/lib/move"
 import {
   auditedMoveWarning,
+  calcDerivedPowerDefault,
   isMoveExplicitlyUnsupported,
   moveBreaksScreensBeforeDamage,
   resolveReviewedMoveType,
-  reviewedVariablePowerDefault,
 } from "@/lib/move"
 import { POKEMON_TYPES, type PokemonType, typeEffectiveness } from "@/lib/pokemon"
 import {
@@ -996,7 +996,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     !isMoveCategory(move.category) ||
     !moveType ||
     isMoveExplicitlyUnsupported(move.id) ||
-    (move.power === null && reviewedVariablePowerDefault(move.id) === undefined)
+    (move.power === null && calcDerivedPowerDefault(move.id) === undefined)
   ) {
     return {
       kind: "unavailable",
@@ -1124,7 +1124,8 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       move: {
         calcMoveName,
         target: spreadTarget,
-        ...(move.power !== null && move.power > 0 && raw.snapshot.power !== move.power
+        ...(calcDerivedPowerDefault(raw.snapshot.moveId) === undefined &&
+          move.power !== null && move.power > 0 && raw.snapshot.power !== move.power
           ? { powerOverride: raw.snapshot.power }
           : {}),
         ...(!calcDerivesMoveType && moveType !== move.type ? { typeOverride: moveType } : {}),

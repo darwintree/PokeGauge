@@ -2,10 +2,10 @@ import { describe, expect, it } from "vitest"
 
 import {
   auditedMoveWarning,
+  calcDerivedPowerDefault,
   isMoveExplicitlyUnsupported,
   moveBreaksScreensBeforeDamage,
   resolveReviewedMoveType,
-  reviewedVariablePowerDefault,
 } from "@/lib/move"
 
 describe("reviewed move semantics", () => {
@@ -40,16 +40,19 @@ describe("reviewed move semantics", () => {
     expect(isMoveExplicitlyUnsupported(906)).toBe(false)
   })
 
-  it("allows only reviewed null-power templates and exposes Raging Bull's screen flag", () => {
-    expect([284, 323, 360, 484, 486, 500].map(reviewedVariablePowerDefault)).toEqual([
+  it("provides display defaults for calc-derived power moves and exposes Raging Bull's screen flag", () => {
+    expect([67, 284, 323, 360, 447, 484, 486, 500, 535].map(calcDerivedPowerDefault)).toEqual([
+      50,
       150,
       150,
       0,
+      60,
       0,
       0,
       20,
+      60,
     ])
-    expect(reviewedVariablePowerDefault(68)).toBeUndefined()
+    expect(calcDerivedPowerDefault(68)).toBeUndefined()
     expect(moveBreaksScreensBeforeDamage(873)).toBe(true)
     expect(moveBreaksScreensBeforeDamage(280)).toBe(true)
     expect(moveBreaksScreensBeforeDamage(706)).toBe(true)

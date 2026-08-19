@@ -1,7 +1,7 @@
 import { localeMessages, type SupportedLocale } from "@/lib/i18n"
 import {
+  calcDerivedPowerDefault,
   isMoveExplicitlyUnsupported,
-  reviewedVariablePowerDefault,
 } from "@/lib/move"
 import {
   getResource,
@@ -130,8 +130,8 @@ function snapshotTemplatePower(
   ) {
     return undefined
   }
-  const reviewedPower = reviewedVariablePowerDefault(moveResource.id)
-  if (reviewedPower !== undefined) return reviewedPower
+  const derivedPower = calcDerivedPowerDefault(moveResource.id)
+  if (derivedPower !== undefined) return derivedPower
   if (moveResource.power !== null && moveResource.power > 0) return moveResource.power
   return undefined
 }

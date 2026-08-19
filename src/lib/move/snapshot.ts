@@ -3,7 +3,7 @@ import {
   isMoveExplicitlyUnsupported,
   moveCanBecomeSpread,
   reviewedMoveSnapshotDefaults,
-  reviewedVariablePowerDefault,
+  calcDerivedPowerDefault,
   type CriticalStage,
 } from "./semantics"
 
@@ -49,7 +49,7 @@ export function createMoveSnapshot(
     throw new Error(`Unsupported Move snapshot template: ${template.id}`)
   }
   const power = normalizeSnapshotPower(template.power)
-  if (power === 0 && reviewedVariablePowerDefault(template.id) === undefined) {
+  if (power === 0 && calcDerivedPowerDefault(template.id) === undefined) {
     throw new Error(`Unreviewed zero-power Move snapshot template: ${template.id}`)
   }
   const reviewed = reviewedMoveDefaults(template.id)
