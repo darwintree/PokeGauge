@@ -121,3 +121,9 @@ updated_at: "2026-08-19T09:19:00Z"
 - Species 归并规则落地：1350 个生成形态全部可解析为 calc Gen 9 物种名。
 - 一次性新旧对比验证脚本（跑完即弃）：6 个代表性场景全部与直接 calc 调用一致。
 - 写 ADR 0007 推翻 ADR 0001；oracle 测试删除，行为测试改到新的 calc adapter seam。
+
+补充（动态威力招式）：
+
+- 退役 reviewedVariablePowerDefault 手填 initialPower 机制，改为 calcDerivedPowerDefault：calc 派生威力招式的默认威力仅作 picker/snapshot 展示，绝不进入伤害公式。
+- Low Kick / Grass Knot / Gyro Ball / Heavy Slam / Electro Ball / Stored Power / Eruption / Water Spout / Wring Out / Punishment / Crush Grip / Heat Crash 现可被选入 Scenario，实际威力由 calc 依据体重/速度/能力阶级/HP 比例推导。
+- 已用测试锁定 Low Kick（Garchomp vs Snorlax = 120 BP）的 calc 派生伤害值；编辑 snapshot 威力不影响 calc 派生结果。
