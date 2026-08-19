@@ -3672,5 +3672,53 @@ export const GENERATED_ABILITIES = {
       "en": "Poison Puppeteer",
       "ja": "どくくぐつ"
     }
+  },
+  "309": {
+    "resourceType": "ability",
+    "id": 309,
+    "slug": "dragonize",
+    "calcAbilityName": "Dragonize",
+    "names": {
+      "zh-hans": "龙皮肤",
+      "zh-hant": "龍皮膚",
+      "en": "Dragonize",
+      "ja": "ドラゴンスキン"
+    }
+  },
+  "310": {
+    "resourceType": "ability",
+    "id": 310,
+    "slug": "mega-sol",
+    "calcAbilityName": "Mega Sol",
+    "names": {
+      "zh-hans": "超级日光",
+      "zh-hant": "超級日光",
+      "en": "Mega Sol",
+      "ja": "メガソーラー"
+    }
+  },
+  "312": {
+    "resourceType": "ability",
+    "id": 312,
+    "slug": "eelevate",
+    "calcAbilityName": "Eelevate",
+    "names": {
+      "zh-hans": "Eelevate",
+      "zh-hant": "Eelevate",
+      "en": "Eelevate",
+      "ja": "Eelevate"
+    }
+  },
+  "313": {
+    "resourceType": "ability",
+    "id": 313,
+    "slug": "fire-mane",
+    "calcAbilityName": "Fire Mane",
+    "names": {
+      "zh-hans": "Fire Mane",
+      "zh-hant": "Fire Mane",
+      "en": "Fire Mane",
+      "ja": "Fire Mane"
+    }
   }
 } as const satisfies Record<UpstreamResourceId, NormalizedAbility>

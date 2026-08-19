@@ -198,89 +198,15 @@ describe("Cloud Nine and Air Lock", () => {
 })
 
 describe("Mega Sol", () => {
-  it("replaces raw weather with effective sun from either side", () => {
+  it("keeps calc-missing Mega Sol unsupported without replacing weather", () => {
     const attacker = calculable({
       snapshot: snapshot(52, 40),
       weather: "rain",
       attackerAbilityId: MEGA_SOL_ABILITY_ID,
     })
-    expect(normal(attacker).weatherModifier).toBe(6144)
-    expect(state(attacker, "attacker-ability")).toBe("active")
-    expect(state(attacker, "weather")).toBe("inactive")
-
-    const defender = calculable({
-      snapshot: snapshot(55, 40),
-      weather: "rain",
-      defenderAbilityId: MEGA_SOL_ABILITY_ID,
-    })
-    expect(normal(defender).weatherModifier).toBe(2048)
-    expect(state(defender, "defender-ability")).toBe("active")
-    expect(state(defender, "weather")).toBe("inactive")
-  })
-
-  it("wins over nullifiers and Utility Umbrella without stacking with raw sun", () => {
-    const composed = calculable({
-      snapshot: snapshot(52, 40),
-      weather: "rain",
-      defenderItemId: 1181,
-      attackerAbilityId: CLOUD_NINE_ABILITY_ID,
-      defenderAbilityId: MEGA_SOL_ABILITY_ID,
-    })
-    expect(normal(composed).weatherModifier).toBe(6144)
-    expect(state(composed, "attacker-ability")).toBe("inactive")
-    expect(state(composed, "defender-ability")).toBe("active")
-    expect(state(composed, "defender-held-item")).toBe("inactive")
-
-    const rawSun = calculable({
-      snapshot: snapshot(52, 40),
-      weather: "sun",
-      attackerAbilityId: MEGA_SOL_ABILITY_ID,
-    })
-    expect(normal(rawSun).weatherModifier).toBe(6144)
-    expect(state(rawSun, "attacker-ability")).toBe("inactive")
-    expect(state(rawSun, "weather")).toBe("active")
-  })
-
-  it("preserves Electro Shot's raw-weather exception", () => {
-    const compiled = calculable({
-      snapshot: snapshot(905, 130),
-      weather: "rain",
-      attackerAbilityId: SOLAR_POWER_ABILITY_ID,
-      defenderAbilityId: MEGA_SOL_ABILITY_ID,
-    })
-
-    expect(normal(compiled).attackModifier).toBe(N)
-    expect(state(compiled, "attacker-ability")).toBe("inactive")
-    expect(state(compiled, "defender-ability")).toBe("inactive")
-  })
-
-  it("feeds effective sun into Weather Ball's type and power", () => {
-    const compiled = calculable({
-      snapshot: snapshot(311, 50),
-      attackerAbilityId: MEGA_SOL_ABILITY_ID,
-    })
-
-    expect(compiled.move.type).toBe("fire")
-    expect(normal(compiled)).toMatchObject({
-      power: 50,
-      basePowerModifier: 8192,
-      weatherModifier: 6144,
-    })
-    expect(state(compiled, "attacker-ability")).toBe("active")
-    expect(state(compiled, "weather")).toBe("neutral")
-  })
-
-  it("feeds effective sun to existing Solar Power consumers", () => {
-    const compiled = calculable({
-      snapshot: snapshot(52, 40),
-      attackerAbilityId: SOLAR_POWER_ABILITY_ID,
-      defenderAbilityId: MEGA_SOL_ABILITY_ID,
-    })
-
-    expect(normal(compiled).attackModifier).toBe(6144)
-    expect(state(compiled, "attacker-ability")).toBe("active")
-    expect(state(compiled, "defender-ability")).toBe("active")
-    expect(state(compiled, "weather")).toBe("neutral")
+    expect(normal(attacker).weatherModifier).toBe(2048)
+    expect(state(attacker, "attacker-ability")).toBe("unsupported")
+    expect(state(attacker, "weather")).toBe("active")
   })
 })
 

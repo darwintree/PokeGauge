@@ -1,4 +1,13 @@
 export { CALC_GEN, VGC_LEVEL } from "./calc-constants"
+export { calcRecognizesAbility, calcRecognizesItem } from "./calc-recognition"
+export type {
+  CalcBoosts,
+  CalcContext,
+  CalcExactStats,
+  CalcFieldContext,
+  CalcMoveContext,
+  CalcPokemonContext,
+} from "./calc-engine"
 export { compileAbilityEffect } from "./ability"
 export {
   calculateDamageRolls,

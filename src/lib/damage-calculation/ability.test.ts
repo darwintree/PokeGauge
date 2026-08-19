@@ -15,6 +15,7 @@ import {
   ADAPTABILITY_ABILITY_ID,
   DEFIANT_ABILITY_ID,
   DROUGHT_ABILITY_ID,
+  FIRE_MANE_ABILITY_ID,
   INTIMIDATE_ABILITY_ID,
   NO_ABILITY_ID,
 } from "@/lib/ability"
@@ -156,12 +157,15 @@ describe("ability compiler", () => {
   })
 
   it("keeps unsupported abilities calculable with neutral ability input", () => {
-    const outcome = calculable({ attackerAbilityId: 50, defenderAbilityId: 17 })
+    const outcome = calculable({
+      attackerAbilityId: FIRE_MANE_ABILITY_ID,
+      defenderAbilityId: FIRE_MANE_ABILITY_ID,
+    })
 
     expect(normalBranch(outcome).stabModifier).toBe(6144)
     expect(outcome.sources).toEqual(expect.arrayContaining([
-      { track: "attacker-ability", optionId: "50", state: "unsupported" },
-      { track: "defender-ability", optionId: "17", state: "unsupported" },
+      { track: "attacker-ability", optionId: String(FIRE_MANE_ABILITY_ID), state: "unsupported" },
+      { track: "defender-ability", optionId: String(FIRE_MANE_ABILITY_ID), state: "unsupported" },
     ]))
   })
 
@@ -172,7 +176,9 @@ describe("ability compiler", () => {
       defenderAbilityId: NO_ABILITY_ID,
     })
 
-    expect(none.calculation).toEqual(ordinary.calculation)
+    expect(damageKernel.calculateDamageRolls(none.calculation)).toEqual(
+      damageKernel.calculateDamageRolls(ordinary.calculation),
+    )
     expect(none.sources).toEqual(expect.arrayContaining([
       { track: "attacker-ability", optionId: String(NO_ABILITY_ID), state: "neutral" },
       { track: "defender-ability", optionId: String(NO_ABILITY_ID), state: "neutral" },
@@ -290,7 +296,7 @@ describe("ability scenario product and provenance", () => {
       row.provenance["attacker-ability"]?.active.includes("91"),
     )).toBe(true)
     expect(result.rows.some((row) =>
-      row.provenance["attacker-ability"]?.unsupported.includes("50"),
+      row.provenance["attacker-ability"]?.inactive.includes("50"),
     )).toBe(true)
 
     const adaptabilityInput = kernel.mock.calls.find(
@@ -361,20 +367,20 @@ describe("ability scenario product and provenance", () => {
     expect(kernel).toHaveBeenCalledTimes(1)
     expect(result.rows[0].provenance["attacker-ability"]).toEqual({
       active: [],
-      inactive: [String(ADAPTABILITY_ABILITY_ID)],
-      unsupported: ["50"],
+      inactive: ["50", String(ADAPTABILITY_ABILITY_ID)],
+      unsupported: [],
       neutral: [],
     })
     expect(result.rows[0].provenance["defender-ability"]).toEqual({
       active: [],
-      inactive: [String(ADAPTABILITY_ABILITY_ID)],
-      unsupported: ["50"],
+      inactive: ["50", String(ADAPTABILITY_ABILITY_ID)],
+      unsupported: [],
       neutral: [],
     })
     kernel.mockRestore()
   })
 
-  it("merges no ability with effect-equivalent unsupported branches", async () => {
+  it("merges no ability with effect-equivalent inert ability branches", async () => {
     const catalog = await getCatalogShell(133, 143, "en", "physical")
     const state = defaultTrackState(catalog)
     state.statMode = "preset"
@@ -394,14 +400,14 @@ describe("ability scenario product and provenance", () => {
     expect(result.rows).toHaveLength(1)
     expect(result.rows[0].provenance["attacker-ability"]).toEqual({
       active: [],
-      inactive: [],
-      unsupported: ["50"],
+      inactive: ["50"],
+      unsupported: [],
       neutral: [String(NO_ABILITY_ID)],
     })
     expect(result.rows[0].provenance["defender-ability"]).toEqual({
       active: [],
-      inactive: [],
-      unsupported: ["17"],
+      inactive: ["17"],
+      unsupported: [],
       neutral: [String(NO_ABILITY_ID)],
     })
   })

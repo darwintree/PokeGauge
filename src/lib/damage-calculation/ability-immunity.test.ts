@@ -71,7 +71,11 @@ function selectionActivation(outcome: CalculableScenario, track: ScenarioTrack) 
 }
 
 beforeAll(async () => {
-  await Promise.all([listResources("pokemon", "en"), listResources("move", "en")])
+  await Promise.all([
+    listResources("pokemon", "en"),
+    listResources("move", "en"),
+    listResources("ability", "en"),
+  ])
 })
 
 describe("ability immunity gates", () => {
@@ -84,7 +88,6 @@ describe("ability immunity gates", () => {
     [SAP_SIPPER_ABILITY_ID, 75, 55],
     [EARTH_EATER_ABILITY_ID, 89, 100],
     [LEVITATE_ABILITY_ID, 89, 100],
-    [EELEVATE_ABILITY_ID, 89, 100],
     [DRY_SKIN_ABILITY_ID, 55, 40],
     [SOUNDPROOF_ABILITY_ID, 304, 90],
     [BULLETPROOF_ABILITY_ID, 396, 80],
@@ -197,7 +200,7 @@ describe("ability immunity gates", () => {
     expect(selectionActivation(soundproof, "defender-ability")).toBe("active")
   })
 
-  it.each([LEVITATE_ABILITY_ID, EELEVATE_ABILITY_ID])(
+  it.each([LEVITATE_ABILITY_ID])(
     "uses Ability %s as attacker grounding provenance for Terrain gates",
     (abilityId) => {
       const outcome = calculable({
@@ -213,7 +216,7 @@ describe("ability immunity gates", () => {
     },
   )
 
-  it.each([LEVITATE_ABILITY_ID, EELEVATE_ABILITY_ID])(
+  it.each([LEVITATE_ABILITY_ID])(
     "uses Ability %s as defender grounding provenance for Terrain gates",
     (abilityId) => {
       const outcome = calculable({
@@ -231,7 +234,7 @@ describe("ability immunity gates", () => {
     },
   )
 
-  it.each([LEVITATE_ABILITY_ID, EELEVATE_ABILITY_ID])(
+  it.each([LEVITATE_ABILITY_ID])(
     "keeps Ability %s inactive when grounding changes only an already immune result",
     (abilityId) => {
       const outcome = calculable({
@@ -249,4 +252,15 @@ describe("ability immunity gates", () => {
       expect(selectionActivation(outcome, "terrain")).toBe("inactive")
     },
   )
+
+  it("keeps calc-missing Eelevate unsupported and grounded for Terrain", () => {
+    const outcome = calculable({
+      attackerId: 25,
+      attackerAbilityId: EELEVATE_ABILITY_ID,
+      terrain: "electric",
+      snapshot: { ...MOVE, moveId: 85, power: 90 },
+    })
+
+    expect(selectionActivation(outcome, "attacker-ability")).toBe("unsupported")
+  })
 })

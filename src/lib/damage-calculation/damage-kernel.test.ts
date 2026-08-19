@@ -1,25 +1,25 @@
-import { calculate, Field, Move, Pokemon } from "@smogon/calc"
 import { describe, expect, it } from "vitest"
 
-import { CALC_GEN, VGC_LEVEL } from "@/lib/damage-calculation"
 import {
   calculateDamageRolls,
   chainModifiers,
+  type CalcContext,
+  type CompiledDamageInput,
   type DamageFormulaBranch,
   NEUTRAL_MODIFIER,
 } from "@/lib/damage-calculation"
 
 const N = NEUTRAL_MODIFIER
 
-function branch(overrides: Partial<DamageFormulaBranch> = {}): DamageFormulaBranch {
+function branch(): DamageFormulaBranch {
   return {
     damageNegated: false,
-    power: 80,
+    power: 0,
     basePowerModifier: N,
-    attack: 100,
+    attack: 0,
     attackStage: 0,
     attackModifier: N,
-    defense: 100,
+    defense: 0,
     defenseStage: 0,
     defenseModifier: N,
     spreadModifier: N,
@@ -28,353 +28,150 @@ function branch(overrides: Partial<DamageFormulaBranch> = {}): DamageFormulaBran
     stabModifier: N,
     typeEffectivenessModifier: N,
     finalModifier: N,
+  }
+}
+
+function calcPoint(overrides: Partial<CalcContext> = {}): CalcContext {
+  return {
+    attacker: {
+      calcSpeciesName: "Garchomp",
+      exactStats: { hp: 183, atk: 186, def: 100, spa: 100, spd: 100, spe: 122 },
+      boosts: { atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
+    },
+    defender: {
+      calcSpeciesName: "Snorlax",
+      exactStats: { hp: 170, atk: 100, def: 153, spa: 100, spd: 100, spe: 50 },
+      boosts: { atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
+    },
+    move: { calcMoveName: "Earthquake", target: "allAdjacent", isCrit: false },
+    field: { gameType: "Doubles" },
     ...overrides,
   }
 }
 
-function oracleRolls(damage: number | number[] | number[][]): number[] {
-  if (typeof damage === "number") return Array(16).fill(damage)
-  if (damage.some(Array.isArray)) throw new Error("Expected a single-hit oracle result")
-  return damage as number[]
+function input(
+  point: CalcContext,
+  branches: { normal?: boolean; critical?: boolean } = { normal: true, critical: true },
+): CompiledDamageInput {
+  return {
+    low: {
+      defenderHp: 170,
+      calc: point,
+      ...(branches.normal ? { normal: branch() } : {}),
+      ...(branches.critical ? { critical: branch() } : {}),
+    },
+  }
 }
 
-describe("fixed-point damage kernel", () => {
+describe("calc-engine adapter", () => {
   it("normalizes modifier chains before applying a phase", () => {
     expect(chainModifiers([])).toBe(N)
     expect(chainModifiers([4915, 2048])).toBe(2458)
     expect(chainModifiers([2732, 5324])).toBe(3551)
   })
 
-  it("rounds exact .5 phase results down", () => {
-    const halfDown = calculateDamageRolls({
-      low: {
-        defenderHp: 100,
-        normal: branch({ power: 1, basePowerModifier: 6144, attack: 1000, defense: 100 }),
-      },
-    }).low.normal
-    const roundedToOne = calculateDamageRolls({
-      low: { defenderHp: 100, normal: branch({ power: 1, attack: 1000, defense: 100 }) },
-    }).low.normal
-    const roundedToTwo = calculateDamageRolls({
-      low: { defenderHp: 100, normal: branch({ power: 2, attack: 1000, defense: 100 }) },
-    }).low.normal
+  it("produces 16 normal and critical rolls for a spread STAB move", () => {
+    const result = calculateDamageRolls(input(calcPoint())).low
 
-    expect(halfDown).toEqual(roundedToOne)
-    expect(halfDown).not.toEqual(roundedToTwo)
+    expect(result.normal).toHaveLength(16)
+    expect(result.critical).toHaveLength(16)
+    expect(result.normal![15]).toBeGreaterThan(result.normal![0])
+    expect(result.critical![0]).toBeGreaterThan(result.normal![15])
+    // Fixed known values for Garchomp Earthquake vs Snorlax, Doubles spread, L50 exact stats.
+    expect(result.normal).toEqual([
+      51, 52, 52, 54, 54, 54, 55, 55, 57, 57, 57, 58, 58, 60, 60, 61,
+    ])
+    expect(result.critical).toEqual([
+      76, 78, 79, 79, 81, 81, 82, 84, 84, 85, 85, 87, 88, 88, 90, 91,
+    ])
   })
 
-  it("applies the exact-half final modifier to every K0 roll", () => {
-    const neutral = calculateDamageRolls({
-      low: {
-        defenderHp: 200,
-        normal: branch({ power: 225, attack: 100, defense: 100 }),
-      },
-    }).low.normal
-    const halved = calculateDamageRolls({
-      low: {
-        defenderHp: 200,
-        normal: branch({
-          power: 225,
-          attack: 100,
-          defense: 100,
-          finalModifier: 2048,
-        }),
-      },
-    }).low.normal
+  it("maps the spread-off toggle to a normal target", () => {
+    const single = calculateDamageRolls(input(calcPoint({
+      move: { calcMoveName: "Earthquake", target: "normal", isCrit: false },
+    }))).low
+    const spread = calculateDamageRolls(input(calcPoint())).low
 
-    expect(neutral).toEqual([85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 101])
-    expect(halved).toEqual([42, 43, 43, 44, 44, 45, 45, 46, 46, 47, 47, 48, 48, 49, 49, 50])
+    expect(single.normal![0]).toBeGreaterThan(spread.normal![0])
   })
 
-  it("matches all normal and critical rolls at an exact .5-down attack phase", () => {
-    const attacker = new Pokemon(CALC_GEN, "Eevee", {
-      level: VGC_LEVEL,
-      nature: "Adamant",
-      evs: { atk: 252 },
-      item: "Choice Band",
-    })
-    const defender = new Pokemon(CALC_GEN, "Snorlax", {
-      level: VGC_LEVEL,
-      nature: "Impish",
-      evs: { hp: 252, def: 252 },
-    })
-    const field = new Field()
-    const common = {
-      power: 40,
-      attack: attacker.rawStats.atk,
-      attackModifier: 6144,
-      defense: defender.rawStats.def,
-      stabModifier: 6144,
-    }
-    const result = calculateDamageRolls({
-      low: {
-        defenderHp: defender.maxHP(),
-        normal: branch(common),
-        critical: branch({ ...common, criticalModifier: 6144 }),
+  it("feeds exact stats and stages into calc", () => {
+    const boosted = calculateDamageRolls(input(calcPoint({
+      attacker: {
+        calcSpeciesName: "Garchomp",
+        exactStats: { hp: 183, atk: 186, def: 100, spa: 100, spd: 100, spe: 122 },
+        boosts: { atk: 2, def: 0, spa: 0, spd: 0, spe: 0 },
       },
-    }).low
+    }))).low
+    const neutral = calculateDamageRolls(input(calcPoint())).low
 
-    expect(attacker.rawStats.atk).toBe(117)
-    expect(result.normal).toEqual(oracleRolls(
-      calculate(CALC_GEN, attacker, defender, new Move(CALC_GEN, "Tackle"), field).damage,
-    ))
-    expect(result.critical).toEqual(oracleRolls(
-      calculate(
-        CALC_GEN,
-        attacker,
-        defender,
-        new Move(CALC_GEN, "Tackle", { isCrit: true }),
-        field,
-      ).damage,
-    ))
+    expect(boosted.normal![0]).toBeGreaterThan(neutral.normal![0])
   })
 
-  it("matches all physical normal and critical rolls after stage, Choice Band, spread, and Reflect", () => {
-    const attacker = new Pokemon(CALC_GEN, "Garchomp", {
-      level: VGC_LEVEL,
-      nature: "Adamant",
-      evs: { atk: 252 },
-      boosts: { atk: 1 },
-      item: "Choice Band",
-    })
-    const defender = new Pokemon(CALC_GEN, "Incineroar", {
-      level: VGC_LEVEL,
-      nature: "Impish",
-      evs: { hp: 252, def: 252 },
-      boosts: { def: 1 },
-    })
-    const field = new Field({ gameType: "Doubles", defenderSide: { isReflect: true } })
-    const common = {
-      power: 100,
-      attack: attacker.rawStats.atk,
-      attackStage: 1,
-      attackModifier: 6144,
-      defense: defender.rawStats.def,
-      spreadModifier: 3072,
-      stabModifier: 6144,
-      typeEffectivenessModifier: 8192,
-    }
-    const result = calculateDamageRolls({
-      low: {
-        defenderHp: defender.maxHP(),
-        normal: branch({ ...common, defenseStage: 1, finalModifier: 2732 }),
-        critical: branch({
-          ...common,
-          defenseStage: 0,
-          criticalModifier: 6144,
-          finalModifier: N,
-        }),
-      },
-    }).low
+  it("derives dynamic move power from calc instead of a fixed snapshot", () => {
+    const lowKick = calculateDamageRolls(input(calcPoint({
+      move: { calcMoveName: "Low Kick", target: "normal", isCrit: false },
+    }))).low
 
-    expect(result.normal).toEqual(
-      calculate(CALC_GEN, attacker, defender, new Move(CALC_GEN, "Earthquake"), field).damage,
-    )
-    expect(result.critical).toEqual(
-      calculate(
-        CALC_GEN,
-        attacker,
-        defender,
-        new Move(CALC_GEN, "Earthquake", { isCrit: true }),
-        field,
-      ).damage,
-    )
+    expect(lowKick.normal![0]).toBeGreaterThan(0)
+    expect(lowKick.normal).toHaveLength(16)
   })
 
-  it("matches all special weather rolls with spread, Light Screen, and Life Orb", () => {
-    const attacker = new Pokemon(CALC_GEN, "Charizard", {
-      level: VGC_LEVEL,
-      nature: "Modest",
-      evs: { spa: 252 },
-      item: "Life Orb",
-    })
-    const defender = new Pokemon(CALC_GEN, "Abomasnow", {
-      level: VGC_LEVEL,
-      nature: "Calm",
-      evs: { hp: 252, spd: 252 },
-    })
-    const field = new Field({
-      gameType: "Doubles",
-      weather: "Sun",
-      defenderSide: { isLightScreen: true },
-    })
-    const common = {
-      power: 95,
-      attack: attacker.rawStats.spa,
-      defense: defender.rawStats.spd,
-      spreadModifier: 3072,
-      weatherModifier: 6144,
-      stabModifier: 6144,
-      typeEffectivenessModifier: 16384,
-    }
-    const result = calculateDamageRolls({
-      low: {
-        defenderHp: defender.maxHP(),
-        normal: branch({ ...common, finalModifier: chainModifiers([2732, 5324]) }),
-        critical: branch({
-          ...common,
-          criticalModifier: 6144,
-          finalModifier: 5324,
-        }),
+  it("applies weather and terrain through the calc field", () => {
+    const sunFire = calculateDamageRolls(input(calcPoint({
+      attacker: {
+        calcSpeciesName: "Charizard",
+        exactStats: { hp: 170, atk: 100, def: 100, spa: 160, spd: 120, spe: 150 },
+        boosts: { atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
       },
-    }).low
+      move: { calcMoveName: "Flamethrower", target: "normal", isCrit: false },
+      field: { gameType: "Doubles", weather: "Sun" },
+    }))).low
+    const noSun = calculateDamageRolls(input(calcPoint({
+      attacker: {
+        calcSpeciesName: "Charizard",
+        exactStats: { hp: 170, atk: 100, def: 100, spa: 160, spd: 120, spe: 150 },
+        boosts: { atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
+      },
+      move: { calcMoveName: "Flamethrower", target: "normal", isCrit: false },
+      field: { gameType: "Doubles" },
+    }))).low
 
-    expect(result.normal).toEqual(
-      calculate(CALC_GEN, attacker, defender, new Move(CALC_GEN, "Heat Wave"), field).damage,
-    )
-    expect(result.critical).toEqual(
-      calculate(
-        CALC_GEN,
-        attacker,
-        defender,
-        new Move(CALC_GEN, "Heat Wave", { isCrit: true }),
-        field,
-      ).damage,
-    )
+    expect(sunFire.normal![0]).toBeGreaterThan(noSun.normal![0])
   })
 
-  it("matches Adaptability STAB and a chained Solar Beam base-power phase", () => {
-    const porygon = new Pokemon(CALC_GEN, "Porygon-Z", {
-      level: VGC_LEVEL,
-      ability: "Adaptability",
-      nature: "Modest",
-      evs: { spa: 252 },
-    })
-    const snorlax = new Pokemon(CALC_GEN, "Snorlax", {
-      level: VGC_LEVEL,
-      nature: "Careful",
-      evs: { hp: 252, spd: 252 },
-    })
-    const adaptability = calculateDamageRolls({
-      low: {
-        defenderHp: snorlax.maxHP(),
-        normal: branch({
-          power: 80,
-          attack: porygon.rawStats.spa,
-          defense: snorlax.rawStats.spd,
-          stabModifier: 8192,
-        }),
+  it("applies recognized ability and item names through calc", () => {
+    const hugePower = calculateDamageRolls(input(calcPoint({
+      attacker: {
+        calcSpeciesName: "Azumarill",
+        abilityCalcName: "Huge Power",
+        exactStats: { hp: 170, atk: 100, def: 100, spa: 100, spd: 100, spe: 100 },
+        boosts: { atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
       },
-    }).low.normal
-
-    expect(adaptability).toEqual(
-      calculate(
-        CALC_GEN,
-        porygon,
-        snorlax,
-        new Move(CALC_GEN, "Tri Attack"),
-        new Field(),
-      ).damage,
-    )
-
-    const venusaur = new Pokemon(CALC_GEN, "Venusaur", {
-      level: VGC_LEVEL,
-      nature: "Modest",
-      evs: { spa: 252 },
-      item: "Miracle Seed",
-    })
-    const blastoise = new Pokemon(CALC_GEN, "Blastoise", {
-      level: VGC_LEVEL,
-      nature: "Calm",
-      evs: { hp: 252, spd: 252 },
-    })
-    const rain = new Field({ weather: "Rain" })
-    const solarBeam = calculateDamageRolls({
-      low: {
-        defenderHp: blastoise.maxHP(),
-        normal: branch({
-          power: 120,
-          basePowerModifier: chainModifiers([2048, 4915]),
-          attack: venusaur.rawStats.spa,
-          defense: blastoise.rawStats.spd,
-          stabModifier: 6144,
-          typeEffectivenessModifier: 8192,
-        }),
+      move: { calcMoveName: "Tackle", target: "normal", isCrit: false },
+    }))).low
+    const noAbility = calculateDamageRolls(input(calcPoint({
+      attacker: {
+        calcSpeciesName: "Azumarill",
+        exactStats: { hp: 170, atk: 100, def: 100, spa: 100, spd: 100, spe: 100 },
+        boosts: { atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
       },
-    }).low.normal
+      move: { calcMoveName: "Tackle", target: "normal", isCrit: false },
+    }))).low
 
-    expect(solarBeam).toEqual(
-      calculate(
-        CALC_GEN,
-        venusaur,
-        blastoise,
-        new Move(CALC_GEN, "Solar Beam"),
-        rain,
-      ).damage,
-    )
+    expect(hugePower.normal![0]).toBeGreaterThan(noAbility.normal![0])
   })
 
-  it("preserves endpoint branches and returns zero rolls for immunity", () => {
-    const inputBranch = branch()
-    const result = calculateDamageRolls({
-      low: { defenderHp: 201, normal: inputBranch },
-      high: {
-        defenderHp: 151,
-        critical: branch({ typeEffectivenessModifier: 0, criticalModifier: 6144 }),
+  it("returns zero rolls for a type immunity", () => {
+    const immune = calculateDamageRolls(input(calcPoint({
+      defender: {
+        calcSpeciesName: "Charizard",
+        exactStats: { hp: 170, atk: 100, def: 100, spa: 100, spd: 100, spe: 100 },
+        boosts: { atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
       },
-    })
+      move: { calcMoveName: "Earthquake", target: "normal", isCrit: false },
+    }))).low
 
-    expect(result.low.defenderHp).toBe(201)
-    expect(result.low.normal).toHaveLength(16)
-    expect(result.low.critical).toBeUndefined()
-    expect(result.high).toEqual({ defenderHp: 151, critical: Array(16).fill(0) })
-  })
-
-  it("returns zero rolls when the compiler negates damage without changing type effectiveness", () => {
-    const result = calculateDamageRolls({
-      low: {
-        defenderHp: 201,
-        normal: branch({ damageNegated: true, typeEffectivenessModifier: 8192 }),
-        critical: branch({
-          damageNegated: true,
-          typeEffectivenessModifier: 8192,
-          criticalModifier: 6144,
-        }),
-      },
-    }).low
-
-    expect(result.normal).toEqual(Array(16).fill(0))
-    expect(result.critical).toEqual(Array(16).fill(0))
-  })
-
-  it("matches all normal and critical rolls for type immunity", () => {
-    const attacker = new Pokemon(CALC_GEN, "Garchomp", {
-      level: VGC_LEVEL,
-      nature: "Adamant",
-      evs: { atk: 252 },
-    })
-    const defender = new Pokemon(CALC_GEN, "Charizard", {
-      level: VGC_LEVEL,
-      nature: "Bold",
-      evs: { hp: 252, def: 252 },
-    })
-    const field = new Field()
-    const common = {
-      power: 100,
-      attack: attacker.rawStats.atk,
-      defense: defender.rawStats.def,
-      stabModifier: 6144,
-      typeEffectivenessModifier: 0,
-    }
-    const result = calculateDamageRolls({
-      low: {
-        defenderHp: defender.maxHP(),
-        normal: branch(common),
-        critical: branch({ ...common, criticalModifier: 6144 }),
-      },
-    }).low
-
-    expect(result.normal).toEqual(oracleRolls(
-      calculate(CALC_GEN, attacker, defender, new Move(CALC_GEN, "Earthquake"), field).damage,
-    ))
-    expect(result.critical).toEqual(oracleRolls(
-      calculate(
-        CALC_GEN,
-        attacker,
-        defender,
-        new Move(CALC_GEN, "Earthquake", { isCrit: true }),
-        field,
-      ).damage,
-    ))
+    expect(immune.normal).toEqual(Array(16).fill(0))
   })
 })

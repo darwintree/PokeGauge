@@ -9,6 +9,7 @@ import {
   NO_ABILITY_ID,
   SCRAPPY_ABILITY_ID,
   UNNERVE_ABILITY_ID,
+  abilityDamageModifierIsSupported,
 } from "@/lib/ability"
 import {
   FROZEN_HELD_ITEM_BY_ID,
@@ -34,11 +35,15 @@ import {
 import { POKEMON_TYPES, type PokemonType, typeEffectiveness } from "@/lib/pokemon"
 import {
   getBattlePokemonById,
+  getAbilityById,
   getMoveById,
   type BattlePokemonId,
   type NormalizedBattlePokemon,
 } from "@/lib/resources"
+import { allStatValues } from "@/lib/stat-calculation"
 
+import { calcRecognizesAbility, calcRecognizesItem } from "./calc-recognition"
+import type { CalcContext, CalcPokemonContext } from "./calc-engine"
 import { compileAbilityEffect } from "./ability"
 import {
   type CompiledDamageInput,
@@ -156,7 +161,22 @@ export function calculationIdentity(outcome: CalculableScenario): string {
   return JSON.stringify([
     outcome.snapshotId,
     outcome.move.type,
-    outcome.calculation,
+    {
+      low: {
+        defenderHp: outcome.calculation.low.defenderHp,
+        normal: outcome.calculation.low.normal,
+        critical: outcome.calculation.low.critical,
+      },
+      ...(outcome.calculation.high
+        ? {
+            high: {
+              defenderHp: outcome.calculation.high.defenderHp,
+              normal: outcome.calculation.high.normal,
+              critical: outcome.calculation.high.critical,
+            },
+          }
+        : {}),
+    },
     outcome.probability,
     outcome.ko,
   ])
@@ -422,8 +442,10 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   const defenderNullifiesWeather = raw.defenderAbilityId === CLOUD_NINE_ABILITY_ID ||
     raw.defenderAbilityId === AIR_LOCK_ABILITY_ID
   const hasWeatherNullifier = attackerNullifiesWeather || defenderNullifiesWeather
-  const attackerHasMegaSol = raw.attackerAbilityId === MEGA_SOL_ABILITY_ID
-  const defenderHasMegaSol = raw.defenderAbilityId === MEGA_SOL_ABILITY_ID
+  const attackerHasMegaSol = raw.attackerAbilityId === MEGA_SOL_ABILITY_ID &&
+    abilityDamageModifierIsSupported(MEGA_SOL_ABILITY_ID)
+  const defenderHasMegaSol = raw.defenderAbilityId === MEGA_SOL_ABILITY_ID &&
+    abilityDamageModifierIsSupported(MEGA_SOL_ABILITY_ID)
   const megaSolApplies = (attackerHasMegaSol || defenderHasMegaSol) &&
     raw.snapshot.moveId !== ELECTRO_SHOT_MOVE_ID
   let effectiveWeather: Weather = raw.weather
@@ -442,7 +464,8 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   const hasOriginalTypeStab = Boolean(
     attacker && identityMoveType && attacker.types.includes(identityMoveType),
   )
-  const typeRewrite = identityMoveType
+  const typeRewrite = identityMoveType &&
+    abilityDamageModifierIsSupported(raw.attackerAbilityId)
     ? resolveAbilityScenarioMoveType({
         abilityId: raw.attackerAbilityId,
         moveId: raw.snapshot.moveId,
@@ -884,6 +907,12 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   } else if (ability.activatesWeather) {
     weatherState = "active"
   }
+  if (!abilityDamageModifierIsSupported(raw.attackerAbilityId)) {
+    attackerAbilityState = "unsupported"
+  }
+  if (!abilityDamageModifierIsSupported(raw.defenderAbilityId)) {
+    defenderAbilityState = "unsupported"
+  }
 
   const sources: ScenarioSource[] = [
     ...(raw.sourceOptionIds
@@ -1014,9 +1043,105 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     weatherModifier: weather.damageModifier,
     screenModifier: screen.modifier,
   }
+  const calcMoveName = move.calcMoveName
+  const calcDerivesMoveType = typeRewrite?.active === true ||
+    raw.snapshot.moveId === 311 /* Weather Ball */
+  const attackerCalcAbilityName = getAbilityById(raw.attackerAbilityId)?.calcAbilityName
+  const defenderCalcAbilityName = getAbilityById(raw.defenderAbilityId)?.calcAbilityName
+  const attackerItemCalcName = typeof raw.attackerItemId === "number"
+    ? FROZEN_HELD_ITEM_BY_ID.get(raw.attackerItemId)?.calcItemName
+    : undefined
+  const defenderItemCalcName = typeof raw.defenderItemId === "number"
+    ? FROZEN_HELD_ITEM_BY_ID.get(raw.defenderItemId)?.calcItemName
+    : undefined
+  const attackerNeutralStats = allStatValues(attacker.calcSpeciesName)
+  const defenderNeutralStats = allStatValues(defender.calcSpeciesName)
+  const spreadTarget = context.spread
+    ? (move.isSpread ? "allAdjacent" as const : "allAdjacentFoes" as const)
+    : "normal" as const
+  const calcContext = (point: RawScenarioPoint): CalcContext => {
+    const attackerStats: CalcPokemonContext["exactStats"] = {
+      ...attackerNeutralStats,
+      ...(moveCategory === "physical" ? { atk: point.offense } : { spa: point.offense }),
+    }
+    const defenderStats: CalcPokemonContext["exactStats"] = {
+      ...defenderNeutralStats,
+      hp: point.defense.hp,
+      ...(moveCategory === "physical" ? { def: point.defense.def } : { spd: point.defense.def }),
+    }
+    const attackerBoosts: CalcPokemonContext["boosts"] = {
+      atk: moveCategory === "physical" ? effectiveAttackerStage : 0,
+      def: 0,
+      spa: moveCategory === "special" ? effectiveAttackerStage : 0,
+      spd: 0,
+      spe: 0,
+    }
+    const defenderBoosts: CalcPokemonContext["boosts"] = {
+      atk: 0,
+      def: moveCategory === "physical" ? effectiveDefenderStage : 0,
+      spa: 0,
+      spd: moveCategory === "special" ? effectiveDefenderStage : 0,
+      spe: 0,
+    }
+    const weather: CalcContext["field"]["weather"] =
+      effectiveWeather === "sun" ? "Sun"
+      : effectiveWeather === "rain" ? "Rain"
+      : effectiveWeather === "sand" ? "Sand"
+      : effectiveWeather === "snow" ? "Snow"
+      : undefined
+    const terrain: CalcContext["field"]["terrain"] =
+      raw.terrain === "electric" ? "Electric"
+      : raw.terrain === "grassy" ? "Grassy"
+      : raw.terrain === "psychic" ? "Psychic"
+      : raw.terrain === "misty" ? "Misty"
+      : undefined
+    const defenderScreen = screen.state === "active"
+      ? (raw.screen === "reflect" ? "reflect" as const : "light-screen" as const)
+      : undefined
+    return {
+      attacker: {
+        calcSpeciesName: attacker.calcSpeciesName,
+        ...(attackerCalcAbilityName && calcRecognizesAbility(attackerCalcAbilityName)
+          ? { abilityCalcName: attackerCalcAbilityName }
+          : {}),
+        ...(attackerItemCalcName && calcRecognizesItem(attackerItemCalcName)
+          ? { itemCalcName: attackerItemCalcName }
+          : {}),
+        exactStats: attackerStats,
+        boosts: attackerBoosts,
+      },
+      defender: {
+        calcSpeciesName: defender.calcSpeciesName,
+        ...(defenderCalcAbilityName && calcRecognizesAbility(defenderCalcAbilityName)
+          ? { abilityCalcName: defenderCalcAbilityName }
+          : {}),
+        ...(defenderItemCalcName && calcRecognizesItem(defenderItemCalcName)
+          ? { itemCalcName: defenderItemCalcName }
+          : {}),
+        exactStats: defenderStats,
+        boosts: defenderBoosts,
+      },
+      move: {
+        calcMoveName,
+        target: spreadTarget,
+        ...(move.power !== null && move.power > 0 && raw.snapshot.power !== move.power
+          ? { powerOverride: raw.snapshot.power }
+          : {}),
+        ...(!calcDerivesMoveType && moveType !== move.type ? { typeOverride: moveType } : {}),
+        isCrit: false,
+      },
+      field: {
+        gameType: "Doubles" as const,
+        ...(weather ? { weather } : {}),
+        ...(terrain ? { terrain } : {}),
+        ...(defenderScreen ? { defenderScreen } : {}),
+      },
+    }
+  }
   const compilePoint = (point: RawScenarioPoint) => {
     return {
       defenderHp: point.defense.hp,
+      calc: calcContext(point),
       ...(ability.preventsCritical || derivedCriticalStage < 3
         ? { normal: compileBranch(point, context, false) }
         : {}),

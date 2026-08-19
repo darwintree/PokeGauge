@@ -12,9 +12,9 @@ Runtime damage rolls now come from @smogon/calc as a black box: the local calcul
 
 - The single seam is calculateDamageRolls(CompiledDamageInput): DamageKernelResult; its contract is unchanged, and downstream evaluate (summarizeDamage, fixedKOProbabilities) is preserved as-is.
 - Abilities are supported when calc knows them (gen.abilities.get(name)), so 239 previously-unsupported abilities auto-unlock. The four abilities calc 0.11.0 lacks (Mega Sol, Dragonize, Eelevate, Fire Mane) stay explicitly unsupported through the calc-missing mechanism; no local patch overrides calc.
-- Weather and terrain modifiers are derived by calc. The local weather/terrain/screen/ability modifier tables are deleted.
+- Weather and terrain modifiers are derived by calc. The local damage formula in damage-kernel.ts is deleted; the compiler's modifier computation remains only as a display projection for the formula-details tooltip (design.md result-surface contract), never as a damage source.
 - Dynamic-power moves (Low Kick, Grass Knot) compute power from calc; the local reviewedVariablePowerDefault hand-filled initialPower mechanism is retired. Override moves (Body Press, Foul Play, Psyshock) and multi-hit expansion remain unsupported, unchanged.
-- The spread toggle maps to move.target (normal when off; calc handles terrain makesSpread); the local spread modifier is deleted. gameType stays Doubles.
+- The spread toggle maps to move.target (normal when off; calc handles terrain makesSpread); the local spread modifier no longer affects damage. gameType stays Doubles.
 - The oracle tests that compared the local kernel against calc are deleted ("test the implementation with the implementation"). Regression coverage moves to the external calculateDamageRolls behavior contract plus calc-name resolution tests; equivalence was proven once with a throwaway old-vs-new script.
 - Future rule changes only require bumping the calc dependency.
 

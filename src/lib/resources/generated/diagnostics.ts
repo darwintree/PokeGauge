@@ -2601,7 +2601,11 @@ export const RESOURCE_DIAGNOSTICS = {
     304,
     305,
     306,
-    307
+    307,
+    309,
+    310,
+    312,
+    313
   ],
   "itemIds": [
     247,
@@ -7013,24 +7017,8 @@ export const RESOURCE_DIAGNOSTICS = {
   ],
   "unsupportedBattleIdentities": [
     {
-      "id": 10282,
-      "reason": "pokemon/10282 has no current ability relation"
-    },
-    {
-      "id": 10283,
-      "reason": "pokemon/10283 has no current ability relation"
-    },
-    {
       "id": 10287,
       "reason": "pokemon/10287 has no current ability relation"
-    },
-    {
-      "id": 10290,
-      "reason": "pokemon/10290 has no current ability relation"
-    },
-    {
-      "id": 10295,
-      "reason": "pokemon/10295 has no current ability relation"
     },
     {
       "id": 10301,

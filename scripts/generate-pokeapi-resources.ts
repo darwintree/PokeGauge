@@ -35,12 +35,15 @@ const ABILITY_CALC_NAME_OVERRIDES: Record<number, string> = {
 }
 
 /**
- * Abilities without a @smogon/calc 0.11.0 gen9 counterpart are excluded from
- * generated resources: newer main-series entries (303, 308-313) and
- * non-main-series XD entries (10002+).
+ * Abilities without a @smogon/calc 0.11.0 gen9 counterpart that are excluded
+ * from generated resources. The four main-series entries the product still
+ * exposes as explicitly unsupported (Dragonize 309, Mega Sol 310, Eelevate 312,
+ * Fire Mane 313) are kept and resolved through the runtime calc-missing check;
+ * remaining newer entries (303, 308, 311) and non-main-series XD entries
+ * (10002+) are dropped.
  */
 const ABILITY_IDS_WITHOUT_CALC = new Set([
-  303, 308, 309, 310, 311, 312, 313,
+  303, 308, 311,
 ])
 
 /**

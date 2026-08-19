@@ -4,6 +4,8 @@ import { beforeAll, describe, expect, it } from "vitest"
 import {
   ADAPTABILITY_ABILITY_ID,
   BLAZE_ABILITY_ID,
+  DRAGONIZE_ABILITY_ID,
+  EELEVATE_ABILITY_ID,
   FAIRY_AURA_ABILITY_ID,
   FILTER_ABILITY_ID,
   FIRE_MANE_ABILITY_ID,
@@ -15,18 +17,16 @@ import {
   IRON_FIST_ABILITY_ID,
   MARVEL_SCALE_ABILITY_ID,
   MEGA_LAUNCHER_ABILITY_ID,
+  MEGA_SOL_ABILITY_ID,
   MULTISCALE_ABILITY_ID,
   NO_ABILITY_ID,
   OVERGROW_ABILITY_ID,
   PURE_POWER_ABILITY_ID,
   PURIFYING_SALT_ABILITY_ID,
-  RECKLESS_ABILITY_ID,
   SAND_FORCE_ABILITY_ID,
   SOLAR_POWER_ABILITY_ID,
   SOLID_ROCK_ABILITY_ID,
   SNIPER_ABILITY_ID,
-  SHARPNESS_ABILITY_ID,
-  SHEER_FORCE_ABILITY_ID,
   STRONG_JAW_ABILITY_ID,
   SWARM_ABILITY_ID,
   TECHNICIAN_ABILITY_ID,
@@ -123,7 +123,6 @@ describe("ability modifier gates", () => {
     [ADAPTABILITY_ABILITY_ID, { hasStab: true }, { hasStab: false }, "stabModifier", 8192],
     [HUGE_POWER_ABILITY_ID, { category: "physical" }, { category: "special" }, "attackerAttackModifier", 8192],
     [PURE_POWER_ABILITY_ID, { category: "physical" }, { category: "special" }, "attackerAttackModifier", 8192],
-    [FIRE_MANE_ABILITY_ID, { moveType: "fire" }, { moveType: "water" }, "attackerAttackModifier", 6144],
     [WATER_BUBBLE_ABILITY_ID, { moveType: "water" }, { moveType: "fire" }, "attackerAttackModifier", 8192],
     [SOLAR_POWER_ABILITY_ID, { category: "special", weather: "sun" }, { category: "special", weather: "none" }, "attackerAttackModifier", 6144],
     [TECHNICIAN_ABILITY_ID, { power: 60 }, { power: 61 }, "basePowerModifier", 6144],
@@ -220,16 +219,18 @@ describe("PokeAPI move flags", () => {
     })
   })
 
-  it.each([SHARPNESS_ABILITY_ID, RECKLESS_ABILITY_ID, SHEER_FORCE_ABILITY_ID])(
-    "keeps out-of-scope Ability %i fully unsupported",
-    (abilityId) => {
-      const outcome = calculable({ attackerAbilityId: abilityId, defenderAbilityId: abilityId })
-      expect(outcome.sources).toEqual(expect.arrayContaining([
-        { track: "attacker-ability", optionId: String(abilityId), state: "unsupported" },
-        { track: "defender-ability", optionId: String(abilityId), state: "unsupported" },
-      ]))
-    },
-  )
+  it.each([
+    DRAGONIZE_ABILITY_ID,
+    MEGA_SOL_ABILITY_ID,
+    EELEVATE_ABILITY_ID,
+    FIRE_MANE_ABILITY_ID,
+  ])("keeps calc-missing Ability %i fully unsupported", (abilityId) => {
+    const outcome = calculable({ attackerAbilityId: abilityId, defenderAbilityId: abilityId })
+    expect(outcome.sources).toEqual(expect.arrayContaining([
+      { track: "attacker-ability", optionId: String(abilityId), state: "unsupported" },
+      { track: "defender-ability", optionId: String(abilityId), state: "unsupported" },
+    ]))
+  })
 })
 
 describe("phase order, critical, and provenance", () => {
@@ -248,10 +249,10 @@ describe("phase order, critical, and provenance", () => {
     const outcome = calculable({
       snapshot: { ...TACKLE, id: "fire-punch", moveId: 7, power: 75 },
       attackerItemId: 197,
-      attackerAbilityId: FIRE_MANE_ABILITY_ID,
+      attackerAbilityId: HUGE_POWER_ABILITY_ID,
       defenderAbilityId: THICK_FAT_ABILITY_ID,
     })
-    expect(normal(outcome).attackModifier).toBe(chainModifiers([6144, 2048, 6144]))
+    expect(normal(outcome).attackModifier).toBe(chainModifiers([8192, 2048, 6144]))
   })
 
   it("preserves raw operands and the kernel interface", () => {
@@ -433,17 +434,26 @@ describe("16-roll oracles and deliberate differences", () => {
     })
   })
 
-  it("locks Fire Mane to the PokeAPI identity and local numeric result", () => {
+  it("keeps calc-missing Fire Mane inert and unsupported", () => {
     const outcome = calculable({
       snapshot: { ...TACKLE, id: "fire-mane", moveId: 53, power: 90 },
       attackerAbilityId: FIRE_MANE_ABILITY_ID,
       lowOutcome: { offense: 120, defense: { hp: 200, def: 100 } },
     })
     expect(FIRE_MANE_ABILITY_ID).toBe(313)
-    expect(normal(outcome).attackModifier).toBe(6144)
-    expect(calculateDamageRolls(outcome.calculation).low).toMatchObject({
-      normal: [62, 62, 63, 64, 64, 65, 66, 67, 67, 68, 69, 70, 70, 71, 72, 73],
-      critical: [92, 93, 94, 95, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 109],
+    expect(normal(outcome).attackModifier).toBe(N)
+    expect(outcome.sources).toContainEqual({
+      track: "attacker-ability",
+      optionId: String(FIRE_MANE_ABILITY_ID),
+      state: "unsupported",
     })
+    const neutral = calculable({
+      snapshot: { ...TACKLE, id: "fire-mane-neutral", moveId: 53, power: 90 },
+      attackerAbilityId: NO_ABILITY_ID,
+      lowOutcome: { offense: 120, defense: { hp: 200, def: 100 } },
+    })
+    expect(calculateDamageRolls(outcome.calculation)).toEqual(
+      calculateDamageRolls(neutral.calculation),
+    )
   })
 })

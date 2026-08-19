@@ -12,7 +12,7 @@ import {
   runScenarioPipeline,
 } from "@/lib/scenario"
 
-import { ADAPTABILITY_ABILITY_ID } from "@/lib/ability"
+import { ADAPTABILITY_ABILITY_ID, FIRE_MANE_ABILITY_ID } from "@/lib/ability"
 import { CALC_GEN, VGC_LEVEL } from "@/lib/damage-calculation"
 import * as damageKernel from "@/lib/damage-calculation"
 import { getAttackerStatSetups, getDefenderSetups } from "@/lib/stat-calculation"
@@ -525,7 +525,7 @@ describe("cross-mechanism acceptance", () => {
     state.weathers = ["rain"]
     state.defensePresetIds = ["standard-bulk"]
     state.defenderStages = [1]
-    state.defenderAbilityIds = [17]
+    state.defenderAbilityIds = [FIRE_MANE_ABILITY_ID]
     state.screens = ["reflect"]
     state.probabilityMode = "classic"
     const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
@@ -566,7 +566,7 @@ describe("cross-mechanism acceptance", () => {
       "attacker-ability": { active: ["91"] },
       weather: { active: ["rain"] },
       "defender-stage": { active: ["1"] },
-      "defender-ability": { unsupported: ["17"] },
+      "defender-ability": { unsupported: [String(FIRE_MANE_ABILITY_ID)] },
       screen: { active: ["reflect"] },
     })
 
@@ -643,11 +643,11 @@ describe("cross-mechanism acceptance", () => {
     state.offensePresetIds = ["neutral-max"]
     state.attackerStages = [-1, 0]
     state.attackerItemIds = ["none", 226]
-    state.attackerAbilityIds = [52, 75]
+    state.attackerAbilityIds = [FIRE_MANE_ABILITY_ID, 75]
     state.weathers = ["none", "sand"]
     state.defensePresetIds = ["standard-bulk"]
     state.defenderStages = [0, 1]
-    state.defenderAbilityIds = [17, 47]
+    state.defenderAbilityIds = [FIRE_MANE_ABILITY_ID, 47]
     state.screens = ["none", "reflect", "light-screen"]
     const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
 
@@ -661,10 +661,16 @@ describe("cross-mechanism acceptance", () => {
     expect(result.rows[0].provenance).toMatchObject({
       "attacker-stage": { inactive: ["-1"], neutral: ["0"] },
       "held-item": { inactive: ["226"], neutral: ["none"] },
-      "attacker-ability": { inactive: ["75"], unsupported: ["52"] },
+      "attacker-ability": {
+        inactive: ["75"],
+        unsupported: [String(FIRE_MANE_ABILITY_ID)],
+      },
       weather: { inactive: ["sand"], neutral: ["none"] },
       "defender-stage": { inactive: ["1"], neutral: ["0"] },
-      "defender-ability": { inactive: ["47"], unsupported: ["17"] },
+      "defender-ability": {
+        inactive: ["47"],
+        unsupported: [String(FIRE_MANE_ABILITY_ID)],
+      },
       screen: {
         inactive: ["reflect", "light-screen"],
         neutral: ["none"],

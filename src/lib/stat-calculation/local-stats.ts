@@ -80,3 +80,24 @@ export function defenderStatValues(
     def: statValue(calcName, defenseStatKey(category), setup),
   }
 }
+
+/** Neutral L50 stat values for every stat of a generated Pokemon. */
+export function allStatValues(calcName: string): {
+  hp: number
+  atk: number
+  def: number
+  spa: number
+  spd: number
+  spe: number
+} {
+  const pokemon = getBattlePokemonByCalcName(calcName)
+  if (!pokemon) throw new Error(`Unknown generated Pokemon for stat calculation: ${calcName}`)
+  return {
+    hp: statValueForPokemon(pokemon, "hp", { nature: "Serious", evs: {} }),
+    atk: statValueForPokemon(pokemon, "atk", { nature: "Serious", evs: {} }),
+    def: statValueForPokemon(pokemon, "def", { nature: "Serious", evs: {} }),
+    spa: statValueForPokemon(pokemon, "spa", { nature: "Serious", evs: {} }),
+    spd: statValueForPokemon(pokemon, "spd", { nature: "Serious", evs: {} }),
+    spe: statValueForPokemon(pokemon, "spe", { nature: "Serious", evs: {} }),
+  }
+}

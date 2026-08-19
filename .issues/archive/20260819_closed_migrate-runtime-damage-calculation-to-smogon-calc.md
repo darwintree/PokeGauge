@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "653c4de0-3231-407b-98b1-b38ba4eab12a"
 title: "Migrate runtime damage calculation to @smogon/calc"
-status: "open"
+status: "closed"
 priority: "high"
 labels: ["READY-FOR-AGENT", "FEATURE-REQUEST"]
 created_at: "2026-08-19T06:05:00Z"
-updated_at: "2026-08-19T06:05:00Z"
+updated_at: "2026-08-19T09:19:00Z"
 ---
 ## Problem Statement
 
@@ -14,7 +14,7 @@ updated_at: "2026-08-19T06:05:00Z"
 
 1. **维护成本高**：本地 kernel 要逐项复刻 calc 的能力、道具、天气、场地语义，239 个生成能力被标为 unsupported，能力/道具的战斗语义硬编码在本地代码里。
 2. **语义不完整**：动态威力招式（Low Kick / Grass Knot 等）依赖手填 initialPower；Body Press / Foul Play / Psyshock 等 override 招式无法表达；版本漂移时（calc 0.11.0 缺 7 个新能力）只能本地拦截。
-3. **信任断层**：本地 kernel 与 calc 之间的数值偏差需要持续的 oracle 审计（见 [[20260807_open_audit-showdown-vs-smogon-calc-damage-rule-mismatches|Audit Showdown vs @smogon/calc damage-rule mismatches]]），测试用 calc 当 oracle 本质是"用实现测实现"。
+3. **信任断层**：本地 kernel 与 calc 之间的数值偏差需要持续的 oracle 审计（见 [[../20260807_open_audit-showdown-vs-smogon-calc-damage-rule-mismatches|Audit Showdown vs @smogon/calc damage-rule mismatches]]），测试用 calc 当 oracle 本质是"用实现测实现"。
 
 ## Solution
 
@@ -107,5 +107,17 @@ updated_at: "2026-08-19T06:05:00Z"
 ## Further Notes
 
 - 讨论 trace: [[../docs/traces/discussion/2026-08-19-smogon-calc-runtime-migration|Smogon calc 运行时迁移讨论记录]]（16 条决策）。
-- 与 [[20260807_open_audit-showdown-vs-smogon-calc-damage-rule-mismatches|Audit Showdown vs @smogon/calc damage-rule mismatches]] 的关系：该 issue 的"数值默认与 calc 对齐"策略在此迁移后自然成立——calc 成为运行时引擎，不再需要本地对齐审计。
+- 与 [[../20260807_open_audit-showdown-vs-smogon-calc-damage-rule-mismatches|Audit Showdown vs @smogon/calc damage-rule mismatches]] 的关系：该 issue 的"数值默认与 calc 对齐"策略在此迁移后自然成立——calc 成为运行时引擎，不再需要本地对齐审计。
 - 资源生成脚本已产出 calcAbilityName（306 条）与 calcItemName（85 条 + 47 个 mega 石），ability/item 映射重构是本次迁移的前置，已提交。
+## Resolution
+
+已实施并验证：
+
+- 运行时伤害计算切换到 @smogon/calc 黑盒：calculateDamageRolls 内部调用 calc.calculate()，输出形状 { low: { normal, critical?, defenderHp }, high? } 不变，概率层（KO 卷积、命中/会心概率、两种 Probability Mode）一行未改。
+- 新增 calc adapter（calc-engine.ts）：以精确能力值 + overrides.baseStats 反推喂给 calc（L50 IV31 EV0），能力/道具按 calc 显示名解析，spread 开关映射 move.target，天气/场地/屏幕交给 calc，会心以 Move.isCrit 传入。
+- 支持边界改为 calc 是否认识（calcRecognizesAbility/calcRecognizesItem）：239 个能力自动解封；calc 0.11.0 缺失的 4 个能力（Mega Sol/Dragonize/Eelevate/Fire Mane）显式 unsupported，展示层同步中性化，绝无静默错误中性计算。
+- 动态威力招式（Gyro Ball/Heavy Slam/Low Kick 等 bp=0 的 calc 派生招式）不再手填 initialPower，威力由 calc 计算；Override 招式与多段展开保持 unsupported。
+- 本地 damage kernel 伤害公式删除；本地修正表保留为 formula-details tooltip 的纯显示投影（design.md 结果面不变量），不参与伤害。
+- Species 归并规则落地：1350 个生成形态全部可解析为 calc Gen 9 物种名。
+- 一次性新旧对比验证脚本（跑完即弃）：6 个代表性场景全部与直接 calc 调用一致。
+- 写 ADR 0007 推翻 ADR 0001；oracle 测试删除，行为测试改到新的 calc adapter seam。

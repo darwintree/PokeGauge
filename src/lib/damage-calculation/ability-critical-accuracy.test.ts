@@ -3,6 +3,9 @@ import { beforeAll, describe, expect, it } from "vitest"
 import {
   BATTLE_ARMOR_ABILITY_ID,
   COMPOUND_EYES_ABILITY_ID,
+  EELEVATE_ABILITY_ID,
+  FIRE_MANE_ABILITY_ID,
+  MEGA_SOL_ABILITY_ID,
   HUSTLE_ABILITY_ID,
   MERCILESS_ABILITY_ID,
   NO_ABILITY_ID,
@@ -351,9 +354,12 @@ describe("accuracy abilities", () => {
 })
 
 describe("support boundary", () => {
-  it.each([35, 51])("keeps Ability %i unsupported", (abilityId) => {
+  it.each([FIRE_MANE_ABILITY_ID, MEGA_SOL_ABILITY_ID, EELEVATE_ABILITY_ID])(
+    "keeps calc-missing Ability %i unsupported",
+    (abilityId) => {
     const outcome = calculable({ attackerAbilityId: abilityId, defenderAbilityId: abilityId })
     expect(state(outcome, "attacker-ability")).toBe("unsupported")
     expect(state(outcome, "defender-ability")).toBe("unsupported")
-  })
+    },
+  )
 })

@@ -55,13 +55,14 @@ import {
   WATER_BUBBLE_ABILITY_ID,
   WATER_ABSORB_ABILITY_ID,
   VOLT_ABSORB_ABILITY_ID,
-  abilityDamageModifierIsSupported,
   abilityIsProjectionNeutral,
 } from "@/lib/ability"
 import type { MoveCategory } from "@/lib/catalog"
 import type { PokemonType } from "@/lib/pokemon"
 
 import { chainModifiers, NEUTRAL_MODIFIER } from "./damage-kernel"
+import { getAbilityById } from "@/lib/resources"
+import { calcRecognizesAbility } from "./calc-recognition"
 import type { TrackSelectionActivation } from "./scenario-compiler"
 import type { Weather } from "./weather"
 
@@ -109,6 +110,13 @@ function neutralState(id: number): TrackSelectionActivation | undefined {
 }
 
 export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEffect {
+  const calcKnown = (id: number) => {
+    const calcAbilityName = getAbilityById(id)?.calcAbilityName
+    return calcAbilityName === undefined || calcRecognizesAbility(calcAbilityName)
+  }
+  const attackerCalcKnown = calcKnown(context.attackerAbilityId)
+  const defenderCalcKnown = calcKnown(context.defenderAbilityId)
+
   const attackerModifiers = {
     basePower: context.typeRewriteBasePower ?? NEUTRAL_MODIFIER,
     attack: NEUTRAL_MODIFIER,
@@ -344,10 +352,31 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
     attackerModifiers.basePower = chainModifiers([attackerModifiers.basePower, 5448])
   }
 
-  const state = (id: number, active: boolean): TrackSelectionActivation =>
-    neutralState(id) ?? (abilityDamageModifierIsSupported(id)
+  if (!attackerCalcKnown) {
+    attackerModifiers.basePower = NEUTRAL_MODIFIER
+    attackerModifiers.attack = NEUTRAL_MODIFIER
+    attackerModifiers.stab = NEUTRAL_MODIFIER
+    attackerModifiers.accuracy = NEUTRAL_MODIFIER
+    attackerModifiers.criticalStage = 0
+    attackerModifiers.criticalFinal = NEUTRAL_MODIFIER
+    attackerActive = false
+  }
+  if (!defenderCalcKnown) {
+    defenderModifiers.attack = NEUTRAL_MODIFIER
+    defenderModifiers.defense = NEUTRAL_MODIFIER
+    defenderModifiers.final = NEUTRAL_MODIFIER
+    defenderModifiers.accuracy = NEUTRAL_MODIFIER
+    defenderActive = false
+    damageNegated = false
+  }
+
+  const state = (id: number, active: boolean): TrackSelectionActivation => {
+    const calcAbilityName = getAbilityById(id)?.calcAbilityName
+    const calcKnown = calcAbilityName === undefined || calcRecognizesAbility(calcAbilityName)
+    return neutralState(id) ?? (calcKnown
       ? active ? "active" : "inactive"
       : "unsupported")
+  }
 
   return {
     damageNegated,

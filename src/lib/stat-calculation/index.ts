@@ -9,6 +9,7 @@ export {
   warmDefenderSpreadCache,
 } from "./stat-bounds"
 export {
+  allStatValues,
   defenderStatValues,
   defenderStatValuesForPokemon,
   offenseStatValue,

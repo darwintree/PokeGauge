@@ -267,7 +267,6 @@ describe("scenario move type compiler coverage", () => {
     [AERILATE_ABILITY_ID, "flying"],
     [REFRIGERATE_ABILITY_ID, "ice"],
     [GALVANIZE_ABILITY_ID, "electric"],
-    [DRAGONIZE_ABILITY_ID, "dragon"],
   ] as const)("compiles active rewrite for ability %i to %s", (abilityId, type) => {
     const outcome = calculable({ attackerAbilityId: abilityId })
     expect(outcome.move.type).toBe(type)
@@ -276,6 +275,17 @@ describe("scenario move type compiler coverage", () => {
       track: "attacker-ability",
       optionId: String(abilityId),
       state: "active",
+    })
+  })
+
+  it("keeps calc-missing Dragonize unsupported without rewriting the move type", () => {
+    const outcome = calculable({ attackerAbilityId: DRAGONIZE_ABILITY_ID })
+    expect(outcome.move.type).toBe("normal")
+    expect(normal(outcome).basePowerModifier).toBe(N)
+    expect(outcome.sources).toContainEqual({
+      track: "attacker-ability",
+      optionId: String(DRAGONIZE_ABILITY_ID),
+      state: "unsupported",
     })
   })
 

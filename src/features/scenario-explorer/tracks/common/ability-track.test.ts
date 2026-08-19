@@ -103,11 +103,12 @@ it("marks only unsupported ability effects in the Track", () => {
   expect(markup).toContain("Drought")
   expect(markup).not.toMatch(/Cloud Nine[^"]*Effect not supported yet/)
   expect(markup).not.toMatch(/Air Lock[^"]*Effect not supported yet/)
-  expect(markup).not.toMatch(/Mega Sol[^"]*Effect not supported yet/)
   expect(markup).not.toMatch(/Unnerve[^"]*Effect not supported yet/)
+  expect(markup).toMatch(/Fire Mane[^"]*Effect not supported yet/)
+  expect(markup).toMatch(/Mega Sol[^"]*Effect not supported yet/)
+  expect(markup).toMatch(/Eelevate[^"]*Effect not supported yet/)
   for (const label of [
     "Levitate",
-    "Eelevate",
     "Flash Fire",
     "Volt Absorb",
     "Water Absorb",
@@ -123,7 +124,7 @@ it("marks only unsupported ability effects in the Track", () => {
     expect(markup).not.toMatch(new RegExp(`${label}[^"]*Effect not supported yet`))
   }
   expect(markup).not.toContain("bg-signal-green")
-  expect(markup.match(/Effect not supported yet/g)).toHaveLength(6)
+  expect(markup.match(/Effect not supported yet/g)).toHaveLength(3)
   expect(markup.indexOf('aria-label="No ability"')).toBeLessThan(
     markup.indexOf('aria-label="Adaptability"'),
   )
@@ -141,7 +142,7 @@ it("marks assumed-satisfied abilities with green disclosure and no red unsupport
         { id: GUTS_ABILITY_ID, label: "Guts", summary: "" },
         { id: MULTISCALE_ABILITY_ID, label: "Multiscale", summary: "" },
         { id: MERCILESS_ABILITY_ID, label: "Merciless", summary: "" },
-        { id: SHARPNESS_ABILITY_ID, label: "Sharpness", summary: "" },
+        { id: FIRE_MANE_ABILITY_ID, label: "Fire Mane", summary: "" },
         { id: NO_ABILITY_ID, label: "—", accessibleLabel: "No ability", summary: "" },
       ],
       selectedIds: [BLAZE_ABILITY_ID],
