@@ -40,10 +40,7 @@ export function projectAbilitySelections(
   const stageAdditions = new Set<TrackState["attackerStages"][number]>()
   if (category === "physical") {
     if (defenderAbilityIds.includes(INTIMIDATE_ABILITY_ID)) stageAdditions.add(-1)
-    if (attackerAbilityIds.includes(DEFIANT_ABILITY_ID)) {
-      stageAdditions.add(1)
-      stageAdditions.add(2)
-    }
+    if (attackerAbilityIds.includes(DEFIANT_ABILITY_ID)) stageAdditions.add(1)
   } else if (attackerAbilityIds.includes(COMPETITIVE_ABILITY_ID)) {
     stageAdditions.add(2)
   }

@@ -5,7 +5,7 @@ import {
   setChampionsItemUsageFetcherForTest,
   type ChampionsItemUsageRecord,
 } from "@/lib/champions"
-import { ATTACKER_HELD_ITEM_IDS } from "@/lib/held-item"
+import { ATTACKER_HELD_ITEM_IDS, DEFENDER_HELD_ITEM_IDS } from "@/lib/held-item"
 
 import { resolveDefaultHeldItemPick } from "./held-item-defaults"
 
@@ -28,6 +28,7 @@ function record(
 }
 
 const attackerEligible = new Set(ATTACKER_HELD_ITEM_IDS)
+const defenderEligible = new Set(DEFENDER_HELD_ITEM_IDS)
 const selectable = new Set([6, 10034, 10035, 445, 10058])
 
 it("builds the top-10 boundary without backfill and selects non-form-trigger items", async () => {
@@ -50,6 +51,7 @@ it("builds the top-10 boundary without backfill and selects non-form-trigger ite
   const result = await resolveDefaultHeldItemPick({
     battlePokemonId: 6,
     lockedItemId: null,
+    side: "attacker",
     sideEligibleIds: attackerEligible,
     selectableIds: selectable,
   })
@@ -68,6 +70,7 @@ it("keeps none in the pool and selection when usage is empty or only form-trigge
     resolveDefaultHeldItemPick({
       battlePokemonId: 6,
       lockedItemId: null,
+      side: "attacker",
       sideEligibleIds: attackerEligible,
       selectableIds: selectable,
     }),
@@ -85,6 +88,7 @@ it("keeps none in the pool and selection when usage is empty or only form-trigge
     resolveDefaultHeldItemPick({
       battlePokemonId: 6,
       lockedItemId: null,
+      side: "attacker",
       sideEligibleIds: attackerEligible,
       selectableIds: selectable,
     }),
@@ -92,6 +96,51 @@ it("keeps none in the pool and selection when usage is empty or only form-trigge
     poolIds: ["none"],
     selectedIds: ["none"],
     status: "unavailable",
+  })
+})
+
+it("caps unlocked attacker default selection at none plus two ordinary items", async () => {
+  setChampionsItemUsageFetcherForTest(async (battlePokemonId) => [
+    record(battlePokemonId, { itemId: 717, rank: 1, percentage: 40, championsItemName: "Charizardite Y" }),
+    record(battlePokemonId, { itemId: 247, rank: 2, percentage: 30, championsItemName: "Life Orb" }),
+    record(battlePokemonId, { itemId: 245, rank: 3, percentage: 20, championsItemName: "Expert Belt" }),
+    record(battlePokemonId, { itemId: 197, rank: 4, percentage: 10, championsItemName: "Choice Band" }),
+  ])
+
+  await expect(
+    resolveDefaultHeldItemPick({
+      battlePokemonId: 6,
+      lockedItemId: null,
+      side: "attacker",
+      sideEligibleIds: attackerEligible,
+      selectableIds: selectable,
+    }),
+  ).resolves.toEqual({
+    poolIds: ["none", 717, 247, 245, 197],
+    selectedIds: ["none", 247, 245],
+    status: "ready",
+  })
+})
+
+it("keeps unlocked defender default selection as none plus every ordinary pool item", async () => {
+  setChampionsItemUsageFetcherForTest(async (battlePokemonId) => [
+    record(battlePokemonId, { itemId: 176, rank: 1, percentage: 40, championsItemName: "Babiri Berry" }),
+    record(battlePokemonId, { itemId: 172, rank: 2, percentage: 30, championsItemName: "Charti Berry" }),
+    record(battlePokemonId, { itemId: 190, rank: 3, percentage: 20, championsItemName: "Bright Powder" }),
+  ])
+
+  await expect(
+    resolveDefaultHeldItemPick({
+      battlePokemonId: 143,
+      lockedItemId: null,
+      side: "defender",
+      sideEligibleIds: defenderEligible,
+      selectableIds: selectable,
+    }),
+  ).resolves.toEqual({
+    poolIds: ["none", 176, 172, 190],
+    selectedIds: ["none", 176, 172, 190],
+    status: "ready",
   })
 })
 
@@ -104,6 +153,7 @@ it("short-circuits locked identities to the locked item only", async () => {
     resolveDefaultHeldItemPick({
       battlePokemonId: 10034,
       lockedItemId: 699,
+      side: "attacker",
       sideEligibleIds: attackerEligible,
       selectableIds: selectable,
     }),

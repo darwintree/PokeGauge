@@ -104,10 +104,10 @@ describe("ability projection lifecycle", () => {
     await render(shell)
 
     await act(async () => current.setAttackerAbilityIds([DEFIANT_ABILITY_ID]))
-    expect(current.trackState.attackerStages).toEqual([0, 1, 2])
+    expect(current.trackState.attackerStages).toEqual([0, 1])
 
     await act(async () => current.setAttackerAbilityIds([NO_ABILITY_ID]))
-    expect(current.trackState.attackerStages).toEqual([0, 1, 2])
+    expect(current.trackState.attackerStages).toEqual([0, 1])
 
     await render({
       ...shell,

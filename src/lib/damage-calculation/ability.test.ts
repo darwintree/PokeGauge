@@ -254,11 +254,11 @@ describe("ability scenario product and provenance", () => {
 
     const result = runScenarioPipeline(catalog, projected)
 
-    expect(projected.attackerStages).toEqual([0, 1, 2])
-    expect(expectedRowCount(projected)).toBe(3)
-    expect(result.rows).toHaveLength(3)
+    expect(projected.attackerStages).toEqual([0, 1])
+    expect(expectedRowCount(projected)).toBe(2)
+    expect(result.rows).toHaveLength(2)
     expect(result.rows.map((row) => row.provenance["attacker-stage"]?.active).flat())
-      .toEqual(["1", "2"])
+      .toEqual(["1"])
     expect(result.rows.every((row) =>
       row.provenance["attacker-ability"]?.neutral.includes(String(DEFIANT_ABILITY_ID)),
     )).toBe(true)

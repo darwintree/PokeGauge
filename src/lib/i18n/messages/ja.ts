@@ -55,7 +55,7 @@ export const jaMessages: Record<string, string> = {
     "usageTip.intimidate.title": "いかく特性",
     "usageTip.intimidate.body": "防御側ポケモンが<b>いかく</b>を持つ場合、物理攻撃の結果に攻撃側ポケモンの攻撃ランク -1 の選択肢が追加されます。",
     "usageTip.defiant.title": "特性：まけんき",
-    "usageTip.defiant.body": "攻撃側ポケモンが<b>まけんき</b>を持つ場合、能力ランク低下後の攻撃上昇を表す +1 と +2 の攻撃ランク選択肢が、物理攻撃の結果に追加されます。",
+    "usageTip.defiant.body": "攻撃側ポケモンが<b>まけんき</b>を持つ場合、いかくを受けた後の攻撃上昇を表す +1 の攻撃ランク選択肢が、物理攻撃の結果に追加されます。",
     "usageTip.weatherAbilities.title": "天候を発生させる特性",
     "usageTip.weatherAbilities.body": "攻撃側または防御側ポケモンが、雨・晴れ・砂嵐・雪などの天候を発生させる特性を持つ場合、<b>天候</b>に対応する選択肢が自動で追加されます。",
     "usageTip.credits.title": "謝辞",

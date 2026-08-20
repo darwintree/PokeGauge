@@ -32,7 +32,12 @@ Rows after the first 10 do not enter the initial Held item Track.
 
 ### Default selection
 
-On an unlocked Identity, the initial pool always includes `none` ahead of usage-sourced items. Every non-form-trigger item that entered the initial pool from the high-usage boundary is selected by default, and `none` is selected with them.
+On an unlocked Identity, the initial pool always includes `none` ahead of usage-sourced items, and `none` is selected by default.
+
+Non-form-trigger items that entered the initial pool from the high-usage boundary are default-selected by side:
+
+- Attacker: the first at most two such items in usage order. Remaining pooled ordinary items stay in the pool and are not default-selected. When `none` is available and at least two ordinary items entered the pool, default selection is exactly those three values.
+- Defender: every such item, together with `none`.
 
 `none` is not produced by Champions usage rows; it is a floor entry in the initial pool and default selection. When usage is missing, empty, failed, or timed out, or when no ordinary usage-sourced items enter the pool, selection is `["none"]` and the pool still includes `none` (plus any legal form-trigger items that entered). An Identity that locks a form item is unchanged: it exposes only the locked item.
 
@@ -102,7 +107,7 @@ First-party hosting may replace the GitHub origin while keeping the same pinned 
 - Usage rank determines initial pool order among usage-sourced items.
 - Manually added ordinary items are selected immediately.
 - Deselecting an ordinary item retains it in the track pool. Deselecting every selected id coerces selection to `["none"]`.
-- Attacker and defender sides use the same contract, each against their own Identity and side eligibility.
+- Attacker and defender sides share pool boundary, form-trigger, locked Identity, Picker, and untouched recompute rules, each against their own Identity and side eligibility. Default selection count follows the per-side rule under Default selection.
 
 ## Error Rules
 
@@ -123,7 +128,8 @@ No stable state may pair a Battle Pokémon Identity with a held-item selection t
 ## Acceptance Criteria
 
 - Only boundary-eligible ordinary items and legal form-trigger items from the first 10 Champions usage rows enter the initial usage-sourced pool; skipped rows do not backfill.
-- Default selection on an unlocked Identity includes `none` plus every non-form-trigger usage-sourced pool item; form-trigger items are never default-selected.
+- Default selection on an unlocked attacker Identity includes `none` plus the first at most two non-form-trigger usage-sourced pool items in usage order; remaining pooled ordinary items stay unselected. When `none` is available and at least two such items entered the pool, default selection has exactly three values.
+- Default selection on an unlocked defender Identity includes `none` plus every non-form-trigger usage-sourced pool item; form-trigger items are never default-selected.
 - Missing usage data yields the defined fallback without blocking the Picker.
 - A Mega Identity with an upstream base species entry exposes the same ordered item usage rows as that species; without one, it produces no usage rows.
 - Confirming a form-trigger item switches Identity via the Pokémon re-select transition; cancel leaves state unchanged; locked forms leave only via the Pokémon Selector.

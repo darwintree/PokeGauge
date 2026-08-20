@@ -57,7 +57,7 @@ export const zhHansMessages: Record<string, string> = {
     "usageTip.intimidate.title": "特性：威吓",
     "usageTip.intimidate.body": "防御宝可梦设置<b>威吓</b>特性时，攻击宝可梦的物理攻击阶级会增加 “-1” 项。",
     "usageTip.defiant.title": "特性：不服输",
-    "usageTip.defiant.body": "进攻宝可梦设置<b>不服输</b>特性时，物理攻击结果会加入 +1 和 +2 两个攻击阶级选项，用来表示能力阶级下降后的攻击提升。",
+    "usageTip.defiant.body": "进攻宝可梦设置<b>不服输</b>特性时，物理攻击结果会加入 +1 攻击阶级选项，用来表示被威吓后的攻击提升。",
     "usageTip.credits.title": "致谢",
     "usageTip.credits.body": "感谢 <b>Smogon</b> 、<b>PokéAPI</b>，以及 <b>Pokémon Champions Battle Data</b> 。这些项目极大地加速了开发进度",
     "usageTip.feedback.title": "反馈问题",

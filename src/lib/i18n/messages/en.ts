@@ -55,7 +55,7 @@ export const enMessages: Record<string, string> = {
     "usageTip.intimidate.title": "Intimidate",
     "usageTip.intimidate.body": "When the defending Pokémon has <b>Intimidate</b>, physical results add a -1 Attack-stage choice for the attacking Pokémon.",
     "usageTip.defiant.title": "Ability: Defiant",
-    "usageTip.defiant.body": "When the attacking Pokémon has <b>Defiant</b>, physical results add +1 and +2 Attack-stage choices to represent its response to a stat drop.",
+    "usageTip.defiant.body": "When the attacking Pokémon has <b>Defiant</b>, physical results add a +1 Attack-stage choice to represent the Attack boost after Intimidate.",
     "usageTip.weatherAbilities.title": "Weather-causing abilities",
     "usageTip.weatherAbilities.body": "When either Pokémon has a weather-causing ability, the matching option is added automatically under <b>Weather</b>. Supported examples include rain, sun, sand, and snow.",
     "usageTip.credits.title": "Credits",

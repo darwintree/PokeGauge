@@ -186,12 +186,14 @@ export async function resolveCatalogDefaultMovePick(
     resolveDefaultHeldItemPick({
       battlePokemonId: catalog.matchup.attackerId,
       lockedItemId: catalog.attackerLockedItemId,
+      side: "attacker",
       sideEligibleIds: new Set(ATTACKER_HELD_ITEM_IDS),
       selectableIds: selectableAttackerIds,
     }),
     resolveDefaultHeldItemPick({
       battlePokemonId: catalog.matchup.defenderId,
       lockedItemId: catalog.defenderLockedItemId,
+      side: "defender",
       sideEligibleIds: new Set(DEFENDER_HELD_ITEM_IDS),
       selectableIds: selectableDefenderIds,
     }),

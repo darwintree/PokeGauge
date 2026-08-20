@@ -55,7 +55,7 @@ export const zhHantMessages: Record<string, string> = {
     "usageTip.intimidate.title": "威嚇特性",
     "usageTip.intimidate.body": "防禦寶可夢設置<b>威嚇</b>特性時，物理攻擊結果會為攻擊寶可夢加入 -1 攻擊階級選項。",
     "usageTip.defiant.title": "特性：不服輸",
-    "usageTip.defiant.body": "進攻寶可夢設置<b>不服輸</b>特性時，物理攻擊結果會加入 +1 與 +2 兩個攻擊階級選項，用來表示能力階級下降後的攻擊提升。",
+    "usageTip.defiant.body": "進攻寶可夢設置<b>不服輸</b>特性時，物理攻擊結果會加入 +1 攻擊階級選項，用來表示被威嚇後的攻擊提升。",
     "usageTip.weatherAbilities.title": "引發天氣的特性",
     "usageTip.weatherAbilities.body": "進攻或防禦寶可夢具有會引發降雨、日照、沙暴或降雪的特性時，<b>天氣</b>中會自動加入對應選項。",
     "usageTip.credits.title": "致謝",

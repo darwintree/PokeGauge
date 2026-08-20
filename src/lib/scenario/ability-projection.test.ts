@@ -36,7 +36,7 @@ describe("ability initialization projection", () => {
 
   it("projects only the applicable attacker Stage choices", async () => {
     const state = defaultTrackState(await getCatalogShell(133, 143, "en"))
-    state.attackerStages = [2, -3, 0]
+    state.attackerStages = [-3, 0]
 
     const physical = projectAbilitySelections(
       state,
@@ -51,7 +51,7 @@ describe("ability initialization projection", () => {
       [INTIMIDATE_ABILITY_ID],
     )
 
-    expect(physical.attackerStages).toEqual([-3, -1, 0, 1, 2])
+    expect(physical.attackerStages).toEqual([-3, -1, 0, 1])
     expect(physical.defenderStages).toEqual([0])
     expect(special.attackerStages).toEqual([-3, 0, 2])
   })

@@ -46,6 +46,7 @@ export type DefaultHeldItemPick = {
 export async function resolveDefaultHeldItemPick(input: {
   battlePokemonId: BattlePokemonId
   lockedItemId: HeldItemId | null
+  side: "attacker" | "defender"
   sideEligibleIds: ReadonlySet<number>
   selectableIds: ReadonlySet<BattlePokemonId>
 }): Promise<DefaultHeldItemPick> {
@@ -85,7 +86,7 @@ export async function resolveDefaultHeldItemPick(input: {
       }
       if (!input.sideEligibleIds.has(row.itemId)) continue
       poolIds.push(row.itemId)
-      selectedIds.push(row.itemId)
+      if (input.side === "defender" || selectedIds.length < 2) selectedIds.push(row.itemId)
     }
 
     return {
