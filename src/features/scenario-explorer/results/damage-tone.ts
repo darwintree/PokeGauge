@@ -1,15 +1,15 @@
 export type DamageTone = "safe" | "cool" | "warm" | "lethal" | "guaranteed"
 
-/** 1.5HKO line: two hits of this percent exceed 100%. */
-export const DAMAGE_TWO_THIRDS = 100 / 1.5
-
-/** Discrete 16-roll box. Crit whiskers are ignored. First match from the top. */
+/**
+ * Discrete 16-roll box. Crit whiskers are ignored.
+ * Order by severity: safe (green) < cool (light yellow) < warm (orange) < lethal (red) < guaranteed (dark red).
+ */
 export function damageToneOf(minPercent: number, maxPercent: number): DamageTone {
   if (minPercent >= 100) return "guaranteed"
   if (maxPercent >= 100) return "lethal"
-  if (minPercent > DAMAGE_TWO_THIRDS) return "warm"
-  if (maxPercent < 40) return "safe"
-  return "cool"
+  if (minPercent >= 50) return "warm"
+  if (maxPercent >= 43) return "cool"
+  return "safe"
 }
 
 export const DAMAGE_TONE_CLASS: Record<DamageTone, string> = {

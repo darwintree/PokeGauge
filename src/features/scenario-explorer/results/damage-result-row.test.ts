@@ -186,7 +186,7 @@ describe("DamageResultRow range envelopes", () => {
     expect(markup).not.toContain("bg-signal-yellow")
   })
 
-  it("paints a discrete box with the safe tone when max is under 40%", () => {
+  it("paints a discrete box with the safe tone when max is under 43%", () => {
     const markup = render()
     expect(markup).toContain("damage-tone--safe")
     expect(markup).not.toContain("damage-tone-envelope")
