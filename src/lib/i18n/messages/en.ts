@@ -149,6 +149,7 @@ export const enMessages: Record<string, string> = {
     "track.terrain.misty": "Misty Terrain",
     "track.screen": "Screen",
     "track.screen.none": "No screen",
+    "track.screen.walls": "Screens up",
     "track.screen.reflect": "Reflect",
     "track.screen.light-screen": "Light Screen",
     "track.stage.reset": "Reset",

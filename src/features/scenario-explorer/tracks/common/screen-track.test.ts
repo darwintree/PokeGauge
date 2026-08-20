@@ -22,8 +22,7 @@ describe("Screen Track", () => {
       }),
     ))
 
-    expect(markup.indexOf("No screen")).toBeLessThan(markup.indexOf("Reflect"))
-    expect(markup.indexOf("Reflect")).toBeLessThan(markup.indexOf("Light Screen"))
+    expect(markup.indexOf("No screen")).toBeLessThan(markup.indexOf("Screens up"))
     expect(normalizeScreens([])).toEqual(["none"])
   })
 

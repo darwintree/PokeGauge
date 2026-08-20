@@ -173,7 +173,8 @@ function additionalEntries(props: DamageScenarioSummaryProps) {
   )
 }
 
-/** 卡底条:战场条件(天气/场地/墙)与「其他条件」折叠同一行。无状态:details + flex,summary 右锚,chips 不占点击区。 */
+/** 卡底条:战场条件(天气/场地/墙)与「其他条件」折叠同一行。
+ * 生效战场 chip 必须在 summary 内(或 details 外),否则 closed `<details>` 会把非 summary 子节点藏掉。 */
 function ConditionsStrip(props: DamageScenarioSummaryProps) {
   const intl = useIntl()
   const field = activeTokens(props, ["weather", "terrain", "screen"])
@@ -195,16 +196,23 @@ function ConditionsStrip(props: DamageScenarioSummaryProps) {
   }
 
   return (
-    <details className="group flex flex-wrap items-center gap-1 border-t border-dashed border-card-border px-2 py-0.5 text-[10px] text-muted-foreground">
-      <summary className="order-2 ml-auto flex shrink-0 cursor-pointer list-none items-center gap-1 text-[9px] leading-none font-bold text-hud-muted hover:text-ink focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none [&::-webkit-details-marker]:hidden [&::marker]:hidden">
-        <MoreHorizontal className="size-2.5 shrink-0" aria-hidden />
-        {intl.formatMessage({ id: "damage.conditions.other" }, { count })}
-        <ChevronDown className="size-2.5 transition-transform group-open:rotate-180" aria-hidden />
+    <details className="group border-t border-dashed border-card-border px-2 py-0.5 text-[10px] text-muted-foreground">
+      <summary className="flex cursor-pointer list-none flex-wrap items-center gap-1 focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none [&::-webkit-details-marker]:hidden [&::marker]:hidden">
+        {chips.length > 0 && (
+          <span
+            className="flex min-w-0 flex-wrap items-center gap-1"
+            onClick={(event) => event.preventDefault()}
+          >
+            {chips}
+          </span>
+        )}
+        <span className="ml-auto flex shrink-0 items-center gap-1 text-[9px] leading-none font-bold text-hud-muted hover:text-ink">
+          <MoreHorizontal className="size-2.5 shrink-0" aria-hidden />
+          {intl.formatMessage({ id: "damage.conditions.other" }, { count })}
+          <ChevronDown className="size-2.5 transition-transform group-open:rotate-180" aria-hidden />
+        </span>
       </summary>
-      {chips.length > 0 && (
-        <span className="order-1 flex min-w-0 flex-wrap items-center gap-1">{chips}</span>
-      )}
-      <div className="order-3 w-full space-y-1 pt-1 text-ink">
+      <div className="space-y-1 pt-1 text-ink">
         {entries.map(({ track, state, id }) => (
           <p key={`${track}:${state}:${id}`}>
             {intl.formatMessage({ id: `damage.sources.${state}` })}

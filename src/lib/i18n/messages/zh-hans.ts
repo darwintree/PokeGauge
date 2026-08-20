@@ -149,6 +149,7 @@ export const zhHansMessages: Record<string, string> = {
     "track.terrain.misty": "薄雾场地",
     "track.screen": "墙",
     "track.screen.none": "无墙",
+    "track.screen.walls": "有墙",
     "track.screen.reflect": "反射壁",
     "track.screen.light-screen": "光墙",
     "track.stage.reset": "重置",

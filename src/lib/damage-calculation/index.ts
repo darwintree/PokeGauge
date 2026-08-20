@@ -45,8 +45,8 @@ export type {
   MoveMechanics,
   MoveMechanicsBranch,
 } from "./mechanics-projection"
-export { SCREENS } from "./screen"
-export type { Screen } from "./screen"
+export { SCREENS, resolveAppliedScreen } from "./screen"
+export type { AppliedScreen, Screen } from "./screen"
 export { STAT_STAGES } from "./types"
 export type {
   KOProbabilities,

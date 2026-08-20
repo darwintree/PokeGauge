@@ -284,7 +284,7 @@ describe("phase order, critical, and provenance", () => {
       attackerItemId: 247,
       defenderItemId: 168,
       defenderAbilityId: FILTER_ABILITY_ID,
-      screen: "reflect",
+      screen: "walls",
     })
     expect(normal(outcome).finalModifier).toBe(chainModifiers([2732, 3072, 5324, 2048]))
     expect(outcome.calculation.low.critical?.finalModifier).toBe(

@@ -142,9 +142,9 @@ describe("scenario pure transitions", () => {
 
   it("normalizes an empty screen selection without changing populated selections", () => {
     expect(normalizeScreens([])).toEqual(["none"])
-    expect(normalizeScreens(["reflect", "light-screen"])).toEqual([
-      "reflect",
-      "light-screen",
+    expect(normalizeScreens(["none", "walls"])).toEqual([
+      "none",
+      "walls",
     ])
   })
 

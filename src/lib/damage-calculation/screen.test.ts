@@ -25,7 +25,11 @@ import {
   offenseStatValueForPokemon,
 } from "@/lib/stat-calculation"
 import { getAttackerStatSetups, getDefenderSetups } from "@/lib/stat-calculation"
-import { SCREENS, type Screen } from "@/lib/damage-calculation"
+import {
+  SCREENS,
+  resolveAppliedScreen,
+  type Screen,
+} from "@/lib/damage-calculation"
 import {
   compileScenario,
   type CalculableScenario,
@@ -120,6 +124,7 @@ function oracleRolls(testCase: ScreenCase, critical: boolean) {
   if (!move || move.category === "status") throw new Error("Expected damage move")
   const offense = getAttackerStatSetups(move.category)["neutral-max"]
   const defense = getDefenderSetups(move.category)["standard-bulk"]
+  const applied = resolveAppliedScreen(testCase.screen, move.category)
   const attacker = new Pokemon(CALC_GEN, testCase.attackerName, {
     level: VGC_LEVEL,
     nature: offense.nature,
@@ -133,8 +138,8 @@ function oracleRolls(testCase: ScreenCase, critical: boolean) {
   const field = new Field({
     gameType: "Doubles",
     defenderSide: {
-      isReflect: testCase.screen === "reflect",
-      isLightScreen: testCase.screen === "light-screen",
+      isReflect: applied === "reflect",
+      isLightScreen: applied === "light-screen",
     },
   })
   return calculate(
@@ -155,20 +160,19 @@ beforeAll(async () => {
 
 describe("screen compiler", () => {
   it.each([
-    [{ attackerId: 133, attackerName: "Eevee", moveId: 33, screen: "reflect" }, 2732, "active"],
-    [{ attackerId: 133, attackerName: "Eevee", moveId: 33, screen: "light-screen" }, 4096, "inactive"],
-    [{ attackerId: 6, attackerName: "Charizard", moveId: 53, screen: "light-screen" }, 2732, "active"],
-    [{ attackerId: 6, attackerName: "Charizard", moveId: 53, screen: "reflect" }, 4096, "inactive"],
+    [{ attackerId: 133, attackerName: "Eevee", moveId: 33, screen: "walls" }, 2732, "active", "reflect"],
+    [{ attackerId: 6, attackerName: "Charizard", moveId: 53, screen: "walls" }, 2732, "active", "light-screen"],
+    [{ attackerId: 133, attackerName: "Eevee", moveId: 33, screen: "none" }, 4096, "neutral", "none"],
   ] as const)(
     "compiles move %i under %s with exact normal and critical modifiers",
-    (testCase, expectedNormalModifier, expectedState) => {
+    (testCase, expectedNormalModifier, expectedState, expectedOptionId) => {
       const outcome = calculable(testCase)
 
       expect(outcome.calculation.low.normal?.finalModifier).toBe(expectedNormalModifier)
       expect(outcome.calculation.low.critical?.finalModifier).toBe(4096)
       expect(screenSource(outcome)).toEqual({
         track: "screen",
-        optionId: testCase.screen,
+        optionId: expectedOptionId,
         state: expectedState,
       })
     },
@@ -179,7 +183,7 @@ describe("screen compiler", () => {
       attackerId: 133,
       attackerName: "Eevee",
       moveId: 33,
-      screen: "reflect",
+      screen: "walls",
     } as const
     const outcome = calculable(testCase, {
       snapshot: snapshot(testCase.moveId, 3),
@@ -187,16 +191,20 @@ describe("screen compiler", () => {
 
     expect(outcome.calculation.low.normal).toBeUndefined()
     expect(outcome.calculation.low.critical?.finalModifier).toBe(4096)
-    expect(screenSource(outcome)?.state).toBe("inactive")
+    expect(screenSource(outcome)).toEqual({
+      track: "screen",
+      optionId: "reflect",
+      state: "inactive",
+    })
     expect(damageKernel.calculateDamageRolls(outcome.calculation).low.critical).toEqual(
       oracleRolls(testCase, true),
     )
   })
 
   it.each([
-    { attackerId: 133, attackerName: "Eevee", moveId: 280, screen: "reflect" },
-    { attackerId: 133, attackerName: "Eevee", moveId: 706, screen: "reflect" },
-    { attackerId: 10251, attackerName: "Tauros-Paldea-Blaze", moveId: 873, screen: "reflect" },
+    { attackerId: 133, attackerName: "Eevee", moveId: 280, screen: "walls" },
+    { attackerId: 133, attackerName: "Eevee", moveId: 706, screen: "walls" },
+    { attackerId: 10251, attackerName: "Tauros-Paldea-Blaze", moveId: 873, screen: "walls" },
   ] as const)(
     "makes screen-breaking move $moveId ignore its screen before damage",
     (testCase) => {
@@ -210,13 +218,11 @@ describe("screen compiler", () => {
   )
 
   it.each([
-    { attackerId: 133, attackerName: "Eevee", moveId: 33, screen: "reflect" },
-    { attackerId: 133, attackerName: "Eevee", moveId: 33, screen: "light-screen" },
-    { attackerId: 6, attackerName: "Charizard", moveId: 53, screen: "light-screen" },
-    { attackerId: 6, attackerName: "Charizard", moveId: 53, screen: "reflect" },
-    { attackerId: 133, attackerName: "Eevee", moveId: 280, screen: "reflect" },
-    { attackerId: 133, attackerName: "Eevee", moveId: 706, screen: "reflect" },
-    { attackerId: 10251, attackerName: "Tauros-Paldea-Blaze", moveId: 873, screen: "reflect" },
+    { attackerId: 133, attackerName: "Eevee", moveId: 33, screen: "walls" },
+    { attackerId: 6, attackerName: "Charizard", moveId: 53, screen: "walls" },
+    { attackerId: 133, attackerName: "Eevee", moveId: 280, screen: "walls" },
+    { attackerId: 133, attackerName: "Eevee", moveId: 706, screen: "walls" },
+    { attackerId: 10251, attackerName: "Tauros-Paldea-Blaze", moveId: 873, screen: "walls" },
   ] as const)(
     "matches all @smogon/calc normal and critical rolls for move $moveId under $screen",
     (testCase) => {
@@ -230,7 +236,7 @@ describe("screen compiler", () => {
 })
 
 describe("screen scenario product and provenance", () => {
-  async function threeScreenState(criticalStage: CriticalStage = 0) {
+  async function screenTrackState(criticalStage: CriticalStage = 0) {
     const catalog = await getCatalogShell(445, 143, "en", "physical")
     const earthquake = catalog.moves.find((move) => move.id === 89)
     if (!earthquake) throw new Error("Expected Earthquake catalog option")
@@ -255,13 +261,13 @@ describe("screen scenario product and provenance", () => {
     return { catalog, state }
   }
 
-  it("turns three physical screen choices into two compiled rows", async () => {
-    const { catalog, state } = await threeScreenState()
+  it("keeps none and walls as two physical rows", async () => {
+    const { catalog, state } = await screenTrackState()
     const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
 
     const result = runScenarioPipeline(catalog, state)
 
-    expect(expectedRowCount(state)).toBe(3)
+    expect(expectedRowCount(state)).toBe(2)
     expect(result.rows).toHaveLength(2)
     expect(result.unavailable).toEqual([])
     expect(kernel).toHaveBeenCalledTimes(2)
@@ -277,26 +283,26 @@ describe("screen scenario product and provenance", () => {
       row.provenance.screen?.neutral.includes("none")
     )?.provenance.screen).toEqual({
       active: [],
-      inactive: ["light-screen"],
+      inactive: [],
       unsupported: [],
       neutral: ["none"],
     })
     kernel.mockRestore()
   })
 
-  it("merges all three screen choices for a critical-only snapshot", async () => {
-    const { catalog, state } = await threeScreenState(3)
+  it("merges none and walls for a critical-only snapshot", async () => {
+    const { catalog, state } = await screenTrackState(3)
     const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
 
     const result = runScenarioPipeline(catalog, state)
 
-    expect(expectedRowCount(state)).toBe(3)
+    expect(expectedRowCount(state)).toBe(2)
     expect(result.rows).toHaveLength(1)
     expect(kernel).toHaveBeenCalledTimes(1)
     expect(result.rows[0].criticalOnly).toBe(true)
     expect(result.rows[0].provenance.screen).toEqual({
       active: [],
-      inactive: ["reflect", "light-screen"],
+      inactive: ["reflect"],
       unsupported: [],
       neutral: ["none"],
     })
@@ -308,7 +314,7 @@ describe("screen scenario product and provenance", () => {
     [445, 706],
     [10251, 873],
   ] as const)(
-    "merges all three screen choices before breaker %i's pipeline damage",
+    "merges none and walls before breaker %i's pipeline damage",
     async (attackerId, moveId) => {
       const catalog = await getCatalogShell(attackerId, 143, "en", "physical")
       const move = catalog.moves.find((candidate) => candidate.id === moveId)
@@ -331,12 +337,12 @@ describe("screen scenario product and provenance", () => {
 
       const result = runScenarioPipeline(catalog, state)
 
-      expect(expectedRowCount(state)).toBe(3)
+      expect(expectedRowCount(state)).toBe(2)
       expect(result.rows).toHaveLength(1)
       expect(kernel).toHaveBeenCalledTimes(1)
       expect(result.rows[0].provenance.screen).toEqual({
         active: [],
-        inactive: ["reflect", "light-screen"],
+        inactive: ["reflect"],
         unsupported: [],
         neutral: ["none"],
       })

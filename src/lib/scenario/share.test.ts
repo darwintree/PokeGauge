@@ -37,7 +37,7 @@ function payloadWithCrc(bytes: Uint8Array): string {
   const payload = new Uint8Array(bytes.length + 4)
   payload.set(bytes)
   new DataView(payload.buffer).setUint32(bytes.length, crc32(bytes))
-  return `1.${base64Url(payload)}`
+  return `2.${base64Url(payload)}`
 }
 
 function tokenBytes(token: string): Uint8Array {
@@ -88,7 +88,7 @@ function duplicateSetToken(): string {
   writer.write(0, 12)
   writer.write(1, 3)
   writer.write(0, 14)
-  writer.write(1, 3)
+  writer.write(1, 2)
   writer.write(1, 1)
   return payloadWithCrc(writer.finish())
 }
@@ -211,7 +211,7 @@ describe("Scenario Setup sharing", () => {
       ok: false,
       failures: [{ stage: "canonical", code: "noncanonical-set" }],
     })
-    expect(decodeScenarioSetupToken(encoded.value.replace(/^1\./u, "0."))).toMatchObject({
+    expect(decodeScenarioSetupToken(encoded.value.replace(/^2\./u, "0."))).toMatchObject({
       ok: false,
       failures: [{ stage: "version", code: "unsupported-version" }],
     })

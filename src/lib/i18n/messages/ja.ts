@@ -149,6 +149,7 @@ export const jaMessages: Record<string, string> = {
     "track.terrain.misty": "ミストフィールド",
     "track.screen": "壁",
     "track.screen.none": "壁なし",
+    "track.screen.walls": "壁あり",
     "track.screen.reflect": "リフレクター",
     "track.screen.light-screen": "ひかりのかべ",
     "track.stage.reset": "リセット",

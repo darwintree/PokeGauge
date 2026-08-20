@@ -217,7 +217,7 @@ describe("cross-mechanism acceptance", () => {
       defenderAbilityId: 17,
     })
     state.attackerItemIds = [236]
-    state.screens = ["reflect"]
+    state.screens = ["walls"]
     state.probabilityMode = "classic"
     const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
 
@@ -526,7 +526,7 @@ describe("cross-mechanism acceptance", () => {
     state.defensePresetIds = ["standard-bulk"]
     state.defenderStages = [1]
     state.defenderAbilityIds = [FIRE_MANE_ABILITY_ID]
-    state.screens = ["reflect"]
+    state.screens = ["walls"]
     state.probabilityMode = "classic"
     const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
 
@@ -648,12 +648,12 @@ describe("cross-mechanism acceptance", () => {
     state.defensePresetIds = ["standard-bulk"]
     state.defenderStages = [0, 1]
     state.defenderAbilityIds = [FIRE_MANE_ABILITY_ID, 47]
-    state.screens = ["none", "reflect", "light-screen"]
+    state.screens = ["none", "walls"]
     const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
 
     const result = runScenarioPipeline(catalog, state)
 
-    expect(expectedRowCount(state)).toBe(192)
+    expect(expectedRowCount(state)).toBe(128)
     expect(result.unavailable).toEqual([])
     expect(result.rows).toHaveLength(1)
     expect(result.rows[0].criticalOnly).toBe(true)
@@ -672,7 +672,7 @@ describe("cross-mechanism acceptance", () => {
         unsupported: [String(FIRE_MANE_ABILITY_ID)],
       },
       screen: {
-        inactive: ["reflect", "light-screen"],
+        inactive: ["reflect"],
         neutral: ["none"],
       },
     })

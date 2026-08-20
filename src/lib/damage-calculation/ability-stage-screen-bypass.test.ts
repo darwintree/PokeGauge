@@ -220,7 +220,7 @@ describe("Infiltrator", () => {
   it("attacker Infiltrator bypasses an otherwise-active Reflect", () => {
     const outcome = calculable({
       attackerAbilityId: INFILTRATOR_ABILITY_ID,
-      screen: "reflect",
+      screen: "walls",
     })
     expect(outcome.calculation.low.normal?.finalModifier).toBe(NEUTRAL_MODIFIER)
     expect(state(outcome, "attacker-ability")).toBe("active")
@@ -232,7 +232,7 @@ describe("Infiltrator", () => {
       snapshot: { ...TACKLE, id: "flamethrower", moveId: 53, power: 90 },
       attackerId: 6,
       attackerAbilityId: INFILTRATOR_ABILITY_ID,
-      screen: "light-screen",
+      screen: "walls",
     })
     expect(outcome.calculation.low.normal?.finalModifier).toBe(NEUTRAL_MODIFIER)
     expect(state(outcome, "attacker-ability")).toBe("active")
@@ -242,7 +242,7 @@ describe("Infiltrator", () => {
   it("defender Infiltrator is always inactive and does not bypass screens", () => {
     const outcome = calculable({
       defenderAbilityId: INFILTRATOR_ABILITY_ID,
-      screen: "reflect",
+      screen: "walls",
     })
     expect(outcome.calculation.low.normal?.finalModifier).not.toBe(NEUTRAL_MODIFIER)
     expect(state(outcome, "defender-ability")).toBe("inactive")
@@ -250,19 +250,15 @@ describe("Infiltrator", () => {
   })
 
   it("is inactive when the wall is already inactive", () => {
-    const wrongCategory = calculable({
-      attackerAbilityId: INFILTRATOR_ABILITY_ID,
-      screen: "light-screen",
-    })
     const criticalOnly = calculable({
       attackerAbilityId: INFILTRATOR_ABILITY_ID,
-      screen: "reflect",
+      screen: "walls",
       snapshot: { ...TACKLE, criticalStage: 3 },
     })
     const breaker = calculable({
       attackerId: 445,
       attackerAbilityId: INFILTRATOR_ABILITY_ID,
-      screen: "reflect",
+      screen: "walls",
       snapshot: {
         ...TACKLE,
         id: "brick-break",
@@ -271,8 +267,6 @@ describe("Infiltrator", () => {
       },
     })
 
-    expect(state(wrongCategory, "attacker-ability")).toBe("inactive")
-    expect(state(wrongCategory, "screen")).toBe("inactive")
     expect(state(criticalOnly, "attacker-ability")).toBe("inactive")
     expect(state(breaker, "attacker-ability")).toBe("inactive")
     expect(state(breaker, "screen")).toBe("inactive")
@@ -302,13 +296,13 @@ describe("Infiltrator", () => {
     trackState.defensePresetIds = ["standard-bulk"]
     trackState.defenderStages = [0]
     trackState.defenderAbilityIds = [NO_ABILITY_ID]
-    trackState.screens = ["none", "reflect", "light-screen"]
+    trackState.screens = ["none", "walls"]
 
     const result = runScenarioPipeline(catalog, trackState)
     expect(result.rows).toHaveLength(1)
     expect(result.rows[0].provenance.screen).toEqual({
       active: [],
-      inactive: ["reflect", "light-screen"],
+      inactive: ["reflect"],
       unsupported: [],
       neutral: ["none"],
     })
@@ -399,7 +393,7 @@ describe("@smogon/calc oracle", () => {
       attackerId: 169,
       defenderId: 143,
       attackerAbilityId: INFILTRATOR_ABILITY_ID,
-      screen: "reflect",
+      screen: "walls",
       lowOutcome: {
         offense: infiltratorAttacker.rawStats.atk,
         defense: { hp: snorlax.maxHP(), def: snorlax.rawStats.def },

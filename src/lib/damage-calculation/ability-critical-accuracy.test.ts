@@ -91,7 +91,7 @@ describe("critical-hit abilities", () => {
             probabilityMode,
             attackerStage: -1,
             defenderStage: 1,
-            screen: "reflect",
+            screen: "walls",
             snapshot: { ...TACKLE, criticalStage },
           })
 
@@ -192,7 +192,7 @@ describe("critical-hit abilities", () => {
       attackerAbilityId: SNIPER_ABILITY_ID,
       defenderAbilityId: FILTER_ABILITY_ID,
       attackerItemId: 247,
-      screen: "reflect",
+      screen: "walls",
       snapshot: { ...TACKLE, id: "sniper-final-order", moveId: 2, power: 50 },
     })
 

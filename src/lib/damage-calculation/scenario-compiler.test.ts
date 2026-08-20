@@ -353,7 +353,7 @@ describe("scenario compiler", () => {
         attackerItemId: 236,
         attackerStage: -1,
         defenderStage: 1,
-        screen: "reflect",
+        screen: "walls",
         snapshot: {
           ...snapshot,
           id: "sirfetchd-leek",

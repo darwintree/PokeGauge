@@ -30,7 +30,7 @@ import { defaultTrackState, defensePresetsForState, offensePresetsForState } fro
 import type { TrackState } from "./types"
 
 export const SCENARIO_SHARE_PARAM = "s"
-export const SCENARIO_SHARE_VERSION = 1
+export const SCENARIO_SHARE_VERSION = 2
 export const PORTABLE_SHARE_URL_LIMIT = 1_800
 export const SHARE_INPUT_LIMIT = 8_192
 

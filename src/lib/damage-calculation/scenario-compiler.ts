@@ -646,7 +646,11 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   const infiltratorBypassesScreen = ability.bypassesScreens &&
     screenWithoutBypass.state === "active"
   const screen = infiltratorBypassesScreen
-    ? { modifier: NEUTRAL_MODIFIER, state: "inactive" as const }
+    ? {
+        modifier: NEUTRAL_MODIFIER,
+        state: "inactive" as const,
+        applied: screenWithoutBypass.applied,
+      }
     : screenWithoutBypass
   const attackerUnawareActive = ability.ignoresDefenderStage && (
     criticalOnly ? raw.defenderStage < 0 : raw.defenderStage !== 0
@@ -965,7 +969,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     },
     {
       track: "screen",
-      optionId: raw.screen,
+      optionId: screen.applied ?? raw.screen,
       state: screen.state,
     },
   ]
@@ -1095,8 +1099,8 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       : raw.terrain === "psychic" ? "Psychic"
       : raw.terrain === "misty" ? "Misty"
       : undefined
-    const defenderScreen = screen.state === "active"
-      ? (raw.screen === "reflect" ? "reflect" as const : "light-screen" as const)
+    const defenderScreen = screen.state === "active" && screen.applied
+      ? screen.applied
       : undefined
     return {
       attacker: {
