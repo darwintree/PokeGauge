@@ -29,10 +29,12 @@ describe("usage tips", () => {
     vi.unstubAllGlobals()
   })
 
-  it("picks uniformly from the maintained catalog", () => {
-    expect(pickUsageTip(USAGE_TIPS, () => 0)?.id).toBe("feedback")
-    expect(pickUsageTip(USAGE_TIPS, () => 0.5)?.id).toBe("share")
-    expect(pickUsageTip(USAGE_TIPS, () => 0.99)?.id).toBe("bookmark")
+  it("picks from the maintained catalog by bucket and returns null when empty", () => {
+    const ids = USAGE_TIPS.map((tip) => tip.id)
+    for (let i = 0; i < USAGE_TIPS.length; i++) {
+      const bucket = (i + 0.5) / USAGE_TIPS.length
+      expect(pickUsageTip(USAGE_TIPS, () => bucket)?.id).toBe(ids[i])
+    }
     expect(pickUsageTip([], () => 0)).toBeNull()
   })
 

@@ -3,18 +3,17 @@ import { IntlProvider } from "react-intl"
 
 import { AppHeader } from "@/components/app-header"
 import { ScenarioExplorerPage } from "@/features/scenario-explorer/scenario-explorer-page"
-import { MovePickerRowsPrototype } from "@/features/scenario-explorer/tracks/move/move-picker-rows.prototype"
+import { UsageTipsPrototype } from "@/features/scenario-explorer/usage-tip/usage-tips.prototype"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { loadInitialLocale, localeMessages, saveLocale, type SupportedLocale } from "@/lib/i18n"
 
-function readPrototypeName() {
-  if (!import.meta.env.DEV) return null
-  return new URLSearchParams(window.location.search).get("prototype")
+function isUsageTipsPage() {
+  return window.location.pathname === "/usage-tips"
 }
 
 function App() {
   const [locale, setLocaleState] = useState<SupportedLocale>(loadInitialLocale)
-  const prototypeName = readPrototypeName()
+  const usageTipsPage = isUsageTipsPage()
 
   useEffect(() => {
     document.documentElement.lang = locale
@@ -31,8 +30,8 @@ function App() {
         <div className="min-h-dvh bg-bg-app">
           <AppHeader locale={locale} onLocaleChange={setLocale} />
           <div className="mx-auto max-w-7xl">
-            {prototypeName === "move-picker-rows" ? (
-              <MovePickerRowsPrototype locale={locale} />
+            {usageTipsPage ? (
+              <UsageTipsPrototype />
             ) : (
               <ScenarioExplorerPage locale={locale} />
             )}

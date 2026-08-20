@@ -1,5 +1,5 @@
-import { Bookmark, Lightbulb, X, type LucideIcon } from "lucide-react"
-import { useState, type ReactNode } from "react"
+import { Bookmark, ChevronDown, Lightbulb, X, type LucideIcon } from "lucide-react"
+import { useState, type CSSProperties, type ReactNode } from "react"
 import { useIntl } from "react-intl"
 
 import { cn } from "@/lib/utils"
@@ -8,27 +8,63 @@ import {
   isUsageTipMutedOn,
   muteUsageTipsForLocalDay,
   pickUsageTip,
+  type UsageTipEntry,
 } from "./usage-tips"
 
-function TipPill({ icon: Icon, children }: { icon: LucideIcon; children: ReactNode }) {
+function TipPill({
+  icon: Icon,
+  children,
+  className,
+  style,
+}: {
+  icon?: LucideIcon
+  children: ReactNode
+  className?: string
+  style?: CSSProperties
+}) {
   return (
-    <span className="inline-flex items-center gap-1 align-middle font-extrabold text-ink">
-      <Icon className="size-3.5 shrink-0" strokeWidth={2.5} aria-hidden />
+    <span
+      className={cn("inline-flex items-center gap-1 align-middle font-extrabold text-ink", className)}
+      style={style}
+    >
+      {Icon ? <Icon className="size-3.5 shrink-0" strokeWidth={2.5} aria-hidden /> : null}
       {children}
     </span>
   )
 }
 
-export function UsageTip({ attached }: { attached?: boolean }) {
-  const intl = useIntl()
-  const [muted, setMuted] = useState(isUsageTipMutedOn)
-  const [tip] = useState(pickUsageTip)
+const BOX_SWATCH_COLORS = {
+  green: "var(--damage-safe-end)",
+  orange: "var(--damage-warm-end)",
+  darkred: "var(--damage-guaranteed-end)",
+} as const
 
-  if (muted || !tip) return null
+function BoxSwatch({ color, children }: { color: keyof typeof BOX_SWATCH_COLORS; children: ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-1 align-middle font-extrabold text-ink">
+      <span
+        aria-hidden
+        className="inline-block h-2 w-3.5 shrink-0 rounded-[2px]"
+        style={{ backgroundColor: BOX_SWATCH_COLORS[color] }}
+      />
+      {children}
+    </span>
+  )
+}
+
+export function UsageTipCard({
+  tip,
+  attached,
+  onDismiss,
+}: {
+  tip: UsageTipEntry
+  attached?: boolean
+  onDismiss?: () => void
+}) {
+  const intl = useIntl()
 
   function dismiss() {
-    muteUsageTipsForLocalDay()
-    setMuted(true)
+    onDismiss?.()
   }
 
   return (
@@ -44,6 +80,25 @@ export function UsageTip({ attached }: { attached?: boolean }) {
             {
               b: (chunks) => <TipPill icon={tip.icon}>{chunks}</TipPill>,
               bookmark: (chunks) => <TipPill icon={Bookmark}>{chunks}</TipPill>,
+              ex: (chunks) => (
+                <TipPill
+                  className="rounded-md border px-1.5 py-px text-[11px]"
+                  style={{ borderColor: "var(--stat-tier-ex-border)", backgroundColor: "var(--stat-tier-ex-bg)", color: "var(--stat-tier-ex-fg)" }}
+                >
+                  {chunks}
+                </TipPill>
+              ),
+              green: (chunks) => <BoxSwatch color="green">{chunks}</BoxSwatch>,
+              orange: (chunks) => <BoxSwatch color="orange">{chunks}</BoxSwatch>,
+              darkred: (chunks) => <BoxSwatch color="darkred">{chunks}</BoxSwatch>,
+              expandButton: () => (
+                <span
+                  aria-hidden
+                  className="inline-grid size-3.5 place-items-center rounded-[4px] align-middle"
+                >
+                  <ChevronDown className="size-2.5 text-muted-foreground" strokeWidth={2.5} />
+                </span>
+              ),
             },
           )}
         </p>
@@ -57,5 +112,23 @@ export function UsageTip({ attached }: { attached?: boolean }) {
         <X className="size-3.5" />
       </button>
     </aside>
+  )
+}
+
+export function UsageTip({ attached }: { attached?: boolean }) {
+  const [muted, setMuted] = useState(isUsageTipMutedOn)
+  const [tip] = useState(pickUsageTip)
+
+  if (muted || !tip) return null
+
+  return (
+    <UsageTipCard
+      tip={tip}
+      attached={attached}
+      onDismiss={() => {
+        muteUsageTipsForLocalDay()
+        setMuted(true)
+      }}
+    />
   )
 }
