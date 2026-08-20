@@ -21,12 +21,29 @@ export function dragRangeFromAnchor(
 
 function valueFromPointer(
   clientX: number,
-  rail: DOMRect,
+  rail: { left: number; width: number },
   min: number,
   max: number,
 ): number {
   const pct = clampStat((clientX - rail.left) / rail.width, 0, 1)
   return Math.round(min + pct * (max - min))
+}
+
+/** Null means the pointer is still on the current point (treat as tap). */
+export function seekDraftFromPointer(
+  clientX: number,
+  rail: { left: number; width: number },
+  min: number,
+  max: number,
+  snapValues: number[],
+  current: number,
+): number | null {
+  const snapped = clampStat(
+    snapToAnchors(valueFromPointer(clientX, rail, min, max), snapValues),
+    min,
+    max,
+  )
+  return snapped === current ? null : snapped
 }
 
 type DualHandleDragOptions = {
@@ -96,6 +113,20 @@ export function useDualHandleDrag({
       handleRef.current = handle
       setActiveHandle(handle)
       event.currentTarget.setPointerCapture(event.pointerId)
+      if (singlePoint && railRef.current) {
+        const next = seekDraftFromPointer(
+          event.clientX,
+          railRef.current.getBoundingClientRect(),
+          boundsMin,
+          boundsMax,
+          snapValues,
+          value.min,
+        )
+        if (next != null) {
+          dragged.current = true
+          applyDrag(next)
+        }
+      }
     }
   }
 

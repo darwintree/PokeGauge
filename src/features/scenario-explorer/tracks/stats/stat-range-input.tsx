@@ -162,8 +162,16 @@ export function StatRangeInput({
             })}
           </div>
 
-          <div ref={drag.railRef} className="relative h-8 touch-none">
-            <div className="bg-muted absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-full" />
+          <div
+            ref={drag.railRef}
+            className={cn("relative h-8 touch-none", drafting && "cursor-grab")}
+          >
+            <div
+              className={cn(
+                "absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-full",
+                drafting ? "bg-ink/35" : "bg-muted",
+              )}
+            />
 
             {bounds.snapPoints.map((snap) => {
               const pct = pctForValue(snap.value, bounds.min, bounds.max)
@@ -249,18 +257,27 @@ export function StatRangeInput({
                 aria-expanded={fineTune === "min"}
                 aria-controls={fineTune === "min" ? fineTuneId : undefined}
                 className={cn(
-                  HANDLE_FACE,
-                  "z-20",
+                  "absolute inset-0 z-20 cursor-grab active:cursor-grabbing",
                   "focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none",
-                  fineTune === "min" && "ring-primary/40 ring-2",
-                  drag.activeHandle === "min" && "scale-110",
                 )}
-                style={handleStyle(draftValue)}
-                onPointerDown={drag.onPointerDown("min")}
+                onPointerDown={(event) => {
+                  event.stopPropagation()
+                  drag.onPointerDown("min")(event)
+                }}
                 onPointerMove={drag.onPointerMove}
                 onPointerUp={drag.onPointerUp("min")}
                 onPointerCancel={drag.onPointerUp("min")}
-              />
+              >
+                <span
+                  aria-hidden
+                  className={cn(
+                    "border-ink bg-signal-yellow shadow-hud-chip absolute top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2",
+                    fineTune === "min" && "ring-primary/40 ring-2",
+                    drag.activeHandle === "min" && "scale-110",
+                  )}
+                  style={handleStyle(draftValue)}
+                />
+              </button>
             ) : null}
           </div>
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { dragRangeFromAnchor } from "./use-dual-handle-drag"
+import { dragRangeFromAnchor, seekDraftFromPointer } from "./use-dual-handle-drag"
 
 describe("dragRangeFromAnchor", () => {
   it("keeps the other endpoint when max crosses min, and the following handle becomes min", () => {
@@ -38,5 +38,17 @@ describe("dragRangeFromAnchor", () => {
       range: { min: 50, max: 50 },
       handle: "max",
     })
+  })
+})
+
+describe("seekDraftFromPointer", () => {
+  const rail = { left: 0, width: 100 }
+
+  it("seeks to the pointer when it is not the current point", () => {
+    expect(seekDraftFromPointer(80, rail, 0, 100, [0, 50, 100], 50)).toBe(80)
+  })
+
+  it("returns null when the pointer is still on the current point", () => {
+    expect(seekDraftFromPointer(50, rail, 0, 100, [0, 50, 100], 50)).toBeNull()
   })
 })

@@ -29,7 +29,7 @@ import { ShowStatValuesSwitch } from "../common/show-stat-values-switch"
 import { TrackPanel } from "../common/track-panel"
 import type { ScenarioState } from "../../state/use-scenario-state"
 
-type StatTrackProps = {
+export type StatTrackProps = {
   side: "offense" | "defense"
   catalog: MatchupCatalog
   state: ScenarioState
@@ -149,25 +149,6 @@ function defenseSummary(catalog: MatchupCatalog, state: ScenarioState): ReactNod
   return <ChipSummary chips={chips} ranged={false} showActual={showActual} />
 }
 
-function StatEditorSection({
-  labelId,
-  className,
-  children,
-}: {
-  labelId: "track.choice" | "track.range"
-  className?: string
-  children: ReactNode
-}) {
-  return (
-    <div className={cn("space-y-2", className)}>
-      <p className="text-[10px] font-extrabold leading-none text-hud-muted">
-        <FormattedMessage id={labelId} />
-      </p>
-      {children}
-    </div>
-  )
-}
-
 function ConfirmCancelActions({
   onCancel,
   onConfirm,
@@ -177,32 +158,112 @@ function ConfirmCancelActions({
 }) {
   const intl = useIntl()
   return (
-    <div className="flex justify-end gap-1.5 pl-[2.75rem]">
-      <Button type="button" variant="ghost" size="sm" className="h-7 text-xs" onClick={onCancel}>
+    <div className="flex shrink-0 justify-end gap-1">
+      <Button type="button" variant="ghost" size="xs" className="h-7 text-xs" onClick={onCancel}>
         {intl.formatMessage({ id: "action.cancel" })}
       </Button>
-      <Button type="button" size="sm" className="h-7 text-xs" onClick={onConfirm}>
+      <Button type="button" size="xs" className="h-7 text-xs" onClick={onConfirm}>
         {intl.formatMessage({ id: "action.confirm" })}
       </Button>
     </div>
   )
 }
 
-export function StatTrack({
+function CurrentBadge() {
+  return (
+    <span className="rounded-[5px] border border-ink bg-signal-yellow px-1 text-[9px] font-extrabold">
+      <FormattedMessage id="track.mode.current" />
+    </span>
+  )
+}
+
+function ModePane({
+  current,
+  labelId,
+  trailing,
+  onActivate,
+  activateOnBody,
+  children,
+}: {
+  current: boolean
+  labelId: "track.range" | "track.choice" | "stat.range.dragToPlace"
+  trailing: ReactNode
+  onActivate?: () => void
+  activateOnBody: boolean
+  children: ReactNode
+}) {
+  const labelClass = cn(
+    "text-[10px] font-extrabold leading-none transition-colors",
+    current ? "text-ink" : "text-hud-muted group-hover:text-ink",
+  )
+  return (
+    <div
+      onPointerDown={activateOnBody && onActivate ? onActivate : undefined}
+      className={cn(
+        "group rounded-[8px] p-2 transition-colors",
+        current ? "bg-token-bg" : "cursor-pointer hover:bg-token-bg/70 active:bg-token-bg",
+      )}
+    >
+      {/* Fixed h-7 header: Current / Confirm swap in-place so + draft does not shift the axis. */}
+      <div className="mb-2 flex h-7 flex-nowrap items-center justify-between gap-2">
+        {onActivate ? (
+          <button type="button" onClick={onActivate} className={labelClass}>
+            <FormattedMessage id={labelId} />
+          </button>
+        ) : (
+          <span className={labelClass}>
+            <FormattedMessage id={labelId} />
+          </span>
+        )}
+        <div
+          className="flex h-7 min-w-0 items-center justify-end"
+          onPointerDown={(event) => event.stopPropagation()}
+        >
+          {trailing}
+        </div>
+      </div>
+      {children}
+    </div>
+  )
+}
+
+function statTrackMode(
+  side: StatTrackProps["side"],
+  state: ScenarioState,
+): StatSelectMode {
+  return side === "offense" ? state.trackState.statMode : state.trackState.defenderMode
+}
+
+function StatTrackSummary({
   side,
   catalog,
   state,
-  expanded,
-  onToggle,
-}: StatTrackProps) {
+}: Pick<StatTrackProps, "side" | "catalog" | "state">) {
+  const offense = side === "offense"
+  const onMode = (next: StatSelectMode) =>
+    offense ? state.setStatMode(next) : state.setDefenderMode(next)
+  const summary = offense ? offenseSummary(catalog, state) : defenseSummary(catalog, state)
+  return (
+    <StatModeWell mode={statTrackMode(side, state)} onMode={onMode}>
+      {summary}
+    </StatModeWell>
+  )
+}
+
+function StatTrackEditor({
+  side,
+  catalog,
+  state,
+  sections,
+}: Pick<StatTrackProps, "side" | "catalog" | "state"> & {
+  sections: "range" | "choice"
+}) {
   const intl = useIntl()
   const { trackState } = state
   const offense = side === "offense"
-  const mode = offense ? trackState.statMode : trackState.defenderMode
-  const label = offense ? catalog.offenseStatLabel : `HP / ${catalog.defenseStatLabel}`
-  const summary = offense ? offenseSummary(catalog, state) : defenseSummary(catalog, state)
-  const onMode = (next: StatSelectMode) =>
-    offense ? state.setStatMode(next) : state.setDefenderMode(next)
+  const offenseDraft = state.offenseDraft
+  const defenseDraft = state.defenseDraft
+  const hasDraft = offense ? offenseDraft != null : defenseDraft != null
   function bandOf(preset: StatPreset) {
     return resolvePresetChip(
       preset,
@@ -214,11 +275,10 @@ export function StatTrack({
       state.statNameStrategy,
     ).band
   }
-  const offenseDraft = state.offenseDraft
-  const defenseDraft = state.defenseDraft
-  const editor = (
-    <div>
-      <StatEditorSection labelId="track.range">
+
+  if (sections === "range") {
+    return (
+      <>
         {offense ? (
           <StatRangeInput
             statLabel={catalog.offenseStatLabel}
@@ -230,10 +290,8 @@ export function StatTrack({
               trackState.offensePresetIds,
               bandOf,
             )}
-            draftValue={offenseDraft ?? undefined}
-            onDraftChange={
-              offenseDraft == null ? undefined : (stat) => state.setOffenseDraft(stat)
-            }
+            draftValue={hasDraft ? (offenseDraft ?? undefined) : undefined}
+            onDraftChange={hasDraft ? (stat) => state.setOffenseDraft(stat) : undefined}
           />
         ) : (
           <>
@@ -250,14 +308,14 @@ export function StatTrack({
                 "hp",
                 bandOf,
               )}
-              draftValue={defenseDraft?.hp}
+              draftValue={hasDraft ? defenseDraft?.hp : undefined}
               onDraftChange={
-                defenseDraft == null
-                  ? undefined
-                  : (hp) =>
+                hasDraft
+                  ? (hp) =>
                       state.setDefenseDraft((current) =>
                         current ? { ...current, hp } : current,
                       )
+                  : undefined
               }
             />
             <StatRangeInput
@@ -273,91 +331,141 @@ export function StatTrack({
                 "def",
                 bandOf,
               )}
-              draftValue={defenseDraft?.def}
+              draftValue={hasDraft ? defenseDraft?.def : undefined}
               onDraftChange={
-                defenseDraft == null
-                  ? undefined
-                  : (def) =>
+                hasDraft
+                  ? (def) =>
                       state.setDefenseDraft((current) =>
                         current ? { ...current, def } : current,
                       )
+                  : undefined
               }
             />
           </>
         )}
-        {offense && offenseDraft != null ? (
-          <ConfirmCancelActions
-            onCancel={() => state.setOffenseDraft(null)}
-            onConfirm={() => state.confirmAddOffense(offenseDraft)}
-          />
-        ) : null}
-        {!offense && defenseDraft != null ? (
-          <ConfirmCancelActions
-            onCancel={() => state.setDefenseDraft(null)}
-            onConfirm={() => state.confirmAddDefense(defenseDraft.hp, defenseDraft.def)}
-          />
-        ) : null}
-      </StatEditorSection>
-      <StatEditorSection labelId="track.choice" className="mt-3 border-t border-hairline pt-3">
-        {offense ? (
-          <StatPresetChoices
-            presets={state.offensePresets}
-            selectedIds={trackState.offensePresetIds}
-            calcName={catalog.matchup.attackerCalcName}
-            category={catalog.moveCategory}
-            statNameStrategy={state.statNameStrategy}
-            showStatValue={trackState.showOffenseStatValue}
-            allocationIndices={trackState.offenseAllocationIndices}
-            onToggle={state.toggleOffensePreset}
-            onCycleAllocation={state.cycleOffenseAllocation}
-            onDelete={state.deleteOffensePreset}
-            onPersist={state.persistOffensePreset}
-            adding={state.addingOffense}
-            onAddClick={state.toggleAddingOffense}
-            addAriaLabel={intl.formatMessage({ id: "statPreset.addAttacker" })}
-          />
-        ) : (
-          <StatPresetChoices
-            presets={state.defensePresets}
-            selectedIds={trackState.defensePresetIds}
-            calcName={catalog.matchup.defenderCalcName}
-            category={catalog.moveCategory}
-            statNameStrategy={state.statNameStrategy}
-            showStatValue={trackState.showDefenseStatValue}
-            allocationIndices={trackState.defenseAllocationIndices}
-            onToggle={state.toggleDefensePreset}
-            onCycleAllocation={state.cycleDefenseAllocation}
-            onDelete={state.deleteDefensePreset}
-            onPersist={state.persistDefensePreset}
-            adding={state.addingDefense}
-            onAddClick={state.toggleAddingDefense}
-            addAriaLabel={intl.formatMessage({ id: "statPreset.addDefender" })}
-          />
-        )}
-      </StatEditorSection>
-      <div className="mt-3">
-        <ShowStatValuesSwitch
-          checked={offense ? trackState.showOffenseStatValue : trackState.showDefenseStatValue}
-          onCheckedChange={offense ? state.setShowOffenseStatValue : state.setShowDefenseStatValue}
-        />
-      </div>
-    </div>
+      </>
+    )
+  }
+
+  return offense ? (
+    <StatPresetChoices
+      presets={state.offensePresets}
+      selectedIds={trackState.offensePresetIds}
+      calcName={catalog.matchup.attackerCalcName}
+      category={catalog.moveCategory}
+      statNameStrategy={state.statNameStrategy}
+      showStatValue={trackState.showOffenseStatValue}
+      allocationIndices={trackState.offenseAllocationIndices}
+      onToggle={state.toggleOffensePreset}
+      onCycleAllocation={state.cycleOffenseAllocation}
+      onDelete={state.deleteOffensePreset}
+      onPersist={state.persistOffensePreset}
+      adding={state.addingOffense}
+      onAddClick={() => {
+        if (offenseDraft == null) state.setStatMode("preset")
+        state.toggleAddingOffense()
+      }}
+      addAriaLabel={intl.formatMessage({ id: "statPreset.addAttacker" })}
+    />
+  ) : (
+    <StatPresetChoices
+      presets={state.defensePresets}
+      selectedIds={trackState.defensePresetIds}
+      calcName={catalog.matchup.defenderCalcName}
+      category={catalog.moveCategory}
+      statNameStrategy={state.statNameStrategy}
+      showStatValue={trackState.showDefenseStatValue}
+      allocationIndices={trackState.defenseAllocationIndices}
+      onToggle={state.toggleDefensePreset}
+      onCycleAllocation={state.cycleDefenseAllocation}
+      onDelete={state.deleteDefensePreset}
+      onPersist={state.persistDefensePreset}
+      adding={state.addingDefense}
+      onAddClick={() => {
+        if (defenseDraft == null) state.setDefenderMode("preset")
+        state.toggleAddingDefense()
+      }}
+      addAriaLabel={intl.formatMessage({ id: "statPreset.addDefender" })}
+    />
   )
+}
+
+export function StatTrack({
+  side,
+  catalog,
+  state,
+  expanded,
+  onToggle,
+}: StatTrackProps) {
+  const offense = side === "offense"
+  const label = offense ? catalog.offenseStatLabel : `HP / ${catalog.defenseStatLabel}`
+  const mode = statTrackMode(side, state)
+  const adding = offense ? state.addingOffense : state.addingDefense
+  const setMode = (next: StatSelectMode) =>
+    offense ? state.setStatMode(next) : state.setDefenderMode(next)
+  function cancelDraft() {
+    if (offense) state.setOffenseDraft(null)
+    else state.setDefenseDraft(null)
+  }
 
   return (
     <TrackPanel
       icon={Gauge}
       label={label}
-      summary={
-        <StatModeWell mode={mode} onMode={onMode}>
-          {summary}
-        </StatModeWell>
-      }
+      summary={<StatTrackSummary side={side} catalog={catalog} state={state} />}
       summaryLayout="stack"
       expanded={expanded}
       onToggle={onToggle}
     >
-      {editor}
+      <div className="space-y-2">
+        <ModePane
+          current={adding || mode === "range"}
+          labelId={adding ? "stat.range.dragToPlace" : "track.range"}
+          activateOnBody={!adding}
+          onActivate={
+            adding
+              ? undefined
+              : () => {
+                  cancelDraft()
+                  setMode("range")
+                }
+          }
+          trailing={
+            adding ? (
+              <ConfirmCancelActions
+                onCancel={cancelDraft}
+                onConfirm={() => {
+                  if (offense) {
+                    if (state.offenseDraft != null) state.confirmAddOffense(state.offenseDraft)
+                    return
+                  }
+                  if (state.defenseDraft != null) {
+                    state.confirmAddDefense(state.defenseDraft.hp, state.defenseDraft.def)
+                  }
+                }}
+              />
+            ) : mode === "range" ? (
+              <CurrentBadge />
+            ) : null
+          }
+        >
+          <StatTrackEditor side={side} catalog={catalog} state={state} sections="range" />
+        </ModePane>
+        <ModePane
+          current={!adding && mode === "preset"}
+          labelId="track.choice"
+          activateOnBody
+          onActivate={() => setMode("preset")}
+          trailing={!adding && mode === "preset" ? <CurrentBadge /> : null}
+        >
+          <StatTrackEditor side={side} catalog={catalog} state={state} sections="choice" />
+        </ModePane>
+        <ShowStatValuesSwitch
+          checked={offense ? state.trackState.showOffenseStatValue : state.trackState.showDefenseStatValue}
+          onCheckedChange={offense ? state.setShowOffenseStatValue : state.setShowDefenseStatValue}
+        />
+      </div>
     </TrackPanel>
   )
 }
+
