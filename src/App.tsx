@@ -14,6 +14,7 @@ function isUsageTipsPage() {
 function App() {
   const [locale, setLocaleState] = useState<SupportedLocale>(loadInitialLocale)
   const [feedbackScenarioUrl, setFeedbackScenarioUrl] = useState<string | null>(null)
+  const [brandHomeAction, setBrandHomeAction] = useState<(() => void) | null>(null)
   const usageTipsPage = isUsageTipsPage()
 
   useEffect(() => {
@@ -33,6 +34,7 @@ function App() {
             locale={locale}
             onLocaleChange={setLocale}
             feedbackScenarioUrl={feedbackScenarioUrl}
+            onBrandHomeClick={brandHomeAction}
           />
           <div className="mx-auto max-w-7xl">
             {usageTipsPage ? (
@@ -41,6 +43,9 @@ function App() {
               <ScenarioExplorerPage
                 locale={locale}
                 onFeedbackScenarioUrlChange={setFeedbackScenarioUrl}
+                onBrandHomeActionChange={(action) =>
+                  setBrandHomeAction(() => action)
+                }
               />
             )}
           </div>

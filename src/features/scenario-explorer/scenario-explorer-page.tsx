@@ -5,6 +5,14 @@ import { MatchupLanding } from "./matchup/matchup-landing"
 import { ScenarioWorkspace } from "./scenario-workspace"
 import { Button } from "@/components/ui/button"
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import {
   getCatalogShell,
   getDefaultMoveCategory,
   listAttackers,
@@ -33,6 +41,7 @@ import { cn } from "@/lib/utils"
 type ScenarioExplorerPageProps = {
   locale: SupportedLocale
   onFeedbackScenarioUrlChange: (url: string | null) => void
+  onBrandHomeActionChange?: (action: (() => void) | null) => void
 }
 
 type LocalizedOptionsState = {
@@ -51,8 +60,10 @@ function catalogKey(catalog: MatchupCatalog): string {
 export function ScenarioExplorerPage({
   locale,
   onFeedbackScenarioUrlChange,
+  onBrandHomeActionChange,
 }: ScenarioExplorerPageProps) {
   const intl = useIntl()
+  const [confirmResetOpen, setConfirmResetOpen] = useState(false)
   const [initialUrlState] = useState(() => readScenarioSetupUrl(window.location.href))
   const [initialRestoredScenario] = useState(() =>
     initialUrlState.kind === "none" ? loadScenarioSnapshot() : null,
@@ -119,6 +130,41 @@ export function ScenarioExplorerPage({
     setShowExplorer(false)
     setRestoring(false)
   }
+
+  function resetToLanding() {
+    discardScenarioSnapshot()
+    restorePendingRef.current = false
+    restoredScenarioRef.current = null
+    restoredTrackStateRef.current = null
+    sharedSetupRef.current = null
+    sharedTokenRef.current = null
+    removeShareParam()
+    setAttackerId(null)
+    setDefenderId(null)
+    setMoveCategory("physical")
+    setCatalog(null)
+    setShowExplorer(false)
+    setRestoring(false)
+    setLeavingHome(false)
+    onFeedbackScenarioUrlChange(null)
+  }
+
+  const resetToLandingRef = useRef(resetToLanding)
+  resetToLandingRef.current = resetToLanding
+
+  useEffect(() => {
+    if (!onBrandHomeActionChange) return
+    if (!(showExplorer && catalog)) {
+      onBrandHomeActionChange(null)
+      return
+    }
+    onBrandHomeActionChange(() => setConfirmResetOpen(true))
+    return () => onBrandHomeActionChange(null)
+  }, [catalog, onBrandHomeActionChange, showExplorer])
+
+  useEffect(() => {
+    if (!showExplorer) setConfirmResetOpen(false)
+  }, [showExplorer])
 
   function rejectSharedSetup(failures: ScenarioShareFailure[]) {
     restorePendingRef.current = false
@@ -380,6 +426,39 @@ export function ScenarioExplorerPage({
         onDefenderChange={setDefenderId}
         onMoveCategoryChange={setMoveCategory}
       />
+      <Dialog open={confirmResetOpen} onOpenChange={setConfirmResetOpen}>
+        <DialogContent
+          showCloseButton={false}
+          className="gap-5 border-2 border-ink bg-paper shadow-hud-panel sm:max-w-md"
+        >
+          <DialogHeader>
+            <DialogTitle>
+              <FormattedMessage id="matchup.resetHomeTitle" />
+            </DialogTitle>
+            <DialogDescription>
+              <FormattedMessage id="matchup.resetHomeDescription" />
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setConfirmResetOpen(false)}
+            >
+              <FormattedMessage id="action.cancel" />
+            </Button>
+            <Button
+              type="button"
+              onClick={() => {
+                setConfirmResetOpen(false)
+                resetToLandingRef.current()
+              }}
+            >
+              <FormattedMessage id="matchup.resetHomeConfirm" />
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

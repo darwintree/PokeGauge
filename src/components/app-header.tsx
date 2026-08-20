@@ -46,6 +46,8 @@ type LocaleControlProps = {
 
 type AppHeaderProps = LocaleControlProps & {
   feedbackScenarioUrl: string | null
+  /** When set, brand is a control that requests return to matchup landing. */
+  onBrandHomeClick?: (() => void) | null
 }
 
 function LocaleSelect({
@@ -203,25 +205,44 @@ export function AppHeader({
   locale,
   onLocaleChange,
   feedbackScenarioUrl,
+  onBrandHomeClick = null,
 }: AppHeaderProps) {
   const intl = useIntl()
+
+  const brand = (
+    <>
+      <img
+        src="/favicon-32x32.png"
+        srcSet="/pokegauge-icon-64.png 2x, /pokegauge-icon-96.png 3x"
+        alt=""
+        width={32}
+        height={32}
+        className="size-8 shrink-0"
+      />
+      <span className="truncate text-[15px] font-extrabold tracking-tight text-paper">
+        <FormattedMessage id="app.name" />
+        <span aria-hidden className="text-signal-yellow">.</span>
+      </span>
+    </>
+  )
 
   return (
     <header className="sticky top-0 z-40 h-14 border-b-2 border-ink bg-[var(--appbar)] text-paper">
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-1 px-4 sm:gap-3 sm:px-6">
         <div className="flex min-w-0 items-center gap-3">
-          <img
-            src="/favicon-32x32.png"
-            srcSet="/pokegauge-icon-64.png 2x, /pokegauge-icon-96.png 3x"
-            alt=""
-            width={32}
-            height={32}
-            className="size-8 shrink-0"
-          />
-          <span className="truncate text-[15px] font-extrabold tracking-tight text-paper">
-            <FormattedMessage id="app.name" />
-            <span aria-hidden className="text-signal-yellow">.</span>
-          </span>
+          {onBrandHomeClick ? (
+            <button
+              type="button"
+              onClick={onBrandHomeClick}
+              className="flex min-w-0 cursor-pointer items-center gap-3 rounded-md text-left outline-none focus-visible:ring-2 focus-visible:ring-signal-yellow"
+              aria-label={intl.formatMessage({ id: "matchup.resetHome" })}
+              title={intl.formatMessage({ id: "matchup.resetHome" })}
+            >
+              {brand}
+            </button>
+          ) : (
+            <div className="flex min-w-0 items-center gap-3">{brand}</div>
+          )}
           <span aria-hidden className="hidden h-4 w-px bg-paper/30 lg:block" />
           <span className="hidden truncate text-xs text-paper/75 lg:block">
             <FormattedMessage id="matchup.context" />
