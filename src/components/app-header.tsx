@@ -17,10 +17,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { createFeedbackUrl } from "@/lib/feedback"
 import { SUPPORTED_LOCALES, type SupportedLocale } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
-
-const FEEDBACK_URL = "https://github.com/darwintree/pokemon-damage-calc/issues/new"
 
 const CREDIT_LINKS = [
   {
@@ -45,7 +44,9 @@ type LocaleControlProps = {
   onLocaleChange: (locale: SupportedLocale) => void
 }
 
-type AppHeaderProps = LocaleControlProps
+type AppHeaderProps = LocaleControlProps & {
+  feedbackScenarioUrl: string | null
+}
 
 function LocaleSelect({
   id,
@@ -201,6 +202,7 @@ function ProjectInfoDialog({ locale, onLocaleChange }: LocaleControlProps) {
 export function AppHeader({
   locale,
   onLocaleChange,
+  feedbackScenarioUrl,
 }: AppHeaderProps) {
   const intl = useIntl()
 
@@ -234,7 +236,7 @@ export function AppHeader({
             nativeButton={false}
             render={
               <a
-                href={FEEDBACK_URL}
+                href={createFeedbackUrl(feedbackScenarioUrl)}
                 target="_blank"
                 rel="noreferrer"
                 aria-label={intl.formatMessage({ id: "header.feedbackNewTab" })}

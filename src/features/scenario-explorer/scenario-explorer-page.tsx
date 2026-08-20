@@ -32,6 +32,7 @@ import { cn } from "@/lib/utils"
 
 type ScenarioExplorerPageProps = {
   locale: SupportedLocale
+  onFeedbackScenarioUrlChange: (url: string | null) => void
 }
 
 type LocalizedOptionsState = {
@@ -47,7 +48,10 @@ function catalogKey(catalog: MatchupCatalog): string {
   ].join(":")
 }
 
-export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
+export function ScenarioExplorerPage({
+  locale,
+  onFeedbackScenarioUrlChange,
+}: ScenarioExplorerPageProps) {
   const intl = useIntl()
   const [initialUrlState] = useState(() => readScenarioSetupUrl(window.location.href))
   const [initialRestoredScenario] = useState(() =>
@@ -369,6 +373,7 @@ export function ScenarioExplorerPage({ locale }: ScenarioExplorerPageProps) {
         defenderId={defenderId}
         restoredTrackState={restoredTrackStateRef.current}
         sharedSetupToken={sharedTokenRef.current}
+        onFeedbackScenarioUrlChange={onFeedbackScenarioUrlChange}
         onSharedSetupEdited={() => removeShareParam()}
         onApplySetupBookmark={applySetupBookmark}
         onAttackerChange={changeAttacker}

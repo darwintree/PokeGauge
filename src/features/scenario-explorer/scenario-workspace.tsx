@@ -29,6 +29,7 @@ export function ScenarioWorkspace({
   defenderId,
   restoredTrackState,
   sharedSetupToken,
+  onFeedbackScenarioUrlChange,
   onSharedSetupEdited,
   onApplySetupBookmark,
   onAttackerChange,
@@ -39,6 +40,7 @@ export function ScenarioWorkspace({
   defenderId: BattlePokemonId
   restoredTrackState: TrackState | null
   sharedSetupToken: string | null
+  onFeedbackScenarioUrlChange: (url: string | null) => void
   onSharedSetupEdited: () => void
   onApplySetupBookmark: (token: string) => Promise<"ok" | "unloadable">
   onAttackerChange: (id: BattlePokemonId) => void
@@ -57,6 +59,16 @@ export function ScenarioWorkspace({
   const [shareStatus, setShareStatus] = useState<"idle" | "copied" | "error">("idle")
 
   useEffect(() => setShareStatus("idle"), [state.trackState])
+
+  useEffect(() => {
+    const result = createScenarioSetupUrl(window.location.href, catalog, state.trackState)
+    onFeedbackScenarioUrlChange(result.ok ? result.value : null)
+  }, [catalog, onFeedbackScenarioUrlChange, state.trackState])
+
+  useEffect(
+    () => () => onFeedbackScenarioUrlChange(null),
+    [onFeedbackScenarioUrlChange],
+  )
 
   function changeMobileView(view: "setup" | "results") {
     setMobileView(view)

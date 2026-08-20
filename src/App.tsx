@@ -13,6 +13,7 @@ function isUsageTipsPage() {
 
 function App() {
   const [locale, setLocaleState] = useState<SupportedLocale>(loadInitialLocale)
+  const [feedbackScenarioUrl, setFeedbackScenarioUrl] = useState<string | null>(null)
   const usageTipsPage = isUsageTipsPage()
 
   useEffect(() => {
@@ -28,12 +29,19 @@ function App() {
     <IntlProvider locale={locale} messages={localeMessages[locale]}>
       <TooltipProvider delay={0}>
         <div className="min-h-dvh bg-bg-app">
-          <AppHeader locale={locale} onLocaleChange={setLocale} />
+          <AppHeader
+            locale={locale}
+            onLocaleChange={setLocale}
+            feedbackScenarioUrl={feedbackScenarioUrl}
+          />
           <div className="mx-auto max-w-7xl">
             {usageTipsPage ? (
               <UsageTipsPrototype />
             ) : (
-              <ScenarioExplorerPage locale={locale} />
+              <ScenarioExplorerPage
+                locale={locale}
+                onFeedbackScenarioUrlChange={setFeedbackScenarioUrl}
+              />
             )}
           </div>
         </div>
