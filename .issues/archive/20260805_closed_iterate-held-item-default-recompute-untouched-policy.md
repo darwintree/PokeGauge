@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "dddd1261-1c58-4c96-a8fc-6cc4ff678d13"
 title: "Iterate held-item default recompute / untouched policy"
-status: "open"
+status: "closed"
 priority: "medium"
 labels: ["FEATURE-REQUEST", "NEEDS-TRIAGE"]
 created_at: "2026-08-05T02:50:00Z"
-updated_at: "2026-08-05T03:24:00Z"
+updated_at: "2026-08-20T08:30:00Z"
 ---
 ## Goal
 
@@ -31,11 +31,19 @@ updated_at: "2026-08-05T03:24:00Z"
 
 ## Related
 
-- [[archive/20260731_closed_choose-default-held-items-from-usage-data]]
-- [[archive/20260803_closed_decide-held-item-track-presentation-and-selection-model]]
-- [[archive/20260803_closed_decide-whether-held-items-may-change-pokemon-form]]
+- [[20260731_closed_choose-default-held-items-from-usage-data]]
+- [[20260803_closed_decide-held-item-track-presentation-and-selection-model]]
+- [[20260803_closed_decide-whether-held-items-may-change-pokemon-form]]
 
 ## Non-goals
 
 - 不在本 issue 重新决定「高使用率 = top 10」或形态道具白名单。
 - 不阻塞当前按 baseline 的实现。
+
+## Resolution
+
+2026-08-20：归档，不保留无当前消费者的未来迭代票。
+
+现有 baseline 已实现并继续作为产品契约：仅 untouched Track 可接收异步默认值；Identity 切换重新初始化；保存与分享恢复状态优先。当前没有已复现问题要求拆分“池成员 untouched”与“选中集合 untouched”，也没有对手变化时自动重算的明确产品需求。
+
+若出现具体覆盖错误或交互需求，应以可复现行为开一张窄 issue，而不是继续维护这张可能性清单。

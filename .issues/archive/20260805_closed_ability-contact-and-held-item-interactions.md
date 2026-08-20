@@ -60,7 +60,7 @@ updated_at: "2026-08-11T06:50:00Z"
 ### Shared rules
 
 - 运行时使用本地 kernel、4096 整数修正和既有阶段顺序。
-- 支持范围内数值与 `@smogon/calc` 对齐；Showdown 钉 commit 与 calc 的编码差异见 [[../20260807_open_audit-showdown-vs-smogon-calc-damage-rule-mismatches|Audit Showdown vs @smogon/calc damage-rule mismatches]]，本票不阻塞于该审计。
+- 支持范围内数值与 `@smogon/calc` 对齐；Showdown 钉 commit 与 calc 的编码差异见 [[20260807_closed_audit-showdown-vs-smogon-calc-damage-rule-mismatches|Audit Showdown vs @smogon/calc damage-rule mismatches]]，本票不阻塞于该审计。
 - 贡献判定对齐现有模式；跨机制总契约见 [[../20260807_open_clarify-active-marking-for-ignore-guaranteed-track-conflicts|Clarify active marking for ignore/guaranteed Track conflicts]]，本票不阻塞。
 - 名单内特性从 `unsupported` 转为可审计的 `active`／`inactive`；无绿点；去红点。
 
@@ -78,7 +78,7 @@ updated_at: "2026-08-11T06:50:00Z"
 - [[../docs/traces/discussion/2026-08-05-ordinary-hit-ability-issue-split|普通命中特性 issue 拆分讨论记录]]
 - [[../docs/traces/discussion/2026-08-07-ability-contact-and-held-item-interactions|Ability 接触与道具组合讨论记录]]
 - [[../docs/research/2026-08-05-champions-ability-damage-relevance-and-first-freeze|Champions ability damage-calc relevance and first freeze]]
-- [[../20260807_open_audit-showdown-vs-smogon-calc-damage-rule-mismatches|Audit Showdown vs @smogon/calc damage-rule mismatches]]
+- [[20260807_closed_audit-showdown-vs-smogon-calc-damage-rule-mismatches|Audit Showdown vs @smogon/calc damage-rule mismatches]]
 
 ## Acceptance criteria
 

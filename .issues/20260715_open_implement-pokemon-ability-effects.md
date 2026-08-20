@@ -6,13 +6,18 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-15T02:45:00Z"
-updated_at: "2026-08-11T15:42:00Z"
+updated_at: "2026-08-20T08:30:00Z"
 ---
 ## Goal
 
-逐步实现主系列全部特性对伤害计算器的有效影响，并让每一次后续实现都可追踪、可验证。
+跟踪 `@smogon/calc` 运行时迁移后仍需要产品侧处理的 Ability 缺口，而不是逐项在本地复刻伤害公式。
 
-当前只有 Adaptability 已作为伤害效果实现；其他合法特性仍须保持明确的“效果暂未支持”状态，不能被误标为已判断无效。
+calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运行时伤害。只有以下情况需要后续子 issue：
+
+- 当前 calc 版本不认识该 Ability；
+- Ability 需要当前产品未建模的战斗状态、历史或队友输入；
+- 本地 Track activation／provenance 无法诚实解释 calc 已执行的效果；
+- Ability 需要改变 Scenario 生成，而不仅是单次伤害调用。
 
 调研、Champions 可用特性与使用率优先级见 [Champions ability inventory and priority](../docs/research/2026-07-30-champions-ability-inventory-and-priority.md)。
 
@@ -20,12 +25,10 @@ updated_at: "2026-08-11T15:42:00Z"
 
 ## Tracking
 
-- 这是长期 issue，按需逐步实现，不预设固定实现顺序。
-- 今后的特性实现使用子 issue 跟踪，并在子 issue 的 `## Parent issue` 中链接本 issue。
-- 子 issue 同时追加到下面的 `## Child issues`，仅用于关联，不表示优先级。
-- 共享同一机制的多个特性可以合并在一个子 issue 中。
-- 实现完成并验证后，勾选本页对应特性。
-- checkbox 表示该特性在本计算器中的处置已完成；`N/A` 表示确认无需实现竞技训练家战斗效果。
+- 不再为 calc 已处理的 Ability 创建本地公式实现票。
+- 新子 issue 必须写明缺失的产品输入、calc 版本缺口或展示错误；仅“checklist 未勾选”不是工作依据。
+- 共享同一输入契约的多个 Ability 可以合并处理。
+- 下方 checklist 保留为迁移前的历史 inventory，不代表当前支持状态，也不再逐项维护。
 
 ## Child issues
 
@@ -41,7 +44,7 @@ updated_at: "2026-08-11T15:42:00Z"
 - [[archive/20260805_closed_ability-weather-and-item-composition|Ability weather and item composition]]
 - [[20260805_open_implement-parental-bond|Implement Parental Bond]]
 
-## Ability checklist (313)
+## Historical local-implementation checklist (313, superseded)
 
 ### Generation III (76)
 
@@ -385,7 +388,9 @@ updated_at: "2026-08-11T15:42:00Z"
 
 ## Current state
 
-- Adaptability 已实现，作为历史基线直接勾选。
-- Run Away、Honey Gather、Ball Fetch 在竞技训练家战斗中无效果，记为 `N/A`。
+- 2026-08-19：运行时伤害迁移到 `@smogon/calc`。calc 认识的 239 个原 unsupported Ability 自动进入计算；Mega Sol、Dragonize、Eelevate、Fire Mane 因 calc 0.11.0 缺失而保持显式 unsupported。
+- 原本地 Ability compiler 只保留 Scenario projection、概率与 formula-details／provenance 所需逻辑，不再是伤害数值来源。
+- Adaptability 等旧 checklist 勾选项只表示迁移前本地覆盖，不能用来判断当前运行时支持。
+- Run Away、Honey Gather、Ball Fetch 在竞技训练家战斗中无效果，历史上记为 `N/A`。
 - 2026-08-05：伤害相关性调研见 Goal 中的 first-freeze 笔记；首批范围产品决策见 [[../docs/traces/discussion/2026-08-05-ability-effects-first-freeze-scope|特性效果首批冻结范围讨论记录]]。已按机制族开子 issue（见 Child issues）。Mold Breaker 族剔出首批；Parental Bond 不进首批，实现见 [[20260805_open_implement-parental-bond|Implement Parental Bond]]（blocked by 多段伤害规格）。
 - 2026-08-07：原「Defer Parental Bond until multi-hit」误把 defer 记录当成票；已改写为实现票 [[20260805_open_implement-parental-bond|Implement Parental Bond]]，并在多段 issue 标明 downstream。

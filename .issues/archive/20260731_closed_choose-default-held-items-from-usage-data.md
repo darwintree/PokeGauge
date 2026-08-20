@@ -20,13 +20,13 @@ updated_at: "2026-08-05T03:59:00Z"
 - Spec change（accepted）：`docs/spec/changes/2026-08-05-held-item-pick-and-form-switch.md`
 - 最终 spec：`docs/spec/held-item-pick.md`
 
-摘要：Champions 默认赛季；Mega 继承 base；top 10 为高使用率边界；默认选中边界内全部非形态触发且有资格的道具；`none` / `nothing` 不进默认；不 backfill；不扩大 frozen 资格（形态例外另见形态 issue）；untouched 异步写入；Identity 变更重走默认；恢复 Matchup 不覆盖。重算策略迭代：[[../20260805_open_iterate-held-item-default-recompute-untouched-policy]]。
+摘要：Champions 默认赛季；Mega 继承 base；top 10 为高使用率边界；默认选中边界内全部非形态触发且有资格的道具；`none` / `nothing` 不进默认；不 backfill；不扩大 frozen 资格（形态例外另见形态 issue）；untouched 异步写入；Identity 变更重走默认；恢复 Matchup 不覆盖。重算策略迭代：[[20260805_closed_iterate-held-item-default-recompute-untouched-policy]]。
 
 ## Related
 
 - [[20260803_closed_decide-held-item-track-presentation-and-selection-model]]
 - [[20260803_closed_decide-whether-held-items-may-change-pokemon-form]]
-- [[../20260805_open_iterate-held-item-default-recompute-untouched-policy]]
+- [[20260805_closed_iterate-held-item-default-recompute-untouched-policy]]
 
 ## Acceptance
 

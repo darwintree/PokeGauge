@@ -26,7 +26,7 @@ updated_at: "2026-08-05T03:59:00Z"
 
 - [[20260731_closed_choose-default-held-items-from-usage-data]]
 - [[20260803_closed_decide-whether-held-items-may-change-pokemon-form]]
-- [[../20260805_open_iterate-held-item-default-recompute-untouched-policy]]
+- [[20260805_closed_iterate-held-item-default-recompute-untouched-policy]]
 
 ## Acceptance
 

@@ -95,7 +95,7 @@ Stat Track 现在仍是两套库：Choice 选中与 Range 区间各自保存，�
 
 ## Out of Scope
 
-- Range endpoint identity, reachable endpoints, calculation identity, and Scenario Merge. See [[../20260717_open_define-range-endpoint-identity-and-merge-semantics|Define Range endpoint identity and merge semantics]].
+- Range endpoint identity, reachable endpoints, calculation identity, and Scenario Merge. See [[20260717_closed_define-range-endpoint-identity-and-merge-semantics|Define Range endpoint identity and merge semantics]].
 - Visual work already shipped: Stat Value Label chips, parent-row chevron, collapsed well + tick.
 - New Stat dimensions, or making nature / SP independent Tracks.
 - Whether allocation internals should use native SP.

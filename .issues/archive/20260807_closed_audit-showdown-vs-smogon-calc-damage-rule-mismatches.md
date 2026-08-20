@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "0f1375bf-4542-4fbd-bce6-54cfcfe90285"
 title: "Audit Showdown vs @smogon/calc damage-rule mismatches"
-status: "open"
+status: "closed"
 priority: "medium"
 labels: ["FEATURE-REQUEST", "NEEDS-TRIAGE"]
 created_at: "2026-08-07T10:30:00Z"
-updated_at: "2026-08-07T10:35:00Z"
+updated_at: "2026-08-20T08:30:00Z"
 ---
 ## Goal
 
@@ -14,7 +14,7 @@ updated_at: "2026-08-07T10:35:00Z"
 
 ## Motivation / highlight
 
-在 [[archive/20260805_closed_ability-contact-and-held-item-interactions|Ability contact and held-item interactions]] 的 grilling 中核对 Fluffy（火＋接触）时发现：
+在 [[20260805_closed_ability-contact-and-held-item-interactions|Ability contact and held-item interactions]] 的 grilling 中核对 Fluffy（火＋接触）时发现：
 
 | 来源 | 火＋接触 |
 | --- | --- |
@@ -47,7 +47,13 @@ Long Reach 表达方式也不相同：Showdown 在 `onModifyMove` 删除 `contac
 
 ## Acceptance criteria
 
-- [ ] 默认策略写清：与 `@smogon/calc` 对齐；Showdown 不一致时的升级路径。
-- [ ] Fluffy 火＋接触（及 Long Reach 交叉）作为首条已记录案例，处置明确。
-- [ ] 至少完成一轮对已支持普通命中路径的不一致扫描，并列出发现／无发现。
-- [ ] 需要改代码的项拆成可执行 follow-up，或直接在本 issue 勾选完成。
+- [x] 默认策略写清：与 `@smogon/calc` 对齐；Showdown 不一致时的升级路径。
+- [x] Fluffy 火＋接触（及 Long Reach 交叉）作为首条已记录案例，处置明确。
+- [x] 本地普通命中规则实现已退役，不再需要持续扫描本地 kernel 与 calc 的差异。
+- [x] 后续规则差异通过升级 `@smogon/calc` 或独立的产品输入契约处理。
+
+## Resolution
+
+2026-08-20：由 [[20260819_closed_migrate-runtime-damage-calculation-to-smogon-calc|Migrate runtime damage calculation to @smogon/calc]] 与 `docs/adr/0007-smogon-calc-runtime-damage-engine.md` 取代。
+
+运行时伤害已直接使用 `@smogon/calc` 黑盒；本地不再维护需要与 calc 对齐的伤害规则实现，因此本 issue 的持续审计对象已经不存在。Showdown 仍可作为机制语义阅读来源，但不再需要一张跨机制差异清单来约束本地数值实现。

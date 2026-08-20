@@ -14,7 +14,7 @@ updated_at: "2026-08-19T09:19:00Z"
 
 1. **维护成本高**：本地 kernel 要逐项复刻 calc 的能力、道具、天气、场地语义，239 个生成能力被标为 unsupported，能力/道具的战斗语义硬编码在本地代码里。
 2. **语义不完整**：动态威力招式（Low Kick / Grass Knot 等）依赖手填 initialPower；Body Press / Foul Play / Psyshock 等 override 招式无法表达；版本漂移时（calc 0.11.0 缺 7 个新能力）只能本地拦截。
-3. **信任断层**：本地 kernel 与 calc 之间的数值偏差需要持续的 oracle 审计（见 [[../20260807_open_audit-showdown-vs-smogon-calc-damage-rule-mismatches|Audit Showdown vs @smogon/calc damage-rule mismatches]]），测试用 calc 当 oracle 本质是"用实现测实现"。
+3. **信任断层**：本地 kernel 与 calc 之间的数值偏差需要持续的 oracle 审计（见 [[20260807_closed_audit-showdown-vs-smogon-calc-damage-rule-mismatches|Audit Showdown vs @smogon/calc damage-rule mismatches]]），测试用 calc 当 oracle 本质是"用实现测实现"。
 
 ## Solution
 
@@ -107,7 +107,7 @@ updated_at: "2026-08-19T09:19:00Z"
 ## Further Notes
 
 - 讨论 trace: [[../docs/traces/discussion/2026-08-19-smogon-calc-runtime-migration|Smogon calc 运行时迁移讨论记录]]（16 条决策）。
-- 与 [[../20260807_open_audit-showdown-vs-smogon-calc-damage-rule-mismatches|Audit Showdown vs @smogon/calc damage-rule mismatches]] 的关系：该 issue 的"数值默认与 calc 对齐"策略在此迁移后自然成立——calc 成为运行时引擎，不再需要本地对齐审计。
+- 与 [[20260807_closed_audit-showdown-vs-smogon-calc-damage-rule-mismatches|Audit Showdown vs @smogon/calc damage-rule mismatches]] 的关系：该 issue 的"数值默认与 calc 对齐"策略在此迁移后自然成立——calc 成为运行时引擎，不再需要本地对齐审计。
 - 资源生成脚本已产出 calcAbilityName（306 条）与 calcItemName（85 条 + 47 个 mega 石），ability/item 映射重构是本次迁移的前置，已提交。
 ## Resolution
 

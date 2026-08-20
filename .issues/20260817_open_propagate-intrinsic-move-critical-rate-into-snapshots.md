@@ -6,7 +6,7 @@ status: "open"
 priority: "high"
 labels: ["BUG", "NEEDS-TRIAGE"]
 created_at: "2026-08-17T15:00:00Z"
-updated_at: "2026-08-17T15:15:00Z"
+updated_at: "2026-08-20T08:30:00Z"
 ---
 ## Problem
 

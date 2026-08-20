@@ -43,7 +43,7 @@ Weather Ball（Move ID 311）当前在无天气时可以按普通招式计算，
 ## Related issues
 
 - [[20260812_closed_enforce-an-audited-move-calculation-boundary|Enforce an audited Move calculation boundary]]
-- [[../20260812_open_unify-modifier-execution-and-explanation-representation|Unify modifier execution and explanation representation]]
+- [[20260812_closed_unify-modifier-execution-and-explanation-representation|Unify modifier execution and explanation representation]]
 
 ## Out of scope
 

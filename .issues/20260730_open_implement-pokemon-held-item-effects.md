@@ -6,11 +6,13 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-30T09:28:00Z"
-updated_at: "2026-08-03T08:24:00Z"
+updated_at: "2026-08-20T08:30:00Z"
 ---
 ## Goal
 
-逐步实现 Pokémon Showdown 中具有独立竞技携带效果的道具，并让后续实现可追踪、可验证。
+扩展产品可选择、可表达的竞技 Held item 范围；伤害数值交给 `@smogon/calc`，不再为每个道具在本地复刻 modifier 公式。
+
+后续工作只覆盖 calc 黑盒之外的产品缺口：候选池／资格、所需战斗状态输入、形态锁定、概率层、Track activation／provenance，以及当前 calc 版本缺失的道具。
 
 调研、Champions 可用道具、直接伤害分类与使用率优先级见 [Champions item inventory and priority](../docs/research/2026-07-30-champions-item-inventory-and-priority.md)。
 
@@ -19,9 +21,9 @@ updated_at: "2026-08-03T08:24:00Z"
 - 这是长期 issue，按需逐步实现，不预设固定实现顺序。
 - 今后的道具实现使用子 issue 跟踪，并在子 issue 的 `## Parent issue` 中链接本 issue。
 - 子 issue 同时追加到下面的 `## Child issues`，仅用于关联，不表示优先级。
-- 共享同一机制的多个道具可以合并在一个子 issue 中。
-- 实现完成并验证后，勾选本页对应道具。
-- checkbox 表示该道具在本计算器中的处置已完成。
+- 新子 issue 必须指出选择边界、缺失输入、calc 版本缺口或展示错误；不再以“缺少本地 modifier 实现”为理由开票。
+- 共享同一产品输入契约的多个道具可以合并在一个子 issue 中。
+- 下方 checklist 保留为迁移前 inventory 与 frozen-85 覆盖记录，不代表 calc 的运行时支持矩阵。
 - 使用率只决定优先级，不决定是否纳入；未上榜但具有独立携带效果的道具仍保留。
 
 ## Child issues
@@ -30,7 +32,7 @@ updated_at: "2026-08-03T08:24:00Z"
 - [[archive/20260731_closed_implement-defender-held-item-effects|Implement defender held-item effects]]
 - [[archive/20260731_closed_wayfinder-held-item-effects-specification|Wayfinder: Held-item effects specification]]
 
-## Implementation-relevant item checklist (375)
+## Historical selectable-item checklist (375)
 
 ### Current Champions usage: non-Mega items (73)
 
@@ -425,5 +427,6 @@ updated_at: "2026-08-03T08:24:00Z"
 
 ## Current state
 
-- frozen-85 规范范围已完整实现，共 85 项。
-- 其余 290 项待处置。
+- frozen-85 规范范围已完整接入 Track 与资源，共 85 项。
+- 2026-08-19 起，已选择且 calc 认识的道具由 `@smogon/calc` 计算；本地 item modifier 不再是伤害数值来源。
+- 其余 290 项不是 290 个本地公式任务；需要按“是否应进入候选池、是否缺少产品输入、calc 是否认识”重新分桶。

@@ -2,11 +2,11 @@
 # This section is managed by the CLI. Do not edit manually.
 id: "f36c2b11-ff0c-4878-b1bb-3d8a05147f80"
 title: "Unify modifier execution and explanation representation"
-status: "open"
+status: "closed"
 priority: "high"
 labels: ["TECH-DEBT", "NEEDS-TRIAGE"]
 created_at: "2026-08-12T07:49:00Z"
-updated_at: "2026-08-12T07:51:00Z"
+updated_at: "2026-08-20T08:30:00Z"
 ---
 ## Problem
 
@@ -33,10 +33,10 @@ updated_at: "2026-08-12T07:51:00Z"
 
 ## Related issues
 
-- [[20260806_open_show-damage-modifier-contributions-on-condition-cards|Show damage modifier contributions on condition cards]]：具体 UI 消费者；不得在本架构前建立平行 label 映射。
-- [[20260812_open_publish-auditable-calculation-cases-and-case-submission|Publish auditable calculation cases and case submission]]：公开审计消费者。
-- [[20260807_open_clarify-active-marking-for-ignore-guaranteed-track-conflicts|Clarify active marking for ignore/guaranteed Track conflicts]]：operation 的贡献与 activation 规则。
-- [[20260807_open_audit-showdown-vs-smogon-calc-damage-rule-mismatches|Audit Showdown vs @smogon/calc damage-rule mismatches]]：数值 oracle 与阶段差异来源。
+- [[../20260806_open_show-damage-modifier-contributions-on-condition-cards|Show damage modifier contributions on condition cards]]：具体 UI 消费者；不得在本架构前建立平行 label 映射。
+- [[../20260812_open_publish-auditable-calculation-cases-and-case-submission|Publish auditable calculation cases and case submission]]：公开审计消费者。
+- [[../20260807_open_clarify-active-marking-for-ignore-guaranteed-track-conflicts|Clarify active marking for ignore/guaranteed Track conflicts]]：operation 的贡献与 activation 规则。
+- [[20260807_closed_audit-showdown-vs-smogon-calc-damage-rule-mismatches|Audit Showdown vs @smogon/calc damage-rule mismatches]]：数值 oracle 与阶段差异来源。
 
 ## Non-goals
 
@@ -58,3 +58,11 @@ updated_at: "2026-08-12T07:51:00Z"
 ## Progress Log
 
 - 2026-08-12：release 讨论确认 modifier 展示必须与实际计算机制同源；该要求先作为独立架构 issue 跟踪。
+
+## Resolution
+
+2026-08-20：由 `docs/adr/0007-smogon-calc-runtime-damage-engine.md` 取代并归档。
+
+ADR 0007 将真实伤害执行迁移到 `@smogon/calc` 黑盒。本 issue 设想的“本地 execution record 同时驱动 kernel 与解释”不再可能成为运行时架构，因为本地已不拥有 modifier 执行序列。现存 compiler modifier 仅用于 formula-details 展示投影，不参与伤害计算。
+
+仍然有效的用户需求保留在 [[../20260806_open_show-damage-modifier-contributions-on-condition-cards|Show damage modifier contributions on condition cards]]，该票改为从 calc 黑盒边界下的最小、诚实解释能力出发，不再依赖本 issue 的 record 架构。
