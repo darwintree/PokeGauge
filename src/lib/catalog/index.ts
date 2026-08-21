@@ -7,6 +7,7 @@ export {
   listDefenders,
   rankMoveOptionsByChampionsUsage,
   rankPokemonOptionsByChampionsUsage,
+  resolveCatalogDefaultMoveCategory,
   resolveCatalogDefaultMovePick,
 } from "./registry"
 export {

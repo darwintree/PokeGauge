@@ -17,6 +17,7 @@ import {
   getDefaultMoveCategory,
   listAttackers,
   listDefenders,
+  resolveCatalogDefaultMoveCategory,
   resolveCatalogDefaultMovePick,
   type BattlePokemonOption,
   type MatchupCatalog,
@@ -81,6 +82,8 @@ export function ScenarioExplorerPage({
   const restorePendingRef = useRef(
     initialRestoredScenario !== null || initialUrlState.kind === "valid",
   )
+  const automaticCategoryAttackerRef = useRef<BattlePokemonId | null>(null)
+  const moveCategoryTouchedRef = useRef(false)
   const [shareFailures, setShareFailures] = useState<ScenarioShareFailure[] | null>(
     initialUrlState.kind === "invalid" ? initialUrlState.failures : null,
   )
@@ -123,6 +126,7 @@ export function ScenarioExplorerPage({
     restorePendingRef.current = false
     restoredScenarioRef.current = null
     restoredTrackStateRef.current = null
+    automaticCategoryAttackerRef.current = null
     setAttackerId(null)
     setDefenderId(null)
     setMoveCategory("physical")
@@ -138,6 +142,7 @@ export function ScenarioExplorerPage({
     restoredTrackStateRef.current = null
     sharedSetupRef.current = null
     sharedTokenRef.current = null
+    automaticCategoryAttackerRef.current = null
     removeShareParam()
     setAttackerId(null)
     setDefenderId(null)
@@ -201,6 +206,25 @@ export function ScenarioExplorerPage({
       cancelled = true
     }
   }, [locale])
+
+  useEffect(() => {
+    if (
+      attackerId == null ||
+      automaticCategoryAttackerRef.current !== attackerId
+    ) return
+    let cancelled = false
+    resolveCatalogDefaultMoveCategory(attackerId).then((category) => {
+      if (
+        cancelled ||
+        moveCategoryTouchedRef.current ||
+        automaticCategoryAttackerRef.current !== attackerId
+      ) return
+      setMoveCategory(category)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [attackerId])
 
   useEffect(() => {
     if (!optionsReady || attackerId == null || defenderId == null) {
@@ -312,8 +336,15 @@ export function ScenarioExplorerPage({
   }, [bothSelected, catalog])
 
   function changeAttacker(id: BattlePokemonId) {
+    automaticCategoryAttackerRef.current = id
+    moveCategoryTouchedRef.current = false
     setAttackerId(id)
     setMoveCategory(getDefaultMoveCategory(id))
+  }
+
+  function changeMoveCategory(category: MoveCategory) {
+    moveCategoryTouchedRef.current = true
+    setMoveCategory(category)
   }
 
   async function applySetupBookmark(token: string): Promise<"ok" | "unloadable"> {
@@ -329,6 +360,8 @@ export function ScenarioExplorerPage({
     removeShareParam()
     sharedSetupRef.current = null
     sharedTokenRef.current = null
+    automaticCategoryAttackerRef.current = null
+    moveCategoryTouchedRef.current = true
     restoredTrackStateRef.current = restored.trackState
     restorePendingRef.current = false
     setAttackerId(restored.catalog.matchup.attackerId)
@@ -424,7 +457,7 @@ export function ScenarioExplorerPage({
         onApplySetupBookmark={applySetupBookmark}
         onAttackerChange={changeAttacker}
         onDefenderChange={setDefenderId}
-        onMoveCategoryChange={setMoveCategory}
+        onMoveCategoryChange={changeMoveCategory}
       />
       <Dialog open={confirmResetOpen} onOpenChange={setConfirmResetOpen}>
         <DialogContent

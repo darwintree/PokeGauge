@@ -28,20 +28,12 @@ import {
   statLabels,
 } from "./resource-options"
 import {
+  resolveCatalogDefaultMoveCategory,
   resolveDefaultAbilityIds,
   resolveDefaultOffensePresetId,
   resolveDefaultMovePick,
 } from "./champions-defaults"
 import { resolveDefaultHeldItemPick } from "./held-item-defaults"
-
-const DEFAULT_MOVE_CATEGORY_BY_ATTACKER: Partial<Record<BattlePokemonId, MoveCategory>> = {
-  445: "physical",
-  591: "special",
-  727: "physical",
-  812: "physical",
-  987: "special",
-  10021: "physical",
-}
 
 const DEFAULT_MATCHUP = {
   attackerId: 445,
@@ -52,14 +44,15 @@ export { listAttackers, listDefenders } from "./resource-options"
 export {
   rankMoveOptionsByChampionsUsage,
   rankPokemonOptionsByChampionsUsage,
+  resolveCatalogDefaultMoveCategory,
 } from "./champions-defaults"
 
 export function getDefaultMatchupIds() {
   return { ...DEFAULT_MATCHUP }
 }
 
-export function getDefaultMoveCategory(attackerId: BattlePokemonId): MoveCategory {
-  return DEFAULT_MOVE_CATEGORY_BY_ATTACKER[attackerId] ?? "physical"
+export function getDefaultMoveCategory(_attackerId: BattlePokemonId): MoveCategory {
+  return "physical"
 }
 
 export async function getCatalogShell(
@@ -233,7 +226,9 @@ export async function getCatalog(
   locale: SupportedLocale,
   moveCategory?: MoveCategory,
 ): Promise<MatchupCatalog> {
+  const activeMoveCategory = moveCategory ??
+    await resolveCatalogDefaultMoveCategory(attackerId)
   return resolveCatalogDefaultMovePick(
-    await getCatalogShell(attackerId, defenderId, locale, moveCategory),
+    await getCatalogShell(attackerId, defenderId, locale, activeMoveCategory),
   )
 }

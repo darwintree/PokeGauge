@@ -227,7 +227,7 @@ describe("catalog registry", () => {
   })
 
   it("routes special attackers through Stat Preset pipeline", async () => {
-    const catalog = await getCatalog(987, 727, LOCALE)
+    const catalog = await getCatalog(987, 727, LOCALE, "special")
     expect(catalog.moveCategory).toBe("special")
 
     const state = defaultTrackState(catalog)

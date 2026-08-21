@@ -4,6 +4,7 @@ import {
   listChampionsMoveUsageRecords,
   listChampionsNatureUsageRecords,
   listChampionsPokemonUsageIds,
+  type ChampionsNatureUsageRecord,
 } from "@/lib/champions"
 import type {
   CatalogAbilityOption,
@@ -186,19 +187,44 @@ export async function resolveDefaultOffensePresetId(
   category: MoveCategory,
 ): Promise<OffensePresetId> {
   try {
-    const topNature = (await withTimeout(
-      listChampionsNatureUsageRecords(battlePokemonId),
-      DEFAULT_USAGE_TIMEOUT_MS,
-    )).toSorted((a, b) =>
-      (b.percentage ?? Number.NEGATIVE_INFINITY) -
-        (a.percentage ?? Number.NEGATIVE_INFINITY) ||
-      a.rank - b.rank ||
-      a.nature.localeCompare(b.nature),
-    )[0]?.nature
+    const topNature = (await rankedNatureUsage(battlePokemonId))[0]?.nature
     return topNature && offenseStatMod(topNature, category) === "+"
       ? "extreme"
       : "neutral-max"
   } catch {
     return "neutral-max"
   }
+}
+
+async function rankedNatureUsage(
+  battlePokemonId: BattlePokemonId,
+): Promise<ChampionsNatureUsageRecord[]> {
+  const records = await withTimeout(
+    listChampionsNatureUsageRecords(battlePokemonId),
+    DEFAULT_USAGE_TIMEOUT_MS,
+  )
+  return records.toSorted((a, b) =>
+    (b.percentage ?? Number.NEGATIVE_INFINITY) -
+      (a.percentage ?? Number.NEGATIVE_INFINITY) ||
+    a.rank - b.rank ||
+    a.nature.localeCompare(b.nature),
+  )
+}
+
+export async function resolveCatalogDefaultMoveCategory(
+  battlePokemonId: BattlePokemonId,
+): Promise<MoveCategory> {
+  try {
+    for (const { nature } of await rankedNatureUsage(battlePokemonId)) {
+      const physical = offenseStatMod(nature, "physical")
+      const special = offenseStatMod(nature, "special")
+      if (physical === "-") return "special"
+      if (special === "-") return "physical"
+      if (physical === "+") return "physical"
+      if (special === "+") return "special"
+    }
+  } catch {
+    // Fall through to the product default.
+  }
+  return "physical"
 }

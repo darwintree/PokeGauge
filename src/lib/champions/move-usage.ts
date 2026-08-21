@@ -129,7 +129,7 @@ function championsIndexByName(index: ChampionsIndexApi): Map<string, ChampionsIn
         pokemon.battleName,
         pokemon.slug,
       ]
-        .filter(Boolean)
+        .filter((name): name is string => Boolean(name))
         .map((name) => [normalizeJoinName(name), pokemon] as const),
     ),
   )

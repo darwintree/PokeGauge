@@ -11,7 +11,11 @@ import {
   setChampionsNatureUsageFetcherForTest,
 } from "@/lib/champions"
 import { NO_ABILITY_ID } from "@/lib/ability"
-import { getCatalogShell, resolveCatalogDefaultMovePick } from "@/lib/catalog"
+import {
+  getCatalogShell,
+  resolveCatalogDefaultMoveCategory,
+  resolveCatalogDefaultMovePick,
+} from "@/lib/catalog"
 import {
   ATTACKER_HELD_ITEM_IDS,
   DEFENDER_HELD_ITEM_IDS,
@@ -176,6 +180,59 @@ describe("catalog Stat Track defaults", () => {
       expect(catalog.defaultOffensePresetId).toBe(expected)
     },
   )
+})
+
+describe("catalog move category default", () => {
+  it.each([
+    ["Careful", "physical"],
+    ["Bold", "special"],
+    ["Lonely", "physical"],
+    ["Mild", "special"],
+  ] as const)(
+    "uses the first decisive nature after neutral natures: %s -> %s",
+    async (nature, expected) => {
+      setChampionsNatureUsageFetcherForTest(async (battlePokemonId) => [
+        {
+          battlePokemonId,
+          format: "Doubles",
+          season: "test",
+          source: "test",
+          dataVersion: "test",
+          rank: 1,
+          percentage: 90,
+          nature: "Hardy",
+        },
+        {
+          battlePokemonId,
+          format: "Doubles",
+          season: "test",
+          source: "test",
+          dataVersion: "test",
+          rank: 3,
+          percentage: 80,
+          nature,
+        },
+        {
+          battlePokemonId,
+          format: "Doubles",
+          season: "test",
+          source: "test",
+          dataVersion: "test",
+          rank: 2,
+          percentage: 20,
+          nature: expected === "physical" ? "Modest" : "Adamant",
+        },
+      ])
+
+      await expect(resolveCatalogDefaultMoveCategory(445)).resolves.toBe(expected)
+    },
+  )
+
+  it("falls back to physical when no nature decides an attack side", async () => {
+    setChampionsNatureUsageFetcherForTest(async () => [])
+
+    await expect(resolveCatalogDefaultMoveCategory(445)).resolves.toBe("physical")
+  })
 })
 
 describe("catalog Held-item candidates", () => {
