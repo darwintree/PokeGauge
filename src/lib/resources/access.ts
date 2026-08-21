@@ -150,7 +150,9 @@ export async function getResource<TType extends ResourceType>(
           damageKind: resource.damageKind,
           target: resource.target,
           isSpread: resource.isSpread,
-        } : {}),
+        } : {
+          description: resource.descriptions[locale],
+        }),
   } as LocalizedResourceByType[TType]
 }
 
@@ -187,6 +189,7 @@ function localizeAbility(
     id: resource.id,
     locale,
     name: resource.names[locale],
+    description: resource.descriptions[locale],
   }
 }
 

@@ -60,6 +60,24 @@ export function AbilityTrack({
     .filter((option) => selected.has(option.id))
     .map((option) => option.label)
     .join(", ")
+  const describedOptions = orderedOptions.map((option) => {
+    // Projection abilities are handled by their target Tracks, not as Ability effects.
+    const unsupported =
+      !abilityDamageModifierIsSupported(option.id) &&
+      option.id !== UNKNOWN_ABILITY_ID &&
+      option.id !== NO_ABILITY_ID &&
+      !abilityIsProjectionNeutral(option.id)
+    const assumedFamily = !unsupported
+      ? assumedSatisfiedAbilityFamily(option.id)
+      : undefined
+    let disclosureLabel: string | null = null
+    if (unsupported) {
+      disclosureLabel = intl.formatMessage({ id: "track.ability.unsupported" })
+    } else if (assumedFamily) {
+      disclosureLabel = intl.formatMessage({ id: ASSUMED_FAMILY_MESSAGE[assumedFamily] })
+    }
+    return { option, unsupported, assumedFamily, disclosureLabel }
+  })
 
   return (
     <TrackPanel
@@ -82,21 +100,7 @@ export function AbilityTrack({
         </Button>
       </div>
       <TrackOptionGroup aria-label={intl.formatMessage({ id: labelId })}>
-        {orderedOptions.map((option) => {
-          // Projection abilities are handled by their target Tracks, not as Ability effects.
-          const unsupported =
-            !abilityDamageModifierIsSupported(option.id) &&
-            option.id !== UNKNOWN_ABILITY_ID &&
-            option.id !== NO_ABILITY_ID &&
-            !abilityIsProjectionNeutral(option.id)
-          const assumedFamily = !unsupported
-            ? assumedSatisfiedAbilityFamily(option.id)
-            : undefined
-          const disclosureLabel = unsupported
-            ? intl.formatMessage({ id: "track.ability.unsupported" })
-            : assumedFamily
-              ? intl.formatMessage({ id: ASSUMED_FAMILY_MESSAGE[assumedFamily] })
-              : null
+        {describedOptions.map(({ option, unsupported, assumedFamily, disclosureLabel }) => {
           return (
             <TrackOption
               key={option.id}
@@ -106,7 +110,11 @@ export function AbilityTrack({
               ariaLabel={disclosureLabel
                 ? `${option.label} · ${disclosureLabel}`
                 : option.accessibleLabel ?? option.label}
-              tooltip={[option.summary, disclosureLabel].filter(Boolean).join("\n") || null}
+              tooltip={(
+                <span className="whitespace-pre-line">
+                  {[option.summary, disclosureLabel].filter(Boolean).join("\n")}
+                </span>
+              )}
               className="px-2"
             >
               <span>{option.label}</span>
@@ -121,6 +129,19 @@ export function AbilityTrack({
           )
         })}
       </TrackOptionGroup>
+      <details className="mt-2 rounded-md border border-card-border bg-token-bg/30 px-3 py-2 text-xs">
+        <summary className="cursor-pointer font-extrabold focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-ring">
+          <FormattedMessage id="track.ability.descriptions" />
+        </summary>
+        <div className="mt-2 space-y-2">
+          {describedOptions.map(({ option }) => (
+            <div key={option.id}>
+              <p className="font-bold text-foreground">{option.label}</p>
+              <p className="text-muted-foreground">{option.summary}</p>
+            </div>
+          ))}
+        </div>
+      </details>
       </div>
     </TrackPanel>
   )

@@ -4,6 +4,7 @@ import {
   FROZEN_HELD_ITEM_IDS,
   FROZEN_HELD_ITEMS,
   HELD_ITEM_SPRITES_COMMIT,
+  itemDescription,
   itemSpriteUrl,
 } from "@/lib/held-item"
 
@@ -26,6 +27,9 @@ describe("generated Held-item resources", () => {
     expect(resources.every((item) => item.spriteSourcePath.startsWith("sprites/items/"))).toBe(
       true,
     )
+    expect(resources.filter((item) => item.descriptions.en.length === 0).map((item) => item.id)).toEqual([
+      2105, 2106, 2107, 2108,
+    ])
   })
 
   it("records PokeAPI slugs and reviewed generation-specific sprite paths", () => {
@@ -37,6 +41,10 @@ describe("generated Held-item resources", () => {
     expect(GENERATED_HELD_ITEMS[247].spriteSourcePath).toBe(
       "sprites/items/life-orb.png",
     )
+    expect(GENERATED_HELD_ITEMS[247].descriptions).toMatchObject({
+      "zh-hans": "携带后，虽然每次攻击时 ＨＰ少量减少， 但招式的威力会提高。",
+      en: "An item to be held by a Pokémon. It boosts the power of moves but at the cost of some HP on each hit.",
+    })
     expect(GENERATED_HELD_ITEMS[1181].spriteSourcePath).toBe(
       "sprites/items/gen8/utility-umbrella.png",
     )
@@ -70,6 +78,12 @@ describe("generated Held-item resources", () => {
     )
     expect(itemSpriteUrl("unknown-mega-stone")).toBeNull()
     expect(itemSpriteUrl("none")).toBeNull()
+  })
+
+  it("localizes descriptions and reports missing official text", () => {
+    expect(itemDescription(247, "zh-hans")).toContain("招式的威力会提高")
+    expect(itemDescription(2106, "en")).toBe("No official description is available.")
+    expect(itemDescription("none", "en")).toBe("No held-item effect is applied.")
   })
 
   it("propagates each frozen item's reviewed calc name into generated resources", () => {

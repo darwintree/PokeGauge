@@ -299,9 +299,22 @@ describe("catalog ability candidates and defaults", () => {
     const catalog = await getCatalogShell(445, 94, "en")
 
     expect(catalog.attackerAbilities).toEqual([
-      { id: NO_ABILITY_ID, label: "—", accessibleLabel: "No ability", summary: "" },
-      { id: 8, label: "Sand Veil", summary: "" },
-      { id: 24, label: "Rough Skin", summary: "" },
+      {
+        id: NO_ABILITY_ID,
+        label: "—",
+        accessibleLabel: "No ability",
+        summary: "No ability effect is applied.",
+      },
+      {
+        id: 8,
+        label: "Sand Veil",
+        summary: "Boosts the Pokémon's evasiveness in a sandstorm.",
+      },
+      {
+        id: 24,
+        label: "Rough Skin",
+        summary: "The Pokémon's rough skin damages attackers that make direct contact with it.",
+      },
     ])
     expect(catalog.defenderAbilities.map((ability) => ability.id)).not.toContain(26)
     expect(catalog.defaultAttackerAbilityIds).toEqual([8, 24])

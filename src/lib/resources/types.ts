@@ -8,6 +8,7 @@ export type DamageKind = "damage" | "damage+ailment" | "damage+lower" | "damage+
 export type MoveDamageClass = "physical" | "special" | "status"
 
 export type LocalizedNames = Record<SupportedLocale, string>
+export type LocalizedDescriptions = Record<SupportedLocale, string>
 
 export type BattleStats = {
   hp: number
@@ -42,6 +43,7 @@ export type NormalizedAbility = {
   slug: string
   calcAbilityName: string
   names: LocalizedNames
+  descriptions: LocalizedDescriptions
 }
 
 export type NormalizedItem = {
@@ -50,6 +52,7 @@ export type NormalizedItem = {
   slug: string
   calcItemName: string
   names: LocalizedNames
+  descriptions: LocalizedDescriptions
 }
 
 export type NormalizedHeldItem = NormalizedItem & {
@@ -124,7 +127,9 @@ export type LocalizedPokemonResource = LocalizedResourceBase<"pokemon"> & {
   baseStats: BattleStats
 }
 
-export type LocalizedAbilityResource = LocalizedResourceBase<"ability">
+export type LocalizedAbilityResource = LocalizedResourceBase<"ability"> & {
+  description: string
+}
 
 export type LocalizedMoveResource = LocalizedResourceBase<"move"> & {
   calcMoveName: string

@@ -6,6 +6,7 @@ export {
   heldItemWarning,
   HELD_ITEM_SPRITES_COMMIT,
   itemAriaLabel,
+  itemDescription,
   itemIsHiddenNeutral,
   itemSpriteUrl,
   lockedHeldItemFor,

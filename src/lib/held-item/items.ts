@@ -85,6 +85,23 @@ export function itemAriaLabel(
     : heldItems[parsed]?.names[locale] ?? String(id)
 }
 
+export function itemDescription(
+  id: string | number,
+  locale: SupportedLocale,
+): string {
+  if (id === EXPLICIT_NO_ITEM_ID) {
+    return localeMessages[locale]["track.item.noneDescription"]
+  }
+  const parsed = numericId(id)
+  if (parsed === undefined) {
+    return localeMessages[locale]["track.description.unavailable"]
+  }
+  const description = heldItems[parsed]?.descriptions[locale]
+    ?? megaStones[parsed]?.descriptions[locale]
+    ?? ""
+  return description || localeMessages[locale]["track.description.unavailable"]
+}
+
 export function itemSpriteUrl(id: string | number): string | null {
   const sourcePath = spriteSourcePathFor(id)
   if (!sourcePath) return null
@@ -102,7 +119,7 @@ export function heldItemCatalogOption(
   return {
     id,
     label: itemAriaLabel(id, locale),
-    summary: "",
+    summary: itemDescription(id, locale),
   }
 }
 

@@ -126,6 +126,28 @@ describe("held-item Tracks", () => {
     expect(container.querySelector('button[aria-label="Add held item"]')).not.toBeNull()
   })
 
+  it("shows official descriptions in the held-item picker", async () => {
+    const catalog = await getCatalogShell(445, 727, "en")
+    await renderTrack({
+      catalog,
+      poolIds: [247],
+      selectedIds: [247],
+      selectableIds: new Set([445, 727]),
+      onChange: vi.fn(),
+      onAdd: vi.fn(),
+      onFormTriggerConfirm: vi.fn(),
+    })
+
+    await act(async () => {
+      ;(container.querySelector('button[aria-label="Add held item"]') as HTMLButtonElement).click()
+      await Promise.resolve()
+    })
+
+    expect(document.body.textContent).toContain(
+      "It boosts the power of moves but at the cost of some HP on each hit.",
+    )
+  })
+
   it("restores explicit no-item after clearing every selected id", async () => {
     const catalog = await getCatalogShell(445, 727, "en")
     const onChange = vi.fn()
