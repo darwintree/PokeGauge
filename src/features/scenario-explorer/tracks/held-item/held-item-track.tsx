@@ -118,13 +118,8 @@ export function HeldItemTrack({
     <>
       <TrackPanel
         icon={PackageOpen}
-        label={
-          <FormattedMessage
-            id={side === "attacker"
-              ? "track.attackerItem"
-              : "track.defenderItem"}
-          />
-        }
+        label={<FormattedMessage id="track.item" />}
+        side={side}
         summary={
           <span className="flex w-full min-w-0 flex-wrap items-center gap-1.5">
             {selectedIds.map((id) => (

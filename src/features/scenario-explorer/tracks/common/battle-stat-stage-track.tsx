@@ -16,6 +16,7 @@ type BattleStatStageTrackProps = {
   ariaLabel: string
   values: StatStage[]
   onChange: (values: StatStage[]) => void
+  side: "attacker" | "defender"
   expanded?: boolean
   onToggle?: () => void
 }
@@ -25,6 +26,7 @@ export function BattleStatStageTrack({
   ariaLabel,
   values,
   onChange,
+  side,
   expanded = true,
   onToggle = () => {},
 }: BattleStatStageTrackProps) {
@@ -42,6 +44,7 @@ export function BattleStatStageTrack({
     <TrackPanel
       icon={ChevronsUpDown}
       label={label}
+      side={side}
       summary={values.length > 0 ? values.map(stageLabel).join(", ") : "0"}
       expanded={expanded}
       onToggle={onToggle}
