@@ -78,7 +78,9 @@ Tag membership:
 - **exclusive**: form-trigger map membership, or holder-species / holder-identity / eviolite-eligible gates.
 - **power**: `base-power`, or outgoing `final-damage`.
 - **stat**: `battle-stat`.
-- **berry**: resistance berries (`persistent-berry` / resistance-berry set).
+- **berry**: resistance berries (`persistent-berry` / resistance-berry set). In every
+  Picker view, resistance berries are limited to Chilan Berry plus berries whose move
+  type is super effective against the current holder's type combination.
 
 Picker list order follows that side's frozen inventory order; filters only hide rows.
 
