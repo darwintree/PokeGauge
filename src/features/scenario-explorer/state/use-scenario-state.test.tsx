@@ -196,7 +196,6 @@ describe("ability projection lifecycle", () => {
       )
       await Promise.resolve()
     })
-    await act(async () => current.setShowResultStatValue(true))
     await act(async () => vi.advanceTimersByTime(200))
     expect(onSharedEdited).not.toHaveBeenCalled()
     expect(storedValues.has(SCENARIO_STORAGE_KEY)).toBe(false)

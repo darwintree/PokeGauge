@@ -145,15 +145,22 @@ export function BattlePokemonPickerDialog({
       onQueryChange={onQueryChange}
       beforeList={
         <>
-          <div className="grid shrink-0 grid-cols-2 gap-3 border-y border-hairline py-3">
-            <Label className="flex min-w-0 items-center justify-between gap-2 text-xs font-bold">
-              <FormattedMessage id="matchup.priority.forms" />
-              <Switch
-                size="sm"
-                checked={sameSpeciesFirst}
-                onCheckedChange={onSameSpeciesFirstChange}
-              />
-            </Label>
+          <div
+            className={cn(
+              "grid shrink-0 gap-3 border-y border-hairline py-3",
+              selected ? "grid-cols-2" : "grid-cols-1",
+            )}
+          >
+            {selected ? (
+              <Label className="flex min-w-0 items-center justify-between gap-2 text-xs font-bold">
+                <FormattedMessage id="matchup.priority.forms" />
+                <Switch
+                  size="sm"
+                  checked={sameSpeciesFirst}
+                  onCheckedChange={onSameSpeciesFirstChange}
+                />
+              </Label>
+            ) : null}
             <Label className="flex min-w-0 items-center justify-between gap-2 text-xs font-bold">
               <FormattedMessage id="matchup.priority.mega" />
               <Switch

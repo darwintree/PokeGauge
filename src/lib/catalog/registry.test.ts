@@ -30,6 +30,13 @@ beforeEach(() => {
 })
 
 describe("catalog move candidate ordering", () => {
+  it("uses only form names for Mega matchup labels", async () => {
+    const catalog = await getCatalogShell(10034, 10035, "zh-hans")
+
+    expect(catalog.matchup.attackerLabel).toBe("超级喷火龙Ｘ")
+    expect(catalog.matchup.defenderLabel).toBe("超级喷火龙Ｙ")
+  })
+
   it("limits picker candidates to the attacker's all-version historical learnset", async () => {
     const [garchomp, bulbasaur] = await Promise.all([
       getCatalogShell(445, 727, "en", "physical"),

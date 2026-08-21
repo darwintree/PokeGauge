@@ -304,13 +304,6 @@
     border-style: dashed;
   }
 
-  .stat-value-chip-actual {
-    font-size: 9px;
-    font-weight: 400;
-    opacity: 0.75;
-    font-variant-numeric: tabular-nums;
-  }
-
   /* Interior selected Stat Values on the range axis. Fill = option invest fg. */
   .stat-axis-mark {
     pointer-events: none;

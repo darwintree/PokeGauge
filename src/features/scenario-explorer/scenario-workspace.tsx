@@ -206,7 +206,6 @@ export function ScenarioWorkspace({
             unavailable={state.unavailable}
             trackState={state.pipelineTrackState}
             statNameStrategy={state.statNameStrategy}
-            onShowResultStatValueChange={state.setShowResultStatValue}
             onProbabilityModeChange={state.setProbabilityMode}
           />
           {state.rows.length > 0 ? (

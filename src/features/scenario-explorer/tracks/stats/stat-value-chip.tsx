@@ -32,11 +32,9 @@ export function StatValueChipTooltipBody({ chip }: { chip: StatValueChipModel })
 
 export function StatValueChip({
   chip,
-  showActual = false,
   compact = false,
 }: {
   chip: StatValueChipModel
-  showActual?: boolean
   compact?: boolean
 }) {
   return (
@@ -56,7 +54,6 @@ export function StatValueChip({
         }
       >
         {chip.label}
-        {showActual ? <span className="stat-value-chip-actual">{chip.actual}</span> : null}
       </TooltipTrigger>
       <TooltipContent side="top" className="rounded-xl border-2 border-ink bg-paper p-2 shadow-hud-panel">
         <StatValueChipTooltipBody chip={chip} />
@@ -67,7 +64,6 @@ export function StatValueChip({
 
 export function StatValueChipPair({
   chips,
-  showActual = false,
   compact = false,
   expandable = false,
   expanded = false,
@@ -75,7 +71,6 @@ export function StatValueChipPair({
   toggleLabel,
 }: {
   chips: StatValueChipModel[]
-  showActual?: boolean
   compact?: boolean
   expandable?: boolean
   expanded?: boolean
@@ -87,7 +82,7 @@ export function StatValueChipPair({
       {chips.map((chip, index) => (
         <span key={`${chip.label}:${chip.actual}:${index}`} className={cn("inline-flex items-center", compact ? "gap-0.5" : "gap-1")}>
           {index > 0 ? <span className="text-muted-foreground font-bold">~</span> : null}
-          <StatValueChip chip={chip} showActual={showActual} compact={compact} />
+          <StatValueChip chip={chip} compact={compact} />
         </span>
       ))}
     </span>

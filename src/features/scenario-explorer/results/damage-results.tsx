@@ -28,7 +28,6 @@ import {
   DamageResultRow,
 } from "./damage-result-row"
 import { ProbabilityModeSwitch } from "./probability-mode-switch"
-import { ShowStatValuesSwitch } from "../tracks/common/show-stat-values-switch"
 import { rowIdentity } from "./row-labels"
 
 type DamageResultsProps = {
@@ -37,7 +36,6 @@ type DamageResultsProps = {
   unavailable: UnavailableScenarioGroup[]
   trackState: TrackState
   statNameStrategy: StatNameStrategy
-  onShowResultStatValueChange: (checked: boolean) => void
   onProbabilityModeChange: (mode: TrackState["probabilityMode"]) => void
 }
 
@@ -94,7 +92,6 @@ export function DamageResults({
   unavailable,
   trackState,
   statNameStrategy,
-  onShowResultStatValueChange,
   onProbabilityModeChange,
 }: DamageResultsProps) {
   const rowLabelPresets = useMemo(
@@ -175,7 +172,6 @@ export function DamageResults({
             attackerStat: {
               id: row.attackerStatId,
               chips: identity.offenseChips,
-              showActual: trackState.showResultStatValue,
               expandable: offenseExpandable,
               expanded: offenseExpandable && expansion.offense,
               onToggle: offenseExpandable
@@ -185,7 +181,6 @@ export function DamageResults({
             defender: {
               id: row.defenderId,
               chips: identity.defenseChips,
-              showActual: trackState.showResultStatValue,
               expandable: defenseExpandable,
               expanded: defenseExpandable && expansion.defense,
               onToggle: defenseExpandable
@@ -220,15 +215,10 @@ export function DamageResults({
   return (
     <>
       <UnavailableScenarioNotices catalog={catalog} unavailable={unavailable} />
-        <ProbabilityModeSwitch
-          mode={trackState.probabilityMode}
-          onChange={onProbabilityModeChange}
-        >
-          <ShowStatValuesSwitch
-            checked={trackState.showResultStatValue}
-            onCheckedChange={onShowResultStatValueChange}
-          />
-        </ProbabilityModeSwitch>
+      <ProbabilityModeSwitch
+        mode={trackState.probabilityMode}
+        onChange={onProbabilityModeChange}
+      />
       {board}
     </>
   )

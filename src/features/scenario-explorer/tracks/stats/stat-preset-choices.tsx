@@ -14,7 +14,6 @@ import {
   TrackOption,
   TrackOptionAdd,
   TrackOptionGroup,
-  TrackOptionSummary,
   type TrackOptionAction,
   type TrackOptionModifier,
 } from "../common/track-option"
@@ -26,7 +25,6 @@ type StatPresetChoicesProps = {
   calcName: string
   category: MoveCategory
   statNameStrategy: StatNameStrategy
-  showStatValue: boolean
   allocationIndices: Record<string, number>
   onToggle: (id: string) => void
   onCycleAllocation: (id: string) => void
@@ -41,7 +39,6 @@ type StatPresetChoiceProps = {
   preset: StatPreset
   selected: boolean
   chip: StatValueChipModel
-  showStatValue: boolean
   allocationCount: number
   onToggle: () => void
   onCycleAllocation: () => void
@@ -108,7 +105,6 @@ function StatPresetChoice({
   preset,
   selected,
   chip,
-  showStatValue,
   allocationCount,
   onToggle,
   onCycleAllocation,
@@ -121,8 +117,6 @@ function StatPresetChoice({
   let ariaLabel = `${chip.label} ${intl.formatMessage({ id: "statPreset.label" })}`
   if (hasNoSpAllocation) {
     ariaLabel = `${chip.label} ${noSpAllocationMessage}`
-  } else if (showStatValue) {
-    ariaLabel = `${chip.label} ${chip.actual} ${intl.formatMessage({ id: "statPreset.label" })}`
   }
 
   return (
@@ -153,9 +147,6 @@ function StatPresetChoice({
           <CircleAlert aria-hidden="true" className="text-hud-muted size-3" />
         ) : null}
       </span>
-      {showStatValue && !hasNoSpAllocation ? (
-        <TrackOptionSummary>{chip.actual}</TrackOptionSummary>
-      ) : null}
     </TrackOption>
   )
 }
@@ -166,7 +157,6 @@ export function StatPresetChoices({
   calcName,
   category,
   statNameStrategy,
-  showStatValue,
   allocationIndices,
   onToggle,
   onCycleAllocation,
@@ -203,7 +193,6 @@ export function StatPresetChoices({
             preset={preset}
             selected={selected}
             chip={chip}
-            showStatValue={showStatValue}
             allocationCount={display.allocations.length}
             onToggle={() => onToggle(preset.id)}
             onCycleAllocation={() => onCycleAllocation(preset.id)}

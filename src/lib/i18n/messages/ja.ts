@@ -201,7 +201,6 @@ export const jaMessages: Record<string, string> = {
     "stat.specialAttack": "特攻",
     "stat.defense": "防御",
     "stat.specialDefense": "特防",
-    "stat.showValue": "能力実数値を表示",
     "stat.range.min": "最小値 {stat}",
     "stat.range.max": "最大値 {stat}",
     "stat.range.draft": "新しい {stat}",

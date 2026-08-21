@@ -201,7 +201,6 @@ export const enMessages: Record<string, string> = {
     "stat.specialAttack": "Sp. Atk",
     "stat.defense": "Def",
     "stat.specialDefense": "Sp. Def",
-    "stat.showValue": "Show Stat Values",
     "stat.range.min": "Min {stat}",
     "stat.range.max": "Max {stat}",
     "stat.range.draft": "New {stat}",

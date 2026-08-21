@@ -20,6 +20,7 @@ import type {
 } from "./types"
 import {
   abilityOptions,
+  battlePokemonLabel,
   listAttackers,
   listDefenders,
   noAbilityOption,
@@ -116,8 +117,8 @@ export async function getCatalogShell(
     matchup: {
       attackerId,
       defenderId,
-      attackerLabel: attackerResource.name,
-      defenderLabel: defenderResource.name,
+      attackerLabel: battlePokemonLabel(attackerResource),
+      defenderLabel: battlePokemonLabel(defenderResource),
       attackerCalcName: attackerResource.calcSpeciesName,
       defenderCalcName: defenderResource.calcSpeciesName,
     },

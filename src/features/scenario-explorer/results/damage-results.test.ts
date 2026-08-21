@@ -44,7 +44,6 @@ describe("unavailable Scenario display", () => {
       unavailable,
       trackState,
       statNameStrategy: "english",
-      onShowResultStatValueChange: () => {},
       onProbabilityModeChange: () => {},
     }))
     const trackMarkup = withEnglish(createElement(MoveTrack, {
@@ -86,7 +85,6 @@ describe("unavailable Scenario display", () => {
       }],
       trackState,
       statNameStrategy: "english",
-      onShowResultStatValueChange: () => {},
       onProbabilityModeChange: () => {},
     }))
 

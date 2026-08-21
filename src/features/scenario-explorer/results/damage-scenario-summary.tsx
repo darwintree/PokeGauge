@@ -28,14 +28,12 @@ type DamageScenarioSummaryProps = {
   row: ScenarioResult
   attackerStat: {
     chips: StatValueChipModel[]
-    showActual?: boolean
     expandable?: boolean
     expanded?: boolean
     onToggle?: () => void
   }
   defender: {
     chips: StatValueChipModel[]
-    showActual?: boolean
     expandable?: boolean
     expanded?: boolean
     onToggle?: () => void
@@ -139,7 +137,6 @@ function UnitPanel({
       </div>
       <StatValueChipPair
         chips={stat.chips}
-        showActual={stat.showActual}
         compact
         expandable={stat.expandable}
         expanded={stat.expanded}
@@ -301,7 +298,6 @@ function FormulaDetailRow({ label, value }: { label: string; value: string | num
 function ScenarioIdentityLine({
   label,
   chips,
-  showActual,
   expandable,
   expanded,
   onToggle,
@@ -310,7 +306,6 @@ function ScenarioIdentityLine({
 }: {
   label: string
   chips: StatValueChipModel[]
-  showActual?: boolean
   expandable?: boolean
   expanded?: boolean
   onToggle?: () => void
@@ -322,7 +317,6 @@ function ScenarioIdentityLine({
       <span className="w-[26px] shrink-0 text-[8.5px] text-muted-foreground">{label}</span>
       <StatValueChipPair
         chips={chips}
-        showActual={showActual}
         compact
         expandable={expandable}
         expanded={expanded}
@@ -361,13 +355,7 @@ function CaptionTypeMark({ type }: { type: DamageScenarioSummaryProps["row"]["mo
   )
 }
 
-function CaptionChip({
-  chip,
-  showActual,
-}: {
-  chip: StatValueChipModel
-  showActual?: boolean
-}) {
+function CaptionChip({ chip }: { chip: StatValueChipModel }) {
   return (
     <span
       className={cn(
@@ -383,23 +371,18 @@ function CaptionChip({
       }}
     >
       {chip.label}
-      {showActual ? (
-        <span className="ml-0.5 font-medium opacity-70">{chip.actual}</span>
-      ) : null}
     </span>
   )
 }
 
 function CaptionChips({
   chips,
-  showActual,
   expandable,
   expanded,
   onToggle,
   toggleLabel,
 }: {
   chips: StatValueChipModel[]
-  showActual?: boolean
   expandable?: boolean
   expanded?: boolean
   onToggle?: () => void
@@ -411,7 +394,7 @@ function CaptionChips({
         {chips.map((chip, index) => (
           <span key={`${chip.label}:${chip.actual}:${index}`} className="inline-flex items-center gap-px">
             {index > 0 ? <span className="text-[8px] font-bold leading-none text-muted-foreground">~</span> : null}
-            <CaptionChip chip={chip} showActual={showActual} />
+            <CaptionChip chip={chip} />
           </span>
         ))}
       </span>
@@ -510,7 +493,6 @@ export function DamageRowCaption(props: DamageScenarioSummaryProps) {
       <span className="flex min-w-0 items-center gap-px overflow-hidden">
         <CaptionChips
           chips={props.attackerStat.chips}
-          showActual={props.attackerStat.showActual}
           expandable={props.attackerStat.expandable}
           expanded={props.attackerStat.expanded}
           onToggle={props.attackerStat.onToggle}
@@ -529,7 +511,6 @@ export function DamageRowCaption(props: DamageScenarioSummaryProps) {
         )}
         <CaptionChips
           chips={props.defender.chips}
-          showActual={props.defender.showActual}
           expandable={props.defender.expandable}
           expanded={props.defender.expanded}
           onToggle={props.defender.onToggle}
@@ -561,14 +542,12 @@ export function ChildScenarioDiff({
           <ScenarioIdentityLine
             label={intl.formatMessage({ id: "damage.row.attack" })}
             chips={attackerStat.chips}
-            showActual={attackerStat.showActual}
           />
         )}
         {diff.defense && (
           <ScenarioIdentityLine
             label={intl.formatMessage({ id: "damage.row.defense" })}
             chips={defender.chips}
-            showActual={defender.showActual}
           />
         )}
       </div>

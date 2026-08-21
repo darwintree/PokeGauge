@@ -131,6 +131,14 @@ describe("Pokemon selector interactions", () => {
     { ...option(4, 2, true), label: "Other Mega" },
   ]
 
+  it("hides same-species priority until a Pokemon is selected", async () => {
+    await renderPicker(formOptions, vi.fn(), null)
+    await click(container.querySelector('[data-slot="button"]'))
+
+    expect(document.body.textContent).not.toContain("同种形态优先")
+    expect(document.body.textContent).toContain("Mega 优先")
+  })
+
   it("clears picker filters on close and opens forms-first from the badge", async () => {
     const onChange = await renderPicker(formOptions)
 

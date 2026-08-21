@@ -462,8 +462,6 @@ export function useScenarioState(
       setTrackState((s) =>
         trackStateAfterOffenseRange(s, statRange, offensePresetsForState(catalog, s)),
       ),
-    setShowOffenseStatValue: (showOffenseStatValue: boolean) =>
-      setTrackState((s) => ({ ...s, showOffenseStatValue })),
     cycleOffenseAllocation,
     persistOffensePreset,
     deleteOffensePreset,
@@ -556,10 +554,6 @@ export function useScenarioState(
       setTrackState((s) =>
         trackStateAfterDefenseRanges(s, defenderRanges, defensePresetsForState(catalog, s)),
       ),
-    setShowDefenseStatValue: (showDefenseStatValue: boolean) =>
-      setTrackState((s) => ({ ...s, showDefenseStatValue })),
-    setShowResultStatValue: (showResultStatValue: boolean) =>
-      setTrackState((s) => ({ ...s, showResultStatValue })),
     setDefenderStages: (defenderStages: StatStage[]) =>
       setTrackState((s) => ({
         ...s,

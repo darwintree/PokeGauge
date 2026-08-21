@@ -83,11 +83,15 @@ export function noAbilityOption(locale: SupportedLocale): CatalogAbilityOption {
   }
 }
 
+export function battlePokemonLabel(resource: LocalizedPokemonResource): string {
+  return resource.isMega ? resource.formName ?? resource.name : resource.name
+}
+
 function localizedBattlePokemonOption(resource: LocalizedPokemonResource): BattlePokemonOption {
   return Object.freeze({
     id: resource.battlePokemonId,
     speciesId: resource.speciesId,
-    label: resource.name,
+    label: battlePokemonLabel(resource),
     species: resource.speciesName,
     form: resource.formName,
     isMega: resource.isMega,

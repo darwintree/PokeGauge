@@ -201,7 +201,6 @@ export const zhHansMessages: Record<string, string> = {
     "stat.specialAttack": "特攻",
     "stat.defense": "物防",
     "stat.specialDefense": "特防",
-    "stat.showValue": "显示能力实数值",
     "stat.range.min": "下限 {stat}",
     "stat.range.max": "上限 {stat}",
     "stat.range.draft": "新的 {stat}",

@@ -25,7 +25,6 @@ import { StatRangeInput } from "./stat-range-input"
 import { StatPresetChoices } from "./stat-preset-choices"
 import { StatValueChip, StatValueChipPair } from "./stat-value-chip"
 import { StatModeWell } from "./stat-mode-switch"
-import { ShowStatValuesSwitch } from "../common/show-stat-values-switch"
 import { TrackPanel } from "../common/track-panel"
 import type { ScenarioState } from "../../state/use-scenario-state"
 
@@ -40,14 +39,12 @@ export type StatTrackProps = {
 function ChipSummary({
   chips,
   ranged,
-  showActual,
 }: {
   chips: StatValueChipModel[]
   ranged: boolean
-  showActual: boolean
 }): ReactNode {
   if (ranged) {
-    return <StatValueChipPair chips={chips} showActual={showActual} compact />
+    return <StatValueChipPair chips={chips} compact />
   }
   return (
     <span className="flex w-full min-w-0 flex-wrap items-center gap-1">
@@ -55,7 +52,6 @@ function ChipSummary({
         <StatValueChip
           key={`${chip.label}:${chip.actual}:${index}`}
           chip={chip}
-          showActual={showActual}
           compact
         />
       ))}
@@ -66,12 +62,10 @@ function ChipSummary({
 function offenseSummary(catalog: MatchupCatalog, state: ScenarioState): ReactNode {
   const { trackState } = state
   const category = catalog.moveCategory
-  const showActual = trackState.showOffenseStatValue
   if (trackState.statMode === "range") {
     return (
       <ChipSummary
         ranged
-        showActual={showActual}
         chips={uniqueEndpointChips(
           resolveOffenseChip({
             calcName: catalog.matchup.attackerCalcName,
@@ -102,18 +96,16 @@ function offenseSummary(catalog: MatchupCatalog, state: ScenarioState): ReactNod
         )
       : fallbackStatValueChip(id)
   })
-  return <ChipSummary chips={chips} ranged={false} showActual={showActual} />
+  return <ChipSummary chips={chips} ranged={false} />
 }
 
 function defenseSummary(catalog: MatchupCatalog, state: ScenarioState): ReactNode {
   const { trackState } = state
   const category = catalog.moveCategory
-  const showActual = trackState.showDefenseStatValue
   if (trackState.defenderMode === "range") {
     return (
       <ChipSummary
         ranged
-        showActual={showActual}
         chips={uniqueEndpointChips(
           resolveDefenseChip({
             calcName: catalog.matchup.defenderCalcName,
@@ -146,7 +138,7 @@ function defenseSummary(catalog: MatchupCatalog, state: ScenarioState): ReactNod
         )
       : fallbackStatValueChip(id)
   })
-  return <ChipSummary chips={chips} ranged={false} showActual={showActual} />
+  return <ChipSummary chips={chips} ranged={false} />
 }
 
 function ConfirmCancelActions({
@@ -354,7 +346,6 @@ function StatTrackEditor({
       calcName={catalog.matchup.attackerCalcName}
       category={catalog.moveCategory}
       statNameStrategy={state.statNameStrategy}
-      showStatValue={trackState.showOffenseStatValue}
       allocationIndices={trackState.offenseAllocationIndices}
       onToggle={state.toggleOffensePreset}
       onCycleAllocation={state.cycleOffenseAllocation}
@@ -374,7 +365,6 @@ function StatTrackEditor({
       calcName={catalog.matchup.defenderCalcName}
       category={catalog.moveCategory}
       statNameStrategy={state.statNameStrategy}
-      showStatValue={trackState.showDefenseStatValue}
       allocationIndices={trackState.defenseAllocationIndices}
       onToggle={state.toggleDefensePreset}
       onCycleAllocation={state.cycleDefenseAllocation}
@@ -460,12 +450,7 @@ export function StatTrack({
         >
           <StatTrackEditor side={side} catalog={catalog} state={state} sections="choice" />
         </ModePane>
-        <ShowStatValuesSwitch
-          checked={offense ? state.trackState.showOffenseStatValue : state.trackState.showDefenseStatValue}
-          onCheckedChange={offense ? state.setShowOffenseStatValue : state.setShowDefenseStatValue}
-        />
       </div>
     </TrackPanel>
   )
 }
-

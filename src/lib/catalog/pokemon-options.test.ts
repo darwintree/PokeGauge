@@ -43,6 +43,13 @@ describe("Pokemon option ranking", () => {
     expect(ranked.filter((option) => option.id === 10034)).toHaveLength(1)
   })
 
+  it("uses only the form name for Mega display labels", async () => {
+    const options = await listAttackers("zh-hans")
+
+    expect(options.find((option) => option.id === 10034)?.label).toBe("超级喷火龙Ｘ")
+    expect(options.find((option) => option.id === 6)?.label).toBe("喷火龙")
+  })
+
   it("keeps default order when usage is empty", async () => {
     setChampionsPokemonUsageFetcherForTest(async () => [])
     const options = await listAttackers("en")

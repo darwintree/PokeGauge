@@ -1,5 +1,5 @@
 import { Info } from "lucide-react"
-import { useId, useState, type ReactNode } from "react"
+import { useId, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
@@ -23,11 +23,9 @@ const LABEL_ID: Record<ProbabilityMode, string> = {
 export function ProbabilityModeSwitch({
   mode,
   onChange,
-  children,
 }: {
   mode: ProbabilityMode
   onChange: (mode: ProbabilityMode) => void
-  children?: ReactNode
 }) {
   const intl = useIntl()
   const panelId = useId()
@@ -35,44 +33,41 @@ export function ProbabilityModeSwitch({
 
   return (
     <div className="mb-3 flex flex-col gap-2">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-1.5">
-          <ToggleGroup
-            value={[mode]}
-            onValueChange={(value) => {
-              if (value[0] === "classic" || value[0] === "battle-odds") onChange(value[0])
-            }}
-            variant="default"
-            size="sm"
-            spacing={0}
-            aria-label="KO probability mode"
-            className="gap-0 rounded-[10px] border-2 border-ink bg-paper p-0.5 shadow-hud-chip"
-          >
-            {MODES.map((value) => (
-              <ToggleGroupItem
-                key={value}
-                value={value}
-                className="rounded-[7px] px-2.5 text-[11px] font-extrabold text-ink hover:bg-token-bg aria-pressed:bg-signal-yellow aria-pressed:text-ink aria-pressed:shadow-none"
-              >
-                <FormattedMessage id={LABEL_ID[value]} />
-              </ToggleGroupItem>
-            ))}
-          </ToggleGroup>
-          <button
-            type="button"
-            aria-expanded={compareOpen}
-            aria-controls={compareOpen ? panelId : undefined}
-            aria-label={intl.formatMessage({ id: "probability.mode.compare" })}
-            className={cn(
-              "grid size-7 place-items-center rounded-[9px] border-2 border-ink bg-paper text-ink shadow-hud-chip hover:bg-token-bg",
-              compareOpen && "bg-signal-yellow shadow-none",
-            )}
-            onClick={() => setCompareOpen((open) => !open)}
-          >
-            <Info className="size-3.5" aria-hidden />
-          </button>
-        </div>
-        {children}
+      <div className="flex items-center gap-1.5">
+        <ToggleGroup
+          value={[mode]}
+          onValueChange={(value) => {
+            if (value[0] === "classic" || value[0] === "battle-odds") onChange(value[0])
+          }}
+          variant="default"
+          size="sm"
+          spacing={0}
+          aria-label="KO probability mode"
+          className="gap-0 rounded-[10px] border-2 border-ink bg-paper p-0.5 shadow-hud-chip"
+        >
+          {MODES.map((value) => (
+            <ToggleGroupItem
+              key={value}
+              value={value}
+              className="rounded-[7px] px-2.5 text-[11px] font-extrabold text-ink hover:bg-token-bg aria-pressed:bg-signal-yellow aria-pressed:text-ink aria-pressed:shadow-none"
+            >
+              <FormattedMessage id={LABEL_ID[value]} />
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+        <button
+          type="button"
+          aria-expanded={compareOpen}
+          aria-controls={compareOpen ? panelId : undefined}
+          aria-label={intl.formatMessage({ id: "probability.mode.compare" })}
+          className={cn(
+            "grid size-7 place-items-center rounded-[9px] border-2 border-ink bg-paper text-ink shadow-hud-chip hover:bg-token-bg",
+            compareOpen && "bg-signal-yellow shadow-none",
+          )}
+          onClick={() => setCompareOpen((open) => !open)}
+        >
+          <Info className="size-3.5" aria-hidden />
+        </button>
       </div>
       {compareOpen ? (
         <div

@@ -142,7 +142,6 @@ function isTrackState(value: unknown): value is TrackState {
     ) &&
     isNumberRange(value.statRange) &&
     (value.statRangeTouched === undefined || isBoolean(value.statRangeTouched)) &&
-    isBoolean(value.showOffenseStatValue) &&
     isAllocationIndices(value.offenseAllocationIndices) &&
     isArrayOf(value.attackerStages, (stage): stage is TrackState["attackerStages"][number] =>
       isOneOf(stage, STAT_STAGES),
@@ -168,8 +167,6 @@ function isTrackState(value: unknown): value is TrackState {
     isNumberRange(value.defenderRanges.hp) &&
     isNumberRange(value.defenderRanges.def) &&
     (value.defenderRangeTouched === undefined || isBoolean(value.defenderRangeTouched)) &&
-    isBoolean(value.showDefenseStatValue) &&
-    isBoolean(value.showResultStatValue) &&
     isAllocationIndices(value.defenseAllocationIndices) &&
     isArrayOf(value.defenderStages, (stage): stage is TrackState["defenderStages"][number] =>
       isOneOf(stage, STAT_STAGES),
@@ -183,8 +180,14 @@ function isTrackState(value: unknown): value is TrackState {
 }
 
 function withItemPools(trackState: Record<string, unknown>): Record<string, unknown> {
+  const {
+    showOffenseStatValue: _showOffenseStatValue,
+    showDefenseStatValue: _showDefenseStatValue,
+    showResultStatValue: _showResultStatValue,
+    ...rest
+  } = trackState
   return {
-    ...trackState,
+    ...rest,
     attackerItemPoolIds: Array.isArray(trackState.attackerItemPoolIds)
       ? trackState.attackerItemPoolIds
       : trackState.attackerItemIds,
@@ -203,9 +206,9 @@ function migrateLegacyScenarioSnapshot(value: unknown): unknown {
       offenseTemporaryTemplates,
       defenseTemplateIds,
       defenseTemporaryTemplates,
-      showOffenseActual,
-      showDefenseActual,
-      showResultActual,
+      showOffenseActual: _showOffenseActual,
+      showDefenseActual: _showDefenseActual,
+      showResultActual: _showResultActual,
       probabilityMode,
       ...trackState
     } = value.trackState
@@ -219,9 +222,6 @@ function migrateLegacyScenarioSnapshot(value: unknown): unknown {
         offenseTemporaryPresets: offenseTemporaryTemplates,
         defensePresetIds: defenseTemplateIds,
         defenseTemporaryPresets: defenseTemporaryTemplates,
-        showOffenseStatValue: showOffenseActual,
-        showDefenseStatValue: showDefenseActual,
-        showResultStatValue: showResultActual,
         probabilityMode:
           probabilityMode === "rolls"
             ? "classic"
