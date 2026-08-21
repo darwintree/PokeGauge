@@ -113,8 +113,9 @@ export function ScenarioSetupPanel({
     ),
     attackerStages: (
       <BattleStatStageTrack
-        label={<FormattedMessage id="track.attackerStage" />}
+        label={<FormattedMessage id="track.stage" />}
         ariaLabel={intl.formatMessage({ id: "track.attackerStage" })}
+        side="attacker"
         values={trackState.attackerStages}
         onChange={state.setAttackerStages}
         expanded={activeId === "attackerStages"}
@@ -123,8 +124,9 @@ export function ScenarioSetupPanel({
     ),
     defenderStages: (
       <BattleStatStageTrack
-        label={<FormattedMessage id="track.defenderStage" />}
+        label={<FormattedMessage id="track.stage" />}
         ariaLabel={intl.formatMessage({ id: "track.defenderStage" })}
+        side="defender"
         values={trackState.defenderStages}
         onChange={state.setDefenderStages}
         expanded={activeId === "defenderStages"}

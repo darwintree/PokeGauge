@@ -1,6 +1,7 @@
 import { ChevronDown } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import type { ReactNode } from "react"
+import { FormattedMessage } from "react-intl"
 
 import { cn } from "@/lib/utils"
 
@@ -16,6 +17,7 @@ type TrackPanelProps = {
   trailing?: ReactNode
   preview?: ReactNode
   className?: string
+  side?: "attacker" | "defender"
 }
 
 export function TrackPanel({
@@ -30,9 +32,28 @@ export function TrackPanel({
   trailing,
   preview,
   className,
+  side,
 }: TrackPanelProps) {
   const richSummary = typeof summary !== "string"
   const stack = summaryLayout === "stack" && richSummary
+  const sideMark = side ? (
+    <>
+      <span
+        aria-hidden
+        className={cn(
+          "inline-flex h-3 shrink-0 items-center rounded-[3px] px-0.5 text-[0.65em] font-extrabold leading-none text-[var(--battle-side-foreground)]",
+          side === "attacker"
+            ? "bg-[var(--battle-side-attacker)]"
+            : "bg-[var(--battle-side-defender)]",
+        )}
+      >
+        {side === "attacker" ? "ATK" : "DEF"}
+      </span>
+      <span className="sr-only">
+        <FormattedMessage id={side === "attacker" ? "track.attacker" : "track.defender"} />
+      </span>
+    </>
+  ) : null
 
   return (
     <section
@@ -51,7 +72,10 @@ export function TrackPanel({
           />
           <span className="pointer-events-none relative flex min-w-0 flex-1 items-center gap-2">
             <Icon className="text-muted-foreground size-3.5 shrink-0" strokeWidth={1.75} />
-            <span className="truncate text-xs font-extrabold">{label}</span>
+            <span className="flex min-w-0 items-center gap-1 text-xs font-extrabold">
+              {sideMark}
+              <span className="truncate">{label}</span>
+            </span>
           </span>
           <ChevronDown
             className={cn(
@@ -73,8 +97,9 @@ export function TrackPanel({
           >
             <Icon className="text-muted-foreground size-3.5 shrink-0" strokeWidth={1.75} />
             <span className="min-w-0 flex-1">
-              <span className="text-muted-foreground block truncate text-[10px] leading-3">
-                {label}
+              <span className="flex min-w-0 items-center gap-1 text-[10px] leading-3 text-muted-foreground">
+                {sideMark}
+                <span className="truncate">{label}</span>
               </span>
               {!richSummary && (
                 <span className="mt-0.5 block min-h-4 truncate text-xs leading-4 font-extrabold">

@@ -61,6 +61,11 @@
     --stat-invest-heavy-fg: #1d4ed8;
     --stat-invest-heavy-bg: #c9d9ff;
 
+    /* Battle-side identity markers */
+    --battle-side-attacker: #c42b28;
+    --battle-side-defender: #1d4ed8;
+    --battle-side-foreground: #ffffff;
+
     /* Damage domain tokens */
     --damage-safe-start: #c6e35a;
     --damage-safe-end: #5f9f2c;

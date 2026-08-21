@@ -74,6 +74,16 @@ Colors are semantic. They communicate hierarchy or state, never decoration.
 
 Pokémon types, effectiveness, Stat Value Label chips, HP, and damage use separate domain tokens. Domain colors must not be reused as general HUD chrome.
 
+Battle-side identity markers use their own domain tokens so their meaning remains independent of damage and Stat Value colors:
+
+| Token | Value | Role |
+| --- | --- | --- |
+| `battle-side-attacker` | `#c42b28` | Attacker identity marker |
+| `battle-side-defender` | `#1d4ed8` | Defender identity marker |
+| `battle-side-foreground` | `#ffffff` | Text and icons on battle-side markers |
+
+Battle-side color is always paired with `ATK` / `DEF`, a distinct icon, or a localized accessible name. Color alone never carries side identity.
+
 ### Damage box tone
 
 The damage pill is domain data ink. Crit whiskers stay `--damage-critical` and do not choose the fill.

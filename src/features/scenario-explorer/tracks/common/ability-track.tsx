@@ -82,7 +82,8 @@ export function AbilityTrack({
   return (
     <TrackPanel
       icon={Sparkles}
-      label={<FormattedMessage id={labelId} />}
+      label={<FormattedMessage id="track.ability" />}
+      side={labelId === "track.attackerAbility" ? "attacker" : "defender"}
       summary={summary || "-"}
       expanded={expanded}
       onToggle={onToggle}
