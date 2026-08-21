@@ -1,4 +1,4 @@
-import { CircleSlash, PackageOpen } from "lucide-react"
+import { CircleQuestionMark, CircleSlash } from "lucide-react"
 import { useState } from "react"
 
 import { EXPLICIT_NO_ITEM_ID, itemSpriteUrl } from "@/lib/held-item"
@@ -30,7 +30,7 @@ export function HeldItemSpriteIcon({
   }
 
   if (!url || failedUrl === url) {
-    return <PackageOpen className={cn(markClassName, "text-hud-muted/60")} aria-hidden />
+    return <CircleQuestionMark className={cn(markClassName, "text-hud-muted/60")} aria-hidden />
   }
 
   return (
