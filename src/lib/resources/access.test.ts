@@ -63,9 +63,20 @@ describe("localized resource access", () => {
       id: 91,
       locale: "zh-hant",
       name: "適應力",
+      description: "與自身同屬性的招式 威力會提高。",
     })
     expect(garchomp.abilityIds).toEqual([8, 24])
     expect(gengar.abilityIds).not.toContain(26)
+  })
+
+  it("normalizes ability descriptions and falls back to English", async () => {
+    const [localized, english] = await Promise.all([
+      getResource("ability", 268, "zh-hans"),
+      getResource("ability", 268, "en"),
+    ])
+
+    expect(localized.description).toBe(english.description)
+    expect(localized.description).not.toMatch(/\s{2,}|[\r\n]/)
   })
 
   it("looks up Pokemon and move resources by numeric upstream id", async () => {

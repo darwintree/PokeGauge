@@ -16,6 +16,7 @@ import {
   heldItemWarning,
   isFormTriggerItem,
   itemAriaLabel,
+  itemDescription,
   type HeldItemId,
 } from "@/lib/held-item"
 import type { SupportedLocale } from "@/lib/i18n"
@@ -144,7 +145,9 @@ export function HeldItemTrack({
           })}
         >
           {displayPoolIds.map((id) => {
-            const label = optionById.get(id)?.label ?? itemAriaLabel(id, locale)
+            const option = optionById.get(id)
+            const label = option?.label ?? itemAriaLabel(id, locale)
+            const description = option?.summary ?? itemDescription(id, locale)
             const warning = heldItemWarning(id)
             const warningText = warning
               ? intl.formatMessage({ id: `track.item.warning.${warning}` })
@@ -155,7 +158,8 @@ export function HeldItemTrack({
             const formHint = formTrigger
               ? intl.formatMessage({ id: "track.item.formTrigger.hint" })
               : null
-            const detailParts = [label, formHint, warningText].filter(Boolean)
+            const ariaParts = [label, formHint, warningText].filter(Boolean)
+            const detailParts = [label, description, formHint, warningText].filter(Boolean)
 
             return (
               <TrackOption
@@ -163,8 +167,10 @@ export function HeldItemTrack({
                 layout="icon"
                 pressed={!formTrigger && selectedIds.includes(id)}
                 disabled={lockedId !== null}
-                ariaLabel={detailParts.join(", ")}
-                tooltip={detailParts.join("\n")}
+                ariaLabel={ariaParts.join(", ")}
+                tooltip={(
+                  <span className="whitespace-pre-line">{detailParts.join("\n")}</span>
+                )}
                 modifier={{ kind: "core" }}
                 className={cn(
                   "relative max-lg:size-11",

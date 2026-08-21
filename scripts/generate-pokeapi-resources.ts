@@ -192,37 +192,42 @@ const missingLocaleNames: Array<{
 }> = []
 const unsupportedBattleIdentities: Array<{ id: number; reason: string }> = []
 
-function parseCsvLine(line: string): string[] {
-  const cells: string[] = []
+function parseCsv(text: string): string[][] {
+  const rows: string[][] = []
+  let row: string[] = []
   let cell = ""
   let quoted = false
 
-  for (let i = 0; i < line.length; i += 1) {
-    const char = line[i]
+  for (let i = 0; i < text.length; i += 1) {
+    const char = text[i]
     if (char === "\"") {
-      if (quoted && line[i + 1] === "\"") {
+      if (quoted && text[i + 1] === "\"") {
         cell += "\""
         i += 1
       } else {
         quoted = !quoted
       }
     } else if (char === "," && !quoted) {
-      cells.push(cell)
+      row.push(cell)
+      cell = ""
+    } else if ((char === "\n" || char === "\r") && !quoted) {
+      if (char === "\r" && text[i + 1] === "\n") i += 1
+      row.push(cell)
+      rows.push(row)
+      row = []
       cell = ""
     } else {
       cell += char
     }
   }
-  cells.push(cell)
-  return cells
+  if (cell || row.length > 0) rows.push([...row, cell])
+  return rows
 }
 
 async function readCsv(name: string): Promise<CsvRow[]> {
   const text = await readFile(path.join(CSV_ROOT, `${name}.csv`), "utf8")
-  const [headerLine, ...lines] = text.trimEnd().split(/\r?\n/)
-  const headers = parseCsvLine(headerLine)
-  return lines.map((line) => {
-    const values = parseCsvLine(line)
+  const [headers, ...rows] = parseCsv(text)
+  return rows.map((values) => {
     return Object.fromEntries(headers.map((header, index) => [header, values[index] ?? ""]))
   })
 }
@@ -286,6 +291,34 @@ function namesByLocale(
   ) as Record<SupportedLocale, string>
 }
 
+function descriptionsByLocale(rows: CsvRow[]): Record<SupportedLocale, string> {
+  const latestByLanguage = new Map<number, { versionGroupId: number; text: string }>()
+  for (const row of rows) {
+    const languageId = requiredNumber(row, "language_id")
+    const versionGroupId = requiredNumber(row, "version_group_id")
+    const current = latestByLanguage.get(languageId)
+    if (!current || versionGroupId > current.versionGroupId) {
+      latestByLanguage.set(languageId, {
+        versionGroupId,
+        text: row.flavor_text.replace(/\s+/g, " ").trim(),
+      })
+    }
+  }
+
+  const english = latestByLanguage.get(9)?.text ?? ""
+  return Object.fromEntries(
+    SUPPORTED_LOCALES.map((locale) => {
+      const localized = LANGUAGE_IDS[locale]
+        .map((languageId, priority) => ({ priority, entry: latestByLanguage.get(languageId) }))
+        .filter((candidate) => candidate.entry !== undefined)
+        .toSorted((a, b) =>
+          b.entry!.versionGroupId - a.entry!.versionGroupId || a.priority - b.priority
+        )[0]?.entry?.text
+      return [locale, localized ?? english]
+    }),
+  ) as Record<SupportedLocale, string>
+}
+
 function stableJson(value: unknown): string {
   return JSON.stringify(value, null, 2)
 }
@@ -338,9 +371,11 @@ async function main() {
     metaCategoryRows,
     abilityRows,
     abilityNameRows,
+    abilityFlavorTextRows,
     pokemonAbilityRows,
     itemRows,
     itemNameRows,
+    itemFlavorTextRows,
   ] = await Promise.all([
     readCsv("pokemon"),
     readCsv("pokemon_species"),
@@ -362,9 +397,11 @@ async function main() {
     readCsv("move_meta_categories"),
     readCsv("abilities"),
     readCsv("ability_names"),
+    readCsv("ability_flavor_text"),
     readCsv("pokemon_abilities"),
     readCsv("items"),
     readCsv("item_names"),
+    readCsv("item_flavor_text"),
   ])
 
   for (const row of typeRows) TYPE_BY_ID[row.id] = row.identifier
@@ -514,6 +551,7 @@ async function main() {
     .map(([pokemonId, moveIds]) => [pokemonId, [...moveIds].sort((a, b) => a - b)] as const)
 
   const abilityNamesByAbilityId = groupByNumber(abilityNameRows, "ability_id")
+  const abilityDescriptionsByAbilityId = groupByNumber(abilityFlavorTextRows, "ability_id")
   const abilityEntries = abilityRows.flatMap((ability) => {
     const id = requiredNumber(ability, "id")
     const names = namesByLocale("ability", id, abilityNamesByAbilityId.get(id) ?? [], "name")
@@ -528,12 +566,14 @@ async function main() {
           slug: ability.identifier,
           calcAbilityName,
           names,
+          descriptions: descriptionsByLocale(abilityDescriptionsByAbilityId.get(id) ?? []),
         },
       ] as const,
     ]
   })
 
   const itemNamesByItemId = groupByNumber(itemNameRows, "item_id")
+  const itemDescriptionsByItemId = groupByNumber(itemFlavorTextRows, "item_id")
   const itemById = indexById(itemRows)
   const heldItemEntries = FROZEN_HELD_ITEMS.map((inventoryItem) => {
     const itemRow = itemById.get(inventoryItem.id)
@@ -551,6 +591,9 @@ async function main() {
           inventoryItem.id,
           itemNamesByItemId.get(inventoryItem.id) ?? [],
           "name",
+        ),
+        descriptions: descriptionsByLocale(
+          itemDescriptionsByItemId.get(inventoryItem.id) ?? [],
         ),
         spriteSourcePath: itemSpriteSourcePath(inventoryItem.id, slug),
       },
@@ -570,6 +613,7 @@ async function main() {
           slug,
           calcItemName: itemNamesByItemId.get(id)?.find((row) => row.local_language_id === "9")?.name ?? slug,
           names: namesByLocale("item", id, itemNamesByItemId.get(id) ?? [], "name"),
+          descriptions: descriptionsByLocale(itemDescriptionsByItemId.get(id) ?? []),
           spriteSourcePath: itemSpriteSourcePath(id, slug),
         },
       ] as const

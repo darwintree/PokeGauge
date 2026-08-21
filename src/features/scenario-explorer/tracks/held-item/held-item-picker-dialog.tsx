@@ -147,7 +147,12 @@ export function HeldItemPickerDialog({
             <span className="grid size-9 place-items-center rounded-md bg-token-bg">
               <HeldItemSpriteIcon id={option.id} />
             </span>
-            <span className="min-w-0 truncate text-sm font-medium">{option.label}</span>
+            <span className="min-w-0">
+              <span className="block text-sm font-bold">{option.label}</span>
+              <span className="mt-0.5 block text-xs leading-snug text-muted-foreground">
+                {option.summary}
+              </span>
+            </span>
             {formTrigger ? (
               <span
                 className="rounded-[5px] bg-ink px-1.5 py-0.5 text-[9px] font-extrabold tracking-wide text-paper"

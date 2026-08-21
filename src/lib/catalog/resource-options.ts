@@ -64,12 +64,20 @@ export async function abilityOptions(
   locale: SupportedLocale,
 ): Promise<CatalogAbilityOption[]> {
   if (abilityIds.length === 0) {
-    return [{ id: UNKNOWN_ABILITY_ID, label: localeMessages[locale]["track.ability.unknown"], summary: "" }]
+    return [{
+      id: UNKNOWN_ABILITY_ID,
+      label: localeMessages[locale]["track.ability.unknown"],
+      summary: localeMessages[locale]["track.description.unavailable"],
+    }]
   }
   return Promise.all(
     abilityIds.map(async (id) => {
       const ability = await getResource("ability", id, locale)
-      return { id, label: ability.name, summary: "" }
+      return {
+        id,
+        label: ability.name,
+        summary: ability.description || localeMessages[locale]["track.description.unavailable"],
+      }
     }),
   )
 }
@@ -79,7 +87,7 @@ export function noAbilityOption(locale: SupportedLocale): CatalogAbilityOption {
     id: NO_ABILITY_ID,
     label: "—",
     accessibleLabel: localeMessages[locale]["track.ability.none"],
-    summary: "",
+    summary: localeMessages[locale]["track.ability.noneDescription"],
   }
 }
 

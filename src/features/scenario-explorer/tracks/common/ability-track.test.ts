@@ -162,6 +162,26 @@ it("marks assumed-satisfied abilities with green disclosure and no red unsupport
   expect(markup).not.toMatch(/bg-destructive[^"]*bg-signal-green|bg-signal-green[^"]*bg-destructive/)
 })
 
+it("shows ability descriptions in tooltips and a touch-accessible disclosure", () => {
+  const markup = renderToStaticMarkup(createElement(
+    IntlProvider,
+    { locale: "en", messages: localeMessages.en },
+    createElement(AbilityTrack, {
+      labelId: "track.attackerAbility",
+      options: [
+        { id: 91, label: "Adaptability", summary: "Powers up same-type moves." },
+      ],
+      selectedIds: [91],
+      onChange: () => {},
+      onReset: () => {},
+    }),
+  ))
+
+  expect(markup).toContain("Powers up same-type moves.")
+  expect(markup).toContain("<details")
+  expect(markup).toContain("View ability descriptions")
+})
+
 it("renders active abilities inline and folds inactive and unsupported states", () => {
   const row: ScenarioResult = {
     support: "supported",
