@@ -90,53 +90,32 @@ export function TrackPanel({
             type="button"
             aria-expanded={expanded}
             onClick={onToggle}
-            className={cn(
-              "hover:bg-token-bg/60 focus-visible:ring-ring flex min-w-0 items-center gap-2 text-left focus-visible:ring-2 focus-visible:outline-none",
-              !richSummary && "flex-1",
-            )}
+            className="hover:bg-token-bg/60 focus-visible:ring-ring flex min-w-0 flex-1 items-center gap-2 text-left focus-visible:ring-2 focus-visible:outline-none"
           >
             <Icon className="text-muted-foreground size-3.5 shrink-0" strokeWidth={1.75} />
-            <span className="min-w-0 flex-1">
+            <div className="min-w-0 flex-1">
               <span className="flex min-w-0 items-center gap-1 text-[10px] leading-3 text-muted-foreground">
                 {sideMark}
                 <span className="truncate">{label}</span>
               </span>
-              {!richSummary && (
-                <span className="mt-0.5 block min-h-4 truncate text-xs leading-4 font-extrabold">
-                  {summary}
-                </span>
-              )}
-            </span>
-            {!richSummary && (
-              <ChevronDown
+              <div
                 className={cn(
-                  "text-muted-foreground size-3.5 shrink-0 transition-transform",
-                  expanded && "rotate-180",
+                  "mt-0.5 min-h-4 text-xs leading-4 font-extrabold",
+                  !richSummary && "truncate",
                 )}
-              />
-            )}
+              >
+                {summary}
+              </div>
+            </div>
+            <ChevronDown
+              className={cn(
+                "text-muted-foreground size-3.5 shrink-0 transition-transform",
+                expanded && "rotate-180",
+              )}
+            />
           </button>
           {labelExtra}
-          {richSummary && (
-            <>
-              <div className="min-w-0 flex-1">{summary}</div>
-              {trailing}
-              <button
-                type="button"
-                tabIndex={-1}
-                aria-hidden
-                onClick={onToggle}
-                className="hover:bg-token-bg/60 shrink-0 rounded-sm p-0.5"
-              >
-                <ChevronDown
-                  className={cn(
-                    "text-muted-foreground size-3.5 transition-transform",
-                    expanded && "rotate-180",
-                  )}
-                />
-              </button>
-            </>
-          )}
+          {trailing}
         </div>
       )}
       {stack && !expanded && (

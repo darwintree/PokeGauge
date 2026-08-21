@@ -87,7 +87,7 @@ describe("held-item Tracks", () => {
     expect(onChange).not.toHaveBeenCalled()
   })
 
-  it("collapses selected items onto a second row", async () => {
+  it("collapses selected items into the header row", async () => {
     const catalog = await getCatalogShell(445, 727, "en")
 
     await renderTrack({
@@ -102,7 +102,10 @@ describe("held-item Tracks", () => {
     })
 
     const section = container.querySelector("section")
-    expect(section?.querySelectorAll(":scope > div")).toHaveLength(2)
+    expect(section?.querySelectorAll(":scope > div")).toHaveLength(1)
+    expect(
+      section?.querySelector('button[aria-expanded="false"] img[src*="life-orb"]'),
+    ).not.toBeNull()
     expect(container.querySelector("button.track-option")).toBeNull()
     expect(container.querySelector('button[aria-label="Add held item"]')).toBeNull()
     expect(container.querySelector('img[src*="life-orb"]')).not.toBeNull()

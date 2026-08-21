@@ -121,15 +121,14 @@ export function HeldItemTrack({
         label={<FormattedMessage id="track.item" />}
         side={side}
         summary={
-          <span className="flex w-full min-w-0 flex-wrap items-center gap-1.5">
+          <span className="flex shrink-0 items-center gap-1.5">
             {selectedIds.map((id) => (
               <span key={String(id)} title={itemAriaLabel(id, locale)}>
-                <HeldItemSpriteIcon id={id} className="size-5" />
+                <HeldItemSpriteIcon id={id} className="size-4" />
               </span>
             ))}
           </span>
         }
-        summaryLayout="stack"
         expanded={expanded}
         onToggle={onToggle}
       >
