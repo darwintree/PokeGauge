@@ -31,7 +31,7 @@ const attackerEligible = new Set(ATTACKER_HELD_ITEM_IDS)
 const defenderEligible = new Set(DEFENDER_HELD_ITEM_IDS)
 const selectable = new Set([6, 10034, 10035, 445, 10058])
 
-it("builds the top-10 boundary without backfill and selects non-form-trigger items", async () => {
+it("builds the top-10 boundary without backfill", async () => {
   setChampionsItemUsageFetcherForTest(async (battlePokemonId) => [
     record(battlePokemonId, { itemId: 717, rank: 1, percentage: 95, championsItemName: "Charizardite Y" }),
     record(battlePokemonId, { itemId: 247, rank: 2, percentage: 3, championsItemName: "Life Orb" }),
@@ -51,14 +51,13 @@ it("builds the top-10 boundary without backfill and selects non-form-trigger ite
   const result = await resolveDefaultHeldItemPick({
     battlePokemonId: 6,
     lockedItemId: null,
-    side: "attacker",
     sideEligibleIds: attackerEligible,
     selectableIds: selectable,
   })
 
   expect(result.status).toBe("ready")
   expect(result.poolIds).toEqual(["none", 717, 247])
-  expect(result.selectedIds).toEqual(["none", 247])
+  expect(result.selectedIds).toEqual(["none"])
 })
 
 it("keeps none in the pool and selection when usage is empty or only form-triggers remain", async () => {
@@ -70,12 +69,26 @@ it("keeps none in the pool and selection when usage is empty or only form-trigge
     resolveDefaultHeldItemPick({
       battlePokemonId: 6,
       lockedItemId: null,
-      side: "attacker",
       sideEligibleIds: attackerEligible,
       selectableIds: selectable,
     }),
   ).resolves.toEqual({
     poolIds: ["none", 717],
+    selectedIds: ["none"],
+    status: "ready",
+  })
+
+  setChampionsItemUsageFetcherForTest(async () => [])
+
+  await expect(
+    resolveDefaultHeldItemPick({
+      battlePokemonId: 6,
+      lockedItemId: null,
+      sideEligibleIds: attackerEligible,
+      selectableIds: selectable,
+    }),
+  ).resolves.toEqual({
+    poolIds: ["none"],
     selectedIds: ["none"],
     status: "ready",
   })
@@ -88,7 +101,6 @@ it("keeps none in the pool and selection when usage is empty or only form-trigge
     resolveDefaultHeldItemPick({
       battlePokemonId: 6,
       lockedItemId: null,
-      side: "attacker",
       sideEligibleIds: attackerEligible,
       selectableIds: selectable,
     }),
@@ -99,47 +111,50 @@ it("keeps none in the pool and selection when usage is empty or only form-trigge
   })
 })
 
-it("caps unlocked attacker default selection at none plus two ordinary items", async () => {
+it("omits none when selected attacker items have under 10% no-effect usage", async () => {
   setChampionsItemUsageFetcherForTest(async (battlePokemonId) => [
-    record(battlePokemonId, { itemId: 717, rank: 1, percentage: 40, championsItemName: "Charizardite Y" }),
+    record(battlePokemonId, { itemId: 717, rank: 1, percentage: 5, championsItemName: "Charizardite Y" }),
     record(battlePokemonId, { itemId: 247, rank: 2, percentage: 30, championsItemName: "Life Orb" }),
     record(battlePokemonId, { itemId: 245, rank: 3, percentage: 20, championsItemName: "Expert Belt" }),
-    record(battlePokemonId, { itemId: 197, rank: 4, percentage: 10, championsItemName: "Choice Band" }),
+    record(battlePokemonId, { itemId: 197, rank: 4, percentage: 15, championsItemName: "Choice Band" }),
+    record(battlePokemonId, { itemId: 220, rank: 5, percentage: 10, championsItemName: "Metronome" }),
+    record(battlePokemonId, { itemId: 214, rank: 6, percentage: null, championsItemName: "White Herb" }),
+    record(battlePokemonId, { itemId: null, rank: 7, percentage: 4, championsItemName: "nothing" }),
   ])
 
   await expect(
     resolveDefaultHeldItemPick({
       battlePokemonId: 6,
       lockedItemId: null,
-      side: "attacker",
       sideEligibleIds: attackerEligible,
       selectableIds: selectable,
     }),
   ).resolves.toEqual({
-    poolIds: ["none", 717, 247, 245, 197],
-    selectedIds: ["none", 247, 245],
+    poolIds: ["none", 717, 247, 245, 197, 220, 214],
+    selectedIds: [247, 245, 197],
     status: "ready",
   })
 })
 
-it("keeps unlocked defender default selection as none plus every ordinary pool item", async () => {
+it("keeps none when selected defender items have exactly 10% no-effect usage", async () => {
   setChampionsItemUsageFetcherForTest(async (battlePokemonId) => [
     record(battlePokemonId, { itemId: 176, rank: 1, percentage: 40, championsItemName: "Babiri Berry" }),
     record(battlePokemonId, { itemId: 172, rank: 2, percentage: 30, championsItemName: "Charti Berry" }),
-    record(battlePokemonId, { itemId: 190, rank: 3, percentage: 20, championsItemName: "Bright Powder" }),
+    record(battlePokemonId, { itemId: 190, rank: 3, percentage: 10, championsItemName: "Bright Powder" }),
+    record(battlePokemonId, { itemId: 247, rank: 4, percentage: 6, championsItemName: "Life Orb" }),
+    record(battlePokemonId, { itemId: null, rank: 5, percentage: 4, championsItemName: "nothing" }),
   ])
 
   await expect(
     resolveDefaultHeldItemPick({
       battlePokemonId: 143,
       lockedItemId: null,
-      side: "defender",
       sideEligibleIds: defenderEligible,
       selectableIds: selectable,
     }),
   ).resolves.toEqual({
     poolIds: ["none", 176, 172, 190],
-    selectedIds: ["none", 176, 172, 190],
+    selectedIds: ["none", 176, 172],
     status: "ready",
   })
 })
@@ -153,7 +168,6 @@ it("short-circuits locked identities to the locked item only", async () => {
     resolveDefaultHeldItemPick({
       battlePokemonId: 10034,
       lockedItemId: 699,
-      side: "attacker",
       sideEligibleIds: attackerEligible,
       selectableIds: selectable,
     }),

@@ -46,7 +46,6 @@ export type DefaultHeldItemPick = {
 export async function resolveDefaultHeldItemPick(input: {
   battlePokemonId: BattlePokemonId
   lockedItemId: HeldItemId | null
-  side: "attacker" | "defender"
   sideEligibleIds: ReadonlySet<number>
   selectableIds: ReadonlySet<BattlePokemonId>
 }): Promise<DefaultHeldItemPick> {
@@ -69,8 +68,11 @@ export async function resolveDefaultHeldItemPick(input: {
 
     const poolIds: HeldItemId[] = []
     const selectedIds: HeldItemId[] = []
+    let noEffectUsage = 0
 
     for (const row of boundary) {
+      const hasEffect = row.itemId != null && input.sideEligibleIds.has(row.itemId)
+      if (!hasEffect) noEffectUsage += row.percentage ?? 0
       if (row.itemId == null) continue
       if (isFormTriggerItem(row.itemId)) {
         if (
@@ -84,14 +86,18 @@ export async function resolveDefaultHeldItemPick(input: {
         }
         continue
       }
-      if (!input.sideEligibleIds.has(row.itemId)) continue
+      if (!hasEffect) continue
       poolIds.push(row.itemId)
-      if (input.side === "defender" || selectedIds.length < 2) selectedIds.push(row.itemId)
+      if (row.percentage != null && row.percentage > 10) selectedIds.push(row.itemId)
+    }
+
+    if (selectedIds.length === 0 || noEffectUsage >= 10) {
+      selectedIds.unshift(EXPLICIT_NO_ITEM_ID)
     }
 
     return {
       poolIds: [EXPLICIT_NO_ITEM_ID, ...poolIds],
-      selectedIds: [EXPLICIT_NO_ITEM_ID, ...selectedIds],
+      selectedIds,
       status: "ready",
     }
   } catch {
