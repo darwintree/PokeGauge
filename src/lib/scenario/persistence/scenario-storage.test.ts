@@ -10,7 +10,7 @@ import {
   type PersistedTrackState,
   type ScenarioSnapshotInput,
 } from "@/lib/scenario"
-import { defaultTrackState } from "@/lib/scenario"
+import { defaultTrackState, offensePresetsForState } from "@/lib/scenario"
 import { NO_ABILITY_ID } from "@/lib/ability"
 
 function scenario(): ScenarioSnapshotInput {
@@ -272,7 +272,10 @@ describe("scenario storage", () => {
 
   it("rebuilds a dual-store Range selected set from the saved interval", async () => {
     const { currentCatalog, snapshot } = await compatibleScenario()
-    const extreme = snapshot.trackState.statRange.max
+    const extremePreset = offensePresetsForState(currentCatalog, snapshot.trackState)
+      .find((preset) => preset.id === "extreme")
+    if (extremePreset?.values.kind !== "offense") throw new Error("Expected EX")
+    const extreme = extremePreset.values.stat
     const raw: PersistedTrackState = {
       ...snapshot.trackState,
       statMode: "range",

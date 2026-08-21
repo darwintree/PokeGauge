@@ -11,6 +11,7 @@ import type {
   ChampionsBattleFormat,
   ChampionsItemUsageRecord,
   ChampionsMoveUsageRecord,
+  ChampionsNatureUsageRecord,
 } from "./types"
 
 const CHAMPIONS_FORMAT: ChampionsBattleFormat = "Doubles"
@@ -83,6 +84,10 @@ let abilityUsageFetcher: (
 const itemUsageCache = new Map<BattlePokemonId, Promise<ChampionsItemUsageRecord[]>>()
 let itemUsageFetcher: (battlePokemonId: BattlePokemonId) => Promise<ChampionsItemUsageRecord[]> =
   fetchChampionsItemUsageOnline
+const natureUsageCache = new Map<BattlePokemonId, Promise<ChampionsNatureUsageRecord[]>>()
+let natureUsageFetcher: (
+  battlePokemonId: BattlePokemonId,
+) => Promise<ChampionsNatureUsageRecord[]> = fetchChampionsNatureUsageOnline
 let pokemonUsagePromise: Promise<BattlePokemonId[]> | undefined
 let pokemonUsageFetcher: () => Promise<BattlePokemonId[]> = fetchChampionsPokemonUsageOnline
 let championsIndexPromise: Promise<ChampionsIndexApi> | undefined
@@ -117,7 +122,13 @@ function fetchChampionsIndex(): Promise<ChampionsIndexApi> {
 function championsIndexByName(index: ChampionsIndexApi): Map<string, ChampionsIndexPokemon> {
   return new Map(
     (index.pokemon ?? []).flatMap((pokemon) =>
-      [pokemon.name, pokemon.battleName, pokemon.slug]
+      [
+        pokemon.showdownId,
+        pokemon.showdownName,
+        pokemon.name,
+        pokemon.battleName,
+        pokemon.slug,
+      ]
         .filter(Boolean)
         .map((name) => [normalizeJoinName(name), pokemon] as const),
     ),
@@ -286,6 +297,26 @@ async function fetchChampionsItemUsageOnline(
     }))
 }
 
+async function fetchChampionsNatureUsageOnline(
+  battlePokemonId: BattlePokemonId,
+): Promise<ChampionsNatureUsageRecord[]> {
+  const battleData = await fetchChampionsBattleData(battlePokemonId)
+  if (!battleData) return []
+
+  return (battleData.data ?? battleData.rows ?? [])
+    .filter((row) => row.category === "stat_alignment")
+    .map((row) => ({
+      battlePokemonId,
+      format: CHAMPIONS_FORMAT,
+      season: battleData.season,
+      source: battleData.source,
+      dataVersion: battleData.dataVersion ?? "",
+      rank: row.rank,
+      percentage: row.percentage_value ?? null,
+      nature: row.name,
+    }))
+}
+
 export async function listChampionsMoveUsageRecords(
   battlePokemonId: BattlePokemonId,
 ): Promise<ChampionsMoveUsageRecord[]> {
@@ -370,6 +401,34 @@ export function resetChampionsItemUsageFetcherForTest(): void {
   itemUsageFetcher = fetchChampionsItemUsageOnline
 }
 
+export async function listChampionsNatureUsageRecords(
+  battlePokemonId: BattlePokemonId,
+): Promise<ChampionsNatureUsageRecord[]> {
+  let promise = natureUsageCache.get(battlePokemonId)
+  if (!promise) {
+    promise = natureUsageFetcher(battlePokemonId)
+    natureUsageCache.set(battlePokemonId, promise)
+    promise.catch(() => {
+      if (natureUsageCache.get(battlePokemonId) === promise) {
+        natureUsageCache.delete(battlePokemonId)
+      }
+    })
+  }
+  return promise
+}
+
+export function setChampionsNatureUsageFetcherForTest(
+  fetcher: (battlePokemonId: BattlePokemonId) => Promise<ChampionsNatureUsageRecord[]>,
+): void {
+  natureUsageCache.clear()
+  natureUsageFetcher = fetcher
+}
+
+export function resetChampionsNatureUsageFetcherForTest(): void {
+  natureUsageCache.clear()
+  natureUsageFetcher = fetchChampionsNatureUsageOnline
+}
+
 export function listChampionsPokemonUsageIds(): Promise<BattlePokemonId[]> {
   pokemonUsagePromise ??= pokemonUsageFetcher()
   return pokemonUsagePromise
@@ -395,6 +454,7 @@ export function setChampionsJsonFetcherForTest(
   usageCache.clear()
   abilityUsageCache.clear()
   itemUsageCache.clear()
+  natureUsageCache.clear()
   pokemonUsagePromise = undefined
   jsonFetcher = fetcher
 }
@@ -405,6 +465,7 @@ export function resetChampionsJsonFetcherForTest(): void {
   usageCache.clear()
   abilityUsageCache.clear()
   itemUsageCache.clear()
+  natureUsageCache.clear()
   pokemonUsagePromise = undefined
   jsonFetcher = fetchJsonFromNetwork
 }

@@ -12,6 +12,7 @@ export function useScenarioSnapshotPersistence({
   trackState,
   catalogTransitionPending,
   movesTouchedRef,
+  offenseTouchedRef,
   attackerAbilitiesTouchedRef,
   defenderAbilitiesTouchedRef,
   attackerItemsTouchedRef,
@@ -22,6 +23,7 @@ export function useScenarioSnapshotPersistence({
   trackState: TrackState
   catalogTransitionPending: boolean
   movesTouchedRef: RefObject<boolean>
+  offenseTouchedRef: RefObject<boolean>
   attackerAbilitiesTouchedRef: RefObject<boolean>
   defenderAbilitiesTouchedRef: RefObject<boolean>
   attackerItemsTouchedRef: RefObject<boolean>
@@ -33,6 +35,7 @@ export function useScenarioSnapshotPersistence({
     if (!enabled || catalogTransitionPending) return
     const untouchedDefaultsPending =
       (catalog.defaultMovePickStatus === "loading" && !movesTouchedRef.current) ||
+      (catalog.defaultStatPickStatus === "loading" && !offenseTouchedRef.current) ||
       (catalog.defaultAbilityPickStatus === "loading" &&
         (!attackerAbilitiesTouchedRef.current ||
           !defenderAbilitiesTouchedRef.current)) ||
@@ -60,9 +63,11 @@ export function useScenarioSnapshotPersistence({
     catalog.defaultAbilityPickStatus,
     catalog.defaultMovePickStatus,
     catalog.defaultItemPickStatus,
+    catalog.defaultStatPickStatus,
     catalogTransitionPending,
     trackState,
     movesTouchedRef,
+    offenseTouchedRef,
     attackerAbilitiesTouchedRef,
     defenderAbilitiesTouchedRef,
     attackerItemsTouchedRef,

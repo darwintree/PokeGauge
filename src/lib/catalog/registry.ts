@@ -29,6 +29,7 @@ import {
 } from "./resource-options"
 import {
   resolveDefaultAbilityIds,
+  resolveDefaultOffensePresetId,
   resolveDefaultMovePick,
 } from "./champions-defaults"
 import { resolveDefaultHeldItemPick } from "./held-item-defaults"
@@ -139,6 +140,8 @@ export async function getCatalogShell(
       attackerLockedItemId === null || defenderLockedItemId === null
         ? "loading"
         : "ready",
+    defaultStatPickStatus: "loading",
+    defaultOffensePresetId: "neutral-max",
     defaultMovePoolIds: [],
     defaultMoveIds: [],
     defaultAttackerItemPoolIds:
@@ -175,6 +178,7 @@ export async function resolveCatalogDefaultMovePick(
     defaultDefenderAbilityIds,
     attackerItemPick,
     defenderItemPick,
+    defaultOffensePresetId,
   ] = await Promise.all([
     resolveDefaultMovePick(
       catalog.matchup.attackerId,
@@ -198,6 +202,7 @@ export async function resolveCatalogDefaultMovePick(
       sideEligibleIds: new Set(DEFENDER_HELD_ITEM_IDS),
       selectableIds: selectableDefenderIds,
     }),
+    resolveDefaultOffensePresetId(catalog.matchup.attackerId, catalog.moveCategory),
   ])
 
   // Each side already embeds none-fallback on failure; gate sync on non-loading only.
@@ -211,6 +216,8 @@ export async function resolveCatalogDefaultMovePick(
     ...defaultMovePick,
     defaultAbilityPickStatus: "ready",
     defaultItemPickStatus: itemStatus,
+    defaultStatPickStatus: "ready",
+    defaultOffensePresetId,
     defaultAttackerAbilityIds,
     defaultDefenderAbilityIds,
     defaultAttackerItemPoolIds: attackerItemPick.poolIds,

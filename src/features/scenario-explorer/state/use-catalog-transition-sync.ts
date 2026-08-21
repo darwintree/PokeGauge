@@ -3,8 +3,9 @@ import { useEffect, useRef, type Dispatch, type SetStateAction } from "react"
 import type { MatchupCatalog } from "@/lib/catalog"
 import type { HeldItemId } from "@/lib/held-item"
 import {
-  selectedSnapshotMoveIds,
+  defaultTrackState,
   projectAbilitySelections,
+  selectedSnapshotMoveIds,
   snapshotMoveIds,
   snapshotsForMoveIds,
   trackStateAfterCatalogTransition,
@@ -29,6 +30,7 @@ export function useCatalogTransitionSync(
   const defenderIdRef = useRef(catalog.matchup.defenderId)
   const defaultMovePoolIdsRef = useRef<number[]>([...catalog.defaultMovePoolIds])
   const defaultMoveIdsRef = useRef<number[]>([...catalog.defaultMoveIds])
+  const defaultOffensePresetIdRef = useRef(catalog.defaultOffensePresetId)
   const defaultAttackerAbilityIdsRef = useRef<number[]>([
     ...catalog.defaultAttackerAbilityIds,
   ])
@@ -48,6 +50,7 @@ export function useCatalogTransitionSync(
     ...catalog.defaultDefenderItemIds,
   ])
   const movesTouchedRef = useRef(restored)
+  const offenseTouchedRef = useRef(restored)
   const attackerAbilitiesTouchedRef = useRef(restored)
   const defenderAbilitiesTouchedRef = useRef(restored)
   const attackerItemsTouchedRef = useRef(restored)
@@ -70,6 +73,7 @@ export function useCatalogTransitionSync(
     if (attackerOwnerChanged) {
       defaultMovePoolIdsRef.current = [...catalog.defaultMovePoolIds]
       defaultMoveIdsRef.current = [...catalog.defaultMoveIds]
+      defaultOffensePresetIdRef.current = catalog.defaultOffensePresetId
     }
     defaultAttackerAbilityIdsRef.current = [...catalog.defaultAttackerAbilityIds]
     defaultDefenderAbilityIdsRef.current = [...catalog.defaultDefenderAbilityIds]
@@ -90,6 +94,7 @@ export function useCatalogTransitionSync(
     }
     if (attackerOwnerChanged) {
       movesTouchedRef.current = false
+      offenseTouchedRef.current = false
     }
     setTrackState((state) =>
       trackStateAfterCatalogTransition(state, catalog, {
@@ -101,6 +106,25 @@ export function useCatalogTransitionSync(
     setAddingOffense()
     setAddingDefense()
   }, [catalog, setTrackState, setAddingOffense, setAddingDefense])
+
+  useEffect(() => {
+    if (catalog.defaultStatPickStatus !== "ready") return
+    const previousId = defaultOffensePresetIdRef.current
+    if (previousId === catalog.defaultOffensePresetId) return
+    defaultOffensePresetIdRef.current = catalog.defaultOffensePresetId
+    setTrackState((state) => {
+      if (offenseTouchedRef.current) return state
+      const defaults = defaultTrackState(catalog)
+      return {
+        ...state,
+        statMode: defaults.statMode,
+        offensePresetIds: defaults.offensePresetIds,
+        offenseTemporaryPresets: defaults.offenseTemporaryPresets,
+        statRange: defaults.statRange,
+        offenseAllocationIndices: defaults.offenseAllocationIndices,
+      }
+    })
+  }, [catalog, catalog.defaultOffensePresetId, catalog.defaultStatPickStatus, setTrackState])
 
   useEffect(() => {
     if (catalog.defaultMovePickStatus !== "ready") return
@@ -244,6 +268,7 @@ export function useCatalogTransitionSync(
   return {
     catalogTransitionPending,
     movesTouchedRef,
+    offenseTouchedRef,
     attackerAbilitiesTouchedRef,
     defenderAbilitiesTouchedRef,
     attackerItemsTouchedRef,

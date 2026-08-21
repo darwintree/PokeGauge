@@ -2,16 +2,19 @@ export {
   listChampionsAbilityUsageRecords,
   listChampionsItemUsageRecords,
   listChampionsMoveUsageRecords,
+  listChampionsNatureUsageRecords,
   listChampionsPokemonUsageIds,
   resetChampionsJsonFetcherForTest,
   resetChampionsAbilityUsageFetcherForTest,
   resetChampionsItemUsageFetcherForTest,
   resetChampionsMoveUsageFetcherForTest,
+  resetChampionsNatureUsageFetcherForTest,
   resetChampionsPokemonUsageFetcherForTest,
   setChampionsJsonFetcherForTest,
   setChampionsAbilityUsageFetcherForTest,
   setChampionsItemUsageFetcherForTest,
   setChampionsMoveUsageFetcherForTest,
+  setChampionsNatureUsageFetcherForTest,
   setChampionsPokemonUsageFetcherForTest,
 } from "./move-usage"
 export type {
@@ -19,4 +22,5 @@ export type {
   ChampionsBattleFormat,
   ChampionsItemUsageRecord,
   ChampionsMoveUsageRecord,
+  ChampionsNatureUsageRecord,
 } from "./types"

@@ -2,6 +2,7 @@ import { typeEffectiveness } from "@/lib/pokemon"
 import {
   listChampionsAbilityUsageRecords,
   listChampionsMoveUsageRecords,
+  listChampionsNatureUsageRecords,
   listChampionsPokemonUsageIds,
 } from "@/lib/champions"
 import type {
@@ -13,6 +14,8 @@ import type {
 } from "./types"
 import type { BattlePokemonId, UpstreamResourceId } from "@/lib/resources"
 import { NO_ABILITY_ID } from "@/lib/ability"
+import { offenseStatMod } from "@/lib/stat-preset"
+import type { OffensePresetId } from "./preset-labels"
 
 export const DEFAULT_USAGE_TIMEOUT_MS = 5_000
 
@@ -175,5 +178,27 @@ export async function resolveDefaultAbilityIds(
     return defaultId === undefined ? [...legalIds] : [defaultId]
   } catch {
     return legalAbilities.map((ability) => ability.id)
+  }
+}
+
+export async function resolveDefaultOffensePresetId(
+  battlePokemonId: BattlePokemonId,
+  category: MoveCategory,
+): Promise<OffensePresetId> {
+  try {
+    const topNature = (await withTimeout(
+      listChampionsNatureUsageRecords(battlePokemonId),
+      DEFAULT_USAGE_TIMEOUT_MS,
+    )).toSorted((a, b) =>
+      (b.percentage ?? Number.NEGATIVE_INFINITY) -
+        (a.percentage ?? Number.NEGATIVE_INFINITY) ||
+      a.rank - b.rank ||
+      a.nature.localeCompare(b.nature),
+    )[0]?.nature
+    return topNature && offenseStatMod(topNature, category) === "+"
+      ? "extreme"
+      : "neutral-max"
+  } catch {
+    return "neutral-max"
   }
 }

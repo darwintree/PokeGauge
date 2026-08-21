@@ -37,3 +37,14 @@ export type ChampionsItemUsageRecord = {
   percentage: number | null
   championsItemName: string
 }
+
+export type ChampionsNatureUsageRecord = {
+  battlePokemonId: BattlePokemonId
+  format: ChampionsBattleFormat
+  season: string
+  source: string
+  dataVersion: string
+  rank: number
+  percentage: number | null
+  nature: string
+}

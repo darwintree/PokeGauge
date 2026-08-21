@@ -160,6 +160,7 @@ export function useScenarioState(
   const {
     catalogTransitionPending,
     movesTouchedRef,
+    offenseTouchedRef,
     attackerAbilitiesTouchedRef,
     defenderAbilitiesTouchedRef,
     attackerItemsTouchedRef,
@@ -178,6 +179,7 @@ export function useScenarioState(
     trackState,
     catalogTransitionPending,
     movesTouchedRef,
+    offenseTouchedRef,
     attackerAbilitiesTouchedRef,
     defenderAbilitiesTouchedRef,
     attackerItemsTouchedRef,
@@ -253,6 +255,7 @@ export function useScenarioState(
   const { rows, unavailable } = pipelineResult
 
   function setStatMode(mode: StatSelectMode) {
+    offenseTouchedRef.current = true
     setTrackState((s) =>
       trackStateAfterOffenseMode(s, mode, offensePresetsForState(catalog, s)),
     )
@@ -265,10 +268,11 @@ export function useScenarioState(
   }
 
   const toggleOffensePreset = useCallback((id: string) => {
+    offenseTouchedRef.current = true
     setTrackState((s) =>
       trackStateAfterToggleOffense(s, id, offensePresetsForState(catalog, s)),
     )
-  }, [catalog])
+  }, [catalog, offenseTouchedRef])
 
   const toggleDefensePreset = useCallback((id: string) => {
     setTrackState((s) =>
@@ -277,6 +281,7 @@ export function useScenarioState(
   }, [catalog])
 
   function cycleOffenseAllocation(id: string) {
+    offenseTouchedRef.current = true
     setTrackState((s) => ({
       ...s,
       offenseAllocationIndices: cycleAllocationIndex(s.offenseAllocationIndices, id),
@@ -293,6 +298,7 @@ export function useScenarioState(
   function persistOffensePreset(id: string) {
     const preset = offensePresets.find((t) => t.id === id)
     if (!preset || preset.kind !== "temporary") return
+    offenseTouchedRef.current = true
     const user = newUserOffensePreset(
       preset.values.kind === "offense" ? preset.values.stat : 0,
     )
@@ -318,6 +324,7 @@ export function useScenarioState(
       offensePresetsForState(catalog, trackState),
     )
     if (!next) return
+    offenseTouchedRef.current = true
     deleteUserOffensePreset(String(catalog.matchup.attackerId), id)
     setTrackState(next)
     setUserOffenseVersion((v) => v + 1)
@@ -336,6 +343,7 @@ export function useScenarioState(
   }
 
   function confirmAddOffense(stat: number) {
+    offenseTouchedRef.current = true
     const existing = findPresetByOffenseValue(offensePresets, stat)
     if (existing) {
       setTrackState((s) =>
@@ -458,10 +466,12 @@ export function useScenarioState(
     setSelectedMoveSnapshotIds,
     setStatMode,
     toggleOffensePreset,
-    setStatRange: (statRange: TrackState["statRange"]) =>
+    setStatRange: (statRange: TrackState["statRange"]) => {
+      offenseTouchedRef.current = true
       setTrackState((s) =>
         trackStateAfterOffenseRange(s, statRange, offensePresetsForState(catalog, s)),
-      ),
+      )
+    },
     cycleOffenseAllocation,
     persistOffensePreset,
     deleteOffensePreset,

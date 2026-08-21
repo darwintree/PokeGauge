@@ -44,7 +44,7 @@ function Harness({
   return null
 }
 
-describe("ability projection lifecycle", () => {
+describe("async default lifecycle", () => {
   let root: Root
   let container: HTMLDivElement
   let storedValues: Map<string, string>
@@ -97,6 +97,30 @@ describe("ability projection lifecycle", () => {
     expect(current.trackState.attackerAbilityIds).toEqual([DRIZZLE_ABILITY_ID])
     expect(current.trackState.weathers).toEqual(["none", "rain"])
     expect(current.trackState.attackerStages).toEqual([-1, 0])
+  })
+
+  it("applies the resolved offense default unless the Stat Track was touched", async () => {
+    const shell = await getCatalogShell(445, 727, "en", "physical")
+    await render(shell)
+    expect(current.trackState.statMode).toBe("preset")
+    expect(current.trackState.offensePresetIds).toEqual(["neutral-max"])
+
+    await render({
+      ...shell,
+      defaultStatPickStatus: "ready",
+      defaultOffensePresetId: "extreme",
+    })
+    expect(current.trackState.offensePresetIds).toEqual(["extreme"])
+
+    const nextShell = await getCatalogShell(445, 727, "en", "special")
+    await render(nextShell)
+    await act(async () => current.setStatMode("range"))
+    await render({
+      ...nextShell,
+      defaultStatPickStatus: "ready",
+      defaultOffensePresetId: "extreme",
+    })
+    expect(current.trackState.statMode).toBe("range")
   })
 
   it("projects manual additions immediately and keeps touched selections on refresh", async () => {

@@ -4,6 +4,7 @@ import {
   listChampionsAbilityUsageRecords,
   listChampionsItemUsageRecords,
   listChampionsMoveUsageRecords,
+  listChampionsNatureUsageRecords,
   resetChampionsJsonFetcherForTest,
   setChampionsJsonFetcherForTest,
 } from "@/lib/champions"
@@ -43,6 +44,7 @@ function championsFixture(): {
           { category: "move", rank: 1, name: "Flamethrower", percentage_value: 90 },
           { category: "move", rank: 2, name: "Dragon Claw", percentage_value: 80 },
           { category: "ability", rank: 1, name: "Blaze", percentage_value: 100 },
+          { category: "stat_alignment", rank: 1, name: "Modest", percentage_value: 70 },
           { category: "held_item", rank: 1, name: "Charizardite Y", percentage_value: 95 },
           { category: "held_item", rank: 2, name: "Life Orb", percentage_value: 3 },
           { category: "held_item", rank: 3, name: "nothing", percentage_value: 1 },
@@ -89,17 +91,27 @@ it("inherits base species usage rows for Mega identities via the index default s
   expect(calls.index).toBe(1)
 })
 
-it("shares one battle rows fetch between move and ability consumers", async () => {
+it("shares one battle rows fetch between move, ability, and nature consumers", async () => {
   const { fetcher, calls } = championsFixture()
   setChampionsJsonFetcherForTest(fetcher)
 
-  const [moves, abilities] = await Promise.all([
+  const [moves, abilities, natures] = await Promise.all([
     listChampionsMoveUsageRecords(10034),
     listChampionsAbilityUsageRecords(10034),
+    listChampionsNatureUsageRecords(10034),
   ])
 
   expect(moves.map((record) => record.moveId)).toEqual([53, 337])
   expect(abilities.map((record) => record.abilityId)).toEqual([66])
+  expect(natures).toEqual([
+    expect.objectContaining({
+      battlePokemonId: 10034,
+      nature: "Modest",
+      rank: 1,
+      percentage: 70,
+      dataVersion: "20260729090313995",
+    }),
+  ])
   expect(calls.battle).toBe(1)
   expect(calls.index).toBe(1)
 })
@@ -109,6 +121,44 @@ it("returns no usage rows when the base species has no Champions entry", async (
   setChampionsJsonFetcherForTest(fetcher)
 
   await expect(listChampionsMoveUsageRecords(10043)).resolves.toEqual([])
+})
+
+it("matches form usage by Showdown name", async () => {
+  setChampionsJsonFetcherForTest(async (url) => {
+    if (url === "https://championsbattledata.com/api") {
+      return {
+        defaultSeason: "Current",
+        pokemon: [{
+          name: "Basculegion Male",
+          slug: "basculegion-male",
+          battleName: "Basculegion Male",
+          showdownId: "basculegion",
+          showdownName: "Basculegion",
+        }],
+      }
+    }
+    if (
+      url ===
+      "https://championsbattledata.com/api/battle/Doubles/Basculegion%20Male?season=Current"
+    ) {
+      return {
+        pokemon: "Basculegion Male",
+        format: "Doubles",
+        season: "Current",
+        source: "Basculegion Male.csv",
+        rows: [{ category: "move", rank: 1, name: "Last Respects", percentage_value: 99.9 }],
+      }
+    }
+    throw new Error(`unexpected Champions URL: ${url}`)
+  })
+
+  await expect(listChampionsMoveUsageRecords(902)).resolves.toEqual([
+    expect.objectContaining({
+      battlePokemonId: 902,
+      championsMoveName: "Last Respects",
+      percentage: 99.9,
+    }),
+  ])
 })
 
 it("inherits base species held-item usage rows for Mega identities", async () => {

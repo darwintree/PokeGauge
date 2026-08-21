@@ -4,9 +4,11 @@ import {
   resetChampionsAbilityUsageFetcherForTest,
   resetChampionsItemUsageFetcherForTest,
   resetChampionsMoveUsageFetcherForTest,
+  resetChampionsNatureUsageFetcherForTest,
   setChampionsAbilityUsageFetcherForTest,
   setChampionsItemUsageFetcherForTest,
   setChampionsMoveUsageFetcherForTest,
+  setChampionsNatureUsageFetcherForTest,
 } from "@/lib/champions"
 import { NO_ABILITY_ID } from "@/lib/ability"
 import { getCatalogShell, resolveCatalogDefaultMovePick } from "@/lib/catalog"
@@ -21,12 +23,14 @@ afterEach(() => {
   resetChampionsAbilityUsageFetcherForTest()
   resetChampionsItemUsageFetcherForTest()
   resetChampionsMoveUsageFetcherForTest()
+  resetChampionsNatureUsageFetcherForTest()
 })
 
 beforeEach(() => {
   setChampionsAbilityUsageFetcherForTest(async () => [])
   setChampionsItemUsageFetcherForTest(async () => [])
   setChampionsMoveUsageFetcherForTest(async () => [])
+  setChampionsNatureUsageFetcherForTest(async () => [])
 })
 
 describe("catalog move candidate ordering", () => {
@@ -130,6 +134,48 @@ describe("catalog move candidate ordering", () => {
     expect(catalog.defaultMovePoolIds).toEqual([])
     expect(catalog.defaultMoveIds).toEqual([])
   })
+})
+
+describe("catalog Stat Track defaults", () => {
+  it.each([
+    ["physical", "Jolly", "neutral-max"],
+    ["physical", "Adamant", "extreme"],
+    ["special", "Timid", "neutral-max"],
+    ["special", "Modest", "extreme"],
+  ] as const)(
+    "uses the top %s nature to choose 32 or EX",
+    async (category, nature, expected) => {
+      setChampionsNatureUsageFetcherForTest(async (battlePokemonId) => [
+        {
+          battlePokemonId,
+          format: "Doubles",
+          season: "test",
+          source: "test",
+          dataVersion: "test",
+          rank: 2,
+          percentage: 80,
+          nature,
+        },
+        {
+          battlePokemonId,
+          format: "Doubles",
+          season: "test",
+          source: "test",
+          dataVersion: "test",
+          rank: 1,
+          percentage: 20,
+          nature: category === "physical" ? "Adamant" : "Modest",
+        },
+      ])
+
+      const catalog = await resolveCatalogDefaultMovePick(
+        await getCatalogShell(445, 727, "en", category),
+      )
+
+      expect(catalog.defaultStatPickStatus).toBe("ready")
+      expect(catalog.defaultOffensePresetId).toBe(expected)
+    },
+  )
 })
 
 describe("catalog Held-item candidates", () => {

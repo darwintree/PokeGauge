@@ -4,7 +4,6 @@ import {
   buildSystemDefensePresets,
   buildSystemOffensePresets,
   defaultDefensePresetSelection,
-  defaultOffensePresetSelection,
   loadUserDefensePresets,
   loadUserOffensePresets,
   mergeStatPresets,
@@ -49,8 +48,8 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
     const move = catalog.moves.find((candidate) => candidate.id === moveId)
     return move ? [createMoveSnapshot(move)] : []
   })
-  const offensePresetIds = defaultOffensePresetSelection(offenseSystem, offenseUser)
-  const defensePresetIds = defaultDefensePresetSelection(defenseSystem, defenseUser)
+  const offensePresetIds = [catalog.defaultOffensePresetId]
+  const defensePresetIds = defaultDefensePresetSelection(defenseSystem, [])
   const offensePresets = mergeStatPresets(offenseSystem, offenseUser, [])
   const defensePresets = mergeStatPresets(defenseSystem, defenseUser, [])
   const statRange = offenseEnvelopeOf(offensePresets, offensePresetIds)
@@ -64,7 +63,7 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
     selectedMoveSnapshotIds: moveSnapshots
       .filter((snapshot) => catalog.defaultMoveIds.includes(snapshot.moveId))
       .map((snapshot) => snapshot.id),
-    statMode: "range",
+    statMode: "preset",
     offensePresetIds,
     offenseTemporaryPresets: [],
     statRange,
@@ -77,7 +76,7 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
     attackerAbilityIds: [...catalog.defaultAttackerAbilityIds],
     weathers: ["none"],
     terrains: ["none"],
-    defenderMode: "range",
+    defenderMode: "preset",
     defensePresetIds,
     defenseTemporaryPresets: [],
     defenderRanges,

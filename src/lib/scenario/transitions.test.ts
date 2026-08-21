@@ -24,6 +24,11 @@ import {
 import { DEFIANT_ABILITY_ID, DROUGHT_ABILITY_ID, INTIMIDATE_ABILITY_ID } from "@/lib/ability"
 import { defaultOffensePresetSelection, type StatPreset } from "@/lib/stat-preset"
 
+function offenseStat(presets: StatPreset[], id: string): number {
+  const preset = presets.find((candidate) => candidate.id === id)
+  if (preset?.values.kind !== "offense") throw new Error(`Expected offense preset ${id}`)
+  return preset.values.stat
+}
 
 describe("scenario identity transitions", () => {
   it("resets projection targets to neutral until identity defaults resolve", async () => {
@@ -148,13 +153,13 @@ describe("scenario pure transitions", () => {
     ])
   })
 
-  it("defaults a new Matchup to Range with 0A+EX and 0H0B+32H0B", async () => {
+  it("defaults a new Matchup to discrete 32A and 0H0B+32H0B selections", async () => {
     const catalog = await getCatalogShell(6, 9, "en")
     const state = defaultTrackState(catalog)
 
-    expect(state.statMode).toBe("range")
-    expect(state.defenderMode).toBe("range")
-    expect(state.offensePresetIds).toEqual(["neutral-zero", "extreme"])
+    expect(state.statMode).toBe("preset")
+    expect(state.defenderMode).toBe("preset")
+    expect(state.offensePresetIds).toEqual(["neutral-max"])
     expect(state.defensePresetIds).toEqual(["min-bulk", "hp-32"])
     expect(state.offenseTemporaryPresets).toEqual([])
     expect(state.defenseTemporaryPresets).toEqual([])
@@ -230,6 +235,7 @@ describe("scenario pure transitions", () => {
     const catalog = await getCatalogShell(6, 9, "en")
     const state = defaultTrackState(catalog)
     const presets = offensePresetsForState(catalog, state)
+    state.offensePresetIds = ["neutral-zero", "extreme"]
     const choice = trackStateAfterToggleOffense(state, "neutral-max", presets)
     const grown = trackStateAfterOffenseRange(
       choice,
@@ -251,6 +257,11 @@ describe("scenario pure transitions", () => {
     const catalog = await getCatalogShell(6, 9, "en")
     const state = defaultTrackState(catalog)
     const presets = offensePresetsForState(catalog, state)
+    state.offensePresetIds = ["neutral-zero", "extreme"]
+    state.statRange = {
+      min: offenseStat(presets, "neutral-zero"),
+      max: offenseStat(presets, "extreme"),
+    }
     const first = trackStateAfterOffenseRange(
       state,
       { min: state.statRange.min - 10, max: state.statRange.max },
@@ -307,6 +318,11 @@ describe("scenario pure transitions", () => {
     const catalog = await getCatalogShell(6, 9, "en")
     const state = defaultTrackState(catalog)
     const presets = offensePresetsForState(catalog, state)
+    state.offensePresetIds = ["neutral-zero", "extreme"]
+    state.statRange = {
+      min: offenseStat(presets, "neutral-zero"),
+      max: offenseStat(presets, "extreme"),
+    }
     const grown = trackStateAfterOffenseRange(
       state,
       { min: state.statRange.min - 10, max: state.statRange.max },
@@ -359,7 +375,7 @@ describe("scenario pure transitions", () => {
     expect(crossed.offensePresetIds).toEqual(state.offensePresetIds)
   })
 
-  it("resets Stat Tracks to the new-Matchup Range defaults on Identity change", async () => {
+  it("resets Stat Tracks to the new-Matchup discrete defaults on Identity change", async () => {
     const baseCatalog = await getCatalogShell(6, 9, "en")
     const state = defaultTrackState(baseCatalog)
     state.statMode = "preset"
@@ -375,9 +391,9 @@ describe("scenario pure transitions", () => {
       },
     )
 
-    expect(next.statMode).toBe("range")
-    expect(next.defenderMode).toBe("range")
-    expect(next.offensePresetIds).toEqual(["neutral-zero", "extreme"])
+    expect(next.statMode).toBe("preset")
+    expect(next.defenderMode).toBe("preset")
+    expect(next.offensePresetIds).toEqual(["neutral-max"])
     expect(next.defensePresetIds).toEqual(["min-bulk", "hp-32"])
   })
 
