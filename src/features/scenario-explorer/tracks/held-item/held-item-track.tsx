@@ -74,8 +74,9 @@ export function HeldItemTrack({
       battlePokemonId,
       speciesId: pokemon?.speciesId ?? battlePokemonId,
       evioliteEligible: pokemon?.evioliteEligible ?? false,
+      types: side === "attacker" ? catalog.attackerTypes : catalog.defenderTypes,
     }
-  }, [battlePokemonId])
+  }, [battlePokemonId, catalog.attackerTypes, catalog.defenderTypes, side])
 
   const optionById = useMemo(() => {
     const options = side === "attacker" ? catalog.attackerItems : catalog.defenderItems

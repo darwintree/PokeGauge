@@ -7,6 +7,13 @@ import {
   listHeldItemPickerOptions,
 } from "./picker-filters"
 
+const charizard = {
+  battlePokemonId: 6,
+  speciesId: 6,
+  evioliteEligible: false,
+  types: ["fire", "flying"] as const,
+}
+
 it("derives stackable picker tags from effect kind, gates, and form-triggers", () => {
   expect(heldItemPickerTags(247)).toEqual(["power"]) // Life Orb
   expect(heldItemPickerTags(197)).toEqual(["stat"]) // Choice Band
@@ -35,7 +42,7 @@ it("matches a single selected tag and always applies holder eligibility", () => 
     heldItemMatchesPickerFilters(lifeOrb, {
       query: "",
       tag: "power",
-      holder: { battlePokemonId: 6, speciesId: 6, evioliteEligible: false },
+      holder: charizard,
     }),
   ).toBe(true)
 
@@ -43,7 +50,7 @@ it("matches a single selected tag and always applies holder eligibility", () => 
     heldItemMatchesPickerFilters(rindo, {
       query: "",
       tag: "power",
-      holder: { battlePokemonId: 6, speciesId: 6, evioliteEligible: false },
+      holder: charizard,
     }),
   ).toBe(false)
 
@@ -51,15 +58,15 @@ it("matches a single selected tag and always applies holder eligibility", () => 
     heldItemMatchesPickerFilters(rindo, {
       query: "",
       tag: "berry",
-      holder: { battlePokemonId: 6, speciesId: 6, evioliteEligible: false },
+      holder: charizard,
     }),
-  ).toBe(true)
+  ).toBe(false)
 
   expect(
     heldItemMatchesPickerFilters(adamant, {
       query: "adam",
       tag: "exclusive",
-      holder: { battlePokemonId: 6, speciesId: 6, evioliteEligible: false },
+      holder: charizard,
     }),
   ).toBe(false)
 
@@ -68,8 +75,26 @@ it("matches a single selected tag and always applies holder eligibility", () => 
       battlePokemonId: 483,
       speciesId: 483,
       evioliteEligible: false,
+      types: ["steel", "dragon"],
     }),
   ).toBe(true)
+})
+
+it("limits the Berry tag to Chilan and the holder's weaknesses", () => {
+  const berryMatches = (id: number, tag: "berry" | null = "berry") =>
+    heldItemMatchesPickerFilters({ id, label: String(id) }, {
+      query: "",
+      tag,
+      holder: charizard,
+    })
+
+  expect(berryMatches(177)).toBe(true) // Chilan / Normal
+  expect(berryMatches(162)).toBe(true) // Passho / Water
+  expect(berryMatches(163)).toBe(true) // Wacan / Electric
+  expect(berryMatches(172)).toBe(true) // Charti / Rock
+  expect(berryMatches(164)).toBe(false) // Rindo / Grass
+  expect(berryMatches(177, null)).toBe(true)
+  expect(berryMatches(164, null)).toBe(false)
 })
 
 it("lists frozen-side options plus legal form-triggers, excluding none", () => {

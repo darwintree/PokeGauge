@@ -1,5 +1,6 @@
 import type { CatalogOption } from "@/lib/catalog"
 import type { SupportedLocale } from "@/lib/i18n"
+import { typeEffectiveness, type PokemonType } from "@/lib/pokemon"
 import type { BattlePokemonId } from "@/lib/resources"
 
 import {
@@ -24,6 +25,7 @@ export type HeldItemPickerHolder = {
   battlePokemonId: BattlePokemonId
   speciesId: number
   evioliteEligible: boolean
+  types: readonly PokemonType[]
 }
 
 function hasHolderGate(gates: readonly HeldItemGate[]): boolean {
@@ -75,6 +77,17 @@ export function heldItemPickerTags(itemId: number): HeldItemPickerTag[] {
   )
 }
 
+function resistanceBerryMatchesHolder(
+  itemId: number,
+  holderTypes: readonly PokemonType[],
+): boolean {
+  const item = FROZEN_HELD_ITEM_BY_ID.get(itemId)
+  const moveTypes = item?.effect.gates.find((gate) => gate.kind === "move-type")?.types
+  return moveTypes?.some(
+    (type) => type === "normal" || typeEffectiveness(type, holderTypes) > 1,
+  ) ?? false
+}
+
 export function isHolderEligibleHeldItem(
   itemId: number,
   holder: HeldItemPickerHolder,
@@ -103,7 +116,14 @@ export function heldItemMatchesPickerFilters(
   if (query && !option.label.toLowerCase().includes(query)) {
     return false
   }
-  if (filters.tag && !heldItemPickerTags(option.id).includes(filters.tag)) {
+  const tags = heldItemPickerTags(option.id)
+  if (filters.tag && !tags.includes(filters.tag)) {
+    return false
+  }
+  if (
+    tags.includes("berry") &&
+    !resistanceBerryMatchesHolder(option.id, filters.holder.types)
+  ) {
     return false
   }
   return isHolderEligibleHeldItem(option.id, filters.holder, filters.selectableIds)
