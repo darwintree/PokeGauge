@@ -152,10 +152,7 @@ export function MoveTrack({
             <div className="relative z-10 ml-auto">
               <MoveCategoryControl
                 category={category}
-                onChange={(nextCategory) => {
-                  onCategoryChange(nextCategory)
-                  onToggle()
-                }}
+                onChange={onCategoryChange}
                 variant="chip"
               />
             </div>
