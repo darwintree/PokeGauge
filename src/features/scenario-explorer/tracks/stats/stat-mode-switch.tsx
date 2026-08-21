@@ -7,7 +7,7 @@ function flipMode(mode: StatSelectMode): StatSelectMode {
   return mode === "range" ? "preset" : "range"
 }
 
-function RangeMark() {
+export function RangeMark() {
   return (
     <span className="flex h-full min-w-0 flex-1 items-center gap-px" aria-hidden>
       <span className="size-[5px] shrink-0 rounded-full bg-current" />

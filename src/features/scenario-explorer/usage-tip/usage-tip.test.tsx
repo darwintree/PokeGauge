@@ -26,17 +26,25 @@ describe("UsageTipCard box color swatches", () => {
   })
 })
 
-describe("UsageTipCard expand stat example", () => {
-  const expandTip = USAGE_TIPS.find((tip) => tip.id === "expandStat")!
+describe("UsageTipCard stat range example", () => {
+  const rangeTip = USAGE_TIPS.find((tip) => tip.id === "statValueOptions")!
 
-  it("renders the result expand button", () => {
+  it.each([
+    ["zh-hans", "区间", "展开"],
+    ["zh-hant", "區間", "展開"],
+    ["en", "range", "Expand"],
+    ["ja", "レンジ", "展開"],
+  ] as const)("renders the range and expand labels in %s", (locale, range, expand) => {
     const markup = renderToStaticMarkup(createElement(
       IntlProvider,
-      { locale: "zh-Hans", messages: localeMessages["zh-hans"] },
-      createElement(UsageTipCard, { tip: expandTip }),
+      { locale, messages: localeMessages[locale] },
+      createElement(UsageTipCard, { tip: rangeTip }),
     ))
 
-    expect(markup).toContain("size-3.5 place-items-center rounded-[4px]")
-    expect(markup).toContain("size-2.5 text-muted-foreground")
+    expect(markup).toContain(range)
+    expect(markup).toContain("inline-flex h-3 w-7 shrink-0")
+    expect(markup).toContain("size-[5px] shrink-0 rounded-full bg-current")
+    expect(markup).toContain(expand)
+    expect(markup).toContain("size-3.5 shrink-0")
   })
 })

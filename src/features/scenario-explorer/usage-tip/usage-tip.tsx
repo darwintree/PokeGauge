@@ -4,6 +4,7 @@ import { useIntl } from "react-intl"
 
 import { cn } from "@/lib/utils"
 
+import { RangeMark } from "../tracks/stats/stat-mode-switch"
 import {
   isUsageTipMutedOn,
   muteUsageTipsForLocalDay,
@@ -91,14 +92,15 @@ export function UsageTipCard({
               green: (chunks) => <BoxSwatch color="green">{chunks}</BoxSwatch>,
               orange: (chunks) => <BoxSwatch color="orange">{chunks}</BoxSwatch>,
               darkred: (chunks) => <BoxSwatch color="darkred">{chunks}</BoxSwatch>,
-              expandButton: () => (
-                <span
-                  aria-hidden
-                  className="inline-grid size-3.5 place-items-center rounded-[4px] align-middle"
-                >
-                  <ChevronDown className="size-2.5 text-muted-foreground" strokeWidth={2.5} />
-                </span>
+              range: (chunks) => (
+                <TipPill>
+                  <span className="inline-flex h-3 w-7 shrink-0" aria-hidden>
+                    <RangeMark />
+                  </span>
+                  {chunks}
+                </TipPill>
               ),
+              expand: (chunks) => <TipPill icon={ChevronDown}>{chunks}</TipPill>,
             },
           )}
         </p>
