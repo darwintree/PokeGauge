@@ -1,4 +1,4 @@
-import { Gem, Plus } from "lucide-react"
+import { PackageOpen, Plus } from "lucide-react"
 import { useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
@@ -115,7 +115,7 @@ export function HeldItemTrack({
   return (
     <>
       <TrackPanel
-        icon={Gem}
+        icon={PackageOpen}
         label={
           <FormattedMessage
             id={side === "attacker"

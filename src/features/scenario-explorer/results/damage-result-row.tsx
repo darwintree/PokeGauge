@@ -198,7 +198,7 @@ export function DamageResultRow({
 
   return (
     <div className={cn(
-      "grid grid-cols-[minmax(0,1fr)_3rem] items-center gap-x-1 gap-y-0.5 md:min-h-[4.5rem]",
+      "grid grid-cols-[minmax(0,1fr)_3rem] items-center gap-x-1 gap-y-1 md:min-h-[4.5rem]",
       DESKTOP_RESULT_GRID,
     )}>
       {diff ? (

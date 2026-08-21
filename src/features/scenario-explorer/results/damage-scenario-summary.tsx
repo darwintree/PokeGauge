@@ -495,7 +495,7 @@ export function DamageRowCaption(props: DamageScenarioSummaryProps) {
   const attackStage = activeStage(props.row, "attacker-stage")
   const defenseStage = activeStage(props.row, "defender-stage")
   return (
-    <span className="flex h-3.5 min-w-0 items-center gap-0.5 overflow-hidden whitespace-nowrap">
+    <span className="flex min-h-3.5 min-w-0 flex-wrap items-center gap-x-0.5 gap-y-1 py-1 whitespace-nowrap sm:h-3.5 sm:min-h-0 sm:flex-nowrap sm:overflow-hidden sm:py-0">
       <span className="flex shrink-0 items-center gap-0.5">
         <CaptionTypeMark type={props.row.moveType} />
         <span className="max-w-[6.5rem] truncate text-[12px] font-extrabold leading-none">

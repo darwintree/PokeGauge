@@ -63,11 +63,14 @@ export function PickerDialog({
   )
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bottom-0 top-auto left-0 h-[min(44rem,calc(100svh-1rem))] max-w-none grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden translate-x-0 translate-y-0 rounded-b-none p-0 sm:top-1/2 sm:left-1/2 sm:h-[min(44rem,calc(100svh-2rem))] sm:max-w-xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl">
+      <DialogContent
+        initialFocus={false}
+        className="top-[calc(50%-env(safe-area-inset-bottom)/2)] h-auto max-h-[calc(90svh-env(safe-area-inset-bottom))] max-w-[calc(100%-2rem)] grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden p-0 sm:top-1/2 sm:h-[min(44rem,calc(100svh-2rem))] sm:max-h-none sm:max-w-xl"
+      >
         <DialogHeader className="border-b px-4 py-3 pr-12">
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
-        <div className="flex min-h-0 flex-col gap-3 p-4">
+        <div className="flex min-h-0 min-w-0 flex-col gap-3 p-4">
           {filtersClassName ? <div className={filtersClassName}>{filters}</div> : filters}
           <div className={cn("min-h-0 flex-1 overflow-y-auto overscroll-contain", bodyClassName)}>
             {empty != null ? (

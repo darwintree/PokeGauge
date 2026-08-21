@@ -20,7 +20,7 @@ import {
 
 /** Pinned PokeAPI/sprites commit for held-item icon hotlinks. */
 export const HELD_ITEM_SPRITES_COMMIT =
-  "8dfa3d97e953caaafaafd4963eff7621811af08e"
+  "81372ec151ab18f27eccfa095a24683014758918"
 
 export const HELD_ITEM_STORAGE_KEY = "pokegauge:held-item-added-boosts"
 

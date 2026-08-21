@@ -204,7 +204,7 @@ export function DamageResults({
                 "px-2 py-0.5 hover:bg-token-bg/55 md:rounded-[10px] md:px-3 md:pt-2.5 md:pb-3 lg:px-4",
                 index > 0 &&
                   (startsMoveGroup
-                    ? "mt-1 border-t border-dashed border-ink/30 pt-1 md:mt-3 md:border-t-2 md:border-ink/35 md:pt-3"
+                    ? "mt-2.5 border-t border-dashed border-ink/30 pt-2.5 md:mt-3 md:border-t-2 md:border-ink/35 md:pt-3"
                     : "border-t border-hairline"),
               )}
             >

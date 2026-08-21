@@ -165,6 +165,20 @@ export function StatRangeInput({
           <div
             ref={drag.railRef}
             className={cn("relative h-8 touch-none", drafting && "cursor-grab")}
+            onPointerDown={(event) => {
+              if (drafting || fineTune) return
+              // Tap the empty track (not a handle): open fine-tune on the nearest endpoint.
+              if (!(event.target instanceof Element)) return
+              if (event.target.closest("button")) return
+              const rail = drag.railRef.current?.getBoundingClientRect()
+              if (!rail || rail.width === 0) return
+              const pointer = clampStat(
+                Math.round(bounds.min + ((event.clientX - rail.left) / rail.width) * (bounds.max - bounds.min)),
+                bounds.min,
+                bounds.max,
+              )
+              setFineTune(Math.abs(pointer - value.min) <= Math.abs(pointer - value.max) ? "min" : "max")
+            }}
           >
             <div
               className={cn(

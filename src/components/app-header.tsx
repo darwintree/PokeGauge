@@ -78,7 +78,7 @@ function LocaleSelect({
   )
 }
 
-function ProjectInfoDialog({ locale, onLocaleChange }: LocaleControlProps) {
+function ProjectInfoDialog() {
   const intl = useIntl()
 
   return (
@@ -124,17 +124,6 @@ function ProjectInfoDialog({ locale, onLocaleChange }: LocaleControlProps) {
             </span>
           </DialogDescription>
         </DialogHeader>
-
-        <div className="flex items-center justify-between gap-4 border-b pb-4 sm:hidden">
-          <label htmlFor="mobile-locale" className="text-sm font-medium">
-            <FormattedMessage id="locale.label" />
-          </label>
-          <LocaleSelect
-            id="mobile-locale"
-            locale={locale}
-            onLocaleChange={onLocaleChange}
-          />
-        </div>
 
         <Tabs defaultValue="changelog">
           <TabsList variant="line" className="w-full border-b">
@@ -273,13 +262,13 @@ export function AppHeader({
             </span>
           </Button>
 
-          <ProjectInfoDialog locale={locale} onLocaleChange={onLocaleChange} />
+          <ProjectInfoDialog />
 
           <LocaleSelect
             id="header-locale"
             locale={locale}
             onLocaleChange={onLocaleChange}
-            className="ml-1 hidden sm:block"
+            className="ml-0.5 sm:ml-1"
           />
         </nav>
       </div>
