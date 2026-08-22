@@ -1,4 +1,6 @@
-import { Generations, toID } from "@smogon/calc"
+import { toID } from "@smogon/calc"
+
+import { CALC_GENERATION } from "@/lib/damage-calculation/calc-constants"
 
 import { GENERATED_ABILITIES } from "@/lib/resources/generated/abilities"
 
@@ -100,7 +102,7 @@ const ASSUMED_SATISFIED_ABILITY_FAMILY: Record<number, AssumedSatisfiedAbilityFa
 export function abilityDamageModifierIsSupported(id: number): boolean {
   const calcAbilityName = GENERATED_ABILITY_BY_ID[id]?.calcAbilityName
   return calcAbilityName === undefined ||
-    Generations.get(9).abilities.get(toID(calcAbilityName)) !== undefined
+    CALC_GENERATION.abilities.get(toID(calcAbilityName)) !== undefined
 }
 
 export function assumedSatisfiedAbilityFamily(
