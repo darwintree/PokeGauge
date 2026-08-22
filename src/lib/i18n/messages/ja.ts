@@ -1,5 +1,6 @@
 export const jaMessages: Record<string, string> = {
-    "app.name": "PokeGauge",
+    "app.name": "ポケゲージ",
+    "app.tagline": "ポケモンダメージ計算ツール",
     "app.title": "ダメージ比較",
     "app.empty": "各項目を少なくとも1つ選ぶとダメージ行を表示します",
     "app.setup": "設定",
@@ -39,7 +40,7 @@ export const jaMessages: Record<string, string> = {
     "header.opensNewTab": "新しいタブで開く",
     "usageTip.dismiss": "使い方のヒントを閉じる",
     "usageTip.modes.title": "確率モード",
-    "usageTip.modes.body": "PokeGauge では、倒せる確率を計算する2つのモードを提供します。<b>クラシックモード</b>はわざが必ず命中すると仮定し、会心を考慮せず、従来の計算機と同じ結果になります。<b>実戦モード</b>は命中、外れ、会心を考慮します。",
+    "usageTip.modes.body": "ポケゲージでは、倒せる確率を計算する2つのモードを提供します。<b>クラシックモード</b>はわざが必ず命中すると仮定し、会心を考慮せず、従来の計算機と同じ結果になります。<b>実戦モード</b>は命中、外れ、会心を考慮します。",
     "usageTip.spMechanic.title": "能力値と SP",
     "usageTip.spMechanic.body": "Pokémon Champions は従来の努力値ではなく <b>SP</b> を使います。SP は能力値の増減として直接反映されます。",
     "usageTip.statValueOptions.title": "能力値レンジ",

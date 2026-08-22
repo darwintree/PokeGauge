@@ -1,5 +1,6 @@
 export const zhHansMessages: Record<string, string> = {
-    "app.name": "PokeGauge",
+    "app.name": "宝可计",
+    "app.tagline": "宝可梦对战伤害计算器",
     "app.title": "伤害对比",
     "app.empty": "请至少各选一维配置以展示伤害对比",
     "app.setup": "参数",
@@ -39,7 +40,7 @@ export const zhHansMessages: Record<string, string> = {
     "header.opensNewTab": "在新标签页打开",
     "usageTip.dismiss": "关闭用法提示",
     "usageTip.modes.title": "概率模式",
-    "usageTip.modes.body": "PokeGauge 提供两种模式来计算 KO 概率。<b>经典模式</b>假定招式必定命中，KO率不考虑会心，与传统计算器一致；<b>实战模式</b>则计入命中、未命中与会心",
+    "usageTip.modes.body": "宝可计提供两种模式来计算 KO 概率。<b>经典模式</b>假定招式必定命中，KO率不考虑会心，与传统计算器一致；<b>实战模式</b>则计入命中、未命中与会心",
     "usageTip.spMechanic.title": "能力值与SP",
     "usageTip.spMechanic.body": "Pokémon Champions 使用 <b>SP</b> 机制，而非传统努力值。SP 可直接体现为能力值加减。",
     "usageTip.statValueOptions.title": "能力值区间",
