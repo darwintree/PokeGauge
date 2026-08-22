@@ -1,9 +1,9 @@
-import { Generations, calculate, Field, Move, Pokemon, toID } from "@smogon/calc"
+import { calculate, Field, Move, Pokemon, toID } from "@smogon/calc"
 import type { TypeName } from "@smogon/calc/dist/data/interface"
 
 import type { PokemonType } from "@/lib/pokemon"
 
-import { CALC_GEN, VGC_LEVEL } from "./calc-constants"
+import { CALC_GENERATION, VGC_LEVEL } from "./calc-constants"
 
 /** Stat values (final, after nature/EVs/SP) fed to the calc engine. */
 export type CalcExactStats = {
@@ -76,12 +76,12 @@ function invertedBaseStats(stats: CalcExactStats) {
 }
 
 function calcPokemon(context: CalcPokemonContext): Pokemon {
-  return new Pokemon(CALC_GEN, context.calcSpeciesName, {
+  return new Pokemon(CALC_GENERATION, context.calcSpeciesName, {
     level: VGC_LEVEL,
     ...(context.abilityCalcName ? { ability: context.abilityCalcName } : {}),
     ...(context.itemCalcName
       ? {
-          item: Generations.get(CALC_GEN).items.get(toID(context.itemCalcName))?.name
+          item: CALC_GENERATION.items.get(toID(context.itemCalcName))?.name
             ?? context.itemCalcName,
         }
       : {}),
@@ -91,7 +91,7 @@ function calcPokemon(context: CalcPokemonContext): Pokemon {
 }
 
 function calcMove(context: CalcMoveContext): Move {
-  return new Move(CALC_GEN, context.calcMoveName, {
+  return new Move(CALC_GENERATION, context.calcMoveName, {
     isCrit: context.isCrit,
     overrides: {
       ...(context.powerOverride === undefined ? {} : { basePower: context.powerOverride }),
@@ -133,7 +133,7 @@ export function rollsFromCalcDamage(
 /** Compute the 16 normal rolls via @smogon/calc. */
 export function calculateNormalRolls(context: CalcContext): number[] {
   const result = calculate(
-    CALC_GEN,
+    CALC_GENERATION,
     calcPokemon(context.attacker),
     calcPokemon(context.defender),
     calcMove({ ...context.move, isCrit: false }),
@@ -145,7 +145,7 @@ export function calculateNormalRolls(context: CalcContext): number[] {
 /** Compute the 16 critical rolls via @smogon/calc. */
 export function calculateCriticalRolls(context: CalcContext): number[] {
   const result = calculate(
-    CALC_GEN,
+    CALC_GENERATION,
     calcPokemon(context.attacker),
     calcPokemon(context.defender),
     calcMove({ ...context.move, isCrit: true }),
