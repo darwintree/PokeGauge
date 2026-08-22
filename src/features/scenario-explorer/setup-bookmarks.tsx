@@ -114,6 +114,8 @@ function PokemonSprite({
     >
       {src && !failed ? (
         <img
+          loading="lazy"
+          decoding="async"
           src={src}
           alt=""
           className="size-11 object-contain [image-rendering:pixelated]"

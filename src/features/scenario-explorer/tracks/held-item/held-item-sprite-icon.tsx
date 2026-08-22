@@ -35,6 +35,8 @@ export function HeldItemSpriteIcon({
 
   return (
     <img
+      loading="lazy"
+      decoding="async"
       src={url}
       alt=""
       className={markClassName}

@@ -49,12 +49,14 @@ function BattlePokemonPickerItem({
         "hover:bg-token-bg/60 aria-current:bg-signal-yellow/55 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring",
         compact
           ? "w-24 shrink-0 rounded-[9px] border border-card-border p-2"
-          : "flex w-full items-center gap-3 border-b px-3 py-2 last:border-b-0",
+          : "flex w-full items-center gap-3 border-b px-3 py-2 last:border-b-0 [content-visibility:auto] [contain-intrinsic-size:auto_64px]",
       )}
       onClick={onSelect}
     >
       <span className={cn("shrink-0", compact ? "mx-auto block size-14" : "size-12")}>
         <img
+          loading="lazy"
+          decoding="async"
           src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${option.id}.png`}
           alt=""
           className="size-full object-contain [image-rendering:pixelated]"
