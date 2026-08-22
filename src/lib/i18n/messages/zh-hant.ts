@@ -1,5 +1,6 @@
 export const zhHantMessages: Record<string, string> = {
-    "app.name": "PokeGauge",
+    "app.name": "寶可計",
+    "app.tagline": "寶可夢對戰傷害計算器",
     "app.title": "傷害對比",
     "app.empty": "請至少各選一維配置以展示傷害對比",
     "app.setup": "參數",
@@ -39,7 +40,7 @@ export const zhHantMessages: Record<string, string> = {
     "header.opensNewTab": "在新分頁開啟",
     "usageTip.dismiss": "關閉用法提示",
     "usageTip.modes.title": "機率模式",
-    "usageTip.modes.body": "PokeGauge 提供兩種模式計算擊倒率。<b>經典模式</b>假定招式必定命中，擊倒率不考慮會心，與傳統計算器一致；<b>實戰模式</b>則計入命中、未命中與會心。",
+    "usageTip.modes.body": "寶可計提供兩種模式計算擊倒率。<b>經典模式</b>假定招式必定命中，擊倒率不考慮會心，與傳統計算器一致；<b>實戰模式</b>則計入命中、未命中與會心。",
     "usageTip.spMechanic.title": "能力值與 SP",
     "usageTip.spMechanic.body": "Pokémon Champions 使用 <b>SP</b> 機制，而非傳統努力值。SP 可直接反映為能力值加減。",
     "usageTip.statValueOptions.title": "能力值區間",

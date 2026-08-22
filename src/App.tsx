@@ -19,6 +19,8 @@ function App() {
 
   useEffect(() => {
     document.documentElement.lang = locale
+    const messages = localeMessages[locale]
+    document.title = `${messages["app.name"]} - ${messages["app.tagline"]}`
   }, [locale])
 
   function setLocale(locale: SupportedLocale) {
