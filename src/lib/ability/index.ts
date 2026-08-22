@@ -2,11 +2,11 @@ import { toID } from "@smogon/calc"
 
 import { CALC_GENERATION } from "@/lib/damage-calculation/calc-constants"
 
-import { GENERATED_ABILITIES } from "@/lib/resources/generated/abilities"
+import { GENERATED_ABILITY_CALC_NAMES } from "@/lib/resources/generated/ability-calc-names"
 
-const GENERATED_ABILITY_BY_ID = GENERATED_ABILITIES as Record<
+const GENERATED_ABILITY_BY_ID = GENERATED_ABILITY_CALC_NAMES as Record<
   number,
-  { calcAbilityName: string } | undefined
+  string | undefined
 >
 
 /** PokeAPI's stable numeric identifier for Adaptability. */
@@ -100,7 +100,7 @@ const ASSUMED_SATISFIED_ABILITY_FAMILY: Record<number, AssumedSatisfiedAbilityFa
 }
 
 export function abilityDamageModifierIsSupported(id: number): boolean {
-  const calcAbilityName = GENERATED_ABILITY_BY_ID[id]?.calcAbilityName
+  const calcAbilityName = GENERATED_ABILITY_BY_ID[id]
   return calcAbilityName === undefined ||
     CALC_GENERATION.abilities.get(toID(calcAbilityName)) !== undefined
 }

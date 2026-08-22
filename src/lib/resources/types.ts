@@ -19,6 +19,12 @@ export type BattleStats = {
   spe: number
 }
 
+/** Minimal per-Pokemon fields needed by synchronous first-screen paths. */
+export type PokemonLite = {
+  speciesId: UpstreamResourceId
+  evioliteEligible: boolean
+}
+
 export type NormalizedBattlePokemon = {
   resourceType: "pokemon"
   id: BattlePokemonId

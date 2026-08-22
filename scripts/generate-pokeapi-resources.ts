@@ -663,6 +663,14 @@ async function main() {
       moduleWithImport(["NormalizedAbility", "UpstreamResourceId"], "GENERATED_ABILITIES", Object.fromEntries(abilityEntries), "Record<UpstreamResourceId, NormalizedAbility>"),
     ),
     writeFile(
+      path.join(OUT_DIR, "pokemon-lite.ts"),
+      moduleWithImport(["UpstreamResourceId"], "GENERATED_POKEMON_LITE", Object.fromEntries(pokemonEntries.map(([id, pokemon]) => [id, { speciesId: pokemon.speciesId, evioliteEligible: pokemon.evioliteEligible }])), "Record<UpstreamResourceId, PokemonLite>"),
+    ),
+    writeFile(
+      path.join(OUT_DIR, "ability-calc-names.ts"),
+      moduleWithImport(["UpstreamResourceId"], "GENERATED_ABILITY_CALC_NAMES", Object.fromEntries(abilityEntries.map(([id, ability]) => [id, ability.calcAbilityName])), "Record<UpstreamResourceId, string>"),
+    ),
+    writeFile(
       path.join(OUT_DIR, "held-items.ts"),
       moduleWithImport(["NormalizedHeldItem", "UpstreamResourceId"], "GENERATED_HELD_ITEMS", Object.fromEntries(heldItemEntries), "Record<UpstreamResourceId, NormalizedHeldItem>"),
     ),
@@ -676,7 +684,7 @@ async function main() {
     ),
     writeFile(
       path.join(OUT_DIR, "index.ts"),
-      "export { GENERATED_ABILITIES } from \"./abilities\"\nexport { RESOURCE_DIAGNOSTICS } from \"./diagnostics\"\nexport { GENERATED_HELD_ITEMS } from \"./held-items\"\nexport { GENERATED_HISTORICAL_LEARNSETS } from \"./learnsets\"\nexport { GENERATED_MEGA_STONES } from \"./mega-stones\"\nexport { GENERATED_MOVES } from \"./moves\"\nexport { GENERATED_POKEMON } from \"./pokemon\"\n",
+      "export { GENERATED_ABILITIES } from \"./abilities\"\nexport { GENERATED_ABILITY_CALC_NAMES } from \"./ability-calc-names\"\nexport { RESOURCE_DIAGNOSTICS } from \"./diagnostics\"\nexport { GENERATED_HELD_ITEMS } from \"./held-items\"\nexport { GENERATED_HISTORICAL_LEARNSETS } from \"./learnsets\"\nexport { GENERATED_MEGA_STONES } from \"./mega-stones\"\nexport { GENERATED_MOVES } from \"./moves\"\nexport { GENERATED_POKEMON } from \"./pokemon\"\nexport { GENERATED_POKEMON_LITE } from \"./pokemon-lite\"\n",
     ),
   ])
 

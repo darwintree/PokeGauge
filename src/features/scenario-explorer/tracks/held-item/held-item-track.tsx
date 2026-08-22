@@ -20,7 +20,7 @@ import {
   type HeldItemId,
 } from "@/lib/held-item"
 import type { SupportedLocale } from "@/lib/i18n"
-import { GENERATED_POKEMON } from "@/lib/resources/generated/pokemon"
+import { GENERATED_POKEMON_LITE } from "@/lib/resources/generated/pokemon-lite"
 import type { BattlePokemonId } from "@/lib/resources"
 import { cn } from "@/lib/utils"
 
@@ -66,7 +66,7 @@ export function HeldItemTrack({
     ? catalog.matchup.attackerId
     : catalog.matchup.defenderId
   const holder = useMemo(() => {
-    const pokemon = (GENERATED_POKEMON as Record<
+    const pokemon = (GENERATED_POKEMON_LITE as Record<
       BattlePokemonId,
       { speciesId: number; evioliteEligible: boolean }
     >)[battlePokemonId]
