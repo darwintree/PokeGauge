@@ -1,5 +1,5 @@
 import type { BattlePokemonId, UpstreamResourceId } from "@/lib/resources"
-import { GENERATED_POKEMON } from "@/lib/resources/generated/pokemon"
+import { GENERATED_POKEMON_LITE } from "@/lib/resources/generated/pokemon-lite"
 
 import { MASK_BY_BATTLE_POKEMON_ID } from "./items"
 import { MEGA_STONE_BY_ID } from "./mega-stones"
@@ -16,7 +16,7 @@ type GeneratedPokemon = {
 function pokemonFor(
   battlePokemonId: BattlePokemonId,
 ): GeneratedPokemon | undefined {
-  return (GENERATED_POKEMON as Record<BattlePokemonId, GeneratedPokemon | undefined>)[
+  return (GENERATED_POKEMON_LITE as Record<BattlePokemonId, GeneratedPokemon | undefined>)[
     battlePokemonId
   ]
 }
