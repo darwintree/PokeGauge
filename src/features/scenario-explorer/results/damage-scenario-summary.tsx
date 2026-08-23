@@ -241,7 +241,7 @@ function DamageFormulaTooltip(props: DamageScenarioSummaryProps) {
   if (!branch) return null
   const accuracy = mechanics.hitFact === "always-hits"
     ? intl.formatMessage({ id: "damage.conditions.alwaysHits" })
-    : `${mechanics.hitFact}%`
+    : new Intl.NumberFormat(intl.locale, { style: "percent", maximumFractionDigits: 0 }).format(Number(mechanics.hitFact) / 100)
   const phaseLabels: Record<MechanicsPhase["kind"], string> = {
     "base-power": intl.formatMessage({ id: "damage.conditions.basePowerModifier" }),
     spread: intl.formatMessage({ id: "damage.conditions.spread" }),
@@ -561,7 +561,7 @@ export function DamageScenarioSummary(props: DamageScenarioSummaryProps) {
   const branch = mechanics.normal ?? mechanics.critical
   const accuracy = mechanics.hitFact === "always-hits"
     ? intl.formatMessage({ id: "damage.conditions.alwaysHits" })
-    : `${Math.round(mechanics.hitProbability * 100)}%`
+    : new Intl.NumberFormat(intl.locale, { style: "percent", maximumFractionDigits: 0 }).format(mechanics.hitProbability)
 
   return (
     <article className="w-full rounded-[10px] border border-card-border bg-muted/60 md:w-[14.75rem]">
