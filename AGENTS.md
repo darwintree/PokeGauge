@@ -24,6 +24,7 @@ Pokémon battle damage calculator.
 ```bash
 pnpm dev
 pnpm build
+pnpm changeset
 pnpm dlx shadcn@latest add <component>
 ```
 
@@ -39,6 +40,29 @@ Package manager: **pnpm** (`packageManager` in [`package.json`](package.json)).
 - When editing existing controls, extend the shadcn primitive through variants, `className`, or composition before introducing parallel handcrafted markup.
 
 ## Agent workflow
+
+### Changesets and commits
+
+Every user-visible feature or fix must include one `.changeset/*.md` file created with `pnpm changeset`; internal-only changes may omit it. Use `minor` for features, `patch` for fixes, and `major` for breaking changes.
+
+Write release text for users in plain language: state the new capability or corrected behavior without implementation details. Include every locale exactly once, using this order and preserving the markers:
+
+```md
+<!-- changelog:start -->
+<!-- changelog:en -->
+English message.
+<!-- changelog:zh-hans -->
+简体中文消息。
+<!-- changelog:zh-hant -->
+繁體中文訊息。
+<!-- changelog:ja -->
+日本語のメッセージ。
+<!-- changelog:end -->
+```
+
+`pnpm dev` and `pnpm build` regenerate `CHANGELOG-UNRELEASE.md`; edit source fragments instead of that generated file. Released entries persist in `CHANGELOG.md`.
+
+Commit messages use ordinary Conventional Commits (`type(scope): subject`); the scope is optional and commit text is not user-facing release copy.
 
 ### Frontend design review
 

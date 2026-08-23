@@ -17,6 +17,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { CHANGELOG_ENTRIES } from "@/lib/changelog"
 import { createFeedbackUrl } from "@/lib/feedback"
 import { SUPPORTED_LOCALES, type SupportedLocale } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
@@ -50,6 +51,10 @@ type AppHeaderProps = LocaleControlProps & {
   onBrandHomeClick?: (() => void) | null
 }
 
+type ProjectInfoDialogProps = {
+  locale: SupportedLocale
+}
+
 function LocaleSelect({
   id,
   locale,
@@ -78,7 +83,7 @@ function LocaleSelect({
   )
 }
 
-function ProjectInfoDialog() {
+function ProjectInfoDialog({ locale }: ProjectInfoDialogProps) {
   const intl = useIntl()
 
   return (
@@ -136,25 +141,29 @@ function ProjectInfoDialog() {
           </TabsList>
 
           <TabsContent value="changelog" className="pt-4">
-            <article className="space-y-2">
-              <time
-                dateTime="2026-07-22"
-                className="text-muted-foreground text-xs tabular-nums"
-              >
-                {intl.formatDate(new Date("2026-07-22T00:00:00Z"), {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                  timeZone: "UTC",
-                })}
-              </time>
-              <h2 className="font-medium">
-                <FormattedMessage id="changelog.structure.title" />
-              </h2>
-              <p className="text-muted-foreground leading-relaxed">
-                <FormattedMessage id="changelog.structure.body" />
+            {CHANGELOG_ENTRIES.length === 0 ? (
+              <p className="text-muted-foreground text-sm">
+                <FormattedMessage id="changelog.empty" />
               </p>
-            </article>
+            ) : (
+              <div className="max-h-[min(50vh,24rem)] space-y-5 overflow-y-auto pr-1">
+                {CHANGELOG_ENTRIES.map((entry, index) => (
+                  <article
+                    key={`${entry.version ?? "unreleased"}-${index}`}
+                    className="space-y-1.5"
+                  >
+                    <h2 className="text-muted-foreground text-xs font-bold tabular-nums">
+                      {entry.version ? (
+                        `v${entry.version}`
+                      ) : (
+                        <FormattedMessage id="changelog.unreleased" />
+                      )}
+                    </h2>
+                    <p className="leading-relaxed">{entry.messages[locale]}</p>
+                  </article>
+                ))}
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="credits" className="pt-2">
@@ -262,7 +271,7 @@ export function AppHeader({
             </span>
           </Button>
 
-          <ProjectInfoDialog />
+          <ProjectInfoDialog locale={locale} />
 
           <LocaleSelect
             id="header-locale"
