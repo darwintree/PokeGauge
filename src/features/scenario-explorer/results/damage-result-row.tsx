@@ -59,6 +59,14 @@ function pctSpan(minPct: number, maxPct: number): { left: string; width: string 
   }
 }
 
+function formatDamagePercent(value: number, locale: string): string {
+  return new Intl.NumberFormat(locale, {
+    style: "percent",
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  }).format(value / 100)
+}
+
 function endpointTones(endpoints: NonNullable<ScenarioResult["rangeEndpoints"]>) {
   return {
     low: damageToneOf(endpoints.low.minPercent, endpoints.low.maxPercent),
@@ -262,7 +270,7 @@ export function DamageResultRow({
             style={{ left: box.left, width: box.width }}
           >
             <span>
-              {row.minPercent.toFixed(1)}% ~ {row.maxPercent.toFixed(1)}%
+              {formatDamagePercent(row.minPercent, intl.locale)} ~ {formatDamagePercent(row.maxPercent, intl.locale)}
             </span>
           </div>
         </TooltipTrigger>
@@ -279,14 +287,14 @@ export function DamageResultRow({
               })}
             </HoverLabel>
             <span className="tabular-nums">
-              {row.minPercent.toFixed(1)}% ~ {row.maxPercent.toFixed(1)}%
+              {formatDamagePercent(row.minPercent, intl.locale)} ~ {formatDamagePercent(row.maxPercent, intl.locale)}
             </span>
           </HoverRow>
           {hasReferenceCritical && (
             <HoverRow marker={<span className="inline-block size-2 rounded-full border-2 border-damage-critical bg-paper" />}>
               <HoverLabel>{intl.formatMessage({ id: "damage.critical" })}</HoverLabel>
               <span className="tabular-nums">
-                {row.critMinPercent.toFixed(1)}% ~ {row.critMaxPercent.toFixed(1)}%
+                {formatDamagePercent(row.critMinPercent, intl.locale)} ~ {formatDamagePercent(row.critMaxPercent, intl.locale)}
               </span>
             </HoverRow>
           )}

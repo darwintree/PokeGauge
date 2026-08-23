@@ -1,9 +1,18 @@
 import * as React from "react"
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
+import { useIntl } from "react-intl"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { XIcon } from "lucide-react"
+
+function useOptionalIntl() {
+  try {
+    return useIntl()
+  } catch {
+    return null
+  }
+}
 
 function Dialog({ ...props }: DialogPrimitive.Root.Props) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />
@@ -45,6 +54,7 @@ function DialogContent({
 }: DialogPrimitive.Popup.Props & {
   showCloseButton?: boolean
 }) {
+  const intl = useOptionalIntl()
   return (
     <DialogPortal>
       <DialogOverlay />
@@ -70,7 +80,7 @@ function DialogContent({
           >
             <XIcon
             />
-            <span className="sr-only">Close</span>
+            <span className="sr-only">{intl ? intl.formatMessage({ id: "app.close" }) : "Close"}</span>
           </DialogPrimitive.Close>
         )}
       </DialogPrimitive.Popup>
@@ -96,6 +106,7 @@ function DialogFooter({
 }: React.ComponentProps<"div"> & {
   showCloseButton?: boolean
 }) {
+  const intl = useOptionalIntl()
   return (
     <div
       data-slot="dialog-footer"
@@ -108,7 +119,7 @@ function DialogFooter({
       {children}
       {showCloseButton && (
         <DialogPrimitive.Close render={<Button variant="outline" />}>
-          Close
+          {intl ? intl.formatMessage({ id: "app.close" }) : "Close"}
         </DialogPrimitive.Close>
       )}
     </div>

@@ -42,7 +42,7 @@ export function ProbabilityModeSwitch({
           variant="default"
           size="sm"
           spacing={0}
-          aria-label="KO probability mode"
+          aria-label={intl.formatMessage({ id: "usageTip.modes.title" })}
           className="gap-0 rounded-[10px] border-2 border-ink bg-paper p-0.5 shadow-hud-chip"
         >
           {MODES.map((value) => (
