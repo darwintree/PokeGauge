@@ -69,7 +69,7 @@ export const zhHantMessages: Record<string, string> = {
     "header.projectDescription": "規則集、更新記錄與資料來源",
     "header.changelog": "更新",
     "header.credits": "來源",
-    "changelog.unreleased": "尚未發布",
+    "changelog.unreleased": "最新變更",
     "changelog.empty": "暫無更新記錄。",
     "credits.smogon": "支援範圍內的傷害結果驗證",
     "credits.pokeapi": "寶可夢、招式、特性與精靈圖",
