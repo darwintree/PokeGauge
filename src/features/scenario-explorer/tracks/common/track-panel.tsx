@@ -13,6 +13,7 @@ type TrackPanelProps = {
   onToggle: () => void
   children: ReactNode
   summaryLayout?: "inline" | "stack"
+  headerTrailing?: ReactNode
   labelExtra?: ReactNode
   trailing?: ReactNode
   preview?: ReactNode
@@ -28,6 +29,7 @@ export function TrackPanel({
   onToggle,
   children,
   summaryLayout = "inline",
+  headerTrailing,
   labelExtra,
   trailing,
   preview,
@@ -77,6 +79,9 @@ export function TrackPanel({
               <span className="truncate">{label}</span>
             </span>
           </span>
+          {expanded && headerTrailing && (
+            <div className="relative z-10 flex shrink-0 items-center">{headerTrailing}</div>
+          )}
           <ChevronDown
             className={cn(
               "pointer-events-none relative size-3.5 shrink-0 text-muted-foreground transition-transform",
