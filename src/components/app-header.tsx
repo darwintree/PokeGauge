@@ -159,7 +159,13 @@ function ProjectInfoDialog({ locale }: ProjectInfoDialogProps) {
                         <FormattedMessage id="changelog.unreleased" />
                       )}
                     </h2>
-                    <p className="leading-relaxed">{entry.messages[locale]}</p>
+                    <div className="space-y-2">
+                      {entry.messages[locale].map((message, messageIndex) => (
+                        <p key={messageIndex} className="leading-relaxed">
+                          {message}
+                        </p>
+                      ))}
+                    </div>
                   </article>
                 ))}
               </div>
