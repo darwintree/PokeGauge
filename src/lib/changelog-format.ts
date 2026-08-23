@@ -2,7 +2,7 @@ import { SUPPORTED_LOCALES, type SupportedLocale } from "./i18n/locales.ts"
 
 export type ChangelogEntry = {
   version: string | null
-  messages: Record<SupportedLocale, string>
+  messages: Record<SupportedLocale, string[]>
 }
 
 const ENTRY_PATTERN = /<!-- changelog:start -->([\s\S]*?)<!-- changelog:end -->/g
@@ -54,9 +54,19 @@ export function parseChangelog(markdown: string): ChangelogEntry[] {
     const section = markdown.slice(sectionStart, sectionEnd)
     const version = heading[1].trim() === "Unreleased" ? null : heading[1].trim()
 
-    return [...section.matchAll(ENTRY_PATTERN)].map((match) => ({
-      version,
-      messages: parseMessages(match[1]),
-    }))
+    const entries = [...section.matchAll(ENTRY_PATTERN)].map((match) => parseMessages(match[1]))
+    if (entries.length === 0) return []
+
+    return [
+      {
+        version,
+        messages: Object.fromEntries(
+          SUPPORTED_LOCALES.map((locale) => [
+            locale,
+            entries.map((entry) => entry[locale]),
+          ]),
+        ) as Record<SupportedLocale, string[]>,
+      },
+    ]
   })
 }
