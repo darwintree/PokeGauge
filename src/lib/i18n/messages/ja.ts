@@ -69,7 +69,7 @@ export const jaMessages: Record<string, string> = {
     "header.projectDescription": "ルールセット、更新履歴、データソース",
     "header.changelog": "更新",
     "header.credits": "データソース",
-    "changelog.unreleased": "未リリース",
+    "changelog.unreleased": "最新の変更",
     "changelog.empty": "更新履歴はまだありません。",
     "credits.smogon": "対応範囲内のダメージ結果の検証",
     "credits.pokeapi": "ポケモン、わざ、とくせい、画像データ",

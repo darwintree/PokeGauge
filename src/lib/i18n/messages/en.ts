@@ -69,7 +69,7 @@ export const enMessages: Record<string, string> = {
     "header.projectDescription": "Ruleset, changelog, and data sources",
     "header.changelog": "Changelog",
     "header.credits": "Credits",
-    "changelog.unreleased": "Unreleased",
+    "changelog.unreleased": "Latest changes",
     "changelog.empty": "No changelog entries yet.",
     "credits.smogon": "Damage result verification within the supported scope",
     "credits.pokeapi": "Pokémon, move, ability, and sprite data",
