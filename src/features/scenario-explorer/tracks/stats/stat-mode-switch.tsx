@@ -1,6 +1,7 @@
 import type { ReactNode } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import type { StatSelectMode } from "@/lib/scenario"
 
 function flipMode(mode: StatSelectMode): StatSelectMode {
@@ -28,6 +29,39 @@ function ChoiceMark() {
       <span className="h-px min-w-0 flex-1 bg-current" />
       <span className="size-[5px] shrink-0 rounded-[1px] bg-current" />
     </span>
+  )
+}
+
+export function StatModeControl({
+  mode,
+  onMode,
+}: {
+  mode: StatSelectMode
+  onMode: (mode: StatSelectMode) => void
+}) {
+  const intl = useIntl()
+  const range = intl.formatMessage({ id: "track.range" })
+  const choice = intl.formatMessage({ id: "track.choice" })
+
+  return (
+    <ToggleGroup
+      value={[mode]}
+      onValueChange={(value) => {
+        if (value[0] === "range" || value[0] === "preset") onMode(value[0])
+      }}
+      aria-label={`${range} / ${choice}`}
+      className="gap-1"
+    >
+      {(["range", "preset"] as const).map((value) => (
+        <ToggleGroupItem
+          key={value}
+          value={value}
+          className="h-6 min-h-0! min-w-0 rounded-[9px] border-2 border-card-border bg-paper px-2 py-0.5 text-[10px] font-extrabold hover:bg-token-bg/60 aria-pressed:border-ink aria-pressed:bg-signal-yellow aria-pressed:shadow-hud-chip aria-pressed:hover:bg-signal-yellow"
+        >
+          {value === "range" ? range : choice}
+        </ToggleGroupItem>
+      ))}
+    </ToggleGroup>
   )
 }
 
