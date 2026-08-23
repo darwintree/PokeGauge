@@ -329,7 +329,7 @@ export function DamagePercentAxis() {
   const intl = useIntl()
   return (
     <div className={cn(
-      "sticky top-[6.25rem] z-10 grid grid-cols-[minmax(0,1fr)_3rem] items-end gap-1 border-b border-hairline bg-paper px-2 py-0.5 md:mb-2 md:grid md:rounded-t-[14px] md:px-3 md:py-1.5 lg:top-14 lg:px-4",
+      "sticky top-12 z-10 grid grid-cols-[minmax(0,1fr)_3rem] items-end gap-1 border-b border-hairline bg-paper px-2 py-0.5 md:mb-2 md:grid md:rounded-t-[14px] md:px-3 md:py-1.5 lg:top-14 lg:px-4",
       DESKTOP_RESULT_GRID,
     )}>
       <div className="hidden md:block" aria-hidden />

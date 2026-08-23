@@ -216,7 +216,7 @@ export function AppHeader({
   )
 
   return (
-    <header className="sticky top-0 z-40 h-14 border-b-2 border-ink bg-[var(--appbar)] text-paper">
+    <header className="z-40 h-14 border-b-2 border-ink bg-[var(--appbar)] text-paper lg:sticky lg:top-0">
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-1 px-4 sm:gap-3 sm:px-6">
         <div className="flex min-w-0 items-center gap-3">
           {onBrandHomeClick ? (

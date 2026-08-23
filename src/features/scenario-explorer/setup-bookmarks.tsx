@@ -242,13 +242,19 @@ export function SetupBookmarkControls({
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <Button type="button" variant="outline" size="sm" onClick={saveCurrent}>
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        className="size-11 sm:h-7 sm:w-auto sm:px-2.5"
+        onClick={saveCurrent}
+      >
         {saveStatus === "saved" ? (
           <CheckIcon data-icon="inline-start" />
         ) : (
           <BookmarkPlusIcon data-icon="inline-start" />
         )}
-        <span aria-live="polite">
+        <span className="sr-only sm:not-sr-only" aria-live="polite">
           <FormattedMessage id={saveStatus === "saved" ? "bookmark.saved" : "bookmark.save"} />
         </span>
       </Button>
@@ -263,9 +269,20 @@ export function SetupBookmarkControls({
           }
         }}
       >
-        <DialogTrigger render={<Button type="button" variant="outline" size="sm" />}>
+        <DialogTrigger
+          render={
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="size-11 sm:h-7 sm:w-auto sm:px-2.5"
+            />
+          }
+        >
           <BookmarkIcon data-icon="inline-start" />
-          <FormattedMessage id="bookmark.list" />
+          <span className="sr-only sm:not-sr-only">
+            <FormattedMessage id="bookmark.list" />
+          </span>
         </DialogTrigger>
         <DialogContent
           ref={dialogRef}
