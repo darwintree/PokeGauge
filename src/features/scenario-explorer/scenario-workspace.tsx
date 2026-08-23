@@ -99,13 +99,13 @@ export function ScenarioWorkspace({
       <a
         href="#damage-results"
         onClick={() => setMobileView("results")}
-        className="focus-visible:ring-ring fixed top-[6.5rem] left-2 z-50 -translate-y-40 rounded-md border-2 border-ink bg-paper px-3 py-2 text-sm font-bold shadow-hud-chip focus-visible:translate-y-0 focus-visible:ring-2 focus-visible:outline-none lg:top-16"
+        className="focus-visible:ring-ring fixed top-12 left-2 z-50 -translate-y-40 rounded-md border-2 border-ink bg-paper px-3 py-2 text-sm font-bold shadow-hud-chip focus-visible:translate-y-0 focus-visible:ring-2 focus-visible:outline-none lg:top-16"
       >
         <FormattedMessage id="app.skipToResults" />
       </a>
       <nav
         aria-label={intl.formatMessage({ id: "app.title" })}
-        className="sticky top-14 z-20 -mx-4 -mt-4 mb-4 grid grid-cols-2 border-b border-hairline bg-bg-app/95 px-4 backdrop-blur sm:-mx-6 sm:-mt-6 sm:px-6 lg:hidden"
+        className="sticky top-0 z-20 -mx-4 -mt-4 mb-4 grid grid-cols-2 border-b border-hairline bg-bg-app/95 px-4 backdrop-blur sm:-mx-6 sm:-mt-6 sm:px-6 lg:hidden"
       >
         <Button
           type="button"
@@ -167,12 +167,12 @@ export function ScenarioWorkspace({
             mobileView !== "results" && "hidden",
           )}
         >
-          <header className="space-y-2">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <h1 className="text-[19px] font-extrabold tracking-tight [text-shadow:1px_1px_0_var(--paper)]">
+          <header className="space-y-1.5">
+            <div className="flex items-center justify-between gap-2">
+              <h1 className="min-w-0 truncate text-[19px] font-extrabold tracking-tight [text-shadow:1px_1px_0_var(--paper)]">
                 {catalog.matchup.attackerLabel} → {catalog.matchup.defenderLabel}
               </h1>
-              <div className="flex flex-wrap items-center justify-end gap-2">
+              <div className="flex shrink-0 items-center justify-end gap-0.5 sm:gap-2">
                 <SetupBookmarkControls
                   catalog={catalog}
                   trackState={state.trackState}
@@ -184,10 +184,11 @@ export function ScenarioWorkspace({
                   type="button"
                   variant="outline"
                   size="sm"
+                  className="size-11 sm:h-7 sm:w-auto sm:px-2.5"
                   onClick={shareSetup}
                 >
                   {shareStatus === "copied" ? <Check /> : <Share2 />}
-                  <span aria-live="polite">
+                  <span className="sr-only sm:not-sr-only" aria-live="polite">
                     <FormattedMessage id={shareStatus === "copied" ? "share.copied" : "share.action"} />
                   </span>
                 </Button>

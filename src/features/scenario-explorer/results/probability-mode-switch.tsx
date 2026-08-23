@@ -32,7 +32,7 @@ export function ProbabilityModeSwitch({
   const [compareOpen, setCompareOpen] = useState(false)
 
   return (
-    <div className="mb-3 flex flex-col gap-2">
+    <div className="mb-2 flex flex-col gap-2">
       <div className="flex items-center gap-1.5">
         <ToggleGroup
           value={[mode]}
@@ -49,8 +49,7 @@ export function ProbabilityModeSwitch({
             <ToggleGroupItem
               key={value}
               value={value}
-              className="rounded-[7px] px-2.5 text-[11px] font-extrabold text-ink hover:bg-token-bg aria-pressed:bg-signal-yellow aria-pressed:text-ink aria-pressed:shadow-none"
-            >
+              className="rounded-[7px] px-2 text-[11px] font-extrabold text-ink hover:bg-token-bg aria-pressed:bg-signal-yellow aria-pressed:text-ink aria-pressed:shadow-none">
               <FormattedMessage id={LABEL_ID[value]} />
             </ToggleGroupItem>
           ))}

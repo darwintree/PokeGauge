@@ -26,23 +26,26 @@ export function ResultSetSummary({
         )
       : intl.formatMessage({ id: "summary.defendersRange" })
   return (
-    <div className="flex flex-wrap items-center justify-between gap-2">
-      <div className="flex flex-wrap gap-1.5">
-        <Badge variant="secondary" className="text-[10.5px] font-bold">
+    <div className="flex flex-wrap items-center justify-between gap-1.5">
+      <div className="flex flex-wrap gap-1">
+        <Badge variant="secondary" className="px-1.5 text-[10.5px] font-bold sm:px-2">
           {intl.formatMessage(
             { id: "summary.moves" },
             { count: trackState.selectedMoveSnapshotIds.length },
           )}
         </Badge>
-        <Badge variant="secondary" className="text-[10.5px] font-bold">{stats}</Badge>
-        <Badge variant="secondary" className="text-[10.5px] font-bold">
+        <Badge variant="secondary" className="px-1.5 text-[10.5px] font-bold sm:px-2">{stats}</Badge>
+        <Badge variant="secondary" className="px-1.5 text-[10.5px] font-bold sm:px-2">
           {intl.formatMessage({ id: "summary.items" }, { count: trackState.attackerItemIds.length })}
         </Badge>
-        <Badge variant="secondary" className="text-[10.5px] font-bold">
+        <Badge variant="secondary" className="px-1.5 text-[10.5px] font-bold sm:px-2">
           {intl.formatMessage({ id: "summary.defenders" }, { value: defenders })}
         </Badge>
       </div>
-      <Badge variant="outline" className="border-card-border text-[10.5px] font-bold tabular-nums">
+      <Badge
+        variant="outline"
+        className="border-card-border px-1.5 text-[10.5px] font-bold tabular-nums sm:px-2"
+      >
         {intl.formatMessage({ id: "summary.rows" }, { count: rowCount })}
       </Badge>
     </div>
