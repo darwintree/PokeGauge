@@ -66,22 +66,18 @@ export function ScenarioExplorerPage({
   const intl = useIntl()
   const [confirmResetOpen, setConfirmResetOpen] = useState(false)
   const [initialUrlState] = useState(() => readScenarioSetupUrl(window.location.href))
-  const [initialRestoredScenario] = useState(() =>
+  const [storedScenario, setStoredScenario] = useState(() =>
     initialUrlState.kind === "none" ? loadScenarioSnapshot() : null,
   )
-  const restoredScenarioRef = useRef(initialRestoredScenario)
-  const restoredTrackStateRef = useRef<TrackState | null>(
-    initialRestoredScenario?.trackState ?? null,
-  )
+  const restoredScenarioRef = useRef<typeof storedScenario>(null)
+  const restoredTrackStateRef = useRef<TrackState | null>(null)
   const sharedSetupRef = useRef<SharedScenarioSetup | null>(
     initialUrlState.kind === "valid" ? initialUrlState.setup : null,
   )
   const sharedTokenRef = useRef(
     initialUrlState.kind === "valid" ? initialUrlState.token : null,
   )
-  const restorePendingRef = useRef(
-    initialRestoredScenario !== null || initialUrlState.kind === "valid",
-  )
+  const restorePendingRef = useRef(initialUrlState.kind === "valid")
   const automaticCategoryAttackerRef = useRef<BattlePokemonId | null>(null)
   const moveCategoryTouchedRef = useRef(false)
   const [shareFailures, setShareFailures] = useState<ScenarioShareFailure[] | null>(
@@ -92,19 +88,13 @@ export function ScenarioExplorerPage({
     defenders: Set<BattlePokemonId>
   } | null>(null)
   const [attackerId, setAttackerId] = useState<BattlePokemonId | null>(
-    sharedSetupRef.current?.attackerId ??
-      restoredScenarioRef.current?.attackerId ??
-      null,
+    sharedSetupRef.current?.attackerId ?? null,
   )
   const [defenderId, setDefenderId] = useState<BattlePokemonId | null>(
-    sharedSetupRef.current?.defenderId ??
-      restoredScenarioRef.current?.defenderId ??
-      null,
+    sharedSetupRef.current?.defenderId ?? null,
   )
   const [moveCategory, setMoveCategory] = useState<MoveCategory>(
-    sharedSetupRef.current?.moveCategory ??
-      restoredScenarioRef.current?.moveCategory ??
-      "physical",
+    sharedSetupRef.current?.moveCategory ?? "physical",
   )
   const [localizedOptions, setLocalizedOptions] = useState<LocalizedOptionsState | null>(null)
   const [catalog, setCatalog] = useState<MatchupCatalog | null>(null)
@@ -123,6 +113,7 @@ export function ScenarioExplorerPage({
 
   function discardRestore() {
     discardScenarioSnapshot()
+    setStoredScenario(null)
     restorePendingRef.current = false
     restoredScenarioRef.current = null
     restoredTrackStateRef.current = null
@@ -137,6 +128,7 @@ export function ScenarioExplorerPage({
 
   function resetToLanding() {
     discardScenarioSnapshot()
+    setStoredScenario(null)
     restorePendingRef.current = false
     restoredScenarioRef.current = null
     restoredTrackStateRef.current = null
@@ -347,6 +339,21 @@ export function ScenarioExplorerPage({
     setMoveCategory(category)
   }
 
+  function resumeStoredScenario() {
+    if (!storedScenario) return
+    restoredScenarioRef.current = storedScenario
+    restoredTrackStateRef.current = storedScenario.trackState
+    restorePendingRef.current = true
+    automaticCategoryAttackerRef.current = null
+    moveCategoryTouchedRef.current = true
+    setAttackerId(storedScenario.attackerId)
+    setDefenderId(storedScenario.defenderId)
+    setMoveCategory(storedScenario.moveCategory)
+    setCatalog(null)
+    setShowExplorer(true)
+    setRestoring(true)
+  }
+
   async function applySetupBookmark(token: string): Promise<"ok" | "unloadable"> {
     const availableMatchupIds = availableMatchupIdsRef.current
     if (!availableMatchupIds) return "unloadable"
@@ -422,6 +429,13 @@ export function ScenarioExplorerPage({
   }
 
   if (!showExplorer || !catalog || attackerId == null || defenderId == null) {
+    const resumeAttacker = localizedOptions.attackers.find(
+      (option) => option.id === storedScenario?.attackerId,
+    )
+    const resumeDefender = localizedOptions.defenders.find(
+      (option) => option.id === storedScenario?.defenderId,
+    )
+
     return (
       <div
         className={cn(
@@ -436,6 +450,11 @@ export function ScenarioExplorerPage({
           defenderId={defenderId}
           onAttackerChange={changeAttacker}
           onDefenderChange={setDefenderId}
+          resumeMatchup={resumeAttacker && resumeDefender ? {
+            attackerLabel: resumeAttacker.label,
+            defenderLabel: resumeDefender.label,
+            onResume: resumeStoredScenario,
+          } : undefined}
         />
       </div>
     )

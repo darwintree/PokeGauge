@@ -11,6 +11,9 @@ const catalogMocks = vi.hoisted(() => ({
   resolveCategory: vi.fn(),
   getCatalogShell: vi.fn(),
 }))
+const scenarioMocks = vi.hoisted(() => ({
+  loadSnapshot: vi.fn(),
+}))
 
 vi.mock("@/lib/catalog", () => ({
   getCatalogShell: catalogMocks.getCatalogShell,
@@ -21,18 +24,29 @@ vi.mock("@/lib/catalog", () => ({
   resolveCatalogDefaultMovePick: async (catalog: unknown) => catalog,
 }))
 
+vi.mock("@/lib/scenario", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@/lib/scenario")>(),
+  loadScenarioSnapshot: scenarioMocks.loadSnapshot,
+  scenarioSnapshotMatchesCatalog: () => true,
+}))
+
 vi.mock("./matchup/matchup-landing", () => ({
   MatchupLanding: ({
     onAttackerChange,
     onDefenderChange,
+    resumeMatchup,
   }: {
     onAttackerChange: (id: number) => void
     onDefenderChange: (id: number) => void
+    resumeMatchup?: { onResume: () => void }
   }) => (
-    <>
+    <div data-testid="landing">
       <button type="button" data-testid="attacker" onClick={() => onAttackerChange(445)} />
       <button type="button" data-testid="defender" onClick={() => onDefenderChange(727)} />
-    </>
+      {resumeMatchup && (
+        <button type="button" data-testid="resume" onClick={resumeMatchup.onResume} />
+      )}
+    </div>
   ),
 }))
 
@@ -64,6 +78,22 @@ async function flush(): Promise<void> {
   })
 }
 
+async function renderPage(): Promise<void> {
+  const mountedRoot = createRoot(container)
+  root = mountedRoot
+  await act(async () => {
+    mountedRoot.render(
+      <IntlProvider locale="en" messages={{}}>
+        <ScenarioExplorerPage
+          locale="en"
+          onFeedbackScenarioUrlChange={() => {}}
+        />
+      </IntlProvider>,
+    )
+  })
+  await flush()
+}
+
 beforeEach(async () => {
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })
   const storedValues = new Map<string, string>()
@@ -82,6 +112,9 @@ beforeEach(async () => {
   })
   catalogMocks.resolveCategory.mockReset()
   catalogMocks.getCatalogShell.mockReset()
+  scenarioMocks.loadSnapshot.mockReset()
+  scenarioMocks.loadSnapshot.mockReturnValue(null)
+  window.history.replaceState(null, "", "/")
   catalogMocks.getCatalogShell.mockImplementation(
     async (attackerId: number, defenderId: number, _locale: string, moveCategory: string) => ({
       matchup: { attackerId, defenderId },
@@ -91,19 +124,7 @@ beforeEach(async () => {
   )
   container = document.createElement("div")
   document.body.append(container)
-  const mountedRoot = createRoot(container)
-  root = mountedRoot
-  await act(async () => {
-    mountedRoot.render(
-      <IntlProvider locale="en" messages={{}}>
-        <ScenarioExplorerPage
-          locale="en"
-          onFeedbackScenarioUrlChange={() => {}}
-        />
-      </IntlProvider>,
-    )
-  })
-  await flush()
+  await renderPage()
 })
 
 afterEach(async () => {
@@ -140,4 +161,25 @@ it("does not replace a category chosen while inference is pending", async () => 
 
   expect(container.querySelector("[data-testid=workspace]")?.getAttribute("data-category"))
     .toBe("physical")
+})
+
+it("waits on the landing before restoring a stored scenario", async () => {
+  await act(async () => root?.unmount())
+  root = null
+  scenarioMocks.loadSnapshot.mockReturnValue({
+    version: 4,
+    attackerId: 445,
+    defenderId: 727,
+    moveCategory: "physical",
+    trackState: {},
+  })
+  await renderPage()
+
+  expect(container.querySelector("[data-testid=landing]")).not.toBeNull()
+  expect(container.querySelector("[data-testid=workspace]")).toBeNull()
+
+  await act(async () => container.querySelector<HTMLElement>("[data-testid=resume]")?.click())
+  await flush()
+
+  expect(container.querySelector("[data-testid=workspace]")).not.toBeNull()
 })
