@@ -19,10 +19,10 @@ Share setup links.
       {
         version: null,
         messages: {
-          en: "Share setup links.",
-          "zh-hans": "分享配置链接。",
-          "zh-hant": "分享配置連結。",
-          ja: "設定リンクを共有できます。",
+          en: ["Share setup links."],
+          "zh-hans": ["分享配置链接。"],
+          "zh-hant": ["分享配置連結。"],
+          ja: ["設定リンクを共有できます。"],
         },
       },
     ])
@@ -31,5 +31,25 @@ Share setup links.
     expect(() => assertLocalizedChangelogEntry(entry.replace("<!-- changelog:ja -->", ""))).toThrow(
       "Changelog locale must appear exactly once: ja",
     )
+  })
+
+  it("groups entries under the same release heading", () => {
+    const entry = (message: string) => `<!-- changelog:start -->
+<!-- changelog:en -->
+${message}
+<!-- changelog:zh-hans -->
+${message}
+<!-- changelog:zh-hant -->
+${message}
+<!-- changelog:ja -->
+${message}
+<!-- changelog:end -->`
+
+    const result = parseChangelog(
+      `# PokeGauge\n\n## Unreleased\n\n${entry("First change.")}\n\n${entry("Second change.")}`,
+    )
+
+    expect(result).toHaveLength(1)
+    expect(result[0]?.messages.en).toEqual(["First change.", "Second change."])
   })
 })
