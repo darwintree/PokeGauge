@@ -69,7 +69,7 @@ export const zhHansMessages: Record<string, string> = {
     "header.projectDescription": "规则集、更新记录与数据来源",
     "header.changelog": "更新",
     "header.credits": "来源",
-    "changelog.unreleased": "尚未发布",
+    "changelog.unreleased": "最新变更",
     "changelog.empty": "暂无更新记录。",
     "credits.smogon": "支持范围内的伤害结果校验",
     "credits.pokeapi": "宝可梦、招式、特性与精灵图",
