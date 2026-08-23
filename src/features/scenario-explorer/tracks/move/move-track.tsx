@@ -11,7 +11,6 @@ import type { BattlePokemonId } from "@/lib/resources"
 import { MovePickerDialog } from "./move-picker-dialog"
 import type { MoveSnapshotPatch } from "./move-snapshot-row"
 import { MoveSnapshotRow } from "./move-snapshot-row"
-import { cn } from "@/lib/utils"
 
 const collapsedSelectedMoveChipClass =
   "pointer-events-auto relative inline-flex max-w-full items-center gap-1 rounded-[9px] border-2 border-card-border bg-paper px-1.5 py-0.5 transition-colors active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-ink [&:is(:hover,:active,:focus-visible)]:border-ink [&:is(:hover,:active,:focus-visible)]:bg-signal-yellow [&:is(:hover,:active,:focus-visible)]:shadow-hud-chip"
@@ -38,14 +37,11 @@ export type MoveTrackProps = {
 function MoveCategoryControl({
   category,
   onChange,
-  variant = "panel",
 }: {
   category: MoveCategory
   onChange: (category: MoveCategory) => void
-  variant?: "panel" | "chip"
 }) {
   const intl = useIntl()
-  const chip = variant === "chip"
 
   return (
     <ToggleGroup
@@ -54,22 +50,13 @@ function MoveCategoryControl({
         if (value[0] === "physical" || value[0] === "special") onChange(value[0])
       }}
       aria-label={intl.formatMessage({ id: "track.moveSide" })}
-      className={cn(
-        chip
-          ? "gap-1"
-          : "grid w-[5.5rem] grid-cols-2 gap-px rounded-md bg-muted p-0.5",
-      )}
+      className="gap-1"
     >
       {(["physical", "special"] as const).map((value) => (
         <ToggleGroupItem
           key={value}
           value={value}
-          className={cn(
-            chip
-              ? "h-auto min-w-0 rounded-[9px] border-2 border-card-border bg-paper px-2 py-0.5 text-[10px] font-extrabold hover:bg-token-bg/60 aria-pressed:border-ink aria-pressed:bg-signal-yellow aria-pressed:shadow-hud-chip aria-pressed:hover:bg-signal-yellow"
-              : "h-8 rounded-[4px] px-1.5 text-[10px] font-medium transition-colors active:scale-[0.98] aria-pressed:bg-background aria-pressed:text-foreground aria-pressed:shadow-sm aria-pressed:hover:bg-background sm:h-6",
-            !chip && "text-muted-foreground hover:text-foreground",
-          )}
+          className="h-6 min-h-0! min-w-0 rounded-[9px] border-2 border-card-border bg-paper px-2 py-0.5 text-[10px] font-extrabold hover:bg-token-bg/60 aria-pressed:border-ink aria-pressed:bg-signal-yellow aria-pressed:shadow-hud-chip aria-pressed:hover:bg-signal-yellow"
         >
           {intl.formatMessage({ id: `track.moveSide.${value}` })}
         </ToggleGroupItem>
@@ -153,7 +140,6 @@ export function MoveTrack({
               <MoveCategoryControl
                 category={category}
                 onChange={onCategoryChange}
-                variant="chip"
               />
             </div>
             <ChevronDown className="pointer-events-none relative size-3.5 shrink-0 text-muted-foreground" />
@@ -200,6 +186,10 @@ export function MoveTrack({
               className="absolute inset-0 hover:bg-token-bg/60 active:bg-token-bg/80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
               onClick={onToggle}
             />
+            <Swords
+              className="pointer-events-none relative size-3.5 shrink-0 text-muted-foreground"
+              strokeWidth={1.75}
+            />
             <span className="pointer-events-none relative text-xs font-extrabold">{label}</span>
             <div className="relative z-10 ml-auto">
               <MoveCategoryControl
@@ -207,9 +197,7 @@ export function MoveTrack({
                 onChange={onCategoryChange}
               />
             </div>
-            <span className="pointer-events-none relative grid size-7 place-items-center text-muted-foreground transition-colors group-hover:text-foreground">
-              <ChevronDown className="size-3.5 rotate-180 transition-transform" />
-            </span>
+            <ChevronDown className="pointer-events-none relative size-3.5 shrink-0 rotate-180 text-muted-foreground transition-transform" />
           </div>
           <div className="border-t">
             {snapshots.map((snapshot) => {
