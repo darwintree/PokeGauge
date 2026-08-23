@@ -24,7 +24,7 @@ import { defenseAxisMarks, offenseAxisMarks } from "./stat-axis-marks"
 import { StatRangeInput } from "./stat-range-input"
 import { StatPresetChoices } from "./stat-preset-choices"
 import { StatValueChip, StatValueChipPair } from "./stat-value-chip"
-import { StatModeWell } from "./stat-mode-switch"
+import { StatModeControl, StatModeWell } from "./stat-mode-switch"
 import { TrackPanel } from "../common/track-panel"
 import type { ScenarioState } from "../../state/use-scenario-state"
 
@@ -406,6 +406,15 @@ export function StatTrack({
       summaryLayout="stack"
       expanded={expanded}
       onToggle={onToggle}
+      headerTrailing={
+        <StatModeControl
+          mode={adding ? "range" : mode}
+          onMode={(next) => {
+            cancelDraft()
+            setMode(next)
+          }}
+        />
+      }
     >
       <div className="space-y-2">
         <ModePane

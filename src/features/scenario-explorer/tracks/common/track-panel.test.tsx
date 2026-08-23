@@ -34,3 +34,24 @@ it("renders accessible red attacker and blue defender title marks", () => {
   expect(defender).toContain("Defender")
   expect(defender).toContain("bg-[var(--battle-side-defender)]")
 })
+
+it("renders stack header controls only while expanded", () => {
+  function render(expanded: boolean) {
+    return renderToStaticMarkup(
+      <TrackPanel
+        label="Stats"
+        icon={Gauge}
+        summary={<span>Summary</span>}
+        summaryLayout="stack"
+        headerTrailing={<button type="button">Mode</button>}
+        expanded={expanded}
+        onToggle={() => {}}
+      >
+        <span />
+      </TrackPanel>,
+    )
+  }
+
+  expect(render(true)).toContain(">Mode</button>")
+  expect(render(false)).not.toContain(">Mode</button>")
+})
