@@ -1,27 +1,30 @@
-name: CI
+name: Changesets
 
 on:
   push:
     branches: [main]
-  pull_request:
 
 permissions:
-  contents: read
+  contents: write
+  pull-requests: write
 
 jobs:
-  check:
+  version:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - run: git submodule update --init --checkout --depth=1 PokeAPI/pokeapi
       - uses: actions/setup-node@v6
         with:
           node-version: 24
           package-manager-cache: false
       - run: corepack enable
       - run: pnpm install --frozen-lockfile
-      - run: pnpm lint
-      - run: pnpm test
-      - run: pnpm build
+      - uses: changesets/action@v1
+        with:
+          version: pnpm release:version
+          commit: "chore: version packages"
+          title: "chore: version packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.CHANGESETS_TOKEN || github.token }}
