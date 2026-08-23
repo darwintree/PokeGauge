@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { IntlProvider } from "react-intl"
 
 import { AppHeader } from "@/components/app-header"
@@ -28,6 +28,10 @@ function App() {
     setLocaleState(locale)
   }
 
+  const handleBrandHomeActionChange = useCallback((action: (() => void) | null) => {
+    setBrandHomeAction(() => action)
+  }, [])
+
   return (
     <IntlProvider locale={locale} messages={localeMessages[locale]}>
       <TooltipProvider delay={0}>
@@ -45,9 +49,7 @@ function App() {
               <ScenarioExplorerPage
                 locale={locale}
                 onFeedbackScenarioUrlChange={setFeedbackScenarioUrl}
-                onBrandHomeActionChange={(action) =>
-                  setBrandHomeAction(() => action)
-                }
+                onBrandHomeActionChange={handleBrandHomeActionChange}
               />
             )}
           </div>
