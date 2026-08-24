@@ -6,6 +6,8 @@ import {
   EELEVATE_ABILITY_ID,
   FIRE_MANE_ABILITY_ID,
   MEGA_SOL_ABILITY_ID,
+  ROUGH_SKIN_ABILITY_ID,
+  SUPREME_OVERLORD_ABILITY_ID,
   HUSTLE_ABILITY_ID,
   MERCILESS_ABILITY_ID,
   NO_ABILITY_ID,
@@ -354,12 +356,20 @@ describe("accuracy abilities", () => {
 })
 
 describe("support boundary", () => {
-  it.each([FIRE_MANE_ABILITY_ID, MEGA_SOL_ABILITY_ID, EELEVATE_ABILITY_ID])(
-    "keeps calc-missing Ability %i unsupported",
+  it.each([
+    FIRE_MANE_ABILITY_ID,
+    MEGA_SOL_ABILITY_ID,
+    EELEVATE_ABILITY_ID,
+    ROUGH_SKIN_ABILITY_ID,
+    SUPREME_OVERLORD_ABILITY_ID,
+  ])(
+    "keeps reviewed Ability %i unsupported",
     (abilityId) => {
     const outcome = calculable({ attackerAbilityId: abilityId, defenderAbilityId: abilityId })
     expect(state(outcome, "attacker-ability")).toBe("unsupported")
     expect(state(outcome, "defender-ability")).toBe("unsupported")
+    expect(outcome.calculation.low.calc.attacker.abilityCalcName).toBeUndefined()
+    expect(outcome.calculation.low.calc.defender.abilityCalcName).toBeUndefined()
     },
   )
 })

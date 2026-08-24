@@ -6,7 +6,7 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-15T02:45:00Z"
-updated_at: "2026-08-20T08:30:00Z"
+updated_at: "2026-08-24T15:21:00Z"
 ---
 ## Goal
 
@@ -28,7 +28,8 @@ calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运�
 - 不再为 calc 已处理的 Ability 创建本地公式实现票。
 - 新子 issue 必须写明缺失的产品输入、calc 版本缺口或展示错误；仅“checklist 未勾选”不是工作依据。
 - 共享同一输入契约的多个 Ability 可以合并处理。
-- 下方 checklist 保留为迁移前的历史 inventory，不代表当前支持状态，也不再逐项维护。
+- 下方 checklist 已于 2026-08-24 按运行时是否诚实还原普通命中伤害贡献重审并重打勾，现代表迁移后支持状态。
+- calc 认识并不等于产品支持：仍需区分 calc 能应用但产品未提供输入（HP%、状态、队友、KO 数、多段等）、calc 无对应伤害钩子，以及 calc 0.11.0 缺失三类。
 
 ## Child issues
 
@@ -42,14 +43,24 @@ calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运�
 - [[archive/20260805_closed_ability-immunities-and-type-exceptions|Ability immunities and type exceptions]]
 - [[archive/20260805_closed_scenario-move-type-rewriting-and-protean-family-stab|Scenario Move Type rewriting and Protean-family STAB]]
 - [[archive/20260805_closed_ability-weather-and-item-composition|Ability weather and item composition]]
+- [[archive/20260824_closed_repair-ability-support-classification-and-assumed-conditions|Repair ability support classification and assumed conditions]]
 - [[20260805_open_implement-parental-bond|Implement Parental Bond]]
 
-## Historical local-implementation checklist (313, superseded)
+## Runtime support checklist (313, re-audited 2026-08-24)
+
+下列勾选项代表当前运行时（`@smogon/calc` 0.11.0 + 本地 compiler／projection）是否诚实还原该 Ability 的普通命中伤害／命中率／会心贡献。`[x]` 只表示运行时数值正确；`[ ]` 表示算不出（calc 缺失、需要产品未建模输入、无对应伤害钩子，或尚未实现）。Track activation／provenance 是否能解释该数值另行记录，不影响本勾选。标记不代表「已判断无效（inactive）」。
+
+### 分类依据
+
+- `[x]`：本地 `compileAbilityEffect`／`scenario-compiler` 处理且 calc 能按已提供输入正确生效；或 calc 直接应用且伤害正确。部分 calc 直应用项存在 provenance 显示为 inactive 的展示缺口，见 Current state。
+- 例外：A 桶的 Illuminate（35）、Keen Eye（51）虽被调研归入 A（普通命中），但产品未实现其命中率防护效果，故仍按 `[ ]`；其余 A 桶普通命中项均按 `[x]`。
+- `[ ]`：calc 0.11.0 不认识的（Dragonize、Mega Sol、Eelevate、Fire Mane）；仍需产品未建模输入的（队友项如 Friend Guard、KO 数如 Supreme Overlord、多段如 Parental Bond/Skill Link）；calc 无普通命中钩子的（如 Dragon’s Maw、Rough Skin、Iron Barbs、Flame Body）；以及交叉能力压制（Mold Breaker/Teravolt/Turboblaze/Neutralizing Gas）。Mind’s Eye 另因本地生成名使用 Unicode `’` 而 calc 的 `hasAbility` 使用 ASCII `'` 精确匹配，当前 hook 不会触发。
+- Assumed-Satisfied 例外：十五项条件特性选中即默认满足约定的 HP、状态、队友或行动顺序条件，并在 Ability Track 显示静态绿点；这不是要求新增对应 Track。calc 适配层现已传入这些假设条件，运行时正确的项目按 `[x]` 记录。
 
 ### Generation III (76)
 
 - [ ] Stench
-- [ ] Drizzle
+- [x] Drizzle
 - [ ] Speed Boost
 - [x] Battle Armor
 - [ ] Sturdy
@@ -69,10 +80,10 @@ calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运�
 - [ ] Shield Dust
 - [ ] Own Tempo
 - [ ] Suction Cups
-- [ ] Intimidate
+- [x] Intimidate
 - [ ] Shadow Tag
 - [ ] Rough Skin
-- [ ] Wonder Guard
+- [x] Wonder Guard
 - [x] Levitate
 - [ ] Effect Spore
 - [ ] Synchronize
@@ -92,7 +103,7 @@ calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运�
 - [ ] Magnet Pull
 - [x] Soundproof
 - [ ] Rain Dish
-- [ ] Sand Stream
+- [x] Sand Stream
 - [ ] Pressure
 - [x] Thick Fat
 - [ ] Early Bird
@@ -104,8 +115,8 @@ calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运�
 - [ ] Truant
 - [x] Hustle
 - [ ] Cute Charm
-- [ ] Plus
-- [ ] Minus
+- [x] Plus
+- [x] Minus
 - [ ] Forecast
 - [ ] Sticky Hold
 - [ ] Shed Skin
@@ -117,7 +128,7 @@ calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运�
 - [x] Torrent
 - [x] Swarm
 - [ ] Rock Head
-- [ ] Drought
+- [x] Drought
 - [ ] Arena Trap
 - [ ] Vital Spirit
 - [ ] White Smoke
@@ -138,7 +149,7 @@ calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运�
 - [x] Heatproof
 - [ ] Simple
 - [x] Dry Skin
-- [ ] Download
+- [x] Download
 - [x] Iron Fist
 - [ ] Poison Heal
 - [x] Adaptability — implemented
@@ -160,28 +171,28 @@ calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运�
 - [ ] Anticipation
 - [ ] Forewarn
 - [x] Unaware
-- [ ] Tinted Lens
+- [x] Tinted Lens
 - [x] Filter
 - [ ] Slow Start
 - [x] Scrappy
-- [ ] Storm Drain
+- [x] Storm Drain
 - [ ] Ice Body
 - [x] Solid Rock
-- [ ] Snow Warning
+- [x] Snow Warning
 - [x] Honey Gather — N/A: no competitive trainer-battle effect
 - [ ] Frisk
-- [ ] Reckless
+- [x] Reckless
 - [ ] Multitype
-- [ ] Flower Gift
+- [x] Flower Gift
 - [ ] Bad Dreams
 
 ### Generation V (41)
 
 - [ ] Pickpocket
-- [ ] Sheer Force
+- [x] Sheer Force
 - [ ] Contrary
 - [x] Unnerve
-- [ ] Defiant
+- [x] Defiant
 - [ ] Defeatist
 - [ ] Cursed Body
 - [ ] Healer
@@ -190,8 +201,8 @@ calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运�
 - [ ] Heavy Metal
 - [ ] Light Metal
 - [x] Multiscale
-- [ ] Toxic Boost
-- [ ] Flare Boost
+- [x] Toxic Boost
+- [x] Flare Boost
 - [ ] Harvest
 - [ ] Telepathy
 - [ ] Moody
@@ -201,7 +212,7 @@ calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运�
 - [ ] Big Pecks
 - [ ] Sand Rush
 - [ ] Wonder Skin
-- [ ] Analytic
+- [x] Analytic
 - [ ] Illusion
 - [ ] Imposter
 - [x] Infiltrator
@@ -228,23 +239,23 @@ calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运�
 - [x] Fur Coat
 - [ ] Magician
 - [x] Bulletproof
-- [ ] Competitive
+- [x] Competitive
 - [x] Strong Jaw
 - [x] Refrigerate
 - [ ] Sweet Veil
 - [ ] Stance Change
 - [ ] Gale Wings
 - [x] Mega Launcher
-- [ ] Grass Pelt
+- [x] Grass Pelt
 - [ ] Symbiosis
 - [x] Tough Claws
 - [x] Pixilate
 - [ ] Gooey
 - [x] Aerilate
 - [ ] Parental Bond
-- [ ] Dark Aura
+- [x] Dark Aura
 - [x] Fairy Aura
-- [ ] Aura Break
+- [x] Aura Break
 - [ ] Primordial Sea
 - [ ] Desolate Land
 - [ ] Delta Stream
@@ -259,7 +270,7 @@ calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运�
 - [ ] Shields Down
 - [ ] Stakeout
 - [x] Water Bubble
-- [ ] Steelworker
+- [x] Steelworker
 - [ ] Berserk
 - [ ] Slush Rush
 - [x] Long Reach
@@ -285,19 +296,19 @@ calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运�
 - [ ] Power of Alchemy
 - [ ] Beast Boost
 - [ ] RKS System
-- [ ] Electric Surge
+- [x] Electric Surge
 - [ ] Psychic Surge
 - [ ] Misty Surge
 - [ ] Grassy Surge
 - [ ] Full Metal Body
-- [ ] Shadow Shield
-- [ ] Prism Armor
-- [ ] Neuroforce
+- [x] Shadow Shield
+- [x] Prism Armor
+- [x] Neuroforce
 
 ### Generation VIII (34)
 
-- [ ] Intrepid Sword
-- [ ] Dauntless Shield
+- [x] Intrepid Sword
+- [x] Dauntless Shield
 - [x] Libero
 - [x] Ball Fetch — N/A: no competitive trainer-battle effect
 - [ ] Cotton Down
@@ -306,25 +317,25 @@ calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运�
 - [ ] Gulp Missile
 - [ ] Stalwart
 - [ ] Steam Engine
-- [ ] Punk Rock
-- [ ] Sand Spit
-- [ ] Ice Scales
+- [x] Punk Rock
+- [x] Sand Spit
+- [x] Ice Scales
 - [ ] Ripen
 - [ ] Ice Face
 - [ ] Power Spot
 - [ ] Mimicry
 - [ ] Screen Cleaner
-- [ ] Steely Spirit
+- [x] Steely Spirit
 - [ ] Perish Body
 - [ ] Wandering Spirit
-- [ ] Gorilla Tactics
+- [x] Gorilla Tactics
 - [ ] Neutralizing Gas
 - [ ] Pastel Veil
 - [ ] Hunger Switch
 - [ ] Quick Draw
 - [ ] Unseen Fist
 - [ ] Curious Medicine
-- [ ] Transistor
+- [x] Transistor
 - [ ] Dragon’s Maw
 - [ ] Chilling Neigh
 - [ ] Grim Neigh
@@ -338,10 +349,10 @@ calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运�
 - [ ] Thermal Exchange
 - [ ] Anger Shell
 - [x] Purifying Salt
-- [ ] Well-Baked Body
-- [ ] Wind Rider
+- [x] Well-Baked Body
+- [x] Wind Rider
 - [ ] Guard Dog
-- [ ] Rocky Payload
+- [x] Rocky Payload
 - [ ] Wind Power
 - [ ] Zero to Hero
 - [ ] Commander
@@ -349,15 +360,15 @@ calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运�
 - [ ] Protosynthesis
 - [ ] Quark Drive
 - [ ] Good as Gold
-- [ ] Vessel of Ruin
-- [ ] Sword of Ruin
-- [ ] Tablets of Ruin
-- [ ] Beads of Ruin
-- [ ] Orichalcum Pulse
-- [ ] Hadron Engine
+- [x] Vessel of Ruin
+- [x] Sword of Ruin
+- [x] Tablets of Ruin
+- [x] Beads of Ruin
+- [x] Orichalcum Pulse
+- [x] Hadron Engine
 - [ ] Opportunist
 - [ ] Cud Chew
-- [ ] Sharpness
+- [x] Sharpness
 - [ ] Supreme Overlord
 - [ ] Costar
 - [ ] Toxic Debris
@@ -370,15 +381,15 @@ calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运�
 - [ ] Toxic Chain
 - [ ] Embody Aspect
 - [ ] Tera Shift
-- [ ] Tera Shell
+- [x] Tera Shell
 - [ ] Teraform Zero
 - [ ] Poison Puppeteer
 - [ ] Piercing Drill
-- [x] Dragonize
-- [x] Mega Sol
+- [ ] Dragonize
+- [ ] Mega Sol
 - [ ] Spicy Spray
-- [x] Eelevate
-- [x] Fire Mane
+- [ ] Eelevate
+- [ ] Fire Mane
 
 ## Deferred constraints
 
@@ -388,9 +399,14 @@ calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运�
 
 ## Current state
 
-- 2026-08-19：运行时伤害迁移到 `@smogon/calc`。calc 认识的 239 个原 unsupported Ability 自动进入计算；Mega Sol、Dragonize、Eelevate、Fire Mane 因 calc 0.11.0 缺失而保持显式 unsupported。
-- 原本地 Ability compiler 只保留 Scenario projection、概率与 formula-details／provenance 所需逻辑，不再是伤害数值来源。
-- Adaptability 等旧 checklist 勾选项只表示迁移前本地覆盖，不能用来判断当前运行时支持。
+- 2026-08-24：重审全部 313 项支持情况，把「calc 认识」细化为「运行时诚实还原」。确认以下偏差：
+  - 大将（Supreme Overlord 293）与粗糙皮肤（Rough Skin 24）当前 **无法触发** —— calc 认识 Supreme Overlord 但产品从不传入 `alliesFainted`，calc 0.11.0 对 Rough Skin 无普通命中伤害钩子；二者均应按 `[ ]` 处理，而不是当作已支持但未激活。
+  - Assumed-Satisfied 契约已扩展并冻结为十五项；calc adapter 现会传入对应 HP、状态、`abilityOn` 与行动顺序输入，默认条件重新实际生效。
+  - Protean、Libero 的完整战斗状态类型持久化不在产品输入契约内，但普通出招伤害已支持：本地 `scenario-move-type` 在非原生同属性招式上补普通 STAB，calc 0.11.0 的 `getStabMod` 也直接处理这两个 Ability；因此恢复为 `[x]`。Dragonize、Mega Sol、Eelevate、Fire Mane 维持 `[ ]`（calc 0.11.0 缺失）。
+  - Dragon’s Maw（263）虽能通过 `toID` 的识别检查，但 calc 0.11.0 没有对应的普通伤害钩子；Mind’s Eye（299）传入 calc 时保留了 Unicode `’`，而 calc 内部按 ASCII `'` 精确比较，导致其 hook 不会触发；二者均维持 `[ ]`。
+  - Download（88）、Intrepid Sword（234）、Normalize（96）、Tinted Lens（110）、Ruin 族等由 calc 直接应用、伤害正确，但 provenance/本地 Track 仍显示 inactive —— 属展示缺口，纳入 Child issue 处理，本身按 `[x]` 计。
+- 2026-08-24：[[archive/20260824_closed_repair-ability-support-classification-and-assumed-conditions|独立修复]]建立 `supported`、`assumed-satisfied`、`unsupported`、`none` 集中裁决；Ability Track、catalog 与 compiler／calc adapter 共用该来源。Rough Skin（24）与 Supreme Overlord（293）现显示红点，none 不再显示，calc 未支持项不再保留本地公式补丁。
+- 清单勾选已重打为运行时支持状态；若某项机制后续被 calc 版本或产品输入变化影响，需重新确认，不能沿用本次勾选。
 - Run Away、Honey Gather、Ball Fetch 在竞技训练家战斗中无效果，历史上记为 `N/A`。
 - 2026-08-05：伤害相关性调研见 Goal 中的 first-freeze 笔记；首批范围产品决策见 [[../docs/traces/discussion/2026-08-05-ability-effects-first-freeze-scope|特性效果首批冻结范围讨论记录]]。已按机制族开子 issue（见 Child issues）。Mold Breaker 族剔出首批；Parental Bond 不进首批，实现见 [[20260805_open_implement-parental-bond|Implement Parental Bond]]（blocked by 多段伤害规格）。
 - 2026-08-07：原「Defer Parental Bond until multi-hit」误把 defer 记录当成票；已改写为实现票 [[20260805_open_implement-parental-bond|Implement Parental Bond]]，并在多段 issue 标明 downstream。

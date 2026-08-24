@@ -4,9 +4,8 @@ import { FormattedMessage, useIntl } from "react-intl"
 import { Button } from "@/components/ui/button"
 import {
   NO_ABILITY_ID,
-  UNKNOWN_ABILITY_ID,
-  abilityDamageModifierIsSupported,
-  abilityIsProjectionNeutral,
+  abilityIsSelectable,
+  abilitySupport,
   assumedSatisfiedAbilityFamily,
 } from "@/lib/ability"
 import type { CatalogAbilityOption } from "@/lib/catalog"
@@ -28,7 +27,11 @@ const ASSUMED_FAMILY_MESSAGE = {
   "full-hp": "track.ability.assumed.fullHp",
   "low-hp": "track.ability.assumed.lowHp",
   status: "track.ability.assumed.status",
-  poisoned: "track.ability.assumed.poisoned",
+  "target-poisoned": "track.ability.assumed.targetPoisoned",
+  "self-poisoned": "track.ability.assumed.selfPoisoned",
+  burned: "track.ability.assumed.burned",
+  partner: "track.ability.assumed.partner",
+  "last-move": "track.ability.assumed.lastMove",
 } as const
 
 export function AbilityTrack({
@@ -52,21 +55,17 @@ export function AbilityTrack({
     )
   }
 
-  const orderedOptions = [...options].sort((a, b) =>
+  const visibleOptions = options.filter((option) => abilityIsSelectable(option.id))
+  const orderedOptions = [...visibleOptions].sort((a, b) =>
     Number(b.id === NO_ABILITY_ID) - Number(a.id === NO_ABILITY_ID) ||
     Number(selected.has(b.id)) - Number(selected.has(a.id)),
   )
-  const summary = options
+  const summary = visibleOptions
     .filter((option) => selected.has(option.id))
     .map((option) => option.label)
     .join(", ")
   const describedOptions = orderedOptions.map((option) => {
-    // Projection abilities are handled by their target Tracks, not as Ability effects.
-    const unsupported =
-      !abilityDamageModifierIsSupported(option.id) &&
-      option.id !== UNKNOWN_ABILITY_ID &&
-      option.id !== NO_ABILITY_ID &&
-      !abilityIsProjectionNeutral(option.id)
+    const unsupported = abilitySupport(option.id) === "unsupported"
     const assumedFamily = !unsupported
       ? assumedSatisfiedAbilityFamily(option.id)
       : undefined

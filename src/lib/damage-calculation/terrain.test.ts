@@ -92,7 +92,7 @@ describe("terrain compiler", () => {
     expect(isGrounded(["psychic"], 28)).toBe(true)
     expect(isGrounded(["flying", "electric"], 46)).toBe(false)
     expect(isGrounded(["electric"], LEVITATE_ABILITY_ID)).toBe(false)
-    expect(isGrounded(["electric"], EELEVATE_ABILITY_ID)).toBe(false)
+    expect(isGrounded(["electric"], EELEVATE_ABILITY_ID)).toBe(true)
   })
 
   it.each([

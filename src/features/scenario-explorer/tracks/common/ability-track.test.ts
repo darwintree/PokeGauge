@@ -80,6 +80,8 @@ it("marks only unsupported ability effects in the Track", () => {
         { id: SCRAPPY_ABILITY_ID, label: "Scrappy", summary: "" },
         { id: DRY_SKIN_ABILITY_ID, label: "Dry Skin", summary: "" },
         { id: 35, label: "Illuminate", summary: "" },
+        { id: 24, label: "Rough Skin", summary: "" },
+        { id: 293, label: "Supreme Overlord", summary: "" },
         { id: 51, label: "Keen Eye", summary: "" },
         { id: NO_ABILITY_ID, label: "—", accessibleLabel: "No ability", summary: "" },
         { id: 50, label: "Run Away", summary: "" },
@@ -88,14 +90,15 @@ it("marks only unsupported ability effects in the Track", () => {
         { id: SHEER_FORCE_ABILITY_ID, label: "Sheer Force", summary: "" },
         { id: DROUGHT_ABILITY_ID, label: "Drought", summary: "" },
       ],
-      selectedIds: [91, 50],
+      selectedIds: [91],
       onChange: () => {},
       onReset: () => {},
     }),
   ))
 
   expect(markup).toContain("Adaptability")
-  expect(markup).toContain("Run Away")
+  expect(markup).not.toContain("Run Away")
+  expect(markup).not.toContain("Keen Eye")
   expect(markup).toContain("Fire Mane")
   expect(markup).toContain("Sharpness")
   expect(markup).toContain("Reckless")
@@ -107,6 +110,9 @@ it("marks only unsupported ability effects in the Track", () => {
   expect(markup).toMatch(/Fire Mane[^"]*Effect not supported yet/)
   expect(markup).toMatch(/Mega Sol[^"]*Effect not supported yet/)
   expect(markup).toMatch(/Eelevate[^"]*Effect not supported yet/)
+  expect(markup).toMatch(/Illuminate[^"]*Effect not supported yet/)
+  expect(markup).toMatch(/Rough Skin[^"]*Effect not supported yet/)
+  expect(markup).toMatch(/Supreme Overlord[^"]*Effect not supported yet/)
   for (const label of [
     "Levitate",
     "Flash Fire",
@@ -124,7 +130,7 @@ it("marks only unsupported ability effects in the Track", () => {
     expect(markup).not.toMatch(new RegExp(`${label}[^"]*Effect not supported yet`))
   }
   expect(markup).not.toContain("bg-signal-green")
-  expect(markup.match(/Effect not supported yet/g)).toHaveLength(3)
+  expect(markup.match(/Effect not supported yet/g)).toHaveLength(6)
   expect(markup.indexOf('aria-label="No ability"')).toBeLessThan(
     markup.indexOf('aria-label="Adaptability"'),
   )
