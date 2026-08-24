@@ -1,16 +1,16 @@
 import {
   ADAPTABILITY_ABILITY_ID,
+  ANALYTIC_ABILITY_ID,
   BATTLE_ARMOR_ABILITY_ID,
   BULLETPROOF_ABILITY_ID,
   BLAZE_ABILITY_ID,
   COMPOUND_EYES_ABILITY_ID,
   DRY_SKIN_ABILITY_ID,
   EARTH_EATER_ABILITY_ID,
-  EELEVATE_ABILITY_ID,
   FAIRY_AURA_ABILITY_ID,
+  FLARE_BOOST_ABILITY_ID,
   FLASH_FIRE_ABILITY_ID,
   FILTER_ABILITY_ID,
-  FIRE_MANE_ABILITY_ID,
   FLUFFY_ABILITY_ID,
   FUR_COAT_ABILITY_ID,
   GUTS_ABILITY_ID,
@@ -26,11 +26,13 @@ import {
   MARVEL_SCALE_ABILITY_ID,
   MEGA_LAUNCHER_ABILITY_ID,
   MERCILESS_ABILITY_ID,
+  MINUS_ABILITY_ID,
   MOTOR_DRIVE_ABILITY_ID,
   MULTISCALE_ABILITY_ID,
   NO_ABILITY_ID,
   NO_GUARD_ABILITY_ID,
   OVERGROW_ABILITY_ID,
+  PLUS_ABILITY_ID,
   PURE_POWER_ABILITY_ID,
   PURIFYING_SALT_ABILITY_ID,
   SAND_VEIL_ABILITY_ID,
@@ -40,29 +42,32 @@ import {
   SOLAR_POWER_ABILITY_ID,
   SOLID_ROCK_ABILITY_ID,
   SHELL_ARMOR_ABILITY_ID,
+  SHADOW_SHIELD_ABILITY_ID,
   SNIPER_ABILITY_ID,
   SNOW_CLOAK_ABILITY_ID,
   SOUNDPROOF_ABILITY_ID,
   STRONG_JAW_ABILITY_ID,
   SWARM_ABILITY_ID,
   TECHNICIAN_ABILITY_ID,
+  TERA_SHELL_ABILITY_ID,
   THICK_FAT_ABILITY_ID,
   TORRENT_ABILITY_ID,
   TOUGH_CLAWS_ABILITY_ID,
+  TOXIC_BOOST_ABILITY_ID,
   SUPER_LUCK_ABILITY_ID,
   UNAWARE_ABILITY_ID,
   UNKNOWN_ABILITY_ID,
   WATER_BUBBLE_ABILITY_ID,
   WATER_ABSORB_ABILITY_ID,
   VOLT_ABSORB_ABILITY_ID,
+  abilityEffectIsSupported,
   abilityIsProjectionNeutral,
+  abilitySupport,
 } from "@/lib/ability"
 import type { MoveCategory } from "@/lib/catalog"
 import type { PokemonType } from "@/lib/pokemon"
 
 import { chainModifiers, NEUTRAL_MODIFIER } from "./damage-kernel"
-import { getAbilityById } from "@/lib/resources"
-import { calcRecognizesAbility } from "./calc-recognition"
 import type { TrackSelectionActivation } from "./scenario-compiler"
 import type { Weather } from "./weather"
 
@@ -109,13 +114,22 @@ function neutralState(id: number): TrackSelectionActivation | undefined {
     : undefined
 }
 
-export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEffect {
-  const calcKnown = (id: number) => {
-    const calcAbilityName = getAbilityById(id)?.calcAbilityName
-    return calcAbilityName === undefined || calcRecognizesAbility(calcAbilityName)
+function classifiedState(id: number, active: boolean): TrackSelectionActivation {
+  const neutral = neutralState(id)
+  if (neutral) return neutral
+  switch (abilitySupport(id)) {
+    case "none":
+      return "neutral"
+    case "unsupported":
+      return "unsupported"
+    default:
+      return active ? "active" : "inactive"
   }
-  const attackerCalcKnown = calcKnown(context.attackerAbilityId)
-  const defenderCalcKnown = calcKnown(context.defenderAbilityId)
+}
+
+export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEffect {
+  const attackerEffectSupported = abilityEffectIsSupported(context.attackerAbilityId)
+  const defenderEffectSupported = abilityEffectIsSupported(context.defenderAbilityId)
 
   const attackerModifiers = {
     basePower: context.typeRewriteBasePower ?? NEUTRAL_MODIFIER,
@@ -167,10 +181,6 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
     case SNIPER_ABILITY_ID:
       attackerActive = true
       attackerModifiers.criticalFinal = 6144
-      break
-    case FIRE_MANE_ABILITY_ID:
-      attackerActive = context.moveType === "fire"
-      if (attackerActive) attackerModifiers.attack = 6144
       break
     case WATER_BUBBLE_ABILITY_ID:
       attackerActive = context.moveType === "water"
@@ -228,6 +238,23 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
       attackerActive = context.category === "physical"
       if (attackerActive) attackerModifiers.attack = 6144
       break
+    case PLUS_ABILITY_ID:
+    case MINUS_ABILITY_ID:
+      attackerActive = context.category === "special"
+      if (attackerActive) attackerModifiers.attack = 6144
+      break
+    case TOXIC_BOOST_ABILITY_ID:
+      attackerActive = context.category === "physical"
+      if (attackerActive) attackerModifiers.basePower = 6144
+      break
+    case FLARE_BOOST_ABILITY_ID:
+      attackerActive = context.category === "special"
+      if (attackerActive) attackerModifiers.basePower = 6144
+      break
+    case ANALYTIC_ABILITY_ID:
+      attackerActive = true
+      attackerModifiers.basePower = 5325
+      break
     case MERCILESS_ABILITY_ID:
       attackerModifiers.criticalStage = 3
       break
@@ -263,7 +290,6 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
       activateImmunity(context.moveType === "grass")
       break
     case LEVITATE_ABILITY_ID:
-    case EELEVATE_ABILITY_ID:
     case EARTH_EATER_ABILITY_ID:
       activateImmunity(context.moveType === "ground")
       break
@@ -317,8 +343,12 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
       if (defenderActive) defenderModifiers.final = 3072
       break
     case MULTISCALE_ABILITY_ID:
+    case SHADOW_SHIELD_ABILITY_ID:
       defenderActive = true
       defenderModifiers.final = 2048
+      break
+    case TERA_SHELL_ABILITY_ID:
+      defenderActive = true
       break
     case MARVEL_SCALE_ABILITY_ID:
       defenderActive = context.category === "physical"
@@ -352,7 +382,7 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
     attackerModifiers.basePower = chainModifiers([attackerModifiers.basePower, 5448])
   }
 
-  if (!attackerCalcKnown) {
+  if (!attackerEffectSupported) {
     attackerModifiers.basePower = NEUTRAL_MODIFIER
     attackerModifiers.attack = NEUTRAL_MODIFIER
     attackerModifiers.stab = NEUTRAL_MODIFIER
@@ -361,21 +391,13 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
     attackerModifiers.criticalFinal = NEUTRAL_MODIFIER
     attackerActive = false
   }
-  if (!defenderCalcKnown) {
+  if (!defenderEffectSupported) {
     defenderModifiers.attack = NEUTRAL_MODIFIER
     defenderModifiers.defense = NEUTRAL_MODIFIER
     defenderModifiers.final = NEUTRAL_MODIFIER
     defenderModifiers.accuracy = NEUTRAL_MODIFIER
     defenderActive = false
     damageNegated = false
-  }
-
-  const state = (id: number, active: boolean): TrackSelectionActivation => {
-    const calcAbilityName = getAbilityById(id)?.calcAbilityName
-    const calcKnown = calcAbilityName === undefined || calcRecognizesAbility(calcAbilityName)
-    return neutralState(id) ?? (calcKnown
-      ? active ? "active" : "inactive"
-      : "unsupported")
   }
 
   return {
@@ -397,8 +419,8 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
     attackerNoGuard: context.attackerAbilityId === NO_GUARD_ABILITY_ID,
     defenderNoGuard: context.defenderAbilityId === NO_GUARD_ABILITY_ID,
     stabModifier: attackerModifiers.stab,
-    attackerState: state(context.attackerAbilityId, attackerActive),
-    defenderState: state(context.defenderAbilityId, defenderActive),
+    attackerState: classifiedState(context.attackerAbilityId, attackerActive),
+    defenderState: classifiedState(context.defenderAbilityId, defenderActive),
     activatesWeather,
   }
 }

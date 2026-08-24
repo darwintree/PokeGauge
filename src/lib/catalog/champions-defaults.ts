@@ -162,6 +162,7 @@ export async function resolveDefaultAbilityIds(
   abilities: CatalogAbilityOption[],
 ): Promise<UpstreamResourceId[]> {
   const legalAbilities = abilities.filter((ability) => ability.id !== NO_ABILITY_ID)
+  if (legalAbilities.length === 0) return [NO_ABILITY_ID]
   try {
     const legalIds = new Set(legalAbilities.map((ability) => ability.id))
     const defaultId = (await withTimeout(

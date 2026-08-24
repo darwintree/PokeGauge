@@ -100,7 +100,6 @@ describe("resolveAbilityScenarioMoveType", () => {
     [PIXILATE_ABILITY_ID, "fairy"],
     [REFRIGERATE_ABILITY_ID, "ice"],
     [GALVANIZE_ABILITY_ID, "electric"],
-    [DRAGONIZE_ABILITY_ID, "dragon"],
   ] as const)("rewrites Normal moves for ability %i to %s", (abilityId, type) => {
     expect(resolveAbilityScenarioMoveType({ ...base, abilityId })).toEqual({
       scenarioMoveType: type,
