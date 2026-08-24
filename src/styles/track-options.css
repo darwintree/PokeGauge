@@ -78,6 +78,14 @@
     box-shadow: none;
   }
 
+  .track-option--neutral-disabled,
+  .track-option--neutral-disabled[aria-pressed="true"] {
+    border-color: var(--input);
+    background: var(--muted);
+    color: var(--muted-foreground);
+    box-shadow: none;
+  }
+
   .track-option--text {
     min-height: 1.75rem;
     padding: 0.25rem 0.625rem;

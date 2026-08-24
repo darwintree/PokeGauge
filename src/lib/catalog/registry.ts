@@ -6,7 +6,7 @@ import {
   lockedHeldItemFor,
   megaStoneFor,
 } from "@/lib/held-item"
-import { NO_ABILITY_ID } from "@/lib/ability"
+import { NO_ABILITY_ID, abilityIsSelectable } from "@/lib/ability"
 import type { SupportedLocale } from "@/lib/i18n"
 import { resolveReviewedMoveType } from "@/lib/move"
 import {
@@ -80,11 +80,17 @@ export async function getCatalogShell(
     : allDefenderAbilities
   const attackerAbilities = [noAbilityOption(locale), ...attackerIdentityAbilities]
   const defenderAbilities = [noAbilityOption(locale), ...defenderIdentityAbilities]
-  const initialAttackerAbilityIds = attackerIdentityAbilities.length > 0
-    ? attackerIdentityAbilities.map((ability) => ability.id)
+  const selectableAttackerAbilityIds = attackerIdentityAbilities
+    .filter((ability) => abilityIsSelectable(ability.id))
+    .map((ability) => ability.id)
+  const selectableDefenderAbilityIds = defenderIdentityAbilities
+    .filter((ability) => abilityIsSelectable(ability.id))
+    .map((ability) => ability.id)
+  const initialAttackerAbilityIds = selectableAttackerAbilityIds.length > 0
+    ? selectableAttackerAbilityIds
     : [NO_ABILITY_ID]
-  const initialDefenderAbilityIds = defenderIdentityAbilities.length > 0
-    ? defenderIdentityAbilities.map((ability) => ability.id)
+  const initialDefenderAbilityIds = selectableDefenderAbilityIds.length > 0
+    ? selectableDefenderAbilityIds
     : [NO_ABILITY_ID]
 
   const moves = snapshotCapableMoves.map(
@@ -153,8 +159,12 @@ export async function getCatalogShell(
     defaultDefenderAbilityIds: initialDefenderAbilityIds,
     attackerLockedItemId,
     defenderLockedItemId,
-    attackerLockedAbilityId: attackerResource.isMega ? initialAttackerAbilityIds[0] : null,
-    defenderLockedAbilityId: defenderResource.isMega ? initialDefenderAbilityIds[0] : null,
+    attackerLockedAbilityId: attackerResource.isMega
+      ? attackerIdentityAbilities[0]?.id ?? NO_ABILITY_ID
+      : null,
+    defenderLockedAbilityId: defenderResource.isMega
+      ? defenderIdentityAbilities[0]?.id ?? NO_ABILITY_ID
+      : null,
     attackerPreservesItem: attackerResource.battlePokemonId === 10079,
     defenderPreservesItem: defenderResource.battlePokemonId === 10079,
   }
