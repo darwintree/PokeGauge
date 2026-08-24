@@ -1,6 +1,5 @@
 import {
   AERILATE_ABILITY_ID,
-  DRAGONIZE_ABILITY_ID,
   GALVANIZE_ABILITY_ID,
   LIBERO_ABILITY_ID,
   LIQUID_VOICE_ABILITY_ID,
@@ -25,7 +24,6 @@ const ATE_TARGETS: Partial<Record<number, PokemonType>> = {
   [PIXILATE_ABILITY_ID]: "fairy",
   [REFRIGERATE_ABILITY_ID]: "ice",
   [GALVANIZE_ABILITY_ID]: "electric",
-  [DRAGONIZE_ABILITY_ID]: "dragon",
 }
 
 export type AbilityScenarioMoveTypeResult = {

@@ -1,14 +1,3 @@
-import { toID } from "@smogon/calc"
-
-import { CALC_GENERATION } from "@/lib/damage-calculation/calc-constants"
-
-import { GENERATED_ABILITY_CALC_NAMES } from "@/lib/resources/generated/ability-calc-names"
-
-const GENERATED_ABILITY_BY_ID = GENERATED_ABILITY_CALC_NAMES as Record<
-  number,
-  string | undefined
->
-
 /** PokeAPI's stable numeric identifier for Adaptability. */
 export const ADAPTABILITY_ABILITY_ID = 91
 export const BATTLE_ARMOR_ABILITY_ID = 4
@@ -18,12 +7,15 @@ export const CLOUD_NINE_ABILITY_ID = 13
 export const SAND_VEIL_ABILITY_ID = 8
 export const COMPOUND_EYES_ABILITY_ID = 14
 export const FLASH_FIRE_ABILITY_ID = 18
+export const ROUGH_SKIN_ABILITY_ID = 24
 export const LEVITATE_ABILITY_ID = 26
 export const LIGHTNING_ROD_ABILITY_ID = 31
 export const SOUNDPROOF_ABILITY_ID = 43
 export const HUSTLE_ABILITY_ID = 55
 export const GUTS_ABILITY_ID = 62
 export const MARVEL_SCALE_ABILITY_ID = 63
+export const PLUS_ABILITY_ID = 57
+export const MINUS_ABILITY_ID = 58
 export const OVERGROW_ABILITY_ID = 65
 export const BLAZE_ABILITY_ID = 66
 export const TORRENT_ABILITY_ID = 67
@@ -53,6 +45,9 @@ export const RECKLESS_ABILITY_ID = 120
 export const SHEER_FORCE_ABILITY_ID = 125
 export const UNNERVE_ABILITY_ID = 127
 export const MULTISCALE_ABILITY_ID = 136
+export const TOXIC_BOOST_ABILITY_ID = 137
+export const FLARE_BOOST_ABILITY_ID = 138
+export const ANALYTIC_ABILITY_ID = 148
 export const INFILTRATOR_ABILITY_ID = 151
 export const SAP_SIPPER_ABILITY_ID = 157
 export const SAND_FORCE_ABILITY_ID = 159
@@ -67,6 +62,7 @@ export const PIXILATE_ABILITY_ID = 182
 export const AERILATE_ABILITY_ID = 184
 export const FAIRY_AURA_ABILITY_ID = 187
 export const MERCILESS_ABILITY_ID = 196
+export const SHADOW_SHIELD_ABILITY_ID = 231
 export const WATER_BUBBLE_ABILITY_ID = 199
 export const LONG_REACH_ABILITY_ID = 203
 export const LIQUID_VOICE_ABILITY_ID = 204
@@ -76,19 +72,32 @@ export const LIBERO_ABILITY_ID = 236
 export const PURIFYING_SALT_ABILITY_ID = 272
 export const EARTH_EATER_ABILITY_ID = 297
 export const SHARPNESS_ABILITY_ID = 292
+export const SUPREME_OVERLORD_ABILITY_ID = 293
+export const TERA_SHELL_ABILITY_ID = 305
 export const DRAGONIZE_ABILITY_ID = 309
 export const MEGA_SOL_ABILITY_ID = 310
 export const EELEVATE_ABILITY_ID = 312
 export const FIRE_MANE_ABILITY_ID = 313
 
-/** Assumed-Satisfied Ability Selection: Track green-dot disclosure only. */
+export type AbilitySupport =
+  | "supported"
+  | "assumed-satisfied"
+  | "unsupported"
+  | "none"
+
 export type AssumedSatisfiedAbilityFamily =
   | "full-hp"
   | "low-hp"
   | "status"
-  | "poisoned"
+  | "target-poisoned"
+  | "self-poisoned"
+  | "burned"
+  | "partner"
+  | "last-move"
 
 const ASSUMED_SATISFIED_ABILITY_FAMILY: Record<number, AssumedSatisfiedAbilityFamily> = {
+  [PLUS_ABILITY_ID]: "partner",
+  [MINUS_ABILITY_ID]: "partner",
   [MULTISCALE_ABILITY_ID]: "full-hp",
   [OVERGROW_ABILITY_ID]: "low-hp",
   [BLAZE_ABILITY_ID]: "low-hp",
@@ -96,13 +105,65 @@ const ASSUMED_SATISFIED_ABILITY_FAMILY: Record<number, AssumedSatisfiedAbilityFa
   [SWARM_ABILITY_ID]: "low-hp",
   [GUTS_ABILITY_ID]: "status",
   [MARVEL_SCALE_ABILITY_ID]: "status",
-  [MERCILESS_ABILITY_ID]: "poisoned",
+  [TOXIC_BOOST_ABILITY_ID]: "self-poisoned",
+  [FLARE_BOOST_ABILITY_ID]: "burned",
+  [ANALYTIC_ABILITY_ID]: "last-move",
+  [MERCILESS_ABILITY_ID]: "target-poisoned",
+  [SHADOW_SHIELD_ABILITY_ID]: "full-hp",
+  [TERA_SHELL_ABILITY_ID]: "full-hp",
 }
 
-export function abilityDamageModifierIsSupported(id: number): boolean {
-  const calcAbilityName = GENERATED_ABILITY_BY_ID[id]
-  return calcAbilityName === undefined ||
-    CALC_GENERATION.abilities.get(toID(calcAbilityName)) !== undefined
+const UNSUPPORTED_ABILITY_IDS = new Set([
+  // Generation III
+  6, 16, 19, 20, 24, 29, 32, 35, 38, 41, 44, 49, 59, 60, 61, 73,
+  // Generation IV
+  77, 79, 82, 86, 90, 92, 93, 98, 102, 104, 112, 115, 121,
+  // Generation V
+  126, 130, 133, 134, 135, 139, 142, 143, 145, 147, 152, 160, 161, 162, 163, 164,
+  // Generation VI
+  166, 167, 185, 189, 190, 191,
+  // Generation VII
+  192, 195, 197, 198, 201, 209, 211, 212, 213, 214, 217, 219, 225, 227, 228, 229,
+  230,
+  // Generation VIII
+  240, 247, 248, 249, 250, 251, 254, 256, 257, 258, 261, 263, 266, 267,
+  // Generation IX
+  268, 269, 270, 271, 275, 277, 278, 279, 280, 281, 282, 290, 291, 293, 294, 295,
+  296, 299, 300, 302, 303, 304, 306, 307, 309, 310, 311, 312, 313,
+])
+
+const NONE_ABILITY_IDS = new Set([
+  // Generation III
+  1, 3, 5, 7, 9, 12, 15, 17, 21, 23, 27, 28, 30, 33, 34, 36, 39, 40, 42, 46, 48,
+  50, 51, 52, 53, 54, 56, 64, 69, 71, 72,
+  // Generation IV
+  80, 83, 84, 95, 100, 106, 107, 108, 118, 119, 123,
+  // Generation V
+  124, 129, 131, 132, 140, 141, 144, 146, 149, 150, 153, 154, 155, 156, 158,
+  // Generation VI
+  165, 170, 175, 176, 177, 180, 183,
+  // Generation VII
+  193, 194, 202, 205, 207, 208, 210, 215, 216, 220, 221, 222, 223, 224,
+  // Generation VIII
+  237, 238, 239, 241, 242, 243, 253, 259, 260, 264, 265,
+  // Generation IX
+  283, 298, 301, 308,
+])
+
+export function abilitySupport(id: number): AbilitySupport {
+  if (ASSUMED_SATISFIED_ABILITY_FAMILY[id]) return "assumed-satisfied"
+  if (UNSUPPORTED_ABILITY_IDS.has(id)) return "unsupported"
+  if (NONE_ABILITY_IDS.has(id)) return "none"
+  return "supported"
+}
+
+export function abilityIsSelectable(id: number): boolean {
+  return abilitySupport(id) !== "none"
+}
+
+export function abilityEffectIsSupported(id: number): boolean {
+  const support = abilitySupport(id)
+  return support === "supported" || support === "assumed-satisfied"
 }
 
 export function assumedSatisfiedAbilityFamily(
