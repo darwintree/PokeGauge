@@ -6,7 +6,7 @@ status: "closed"
 priority: "medium"
 labels: ["BUG"]
 created_at: "2026-08-24T11:56:00Z"
-updated_at: "2026-08-24T15:22:00Z"
+updated_at: "2026-08-24T23:49:00Z"
 ---
 ## Problem
 
@@ -26,7 +26,7 @@ Ability Track 当前用 `@smogon/calc` 是否认识 Ability 名称来决定红�
 - `supported`：产品保留显示，当前计算行为已支持，不显示状态点。
 - `assumed-satisfied`：产品保留显示，选中即代表约定条件满足，显示绿色状态点。
 - `unsupported`：产品保留显示，效果可能在计算器结果中体现且产品计划支持，但当前尚未正确计算，显示红色状态点。
-- `none`：效果与产品计算范围无关或产品明确不计划支持；不进入产品 Ability 列表。
+- `none`：效果与产品计算范围无关或产品明确不计划支持；在 Ability 列表中以灰色禁用项显示，不可选择。
 - 建立一个集中、可测试的 Ability 支持判定，供 Ability Track、Scenario compiler 与 calc adapter 共同使用；不要在组件内逐项打补丁。
 - `unsupported` 必须同时满足：效果可能在计算器结果中体现；产品计划支持。仅“长期 checklist 未勾选”或“calc 能识别名称”都不足以进入该集合。
 - calc 不认识、缺少对应效果钩子或产品未提供必要输入，只是判断已计划 Ability 是否 unsupported 的实现证据。
@@ -52,7 +52,8 @@ Ability Track 当前用 `@smogon/calc` 是否认识 Ability 名称来决定红�
 ### 3. 不复刻 calc 未支持的效果
 
 - `@smogon/calc` 当前版本没有实现或不认识的 Ability，现阶段产品不实现本地公式补丁。
-- 已计划支持且因此无法正确计算的 Ability 判定为不支持并显示红色标记；没有支持计划的归入 none 并从产品列表移除。
+- 已计划支持且因此无法正确计算的 Ability 判定为不支持并显示红色标记；没有支持计划的归入 none 并以灰色禁用项显示。
+- Champions 使用率默认若命中 none Ability，选择中性的 No Ability（`-`）项，不顺延到下一项 Ability。
 - 后续若升级 calc 后获得原生支持，只需重新验证并调整集中支持判定；本 issue 不升级 calc。
 
 ## Generation III reviewed decisions
@@ -234,7 +235,6 @@ Good as Gold（283）、Mycelium Might（298）、Hospitality（301）、Piercin
 - 实现 Rough Skin、Supreme Overlord 或其他 calc 缺失效果；
 - 为默认条件族新增用户输入 Track；
 - 升级或 fork `@smogon/calc`；
-- 在产品中继续显示归类为 none 的 Ability。
 
 ## Issue Assessment
 
@@ -249,7 +249,8 @@ Good as Gold（283）、Mycelium Might（298）、Hospitality（301）、Piercin
 - [x] Rough Skin、Supreme Overlord 显示红色不支持标记
 - [x] calc 未支持且与伤害相关的 Ability 显示红色不支持标记，无本地公式实现
 - [x] supported、assumed-satisfied、unsupported、none 由同一个权威来源判定
-- [x] none Ability 不出现在产品 Ability 列表中
+- [x] none Ability 在产品 Ability 列表中以灰色禁用项显示且不可选择
+- [x] 使用率默认命中 none Ability 时选择中性的 No Ability（`-`）项
 - [x] 十五个 Assumed-Satisfied Ability 均显示绿点且实际伤害符合默认条件已满足
 - [x] Generation III 的 21 项 supported、8 项 assumed-satisfied、16 项 unsupported、31 项 none 与审阅结果一致
 - [x] Generation IV 的 23 项 supported、0 项 assumed-satisfied、13 项 unsupported、11 项 none 与审阅结果一致
@@ -267,7 +268,7 @@ Good as Gold（283）、Mycelium Might（298）、Hospitality（301）、Piercin
 - 2026-08-24: 完成 Generation III 全部 76 项人工审阅；新增 Plus／Minus 默认条件满足契约。
 - 2026-08-24: 完成 Generation IV 全部 47 项人工审阅；记录 Solar Power 与 Flower Gift 的后续边界。
 - 2026-08-24: 完成 Generation V 全部 41 项人工审阅；冻结 4 项 Assumed-Satisfied、16 项 unsupported，并新增 Toxic Boost、Flare Boost、Analytic 默认条件契约。
-- 2026-08-24: 将 neutral 拆为 supported 与 none；none 不再进入产品 Ability 列表。回溯整理 Generation III-V，分别得到 21/8/16/31、23/0/13/11、6/4/16/15。
+- 2026-08-24: 将 neutral 拆为 supported 与 none。回溯整理 Generation III-V，分别得到 21/8/16/31、23/0/13/11、6/4/16/15。
 - 2026-08-24: 完成 Generation VI 全部 27 项人工审阅；冻结 14 项 supported、0 项 assumed-satisfied、6 项 unsupported、7 项 none，并记录气场族暂不覆盖友方效果。
 - 2026-08-24: 完成 Generation VII 全部 42 项人工审阅；冻结 9 项 supported、2 项 assumed-satisfied、17 项 unsupported、14 项 none，并新增 Shadow Shield 满 HP 默认条件契约。
 - 2026-08-24: 完成 Generation VIII 全部 34 项人工审阅；冻结 9 项 supported、0 项 assumed-satisfied、14 项 unsupported、11 项 none，并记录 Screen Cleaner、Curious Medicine 与 Steely Spirit 的实现边界。
@@ -275,5 +276,6 @@ Good as Gold（283）、Mycelium Might（298）、Hospitality（301）、Piercin
 - 2026-08-24: 实现集中分类：仅枚举 assumed-satisfied、unsupported、none，其他 Ability 默认 supported；Track、catalog、compiler 和 calc adapter 共用该裁决。
 - 2026-08-24: calc adapter 为十五项默认条件传入 HP、状态、`abilityOn` 或行动顺序输入；Analytic 的 Pursuit 冲突处理见 [[../docs/traces/implementations/2026-08-24-ability-support-classification|implementation trace]]。
 - 2026-08-24: 移除 Dragonize、Mega Sol、Eelevate、Fire Mane 的残留本地效果路径；Rough Skin 与 Supreme Overlord 明确保持数值中性并显示 unsupported。
-- 2026-08-24: none 从 Ability catalog 隐藏；没有可见身份特性时回退 No Ability。另修复 calc 在省略 Ability 时自动选择物种默认特性的适配问题。
+- 2026-08-24: 初版将 none 从 Ability catalog 隐藏；没有可见身份特性时回退 No Ability。另修复 calc 在省略 Ability 时自动选择物种默认特性的适配问题。
+- 2026-08-25: 按后续确认将 none 改为灰色禁用显示；Champions 使用率默认命中 none 时改选中性的 No Ability（`-`）项。
 - 2026-08-24: 验证 `pnpm exec vitest run`（73 files / 702 tests）、`pnpm build` 与 `git diff --check` 全部通过。

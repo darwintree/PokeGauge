@@ -6,7 +6,7 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST"]
 created_at: "2026-07-15T02:45:00Z"
-updated_at: "2026-08-24T15:21:00Z"
+updated_at: "2026-08-24T23:49:00Z"
 ---
 ## Goal
 
@@ -405,7 +405,7 @@ calc 能识别且现有 Scenario 输入足以表达的 Ability 直接参与运�
   - Protean、Libero 的完整战斗状态类型持久化不在产品输入契约内，但普通出招伤害已支持：本地 `scenario-move-type` 在非原生同属性招式上补普通 STAB，calc 0.11.0 的 `getStabMod` 也直接处理这两个 Ability；因此恢复为 `[x]`。Dragonize、Mega Sol、Eelevate、Fire Mane 维持 `[ ]`（calc 0.11.0 缺失）。
   - Dragon’s Maw（263）虽能通过 `toID` 的识别检查，但 calc 0.11.0 没有对应的普通伤害钩子；Mind’s Eye（299）传入 calc 时保留了 Unicode `’`，而 calc 内部按 ASCII `'` 精确比较，导致其 hook 不会触发；二者均维持 `[ ]`。
   - Download（88）、Intrepid Sword（234）、Normalize（96）、Tinted Lens（110）、Ruin 族等由 calc 直接应用、伤害正确，但 provenance/本地 Track 仍显示 inactive —— 属展示缺口，纳入 Child issue 处理，本身按 `[x]` 计。
-- 2026-08-24：[[archive/20260824_closed_repair-ability-support-classification-and-assumed-conditions|独立修复]]建立 `supported`、`assumed-satisfied`、`unsupported`、`none` 集中裁决；Ability Track、catalog 与 compiler／calc adapter 共用该来源。Rough Skin（24）与 Supreme Overlord（293）现显示红点，none 不再显示，calc 未支持项不再保留本地公式补丁。
+- 2026-08-25：[[archive/20260824_closed_repair-ability-support-classification-and-assumed-conditions|独立修复]]建立 `supported`、`assumed-satisfied`、`unsupported`、`none` 集中裁决；Ability Track、catalog 与 compiler／calc adapter 共用该来源。Rough Skin（24）与 Supreme Overlord（293）显示红点，none 以灰色禁用项显示，使用率默认命中 none 时选择 No Ability，calc 未支持项不保留本地公式补丁。
 - 清单勾选已重打为运行时支持状态；若某项机制后续被 calc 版本或产品输入变化影响，需重新确认，不能沿用本次勾选。
 - Run Away、Honey Gather、Ball Fetch 在竞技训练家战斗中无效果，历史上记为 `N/A`。
 - 2026-08-05：伤害相关性调研见 Goal 中的 first-freeze 笔记；首批范围产品决策见 [[../docs/traces/discussion/2026-08-05-ability-effects-first-freeze-scope|特性效果首批冻结范围讨论记录]]。已按机制族开子 issue（见 Child issues）。Mold Breaker 族剔出首批；Parental Bond 不进首批，实现见 [[20260805_open_implement-parental-bond|Implement Parental Bond]]（blocked by 多段伤害规格）。

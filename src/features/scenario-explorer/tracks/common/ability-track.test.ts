@@ -97,8 +97,9 @@ it("marks only unsupported ability effects in the Track", () => {
   ))
 
   expect(markup).toContain("Adaptability")
-  expect(markup).not.toContain("Run Away")
-  expect(markup).not.toContain("Keen Eye")
+  expect(markup).toMatch(/aria-label="Run Away"[^>]*disabled/)
+  expect(markup).toMatch(/aria-label="Keen Eye"[^>]*disabled/)
+  expect(markup.match(/track-option--neutral-disabled/g)).toHaveLength(2)
   expect(markup).toContain("Fire Mane")
   expect(markup).toContain("Sharpness")
   expect(markup).toContain("Reckless")

@@ -342,6 +342,28 @@ describe("catalog ability candidates and defaults", () => {
     expect(catalog.defaultDefenderAbilityIds).toEqual([22])
   })
 
+  it("uses No Ability when the top usage ability has no calculator effect", async () => {
+    setChampionsAbilityUsageFetcherForTest(async (battlePokemonId) =>
+      battlePokemonId === 1
+        ? [
+            { battlePokemonId, abilityId: 34, format: "Doubles", season: "test", source: "test", rank: 1, percentage: 80, championsAbilityName: "Chlorophyll" },
+            { battlePokemonId, abilityId: 65, format: "Doubles", season: "test", source: "test", rank: 2, percentage: 20, championsAbilityName: "Overgrow" },
+          ]
+        : [],
+    )
+
+    const shell = await getCatalogShell(1, 727, "en")
+    const catalog = await resolveCatalogDefaultMovePick(shell)
+
+    expect(shell.attackerAbilities.map((ability) => ability.id)).toEqual([
+      NO_ABILITY_ID,
+      65,
+      34,
+    ])
+    expect(shell.defaultAttackerAbilityIds).toEqual([65])
+    expect(catalog.defaultAttackerAbilityIds).toEqual([NO_ABILITY_ID])
+  })
+
   it("selects every legal ability when usage is unavailable or has no legal match", async () => {
     setChampionsAbilityUsageFetcherForTest(async (battlePokemonId) => {
       if (battlePokemonId === 445) throw new Error("unavailable")

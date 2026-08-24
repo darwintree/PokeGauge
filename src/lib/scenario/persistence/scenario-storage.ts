@@ -1,4 +1,5 @@
 import { SCREENS, STAT_STAGES, TERRAINS, WEATHERS } from "@/lib/damage-calculation"
+import { abilityIsSelectable } from "@/lib/ability"
 import {
   getDefenderDefBounds,
   getDefenderHpBounds,
@@ -438,11 +439,15 @@ export function scenarioSnapshotMatchesCatalog(
       state.defenderItemIds[0] === catalog.defenderLockedItemId) &&
     hasOnlyKnownIds(
       state.attackerAbilityIds,
-      new Set(catalog.attackerAbilities.map((ability) => ability.id)),
+      new Set(catalog.attackerAbilities
+        .filter((ability) => abilityIsSelectable(ability.id))
+        .map((ability) => ability.id)),
     ) &&
     hasOnlyKnownIds(
       state.defenderAbilityIds,
-      new Set(catalog.defenderAbilities.map((ability) => ability.id)),
+      new Set(catalog.defenderAbilities
+        .filter((ability) => abilityIsSelectable(ability.id))
+        .map((ability) => ability.id)),
     )
   )
 }

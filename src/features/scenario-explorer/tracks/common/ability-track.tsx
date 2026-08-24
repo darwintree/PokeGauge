@@ -50,22 +50,25 @@ export function AbilityTrack({
     if (selected.has(id) && selected.size === 1) return
     onChange(
       options
-        .filter((option) => option.id === id ? !selected.has(id) : selected.has(option.id))
+        .filter((option) =>
+          abilityIsSelectable(option.id) &&
+          (option.id === id ? !selected.has(id) : selected.has(option.id)))
         .map((option) => option.id),
     )
   }
 
-  const visibleOptions = options.filter((option) => abilityIsSelectable(option.id))
-  const orderedOptions = [...visibleOptions].sort((a, b) =>
+  const orderedOptions = [...options].sort((a, b) =>
     Number(b.id === NO_ABILITY_ID) - Number(a.id === NO_ABILITY_ID) ||
     Number(selected.has(b.id)) - Number(selected.has(a.id)),
   )
-  const summary = visibleOptions
+  const summary = options
     .filter((option) => selected.has(option.id))
     .map((option) => option.label)
     .join(", ")
   const describedOptions = orderedOptions.map((option) => {
-    const unsupported = abilitySupport(option.id) === "unsupported"
+    const support = abilitySupport(option.id)
+    const disabled = support === "none"
+    const unsupported = support === "unsupported"
     const assumedFamily = !unsupported
       ? assumedSatisfiedAbilityFamily(option.id)
       : undefined
@@ -75,7 +78,7 @@ export function AbilityTrack({
     } else if (assumedFamily) {
       disclosureLabel = intl.formatMessage({ id: ASSUMED_FAMILY_MESSAGE[assumedFamily] })
     }
-    return { option, unsupported, assumedFamily, disclosureLabel }
+    return { option, disabled, unsupported, assumedFamily, disclosureLabel }
   })
 
   return (
@@ -100,12 +103,13 @@ export function AbilityTrack({
         </Button>
       </div>
       <TrackOptionGroup aria-label={intl.formatMessage({ id: labelId })}>
-        {describedOptions.map(({ option, unsupported, assumedFamily, disclosureLabel }) => {
+        {describedOptions.map(({ option, disabled, unsupported, assumedFamily, disclosureLabel }) => {
           return (
             <TrackOption
               key={option.id}
               layout="text"
               pressed={selected.has(option.id)}
+              disabled={disabled}
               onToggle={() => toggle(option.id)}
               ariaLabel={disclosureLabel
                 ? `${option.label} · ${disclosureLabel}`
@@ -115,7 +119,7 @@ export function AbilityTrack({
                   {[option.summary, disclosureLabel].filter(Boolean).join("\n")}
                 </span>
               )}
-              className="px-2"
+              className={disabled ? "track-option--neutral-disabled px-2" : "px-2"}
             >
               <span>{option.label}</span>
               {unsupported && (

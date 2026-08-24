@@ -10,7 +10,7 @@ import {
   type LocalizedPokemonResource,
   type UpstreamResourceId,
 } from "@/lib/resources"
-import { NO_ABILITY_ID, UNKNOWN_ABILITY_ID, abilityIsSelectable } from "@/lib/ability"
+import { NO_ABILITY_ID, UNKNOWN_ABILITY_ID } from "@/lib/ability"
 import type {
   BattlePokemonOption,
   CatalogAbilityOption,
@@ -71,7 +71,7 @@ export async function abilityOptions(
     }]
   }
   return Promise.all(
-    abilityIds.filter(abilityIsSelectable).map(async (id) => {
+    abilityIds.map(async (id) => {
       const ability = await getResource("ability", id, locale)
       return {
         id,
