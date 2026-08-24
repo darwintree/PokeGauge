@@ -1,5 +1,5 @@
 import { calculate, Field, Move, Pokemon, toID } from "@smogon/calc"
-import type { TypeName } from "@smogon/calc/dist/data/interface"
+import type { AbilityName, TypeName } from "@smogon/calc/dist/data/interface"
 
 import type { PokemonType } from "@/lib/pokemon"
 
@@ -30,6 +30,9 @@ export type CalcPokemonContext = {
   abilityCalcName?: string
   /** Calc-usable item name; omit when the item is not recognized by calc. */
   itemCalcName?: string
+  currentHp?: number
+  status?: "brn" | "psn"
+  abilityOn?: boolean
   exactStats: CalcExactStats
   boosts: CalcBoosts
 }
@@ -49,6 +52,7 @@ export type CalcFieldContext = {
   weather?: "Sun" | "Rain" | "Sand" | "Snow"
   terrain?: "Electric" | "Grassy" | "Psychic" | "Misty"
   defenderScreen?: "reflect" | "light-screen"
+  defenderIsSwitchingOut?: boolean
   gameType: "Singles" | "Doubles"
 }
 
@@ -78,7 +82,10 @@ function invertedBaseStats(stats: CalcExactStats) {
 function calcPokemon(context: CalcPokemonContext): Pokemon {
   return new Pokemon(CALC_GENERATION, context.calcSpeciesName, {
     level: VGC_LEVEL,
-    ...(context.abilityCalcName ? { ability: context.abilityCalcName } : {}),
+    ability: (context.abilityCalcName ?? "No Ability") as AbilityName,
+    ...(context.currentHp === undefined ? {} : { curHP: context.currentHp }),
+    ...(context.status ? { status: context.status } : {}),
+    ...(context.abilityOn ? { abilityOn: true } : {}),
     ...(context.itemCalcName
       ? {
           item: CALC_GENERATION.items.get(toID(context.itemCalcName))?.name
@@ -113,6 +120,7 @@ function calcField(context: CalcFieldContext): Field {
     defenderSide: {
       ...(context.defenderScreen === "reflect" ? { isReflect: true } : {}),
       ...(context.defenderScreen === "light-screen" ? { isLightScreen: true } : {}),
+      ...(context.defenderIsSwitchingOut ? { isSwitching: "out" as const } : {}),
     },
   })
 }

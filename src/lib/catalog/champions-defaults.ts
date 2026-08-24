@@ -14,7 +14,7 @@ import type {
   BattlePokemonOption,
 } from "./types"
 import type { BattlePokemonId, UpstreamResourceId } from "@/lib/resources"
-import { NO_ABILITY_ID } from "@/lib/ability"
+import { NO_ABILITY_ID, abilityIsSelectable } from "@/lib/ability"
 import { offenseStatMod } from "@/lib/stat-preset"
 import type { OffensePresetId } from "./preset-labels"
 
@@ -161,9 +161,14 @@ export async function resolveDefaultAbilityIds(
   battlePokemonId: BattlePokemonId,
   abilities: CatalogAbilityOption[],
 ): Promise<UpstreamResourceId[]> {
-  const legalAbilities = abilities.filter((ability) => ability.id !== NO_ABILITY_ID)
+  const identityAbilities = abilities.filter((ability) => ability.id !== NO_ABILITY_ID)
+  const selectableIds = identityAbilities
+    .filter((ability) => abilityIsSelectable(ability.id))
+    .map((ability) => ability.id)
+  const fallbackIds = selectableIds.length > 0 ? selectableIds : [NO_ABILITY_ID]
+  if (identityAbilities.length === 0) return [NO_ABILITY_ID]
   try {
-    const legalIds = new Set(legalAbilities.map((ability) => ability.id))
+    const identityIds = new Set(identityAbilities.map((ability) => ability.id))
     const defaultId = (await withTimeout(
       listChampionsAbilityUsageRecords(battlePokemonId),
       DEFAULT_USAGE_TIMEOUT_MS,
@@ -175,10 +180,11 @@ export async function resolveDefaultAbilityIds(
         a.championsAbilityName.localeCompare(b.championsAbilityName) ||
         a.abilityId - b.abilityId,
       )
-      .find((record) => legalIds.has(record.abilityId))?.abilityId
-    return defaultId === undefined ? [...legalIds] : [defaultId]
+      .find((record) => identityIds.has(record.abilityId))?.abilityId
+    if (defaultId === undefined) return fallbackIds
+    return [abilityIsSelectable(defaultId) ? defaultId : NO_ABILITY_ID]
   } catch {
-    return legalAbilities.map((ability) => ability.id)
+    return fallbackIds
   }
 }
 

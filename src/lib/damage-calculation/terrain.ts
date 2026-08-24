@@ -1,5 +1,5 @@
 import type { PokemonType } from "@/lib/pokemon"
-import { EELEVATE_ABILITY_ID, LEVITATE_ABILITY_ID } from "@/lib/ability"
+import { LEVITATE_ABILITY_ID } from "@/lib/ability"
 
 export { LEVITATE_ABILITY_ID }
 
@@ -20,8 +20,7 @@ export function isGrounded(
   abilityId: number,
 ): boolean {
   return !types.includes("flying") &&
-    abilityId !== LEVITATE_ABILITY_ID &&
-    abilityId !== EELEVATE_ABILITY_ID
+    abilityId !== LEVITATE_ABILITY_ID
 }
 
 type CompiledTerrainEffect = {

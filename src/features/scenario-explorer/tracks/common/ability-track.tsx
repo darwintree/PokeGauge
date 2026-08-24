@@ -4,9 +4,8 @@ import { FormattedMessage, useIntl } from "react-intl"
 import { Button } from "@/components/ui/button"
 import {
   NO_ABILITY_ID,
-  UNKNOWN_ABILITY_ID,
-  abilityDamageModifierIsSupported,
-  abilityIsProjectionNeutral,
+  abilityIsSelectable,
+  abilitySupport,
   assumedSatisfiedAbilityFamily,
 } from "@/lib/ability"
 import type { CatalogAbilityOption } from "@/lib/catalog"
@@ -28,7 +27,11 @@ const ASSUMED_FAMILY_MESSAGE = {
   "full-hp": "track.ability.assumed.fullHp",
   "low-hp": "track.ability.assumed.lowHp",
   status: "track.ability.assumed.status",
-  poisoned: "track.ability.assumed.poisoned",
+  "target-poisoned": "track.ability.assumed.targetPoisoned",
+  "self-poisoned": "track.ability.assumed.selfPoisoned",
+  burned: "track.ability.assumed.burned",
+  partner: "track.ability.assumed.partner",
+  "last-move": "track.ability.assumed.lastMove",
 } as const
 
 export function AbilityTrack({
@@ -47,7 +50,9 @@ export function AbilityTrack({
     if (selected.has(id) && selected.size === 1) return
     onChange(
       options
-        .filter((option) => option.id === id ? !selected.has(id) : selected.has(option.id))
+        .filter((option) =>
+          abilityIsSelectable(option.id) &&
+          (option.id === id ? !selected.has(id) : selected.has(option.id)))
         .map((option) => option.id),
     )
   }
@@ -61,12 +66,9 @@ export function AbilityTrack({
     .map((option) => option.label)
     .join(", ")
   const describedOptions = orderedOptions.map((option) => {
-    // Projection abilities are handled by their target Tracks, not as Ability effects.
-    const unsupported =
-      !abilityDamageModifierIsSupported(option.id) &&
-      option.id !== UNKNOWN_ABILITY_ID &&
-      option.id !== NO_ABILITY_ID &&
-      !abilityIsProjectionNeutral(option.id)
+    const support = abilitySupport(option.id)
+    const disabled = support === "none"
+    const unsupported = support === "unsupported"
     const assumedFamily = !unsupported
       ? assumedSatisfiedAbilityFamily(option.id)
       : undefined
@@ -76,7 +78,7 @@ export function AbilityTrack({
     } else if (assumedFamily) {
       disclosureLabel = intl.formatMessage({ id: ASSUMED_FAMILY_MESSAGE[assumedFamily] })
     }
-    return { option, unsupported, assumedFamily, disclosureLabel }
+    return { option, disabled, unsupported, assumedFamily, disclosureLabel }
   })
 
   return (
@@ -101,12 +103,13 @@ export function AbilityTrack({
         </Button>
       </div>
       <TrackOptionGroup aria-label={intl.formatMessage({ id: labelId })}>
-        {describedOptions.map(({ option, unsupported, assumedFamily, disclosureLabel }) => {
+        {describedOptions.map(({ option, disabled, unsupported, assumedFamily, disclosureLabel }) => {
           return (
             <TrackOption
               key={option.id}
               layout="text"
               pressed={selected.has(option.id)}
+              disabled={disabled}
               onToggle={() => toggle(option.id)}
               ariaLabel={disclosureLabel
                 ? `${option.label} · ${disclosureLabel}`
@@ -116,7 +119,7 @@ export function AbilityTrack({
                   {[option.summary, disclosureLabel].filter(Boolean).join("\n")}
                 </span>
               )}
-              className="px-2"
+              className={disabled ? "track-option--neutral-disabled px-2" : "px-2"}
             >
               <span>{option.label}</span>
               {unsupported && (

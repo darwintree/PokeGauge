@@ -296,7 +296,7 @@ describe("ability scenario product and provenance", () => {
       row.provenance["attacker-ability"]?.active.includes("91"),
     )).toBe(true)
     expect(result.rows.some((row) =>
-      row.provenance["attacker-ability"]?.inactive.includes("50"),
+      row.provenance["attacker-ability"]?.neutral.includes("50"),
     )).toBe(true)
 
     const adaptabilityInput = kernel.mock.calls.find(
@@ -367,15 +367,15 @@ describe("ability scenario product and provenance", () => {
     expect(kernel).toHaveBeenCalledTimes(1)
     expect(result.rows[0].provenance["attacker-ability"]).toEqual({
       active: [],
-      inactive: ["50", String(ADAPTABILITY_ABILITY_ID)],
+      inactive: [String(ADAPTABILITY_ABILITY_ID)],
       unsupported: [],
-      neutral: [],
+      neutral: ["50"],
     })
     expect(result.rows[0].provenance["defender-ability"]).toEqual({
       active: [],
-      inactive: ["50", String(ADAPTABILITY_ABILITY_ID)],
+      inactive: [String(ADAPTABILITY_ABILITY_ID)],
       unsupported: [],
-      neutral: [],
+      neutral: ["50"],
     })
     kernel.mockRestore()
   })
@@ -400,15 +400,15 @@ describe("ability scenario product and provenance", () => {
     expect(result.rows).toHaveLength(1)
     expect(result.rows[0].provenance["attacker-ability"]).toEqual({
       active: [],
-      inactive: ["50"],
+      inactive: [],
       unsupported: [],
-      neutral: [String(NO_ABILITY_ID)],
+      neutral: [String(NO_ABILITY_ID), "50"],
     })
     expect(result.rows[0].provenance["defender-ability"]).toEqual({
       active: [],
-      inactive: ["17"],
+      inactive: [],
       unsupported: [],
-      neutral: [String(NO_ABILITY_ID)],
+      neutral: [String(NO_ABILITY_ID), "17"],
     })
   })
 })
