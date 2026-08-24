@@ -6,7 +6,11 @@ import { describe, expect, it } from "vitest"
 import { getCatalogShell } from "@/lib/catalog"
 import { localeMessages } from "@/lib/i18n"
 import { createMoveSnapshot } from "@/lib/move"
-import { defaultTrackState, type UnavailableScenarioGroup } from "@/lib/scenario"
+import {
+  defaultTrackState,
+  runScenarioPipeline,
+  type UnavailableScenarioGroup,
+} from "@/lib/scenario"
 
 import { MoveTrack } from "../tracks/move/move-track"
 import { DamageResults } from "./damage-results"
@@ -89,5 +93,34 @@ describe("unavailable Scenario display", () => {
     }))
 
     expect(markup).toContain("Terrain-based move type changes are not calculated yet")
+  })
+})
+
+describe("mobile move grouping", () => {
+  it("renders one group header per move and drops per-row separators", async () => {
+    const catalog = await getCatalogShell(342, 143, "en", "physical")
+    const state = defaultTrackState(catalog)
+    const moveIds = [152, 89]
+    state.moveSnapshots = moveIds.flatMap((moveId, index) => {
+      const move = catalog.moves.find((candidate) => candidate.id === moveId)
+      return move ? [createMoveSnapshot(move, `test-${index}-${moveId}`)] : []
+    })
+    state.selectedMoveSnapshotIds = state.moveSnapshots.map((snapshot) => snapshot.id)
+    const rows = runScenarioPipeline(catalog, state).rows
+
+    const markup = withEnglish(createElement(DamageResults, {
+      catalog,
+      rows,
+      unavailable: [],
+      trackState: state,
+      statNameStrategy: "english",
+      onProbabilityModeChange: () => {},
+    }))
+
+    expect(markup.match(/data-move-group="89"/g)).toHaveLength(1)
+    expect(markup.match(/data-move-group="152"/g)).toHaveLength(1)
+    expect(markup.match(/data-result-row=/g)).toHaveLength(rows.length)
+    expect(markup).not.toContain("mt-2.5 border-t border-dashed border-ink/30 pt-2.5")
+    expect(markup).toContain("md:border-t md:border-hairline")
   })
 })

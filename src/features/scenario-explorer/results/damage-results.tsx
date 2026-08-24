@@ -1,5 +1,5 @@
 import { TriangleAlert } from "lucide-react"
-import { useEffect, useMemo, useState } from "react"
+import { Fragment, useEffect, useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import {
@@ -7,7 +7,7 @@ import {
   EmptyDescription,
   EmptyHeader,
 } from "@/components/ui/empty"
-import type { MatchupCatalog } from "@/lib/catalog"
+import type { CatalogMoveOption, MatchupCatalog } from "@/lib/catalog"
 import {
   RANGE_DEFENDER_ID,
   RANGE_STAT_ID,
@@ -27,6 +27,7 @@ import {
   DamageRangeLegend,
   DamageResultRow,
 } from "./damage-result-row"
+import { TypeBadge } from "@/components/pokemon/type-badge"
 import { ProbabilityModeSwitch } from "./probability-mode-switch"
 import { rowIdentity } from "./row-labels"
 
@@ -84,6 +85,19 @@ function catalogOption<T extends { id: string | number }>(options: T[], id: stri
   const found = options.find((o) => o.id === id)
   if (!found) throw new Error(`Unknown catalog option: ${id}`)
   return found
+}
+
+function MoveGroupHeader({ move }: { move: CatalogMoveOption }) {
+  return (
+    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-2 pt-3 pb-1 md:hidden">
+      <span className="flex min-w-0 items-center gap-1.5">
+        <TypeBadge type={move.type} />
+        <span className="truncate text-[14px] font-extrabold leading-none">
+          {move.label}
+        </span>
+      </span>
+    </div>
+  )
 }
 
 export function DamageResults({
@@ -161,12 +175,13 @@ export function DamageResults({
         }).map((item, index, displayRows) => {
           const { row, role, expansion } = item
           const identity = rowIdentity(catalog, row, trackState, statNameStrategy, rowLabelPresets)
+          const move = catalogOption(catalog.moves, row.moveId)
           const offenseExpandable = role === "parent" && row.attackerStatId === RANGE_STAT_ID
           const defenseExpandable = role === "parent" && row.defenderId === RANGE_DEFENDER_ID
           const startsMoveGroup =
             index === 0 || displayRows[index - 1].row.snapshotId !== row.snapshotId
           const rowProps = {
-            move: catalogOption(catalog.moves, row.moveId),
+            move,
             attackerAbilities: catalog.attackerAbilities,
             defenderAbilities: catalog.defenderAbilities,
             attackerStat: {
@@ -193,18 +208,25 @@ export function DamageResults({
           }
 
           return (
-            <li
-              key={`${role}:${row.calculationIdentity}`}
-              className={cn(
-                "px-2 py-0.5 hover:bg-token-bg/55 md:rounded-[10px] md:px-3 md:pt-2.5 md:pb-3 lg:px-4",
-                index > 0 &&
-                  (startsMoveGroup
-                    ? "mt-2.5 border-t border-dashed border-ink/30 pt-2.5 md:mt-3 md:border-t-2 md:border-ink/35 md:pt-3"
-                    : "border-t border-hairline"),
+            <Fragment key={`${role}:${row.calculationIdentity}`}>
+              {startsMoveGroup && (
+                <li className="md:hidden" data-move-group={move.id}>
+                  <MoveGroupHeader move={move} />
+                </li>
               )}
-            >
-              <DamageResultRow {...rowProps} />
-            </li>
+              <li
+                data-result-row={row.calculationIdentity}
+                className={cn(
+                  "px-2 py-0.5 hover:bg-token-bg/55 md:rounded-[10px] md:px-3 md:pt-2.5 md:pb-3 lg:px-4",
+                  index > 0 &&
+                    (startsMoveGroup
+                      ? "md:mt-3 md:border-t-2 md:border-ink/35 md:pt-3"
+                      : "md:border-t md:border-hairline"),
+                )}
+              >
+                <DamageResultRow {...rowProps} showMoveInCaption={false} />
+              </li>
+            </Fragment>
           )
         })}
       </ul>
