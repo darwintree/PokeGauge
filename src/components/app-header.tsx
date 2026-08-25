@@ -26,6 +26,21 @@ import {
   type StatNameStrategy,
 } from "@/lib/stat-preset"
 
+const SOURCE_URL = "https://github.com/darwintree/PokeGauge"
+
+const LICENSE_LINKS = [
+  {
+    nameId: "credits.license.name",
+    href: `${SOURCE_URL}/blob/main/LICENSE`,
+    descriptionId: "credits.license",
+  },
+  {
+    nameId: "credits.source.name",
+    href: SOURCE_URL,
+    descriptionId: "credits.source",
+  },
+] as const
+
 const CREDIT_LINKS = [
   {
     name: "Smogon Damage Calc",
@@ -71,6 +86,39 @@ const SELECT_CLASS =
   "h-10 w-full rounded-[10px] border-2 border-ink bg-paper px-3 text-sm font-bold text-ink shadow-hud-chip outline-none hover:bg-token-bg focus-visible:ring-2 focus-visible:ring-signal-yellow"
 const TAB_CLASS =
   "h-10 flex-none rounded-[9px] px-4 font-extrabold data-active:bg-signal-yellow data-active:shadow-hud-chip"
+
+function SettingsLinkRow({
+  href,
+  name,
+  descriptionId,
+}: {
+  href: string
+  name: React.ReactNode
+  descriptionId: string
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className="group -mx-2 grid grid-cols-[1fr_auto] items-center gap-3 rounded-lg px-2 py-3 outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/50"
+    >
+      <span className="min-w-0">
+        <span className="block font-medium">{name}</span>
+        <span className="text-muted-foreground mt-0.5 block text-xs leading-relaxed">
+          <FormattedMessage id={descriptionId} />
+        </span>
+      </span>
+      <ExternalLinkIcon
+        aria-hidden
+        className="text-muted-foreground size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+      />
+      <span className="sr-only">
+        <FormattedMessage id="header.opensNewTab" />
+      </span>
+    </a>
+  )
+}
 
 function PreferenceRow({
   htmlFor,
@@ -263,28 +311,24 @@ function SettingsDialog({
 
           <TabsContent value="credits" className="min-h-0 overscroll-contain overflow-y-auto px-5 py-3 sm:px-6">
             <div className="grid">
+              {LICENSE_LINKS.map((link) => (
+                <SettingsLinkRow
+                  key={link.nameId}
+                  href={link.href}
+                  name={<FormattedMessage id={link.nameId} />}
+                  descriptionId={link.descriptionId}
+                />
+              ))}
+            </div>
+            <div className="my-1 border-t border-hairline" role="separator" />
+            <div className="grid">
               {CREDIT_LINKS.map((credit) => (
-                <a
+                <SettingsLinkRow
                   key={credit.name}
                   href={credit.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group -mx-2 grid grid-cols-[1fr_auto] items-center gap-3 rounded-lg px-2 py-3 outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/50"
-                >
-                  <span className="min-w-0">
-                    <span className="block font-medium">{credit.name}</span>
-                    <span className="text-muted-foreground mt-0.5 block text-xs leading-relaxed">
-                      <FormattedMessage id={credit.descriptionId} />
-                    </span>
-                  </span>
-                  <ExternalLinkIcon
-                    aria-hidden
-                    className="text-muted-foreground size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                  />
-                  <span className="sr-only">
-                    <FormattedMessage id="header.opensNewTab" />
-                  </span>
-                </a>
+                  name={credit.name}
+                  descriptionId={credit.descriptionId}
+                />
               ))}
             </div>
           </TabsContent>

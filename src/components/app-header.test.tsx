@@ -92,4 +92,18 @@ describe("app settings", () => {
       .toContain("Updates")
     expect(document.querySelector('[role="tabpanel"]')?.textContent).toContain("Latest changes")
   })
+
+  it("lists license and source links in Credits", () => {
+    click(document.querySelector('[aria-label="Settings"]'))
+    const credits = [...document.querySelectorAll('[role="tab"]')]
+      .find((tab) => tab.textContent?.includes("Credits"))
+    click(credits ?? null)
+
+    const panel = document.querySelector('[role="tabpanel"]')
+    expect(panel?.textContent).toContain("GNU Affero General Public License v3.0 only")
+    expect(panel?.querySelector('a[href="https://github.com/darwintree/PokeGauge/blob/main/LICENSE"]'))
+      .toBeTruthy()
+    expect(panel?.querySelector('a[href="https://github.com/darwintree/PokeGauge"]'))
+      .toBeTruthy()
+  })
 })
