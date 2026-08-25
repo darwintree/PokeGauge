@@ -48,7 +48,7 @@ describe("unavailable Scenario display", () => {
       unavailable,
       trackState,
       statNameStrategy: "english",
-      onProbabilityModeChange: () => {},
+      probabilityMode: "battle-odds",
     }))
     const trackMarkup = withEnglish(createElement(MoveTrack, {
       label: "Moves",
@@ -89,7 +89,7 @@ describe("unavailable Scenario display", () => {
       }],
       trackState,
       statNameStrategy: "english",
-      onProbabilityModeChange: () => {},
+      probabilityMode: "battle-odds",
     }))
 
     expect(markup).toContain("Terrain-based move type changes are not calculated yet")
@@ -114,7 +114,7 @@ describe("mobile move grouping", () => {
       unavailable: [],
       trackState: state,
       statNameStrategy: "english",
-      onProbabilityModeChange: () => {},
+      probabilityMode: "battle-odds",
     }))
 
     expect(markup.match(/data-move-group="89"/g)).toHaveLength(1)

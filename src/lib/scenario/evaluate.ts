@@ -4,6 +4,7 @@ import {
 } from "@/lib/damage-calculation"
 import {
   calculationIdentity,
+  type ProbabilityMode,
   type CalculableScenario,
   type ProbabilityInput,
   type RawScenarioPoint,
@@ -271,6 +272,7 @@ function unavailableGroup(
 export function runScenarioPipeline(
   catalog: MatchupCatalog,
   trackState: TrackState,
+  probabilityMode: ProbabilityMode = "battle-odds",
 ): ScenarioPipelineResult {
   const calculableGroups = new Map<string, CalculableGroup>()
   const unavailableGroups = new Map<string, UnavailableGroupBuilder>()
@@ -306,7 +308,7 @@ export function runScenarioPipeline(
                           weather,
                           terrain,
                           screen,
-                          probabilityMode: trackState.probabilityMode,
+                          probabilityMode,
                           sourceOptionIds: {
                             attackerStat: offense.id,
                             defenderStat: defense.id,

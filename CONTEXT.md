@@ -117,7 +117,7 @@ _Avoid_: Result Move Type, resolved move type, Move Snapshot type
 ### Scenario model
 
 **Scenario Setup（情景设定）**:
-由一个 Matchup、Move side、各 Track 当前已选语义与 Probability Mode 构成的可重建计算输入；它生成 Scenario set，但不包含未选候选、纯展示偏好或计算结果。
+由一个 Matchup、Move side 与各 Track 当前已选语义构成的可重建计算输入；它生成 Scenario set，但不包含未选候选、应用级偏好、纯展示偏好或计算结果。
 _Avoid_: Scenario, full Track state, saved UI session, frozen result
 
 **Setup Bookmark（情景书签）**:
@@ -147,8 +147,8 @@ _Avoid_: Equal-display merge, result deduplication
 ### 概率模式（Probability Mode）
 
 **概率模式（Probability Mode）**:
-击倒概率采用的计算口径；它应用于 Scenario，但不是 Track，也不改变 Scenario set 的大小。
-_Avoid_: Probability Track, result filter
+应用中所有 Scenario 的击倒概率所采用的计算口径；它是应用级计算偏好，不是 Track 或 Scenario Setup 的一部分，也不改变 Scenario set 的大小。
+_Avoid_: Probability Track, Scenario Setup field, result filter
 
 **经典模式（Classic Mode）**:
 假定招式命中，并以 16 个等概率伤害值计算击倒概率；非必定会心不参与，必定会心则使用会心伤害值。
