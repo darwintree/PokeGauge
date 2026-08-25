@@ -16,6 +16,7 @@
     "perf:scenario-explorer": "tsx scripts/verify-scenario-explorer-performance.ts",
     "preview": "vite preview",
     "release:version": "changeset version && pnpm changelog:generate",
+    "pretest": "pnpm changelog:generate",
     "test": "vitest run",
     "test:watch": "vitest"
   },

@@ -333,8 +333,6 @@ describe("accuracy abilities", () => {
     state.defenderAbilityIds = [NO_ABILITY_ID]
     state.offensePresetIds = state.offensePresetIds.slice(0, 1)
     state.defensePresetIds = state.defensePresetIds.slice(0, 1)
-    state.probabilityMode = "battle-odds"
-
     const forward = runScenarioPipeline(catalog, state)
     state.attackerAbilityIds.reverse()
     const reverse = runScenarioPipeline(catalog, state)

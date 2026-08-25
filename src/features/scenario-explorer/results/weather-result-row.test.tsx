@@ -29,9 +29,7 @@ describe("weather damage result presentation", () => {
     state.attackerItemIds = ["none"]
     state.defensePresetIds = ["standard-bulk"]
     state.weathers = ["none", "rain"]
-    state.probabilityMode = "battle-odds"
-
-    const result = runScenarioPipeline(catalog, state)
+    const result = runScenarioPipeline(catalog, state, "battle-odds")
     const move = catalog.moves.find((candidate) => candidate.id === 87)!
     const markup = renderToStaticMarkup(createElement(
       IntlProvider,

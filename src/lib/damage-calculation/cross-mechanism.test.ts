@@ -98,7 +98,6 @@ async function exactHeldItemFixture({
   state.weathers = ["none"]
   state.terrains = ["none"]
   state.screens = ["none"]
-  state.probabilityMode = "battle-odds"
   return { catalog, state }
 }
 
@@ -218,10 +217,9 @@ describe("cross-mechanism acceptance", () => {
     })
     state.attackerItemIds = [236]
     state.screens = ["walls"]
-    state.probabilityMode = "classic"
     const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
 
-    const result = runScenarioPipeline(catalog, state)
+    const result = runScenarioPipeline(catalog, state, "classic")
 
     expect(result.unavailable).toEqual([])
     expect(result.rows).toHaveLength(1)
@@ -411,9 +409,8 @@ describe("cross-mechanism acceptance", () => {
     expect(battleOddsResult.rows[0].koProbabilities?.ohko).toBeCloseTo(0.0703125)
     expect(battleOddsResult.rows[0].koProbabilities?.twoHit).toBeCloseTo(0.8240625)
 
-    state.probabilityMode = "classic"
     kernel.mockClear()
-    const classicResult = runScenarioPipeline(catalog, state)
+    const classicResult = runScenarioPipeline(catalog, state, "classic")
 
     expect(classicResult.rows[0]).toMatchObject({
       criticalOnly: false,
@@ -427,7 +424,7 @@ describe("cross-mechanism acceptance", () => {
       criticalStage: 2,
     }))
     kernel.mockClear()
-    const guaranteedClassic = runScenarioPipeline(catalog, state)
+    const guaranteedClassic = runScenarioPipeline(catalog, state, "classic")
 
     expect(kernel.mock.results[0].value.low).not.toHaveProperty("normal")
     expect(kernel.mock.results[0].value.low.critical).toEqual([
@@ -443,8 +440,7 @@ describe("cross-mechanism acceptance", () => {
     expect(guaranteedClassic.rows[0].koProbabilities?.ohko).toBeCloseTo(0.625)
     expect(guaranteedClassic.rows[0].koProbabilities?.twoHit).toBe(1)
 
-    state.probabilityMode = "battle-odds"
-    const guaranteedBattleOdds = runScenarioPipeline(catalog, state)
+    const guaranteedBattleOdds = runScenarioPipeline(catalog, state, "battle-odds")
     expect(guaranteedBattleOdds.rows[0]).toMatchObject({
       criticalOnly: true,
       provenance: { "held-item": { active: ["209"] } },
@@ -527,10 +523,9 @@ describe("cross-mechanism acceptance", () => {
     state.defenderStages = [1]
     state.defenderAbilityIds = [FIRE_MANE_ABILITY_ID]
     state.screens = ["walls"]
-    state.probabilityMode = "classic"
     const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
 
-    const presetResult = runScenarioPipeline(catalog, state)
+    const presetResult = runScenarioPipeline(catalog, state, "classic")
 
     expect(expectedRowCount(state)).toBe(1)
     expect(presetResult.unavailable).toEqual([])

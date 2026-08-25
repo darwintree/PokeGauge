@@ -430,9 +430,7 @@ describe("weather scenario product and provenance", () => {
     state.attackerItemIds = ["none"]
     state.defensePresetIds = ["standard-bulk"]
     state.weathers = ["none", "rain"]
-    state.probabilityMode = "classic"
-
-    const result = runScenarioPipeline(catalog, state)
+    const result = runScenarioPipeline(catalog, state, "classic")
 
     expect(result.rows).toHaveLength(1)
     expect(result.rows[0].provenance.weather).toEqual({
@@ -456,9 +454,7 @@ describe("weather scenario product and provenance", () => {
     state.attackerItemIds = ["none"]
     state.defensePresetIds = ["standard-bulk"]
     state.weathers = ["none", "rain"]
-    state.probabilityMode = "battle-odds"
-
-    const result = runScenarioPipeline(catalog, state)
+    const result = runScenarioPipeline(catalog, state, "battle-odds")
 
     expect(result.rows).toHaveLength(1)
     expect(result.rows[0].provenance.weather).toEqual({

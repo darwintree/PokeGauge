@@ -7,6 +7,7 @@ import {
   setChampionsNatureUsageFetcherForTest,
 } from "@/lib/champions"
 import * as damageKernel from "@/lib/damage-calculation"
+import type { ProbabilityMode } from "@/lib/damage-calculation"
 import {
   getCatalog,
   getCatalogShell,
@@ -46,8 +47,9 @@ function selectMoves(
 function scenarioResults(
   catalog: MatchupCatalog,
   state: ReturnType<typeof defaultTrackState>,
+  probabilityMode: ProbabilityMode = "battle-odds",
 ) {
-  return runScenarioPipeline(catalog, state).rows
+  return runScenarioPipeline(catalog, state, probabilityMode).rows
 }
 
 function withChoiceStats(state: ReturnType<typeof defaultTrackState>) {
@@ -649,23 +651,16 @@ describe("matchup scenario pipeline", () => {
     expect(sandRows[0].maxDamage).toBeGreaterThan(noneRows[0].maxDamage)
   })
 
-  it("defaults new Track State to Battle Odds Mode", () => {
-    expect(defaultTrackState(catalog).probabilityMode).toBe("battle-odds")
-  })
-
   it("compiles Classic and Battle Odds fixed-build KO Probabilities", () => {
     const state = withChoiceStats(defaultTrackState(catalog))
     selectMoves(catalog, state, [667])
     state.offensePresetIds = ["extreme"]
     state.attackerItemIds = [197]
     state.defensePresetIds = ["min-bulk"]
-    state.probabilityMode = "classic"
-
-    const [classicResult] = scenarioResults(catalog, state)
+    const [classicResult] = scenarioResults(catalog, state, "classic")
     expect(classicResult.koProbabilities).toEqual({ ohko: 1, twoHit: 1 })
 
-    state.probabilityMode = "battle-odds"
-    const [battleOddsResult] = scenarioResults(catalog, state)
+    const [battleOddsResult] = scenarioResults(catalog, state, "battle-odds")
     expect(battleOddsResult.koProbabilities?.ohko).toBeCloseTo(0.95)
     expect(battleOddsResult.koProbabilities?.twoHit).toBeCloseTo(0.9975)
   })
@@ -676,8 +671,6 @@ describe("matchup scenario pipeline", () => {
     state.offensePresetIds = ["extreme"]
     state.attackerItemIds = ["none"]
     state.defensePresetIds = ["min-bulk"]
-    state.probabilityMode = "battle-odds"
-
     const [row] = scenarioResults(catalog, state)
     expect(row).toBeDefined()
     expect(row.koProbabilities).toBeDefined()
@@ -777,7 +770,6 @@ describe("matchup scenario pipeline - range mode", () => {
     selectMoves(catalog, state, [89])
     state.attackerItemIds = ["none"]
     state.defensePresetIds = ["min-bulk"]
-    state.probabilityMode = "battle-odds"
     const offenseRange = offenseEnvelopeOf(
       offensePresetsForState(catalog, state),
       ["neutral-zero", "extreme"],
@@ -809,8 +801,6 @@ describe("matchup scenario pipeline - range mode", () => {
     const state = defaultTrackState(catalog)
     selectMoves(catalog, state, [89])
     state.attackerItemIds = ["none"]
-    state.probabilityMode = "battle-odds"
-
     const oppositeEndpoints = [
       { offensePresetIds: ["neutral-zero"], defensePresetIds: ["standard-bulk"] },
       { offensePresetIds: ["extreme"], defensePresetIds: ["min-bulk"] },

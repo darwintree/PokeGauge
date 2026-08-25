@@ -1,7 +1,6 @@
 import type {
   KOProbabilities,
   MoveMechanics,
-  ProbabilityMode,
   Screen,
   ScenarioTrack,
   ScenarioSupport,
@@ -58,7 +57,6 @@ export type TrackState = {
   defenderStages: StatStage[]
   defenderAbilityIds: number[]
   screens: Screen[]
-  probabilityMode: ProbabilityMode
 }
 
 export type ScenarioResult = {

@@ -116,7 +116,6 @@ function escapedSetup(): SharedScenarioSetup {
     defenderItems: [6_000],
     defenderAbilities: [30_000],
     screens: ["none"],
-    probabilityMode: "battle-odds",
   }
 }
 
@@ -142,6 +141,7 @@ describe("Scenario Setup sharing", () => {
     const decoded = decodeScenarioSetupToken(encoded.value)
     expect(decoded.ok).toBe(true)
     if (!decoded.ok) return
+    expect(decoded.value).not.toHaveProperty("probabilityMode")
     expect(decoded.value.moveSnapshots).toHaveLength(2)
     expect(decoded.value.moveSnapshots[0]).toEqual(decoded.value.moveSnapshots[1])
     expect(decoded.value.offenseStat.values).toHaveLength(3)

@@ -1,7 +1,7 @@
 import {
   ExternalLinkIcon,
-  InfoIcon,
   MessageSquareWarningIcon,
+  SettingsIcon,
   XIcon,
 } from "lucide-react"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -18,9 +18,13 @@ import {
 } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CHANGELOG_ENTRIES } from "@/lib/changelog"
+import type { ProbabilityMode } from "@/lib/damage-calculation"
 import { createFeedbackUrl } from "@/lib/feedback"
 import { SUPPORTED_LOCALES, type SupportedLocale } from "@/lib/i18n"
-import { cn } from "@/lib/utils"
+import {
+  STAT_NAME_STRATEGY_OPTIONS,
+  type StatNameStrategy,
+} from "@/lib/stat-preset"
 
 const CREDIT_LINKS = [
   {
@@ -47,44 +51,63 @@ type LocaleControlProps = {
 
 type AppHeaderProps = LocaleControlProps & {
   feedbackScenarioUrl: string | null
+  probabilityMode: ProbabilityMode
+  onProbabilityModeChange: (mode: ProbabilityMode) => void
+  statNameStrategy: StatNameStrategy
+  onStatNameStrategyChange: (strategy: StatNameStrategy) => void
   /** When set, brand is a control that requests return to matchup landing. */
   onBrandHomeClick?: (() => void) | null
 }
 
-type ProjectInfoDialogProps = {
-  locale: SupportedLocale
-}
+type SettingsDialogProps = LocaleControlProps & Pick<
+  AppHeaderProps,
+  | "probabilityMode"
+  | "onProbabilityModeChange"
+  | "statNameStrategy"
+  | "onStatNameStrategyChange"
+>
 
-function LocaleSelect({
-  id,
-  locale,
-  onLocaleChange,
-  className,
-}: LocaleControlProps & { id: string; className?: string }) {
-  const intl = useIntl()
+const SELECT_CLASS =
+  "h-10 w-full rounded-[10px] border-2 border-ink bg-paper px-3 text-sm font-bold text-ink shadow-hud-chip outline-none hover:bg-token-bg focus-visible:ring-2 focus-visible:ring-signal-yellow"
+const TAB_CLASS =
+  "h-10 flex-none rounded-[9px] px-4 font-extrabold data-active:bg-signal-yellow data-active:shadow-hud-chip"
 
+function PreferenceRow({
+  htmlFor,
+  label,
+  description,
+  children,
+}: {
+  htmlFor: string
+  label: React.ReactNode
+  description: React.ReactNode
+  children: React.ReactNode
+}) {
   return (
-    <select
-      id={id}
-      value={locale}
-      onChange={(event) => onLocaleChange(event.target.value as SupportedLocale)}
-      className={cn(
-        "h-9 rounded-full border-2 border-ink bg-paper px-2 text-xs font-bold text-ink shadow-hud-chip",
-        className,
-      )}
-      aria-label={intl.formatMessage({ id: "locale.label" })}
-    >
-      {SUPPORTED_LOCALES.map((value) => (
-        <option key={value} value={value}>
-          {intl.formatMessage({ id: `locale.${value}` })}
-        </option>
-      ))}
-    </select>
+    <div className="grid gap-3 border-b border-hairline py-4 last:border-b-0 sm:grid-cols-[minmax(0,1fr)_minmax(13rem,17rem)] sm:items-center">
+      <div className="min-w-0">
+        <label htmlFor={htmlFor} className="font-extrabold text-ink">{label}</label>
+        <div id={`${htmlFor}-description`} className="mt-1 text-xs leading-relaxed font-medium text-hud-muted">
+          {description}
+        </div>
+      </div>
+      <div>{children}</div>
+    </div>
   )
 }
 
-function ProjectInfoDialog({ locale }: ProjectInfoDialogProps) {
+function SettingsDialog({
+  locale,
+  onLocaleChange,
+  probabilityMode,
+  onProbabilityModeChange,
+  statNameStrategy,
+  onStatNameStrategyChange,
+}: SettingsDialogProps) {
   const intl = useIntl()
+  const probabilityHintId = probabilityMode === "battle-odds"
+    ? "probability.mode.battleOdds.hint"
+    : "probability.mode.classic.hint"
 
   return (
     <Dialog>
@@ -95,58 +118,124 @@ function ProjectInfoDialog({ locale }: ProjectInfoDialogProps) {
             variant="ghost"
             size="sm"
             className="size-11 rounded-full border-2 border-ink bg-paper px-0 text-ink shadow-hud-chip hover:bg-signal-yellow hover:text-ink sm:size-10 md:w-auto md:px-2.5 lg:h-8"
-            aria-label={intl.formatMessage({ id: "header.projectInfo" })}
+            aria-label={intl.formatMessage({ id: "settings.title" })}
           />
         }
       >
-        <InfoIcon aria-hidden />
+        <SettingsIcon aria-hidden />
         <span className="hidden md:inline">
-          <FormattedMessage id="header.projectInfo" />
+          <FormattedMessage id="settings.title" />
         </span>
       </DialogTrigger>
-      <DialogContent showCloseButton={false} className="gap-5 border-2 border-ink bg-paper shadow-hud-panel sm:max-w-md">
+      <DialogContent
+        showCloseButton={false}
+        className="h-[calc(100dvh-1rem)] max-h-[calc(100dvh-1rem)] max-w-[calc(100%-1rem)] grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden border-2 border-ink bg-paper p-0 shadow-hud-panel sm:h-auto sm:max-h-[min(82dvh,42rem)] sm:max-w-2xl"
+      >
         <DialogClose
           render={
             <Button
               type="button"
               variant="ghost"
               size="icon"
-              className="absolute top-1.5 right-1.5 size-11 sm:top-2 sm:right-2 sm:size-8"
+              className="absolute top-2 right-2 z-10 size-11 sm:size-9"
               aria-label={intl.formatMessage({ id: "app.close" })}
             />
           }
         >
           <XIcon aria-hidden />
         </DialogClose>
-        <DialogHeader className="pr-12">
-          <DialogTitle>
-            <FormattedMessage id="header.projectInfo" />
+        <DialogHeader className="border-b-2 border-ink px-5 py-4 pr-14">
+          <DialogTitle className="text-lg font-extrabold">
+            <FormattedMessage id="settings.title" />
           </DialogTitle>
           <DialogDescription>
-            <FormattedMessage id="header.projectDescription" />
-            <span className="mt-1 block">
-              <FormattedMessage id="matchup.context" />
-            </span>
+            <FormattedMessage id="settings.description" />
           </DialogDescription>
         </DialogHeader>
 
-        <Tabs defaultValue="changelog">
-          <TabsList variant="line" className="w-full border-b">
-            <TabsTrigger value="changelog">
-              <FormattedMessage id="header.changelog" />
+        <Tabs defaultValue="preferences" className="min-h-0 gap-0">
+          <TabsList className="group-data-horizontal/tabs:h-auto w-full shrink-0 justify-start gap-1 overflow-x-auto rounded-none border-b border-hairline bg-token-bg/70 p-2">
+            <TabsTrigger className={TAB_CLASS} value="preferences">
+              <FormattedMessage id="settings.preferences" />
             </TabsTrigger>
-            <TabsTrigger value="credits">
-              <FormattedMessage id="header.credits" />
+            <TabsTrigger className={TAB_CLASS} value="changelog">
+              <FormattedMessage id="settings.changelog" />
+            </TabsTrigger>
+            <TabsTrigger className={TAB_CLASS} value="credits">
+              <FormattedMessage id="settings.credits" />
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="changelog" className="pt-4">
+          <TabsContent value="preferences" className="min-h-0 overscroll-contain overflow-y-auto px-5 py-2 sm:px-6">
+            <PreferenceRow
+              htmlFor="settings-locale"
+              label={<FormattedMessage id="locale.label" />}
+              description={<FormattedMessage id="settings.language.description" />}
+            >
+              <select
+                id="settings-locale"
+                aria-describedby="settings-locale-description"
+                value={locale}
+                onChange={(event) => onLocaleChange(event.target.value as SupportedLocale)}
+                className={SELECT_CLASS}
+              >
+                {SUPPORTED_LOCALES.map((value) => (
+                  <option key={value} value={value}>
+                    {intl.formatMessage({ id: `locale.${value}` })}
+                  </option>
+                ))}
+              </select>
+            </PreferenceRow>
+
+            <PreferenceRow
+              htmlFor="settings-stat-display"
+              label={<FormattedMessage id="stat.display" />}
+              description={<FormattedMessage id="settings.statDisplay.description" />}
+            >
+              <select
+                id="settings-stat-display"
+                aria-describedby="settings-stat-display-description"
+                value={statNameStrategy}
+                onChange={(event) => onStatNameStrategyChange(event.target.value as StatNameStrategy)}
+                className={SELECT_CLASS}
+              >
+                {STAT_NAME_STRATEGY_OPTIONS.map((value) => (
+                  <option key={value} value={value}>
+                    {intl.formatMessage({ id: `stat.strategy.${value}` })}
+                  </option>
+                ))}
+              </select>
+            </PreferenceRow>
+
+            <PreferenceRow
+              htmlFor="settings-probability-mode"
+              label={<FormattedMessage id="settings.probabilityMode" />}
+              description={<FormattedMessage id={probabilityHintId} />}
+            >
+              <select
+                id="settings-probability-mode"
+                aria-describedby="settings-probability-mode-description"
+                value={probabilityMode}
+                onChange={(event) => onProbabilityModeChange(event.target.value as ProbabilityMode)}
+                className={SELECT_CLASS}
+              >
+                <option value="battle-odds">
+                  {intl.formatMessage({ id: "probability.mode.battleOdds" })}
+                </option>
+                <option value="classic">
+                  {intl.formatMessage({ id: "probability.mode.classic" })}
+                </option>
+              </select>
+            </PreferenceRow>
+          </TabsContent>
+
+          <TabsContent value="changelog" className="min-h-0 overscroll-contain overflow-y-auto px-5 py-5 sm:max-h-[min(60dvh,30rem)] sm:px-6">
             {CHANGELOG_ENTRIES.length === 0 ? (
               <p className="text-muted-foreground text-sm">
                 <FormattedMessage id="changelog.empty" />
               </p>
             ) : (
-              <div className="max-h-[min(50vh,24rem)] space-y-5 overflow-y-auto pr-1">
+              <div className="space-y-5 pr-1">
                 {CHANGELOG_ENTRIES.map((entry, index) => (
                   <article
                     key={`${entry.version ?? "unreleased"}-${index}`}
@@ -172,7 +261,7 @@ function ProjectInfoDialog({ locale }: ProjectInfoDialogProps) {
             )}
           </TabsContent>
 
-          <TabsContent value="credits" className="pt-2">
+          <TabsContent value="credits" className="min-h-0 overscroll-contain overflow-y-auto px-5 py-3 sm:px-6">
             <div className="grid">
               {CREDIT_LINKS.map((credit) => (
                 <a
@@ -208,6 +297,10 @@ function ProjectInfoDialog({ locale }: ProjectInfoDialogProps) {
 export function AppHeader({
   locale,
   onLocaleChange,
+  probabilityMode,
+  onProbabilityModeChange,
+  statNameStrategy,
+  onStatNameStrategyChange,
   feedbackScenarioUrl,
   onBrandHomeClick = null,
 }: AppHeaderProps) {
@@ -277,13 +370,13 @@ export function AppHeader({
             </span>
           </Button>
 
-          <ProjectInfoDialog locale={locale} />
-
-          <LocaleSelect
-            id="header-locale"
+          <SettingsDialog
             locale={locale}
             onLocaleChange={onLocaleChange}
-            className="ml-0.5 sm:ml-1"
+            probabilityMode={probabilityMode}
+            onProbabilityModeChange={onProbabilityModeChange}
+            statNameStrategy={statNameStrategy}
+            onStatNameStrategyChange={onStatNameStrategyChange}
           />
         </nav>
       </div>

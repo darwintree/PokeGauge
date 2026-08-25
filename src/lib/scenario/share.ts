@@ -5,7 +5,6 @@ import {
   STAT_STAGES,
   TERRAINS,
   WEATHERS,
-  type ProbabilityMode,
   type Screen,
   type StatStage,
   type Terrain,
@@ -65,7 +64,6 @@ export type SharedScenarioSetup = {
   defenderItems: HeldItemId[]
   defenderAbilities: number[]
   screens: Screen[]
-  probabilityMode: ProbabilityMode
 }
 
 export type ScenarioShareFailure = {
@@ -343,7 +341,8 @@ function encodeBytes(input: SharedScenarioSetup): Uint8Array {
   writeEscapedList(writer, setup.defenderItems, ITEM_COUNT_BITS, ITEM_BITS, itemCode)
   writeEscapedList(writer, setup.defenderAbilities, ABILITY_COUNT_BITS, ID_BITS, abilityCode)
   writeMask(writer, setup.screens, SCREENS)
-  writer.write(setup.probabilityMode === "battle-odds" ? 1 : 0, 1)
+  // v2 keeps its legacy probability bit so existing decoders remain compatible.
+  writer.write(1, 1)
   return withCrc(writer.finish())
 }
 
@@ -417,7 +416,6 @@ export function decodeScenarioSetupToken(token: string): ScenarioShareResult<Sha
       defenderItems: [],
       defenderAbilities: [],
       screens: [],
-      probabilityMode: "classic",
     }
     const moveCount = reader.readEscaped(MOVE_COUNT_BITS)
     if (moveCount > 1_024) throw new RangeError("count-too-large")
@@ -476,7 +474,7 @@ export function decodeScenarioSetupToken(token: string): ScenarioShareResult<Sha
     setup.defenderAbilities = readEscapedList(reader, ABILITY_COUNT_BITS, ID_BITS, abilityFromCode)
     assertStrict(setup.defenderAbilities, abilityCode)
     setup.screens = readMask(reader, SCREENS)
-    setup.probabilityMode = reader.read(1) === 1 ? "battle-odds" : "classic"
+    reader.read(1)
     if (!reader.hasCanonicalPadding()) throw new RangeError("trailing-bits")
     return { ok: true, value: setup }
   } catch (error) {
@@ -577,7 +575,6 @@ export function scenarioSetupFromTrackState(
       defenderItems: state.defenderItemIds,
       defenderAbilities: state.defenderAbilityIds,
       screens: state.screens,
-      probabilityMode: state.probabilityMode,
     }),
   }
 }
@@ -729,7 +726,6 @@ export function trackStateFromScenarioSetup(
       defenderItemIds: setup.defenderItems,
       defenderAbilityIds: setup.defenderAbilities,
       screens: setup.screens,
-      probabilityMode: setup.probabilityMode,
     },
   }
 }
