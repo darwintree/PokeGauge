@@ -168,8 +168,6 @@ type DamageResultRowProps = {
   }
   row: ScenarioResult
   showAccuracy?: boolean
-  /** Mobile group headers carry the move identity; hide it from the per-row caption. */
-  showMoveInCaption?: boolean
   /** Child of an expanded Range parent: only these axes differ from the parent. */
   diff?: { offense: boolean; defense: boolean }
 }
@@ -182,7 +180,6 @@ export function DamageResultRow({
   defender,
   row,
   showAccuracy = false,
-  showMoveInCaption,
   diff,
 }: DamageResultRowProps) {
   const intl = useIntl()
@@ -203,7 +200,6 @@ export function DamageResultRow({
     attackerAbilities,
     defenderAbilities,
     showAccuracy,
-    showMoveInCaption,
   }
 
   return (
