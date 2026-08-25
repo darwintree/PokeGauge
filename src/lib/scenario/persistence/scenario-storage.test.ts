@@ -54,7 +54,6 @@ function scenario(): ScenarioSnapshotInput {
       defenderStages: [0],
       defenderAbilityIds: [22],
       screens: ["none"],
-      probabilityMode: "battle-odds",
     },
   }
 }
@@ -69,7 +68,7 @@ async function compatibleScenario() {
   return {
     currentCatalog,
     snapshot: {
-      version: 4,
+      version: 5,
       attackerId: 445,
       defenderId: 727,
       moveCategory: "physical",
@@ -102,7 +101,7 @@ describe("scenario storage", () => {
     const input = scenario()
     saveScenarioSnapshot(input)
 
-    expect(loadScenarioSnapshot()).toEqual({ version: 4, ...input })
+    expect(loadScenarioSnapshot()).toEqual({ version: 5, ...input })
   })
 
   it("migrates version 3 terminology without dropping the saved scenario", () => {
@@ -112,7 +111,6 @@ describe("scenario storage", () => {
       offenseTemporaryPresets,
       defensePresetIds,
       defenseTemporaryPresets,
-      probabilityMode: _probabilityMode,
       ...trackState
     } = input.trackState
     data[SCENARIO_STORAGE_KEY] = JSON.stringify({
@@ -131,7 +129,18 @@ describe("scenario storage", () => {
       },
     })
 
-    expect(loadScenarioSnapshot()).toEqual({ version: 4, ...input })
+    expect(loadScenarioSnapshot()).toEqual({ version: 5, ...input })
+  })
+
+  it("migrates version 4 while dropping its scenario probability mode", () => {
+    const input = scenario()
+    data[SCENARIO_STORAGE_KEY] = JSON.stringify({
+      ...input,
+      version: 4,
+      trackState: { ...input.trackState, probabilityMode: "classic" },
+    })
+
+    expect(loadScenarioSnapshot()).toEqual({ version: 5, ...input })
   })
 
   it("round trips numeric upstream held-item identities", () => {
@@ -223,7 +232,7 @@ describe("scenario storage", () => {
     expect(
       scenarioSnapshotMatchesCatalog(
         {
-          version: 4,
+          version: 5,
           attackerId: 10273,
           defenderId: 727,
           moveCategory: "physical",
@@ -242,7 +251,7 @@ describe("scenario storage", () => {
     expect(
       scenarioSnapshotMatchesCatalog(
         {
-          version: 4,
+          version: 5,
           attackerId: 10034,
           defenderId: 727,
           moveCategory: "physical",
@@ -256,7 +265,7 @@ describe("scenario storage", () => {
   it("loads a dual-store snapshot that still has touched flags", () => {
     const input = scenario()
     data[SCENARIO_STORAGE_KEY] = JSON.stringify({
-      version: 4,
+      version: 5,
       ...input,
       trackState: {
         ...input.trackState,
@@ -299,7 +308,7 @@ describe("scenario storage", () => {
       trackState.attackerAbilityIds = selection
 
       expect(scenarioSnapshotMatchesCatalog({
-        version: 4,
+        version: 5,
         attackerId: 10034,
         defenderId: 727,
         moveCategory: "physical",
