@@ -41,8 +41,6 @@ type DamageScenarioSummaryProps = {
   attackerAbilities: CatalogAbilityOption[]
   defenderAbilities: CatalogAbilityOption[]
   showAccuracy: boolean
-  /** Mobile group headers carry the move identity; hide it from the per-row caption. */
-  showMoveInCaption?: boolean
 }
 
 function abilitySourceIsHidden(track: ScenarioTrack, id: string): boolean {
@@ -481,19 +479,17 @@ export function DamageRowCaption(props: DamageScenarioSummaryProps) {
   const defenseStage = activeStage(props.row, "defender-stage")
   return (
     <span className="flex min-h-3.5 min-w-0 flex-wrap items-center gap-x-0.5 gap-y-1 py-1 whitespace-nowrap sm:h-3.5 sm:min-h-0 sm:flex-nowrap sm:overflow-hidden sm:py-0">
-      {props.showMoveInCaption !== false && (
-        <span className="flex shrink-0 items-center gap-0.5">
-          <CaptionTypeMark type={props.row.moveType} />
-          <span className="max-w-[6.5rem] truncate text-[12px] font-extrabold leading-none">
-            {props.move.label}
-          </span>
-          {attackStage !== 0 && (
-            <span className="text-[9px] font-extrabold leading-none tabular-nums">
-              {stageLabel(attackStage)}
-            </span>
-          )}
+      <span className="flex shrink-0 items-center gap-0.5">
+        <CaptionTypeMark type={props.row.moveType} />
+        <span className="max-w-[6.5rem] truncate text-[12px] font-extrabold leading-none">
+          {props.move.label}
         </span>
-      )}
+        {attackStage !== 0 && (
+          <span className="text-[9px] font-extrabold leading-none tabular-nums">
+            {stageLabel(attackStage)}
+          </span>
+        )}
+      </span>
       <span className="flex min-w-0 items-center gap-px overflow-hidden">
         <CaptionChips
           chips={props.attackerStat.chips}

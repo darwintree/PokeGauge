@@ -28,7 +28,6 @@ import {
   DamageRangeLegend,
   DamageResultRow,
 } from "./damage-result-row"
-import { TypeBadge } from "@/components/pokemon/type-badge"
 import { rowIdentity } from "./row-labels"
 
 type DamageResultsProps = {
@@ -90,11 +89,8 @@ function catalogOption<T extends { id: string | number }>(options: T[], id: stri
 function MoveGroupHeader({ move }: { move: CatalogMoveOption }) {
   return (
     <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-2 pt-3 pb-1 md:hidden">
-      <span className="flex min-w-0 items-center gap-1.5">
-        <TypeBadge type={move.type} />
-        <span className="truncate text-[14px] font-extrabold leading-none">
-          {move.label}
-        </span>
+      <span className="truncate text-[14px] font-extrabold leading-none">
+        {move.label}
       </span>
     </div>
   )
@@ -224,7 +220,7 @@ export function DamageResults({
                       : "md:border-t md:border-hairline"),
                 )}
               >
-                <DamageResultRow {...rowProps} showMoveInCaption={false} />
+                <DamageResultRow {...rowProps} />
               </li>
             </Fragment>
           )
