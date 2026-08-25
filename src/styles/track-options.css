@@ -97,10 +97,64 @@
     padding: 0.125rem;
   }
 
-  .track-option--icon :is(img, svg) {
+  .track-option--icon:not(.track-option--described) > :is(img, svg) {
     width: 100%;
     height: 100%;
     object-fit: contain;
+  }
+
+  .track-option--described {
+    width: 100%;
+    height: auto;
+    min-height: 3.5rem;
+    justify-content: flex-start;
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+
+  .track-option-description-icon {
+    position: relative;
+    display: grid;
+    flex: 0 0 auto;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+  }
+
+  .track-option-description-icon :is(img, svg) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .track-option-description-copy {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .track-option-description-label {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .track-option-description-text {
+    display: block;
+    margin-top: 0.125rem;
+    color: var(--muted-foreground);
+    font-weight: 400;
+    line-height: 1rem;
+  }
+
+  .track-option-description-check {
+    width: 1rem;
+    height: 1rem;
+    flex: 0 0 auto;
+    opacity: 0;
+  }
+
+  .track-option--described[aria-pressed="true"] .track-option-description-check {
+    opacity: 1;
   }
 
   .track-option--add {

@@ -169,7 +169,7 @@ it("marks assumed-satisfied abilities with green disclosure and no red unsupport
   expect(markup).not.toMatch(/bg-destructive[^"]*bg-signal-green|bg-signal-green[^"]*bg-destructive/)
 })
 
-it("shows ability descriptions in tooltips and a touch-accessible disclosure", () => {
+it("shows ability descriptions in tooltips and offers an inline-description switch", () => {
   const markup = renderToStaticMarkup(createElement(
     IntlProvider,
     { locale: "en", messages: localeMessages.en },
@@ -184,9 +184,9 @@ it("shows ability descriptions in tooltips and a touch-accessible disclosure", (
     }),
   ))
 
-  expect(markup).toContain("Powers up same-type moves.")
-  expect(markup).toContain("<details")
-  expect(markup).toContain("View ability descriptions")
+  expect(markup).not.toContain("<details")
+  expect(markup).toContain("Show descriptions")
+  expect(markup).toContain('data-slot="switch"')
 })
 
 it("renders active abilities inline and folds inactive and unsupported states", () => {
