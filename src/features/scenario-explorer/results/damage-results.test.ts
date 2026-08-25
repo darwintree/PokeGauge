@@ -97,7 +97,7 @@ describe("unavailable Scenario display", () => {
 })
 
 describe("mobile move grouping", () => {
-  it("renders one group header per move and drops per-row separators", async () => {
+  it("renders one group header per move and keeps move identity in every row", async () => {
     const catalog = await getCatalogShell(342, 143, "en", "physical")
     const state = defaultTrackState(catalog)
     const moveIds = [152, 89]
@@ -120,6 +120,12 @@ describe("mobile move grouping", () => {
     expect(markup.match(/data-move-group="89"/g)).toHaveLength(1)
     expect(markup.match(/data-move-group="152"/g)).toHaveLength(1)
     expect(markup.match(/data-result-row=/g)).toHaveLength(rows.length)
+    for (const moveId of moveIds) {
+      const move = catalog.moves.find((candidate) => candidate.id === moveId)
+      if (!move) throw new Error(`Expected move ${moveId} in catalog`)
+      const rowCount = rows.filter((row) => row.moveId === moveId).length
+      expect(markup.split(move.label)).toHaveLength(rowCount * 2 + 2)
+    }
     expect(markup).not.toContain("mt-2.5 border-t border-dashed border-ink/30 pt-2.5")
     expect(markup).toContain("md:border-t md:border-hairline")
   })
