@@ -1,4 +1,4 @@
-import { RefreshCw, Save, Trash2 } from "lucide-react"
+import { Check, RefreshCw, Save, Trash2 } from "lucide-react"
 import type { ReactNode } from "react"
 
 import {
@@ -45,6 +45,9 @@ type TrackOptionProps = {
   actions?: TrackOptionAction[]
   className?: string
   tooltip?: ReactNode
+  description?: ReactNode
+  descriptionLabel?: ReactNode
+  showDescription?: boolean
   disabled?: boolean
 }
 
@@ -147,16 +150,33 @@ export function TrackOption({
   actions = [],
   className,
   tooltip,
+  description,
+  descriptionLabel,
+  showDescription = false,
   disabled = false,
 }: TrackOptionProps) {
   const buttonClassName = cn(
     "track-option",
     layout === "text" ? "track-option--text" : "track-option--icon",
+    showDescription && "track-option--described",
     modifierClass(modifier),
     className,
   )
 
-  const button = tooltip ? (
+  const content = showDescription ? (
+    <>
+      {layout === "icon" && <span className="track-option-description-icon">{children}</span>}
+      <span className="track-option-description-copy">
+        <span className="track-option-description-label">
+          {descriptionLabel ?? children}
+        </span>
+        <span className="track-option-description-text">{description}</span>
+      </span>
+      <Check aria-hidden className="track-option-description-check" />
+    </>
+  ) : children
+
+  const button = tooltip && !showDescription ? (
     <Tooltip>
       <TooltipTrigger
         render={
@@ -170,7 +190,7 @@ export function TrackOption({
           />
         }
       >
-        {children}
+        {content}
       </TooltipTrigger>
       <TooltipContent side="top" className="max-w-xs rounded-xl border-2 border-ink bg-paper p-2 text-xs shadow-hud-panel">
         {tooltip}
@@ -185,7 +205,7 @@ export function TrackOption({
       onClick={onToggle}
       className={buttonClassName}
     >
-      {children}
+      {content}
     </button>
   )
 
