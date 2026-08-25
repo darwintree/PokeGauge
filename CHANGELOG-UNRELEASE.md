@@ -67,3 +67,14 @@ Mobile results now group rows by move with a clear move header and quieter row s
 <!-- changelog:ja -->
 モバイル版の結果は技ごとにグループ化され、各グループに明確な技見出しと静かな行間隔が表示されます。
 <!-- changelog:end -->
+
+<!-- changelog:start -->
+<!-- changelog:en -->
+Show item, ability, weather, terrain, and screen descriptions directly inside each Track.
+<!-- changelog:zh-hans -->
+可在每条 Track 内直接显示道具、特性、天气、场地和墙的说明。
+<!-- changelog:zh-hant -->
+可在每條 Track 內直接顯示道具、特性、天氣、場地和牆的說明。
+<!-- changelog:ja -->
+各 Track 内で、どうぐ、特性、天気、フィールド、壁の説明を直接表示できるようになりました。
+<!-- changelog:end -->

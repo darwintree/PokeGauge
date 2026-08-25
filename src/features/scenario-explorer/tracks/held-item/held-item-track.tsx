@@ -25,6 +25,7 @@ import type { BattlePokemonId } from "@/lib/resources"
 import { cn } from "@/lib/utils"
 
 import { TrackOption, TrackOptionGroup } from "../common/track-option"
+import { TrackDescriptionToggle } from "../common/track-description-toggle"
 import { TrackPanel } from "../common/track-panel"
 import { HeldItemPickerDialog } from "./held-item-picker-dialog"
 import { HeldItemSpriteIcon } from "./held-item-sprite-icon"
@@ -61,6 +62,7 @@ export function HeldItemTrack({
   const locale = intl.locale as SupportedLocale
   const [pickerOpen, setPickerOpen] = useState(false)
   const [pendingFormItemId, setPendingFormItemId] = useState<number | null>(null)
+  const [showDescriptions, setShowDescriptions] = useState(false)
 
   const battlePokemonId = side === "attacker"
     ? catalog.matchup.attackerId
@@ -132,6 +134,12 @@ export function HeldItemTrack({
         expanded={expanded}
         onToggle={onToggle}
       >
+        <div className="mb-2 flex justify-end">
+          <TrackDescriptionToggle
+            checked={showDescriptions}
+            onCheckedChange={setShowDescriptions}
+          />
+        </div>
         <TrackOptionGroup
           aria-label={intl.formatMessage({
             id: side === "attacker"
@@ -166,9 +174,17 @@ export function HeldItemTrack({
                 tooltip={(
                   <span className="whitespace-pre-line">{detailParts.join("\n")}</span>
                 )}
+                description={(
+                  <span className="whitespace-pre-line">
+                    {[description, formHint, warningText].filter(Boolean).join("\n")}
+                  </span>
+                )}
+                descriptionLabel={label}
+                showDescription={showDescriptions}
                 modifier={{ kind: "core" }}
                 className={cn(
-                  "relative max-lg:size-11",
+                  "relative",
+                  !showDescriptions && "max-lg:size-11",
                   formTrigger && "border-dashed opacity-90",
                 )}
                 onToggle={() => toggle(id)}

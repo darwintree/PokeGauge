@@ -1,4 +1,5 @@
 import { Sprout } from "lucide-react"
+import { useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { Button } from "@/components/ui/button"
@@ -6,6 +7,7 @@ import { TERRAINS, type Terrain } from "@/lib/damage-calculation"
 
 import { TrackPanel } from "./track-panel"
 import { TrackOption, TrackOptionGroup } from "./track-option"
+import { TrackDescriptionToggle } from "./track-description-toggle"
 
 type TerrainTrackProps = {
   values: Terrain[]
@@ -22,6 +24,7 @@ export function TerrainTrack({
 }: TerrainTrackProps) {
   const intl = useIntl()
   const selected = new Set(values)
+  const [showDescriptions, setShowDescriptions] = useState(false)
 
   function toggle(terrain: Terrain) {
     const next = TERRAINS.filter((candidate) =>
@@ -43,7 +46,11 @@ export function TerrainTrack({
       onToggle={onToggle}
     >
       <div className="space-y-2">
-        <div className="flex justify-end">
+        <div className="flex items-center justify-end gap-1">
+          <TrackDescriptionToggle
+            checked={showDescriptions}
+            onCheckedChange={setShowDescriptions}
+          />
           <Button
             type="button"
             variant="ghost"
@@ -57,6 +64,7 @@ export function TerrainTrack({
         <TrackOptionGroup aria-label={intl.formatMessage({ id: "track.terrain" })}>
           {TERRAINS.map((terrain) => {
             const label = intl.formatMessage({ id: `track.terrain.${terrain}` })
+            const description = intl.formatMessage({ id: `track.terrain.${terrain}.description` })
             const warning = terrain === "grassy"
               ? intl.formatMessage({ id: "track.terrain.warning.grassy-recovery" })
               : undefined
@@ -67,7 +75,17 @@ export function TerrainTrack({
                 pressed={selected.has(terrain)}
                 onToggle={() => toggle(terrain)}
                 ariaLabel={[label, warning].filter(Boolean).join(", ")}
-                tooltip={warning}
+                tooltip={(
+                  <span className="whitespace-pre-line">
+                    {[description, warning].filter(Boolean).join("\n")}
+                  </span>
+                )}
+                description={(
+                  <span className="whitespace-pre-line">
+                    {[description, warning].filter(Boolean).join("\n")}
+                  </span>
+                )}
+                showDescription={showDescriptions}
                 className="px-2"
               >
                 <span className="inline-flex items-center gap-1">

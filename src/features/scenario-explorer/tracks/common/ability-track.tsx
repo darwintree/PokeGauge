@@ -1,4 +1,5 @@
 import { Sparkles } from "lucide-react"
+import { useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { Button } from "@/components/ui/button"
@@ -11,6 +12,7 @@ import {
 import type { CatalogAbilityOption } from "@/lib/catalog"
 
 import { TrackOption, TrackOptionGroup } from "./track-option"
+import { TrackDescriptionToggle } from "./track-description-toggle"
 import { TrackPanel } from "./track-panel"
 
 type AbilityTrackProps = {
@@ -45,6 +47,7 @@ export function AbilityTrack({
 }: AbilityTrackProps) {
   const intl = useIntl()
   const selected = new Set(selectedIds)
+  const [showDescriptions, setShowDescriptions] = useState(false)
 
   function toggle(id: number) {
     if (selected.has(id) && selected.size === 1) return
@@ -91,61 +94,58 @@ export function AbilityTrack({
       onToggle={onToggle}
     >
       <div className="space-y-2">
-        <div className="flex justify-end">
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="h-6 px-2 text-xs"
-          onClick={onReset}
-        >
-          <FormattedMessage id="track.stage.reset" />
-        </Button>
-      </div>
-      <TrackOptionGroup aria-label={intl.formatMessage({ id: labelId })}>
-        {describedOptions.map(({ option, disabled, unsupported, assumedFamily, disclosureLabel }) => {
-          return (
-            <TrackOption
-              key={option.id}
-              layout="text"
-              pressed={selected.has(option.id)}
-              disabled={disabled}
-              onToggle={() => toggle(option.id)}
-              ariaLabel={disclosureLabel
-                ? `${option.label} · ${disclosureLabel}`
-                : option.accessibleLabel ?? option.label}
-              tooltip={(
-                <span className="whitespace-pre-line">
-                  {[option.summary, disclosureLabel].filter(Boolean).join("\n")}
-                </span>
-              )}
-              className={disabled ? "track-option--neutral-disabled px-2" : "px-2"}
-            >
-              <span>{option.label}</span>
-              {unsupported && (
-                /* State also lives in the accessible name, never color alone. */
-                <span aria-hidden className="size-2 rounded-full border border-ink bg-destructive" />
-              )}
-              {assumedFamily && (
-                <span aria-hidden className="size-2 rounded-full border border-ink bg-signal-green" />
-              )}
-            </TrackOption>
-          )
-        })}
-      </TrackOptionGroup>
-      <details className="mt-2 rounded-md border border-card-border bg-token-bg/30 px-3 py-2 text-xs">
-        <summary className="cursor-pointer font-extrabold focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-ring">
-          <FormattedMessage id="track.ability.descriptions" />
-        </summary>
-        <div className="mt-2 space-y-2">
-          {describedOptions.map(({ option }) => (
-            <div key={option.id}>
-              <p className="font-bold text-foreground">{option.label}</p>
-              <p className="text-muted-foreground">{option.summary}</p>
-            </div>
-          ))}
+        <div className="flex items-center justify-end gap-1">
+          <TrackDescriptionToggle
+            checked={showDescriptions}
+            onCheckedChange={setShowDescriptions}
+          />
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="h-6 px-2 text-xs"
+            onClick={onReset}
+          >
+            <FormattedMessage id="track.stage.reset" />
+          </Button>
         </div>
-      </details>
+        <TrackOptionGroup aria-label={intl.formatMessage({ id: labelId })}>
+          {describedOptions.map(({ option, disabled, unsupported, assumedFamily, disclosureLabel }) => {
+            return (
+              <TrackOption
+                key={option.id}
+                layout="text"
+                pressed={selected.has(option.id)}
+                disabled={disabled}
+                onToggle={() => toggle(option.id)}
+                ariaLabel={disclosureLabel
+                  ? `${option.label} · ${disclosureLabel}`
+                  : option.accessibleLabel ?? option.label}
+                tooltip={(
+                  <span className="whitespace-pre-line">
+                    {[option.summary, disclosureLabel].filter(Boolean).join("\n")}
+                  </span>
+                )}
+                description={(
+                  <span className="whitespace-pre-line">
+                    {[option.summary, disclosureLabel].filter(Boolean).join("\n")}
+                  </span>
+                )}
+                showDescription={showDescriptions}
+                className={disabled ? "track-option--neutral-disabled px-2" : "px-2"}
+              >
+                <span>{option.label}</span>
+                {unsupported && (
+                  /* State also lives in the accessible name, never color alone. */
+                  <span aria-hidden className="size-2 rounded-full border border-ink bg-destructive" />
+                )}
+                {assumedFamily && (
+                  <span aria-hidden className="size-2 rounded-full border border-ink bg-signal-green" />
+                )}
+              </TrackOption>
+            )
+          })}
+        </TrackOptionGroup>
       </div>
     </TrackPanel>
   )
