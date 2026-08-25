@@ -7,7 +7,7 @@ import {
   warmDefenderSpreadCache,
   type StatAxisBounds,
 } from "@/lib/stat-calculation"
-import type { StatStage } from "@/lib/damage-calculation"
+import type { ProbabilityMode, StatStage } from "@/lib/damage-calculation"
 import type { MatchupCatalog } from "@/lib/catalog"
 import { measureInteractionWork } from "@/devtools/interaction-performance-monitor"
 import {
@@ -25,8 +25,6 @@ import {
   resolveOffenseChip,
   saveUserDefensePreset,
   saveUserOffensePreset,
-  loadStatNameStrategy,
-  saveStatNameStrategy,
   type StatNameStrategy,
 } from "@/lib/stat-preset"
 import {
@@ -120,6 +118,8 @@ function appendHeldItemId(
 
 export function useScenarioState(
   catalog: MatchupCatalog,
+  statNameStrategy: StatNameStrategy,
+  probabilityMode: ProbabilityMode,
   restoredTrackState?: TrackState,
   sharedImport?: {
     token: string
@@ -154,7 +154,6 @@ export function useScenarioState(
   const [userDefenseVersion, setUserDefenseVersion] = useState(0)
   const [offenseDraft, setOffenseDraft] = useState<number | null>(null)
   const [defenseDraft, setDefenseDraft] = useState<{ hp: number; def: number } | null>(null)
-  const [statNameStrategy, setStatNameStrategyState] = useState<StatNameStrategy>(loadStatNameStrategy)
   const [sharedImportUntouched, setSharedImportUntouched] = useState(sharedImport !== undefined)
 
   const {
@@ -193,11 +192,6 @@ export function useScenarioState(
     setSharedImportUntouched(false)
     sharedImport.onEdited()
   }, [catalog, sharedImport, sharedImportUntouched, trackState])
-
-  const setStatNameStrategy = useCallback((strategy: StatNameStrategy) => {
-    saveStatNameStrategy(strategy)
-    setStatNameStrategyState(strategy)
-  }, [])
 
   useEffect(() => {
     const id = window.setTimeout(() => {
@@ -249,9 +243,9 @@ export function useScenarioState(
   const pipelineResult = useMemo(() => {
     if (catalogTransitionPending) return { rows: [], unavailable: [] }
     return measureInteractionWork("runScenarioPipeline", () =>
-      runScenarioPipeline(catalog, pipelineTrackState),
+      runScenarioPipeline(catalog, pipelineTrackState, probabilityMode),
     )
-  }, [catalog, catalogTransitionPending, pipelineTrackState])
+  }, [catalog, catalogTransitionPending, pipelineTrackState, probabilityMode])
   const { rows, unavailable } = pipelineResult
 
   function setStatMode(mode: StatSelectMode) {
@@ -591,14 +585,11 @@ export function useScenarioState(
           : next
       })
     },
-    setProbabilityMode: (probabilityMode: TrackState["probabilityMode"]) =>
-      setTrackState((s) => ({ ...s, probabilityMode })),
     cycleDefenseAllocation,
     persistDefensePreset,
     deleteDefensePreset,
     confirmAddDefense,
     statNameStrategy,
-    setStatNameStrategy,
   }
 }
 

@@ -24,7 +24,9 @@ import {
   type MoveCategory,
 } from "@/lib/catalog"
 import type { SupportedLocale } from "@/lib/i18n"
+import type { ProbabilityMode } from "@/lib/damage-calculation"
 import type { BattlePokemonId } from "@/lib/resources"
+import type { StatNameStrategy } from "@/lib/stat-preset"
 import {
   discardScenarioSnapshot,
   loadScenarioSnapshot,
@@ -41,6 +43,8 @@ import { cn } from "@/lib/utils"
 
 type ScenarioExplorerPageProps = {
   locale: SupportedLocale
+  probabilityMode: ProbabilityMode
+  statNameStrategy: StatNameStrategy
   onFeedbackScenarioUrlChange: (url: string | null) => void
   onBrandHomeActionChange?: (action: (() => void) | null) => void
 }
@@ -60,6 +64,8 @@ function catalogKey(catalog: MatchupCatalog): string {
 
 export function ScenarioExplorerPage({
   locale,
+  probabilityMode,
+  statNameStrategy,
   onFeedbackScenarioUrlChange,
   onBrandHomeActionChange,
 }: ScenarioExplorerPageProps) {
@@ -477,6 +483,8 @@ export function ScenarioExplorerPage({
         onAttackerChange={changeAttacker}
         onDefenderChange={setDefenderId}
         onMoveCategoryChange={changeMoveCategory}
+        probabilityMode={probabilityMode}
+        statNameStrategy={statNameStrategy}
       />
       <Dialog open={confirmResetOpen} onOpenChange={setConfirmResetOpen}>
         <DialogContent

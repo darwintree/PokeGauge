@@ -1,5 +1,5 @@
 import type { MatchupCatalog } from "@/lib/catalog"
-import type { ScenarioTrack } from "@/lib/damage-calculation"
+import type { ProbabilityMode, ScenarioTrack } from "@/lib/damage-calculation"
 
 import { runScenarioPipeline } from "./evaluate"
 import {
@@ -100,6 +100,7 @@ export function expandRangeParentBlocks(
   trackState: TrackState,
   parents: ScenarioResult[],
   expanded: Record<string, RangeAxisExpansion>,
+  probabilityMode: ProbabilityMode = "battle-odds",
 ): RangeParentBlock[] {
   const cache = new Map<string, ScenarioResult[]>()
 
@@ -115,6 +116,7 @@ export function expandRangeParentBlocks(
       extras = runScenarioPipeline(
         catalog,
         trackStateForExpansion(trackState, expansion),
+        probabilityMode,
       ).rows
       cache.set(signature, extras)
     }

@@ -36,6 +36,8 @@ function Harness({
 }) {
   current = useScenarioState(
     catalog,
+    "english",
+    "battle-odds",
     restored,
     sharedToken && onSharedEdited
       ? { token: sharedToken, onEdited: onSharedEdited }

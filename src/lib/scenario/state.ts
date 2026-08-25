@@ -84,7 +84,6 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
     defenderStages: [0],
     defenderAbilityIds: [...catalog.defaultDefenderAbilityIds],
     screens: ["none"],
-    probabilityMode: "battle-odds",
   }
 
   return withDefenseRangeEndpoints(
