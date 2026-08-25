@@ -4,8 +4,10 @@ import { Check, Share2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import type { BattlePokemonOption, MatchupCatalog, MoveCategory } from "@/lib/catalog"
+import type { ProbabilityMode } from "@/lib/damage-calculation"
 import type { BattlePokemonId } from "@/lib/resources"
 import { createScenarioSetupUrl, type TrackState } from "@/lib/scenario"
+import type { StatNameStrategy } from "@/lib/stat-preset"
 import { cn } from "@/lib/utils"
 
 import { DamageResults } from "./results/damage-results"
@@ -35,6 +37,8 @@ export function ScenarioWorkspace({
   onAttackerChange,
   onDefenderChange,
   onMoveCategoryChange,
+  statNameStrategy,
+  probabilityMode,
 }: LocalizedCatalogState & {
   attackerId: BattlePokemonId
   defenderId: BattlePokemonId
@@ -46,10 +50,14 @@ export function ScenarioWorkspace({
   onAttackerChange: (id: BattlePokemonId) => void
   onDefenderChange: (id: BattlePokemonId) => void
   onMoveCategoryChange: (category: MoveCategory) => void
+  statNameStrategy: StatNameStrategy
+  probabilityMode: ProbabilityMode
 }) {
   const intl = useIntl()
   const state = useScenarioState(
     catalog,
+    statNameStrategy,
+    probabilityMode,
     restoredTrackState ?? undefined,
     sharedSetupToken
       ? { token: sharedSetupToken, onEdited: onSharedSetupEdited }
@@ -207,7 +215,7 @@ export function ScenarioWorkspace({
             unavailable={state.unavailable}
             trackState={state.pipelineTrackState}
             statNameStrategy={state.statNameStrategy}
-            onProbabilityModeChange={state.setProbabilityMode}
+            probabilityMode={probabilityMode}
           />
           {state.rows.length > 0 ? (
             <UsageTip key={`${attackerId}:${defenderId}`} attached />

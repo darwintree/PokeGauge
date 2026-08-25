@@ -24,11 +24,11 @@ import type { TrackState } from "../types"
 
 export const SCENARIO_STORAGE_KEY = "pokegauge:scenario"
 
-const SCENARIO_STORAGE_VERSION = 4
+const SCENARIO_STORAGE_VERSION = 5
 const LEGACY_SCENARIO_STORAGE_VERSION = 3
+const PREVIOUS_SCENARIO_STORAGE_VERSION = 4
 const MOVE_CATEGORIES = ["physical", "special"] as const
 const STAT_MODES = ["preset", "range"] as const
-const PROBABILITY_MODES = ["classic", "battle-odds"] as const
 const CRITICAL_STAGES = [0, 1, 2, 3] as const
 
 export type ScenarioSnapshot = {
@@ -175,8 +175,7 @@ function isTrackState(value: unknown): value is TrackState {
     isArrayOf(value.defenderAbilityIds, isInteger) &&
     isArrayOf(value.screens, (screen): screen is TrackState["screens"][number] =>
       isOneOf(screen, SCREENS),
-    ) &&
-    isOneOf(value.probabilityMode, PROBABILITY_MODES)
+    )
   )
 }
 
@@ -185,6 +184,7 @@ function withItemPools(trackState: Record<string, unknown>): Record<string, unkn
     showOffenseStatValue: _showOffenseStatValue,
     showDefenseStatValue: _showDefenseStatValue,
     showResultStatValue: _showResultStatValue,
+    probabilityMode: _probabilityMode,
     ...rest
   } = trackState
   return {
@@ -210,7 +210,7 @@ function migrateLegacyScenarioSnapshot(value: unknown): unknown {
       showOffenseActual: _showOffenseActual,
       showDefenseActual: _showDefenseActual,
       showResultActual: _showResultActual,
-      probabilityMode,
+      probabilityMode: _probabilityMode,
       ...trackState
     } = value.trackState
 
@@ -223,17 +223,18 @@ function migrateLegacyScenarioSnapshot(value: unknown): unknown {
         offenseTemporaryPresets: offenseTemporaryTemplates,
         defensePresetIds: defenseTemplateIds,
         defenseTemporaryPresets: defenseTemporaryTemplates,
-        probabilityMode:
-          probabilityMode === "rolls"
-            ? "classic"
-            : probabilityMode === "actual"
-              ? "battle-odds"
-              : probabilityMode,
       }),
     }
   }
 
-  // Current version snapshots saved before item pools existed.
+  if (value.version === PREVIOUS_SCENARIO_STORAGE_VERSION) {
+    return {
+      ...value,
+      version: SCENARIO_STORAGE_VERSION,
+      trackState: withItemPools(value.trackState),
+    }
+  }
+
   return {
     ...value,
     trackState: withItemPools(value.trackState),

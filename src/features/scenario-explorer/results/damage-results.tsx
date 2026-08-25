@@ -8,6 +8,7 @@ import {
   EmptyHeader,
 } from "@/components/ui/empty"
 import type { CatalogMoveOption, MatchupCatalog } from "@/lib/catalog"
+import type { ProbabilityMode } from "@/lib/damage-calculation"
 import {
   RANGE_DEFENDER_ID,
   RANGE_STAT_ID,
@@ -27,7 +28,6 @@ import {
   DamageRangeLegend,
   DamageResultRow,
 } from "./damage-result-row"
-import { ProbabilityModeSwitch } from "./probability-mode-switch"
 import { rowIdentity } from "./row-labels"
 
 type DamageResultsProps = {
@@ -36,7 +36,7 @@ type DamageResultsProps = {
   unavailable: UnavailableScenarioGroup[]
   trackState: TrackState
   statNameStrategy: StatNameStrategy
-  onProbabilityModeChange: (mode: TrackState["probabilityMode"]) => void
+  probabilityMode: ProbabilityMode
 }
 
 function UnavailableScenarioNotices({
@@ -102,7 +102,7 @@ export function DamageResults({
   unavailable,
   trackState,
   statNameStrategy,
-  onProbabilityModeChange,
+  probabilityMode,
 }: DamageResultsProps) {
   const rowLabelPresets = useMemo(
     () => ({
@@ -118,8 +118,8 @@ export function DamageResults({
   }, [trackState.statMode, trackState.defenderMode])
 
   const blocks = useMemo(
-    () => expandRangeParentBlocks(catalog, trackState, rows, expanded),
-    [catalog, trackState, rows, expanded],
+    () => expandRangeParentBlocks(catalog, trackState, rows, expanded, probabilityMode),
+    [catalog, expanded, probabilityMode, rows, trackState],
   )
 
   function toggleAxis(parentId: string, axis: keyof RangeAxisExpansion) {
@@ -199,7 +199,7 @@ export function DamageResults({
                 : undefined,
             },
             row,
-            showAccuracy: trackState.probabilityMode === "battle-odds",
+            showAccuracy: probabilityMode === "battle-odds",
             diff: role === "child" ? expansion : undefined,
           }
 
@@ -233,10 +233,6 @@ export function DamageResults({
   return (
     <>
       <UnavailableScenarioNotices catalog={catalog} unavailable={unavailable} />
-      <ProbabilityModeSwitch
-        mode={trackState.probabilityMode}
-        onChange={onProbabilityModeChange}
-      />
       {board}
     </>
   )

@@ -86,6 +86,8 @@ async function renderPage(): Promise<void> {
       <IntlProvider locale="en" messages={{}}>
         <ScenarioExplorerPage
           locale="en"
+          probabilityMode="battle-odds"
+          statNameStrategy="english"
           onFeedbackScenarioUrlChange={() => {}}
         />
       </IntlProvider>,
@@ -167,7 +169,7 @@ it("waits on the landing before restoring a stored scenario", async () => {
   await act(async () => root?.unmount())
   root = null
   scenarioMocks.loadSnapshot.mockReturnValue({
-    version: 4,
+    version: 5,
     attackerId: 445,
     defenderId: 727,
     moveCategory: "physical",
