@@ -174,28 +174,20 @@ function ModePane({
   labelId,
   trailing,
   onActivate,
-  activateOnBody,
   children,
 }: {
   current: boolean
   labelId: "track.range" | "track.choice" | "stat.range.dragToPlace"
   trailing: ReactNode
   onActivate?: () => void
-  activateOnBody: boolean
   children: ReactNode
 }) {
   const labelClass = cn(
     "text-[10px] font-extrabold leading-none transition-colors",
-    current ? "text-ink" : "text-hud-muted group-hover:text-ink",
+    current ? "text-ink" : "text-hud-muted hover:text-ink",
   )
   return (
-    <div
-      onPointerDown={activateOnBody && onActivate ? onActivate : undefined}
-      className={cn(
-        "group rounded-[8px] p-2 transition-colors",
-        current ? "bg-token-bg" : "cursor-pointer hover:bg-token-bg/70 active:bg-token-bg",
-      )}
-    >
+    <div className="p-2">
       {/* Fixed h-7 header: Current / Confirm swap in-place so + draft does not shift the axis. */}
       <div className="mb-2 flex h-7 flex-nowrap items-center justify-between gap-2">
         {onActivate ? (
@@ -207,10 +199,7 @@ function ModePane({
             <FormattedMessage id={labelId} />
           </span>
         )}
-        <div
-          className="flex h-7 min-w-0 items-center justify-end"
-          onPointerDown={(event) => event.stopPropagation()}
-        >
+        <div className="flex h-7 min-w-0 items-center justify-end">
           {trailing}
         </div>
       </div>
@@ -420,7 +409,6 @@ export function StatTrack({
         <ModePane
           current={adding || mode === "range"}
           labelId={adding ? "stat.range.dragToPlace" : "track.range"}
-          activateOnBody={!adding}
           onActivate={
             adding
               ? undefined
@@ -453,7 +441,6 @@ export function StatTrack({
         <ModePane
           current={!adding && mode === "preset"}
           labelId="track.choice"
-          activateOnBody
           onActivate={() => setMode("preset")}
           trailing={!adding && mode === "preset" ? <CurrentBadge /> : null}
         >
