@@ -19,7 +19,7 @@ const LANGUAGE_IDS: Record<SupportedLocale, number[]> = {
   ja: [1, 11],
 }
 const SPREAD_TARGETS = new Set(["all-other-pokemon", "all-opponents", "entire-field"])
-const EVIOLITE_ELIGIBILITY_OVERRIDES = new Set([10027, 10028, 10029, 10263])
+const EVIOLITE_ELIGIBILITY_OVERRIDES = new Set([670, 10027, 10028, 10029, 10263])
 const GEN_8_ITEM_SPRITES = new Set([1181])
 const GEN_9_ITEM_SPRITES = new Set([2105, 2106, 2107, 2108])
 
@@ -475,6 +475,14 @@ async function main() {
     }
 
     const names = composeNames(id, pokemon.is_default === "1", speciesNames, formNames)
+    const calcSpeciesName = calcSpeciesNameFor(id, names.en || pokemon.identifier)
+    if (!Generations.get(9).species.get(toID(calcSpeciesName))) {
+      unsupportedBattleIdentities.push({
+        id,
+        reason: `pokemon/${id} has no @smogon/calc 0.11.0 species mapping`,
+      })
+      return []
+    }
 
     return [[
       id,
@@ -487,7 +495,7 @@ async function main() {
         evioliteEligible: evioliteEligible(pokemon),
         pokemonSlug: pokemon.identifier,
         speciesSlug: species?.identifier ?? pokemon.identifier,
-        calcSpeciesName: calcSpeciesNameFor(id, names.en || pokemon.identifier),
+        calcSpeciesName,
         names,
         speciesNames,
         formNames,
@@ -601,7 +609,12 @@ async function main() {
   })
 
   const megaStoneEntries = itemRows
-    .filter((item) => item.category_id === "44")
+    .filter((item) =>
+      item.category_id === "44" &&
+      itemNamesByItemId.get(requiredNumber(item, "id"))?.some((row) =>
+        row.local_language_id === "9" && row.name
+      )
+    )
     .map((item) => {
       const id = requiredNumber(item, "id")
       const slug = item.identifier
@@ -664,7 +677,7 @@ async function main() {
     ),
     writeFile(
       path.join(OUT_DIR, "pokemon-lite.ts"),
-      moduleWithImport(["UpstreamResourceId"], "GENERATED_POKEMON_LITE", Object.fromEntries(pokemonEntries.map(([id, pokemon]) => [id, { speciesId: pokemon.speciesId, evioliteEligible: pokemon.evioliteEligible }])), "Record<UpstreamResourceId, PokemonLite>"),
+      moduleWithImport(["PokemonLite", "UpstreamResourceId"], "GENERATED_POKEMON_LITE", Object.fromEntries(pokemonEntries.map(([id, pokemon]) => [id, { speciesId: pokemon.speciesId, evioliteEligible: pokemon.evioliteEligible }])), "Record<UpstreamResourceId, PokemonLite>"),
     ),
     writeFile(
       path.join(OUT_DIR, "ability-calc-names.ts"),

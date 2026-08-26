@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CHANGELOG_ENTRIES } from "@/lib/changelog"
+import { trackProductEvent } from "@/lib/analytics"
 import type { ProbabilityMode } from "@/lib/damage-calculation"
 import { createFeedbackUrl } from "@/lib/feedback"
 import { SUPPORTED_LOCALES, type SupportedLocale } from "@/lib/i18n"
@@ -402,6 +403,7 @@ export function AppHeader({
                 target="_blank"
                 rel="noreferrer"
                 aria-label={intl.formatMessage({ id: "header.feedbackNewTab" })}
+                onClick={() => trackProductEvent("feedback", locale)}
               />
             }
             variant="ghost"

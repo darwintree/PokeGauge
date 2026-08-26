@@ -1,8 +1,5 @@
 import type { UpstreamResourceId } from "../types"
 
-/** Minimal id -> calcAbilityName map for synchronous calc-recognition paths.
- * Kept separate from GENERATED_ABILITIES so the full dataset can stay in a
- * dynamically-imported chunk (see access.ts). */
 export const GENERATED_ABILITY_CALC_NAMES = {
   "1": "Stench",
   "2": "Drizzle",
@@ -314,4 +311,4 @@ export const GENERATED_ABILITY_CALC_NAMES = {
   "310": "Mega Sol",
   "312": "Eelevate",
   "313": "Fire Mane"
-} satisfies Record<UpstreamResourceId, string>
+} as const satisfies Record<UpstreamResourceId, string>

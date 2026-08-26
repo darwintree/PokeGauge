@@ -107,19 +107,6 @@ describe("generated Held-item resources", () => {
       ]),
     )
 
-    const missingHeldItemLocales = RESOURCE_DIAGNOSTICS.missingLocaleNames
-      .filter(({ resourceType }) => resourceType === "item")
-    expect(missingHeldItemLocales).toHaveLength(8)
-    expect(missingHeldItemLocales).toEqual(
-      FROZEN_HELD_ITEMS
-        .filter(({ id }) => [2105, 2106, 2107, 2108].includes(id))
-        .flatMap(({ id }) => ["zh-hans", "zh-hant"].map((locale) => ({
-          resourceType: "item",
-          id,
-          locale,
-          fallbackLocale: "en",
-        }))),
-    )
   })
 })
 

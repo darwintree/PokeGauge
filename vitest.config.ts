@@ -7,7 +7,7 @@ export default mergeConfig(
   defineConfig({
     test: {
       environment: "node",
-      include: ["src/**/*.test.{ts,tsx}"],
+      include: ["src/**/*.test.{ts,tsx}", "worker/**/*.test.ts"],
     },
     resolve: {
       alias: {

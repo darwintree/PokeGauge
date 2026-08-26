@@ -1,36 +1,27 @@
-# React + TypeScript + Vite
+# PokeGauge
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Pokémon battle damage calculator for comparing one Pokémon across multiple battle configurations.
 
-Currently, two official plugins are available:
+## Core features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Compare multiple moves, stats, items, abilities, and battle conditions at once.
+- Include accuracy and critical hits when calculating KO probabilities.
+- Explore damage across selectable stat values or a continuous stat range.
 
-## React Compiler
+## TODO
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Support multi-hit moves.
+- Support one-versus-many Pokémon comparisons.
 
-## Expanding the Oxlint configuration
+## Development
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+pnpm install
+pnpm dev
+pnpm test
+pnpm build
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Deploy the production build to Cloudflare Workers with `pnpm deploy`.
 
-## License
-
-This project is licensed under the [GNU Affero General Public License v3.0 only](./LICENSE).
+Source: [darwintree/PokeGauge](https://github.com/darwintree/PokeGauge) · License: [AGPL-3.0-only](./LICENSE)

@@ -164,6 +164,9 @@ function snapshotCapableMoveOption(
     category: moveResource.category,
     power,
     accuracy: moveResource.accuracy,
+    ...(moveResource.critRate
+      ? { criticalStage: Math.min(moveResource.critRate, 3) as CatalogMoveOption["criticalStage"] }
+      : {}),
     isSpread: moveResource.isSpread,
   }
 }

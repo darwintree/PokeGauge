@@ -5,6 +5,7 @@ import { AppHeader } from "@/components/app-header"
 import { ScenarioExplorerPage } from "@/features/scenario-explorer/scenario-explorer-page"
 import { UsageTipsPrototype } from "@/features/scenario-explorer/usage-tip/usage-tips.prototype"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { trackProductEvent } from "@/lib/analytics"
 import type { ProbabilityMode } from "@/lib/damage-calculation"
 import { loadInitialLocale, localeMessages, saveLocale, type SupportedLocale } from "@/lib/i18n"
 import { loadProbabilityMode, saveProbabilityMode } from "@/lib/probability-mode-preference"
@@ -30,6 +31,10 @@ function App() {
     document.documentElement.lang = locale
     const messages = localeMessages[locale]
     document.title = `${messages["app.name"]} - ${messages["app.tagline"]}`
+  }, [locale])
+
+  useEffect(() => {
+    trackProductEvent("page_view", locale)
   }, [locale])
 
   function setLocale(locale: SupportedLocale) {

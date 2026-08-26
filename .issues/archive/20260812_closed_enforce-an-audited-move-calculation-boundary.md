@@ -119,7 +119,7 @@ updated_at: "2026-08-17T15:29:00Z"
 
 - [[../20260715_open_specify-random-multi-hit-and-accuracy-mechanics|Specify random multi-hit and accuracy mechanics]]：完整 Hit Composition 与 multi-hit 计算模型。
 - [[../20260806_open_complete-missing-pokeapi-move-behavioral-metadata-upstream|Complete missing PokeAPI move behavioral metadata upstream]]：上游 Move 行为元数据缺口。
-- [[../20260817_open_propagate-intrinsic-move-critical-rate-into-snapshots|Propagate intrinsic Move critical rate into snapshots]]：单独传递招式固有会心等级；不属于本票警告范围。
+- [[20260817_closed_propagate-intrinsic-move-critical-rate-into-snapshots|Propagate intrinsic Move critical rate into snapshots]]：单独传递招式固有会心等级；不属于本票警告范围。
 - [[../20260717_open_define-ruleset-aware-move-candidate-pool-and-learnset-validation|Define ruleset-aware Move candidate pool and learnset validation]]：候选招式的 ruleset／learnset 合法性；与本票的「是否可可信计算」正交。
 
 ## Out of scope

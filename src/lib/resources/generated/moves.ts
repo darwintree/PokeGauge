@@ -19274,8 +19274,8 @@ export const GENERATED_MOVES = {
     "slug": "dire-claw",
     "calcMoveName": "Dire Claw",
     "names": {
-      "zh-hans": "Dire Claw",
-      "zh-hant": "克命爪",
+      "zh-hans": "克命爪",
+      "zh-hant": "剋命爪",
       "en": "Dire Claw",
       "ja": "フェイタルクロー"
     },
@@ -19294,7 +19294,7 @@ export const GENERATED_MOVES = {
     "slug": "psyshield-bash",
     "calcMoveName": "Psyshield Bash",
     "names": {
-      "zh-hans": "Psyshield Bash",
+      "zh-hans": "屏障猛攻",
       "zh-hant": "屏障猛攻",
       "en": "Psyshield Bash",
       "ja": "バリアーラッシュ"
@@ -19314,8 +19314,8 @@ export const GENERATED_MOVES = {
     "slug": "power-shift",
     "calcMoveName": "Power Shift",
     "names": {
-      "zh-hans": "Power Shift",
-      "zh-hant": "力量转换",
+      "zh-hans": "力量转换",
+      "zh-hant": "力量轉換",
       "en": "Power Shift",
       "ja": "パワーシフト"
     },
@@ -19334,7 +19334,7 @@ export const GENERATED_MOVES = {
     "slug": "stone-axe",
     "calcMoveName": "Stone Axe",
     "names": {
-      "zh-hans": "Stone Axe",
+      "zh-hans": "岩斧",
       "zh-hant": "岩斧",
       "en": "Stone Axe",
       "ja": "がんせきアックス"
@@ -19354,8 +19354,8 @@ export const GENERATED_MOVES = {
     "slug": "springtide-storm",
     "calcMoveName": "Springtide Storm",
     "names": {
-      "zh-hans": "Springtide Storm",
-      "zh-hant": "阳春风暴",
+      "zh-hans": "阳春风暴",
+      "zh-hant": "陽春風暴",
       "en": "Springtide Storm",
       "ja": "はるのあらし"
     },
@@ -19374,7 +19374,7 @@ export const GENERATED_MOVES = {
     "slug": "mystical-power",
     "calcMoveName": "Mystical Power",
     "names": {
-      "zh-hans": "Mystical Power",
+      "zh-hans": "神秘之力",
       "zh-hant": "神秘之力",
       "en": "Mystical Power",
       "ja": "しんぴのちから"
@@ -19394,8 +19394,8 @@ export const GENERATED_MOVES = {
     "slug": "raging-fury",
     "calcMoveName": "Raging Fury",
     "names": {
-      "zh-hans": "Raging Fury",
-      "zh-hant": "大愤慨",
+      "zh-hans": "大愤慨",
+      "zh-hant": "大憤慨",
       "en": "Raging Fury",
       "ja": "だいふんげき"
     },
@@ -19414,8 +19414,8 @@ export const GENERATED_MOVES = {
     "slug": "wave-crash",
     "calcMoveName": "Wave Crash",
     "names": {
-      "zh-hans": "Wave Crash",
-      "zh-hant": "波动冲",
+      "zh-hans": "波动冲",
+      "zh-hant": "波動衝",
       "en": "Wave Crash",
       "ja": "ウェーブタックル"
     },
@@ -19434,8 +19434,8 @@ export const GENERATED_MOVES = {
     "slug": "chloroblast",
     "calcMoveName": "Chloroblast",
     "names": {
-      "zh-hans": "Chloroblast",
-      "zh-hant": "叶绿爆震",
+      "zh-hans": "叶绿爆震",
+      "zh-hant": "葉綠爆震",
       "en": "Chloroblast",
       "ja": "クロロブラスト"
     },
@@ -19454,8 +19454,8 @@ export const GENERATED_MOVES = {
     "slug": "mountain-gale",
     "calcMoveName": "Mountain Gale",
     "names": {
-      "zh-hans": "Mountain Gale",
-      "zh-hant": "冰山风",
+      "zh-hans": "冰山风",
+      "zh-hant": "冰山風",
       "en": "Mountain Gale",
       "ja": "ひょうざんおろし"
     },
@@ -19474,8 +19474,8 @@ export const GENERATED_MOVES = {
     "slug": "victory-dance",
     "calcMoveName": "Victory Dance",
     "names": {
-      "zh-hans": "Victory Dance",
-      "zh-hant": "胜利之舞",
+      "zh-hans": "胜利之舞",
+      "zh-hant": "勝利之舞",
       "en": "Victory Dance",
       "ja": "しょうりのまい"
     },
@@ -19494,8 +19494,8 @@ export const GENERATED_MOVES = {
     "slug": "headlong-rush",
     "calcMoveName": "Headlong Rush",
     "names": {
-      "zh-hans": "Headlong Rush",
-      "zh-hant": "突飞猛扑",
+      "zh-hans": "突飞猛扑",
+      "zh-hant": "突飛猛撲",
       "en": "Headlong Rush",
       "ja": "ぶちかまし"
     },
@@ -19514,8 +19514,8 @@ export const GENERATED_MOVES = {
     "slug": "barb-barrage",
     "calcMoveName": "Barb Barrage",
     "names": {
-      "zh-hans": "Barb Barrage",
-      "zh-hant": "毒千针",
+      "zh-hans": "毒千针",
+      "zh-hant": "毒千針",
       "en": "Barb Barrage",
       "ja": "どくばりセンボン"
     },
@@ -19534,8 +19534,8 @@ export const GENERATED_MOVES = {
     "slug": "esper-wing",
     "calcMoveName": "Esper Wing",
     "names": {
-      "zh-hans": "Esper Wing",
-      "zh-hant": "气场之翼",
+      "zh-hans": "气场之翼",
+      "zh-hant": "氣場之翼",
       "en": "Esper Wing",
       "ja": "オーラウイング"
     },
@@ -19554,8 +19554,8 @@ export const GENERATED_MOVES = {
     "slug": "bitter-malice",
     "calcMoveName": "Bitter Malice",
     "names": {
-      "zh-hans": "Bitter Malice",
-      "zh-hant": "冤冤相报",
+      "zh-hans": "冤冤相报",
+      "zh-hant": "冤冤相報",
       "en": "Bitter Malice",
       "ja": "うらみつらみ"
     },
@@ -19574,8 +19574,8 @@ export const GENERATED_MOVES = {
     "slug": "shelter",
     "calcMoveName": "Shelter",
     "names": {
-      "zh-hans": "Shelter",
-      "zh-hant": "闭关",
+      "zh-hans": "闭关",
+      "zh-hant": "閉關",
       "en": "Shelter",
       "ja": "たてこもる"
     },
@@ -19594,8 +19594,8 @@ export const GENERATED_MOVES = {
     "slug": "triple-arrows",
     "calcMoveName": "Triple Arrows",
     "names": {
-      "zh-hans": "Triple Arrows",
-      "zh-hant": "三连箭",
+      "zh-hans": "三连箭",
+      "zh-hant": "三連箭",
       "en": "Triple Arrows",
       "ja": "３ぼんのや"
     },
@@ -19614,8 +19614,8 @@ export const GENERATED_MOVES = {
     "slug": "infernal-parade",
     "calcMoveName": "Infernal Parade",
     "names": {
-      "zh-hans": "Infernal Parade",
-      "zh-hant": "群魔乱舞",
+      "zh-hans": "群魔乱舞",
+      "zh-hant": "群魔亂舞",
       "en": "Infernal Parade",
       "ja": "ひゃっきやこう"
     },
@@ -19634,8 +19634,8 @@ export const GENERATED_MOVES = {
     "slug": "ceaseless-edge",
     "calcMoveName": "Ceaseless Edge",
     "names": {
-      "zh-hans": "Ceaseless Edge",
-      "zh-hant": "秘剑・千重涛",
+      "zh-hans": "秘剑・千重涛",
+      "zh-hant": "秘劍・千重濤",
       "en": "Ceaseless Edge",
       "ja": "ひけん・ちえなみ"
     },
@@ -19654,8 +19654,8 @@ export const GENERATED_MOVES = {
     "slug": "bleakwind-storm",
     "calcMoveName": "Bleakwind Storm",
     "names": {
-      "zh-hans": "Bleakwind Storm",
-      "zh-hant": "枯叶风暴",
+      "zh-hans": "枯叶风暴",
+      "zh-hant": "枯葉風暴",
       "en": "Bleakwind Storm",
       "ja": "こがらしあらし"
     },
@@ -19674,8 +19674,8 @@ export const GENERATED_MOVES = {
     "slug": "wildbolt-storm",
     "calcMoveName": "Wildbolt Storm",
     "names": {
-      "zh-hans": "Wildbolt Storm",
-      "zh-hant": "鸣雷风暴",
+      "zh-hans": "鸣雷风暴",
+      "zh-hant": "鳴雷風暴",
       "en": "Wildbolt Storm",
       "ja": "かみなりあらし"
     },
@@ -19694,8 +19694,8 @@ export const GENERATED_MOVES = {
     "slug": "sandsear-storm",
     "calcMoveName": "Sandsear Storm",
     "names": {
-      "zh-hans": "Sandsear Storm",
-      "zh-hant": "热沙风暴",
+      "zh-hans": "热沙风暴",
+      "zh-hant": "熱沙風暴",
       "en": "Sandsear Storm",
       "ja": "ねっさのあらし"
     },
@@ -19714,8 +19714,8 @@ export const GENERATED_MOVES = {
     "slug": "lunar-blessing",
     "calcMoveName": "Lunar Blessing",
     "names": {
-      "zh-hans": "Lunar Blessing",
-      "zh-hant": "新月祈祷",
+      "zh-hans": "新月祈祷",
+      "zh-hant": "新月祈禱",
       "en": "Lunar Blessing",
       "ja": "みかづきのいのり"
     },
@@ -19734,8 +19734,8 @@ export const GENERATED_MOVES = {
     "slug": "take-heart",
     "calcMoveName": "Take Heart",
     "names": {
-      "zh-hans": "Take Heart",
-      "zh-hant": "勇气填充",
+      "zh-hans": "勇气填充",
+      "zh-hant": "勇氣填充",
       "en": "Take Heart",
       "ja": "ブレイブチャージ"
     },
@@ -19754,8 +19754,8 @@ export const GENERATED_MOVES = {
     "slug": "tera-blast",
     "calcMoveName": "Tera Blast",
     "names": {
-      "zh-hans": "Tera Blast",
-      "zh-hant": "太晶爆发",
+      "zh-hans": "太晶爆发",
+      "zh-hant": "太晶爆發",
       "en": "Tera Blast",
       "ja": "テラバースト"
     },
@@ -19774,8 +19774,8 @@ export const GENERATED_MOVES = {
     "slug": "silk-trap",
     "calcMoveName": "Silk Trap",
     "names": {
-      "zh-hans": "Silk Trap",
-      "zh-hant": "线阱",
+      "zh-hans": "线阱",
+      "zh-hant": "線阱",
       "en": "Silk Trap",
       "ja": "スレッドトラップ"
     },
@@ -19794,8 +19794,8 @@ export const GENERATED_MOVES = {
     "slug": "axe-kick",
     "calcMoveName": "Axe Kick",
     "names": {
-      "zh-hans": "Axe Kick",
-      "zh-hant": "下压踢",
+      "zh-hans": "下压踢",
+      "zh-hant": "下壓踢",
       "en": "Axe Kick",
       "ja": "かかとおとし"
     },
@@ -19814,8 +19814,8 @@ export const GENERATED_MOVES = {
     "slug": "last-respects",
     "calcMoveName": "Last Respects",
     "names": {
-      "zh-hans": "Last Respects",
-      "zh-hant": "扫墓",
+      "zh-hans": "扫墓",
+      "zh-hant": "掃墓",
       "en": "Last Respects",
       "ja": "おはかまいり"
     },
@@ -19834,8 +19834,8 @@ export const GENERATED_MOVES = {
     "slug": "lumina-crash",
     "calcMoveName": "Lumina Crash",
     "names": {
-      "zh-hans": "Lumina Crash",
-      "zh-hant": "琉光冲激",
+      "zh-hans": "琉光冲激",
+      "zh-hant": "琉光衝激",
       "en": "Lumina Crash",
       "ja": "ルミナコリジョン"
     },
@@ -19854,7 +19854,7 @@ export const GENERATED_MOVES = {
     "slug": "order-up",
     "calcMoveName": "Order Up",
     "names": {
-      "zh-hans": "Order Up",
+      "zh-hans": "上菜",
       "zh-hant": "上菜",
       "en": "Order Up",
       "ja": "いっちょうあがり"
@@ -19874,8 +19874,8 @@ export const GENERATED_MOVES = {
     "slug": "jet-punch",
     "calcMoveName": "Jet Punch",
     "names": {
-      "zh-hans": "Jet Punch",
-      "zh-hant": "喷射拳",
+      "zh-hans": "喷射拳",
+      "zh-hant": "噴射拳",
       "en": "Jet Punch",
       "ja": "ジェットパンチ"
     },
@@ -19894,8 +19894,8 @@ export const GENERATED_MOVES = {
     "slug": "spicy-extract",
     "calcMoveName": "Spicy Extract",
     "names": {
-      "zh-hans": "Spicy Extract",
-      "zh-hant": "辣椒精华",
+      "zh-hans": "辣椒精华",
+      "zh-hant": "辣椒精華",
       "en": "Spicy Extract",
       "ja": "ハバネロエキス"
     },
@@ -19914,8 +19914,8 @@ export const GENERATED_MOVES = {
     "slug": "spin-out",
     "calcMoveName": "Spin Out",
     "names": {
-      "zh-hans": "Spin Out",
-      "zh-hant": "疾速转轮",
+      "zh-hans": "疾速转轮",
+      "zh-hant": "疾速轉輪",
       "en": "Spin Out",
       "ja": "ホイールスピン"
     },
@@ -19934,8 +19934,8 @@ export const GENERATED_MOVES = {
     "slug": "population-bomb",
     "calcMoveName": "Population Bomb",
     "names": {
-      "zh-hans": "Population Bomb",
-      "zh-hant": "鼠数儿",
+      "zh-hans": "鼠数儿",
+      "zh-hant": "鼠數兒",
       "en": "Population Bomb",
       "ja": "ネズミざん"
     },
@@ -19954,7 +19954,7 @@ export const GENERATED_MOVES = {
     "slug": "ice-spinner",
     "calcMoveName": "Ice Spinner",
     "names": {
-      "zh-hans": "Ice Spinner",
+      "zh-hans": "冰旋",
       "zh-hant": "冰旋",
       "en": "Ice Spinner",
       "ja": "アイススピナー"
@@ -19974,8 +19974,8 @@ export const GENERATED_MOVES = {
     "slug": "glaive-rush",
     "calcMoveName": "Glaive Rush",
     "names": {
-      "zh-hans": "Glaive Rush",
-      "zh-hant": "巨剑突击",
+      "zh-hans": "巨剑突击",
+      "zh-hant": "巨劍突擊",
       "en": "Glaive Rush",
       "ja": "きょけんとつげき"
     },
@@ -19994,8 +19994,8 @@ export const GENERATED_MOVES = {
     "slug": "revival-blessing",
     "calcMoveName": "Revival Blessing",
     "names": {
-      "zh-hans": "Revival Blessing",
-      "zh-hant": "复生祈祷",
+      "zh-hans": "复生祈祷",
+      "zh-hant": "復生祈禱",
       "en": "Revival Blessing",
       "ja": "さいきのいのり"
     },
@@ -20014,8 +20014,8 @@ export const GENERATED_MOVES = {
     "slug": "salt-cure",
     "calcMoveName": "Salt Cure",
     "names": {
-      "zh-hans": "Salt Cure",
-      "zh-hant": "盐腌",
+      "zh-hans": "盐腌",
+      "zh-hant": "鹽醃",
       "en": "Salt Cure",
       "ja": "しおづけ"
     },
@@ -20034,8 +20034,8 @@ export const GENERATED_MOVES = {
     "slug": "triple-dive",
     "calcMoveName": "Triple Dive",
     "names": {
-      "zh-hans": "Triple Dive",
-      "zh-hant": "三连钻",
+      "zh-hans": "三连钻",
+      "zh-hant": "三連鑽",
       "en": "Triple Dive",
       "ja": "トリプルダイブ"
     },
@@ -20054,8 +20054,8 @@ export const GENERATED_MOVES = {
     "slug": "mortal-spin",
     "calcMoveName": "Mortal Spin",
     "names": {
-      "zh-hans": "Mortal Spin",
-      "zh-hant": "晶光转转",
+      "zh-hans": "晶光转转",
+      "zh-hant": "晶光轉轉",
       "en": "Mortal Spin",
       "ja": "キラースピン"
     },
@@ -20074,8 +20074,8 @@ export const GENERATED_MOVES = {
     "slug": "doodle",
     "calcMoveName": "Doodle",
     "names": {
-      "zh-hans": "Doodle",
-      "zh-hant": "描绘",
+      "zh-hans": "描绘",
+      "zh-hant": "描繪",
       "en": "Doodle",
       "ja": "うつしえ"
     },
@@ -20094,7 +20094,7 @@ export const GENERATED_MOVES = {
     "slug": "fillet-away",
     "calcMoveName": "Fillet Away",
     "names": {
-      "zh-hans": "Fillet Away",
+      "zh-hans": "甩肉",
       "zh-hant": "甩肉",
       "en": "Fillet Away",
       "ja": "みをけずる"
@@ -20114,8 +20114,8 @@ export const GENERATED_MOVES = {
     "slug": "kowtow-cleave",
     "calcMoveName": "Kowtow Cleave",
     "names": {
-      "zh-hans": "Kowtow Cleave",
-      "zh-hant": "仆刀",
+      "zh-hans": "仆刀",
+      "zh-hant": "仆斬",
       "en": "Kowtow Cleave",
       "ja": "ドゲザン"
     },
@@ -20134,8 +20134,8 @@ export const GENERATED_MOVES = {
     "slug": "flower-trick",
     "calcMoveName": "Flower Trick",
     "names": {
-      "zh-hans": "Flower Trick",
-      "zh-hant": "千变万花",
+      "zh-hans": "千变万花",
+      "zh-hant": "千變萬花",
       "en": "Flower Trick",
       "ja": "トリックフラワー"
     },
@@ -20154,8 +20154,8 @@ export const GENERATED_MOVES = {
     "slug": "torch-song",
     "calcMoveName": "Torch Song",
     "names": {
-      "zh-hans": "Torch Song",
-      "zh-hant": "闪焰高歌",
+      "zh-hans": "闪焰高歌",
+      "zh-hant": "閃焰高歌",
       "en": "Torch Song",
       "ja": "フレアソング"
     },
@@ -20174,7 +20174,7 @@ export const GENERATED_MOVES = {
     "slug": "aqua-step",
     "calcMoveName": "Aqua Step",
     "names": {
-      "zh-hans": "Aqua Step",
+      "zh-hans": "流水旋舞",
       "zh-hant": "流水旋舞",
       "en": "Aqua Step",
       "ja": "アクアステップ"
@@ -20194,7 +20194,7 @@ export const GENERATED_MOVES = {
     "slug": "raging-bull",
     "calcMoveName": "Raging Bull",
     "names": {
-      "zh-hans": "Raging Bull",
+      "zh-hans": "怒牛",
       "zh-hant": "怒牛",
       "en": "Raging Bull",
       "ja": "レイジングブル"
@@ -20214,7 +20214,7 @@ export const GENERATED_MOVES = {
     "slug": "make-it-rain",
     "calcMoveName": "Make It Rain",
     "names": {
-      "zh-hans": "Make It Rain",
+      "zh-hans": "淘金潮",
       "zh-hant": "淘金潮",
       "en": "Make It Rain",
       "ja": "ゴールドラッシュ"
@@ -20237,7 +20237,7 @@ export const GENERATED_MOVES = {
       "zh-hans": "精神剑",
       "zh-hant": "精神劍",
       "en": "Psyblade",
-      "ja": "サイコブレイド "
+      "ja": "サイコブレイド"
     },
     "type": "psychic",
     "category": "physical",
@@ -20274,8 +20274,8 @@ export const GENERATED_MOVES = {
     "slug": "ruination",
     "calcMoveName": "Ruination",
     "names": {
-      "zh-hans": "Ruination",
-      "zh-hant": "大灾难",
+      "zh-hans": "大灾难",
+      "zh-hant": "大災難",
       "en": "Ruination",
       "ja": "カタストロフィ"
     },
@@ -20294,8 +20294,8 @@ export const GENERATED_MOVES = {
     "slug": "collision-course",
     "calcMoveName": "Collision Course",
     "names": {
-      "zh-hans": "Collision Course",
-      "zh-hant": "全开猛撞",
+      "zh-hans": "全开猛撞",
+      "zh-hant": "全開猛撞",
       "en": "Collision Course",
       "ja": "アクセルブレイク"
     },
@@ -20314,8 +20314,8 @@ export const GENERATED_MOVES = {
     "slug": "electro-drift",
     "calcMoveName": "Electro Drift",
     "names": {
-      "zh-hans": "Electro Drift",
-      "zh-hant": "闪电猛冲",
+      "zh-hans": "闪电猛冲",
+      "zh-hant": "閃電猛衝",
       "en": "Electro Drift",
       "ja": "イナズマドライブ"
     },
@@ -20334,8 +20334,8 @@ export const GENERATED_MOVES = {
     "slug": "shed-tail",
     "calcMoveName": "Shed Tail",
     "names": {
-      "zh-hans": "Shed Tail",
-      "zh-hant": "断尾",
+      "zh-hans": "断尾",
+      "zh-hant": "斷尾",
       "en": "Shed Tail",
       "ja": "しっぽきり"
     },
@@ -20354,8 +20354,8 @@ export const GENERATED_MOVES = {
     "slug": "chilly-reception",
     "calcMoveName": "Chilly Reception",
     "names": {
-      "zh-hans": "Chilly Reception",
-      "zh-hant": "冷笑话",
+      "zh-hans": "冷笑话",
+      "zh-hant": "冷笑話",
       "en": "Chilly Reception",
       "ja": "さむいギャグ"
     },
@@ -20374,8 +20374,8 @@ export const GENERATED_MOVES = {
     "slug": "tidy-up",
     "calcMoveName": "Tidy Up",
     "names": {
-      "zh-hans": "Tidy Up",
-      "zh-hant": "大扫除",
+      "zh-hans": "大扫除",
+      "zh-hant": "大掃除",
       "en": "Tidy Up",
       "ja": "おかたづけ"
     },
@@ -20394,7 +20394,7 @@ export const GENERATED_MOVES = {
     "slug": "snowscape",
     "calcMoveName": "Snowscape",
     "names": {
-      "zh-hans": "Snowscape",
+      "zh-hans": "雪景",
       "zh-hant": "雪景",
       "en": "Snowscape",
       "ja": "ゆきげしき"
@@ -20414,8 +20414,8 @@ export const GENERATED_MOVES = {
     "slug": "pounce",
     "calcMoveName": "Pounce",
     "names": {
-      "zh-hans": "Pounce",
-      "zh-hant": "虫扑",
+      "zh-hans": "虫扑",
+      "zh-hant": "蟲撲",
       "en": "Pounce",
       "ja": "とびつく"
     },
@@ -20434,7 +20434,7 @@ export const GENERATED_MOVES = {
     "slug": "trailblaze",
     "calcMoveName": "Trailblaze",
     "names": {
-      "zh-hans": "Trailblaze",
+      "zh-hans": "起草",
       "zh-hant": "起草",
       "en": "Trailblaze",
       "ja": "くさわけ"
@@ -20454,8 +20454,8 @@ export const GENERATED_MOVES = {
     "slug": "chilling-water",
     "calcMoveName": "Chilling Water",
     "names": {
-      "zh-hans": "Chilling Water",
-      "zh-hant": "泼冷水",
+      "zh-hans": "泼冷水",
+      "zh-hant": "潑冷水",
       "en": "Chilling Water",
       "ja": "ひやみず"
     },
@@ -20474,8 +20474,8 @@ export const GENERATED_MOVES = {
     "slug": "hyper-drill",
     "calcMoveName": "Hyper Drill",
     "names": {
-      "zh-hans": "Hyper Drill",
-      "zh-hant": "强力钻",
+      "zh-hans": "强力钻",
+      "zh-hant": "強力鑽",
       "en": "Hyper Drill",
       "ja": "ハイパードリル"
     },
@@ -20494,8 +20494,8 @@ export const GENERATED_MOVES = {
     "slug": "twin-beam",
     "calcMoveName": "Twin Beam",
     "names": {
-      "zh-hans": "Twin Beam",
-      "zh-hant": "双光束",
+      "zh-hans": "双光束",
+      "zh-hant": "雙光束",
       "en": "Twin Beam",
       "ja": "ツインビーム"
     },
@@ -20514,8 +20514,8 @@ export const GENERATED_MOVES = {
     "slug": "rage-fist",
     "calcMoveName": "Rage Fist",
     "names": {
-      "zh-hans": "Rage Fist",
-      "zh-hant": "愤怒之拳",
+      "zh-hans": "愤怒之拳",
+      "zh-hant": "憤怒之拳",
       "en": "Rage Fist",
       "ja": "ふんどのこぶし"
     },
@@ -20534,8 +20534,8 @@ export const GENERATED_MOVES = {
     "slug": "armor-cannon",
     "calcMoveName": "Armor Cannon",
     "names": {
-      "zh-hans": "Armor Cannon",
-      "zh-hant": "铠农炮",
+      "zh-hans": "铠农炮",
+      "zh-hant": "鎧農炮",
       "en": "Armor Cannon",
       "ja": "アーマーキャノン"
     },
@@ -20554,8 +20554,8 @@ export const GENERATED_MOVES = {
     "slug": "bitter-blade",
     "calcMoveName": "Bitter Blade",
     "names": {
-      "zh-hans": "Bitter Blade",
-      "zh-hant": "悔念剑",
+      "zh-hans": "悔念剑",
+      "zh-hant": "悔念劍",
       "en": "Bitter Blade",
       "ja": "むねんのつるぎ"
     },
@@ -20574,8 +20574,8 @@ export const GENERATED_MOVES = {
     "slug": "double-shock",
     "calcMoveName": "Double Shock",
     "names": {
-      "zh-hans": "Double Shock",
-      "zh-hant": "电光双击",
+      "zh-hans": "电光双击",
+      "zh-hant": "電光雙擊",
       "en": "Double Shock",
       "ja": "でんこうそうげき"
     },
@@ -20594,8 +20594,8 @@ export const GENERATED_MOVES = {
     "slug": "gigaton-hammer",
     "calcMoveName": "Gigaton Hammer",
     "names": {
-      "zh-hans": "Gigaton Hammer",
-      "zh-hant": "巨力锤",
+      "zh-hans": "巨力锤",
+      "zh-hant": "巨力錘",
       "en": "Gigaton Hammer",
       "ja": "デカハンマー"
     },
@@ -20614,8 +20614,8 @@ export const GENERATED_MOVES = {
     "slug": "comeuppance",
     "calcMoveName": "Comeuppance",
     "names": {
-      "zh-hans": "Comeuppance",
-      "zh-hant": "复仇",
+      "zh-hans": "复仇",
+      "zh-hant": "復仇",
       "en": "Comeuppance",
       "ja": "ほうふく"
     },
@@ -20634,7 +20634,7 @@ export const GENERATED_MOVES = {
     "slug": "aqua-cutter",
     "calcMoveName": "Aqua Cutter",
     "names": {
-      "zh-hans": "Aqua Cutter",
+      "zh-hans": "水波刀",
       "zh-hant": "水波刀",
       "en": "Aqua Cutter",
       "ja": "アクアカッター"
@@ -20654,8 +20654,8 @@ export const GENERATED_MOVES = {
     "slug": "blazing-torque",
     "calcMoveName": "Blazing Torque",
     "names": {
-      "zh-hans": "Blazing Torque",
-      "zh-hant": "灼热暴冲",
+      "zh-hans": "灼热暴冲",
+      "zh-hant": "灼熱暴衝",
       "en": "Blazing Torque",
       "ja": "バーンアクセル"
     },
@@ -20674,8 +20674,8 @@ export const GENERATED_MOVES = {
     "slug": "wicked-torque",
     "calcMoveName": "Wicked Torque",
     "names": {
-      "zh-hans": "Wicked Torque",
-      "zh-hant": "黑暗暴冲",
+      "zh-hans": "黑暗暴冲",
+      "zh-hant": "黑暗暴衝",
       "en": "Wicked Torque",
       "ja": "ダークアクセル"
     },
@@ -20694,8 +20694,8 @@ export const GENERATED_MOVES = {
     "slug": "noxious-torque",
     "calcMoveName": "Noxious Torque",
     "names": {
-      "zh-hans": "Noxious Torque",
-      "zh-hant": "剧毒暴冲",
+      "zh-hans": "剧毒暴冲",
+      "zh-hant": "劇毒暴衝",
       "en": "Noxious Torque",
       "ja": "ポイズンアクセル"
     },
@@ -20714,8 +20714,8 @@ export const GENERATED_MOVES = {
     "slug": "combat-torque",
     "calcMoveName": "Combat Torque",
     "names": {
-      "zh-hans": "Combat Torque",
-      "zh-hant": "格斗暴冲",
+      "zh-hans": "格斗暴冲",
+      "zh-hant": "格鬥暴衝",
       "en": "Combat Torque",
       "ja": "ファイトアクセル"
     },
@@ -20734,8 +20734,8 @@ export const GENERATED_MOVES = {
     "slug": "magical-torque",
     "calcMoveName": "Magical Torque",
     "names": {
-      "zh-hans": "Magical Torque",
-      "zh-hant": "魔法暴冲",
+      "zh-hans": "魔法暴冲",
+      "zh-hant": "魔法暴衝",
       "en": "Magical Torque",
       "ja": "マジカルアクセル"
     },
@@ -20754,8 +20754,8 @@ export const GENERATED_MOVES = {
     "slug": "blood-moon",
     "calcMoveName": "Blood Moon",
     "names": {
-      "zh-hans": "Blood Moon",
-      "zh-hant": "Blood Moon",
+      "zh-hans": "血月",
+      "zh-hant": "血月",
       "en": "Blood Moon",
       "ja": "ブラッドムーン"
     },
@@ -20774,8 +20774,8 @@ export const GENERATED_MOVES = {
     "slug": "matcha-gotcha",
     "calcMoveName": "Matcha Gotcha",
     "names": {
-      "zh-hans": "Matcha Gotcha",
-      "zh-hant": "Matcha Gotcha",
+      "zh-hans": "刷刷茶炮",
+      "zh-hant": "刷刷茶炮",
       "en": "Matcha Gotcha",
       "ja": "シャカシャカほう"
     },
@@ -20794,8 +20794,8 @@ export const GENERATED_MOVES = {
     "slug": "syrup-bomb",
     "calcMoveName": "Syrup Bomb",
     "names": {
-      "zh-hans": "Syrup Bomb",
-      "zh-hant": "Syrup Bomb",
+      "zh-hans": "糖浆炸弹",
+      "zh-hant": "糖漿炸彈",
       "en": "Syrup Bomb",
       "ja": "みずあめボム"
     },
@@ -20814,8 +20814,8 @@ export const GENERATED_MOVES = {
     "slug": "ivy-cudgel",
     "calcMoveName": "Ivy Cudgel",
     "names": {
-      "zh-hans": "Ivy Cudgel",
-      "zh-hant": "Ivy Cudgel",
+      "zh-hans": "棘藤棒",
+      "zh-hant": "棘藤棒",
       "en": "Ivy Cudgel",
       "ja": "ツタこんぼう"
     },

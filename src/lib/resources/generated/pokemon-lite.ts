@@ -1,9 +1,5 @@
 import type { PokemonLite, UpstreamResourceId } from "../types"
 
-/** Minimal per-Pokemon fields needed by synchronous first-screen paths.
- * Kept separate from GENERATED_POKEMON so the full dataset can stay in a
- * dynamically-imported chunk (see access.ts). */
-
 export const GENERATED_POKEMON_LITE = {
   "1": {
     "speciesId": 1,
@@ -103,7 +99,7 @@ export const GENERATED_POKEMON_LITE = {
   },
   "25": {
     "speciesId": 25,
-    "evioliteEligible": true
+    "evioliteEligible": false
   },
   "26": {
     "speciesId": 26,
@@ -535,7 +531,7 @@ export const GENERATED_POKEMON_LITE = {
   },
   "133": {
     "speciesId": 133,
-    "evioliteEligible": true
+    "evioliteEligible": false
   },
   "134": {
     "speciesId": 134,
@@ -2843,7 +2839,7 @@ export const GENERATED_POKEMON_LITE = {
   },
   "710": {
     "speciesId": 710,
-    "evioliteEligible": true
+    "evioliteEligible": false
   },
   "711": {
     "speciesId": 711,
@@ -2979,7 +2975,7 @@ export const GENERATED_POKEMON_LITE = {
   },
   "744": {
     "speciesId": 744,
-    "evioliteEligible": true
+    "evioliteEligible": false
   },
   "745": {
     "speciesId": 745,
@@ -4707,7 +4703,7 @@ export const GENERATED_POKEMON_LITE = {
   },
   "10151": {
     "speciesId": 744,
-    "evioliteEligible": false
+    "evioliteEligible": true
   },
   "10152": {
     "speciesId": 745,
@@ -5405,4 +5401,4 @@ export const GENERATED_POKEMON_LITE = {
     "speciesId": 998,
     "evioliteEligible": false
   }
-} satisfies Record<UpstreamResourceId, PokemonLite>
+} as const satisfies Record<UpstreamResourceId, PokemonLite>

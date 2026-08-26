@@ -29,11 +29,17 @@ describe("usage tips", () => {
     vi.unstubAllGlobals()
   })
 
-  it("picks from the maintained catalog by bucket and returns null when empty", () => {
-    const ids = USAGE_TIPS.map((tip) => tip.id)
-    for (let i = 0; i < USAGE_TIPS.length; i++) {
-      const bucket = (i + 0.5) / USAGE_TIPS.length
-      expect(pickUsageTip(USAGE_TIPS, () => bucket)?.id).toBe(ids[i])
+  it("picks feedback for one quarter of the random range", () => {
+    expect(pickUsageTip(USAGE_TIPS, () => 0)?.id).toBe("feedback")
+    expect(pickUsageTip(USAGE_TIPS, () => 0.249)?.id).toBe("feedback")
+    expect(pickUsageTip(USAGE_TIPS, () => 0.25)?.id).not.toBe("feedback")
+  })
+
+  it("spreads the remaining range across other tips and returns null when empty", () => {
+    const others = USAGE_TIPS.filter((tip) => tip.id !== "feedback")
+    for (let i = 0; i < others.length; i++) {
+      const roll = 0.25 + ((i + 0.5) / others.length) * 0.75
+      expect(pickUsageTip(USAGE_TIPS, () => roll)?.id).toBe(others[i].id)
     }
     expect(pickUsageTip([], () => 0)).toBeNull()
   })

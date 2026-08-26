@@ -3,6 +3,7 @@ import { FormattedMessage, useIntl } from "react-intl"
 import { Check, Share2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { trackProductEvent } from "@/lib/analytics"
 import type { BattlePokemonOption, MatchupCatalog, MoveCategory } from "@/lib/catalog"
 import type { ProbabilityMode } from "@/lib/damage-calculation"
 import type { BattlePokemonId } from "@/lib/resources"
@@ -66,6 +67,10 @@ export function ScenarioWorkspace({
   const [mobileView, setMobileView] = useState<"setup" | "results">("results")
   const [shareStatus, setShareStatus] = useState<"idle" | "copied" | "error">("idle")
 
+  useEffect(() => {
+    trackProductEvent("scenario_ready", intl.locale)
+  }, [intl.locale])
+
   useEffect(() => setShareStatus("idle"), [state.trackState])
 
   useEffect(() => {
@@ -93,12 +98,16 @@ export function ScenarioWorkspace({
       if (!navigator.clipboard) throw new Error("clipboard-unavailable")
       await navigator.clipboard.writeText(result.value)
       setShareStatus("copied")
+      trackProductEvent("share", intl.locale)
     } catch {
       const copied = window.prompt(
         intl.formatMessage({ id: "share.copyPrompt" }),
         result.value,
       )
       setShareStatus(copied === null ? "error" : "copied")
+      if (copied !== null) {
+        trackProductEvent("share", intl.locale)
+      }
     }
   }
 

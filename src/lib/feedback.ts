@@ -1,4 +1,4 @@
-const FEEDBACK_URL = "https://github.com/darwintree/pokemon-damage-calc/issues/new"
+const FEEDBACK_URL = "https://github.com/darwintree/PokeGauge/issues/new"
 
 export function createFeedbackUrl(scenarioUrl: string | null): string {
   if (!scenarioUrl) return FEEDBACK_URL
