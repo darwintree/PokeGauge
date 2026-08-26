@@ -432,7 +432,9 @@ async function main() {
         evolutionsByEvolvedSpeciesId.get(requiredNumber(child, "id")) ?? [],
       )
     return pokemon.is_default === "1"
-      ? outgoing.some((evolution) => evolution.base_form_id === "")
+      ? outgoing.some((evolution) =>
+          evolution.base_form_id === "" || Number(evolution.base_form_id) === id
+        )
       : outgoing.some((evolution) => Number(evolution.base_form_id) === id)
   }
 

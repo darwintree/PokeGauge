@@ -112,6 +112,11 @@ describe("generated Held-item resources", () => {
 
 describe("generated Eviolite eligibility", () => {
   it.each([
+    [25, true],
+    [133, true],
+    [710, true],
+    [744, true],
+    [10151, true],
     [112, true],
     [464, false],
     [550, false],

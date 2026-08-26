@@ -99,7 +99,7 @@ export const GENERATED_POKEMON_LITE = {
   },
   "25": {
     "speciesId": 25,
-    "evioliteEligible": false
+    "evioliteEligible": true
   },
   "26": {
     "speciesId": 26,
@@ -531,7 +531,7 @@ export const GENERATED_POKEMON_LITE = {
   },
   "133": {
     "speciesId": 133,
-    "evioliteEligible": false
+    "evioliteEligible": true
   },
   "134": {
     "speciesId": 134,
@@ -2839,7 +2839,7 @@ export const GENERATED_POKEMON_LITE = {
   },
   "710": {
     "speciesId": 710,
-    "evioliteEligible": false
+    "evioliteEligible": true
   },
   "711": {
     "speciesId": 711,
@@ -2975,7 +2975,7 @@ export const GENERATED_POKEMON_LITE = {
   },
   "744": {
     "speciesId": 744,
-    "evioliteEligible": false
+    "evioliteEligible": true
   },
   "745": {
     "speciesId": 745,
