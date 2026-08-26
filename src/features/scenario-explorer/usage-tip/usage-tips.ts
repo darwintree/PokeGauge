@@ -58,5 +58,13 @@ export function pickUsageTip(
   random = Math.random,
 ): UsageTipEntry | null {
   if (tips.length === 0) return null
-  return tips[Math.floor(random() * tips.length)] ?? null
+  const feedback = tips.find((tip) => tip.id === "feedback")
+  if (!feedback || tips.length === 1) {
+    return tips[Math.floor(random() * tips.length)] ?? null
+  }
+
+  const roll = random()
+  if (roll < 0.25) return feedback
+  const others = tips.filter((tip) => tip !== feedback)
+  return others[Math.floor(((roll - 0.25) / 0.75) * others.length)] ?? null
 }

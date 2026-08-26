@@ -5,6 +5,7 @@ import { AppHeader } from "@/components/app-header"
 import { ScenarioExplorerPage } from "@/features/scenario-explorer/scenario-explorer-page"
 import { UsageTipsPrototype } from "@/features/scenario-explorer/usage-tip/usage-tips.prototype"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { useTrackProductEventOnce } from "@/lib/analytics"
 import type { ProbabilityMode } from "@/lib/damage-calculation"
 import { loadInitialLocale, localeMessages, saveLocale, type SupportedLocale } from "@/lib/i18n"
 import { loadProbabilityMode, saveProbabilityMode } from "@/lib/probability-mode-preference"
@@ -25,6 +26,7 @@ function App() {
   const [feedbackScenarioUrl, setFeedbackScenarioUrl] = useState<string | null>(null)
   const [brandHomeAction, setBrandHomeAction] = useState<(() => void) | null>(null)
   const usageTipsPage = isUsageTipsPage()
+  useTrackProductEventOnce("page_view", locale)
 
   useEffect(() => {
     document.documentElement.lang = locale

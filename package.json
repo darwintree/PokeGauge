@@ -12,6 +12,9 @@
     "build": "tsc -b && vite build",
     "changelog:generate": "node scripts/generate-changelog.ts",
     "changeset": "changeset",
+    "cf:types": "wrangler types",
+    "deploy": "pnpm build && wrangler deploy",
+    "deploy:dry-run": "pnpm build && wrangler deploy --dry-run",
     "generate:pokeapi": "tsx scripts/generate-pokeapi-resources.ts",
     "lint": "oxlint",
     "perf:scenario-explorer": "tsx scripts/verify-scenario-explorer-performance.ts",
@@ -49,6 +52,7 @@
     "tsx": "^4.22.4",
     "typescript": "~6.0.2",
     "vite": "^8.1.0",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.9",
+    "wrangler": "^4.126.0"
   }
 }

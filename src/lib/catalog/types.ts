@@ -1,6 +1,7 @@
 import type { PokemonType } from "@/lib/pokemon"
 import type { BattlePokemonId, UpstreamResourceId } from "@/lib/resources"
 import type { HeldItemId } from "@/lib/held-item"
+import type { CriticalStage } from "@/lib/move"
 import type { OffensePresetId } from "./preset-labels"
 
 export type MoveCategory = "physical" | "special"
@@ -17,6 +18,7 @@ export type CatalogMoveOption = CatalogOption<UpstreamResourceId> & {
   category: MoveCategory
   power: number
   accuracy: number | null
+  criticalStage?: CriticalStage
   isSpread: boolean
 }
 

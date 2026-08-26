@@ -45,6 +45,16 @@ describe("move snapshots", () => {
     ).toMatchObject({ accuracy: 0, alwaysHits: false, criticalStage: 0 })
   })
 
+  it("uses intrinsic critical stages while preserving explicit snapshot edits", () => {
+    const snapshot = createMoveSnapshot(
+      { id: 2, power: 50, accuracy: 100, criticalStage: 1, isSpread: false },
+      "karate-chop",
+    )
+
+    expect(snapshot.criticalStage).toBe(1)
+    expect(editMoveSnapshot(snapshot, { criticalStage: 0 }).criticalStage).toBe(0)
+  })
+
   it("rejects templates for explicitly unsupported move mechanics", () => {
     expect(() =>
       createMoveSnapshot({ id: 473, power: 80, accuracy: 100, isSpread: false }),

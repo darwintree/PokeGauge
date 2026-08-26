@@ -1546,8 +1546,8 @@ export const GENERATED_HELD_ITEMS = {
     "slug": "fairy-feather",
     "calcItemName": "fairyfeather",
     "names": {
-      "zh-hans": "Fairy Feather",
-      "zh-hant": "Fairy Feather",
+      "zh-hans": "妖精之羽",
+      "zh-hant": "妖精之羽",
       "en": "Fairy Feather",
       "ja": "ようせいのハネ"
     },
@@ -1565,8 +1565,8 @@ export const GENERATED_HELD_ITEMS = {
     "slug": "wellspring-mask",
     "calcItemName": "wellspringmask",
     "names": {
-      "zh-hans": "Wellspring Mask",
-      "zh-hant": "Wellspring Mask",
+      "zh-hans": "水井面具",
+      "zh-hant": "水井面具",
       "en": "Wellspring Mask",
       "ja": "いどのめん"
     },
@@ -1584,8 +1584,8 @@ export const GENERATED_HELD_ITEMS = {
     "slug": "hearthflame-mask",
     "calcItemName": "hearthflamemask",
     "names": {
-      "zh-hans": "Hearthflame Mask",
-      "zh-hant": "Hearthflame Mask",
+      "zh-hans": "火灶面具",
+      "zh-hant": "火灶面具",
       "en": "Hearthflame Mask",
       "ja": "かまどのめん"
     },
@@ -1603,8 +1603,8 @@ export const GENERATED_HELD_ITEMS = {
     "slug": "cornerstone-mask",
     "calcItemName": "cornerstonemask",
     "names": {
-      "zh-hans": "Cornerstone Mask",
-      "zh-hant": "Cornerstone Mask",
+      "zh-hans": "础石面具",
+      "zh-hant": "礎石面具",
       "en": "Cornerstone Mask",
       "ja": "いしずえのめん"
     },
