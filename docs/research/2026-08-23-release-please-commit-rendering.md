@@ -36,7 +36,7 @@ setup change and make no Release Please configuration change:
 
 ```json
 {
-  "repository": "darwintree/pokemon-damage-calc",
+  "repository": "darwintree/PokeGauge",
   "entries": []
 }
 ```
@@ -202,7 +202,7 @@ The generated shape is equivalent to:
 
 ```json
 {
-  "repository": "darwintree/pokemon-damage-calc",
+  "repository": "darwintree/PokeGauge",
   "entries": [
     {
       "changes": [

@@ -110,6 +110,17 @@ describe("localized resource access", () => {
     })
   })
 
+  it("preserves intrinsic Move critical rates across the localized boundary", async () => {
+    await expect(getResource("move", 2, "en")).resolves.toMatchObject({
+      name: "Karate Chop",
+      critRate: 1,
+    })
+    await expect(getResource("move", 152, "en")).resolves.toMatchObject({
+      name: "Crabhammer",
+      critRate: 1,
+    })
+  })
+
   it("exposes per-identity Eviolite eligibility through localized resources", async () => {
     await expect(getResource("pokemon", 112, "en")).resolves.toMatchObject({
       id: 112,

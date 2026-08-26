@@ -143,6 +143,7 @@ export type LocalizedMoveResource = LocalizedResourceBase<"move"> & {
   category: MoveDamageClass
   power: number | null
   accuracy: number | null
+  critRate?: number
   damageKind: DamageKind
   target: string
   isSpread: boolean

@@ -8,6 +8,6 @@ it("prefills feedback with the scenario share link", () => {
 
   expect(feedbackUrl.searchParams.get("body")).toContain(scenarioUrl)
   expect(createFeedbackUrl(null)).toBe(
-    "https://github.com/darwintree/pokemon-damage-calc/issues/new",
+    "https://github.com/darwintree/PokeGauge/issues/new",
   )
 })
