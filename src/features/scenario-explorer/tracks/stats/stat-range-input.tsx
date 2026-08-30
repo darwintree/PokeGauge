@@ -46,7 +46,7 @@ const STAT_AXIS_SNAP_LABELS: Record<string, string> = {
 }
 
 const HANDLE_FACE =
-  "border-primary bg-background absolute top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 shadow-sm"
+  "border-primary bg-background pointer-events-none absolute top-1/2 left-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 shadow-sm"
 
 export function StatRangeInput({
   statLabel,
@@ -247,19 +247,23 @@ export function StatRangeInput({
                     )}
                     aria-expanded={fineTune === handle}
                     aria-controls={fineTune === handle ? fineTuneId : undefined}
-                    className={cn(
-                      HANDLE_FACE,
-                      "z-10",
-                      "focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none",
-                      fineTune === handle && "ring-primary/40 ring-2",
-                      drag.activeHandle === handle && "scale-110",
-                    )}
+                    className="group/handle absolute top-1/2 z-10 size-8 -translate-x-1/2 -translate-y-1/2 rounded-full focus-visible:outline-none"
                     style={handleStyle(point)}
                     onPointerDown={drag.onPointerDown(handle)}
                     onPointerMove={drag.onPointerMove}
                     onPointerUp={drag.onPointerUp(handle)}
                     onPointerCancel={drag.onPointerUp(handle)}
-                  />
+                  >
+                    <span
+                      aria-hidden
+                      className={cn(
+                        HANDLE_FACE,
+                        "group-focus-visible/handle:ring-ring group-focus-visible/handle:ring-2",
+                        fineTune === handle && "ring-primary/40 ring-2",
+                        drag.activeHandle === handle && "scale-110",
+                      )}
+                    />
+                  </button>
                 )
               })}
             </div>
