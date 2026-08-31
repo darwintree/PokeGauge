@@ -9,9 +9,10 @@ type TrackPanelProps = {
   label: ReactNode
   icon: LucideIcon
   summary: ReactNode
-  expanded: boolean
-  onToggle: () => void
-  children: ReactNode
+  expanded?: boolean
+  onToggle?: () => void
+  expandable?: boolean
+  children?: ReactNode
   summaryLayout?: "inline" | "stack"
   headerTrailing?: ReactNode
   labelExtra?: ReactNode
@@ -25,8 +26,9 @@ export function TrackPanel({
   label,
   icon: Icon,
   summary,
-  expanded,
+  expanded = false,
   onToggle,
+  expandable = true,
   children,
   summaryLayout = "inline",
   headerTrailing,
@@ -37,7 +39,7 @@ export function TrackPanel({
   side,
 }: TrackPanelProps) {
   const richSummary = typeof summary !== "string"
-  const stack = summaryLayout === "stack" && richSummary
+  const stack = !expandable || (summaryLayout === "stack" && richSummary)
   const sideMark = side ? (
     <>
       <span
@@ -66,28 +68,37 @@ export function TrackPanel({
     >
       {stack ? (
         <div className="relative flex h-11 items-center gap-2 px-2.5 sm:h-10">
-          <button
-            type="button"
-            aria-expanded={expanded}
-            onClick={onToggle}
-            className="hover:bg-token-bg/60 focus-visible:ring-ring absolute inset-0 focus-visible:ring-2 focus-visible:outline-none"
-          />
-          <span className="pointer-events-none relative flex min-w-0 flex-1 items-center gap-2">
+          {expandable && (
+            <button
+              type="button"
+              aria-expanded={expanded}
+              onClick={onToggle}
+              className="hover:bg-token-bg/60 focus-visible:ring-ring absolute inset-0 focus-visible:ring-2 focus-visible:outline-none"
+            />
+          )}
+          <span
+            className={cn(
+              "relative flex min-w-0 flex-1 items-center gap-2",
+              expandable && "pointer-events-none",
+            )}
+          >
             <Icon className="text-muted-foreground size-3.5 shrink-0" strokeWidth={1.75} />
             <span className="flex min-w-0 items-center gap-1 text-xs font-extrabold">
               {sideMark}
               <span className="truncate">{label}</span>
             </span>
           </span>
-          {expanded && headerTrailing && (
+          {headerTrailing && (!expandable || expanded) && (
             <div className="relative z-10 flex shrink-0 items-center">{headerTrailing}</div>
           )}
-          <ChevronDown
-            className={cn(
-              "pointer-events-none relative size-3.5 shrink-0 text-muted-foreground transition-transform",
-              expanded && "rotate-180",
-            )}
-          />
+          {expandable && (
+            <ChevronDown
+              className={cn(
+                "pointer-events-none relative size-3.5 shrink-0 text-muted-foreground transition-transform",
+                expanded && "rotate-180",
+              )}
+            />
+          )}
         </div>
       ) : (
         <div className="flex w-full min-w-0 items-center gap-2 px-2.5 py-2">
@@ -123,7 +134,7 @@ export function TrackPanel({
           {trailing}
         </div>
       )}
-      {stack && !expanded && (
+      {stack && (!expandable || !expanded) && (
         <div className="flex items-start gap-1.5 border-t px-2.5 py-2">
           <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5">
             {summary}
@@ -137,7 +148,9 @@ export function TrackPanel({
         </div>
       )}
       {preview && <div className="border-t p-2">{preview}</div>}
-      {expanded && <div className="border-t p-3">{children}</div>}
+      {expandable && expanded && children != null && (
+        <div className="border-t p-3">{children}</div>
+      )}
     </section>
   )
 }

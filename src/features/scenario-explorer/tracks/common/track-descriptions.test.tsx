@@ -25,7 +25,7 @@ afterEach(async () => {
   container.remove()
 })
 
-it("expands options into description rows without changing selection behavior", async () => {
+it("lists the weather Choice Pool without expanding and toggles selection", async () => {
   const onChange = vi.fn()
   await act(async () => {
     root.render(
@@ -38,12 +38,8 @@ it("expands options into description rows without changing selection behavior", 
   })
 
   expect(container.querySelectorAll(".track-option--described")).toHaveLength(0)
-  await act(async () => {
-    ;(container.querySelector('[data-slot="switch"]') as HTMLElement).click()
-  })
-
-  expect(container.querySelectorAll(".track-option--described")).toHaveLength(5)
-  expect(container.textContent).toContain("Boosts Fire-type damage")
+  expect(container.querySelector('[data-slot="switch"]')).toBeNull()
+  expect(container.textContent).toContain("Sun")
 
   const sun = [...container.querySelectorAll("button")].find((button) =>
     button.textContent?.includes("Sun"),

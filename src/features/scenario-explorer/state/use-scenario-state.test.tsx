@@ -203,6 +203,24 @@ describe("async default lifecycle", () => {
     expect(current.trackState.attackerStages).toEqual([-1, 0])
   })
 
+  it("adds a stage to the Choice Pool and reset shrinks the pool to 0", async () => {
+    const shell = await getCatalogShell(133, 143, "en")
+    await render(shell)
+    expect(current.trackState.attackerStagePool).toEqual([0])
+
+    await act(async () => current.addAttackerStage(2))
+    expect(current.trackState.attackerStagePool).toEqual([0, 2])
+    expect(current.trackState.attackerStages).toEqual([0, 2])
+
+    await act(async () => current.setAttackerStages([2]))
+    expect(current.trackState.attackerStagePool).toEqual([0, 2])
+    expect(current.trackState.attackerStages).toEqual([2])
+
+    await act(async () => current.resetAttackerStages())
+    expect(current.trackState.attackerStagePool).toEqual([0])
+    expect(current.trackState.attackerStages).toEqual([0])
+  })
+
   it("keeps a shared import transient until its first semantic edit", async () => {
     vi.useFakeTimers()
     const catalog = await getCatalogShell(445, 727, "en", "physical")

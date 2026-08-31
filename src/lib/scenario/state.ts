@@ -1,4 +1,5 @@
 import type { MatchupCatalog } from "@/lib/catalog"
+import { STAT_STAGES, type StatStage } from "@/lib/damage-calculation"
 import { createMoveSnapshot } from "@/lib/move"
 import {
   buildSystemDefensePresets,
@@ -17,6 +18,24 @@ import {
   offenseEnvelopeOf,
 } from "./stat-selection"
 import type { TrackState } from "./types"
+
+/** Choice Pool for a stage Track: catalog order, always includes Neutral `0`. */
+export function mergeStagePool(
+  pool: readonly StatStage[],
+  extra: readonly StatStage[] = [],
+): StatStage[] {
+  const keep = new Set<StatStage>([0, ...pool, ...extra])
+  return STAT_STAGES.filter((stage) => keep.has(stage))
+}
+
+export function mergeStageSelection(
+  selected: readonly StatStage[],
+  extra: readonly StatStage[] = [],
+): StatStage[] {
+  const keep = new Set<StatStage>([...selected, ...extra])
+  const next = STAT_STAGES.filter((stage) => keep.has(stage))
+  return next.length > 0 ? next : [0]
+}
 
 export function offensePresetsForState(
   catalog: MatchupCatalog,
@@ -69,6 +88,7 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
     statRange,
     offenseAllocationIndices: {},
     attackerStages: [0],
+    attackerStagePool: [0],
     attackerItemPoolIds: [...catalog.defaultAttackerItemPoolIds],
     defenderItemPoolIds: [...catalog.defaultDefenderItemPoolIds],
     attackerItemIds: [...catalog.defaultAttackerItemIds],
@@ -82,6 +102,7 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
     defenderRanges,
     defenseAllocationIndices: {},
     defenderStages: [0],
+    defenderStagePool: [0],
     defenderAbilityIds: [...catalog.defaultDefenderAbilityIds],
     screens: ["none"],
   }

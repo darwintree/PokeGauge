@@ -52,7 +52,9 @@ describe("ability initialization projection", () => {
     )
 
     expect(physical.attackerStages).toEqual([-3, -1, 0, 1])
+    expect(physical.attackerStagePool).toEqual([-3, -1, 0, 1])
     expect(physical.defenderStages).toEqual([0])
     expect(special.attackerStages).toEqual([-3, 0, 2])
+    expect(special.attackerStagePool).toEqual([-3, 0, 2])
   })
 })

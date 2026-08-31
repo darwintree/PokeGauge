@@ -25,7 +25,7 @@ import {
   getOffenseStatBounds,
 } from "@/lib/stat-calculation"
 
-import { defaultTrackState, defensePresetsForState, offensePresetsForState } from "./state"
+import { defaultTrackState, defensePresetsForState, mergeStagePool, offensePresetsForState } from "./state"
 import type { TrackState } from "./types"
 
 export const SCENARIO_SHARE_PARAM = "s"
@@ -709,6 +709,7 @@ export function trackStateFromScenarioSetup(
       offenseTemporaryPresets: offenseTemporary,
       statRange: { min: offenseValues[0], max: offenseValues.at(-1)! },
       attackerStages: setup.attackerStages,
+      attackerStagePool: mergeStagePool([], setup.attackerStages),
       attackerItemPoolIds: setup.attackerItems,
       attackerItemIds: setup.attackerItems,
       attackerAbilityIds: setup.attackerAbilities,
@@ -722,6 +723,7 @@ export function trackStateFromScenarioSetup(
         def: { min: Math.min(...defenseValues.map((value) => value.def)), max: Math.max(...defenseValues.map((value) => value.def)) },
       },
       defenderStages: setup.defenderStages,
+      defenderStagePool: mergeStagePool([], setup.defenderStages),
       defenderItemPoolIds: setup.defenderItems,
       defenderItemIds: setup.defenderItems,
       defenderAbilityIds: setup.defenderAbilities,

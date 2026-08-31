@@ -1,8 +1,6 @@
 import { Sparkles } from "lucide-react"
-import { useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-import { Button } from "@/components/ui/button"
 import {
   NO_ABILITY_ID,
   abilityIsSelectable,
@@ -12,7 +10,6 @@ import {
 import type { CatalogAbilityOption } from "@/lib/catalog"
 
 import { TrackOption, TrackOptionGroup } from "./track-option"
-import { TrackDescriptionToggle } from "./track-description-toggle"
 import { TrackPanel } from "./track-panel"
 
 type AbilityTrackProps = {
@@ -20,9 +17,6 @@ type AbilityTrackProps = {
   options: CatalogAbilityOption[]
   selectedIds: number[]
   onChange: (ids: number[]) => void
-  onReset: () => void
-  expanded?: boolean
-  onToggle?: () => void
 }
 
 const ASSUMED_FAMILY_MESSAGE = {
@@ -41,13 +35,9 @@ export function AbilityTrack({
   options,
   selectedIds,
   onChange,
-  onReset,
-  expanded = true,
-  onToggle = () => {},
 }: AbilityTrackProps) {
   const intl = useIntl()
   const selected = new Set(selectedIds)
-  const [showDescriptions, setShowDescriptions] = useState(false)
 
   function toggle(id: number) {
     if (selected.has(id) && selected.size === 1) return
@@ -61,13 +51,8 @@ export function AbilityTrack({
   }
 
   const orderedOptions = [...options].sort((a, b) =>
-    Number(b.id === NO_ABILITY_ID) - Number(a.id === NO_ABILITY_ID) ||
-    Number(selected.has(b.id)) - Number(selected.has(a.id)),
+    Number(b.id === NO_ABILITY_ID) - Number(a.id === NO_ABILITY_ID),
   )
-  const summary = options
-    .filter((option) => selected.has(option.id))
-    .map((option) => option.label)
-    .join(", ")
   const describedOptions = orderedOptions.map((option) => {
     const support = abilitySupport(option.id)
     const disabled = support === "none"
@@ -86,29 +71,11 @@ export function AbilityTrack({
 
   return (
     <TrackPanel
+      expandable={false}
       icon={Sparkles}
       label={<FormattedMessage id="track.ability" />}
       side={labelId === "track.attackerAbility" ? "attacker" : "defender"}
-      summary={summary || "-"}
-      expanded={expanded}
-      onToggle={onToggle}
-    >
-      <div className="space-y-2">
-        <div className="flex items-center justify-end gap-1">
-          <TrackDescriptionToggle
-            checked={showDescriptions}
-            onCheckedChange={setShowDescriptions}
-          />
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            className="h-6 px-2 text-xs"
-            onClick={onReset}
-          >
-            <FormattedMessage id="track.stage.reset" />
-          </Button>
-        </div>
+      summary={
         <TrackOptionGroup aria-label={intl.formatMessage({ id: labelId })}>
           {describedOptions.map(({ option, disabled, unsupported, assumedFamily, disclosureLabel }) => {
             return (
@@ -126,12 +93,6 @@ export function AbilityTrack({
                     {[option.summary, disclosureLabel].filter(Boolean).join("\n")}
                   </span>
                 )}
-                description={(
-                  <span className="whitespace-pre-line">
-                    {[option.summary, disclosureLabel].filter(Boolean).join("\n")}
-                  </span>
-                )}
-                showDescription={showDescriptions}
                 className={disabled ? "track-option--neutral-disabled px-2" : "px-2"}
               >
                 <span>{option.label}</span>
@@ -146,7 +107,7 @@ export function AbilityTrack({
             )
           })}
         </TrackOptionGroup>
-      </div>
-    </TrackPanel>
+      }
+    />
   )
 }

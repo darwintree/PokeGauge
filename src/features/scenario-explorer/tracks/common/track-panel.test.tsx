@@ -55,3 +55,22 @@ it("renders stack header controls only while expanded", () => {
   expect(render(true)).toContain(">Mode</button>")
   expect(render(false)).not.toContain(">Mode</button>")
 })
+
+it("keeps a static Choice Pool visible without expand controls", () => {
+  const markup = renderToStaticMarkup(
+    <IntlProvider locale="en" messages={localeMessages.en}>
+      <TrackPanel
+        expandable={false}
+        label="Weather"
+        icon={Gauge}
+        summary={<span>PoolChip</span>}
+      >
+        <span>ExpandedOnly</span>
+      </TrackPanel>
+    </IntlProvider>,
+  )
+
+  expect(markup).toContain("PoolChip")
+  expect(markup).not.toContain("ExpandedOnly")
+  expect(markup).not.toContain("aria-expanded")
+})

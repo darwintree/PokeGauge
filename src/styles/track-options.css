@@ -7,15 +7,6 @@
     min-height: 2.5rem;
   }
 
-  .track-option--text,
-  .track-option--add-text {
-    min-height: 2.5rem;
-  }
-
-  .track-option--add-text {
-    width: 2.5rem;
-  }
-
   /* Visible badge stays 1rem; keep the old 2rem tap target. */
   .track-option-action::before {
     content: "";

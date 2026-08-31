@@ -15,10 +15,10 @@ import { TerrainTrack } from "./tracks/common/terrain-track"
 import type { ScenarioState } from "./state/use-scenario-state"
 import { WeatherTrack } from "./tracks/common/weather-track"
 
+type AccordionTrackId = "moves" | "offenseStats" | "defenseStats"
+
 type TrackId =
-  | "moves"
-  | "offenseStats"
-  | "defenseStats"
+  | AccordionTrackId
   | "attackerStages"
   | "defenderStages"
   | "attackerItems"
@@ -53,10 +53,10 @@ export function ScenarioSetupPanel({
   onMoveCategoryChange,
 }: ScenarioSetupPanelProps) {
   const intl = useIntl()
-  const [activeId, setActiveId] = useState<TrackId | null>(null)
+  const [activeId, setActiveId] = useState<AccordionTrackId | null>(null)
   const { trackState } = state
 
-  function toggle(id: TrackId) {
+  function toggle(id: AccordionTrackId) {
     setActiveId((current) => (current === id ? null : id))
   }
 
@@ -116,10 +116,10 @@ export function ScenarioSetupPanel({
         label={<FormattedMessage id="track.stage" />}
         ariaLabel={intl.formatMessage({ id: "track.attackerStage" })}
         side="attacker"
+        pool={trackState.attackerStagePool}
         values={trackState.attackerStages}
         onChange={state.setAttackerStages}
-        expanded={activeId === "attackerStages"}
-        onToggle={() => toggle("attackerStages")}
+        onAdd={state.addAttackerStage}
       />
     ),
     defenderStages: (
@@ -127,10 +127,10 @@ export function ScenarioSetupPanel({
         label={<FormattedMessage id="track.stage" />}
         ariaLabel={intl.formatMessage({ id: "track.defenderStage" })}
         side="defender"
+        pool={trackState.defenderStagePool}
         values={trackState.defenderStages}
         onChange={state.setDefenderStages}
-        expanded={activeId === "defenderStages"}
-        onToggle={() => toggle("defenderStages")}
+        onAdd={state.addDefenderStage}
       />
     ),
     attackerItems: (
@@ -143,8 +143,6 @@ export function ScenarioSetupPanel({
         onFormTriggerConfirm={onAttackerChange}
         selectableIds={new Set(attackers.map((option) => option.id))}
         lockedId={catalog.attackerLockedItemId}
-        expanded={activeId === "attackerItems"}
-        onToggle={() => toggle("attackerItems")}
       />
     ),
     defenderItems: (
@@ -158,8 +156,6 @@ export function ScenarioSetupPanel({
         onFormTriggerConfirm={onDefenderChange}
         selectableIds={new Set(defenders.map((option) => option.id))}
         lockedId={catalog.defenderLockedItemId}
-        expanded={activeId === "defenderItems"}
-        onToggle={() => toggle("defenderItems")}
       />
     ),
     attackerAbilities: (
@@ -168,9 +164,6 @@ export function ScenarioSetupPanel({
         options={catalog.attackerAbilities}
         selectedIds={trackState.attackerAbilityIds}
         onChange={state.setAttackerAbilityIds}
-        onReset={state.resetAttackerAbilities}
-        expanded={activeId === "attackerAbilities"}
-        onToggle={() => toggle("attackerAbilities")}
       />
     ),
     defenderAbilities: (
@@ -179,33 +172,24 @@ export function ScenarioSetupPanel({
         options={catalog.defenderAbilities}
         selectedIds={trackState.defenderAbilityIds}
         onChange={state.setDefenderAbilityIds}
-        onReset={state.resetDefenderAbilities}
-        expanded={activeId === "defenderAbilities"}
-        onToggle={() => toggle("defenderAbilities")}
       />
     ),
     weather: (
       <WeatherTrack
         values={trackState.weathers}
         onChange={state.setWeathers}
-        expanded={activeId === "weather"}
-        onToggle={() => toggle("weather")}
       />
     ),
     terrain: (
       <TerrainTrack
         values={trackState.terrains}
         onChange={state.setTerrains}
-        expanded={activeId === "terrain"}
-        onToggle={() => toggle("terrain")}
       />
     ),
     screens: (
       <ScreenTrack
         values={trackState.screens}
         onChange={state.setScreens}
-        expanded={activeId === "screens"}
-        onToggle={() => toggle("screens")}
       />
     ),
   }

@@ -1,4 +1,4 @@
-import { PackageOpen, Plus } from "lucide-react"
+import { PackageOpen } from "lucide-react"
 import { useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
@@ -24,8 +24,7 @@ import { GENERATED_POKEMON_LITE } from "@/lib/resources/generated/pokemon-lite"
 import type { BattlePokemonId } from "@/lib/resources"
 import { cn } from "@/lib/utils"
 
-import { TrackOption, TrackOptionGroup } from "../common/track-option"
-import { TrackDescriptionToggle } from "../common/track-description-toggle"
+import { TrackOption, TrackOptionAdd, TrackOptionGroup } from "../common/track-option"
 import { TrackPanel } from "../common/track-panel"
 import { HeldItemPickerDialog } from "./held-item-picker-dialog"
 import { HeldItemSpriteIcon } from "./held-item-sprite-icon"
@@ -41,8 +40,6 @@ type HeldItemTrackProps = {
   selectableIds: ReadonlySet<BattlePokemonId>
   side?: "attacker" | "defender"
   lockedId?: HeldItemId | null
-  expanded?: boolean
-  onToggle?: () => void
 }
 
 export function HeldItemTrack({
@@ -55,14 +52,11 @@ export function HeldItemTrack({
   selectableIds,
   side = "attacker",
   lockedId = null,
-  expanded = true,
-  onToggle = () => {},
 }: HeldItemTrackProps) {
   const intl = useIntl()
   const locale = intl.locale as SupportedLocale
   const [pickerOpen, setPickerOpen] = useState(false)
   const [pendingFormItemId, setPendingFormItemId] = useState<number | null>(null)
-  const [showDescriptions, setShowDescriptions] = useState(false)
 
   const battlePokemonId = side === "attacker"
     ? catalog.matchup.attackerId
@@ -119,100 +113,72 @@ export function HeldItemTrack({
   return (
     <>
       <TrackPanel
+        expandable={false}
         icon={PackageOpen}
         label={<FormattedMessage id="track.item" />}
         side={side}
         summary={
-          <span className="flex shrink-0 items-center gap-1.5">
-            {selectedIds.map((id) => (
-              <span key={String(id)} title={itemAriaLabel(id, locale)}>
-                <HeldItemSpriteIcon id={id} className="size-4" />
-              </span>
-            ))}
-          </span>
-        }
-        expanded={expanded}
-        onToggle={onToggle}
-      >
-        <div className="mb-2 flex justify-end">
-          <TrackDescriptionToggle
-            checked={showDescriptions}
-            onCheckedChange={setShowDescriptions}
-          />
-        </div>
-        <TrackOptionGroup
-          aria-label={intl.formatMessage({
-            id: side === "attacker"
-              ? "track.attackerItem"
-              : "track.defenderItem",
-          })}
-        >
-          {displayPoolIds.map((id) => {
-            const option = optionById.get(id)
-            const label = option?.label ?? itemAriaLabel(id, locale)
-            const description = option?.summary ?? itemDescription(id, locale)
-            const warning = heldItemWarning(id)
-            const warningText = warning
-              ? intl.formatMessage({ id: `track.item.warning.${warning}` })
-              : null
-            // Form-trigger affordances only on unlocked Identities; locks are ordinary selected chips.
-            const formTrigger =
-              lockedId === null && typeof id === "number" && isFormTriggerItem(id)
-            const formHint = formTrigger
-              ? intl.formatMessage({ id: "track.item.formTrigger.hint" })
-              : null
-            const ariaParts = [label, formHint, warningText].filter(Boolean)
-            const detailParts = [label, description, formHint, warningText].filter(Boolean)
+          <TrackOptionGroup
+            aria-label={intl.formatMessage({
+              id: side === "attacker"
+                ? "track.attackerItem"
+                : "track.defenderItem",
+            })}
+          >
+            {displayPoolIds.map((id) => {
+              const option = optionById.get(id)
+              const label = option?.label ?? itemAriaLabel(id, locale)
+              const description = option?.summary ?? itemDescription(id, locale)
+              const warning = heldItemWarning(id)
+              const warningText = warning
+                ? intl.formatMessage({ id: `track.item.warning.${warning}` })
+                : null
+              // Form-trigger affordances only on unlocked Identities; locks are ordinary selected chips.
+              const formTrigger =
+                lockedId === null && typeof id === "number" && isFormTriggerItem(id)
+              const formHint = formTrigger
+                ? intl.formatMessage({ id: "track.item.formTrigger.hint" })
+                : null
+              const ariaParts = [label, formHint, warningText].filter(Boolean)
+              const detailParts = [label, description, formHint, warningText].filter(Boolean)
 
-            return (
-              <TrackOption
-                key={String(id)}
+              return (
+                <TrackOption
+                  key={String(id)}
+                  layout="icon"
+                  pressed={!formTrigger && selectedIds.includes(id)}
+                  disabled={lockedId !== null}
+                  ariaLabel={ariaParts.join(", ")}
+                  tooltip={(
+                    <span className="whitespace-pre-line">{detailParts.join("\n")}</span>
+                  )}
+                  modifier={{ kind: "core" }}
+                  className={cn(
+                    "relative",
+                    formTrigger && "border-dashed opacity-90",
+                  )}
+                  onToggle={() => toggle(id)}
+                >
+                  <HeldItemSpriteIcon id={id} className="size-full" />
+                  {warning && (
+                    <span
+                      aria-hidden
+                      className="absolute top-0.5 right-0.5 size-2 rounded-full border border-ink bg-destructive"
+                    />
+                  )}
+                </TrackOption>
+              )
+            })}
+            {lockedId === null && (
+              <TrackOptionAdd
                 layout="icon"
-                pressed={!formTrigger && selectedIds.includes(id)}
-                disabled={lockedId !== null}
-                ariaLabel={ariaParts.join(", ")}
-                tooltip={(
-                  <span className="whitespace-pre-line">{detailParts.join("\n")}</span>
-                )}
-                description={(
-                  <span className="whitespace-pre-line">
-                    {[description, formHint, warningText].filter(Boolean).join("\n")}
-                  </span>
-                )}
-                descriptionLabel={label}
-                showDescription={showDescriptions}
-                modifier={{ kind: "core" }}
-                className={cn(
-                  "relative",
-                  !showDescriptions && "max-lg:size-11",
-                  formTrigger && "border-dashed opacity-90",
-                )}
-                onToggle={() => toggle(id)}
-              >
-                <HeldItemSpriteIcon id={id} className="size-full" />
-                {warning && (
-                  <span
-                    aria-hidden
-                    className="absolute top-0.5 right-0.5 size-2 rounded-full border border-ink bg-destructive"
-                  />
-                )}
-              </TrackOption>
-            )
-          })}
-        </TrackOptionGroup>
-        {lockedId === null && (
-          <div className="mt-2">
-            <button
-              type="button"
-              aria-label={intl.formatMessage({ id: "track.addItem" })}
-              className="grid h-10 w-full place-items-center rounded-md border border-dashed border-muted-foreground/35 text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-muted/60 hover:text-foreground active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-ring sm:h-8"
-              onClick={() => setPickerOpen(true)}
-            >
-              <Plus className="size-3.5" />
-            </button>
-          </div>
-        )}
-      </TrackPanel>
+                ariaLabel={intl.formatMessage({ id: "track.addItem" })}
+                onClick={() => setPickerOpen(true)}
+              />
+            )}
+          </TrackOptionGroup>
+        }
+      />
 
       {lockedId === null && (
         <HeldItemPickerDialog

@@ -8,12 +8,10 @@ import type { CatalogMoveOption, MoveCategory } from "@/lib/catalog"
 import type { MoveSnapshot } from "@/lib/move"
 import type { PokemonType } from "@/lib/pokemon"
 import type { BattlePokemonId } from "@/lib/resources"
+import { TrackOption, TrackOptionAdd, TrackOptionGroup } from "../common/track-option"
 import { MovePickerDialog } from "./move-picker-dialog"
 import type { MoveSnapshotPatch } from "./move-snapshot-row"
 import { MoveSnapshotRow } from "./move-snapshot-row"
-
-const collapsedSelectedMoveChipClass =
-  "pointer-events-auto relative inline-flex max-w-full items-center gap-1 rounded-[9px] border-2 border-card-border bg-paper px-1.5 py-0.5 transition-colors active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-ink [&:is(:hover,:active,:focus-visible)]:border-ink [&:is(:hover,:active,:focus-visible)]:bg-signal-yellow [&:is(:hover,:active,:focus-visible)]:shadow-hud-chip"
 
 export type MoveTrackProps = {
   label: string
@@ -91,7 +89,6 @@ export function MoveTrack({
     [options],
   )
   const selectedIds = useMemo(() => new Set(selectedSnapshotIds), [selectedSnapshotIds])
-  const selectedSnapshots = snapshots.filter((snapshot) => selectedIds.has(snapshot.id))
   function add(moveId: number) {
     const snapshotId = onAdd(moveId)
     if (snapshotId) setEditingId(snapshotId)
@@ -105,11 +102,6 @@ export function MoveTrack({
         ? selectedSnapshotIds.filter((id) => id !== snapshot.id)
         : [...selectedSnapshotIds, snapshot.id],
     )
-  }
-
-  function selectSnapshot(snapshotId: string) {
-    setEditingId(snapshotId)
-    if (!expanded) onToggle()
   }
 
   function removeSnapshot(snapshotId: string) {
@@ -151,29 +143,38 @@ export function MoveTrack({
               className="absolute inset-0 hover:bg-token-bg/60 active:bg-token-bg/80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
               onClick={onToggle}
             />
-            {selectedSnapshots.length === 0 ? (
-              <div className="relative flex h-7 items-center text-[11px] text-muted-foreground">
-                {intl.formatMessage({ id: "track.move.noneSelected" })}
-              </div>
-            ) : (
-              <div className="pointer-events-none relative flex flex-wrap gap-1.5">
-                {selectedSnapshots.map((snapshot) => {
-                  const option = optionById.get(snapshot.moveId)
-                  if (!option) return null
-                  return (
-                    <button
-                      key={snapshot.id}
-                      type="button"
-                      className={collapsedSelectedMoveChipClass}
-                      onClick={() => selectSnapshot(snapshot.id)}
-                    >
-                      <TypeBadge type={option.type} />
-                      <span className="truncate text-[11px] font-extrabold">{option.label}</span>
-                    </button>
-                  )
-                })}
-              </div>
-            )}
+            <TrackOptionGroup
+              aria-label={label}
+              className="pointer-events-none relative"
+            >
+              {snapshots.length === 0 ? (
+                <span className="flex h-7 items-center text-[11px] text-muted-foreground">
+                  {intl.formatMessage({ id: "track.move.noneSelected" })}
+                </span>
+              ) : snapshots.map((snapshot) => {
+                const option = optionById.get(snapshot.moveId)
+                if (!option) return null
+                return (
+                  <TrackOption
+                    key={snapshot.id}
+                    layout="text"
+                    pressed={selectedIds.has(snapshot.id)}
+                    className="pointer-events-auto max-w-full px-1.5"
+                    ariaLabel={option.label}
+                    onToggle={() => toggleSelection(snapshot)}
+                  >
+                    <TypeBadge type={option.type} />
+                    <span className="truncate">{option.label}</span>
+                  </TrackOption>
+                )
+              })}
+              <TrackOptionAdd
+                layout="text"
+                className="pointer-events-auto relative z-10"
+                ariaLabel={intl.formatMessage({ id: "track.addMove" })}
+                onClick={() => setOpen(true)}
+              />
+            </TrackOptionGroup>
           </div>
         </>
       ) : (

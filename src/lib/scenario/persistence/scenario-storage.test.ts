@@ -36,6 +36,7 @@ function scenario(): ScenarioSnapshotInput {
       statRange: { min: 130, max: 182 },
       offenseAllocationIndices: {},
       attackerStages: [0],
+      attackerStagePool: [0],
       attackerItemPoolIds: ["none"],
       defenderItemPoolIds: ["none"],
       attackerItemIds: ["none"],
@@ -52,6 +53,7 @@ function scenario(): ScenarioSnapshotInput {
       },
       defenseAllocationIndices: {},
       defenderStages: [0],
+      defenderStagePool: [0],
       defenderAbilityIds: [22],
       screens: ["none"],
     },
@@ -141,6 +143,27 @@ describe("scenario storage", () => {
     })
 
     expect(loadScenarioSnapshot()).toEqual({ version: 5, ...input })
+  })
+
+  it("fills missing stage pools from selected stages", () => {
+    const input = scenario()
+    const {
+      attackerStagePool: _attackerStagePool,
+      defenderStagePool: _defenderStagePool,
+      ...trackState
+    } = input.trackState
+    data[SCENARIO_STORAGE_KEY] = JSON.stringify({
+      version: 5,
+      attackerId: input.attackerId,
+      defenderId: input.defenderId,
+      moveCategory: input.moveCategory,
+      trackState: { ...trackState, attackerStages: [-1, 0] },
+    })
+
+    const loaded = loadScenarioSnapshot()
+    expect(loaded?.trackState.attackerStagePool).toEqual([-1, 0])
+    expect(loaded?.trackState.defenderStagePool).toEqual([0])
+    expect(loaded?.trackState.attackerStages).toEqual([-1, 0])
   })
 
   it("round trips numeric upstream held-item identities", () => {

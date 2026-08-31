@@ -42,6 +42,7 @@ export type TrackState = {
   statRange: StatRange
   offenseAllocationIndices: Record<string, number>
   attackerStages: StatStage[]
+  attackerStagePool: StatStage[]
   attackerItemPoolIds: HeldItemId[]
   defenderItemPoolIds: HeldItemId[]
   attackerItemIds: HeldItemId[]
@@ -55,6 +56,7 @@ export type TrackState = {
   defenderRanges: DefenderStatRanges
   defenseAllocationIndices: Record<string, number>
   defenderStages: StatStage[]
+  defenderStagePool: StatStage[]
   defenderAbilityIds: number[]
   screens: Screen[]
 }

@@ -30,6 +30,8 @@ import {
 import {
   defensePresetsForState,
   defaultTrackState,
+  mergeStagePool,
+  mergeStageSelection,
   normalizeScreens,
   offensePresetsForState,
   projectAbilitySelections,
@@ -550,7 +552,19 @@ export function useScenarioState(
     setAttackerStages: (attackerStages: StatStage[]) =>
       setTrackState((s) => ({
         ...s,
-        attackerStages: attackerStages.length > 0 ? attackerStages : [0],
+        attackerStages: mergeStageSelection(attackerStages),
+      })),
+    addAttackerStage: (stage: StatStage) =>
+      setTrackState((s) => ({
+        ...s,
+        attackerStagePool: mergeStagePool(s.attackerStagePool, [stage]),
+        attackerStages: mergeStageSelection(s.attackerStages, [stage]),
+      })),
+    resetAttackerStages: () =>
+      setTrackState((s) => ({
+        ...s,
+        attackerStagePool: [0],
+        attackerStages: [0],
       })),
     setDefenderMode,
     toggleDefensePreset,
@@ -561,7 +575,19 @@ export function useScenarioState(
     setDefenderStages: (defenderStages: StatStage[]) =>
       setTrackState((s) => ({
         ...s,
-        defenderStages: defenderStages.length > 0 ? defenderStages : [0],
+        defenderStages: mergeStageSelection(defenderStages),
+      })),
+    addDefenderStage: (stage: StatStage) =>
+      setTrackState((s) => ({
+        ...s,
+        defenderStagePool: mergeStagePool(s.defenderStagePool, [stage]),
+        defenderStages: mergeStageSelection(s.defenderStages, [stage]),
+      })),
+    resetDefenderStages: () =>
+      setTrackState((s) => ({
+        ...s,
+        defenderStagePool: [0],
+        defenderStages: [0],
       })),
     setDefenderAbilityIds: (ids: number[]) => {
       if (ids.length === 0) return
