@@ -1,3 +1,7 @@
+// @vitest-environment happy-dom
+
+import { act, useState } from "react"
+import { createRoot } from "react-dom/client"
 import { renderToStaticMarkup } from "react-dom/server"
 import { Gauge } from "lucide-react"
 import { IntlProvider } from "react-intl"
@@ -73,4 +77,31 @@ it("keeps a static Choice Pool visible without expand controls", () => {
   expect(markup).toContain("PoolChip")
   expect(markup).not.toContain("ExpandedOnly")
   expect(markup).not.toContain("aria-expanded")
+})
+
+
+it.each(["Attack", "HP / Defense"])("toggles %s with one click on the header chevron", async (label) => {
+  Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })
+  const container = document.createElement("div")
+  const root = createRoot(container)
+  function Harness() {
+    const [expanded, setExpanded] = useState(false)
+    return <TrackPanel label={label} icon={Gauge} summary={<span>Summary</span>}
+      summaryLayout="stack" expanded={expanded} onToggle={() => setExpanded(value => !value)}>
+      <span>Stat editor</span>
+    </TrackPanel>
+  }
+  try {
+    await act(async () => root.render(<Harness />))
+    const chevron = container.querySelector(".lucide-chevron-down")!
+    expect(chevron.closest("button")?.textContent).toContain(label)
+    await act(async () => chevron.dispatchEvent(new MouseEvent("click", { bubbles: true })))
+    expect(container.querySelector("button")?.getAttribute("aria-expanded")).toBe("true")
+    expect(container.textContent).toContain("Stat editor")
+    await act(async () => chevron.dispatchEvent(new MouseEvent("click", { bubbles: true })))
+    expect(container.querySelector("button")?.getAttribute("aria-expanded")).toBe("false")
+    expect(container.textContent).not.toContain("Stat editor")
+  } finally {
+    await act(async () => root.unmount())
+  }
 })

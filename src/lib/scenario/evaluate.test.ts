@@ -462,6 +462,27 @@ describe("matchup scenario pipeline", () => {
     }
   })
 
+  it("splits the grouped Track before merging while reusing equivalent calculations", () => {
+    const state = withChoiceStats(defaultTrackState(catalog))
+    selectMoves(catalog, state, [424, 127, 89])
+    state.offensePresetIds = ["extreme"]
+    state.defensePresetIds = ["hp-32"]
+    state.attackerItemIds = ["none", 226, 220, 214]
+    const merged = runScenarioPipeline(catalog, state)
+    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    kernel.mockClear()
+
+    const partitioned = runScenarioPipeline(catalog, state, "battle-odds", "held-item")
+    expect(merged.rows).toHaveLength(6)
+    expect(partitioned.rows).toHaveLength(12)
+    expect(kernel).toHaveBeenCalledTimes(6)
+    expect(new Set(partitioned.rows.map(row => row.calculationIdentity)).size).toBe(12)
+    for (const row of partitioned.rows) {
+      expect(Object.values(row.provenance["held-item"]!).flat()).toHaveLength(1)
+    }
+    expect(runScenarioPipeline(catalog, state).rows).toEqual(merged.rows)
+  })
+
   it("expands defender items and merges their neutral damage inputs", () => {
     const state = withChoiceStats(defaultTrackState(catalog))
     selectMoves(catalog, state, [89])

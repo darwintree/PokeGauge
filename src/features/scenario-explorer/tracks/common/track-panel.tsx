@@ -69,36 +69,38 @@ export function TrackPanel({
     >
       {stack ? (
         <div className="track-panel-heading relative flex min-h-10 items-center gap-2 px-3">
-          {expandable && (
+          {expandable ? (
             <button
               type="button"
               aria-expanded={expanded}
               onClick={onToggle}
-              className="hover:bg-token-bg/60 focus-visible:ring-ring absolute inset-0 focus-visible:ring-2 focus-visible:outline-none"
-            />
-          )}
-          <span
-            className={cn(
-              "relative flex min-w-0 flex-1 items-center gap-2",
-              expandable && "pointer-events-none",
-            )}
-          >
-            <Icon className="text-muted-foreground size-3.5 shrink-0" strokeWidth={1.75} />
-            <span className="flex min-w-0 items-center gap-1 text-xs font-extrabold">
-              {sideMark}
-              <span className="truncate">{label}</span>
+              className="hover:bg-token-bg/60 focus-visible:ring-ring absolute inset-0 flex w-full items-center gap-2 px-3 text-left focus-visible:ring-2 focus-visible:outline-none"
+            >
+              <Icon className="pointer-events-none text-muted-foreground size-3.5 shrink-0" strokeWidth={1.75} />
+              <span className="pointer-events-none flex min-w-0 items-center gap-1 text-xs font-extrabold">
+                {sideMark}
+                <span className="truncate">{label}</span>
+              </span>
+              <ChevronDown
+                className={cn(
+                  "pointer-events-none ml-auto size-3.5 shrink-0 text-muted-foreground transition-transform",
+                  expanded && "rotate-180",
+                )}
+              />
+            </button>
+          ) : (
+            <span className="relative flex min-w-0 flex-1 items-center gap-2">
+              <Icon className="text-muted-foreground size-3.5 shrink-0" strokeWidth={1.75} />
+              <span className="flex min-w-0 items-center gap-1 text-xs font-extrabold">
+                {sideMark}
+                <span className="truncate">{label}</span>
+              </span>
             </span>
-          </span>
-          {headerTrailing && (!expandable || expanded) && (
-            <div className="relative z-10 flex shrink-0 items-center">{headerTrailing}</div>
           )}
-          {expandable && (
-            <ChevronDown
-              className={cn(
-                "pointer-events-none relative size-3.5 shrink-0 text-muted-foreground transition-transform",
-                expanded && "rotate-180",
-              )}
-            />
+          {headerTrailing && (!expandable || expanded) && (
+            <div className={cn("relative z-10 ml-auto flex shrink-0 items-center", expandable && "mr-5")}>
+              {headerTrailing}
+            </div>
           )}
         </div>
       ) : (
