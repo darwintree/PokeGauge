@@ -3,6 +3,7 @@ import { FormattedMessage, useIntl } from "react-intl"
 
 import type { MatchupCatalog, MoveCategory, BattlePokemonOption } from "@/lib/catalog"
 import type { BattlePokemonId } from "@/lib/resources"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 import { AbilityTrack } from "./tracks/common/ability-track"
 import { HeldItemTrack } from "./tracks/held-item/held-item-track"
@@ -15,10 +16,12 @@ import { TerrainTrack } from "./tracks/common/terrain-track"
 import type { ScenarioState } from "./state/use-scenario-state"
 import { WeatherTrack } from "./tracks/common/weather-track"
 
+import "./matchup/battle-pokemon-identity.css"
+
+type AccordionTrackId = "moves" | "offenseStats" | "defenseStats"
+
 type TrackId =
-  | "moves"
-  | "offenseStats"
-  | "defenseStats"
+  | AccordionTrackId
   | "attackerStages"
   | "defenderStages"
   | "attackerItems"
@@ -53,10 +56,11 @@ export function ScenarioSetupPanel({
   onMoveCategoryChange,
 }: ScenarioSetupPanelProps) {
   const intl = useIntl()
-  const [activeId, setActiveId] = useState<TrackId | null>(null)
+  const [activeId, setActiveId] = useState<AccordionTrackId | null>(null)
   const { trackState } = state
 
-  function toggle(id: TrackId) {
+
+  function toggle(id: AccordionTrackId) {
     setActiveId((current) => (current === id ? null : id))
   }
 
@@ -116,10 +120,10 @@ export function ScenarioSetupPanel({
         label={<FormattedMessage id="track.stage" />}
         ariaLabel={intl.formatMessage({ id: "track.attackerStage" })}
         side="attacker"
+        pool={trackState.attackerStagePool}
         values={trackState.attackerStages}
         onChange={state.setAttackerStages}
-        expanded={activeId === "attackerStages"}
-        onToggle={() => toggle("attackerStages")}
+        onAdd={state.addAttackerStage}
       />
     ),
     defenderStages: (
@@ -127,10 +131,10 @@ export function ScenarioSetupPanel({
         label={<FormattedMessage id="track.stage" />}
         ariaLabel={intl.formatMessage({ id: "track.defenderStage" })}
         side="defender"
+        pool={trackState.defenderStagePool}
         values={trackState.defenderStages}
         onChange={state.setDefenderStages}
-        expanded={activeId === "defenderStages"}
-        onToggle={() => toggle("defenderStages")}
+        onAdd={state.addDefenderStage}
       />
     ),
     attackerItems: (
@@ -143,8 +147,6 @@ export function ScenarioSetupPanel({
         onFormTriggerConfirm={onAttackerChange}
         selectableIds={new Set(attackers.map((option) => option.id))}
         lockedId={catalog.attackerLockedItemId}
-        expanded={activeId === "attackerItems"}
-        onToggle={() => toggle("attackerItems")}
       />
     ),
     defenderItems: (
@@ -158,8 +160,6 @@ export function ScenarioSetupPanel({
         onFormTriggerConfirm={onDefenderChange}
         selectableIds={new Set(defenders.map((option) => option.id))}
         lockedId={catalog.defenderLockedItemId}
-        expanded={activeId === "defenderItems"}
-        onToggle={() => toggle("defenderItems")}
       />
     ),
     attackerAbilities: (
@@ -168,9 +168,6 @@ export function ScenarioSetupPanel({
         options={catalog.attackerAbilities}
         selectedIds={trackState.attackerAbilityIds}
         onChange={state.setAttackerAbilityIds}
-        onReset={state.resetAttackerAbilities}
-        expanded={activeId === "attackerAbilities"}
-        onToggle={() => toggle("attackerAbilities")}
       />
     ),
     defenderAbilities: (
@@ -179,89 +176,88 @@ export function ScenarioSetupPanel({
         options={catalog.defenderAbilities}
         selectedIds={trackState.defenderAbilityIds}
         onChange={state.setDefenderAbilityIds}
-        onReset={state.resetDefenderAbilities}
-        expanded={activeId === "defenderAbilities"}
-        onToggle={() => toggle("defenderAbilities")}
       />
     ),
     weather: (
       <WeatherTrack
+        pool={trackState.weatherPool}
+        onAdd={state.addWeather}
         values={trackState.weathers}
         onChange={state.setWeathers}
-        expanded={activeId === "weather"}
-        onToggle={() => toggle("weather")}
       />
     ),
     terrain: (
       <TerrainTrack
+        pool={trackState.terrainPool}
+        onAdd={state.addTerrain}
         values={trackState.terrains}
         onChange={state.setTerrains}
-        expanded={activeId === "terrain"}
-        onToggle={() => toggle("terrain")}
       />
     ),
     screens: (
       <ScreenTrack
         values={trackState.screens}
         onChange={state.setScreens}
-        expanded={activeId === "screens"}
-        onToggle={() => toggle("screens")}
       />
     ),
   }
 
-  function pair(leftId: TrackId | null, rightId: TrackId | null) {
-    const selected = [leftId, rightId].find((id) => id === activeId)
-    const peer = selected === leftId ? rightId : leftId
-
-    if (selected) {
-      return (
-        <div className="grid grid-cols-2 gap-2">
-          <div key={selected} data-track-id={selected} className="col-span-2">
-            {tracks[selected]}
-          </div>
-          {peer && (
-            <div key={peer} data-track-id={peer}>
-              {tracks[peer]}
-            </div>
-          )}
-        </div>
-      )
-    }
-
-    return (
-      <div className="grid grid-cols-2 gap-2">
-        {leftId ? <div data-track-id={leftId}>{tracks[leftId]}</div> : <div />}
-        {rightId ? <div data-track-id={rightId}>{tracks[rightId]}</div> : <div />}
-      </div>
-    )
-  }
-
   return (
-    <section aria-label={intl.formatMessage({ id: "app.setup" })} className="space-y-3">
-      <div className="grid grid-cols-2 gap-2">
+    <section aria-label={intl.formatMessage({ id: "app.setup" })} className="setup-panel flex flex-col gap-4">
+      <div className="battle-pokemon-identities grid grid-cols-2">
         <BattlePokemonPicker
           label={intl.formatMessage({ id: "matchup.attacker" })}
           options={attackers}
           value={attackerId}
           onChange={onAttackerChange}
+          compactSide="attacker"
           spriteSide="back"
         />
         <BattlePokemonPicker
           label={intl.formatMessage({ id: "matchup.defender" })}
+          compactSide="defender"
           options={defenders}
           value={defenderId}
           onChange={onDefenderChange}
         />
       </div>
 
-      <div data-track-id="moves">{tracks.moves}</div>
-      {pair("offenseStats", "defenseStats")}
-      {pair("attackerStages", "defenderStages")}
-      {pair("attackerAbilities", "defenderAbilities")}
-      {pair("attackerItems", "defenderItems")}
-      {pair("terrain", "screens")}
-      {pair("weather", null)}
+      <div className="setup-controls" data-track-id="moves">{tracks.moves}</div>
+      <div
+        className="setup-sides"
+        data-editing-stats={activeId === "offenseStats" || activeId === "defenseStats"}
+      >
+        <SetupSection title={intl.formatMessage({ id: "matchup.attacker" })}>
+          <div data-track-id="offenseStats">{tracks.offenseStats}</div>
+          <div data-track-id="attackerStages">{tracks.attackerStages}</div>
+          <div data-track-id="attackerAbilities">{tracks.attackerAbilities}</div>
+          <div data-track-id="attackerItems">{tracks.attackerItems}</div>
+        </SetupSection>
+        <SetupSection title={intl.formatMessage({ id: "matchup.defender" })}>
+          <div data-track-id="defenseStats">{tracks.defenseStats}</div>
+          <div data-track-id="defenderStages">{tracks.defenderStages}</div>
+          <div data-track-id="defenderAbilities">{tracks.defenderAbilities}</div>
+          <div data-track-id="defenderItems">{tracks.defenderItems}</div>
+          <div data-track-id="screens">{tracks.screens}</div>
+        </SetupSection>
+      </div>
+      <SetupSection title={intl.formatMessage({ id: "setup.sharedField" })}>
+        <div className="grid grid-cols-2">
+          <div className="min-w-0" data-track-id="terrain">{tracks.terrain}</div>
+          <div className="min-w-0 border-l border-hairline" data-track-id="weather">{tracks.weather}</div>
+        </div>
+      </SetupSection>
     </section>
+  )
+}
+
+function SetupSection({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <Card className="setup-controls min-w-0 gap-0 overflow-visible py-0 ring-0" role="group" aria-label={title}>
+      <CardHeader className="px-3 py-2">
+        <CardTitle className="text-xs font-extrabold">{title}</CardTitle>
+      </CardHeader>
+      <CardContent className="setup-section-tracks px-0">{children}</CardContent>
+    </Card>
   )
 }

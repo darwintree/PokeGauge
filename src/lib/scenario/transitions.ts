@@ -31,7 +31,9 @@ export function trackStateAfterCatalogTransition(
     ...defaultTrackState(catalog),
     screens: state.screens,
     ...(!identityChanged && {
+      weatherPool: state.weatherPool,
       weathers: state.weathers,
+      terrainPool: state.terrainPool,
       terrains: state.terrains,
     }),
     ...(attackerChanged && catalog.attackerPreservesItem &&

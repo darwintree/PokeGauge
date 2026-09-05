@@ -36,12 +36,15 @@ function scenario(): ScenarioSnapshotInput {
       statRange: { min: 130, max: 182 },
       offenseAllocationIndices: {},
       attackerStages: [0],
+      attackerStagePool: [0],
       attackerItemPoolIds: ["none"],
       defenderItemPoolIds: ["none"],
       attackerItemIds: ["none"],
       defenderItemIds: ["none"],
       attackerAbilityIds: [8],
+      weatherPool: ["none"],
       weathers: ["none"],
+      terrainPool: ["none"],
       terrains: ["none"],
       defenderMode: "preset",
       defensePresetIds: [],
@@ -52,6 +55,7 @@ function scenario(): ScenarioSnapshotInput {
       },
       defenseAllocationIndices: {},
       defenderStages: [0],
+      defenderStagePool: [0],
       defenderAbilityIds: [22],
       screens: ["none"],
     },
@@ -141,6 +145,41 @@ describe("scenario storage", () => {
     })
 
     expect(loadScenarioSnapshot()).toEqual({ version: 5, ...input })
+  })
+
+  it("restores missing field pools from legacy selections", () => {
+    const input = scenario()
+    const { weatherPool: _weatherPool, terrainPool: _terrainPool, ...trackState } = input.trackState
+    data[SCENARIO_STORAGE_KEY] = JSON.stringify({
+      ...input, version: 5,
+      trackState: { ...trackState, weathers: ["rain"], terrains: ["grassy"] },
+    })
+    const loaded = loadScenarioSnapshot()
+    expect(loaded?.trackState.weatherPool).toEqual(["none", "rain"])
+    expect(loaded?.trackState.terrainPool).toEqual(["none", "grassy"])
+    expect(loaded?.trackState.weathers).toEqual(["rain"])
+    expect(loaded?.trackState.terrains).toEqual(["grassy"])
+  })
+
+  it("fills missing stage pools from selected stages", () => {
+    const input = scenario()
+    const {
+      attackerStagePool: _attackerStagePool,
+      defenderStagePool: _defenderStagePool,
+      ...trackState
+    } = input.trackState
+    data[SCENARIO_STORAGE_KEY] = JSON.stringify({
+      version: 5,
+      attackerId: input.attackerId,
+      defenderId: input.defenderId,
+      moveCategory: input.moveCategory,
+      trackState: { ...trackState, attackerStages: [-1, 0] },
+    })
+
+    const loaded = loadScenarioSnapshot()
+    expect(loaded?.trackState.attackerStagePool).toEqual([-1, 0])
+    expect(loaded?.trackState.defenderStagePool).toEqual([0])
+    expect(loaded?.trackState.attackerStages).toEqual([-1, 0])
   })
 
   it("round trips numeric upstream held-item identities", () => {

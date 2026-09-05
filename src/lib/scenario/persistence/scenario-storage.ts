@@ -9,6 +9,7 @@ import type { MatchupCatalog, MoveCategory } from "@/lib/catalog"
 import { moveCanBecomeSpread } from "@/lib/move"
 import {
   defensePresetsForState,
+  mergeStagePool,
   offensePresetsForState,
 } from "../state"
 import {
@@ -147,14 +148,23 @@ function isTrackState(value: unknown): value is TrackState {
     isArrayOf(value.attackerStages, (stage): stage is TrackState["attackerStages"][number] =>
       isOneOf(stage, STAT_STAGES),
     ) &&
+    isArrayOf(value.attackerStagePool, (stage): stage is TrackState["attackerStagePool"][number] =>
+      isOneOf(stage, STAT_STAGES),
+    ) &&
     isArrayOf(value.attackerItemPoolIds, isHeldItemId) &&
     isArrayOf(value.defenderItemPoolIds, isHeldItemId) &&
     isArrayOf(value.attackerItemIds, isHeldItemId) &&
     isArrayOf(value.defenderItemIds, isHeldItemId) &&
     isArrayOf(value.attackerAbilityIds, isInteger) &&
 
+    isArrayOf(value.weatherPool, (value): value is TrackState["weatherPool"][number] =>
+      isOneOf(value, WEATHERS),
+    ) &&
     isArrayOf(value.weathers, (weather): weather is TrackState["weathers"][number] =>
       isOneOf(weather, WEATHERS),
+    ) &&
+    isArrayOf(value.terrainPool, (value): value is TrackState["terrainPool"][number] =>
+      isOneOf(value, TERRAINS),
     ) &&
     isArrayOf(value.terrains, (terrain): terrain is TrackState["terrains"][number] =>
       isOneOf(terrain, TERRAINS),
@@ -172,6 +182,9 @@ function isTrackState(value: unknown): value is TrackState {
     isArrayOf(value.defenderStages, (stage): stage is TrackState["defenderStages"][number] =>
       isOneOf(stage, STAT_STAGES),
     ) &&
+    isArrayOf(value.defenderStagePool, (stage): stage is TrackState["defenderStagePool"][number] =>
+      isOneOf(stage, STAT_STAGES),
+    ) &&
     isArrayOf(value.defenderAbilityIds, isInteger) &&
     isArrayOf(value.screens, (screen): screen is TrackState["screens"][number] =>
       isOneOf(screen, SCREENS),
@@ -179,7 +192,7 @@ function isTrackState(value: unknown): value is TrackState {
   )
 }
 
-function withItemPools(trackState: Record<string, unknown>): Record<string, unknown> {
+function withChoicePools(trackState: Record<string, unknown>): Record<string, unknown> {
   const {
     showOffenseStatValue: _showOffenseStatValue,
     showDefenseStatValue: _showDefenseStatValue,
@@ -187,14 +200,36 @@ function withItemPools(trackState: Record<string, unknown>): Record<string, unkn
     probabilityMode: _probabilityMode,
     ...rest
   } = trackState
+  const attackerStages = Array.isArray(trackState.attackerStages)
+    ? trackState.attackerStages.filter((stage): stage is TrackState["attackerStages"][number] =>
+      isOneOf(stage, STAT_STAGES),
+    )
+    : []
+  const defenderStages = Array.isArray(trackState.defenderStages)
+    ? trackState.defenderStages.filter((stage): stage is TrackState["defenderStages"][number] =>
+      isOneOf(stage, STAT_STAGES),
+    )
+    : []
   return {
     ...rest,
+    terrainPool: trackState.terrainPool ?? [
+      ...new Set(["none", ...(Array.isArray(trackState.terrains) ? trackState.terrains : [])]),
+    ],
+    weatherPool: trackState.weatherPool ?? [
+      ...new Set(["none", ...(Array.isArray(trackState.weathers) ? trackState.weathers : [])]),
+    ],
     attackerItemPoolIds: Array.isArray(trackState.attackerItemPoolIds)
       ? trackState.attackerItemPoolIds
       : trackState.attackerItemIds,
     defenderItemPoolIds: Array.isArray(trackState.defenderItemPoolIds)
       ? trackState.defenderItemPoolIds
       : trackState.defenderItemIds,
+    attackerStagePool: Array.isArray(trackState.attackerStagePool)
+      ? trackState.attackerStagePool
+      : mergeStagePool([], attackerStages),
+    defenderStagePool: Array.isArray(trackState.defenderStagePool)
+      ? trackState.defenderStagePool
+      : mergeStagePool([], defenderStages),
   }
 }
 
@@ -217,7 +252,7 @@ function migrateLegacyScenarioSnapshot(value: unknown): unknown {
     return {
       ...value,
       version: SCENARIO_STORAGE_VERSION,
-      trackState: withItemPools({
+      trackState: withChoicePools({
         ...trackState,
         offensePresetIds: offenseTemplateIds,
         offenseTemporaryPresets: offenseTemporaryTemplates,
@@ -231,13 +266,13 @@ function migrateLegacyScenarioSnapshot(value: unknown): unknown {
     return {
       ...value,
       version: SCENARIO_STORAGE_VERSION,
-      trackState: withItemPools(value.trackState),
+      trackState: withChoicePools(value.trackState),
     }
   }
 
   return {
     ...value,
-    trackState: withItemPools(value.trackState),
+    trackState: withChoicePools(value.trackState),
   }
 }
 
@@ -413,13 +448,17 @@ export function scenarioSnapshotMatchesCatalog(
     hasUniqueValues(state.selectedMoveSnapshotIds) &&
     hasUniqueValues(state.offensePresetIds) &&
     hasUniqueValues(state.attackerStages) &&
+    hasUniqueValues(state.attackerStagePool) &&
     hasUniqueValues(state.attackerItemIds) &&
     hasUniqueValues(state.defenderItemIds) &&
     hasUniqueValues(state.attackerAbilityIds) &&
+    hasUniqueValues(state.weatherPool) &&
     hasUniqueValues(state.weathers) &&
+    hasUniqueValues(state.terrainPool) &&
     hasUniqueValues(state.terrains) &&
     hasUniqueValues(state.defensePresetIds) &&
     hasUniqueValues(state.defenderStages) &&
+    hasUniqueValues(state.defenderStagePool) &&
     hasUniqueValues(state.defenderAbilityIds) &&
     hasUniqueValues(state.screens) &&
     hasOnlyKnownIds(state.offensePresetIds, offensePresetIds) &&

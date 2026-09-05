@@ -8,12 +8,11 @@ import type { CatalogMoveOption, MoveCategory } from "@/lib/catalog"
 import type { MoveSnapshot } from "@/lib/move"
 import type { PokemonType } from "@/lib/pokemon"
 import type { BattlePokemonId } from "@/lib/resources"
+import { cn } from "@/lib/utils"
+import { TrackOption, TrackOptionAdd, TrackOptionGroup } from "../common/track-option"
 import { MovePickerDialog } from "./move-picker-dialog"
 import type { MoveSnapshotPatch } from "./move-snapshot-row"
 import { MoveSnapshotRow } from "./move-snapshot-row"
-
-const collapsedSelectedMoveChipClass =
-  "pointer-events-auto relative inline-flex max-w-full items-center gap-1 rounded-[9px] border-2 border-card-border bg-paper px-1.5 py-0.5 transition-colors active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-ink [&:is(:hover,:active,:focus-visible)]:border-ink [&:is(:hover,:active,:focus-visible)]:bg-signal-yellow [&:is(:hover,:active,:focus-visible)]:shadow-hud-chip"
 
 export type MoveTrackProps = {
   label: string
@@ -91,7 +90,6 @@ export function MoveTrack({
     [options],
   )
   const selectedIds = useMemo(() => new Set(selectedSnapshotIds), [selectedSnapshotIds])
-  const selectedSnapshots = snapshots.filter((snapshot) => selectedIds.has(snapshot.id))
   function add(moveId: number) {
     const snapshotId = onAdd(moveId)
     if (snapshotId) setEditingId(snapshotId)
@@ -107,11 +105,6 @@ export function MoveTrack({
     )
   }
 
-  function selectSnapshot(snapshotId: string) {
-    setEditingId(snapshotId)
-    if (!expanded) onToggle()
-  }
-
   function removeSnapshot(snapshotId: string) {
     const index = snapshots.findIndex((snapshot) => snapshot.id === snapshotId)
     const next = snapshots[index + 1] ?? snapshots[index - 1]
@@ -120,85 +113,78 @@ export function MoveTrack({
   }
 
   return (
-    <section className="overflow-hidden rounded-[14px] border-2 border-ink bg-paper shadow-hud-panel transition-colors">
+    <section className="track-panel">
+      <div className="track-panel-heading group relative flex min-h-11 items-center gap-2 px-3">
+        <button
+          type="button"
+          aria-expanded={expanded}
+          aria-label={intl.formatMessage({ id: expanded ? "track.move.collapse" : "track.move.expand" })}
+          className="absolute inset-0 hover:bg-token-bg/60 active:bg-token-bg/80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+          onClick={onToggle}
+        />
+        <Swords
+          className="pointer-events-none relative size-3.5 shrink-0 text-muted-foreground"
+          strokeWidth={1.75}
+        />
+        <span className="pointer-events-none relative text-xs font-extrabold">{label}</span>
+        <div className="relative z-10 ml-auto">
+          <MoveCategoryControl
+            category={category}
+            onChange={onCategoryChange}
+          />
+        </div>
+        <ChevronDown
+          className={cn(
+            "pointer-events-none relative size-3.5 shrink-0 text-muted-foreground transition-transform",
+            expanded && "rotate-180",
+          )}
+        />
+      </div>
       {!expanded ? (
         <>
-          <div className="group relative flex h-11 items-center gap-2 px-2.5 sm:h-10">
+          <div className="track-panel-pool relative px-3 pb-3">
             <button
               type="button"
-              aria-expanded={false}
               aria-label={intl.formatMessage({ id: "track.move.expand" })}
               className="absolute inset-0 hover:bg-token-bg/60 active:bg-token-bg/80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
               onClick={onToggle}
             />
-            <Swords
-              className="pointer-events-none relative size-3.5 shrink-0 text-muted-foreground"
-              strokeWidth={1.75}
-            />
-            <span className="pointer-events-none relative text-xs font-extrabold">{label}</span>
-            <div className="relative z-10 ml-auto">
-              <MoveCategoryControl
-                category={category}
-                onChange={onCategoryChange}
+            <TrackOptionGroup
+              aria-label={label}
+              className="pointer-events-none relative"
+            >
+              {snapshots.length === 0 ? (
+                <span className="flex h-7 items-center text-[11px] text-muted-foreground">
+                  {intl.formatMessage({ id: "track.move.noneSelected" })}
+                </span>
+              ) : snapshots.map((snapshot) => {
+                const option = optionById.get(snapshot.moveId)
+                if (!option) return null
+                return (
+                  <TrackOption
+                    key={snapshot.id}
+                    layout="text"
+                    pressed={selectedIds.has(snapshot.id)}
+                    className="pointer-events-auto max-w-full px-1.5"
+                    ariaLabel={option.label}
+                    onToggle={() => toggleSelection(snapshot)}
+                  >
+                    <TypeBadge type={option.type} />
+                    <span className="min-w-0 text-left">{option.label}</span>
+                  </TrackOption>
+                )
+              })}
+              <TrackOptionAdd
+                layout="text"
+                className="pointer-events-auto relative z-10"
+                ariaLabel={intl.formatMessage({ id: "track.addMove" })}
+                onClick={() => setOpen(true)}
               />
-            </div>
-            <ChevronDown className="pointer-events-none relative size-3.5 shrink-0 text-muted-foreground" />
-          </div>
-          <div className="relative border-t px-2.5 py-2">
-            <button
-              type="button"
-              aria-label={intl.formatMessage({ id: "track.move.expand" })}
-              className="absolute inset-0 hover:bg-token-bg/60 active:bg-token-bg/80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-              onClick={onToggle}
-            />
-            {selectedSnapshots.length === 0 ? (
-              <div className="relative flex h-7 items-center text-[11px] text-muted-foreground">
-                {intl.formatMessage({ id: "track.move.noneSelected" })}
-              </div>
-            ) : (
-              <div className="pointer-events-none relative flex flex-wrap gap-1.5">
-                {selectedSnapshots.map((snapshot) => {
-                  const option = optionById.get(snapshot.moveId)
-                  if (!option) return null
-                  return (
-                    <button
-                      key={snapshot.id}
-                      type="button"
-                      className={collapsedSelectedMoveChipClass}
-                      onClick={() => selectSnapshot(snapshot.id)}
-                    >
-                      <TypeBadge type={option.type} />
-                      <span className="truncate text-[11px] font-extrabold">{option.label}</span>
-                    </button>
-                  )
-                })}
-              </div>
-            )}
+            </TrackOptionGroup>
           </div>
         </>
       ) : (
         <>
-          <div className="group relative flex h-11 items-center gap-2 px-2.5 sm:h-10">
-            <button
-              type="button"
-              aria-expanded={true}
-              aria-label={intl.formatMessage({ id: "track.move.collapse" })}
-              className="absolute inset-0 hover:bg-token-bg/60 active:bg-token-bg/80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-              onClick={onToggle}
-            />
-            <Swords
-              className="pointer-events-none relative size-3.5 shrink-0 text-muted-foreground"
-              strokeWidth={1.75}
-            />
-            <span className="pointer-events-none relative text-xs font-extrabold">{label}</span>
-            <div className="relative z-10 ml-auto">
-              <MoveCategoryControl
-                category={category}
-                onChange={onCategoryChange}
-              />
-            </div>
-            <ChevronDown className="pointer-events-none relative size-3.5 shrink-0 rotate-180 text-muted-foreground transition-transform" />
-          </div>
           <div className="border-t">
             {snapshots.map((snapshot) => {
               const option = optionById.get(snapshot.moveId)

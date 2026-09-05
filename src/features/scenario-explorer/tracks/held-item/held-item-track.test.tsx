@@ -87,7 +87,7 @@ describe("held-item Tracks", () => {
     expect(onChange).not.toHaveBeenCalled()
   })
 
-  it("collapses selected items into the header row", async () => {
+  it("lists the item Choice Pool without expanding", async () => {
     const catalog = await getCatalogShell(445, 727, "en")
 
     await renderTrack({
@@ -95,19 +95,16 @@ describe("held-item Tracks", () => {
       poolIds: ["none", 247],
       selectedIds: ["none", 247],
       selectableIds: new Set([445, 727]),
-      expanded: false,
       onChange: vi.fn(),
       onAdd: vi.fn(),
       onFormTriggerConfirm: vi.fn(),
     })
 
     const section = container.querySelector("section")
-    expect(section?.querySelectorAll(":scope > div")).toHaveLength(1)
-    expect(
-      section?.querySelector('button[aria-expanded="false"] img[src*="life-orb"]'),
-    ).not.toBeNull()
-    expect(container.querySelector("button.track-option")).toBeNull()
-    expect(container.querySelector('button[aria-label="Add held item"]')).toBeNull()
+    expect(section?.querySelectorAll(":scope > div")).toHaveLength(2)
+    expect(section?.querySelector("[aria-expanded]")).toBeNull()
+    expect(container.querySelectorAll("button.track-option:not(.track-option--add)")).toHaveLength(2)
+    expect(container.querySelector('button[aria-label="Add held item"]')).not.toBeNull()
     expect(container.querySelector('img[src*="life-orb"]')).not.toBeNull()
     expect(container.querySelector(".lucide-circle-slash")).not.toBeNull()
   })
@@ -124,7 +121,7 @@ describe("held-item Tracks", () => {
       onAdd: vi.fn(),
       onFormTriggerConfirm: vi.fn(),
     })
-    expect(container.querySelectorAll("button.track-option")).toHaveLength(1)
+    expect(container.querySelectorAll("button.track-option:not(.track-option--add)")).toHaveLength(1)
     expect(container.querySelector('button[aria-label="Life Orb"]')).not.toBeNull()
     expect(container.querySelector('button[aria-label="Add held item"]')).not.toBeNull()
   })

@@ -10,8 +10,9 @@ import {
   SNOW_WARNING_ABILITY_ID,
 } from "@/lib/ability"
 import type { MoveCategory } from "@/lib/catalog"
-import { STAT_STAGES, TERRAINS, WEATHERS } from "@/lib/damage-calculation"
+import { TERRAINS, WEATHERS } from "@/lib/damage-calculation"
 
+import { mergeStagePool, mergeStageSelection } from "./state"
 import type { TrackState } from "./types"
 
 export function projectAbilitySelections(
@@ -37,26 +38,37 @@ export function projectAbilitySelections(
     }
   }
 
-  const stageAdditions = new Set<TrackState["attackerStages"][number]>()
+  const stageAdditions: TrackState["attackerStages"] = []
   if (category === "physical") {
-    if (defenderAbilityIds.includes(INTIMIDATE_ABILITY_ID)) stageAdditions.add(-1)
-    if (attackerAbilityIds.includes(DEFIANT_ABILITY_ID)) stageAdditions.add(1)
+    if (defenderAbilityIds.includes(INTIMIDATE_ABILITY_ID)) stageAdditions.push(-1)
+    if (attackerAbilityIds.includes(DEFIANT_ABILITY_ID)) stageAdditions.push(1)
   } else if (attackerAbilityIds.includes(COMPETITIVE_ABILITY_ID)) {
-    stageAdditions.add(2)
+    stageAdditions.push(2)
   }
+
+  const weathers = stageOnly
+    ? state.weathers
+    : WEATHERS.filter((value) => state.weathers.includes(value) || weatherAdditions.has(value))
+  const terrains = stageOnly
+    ? state.terrains
+    : TERRAINS.filter((value) =>
+        state.terrains.includes(value) || (value === "electric" && addElectricTerrain),
+      )
 
   return {
     ...state,
-    weathers: stageOnly
-      ? state.weathers
-      : WEATHERS.filter((value) => state.weathers.includes(value) || weatherAdditions.has(value)),
-    terrains: stageOnly
-      ? state.terrains
-      : TERRAINS.filter((value) =>
-          state.terrains.includes(value) || (value === "electric" && addElectricTerrain),
-        ),
-    attackerStages: STAT_STAGES.filter((value) =>
-      state.attackerStages.includes(value) || stageAdditions.has(value),
+    weathers,
+    terrains,
+    weatherPool: WEATHERS.filter((value) =>
+      value === "none" || state.weatherPool.includes(value) || weathers.includes(value),
     ),
+    terrainPool: TERRAINS.filter((value) =>
+      value === "none" || state.terrainPool.includes(value) || terrains.includes(value),
+    ),
+    attackerStagePool: mergeStagePool(
+      state.attackerStagePool,
+      [...state.attackerStages, ...stageAdditions],
+    ),
+    attackerStages: mergeStageSelection(state.attackerStages, stageAdditions),
   }
 }

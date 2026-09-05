@@ -30,6 +30,10 @@ _Avoid_: Track, Filter (as Track), Scenario Setup preference
 取值为离散集合的 Track；集合中的每个值各自形成一条组合分支。
 _Avoid_: Multi-select Track, option list
 
+**Choice Pool（选项池）**:
+一条 Choice Track 上已加入的取值集合；其中已选中的项各成一条 Scenario 分支，未选中的项仍留在池中但不生成 Scenario。
+_Avoid_: Candidate pool, 候选池, 备选池, Picker Filter
+
 **Track Selection Activation**:
 对于具有默认 Neutral Selection 的 Choice Track，表示一个 Selection 是否对最终结果有贡献。取值为 `active`、`inactive`、`unsupported` 或 `neutral`。
 _Avoid_: Source State, Effective
@@ -79,7 +83,7 @@ Stat Track 中的一个确定值；Offense Stat Value 是攻击或特攻的单�
 _Avoid_: Base Stat, EV spread, Stat Allocation
 
 **Stat Preset（能力值预设）**:
-可复用的固定 Stat Value（系统或用户保存）；它是 Choice 池里的选项来源，不是选中集合的身份，也不是与 Range 对位的模式名。
+可复用的固定 Stat Value（系统或用户保存）；它是 Choice 模式选项的来源，不是选中集合的身份，也不是与 Range 对位的模式名。
 _Avoid_: Stat Value Template, preset spread, mode name for Choice, selected-stat identity
 
 **Temporary Stat Value（临时能力实数值）**:
@@ -99,7 +103,7 @@ Stat Allocation 的展示值，由 Stat Value 反向求得可产生该值的 All
 _Avoid_: Stat Value, actual value, preset name
 
 **Move Track（招式 Track）**:
-保存 Move Snapshot 的 Choice Track；每个已选 Snapshot 形成一条 Scenario 分支，未选 Snapshot 保留但不参与 Scenario 生成。
+保存 Move Snapshot 的 Choice Track；全部 Snapshot 构成该 Track 的 Choice Pool，每个已选 Snapshot 形成一条 Scenario 分支，未选 Snapshot 保留但不参与 Scenario 生成。
 _Avoid_: Move list, Move Template Track
 
 **Move Template（招式模板）**:

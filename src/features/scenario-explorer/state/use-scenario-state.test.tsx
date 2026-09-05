@@ -98,6 +98,7 @@ describe("async default lifecycle", () => {
     })
     expect(current.trackState.attackerAbilityIds).toEqual([DRIZZLE_ABILITY_ID])
     expect(current.trackState.weathers).toEqual(["none", "rain"])
+    expect(current.trackState.weatherPool).toContain("rain")
     expect(current.trackState.attackerStages).toEqual([-1, 0])
   })
 
@@ -201,6 +202,50 @@ describe("async default lifecycle", () => {
     await render({ ...nextShell, defaultAbilityPickStatus: "ready" }, restored)
     expect(current.trackState.weathers).toEqual(["none", "rain"])
     expect(current.trackState.attackerStages).toEqual([-1, 0])
+  })
+
+  it("retains field pools independently from selections and persists them locally", async () => {
+    vi.useFakeTimers()
+    const shell = await getCatalogShell(133, 143, "en")
+    await render(shell, defaultTrackState(shell))
+    await act(async () => {
+      current.addWeather("sun")
+      current.addTerrain("grassy")
+    })
+    expect(current.trackState.weathers).toEqual(["none", "sun"])
+    expect(current.trackState.terrains).toEqual(["none", "grassy"])
+    await act(async () => {
+      current.setWeathers(["none"])
+      current.setTerrains(["none"])
+    })
+    expect(current.trackState.weatherPool).toEqual(["none", "sun"])
+    expect(current.trackState.terrainPool).toEqual(["none", "grassy"])
+    await act(async () => vi.advanceTimersByTime(200))
+    const stored = JSON.parse(localStorage.getItem(SCENARIO_STORAGE_KEY)!)
+    expect(stored.trackState.weatherPool).toEqual(["none", "sun"])
+    expect(stored.trackState.terrainPool).toEqual(["none", "grassy"])
+    await render({ ...shell, moveCategory: "special" })
+    expect(current.trackState.weatherPool).toEqual(["none", "sun"])
+    expect(current.trackState.terrainPool).toEqual(["none", "grassy"])
+    vi.useRealTimers()
+  })
+
+  it("adds a stage to the Choice Pool and reset shrinks the pool to 0", async () => {
+    const shell = await getCatalogShell(133, 143, "en")
+    await render(shell)
+    expect(current.trackState.attackerStagePool).toEqual([0])
+
+    await act(async () => current.addAttackerStage(2))
+    expect(current.trackState.attackerStagePool).toEqual([0, 2])
+    expect(current.trackState.attackerStages).toEqual([0, 2])
+
+    await act(async () => current.setAttackerStages([2]))
+    expect(current.trackState.attackerStagePool).toEqual([0, 2])
+    expect(current.trackState.attackerStages).toEqual([2])
+
+    await act(async () => current.resetAttackerStages())
+    expect(current.trackState.attackerStagePool).toEqual([0])
+    expect(current.trackState.attackerStages).toEqual([0])
   })
 
   it("keeps a shared import transient until its first semantic edit", async () => {
