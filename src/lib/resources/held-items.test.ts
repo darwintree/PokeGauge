@@ -3,7 +3,6 @@ import { describe, expect, it } from "vitest"
 import {
   FROZEN_HELD_ITEM_IDS,
   FROZEN_HELD_ITEMS,
-  HELD_ITEM_SPRITES_COMMIT,
   itemDescription,
   itemSpriteUrl,
 } from "@/lib/held-item"
@@ -66,15 +65,16 @@ describe("generated Held-item resources", () => {
     )
   })
 
-  it("builds pinned hotlink URLs for frozen items and Mega Stones", () => {
+  it("builds configured static URLs for frozen items and Mega Stones", () => {
+    const baseUrl = import.meta.env.VITE_STATIC_ASSET_BASE_URL.replace(/\/+$/, "")
     expect(itemSpriteUrl(247)).toBe(
-      `https://raw.githubusercontent.com/PokeAPI/sprites/${HELD_ITEM_SPRITES_COMMIT}/sprites/items/life-orb.png`,
+      `${baseUrl}/sprites/items/life-orb.png`,
     )
     expect(itemSpriteUrl(699)).toBe(
-      `https://raw.githubusercontent.com/PokeAPI/sprites/${HELD_ITEM_SPRITES_COMMIT}/sprites/items/charizardite-x.png`,
+      `${baseUrl}/sprites/items/charizardite-x.png`,
     )
     expect(itemSpriteUrl(1181)).toBe(
-      `https://raw.githubusercontent.com/PokeAPI/sprites/${HELD_ITEM_SPRITES_COMMIT}/sprites/items/gen8/utility-umbrella.png`,
+      `${baseUrl}/sprites/items/gen8/utility-umbrella.png`,
     )
     expect(itemSpriteUrl("unknown-mega-stone")).toBeNull()
     expect(itemSpriteUrl("none")).toBeNull()

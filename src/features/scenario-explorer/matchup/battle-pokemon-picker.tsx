@@ -4,6 +4,7 @@ import { useIntl } from "react-intl"
 
 import { TypeBadgeList } from "@/components/pokemon/type-badge"
 import { Button } from "@/components/ui/button"
+import { pokemonSpriteUrl } from "@/lib/assets"
 import {
   rankPokemonOptionsByChampionsUsage,
   speciesHasMultipleBattlePokemonIdentities,
@@ -109,7 +110,7 @@ export function BattlePokemonPicker({
     changeOpen(false)
   }
 
-  const spriteFile = value == null ? null : `${spriteSide === "back" ? "back/" : ""}${value}.png`
+  const spriteUrl = value == null ? null : pokemonSpriteUrl(value, spriteSide)
   const placeholder =
     selected?.label ?? intl.formatMessage({ id: "matchup.placeholder" })
 
@@ -141,9 +142,9 @@ export function BattlePokemonPicker({
       >
         {compactSide ? (
           <>
-            {spriteFile ? (
+            {spriteUrl ? (
               <img
-                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${spriteFile}`}
+                src={spriteUrl}
                 alt=""
                 className="battle-pokemon-identity-sprite"
               />
@@ -162,9 +163,9 @@ export function BattlePokemonPicker({
           </>
         ) : (
           <>
-            {spriteFile ? (
+            {spriteUrl ? (
               <img
-                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${spriteFile}`}
+                src={spriteUrl}
                 alt=""
                 className="size-10 shrink-0 object-contain [image-rendering:pixelated]"
               />

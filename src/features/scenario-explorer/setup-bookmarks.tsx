@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/dialog"
 import { Empty, EmptyHeader, EmptyTitle } from "@/components/ui/empty"
 import { Input } from "@/components/ui/input"
+import { pokemonSpriteUrl } from "@/lib/assets"
 import type { BattlePokemonOption, MatchupCatalog } from "@/lib/catalog"
 import {
   decodeSetupBookmarkToken,
@@ -89,11 +90,6 @@ function bookmarkTitle(
   return `${attacker} → ${defender}`
 }
 
-function spriteUrl(id: number, side: "front" | "back"): string {
-  const file = side === "back" ? `back/${id}.png` : `${id}.png`
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${file}`
-}
-
 function PokemonSprite({
   id,
   side,
@@ -104,7 +100,7 @@ function PokemonSprite({
   dimmed?: boolean
 }) {
   const [failed, setFailed] = useState(false)
-  const src = id && id > 0 ? spriteUrl(id, side) : null
+  const src = id && id > 0 ? pokemonSpriteUrl(id, side) : null
   return (
     <span
       className={cn(
