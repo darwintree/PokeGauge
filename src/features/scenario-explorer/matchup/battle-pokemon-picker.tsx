@@ -1,4 +1,4 @@
-import { Layers3, Plus } from "lucide-react"
+import { ChevronDown, Plus } from "lucide-react"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useIntl } from "react-intl"
 
@@ -193,20 +193,19 @@ export function BattlePokemonPicker({
       </Button>
 
       {!disabled && showFormBadge && (
-        <button
+        <Button
           type="button"
+          size="sm"
           aria-label={intl.formatMessage({ id: "matchup.forms.open" })}
-          className={cn(
-            "battle-pokemon-form-trigger absolute grid size-8 place-items-center rounded-full border-2 border-ink bg-paper text-ink shadow-hud-chip outline-none transition-colors hover:bg-signal-yellow focus-visible:ring-2 focus-visible:ring-ring active:translate-y-px active:shadow-none",
-            "-top-2 -right-2",
-          )}
+          aria-haspopup="dialog"
+          className="battle-pokemon-form-trigger"
           onClick={() => {
             resetPickerFilter(true)
             changeOpen(true)
           }}
         >
-          <Layers3 className="size-4" aria-hidden />
-        </button>
+          FORM <ChevronDown aria-hidden data-icon="inline-end" />
+        </Button>
       )}
 
       <BattlePokemonPickerDialog
