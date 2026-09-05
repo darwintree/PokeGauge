@@ -157,8 +157,14 @@ function isTrackState(value: unknown): value is TrackState {
     isArrayOf(value.defenderItemIds, isHeldItemId) &&
     isArrayOf(value.attackerAbilityIds, isInteger) &&
 
+    isArrayOf(value.weatherPool, (value): value is TrackState["weatherPool"][number] =>
+      isOneOf(value, WEATHERS),
+    ) &&
     isArrayOf(value.weathers, (weather): weather is TrackState["weathers"][number] =>
       isOneOf(weather, WEATHERS),
+    ) &&
+    isArrayOf(value.terrainPool, (value): value is TrackState["terrainPool"][number] =>
+      isOneOf(value, TERRAINS),
     ) &&
     isArrayOf(value.terrains, (terrain): terrain is TrackState["terrains"][number] =>
       isOneOf(terrain, TERRAINS),
@@ -206,6 +212,12 @@ function withChoicePools(trackState: Record<string, unknown>): Record<string, un
     : []
   return {
     ...rest,
+    terrainPool: trackState.terrainPool ?? [
+      ...new Set(["none", ...(Array.isArray(trackState.terrains) ? trackState.terrains : [])]),
+    ],
+    weatherPool: trackState.weatherPool ?? [
+      ...new Set(["none", ...(Array.isArray(trackState.weathers) ? trackState.weathers : [])]),
+    ],
     attackerItemPoolIds: Array.isArray(trackState.attackerItemPoolIds)
       ? trackState.attackerItemPoolIds
       : trackState.attackerItemIds,
@@ -440,7 +452,9 @@ export function scenarioSnapshotMatchesCatalog(
     hasUniqueValues(state.attackerItemIds) &&
     hasUniqueValues(state.defenderItemIds) &&
     hasUniqueValues(state.attackerAbilityIds) &&
+    hasUniqueValues(state.weatherPool) &&
     hasUniqueValues(state.weathers) &&
+    hasUniqueValues(state.terrainPool) &&
     hasUniqueValues(state.terrains) &&
     hasUniqueValues(state.defensePresetIds) &&
     hasUniqueValues(state.defenderStages) &&

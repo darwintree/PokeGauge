@@ -112,10 +112,10 @@ export function MoveTrack({
   }
 
   return (
-    <section className="overflow-hidden rounded-[14px] border-2 border-ink bg-paper shadow-hud-panel transition-colors">
+    <section className="track-panel">
       {!expanded ? (
         <>
-          <div className="group relative flex h-11 items-center gap-2 px-2.5 sm:h-10">
+          <div className="track-panel-heading group relative flex min-h-11 items-center gap-2 px-3">
             <button
               type="button"
               aria-expanded={false}
@@ -136,7 +136,7 @@ export function MoveTrack({
             </div>
             <ChevronDown className="pointer-events-none relative size-3.5 shrink-0 text-muted-foreground" />
           </div>
-          <div className="relative border-t px-2.5 py-2">
+          <div className="track-panel-pool relative px-3 pb-3">
             <button
               type="button"
               aria-label={intl.formatMessage({ id: "track.move.expand" })}
@@ -164,7 +164,7 @@ export function MoveTrack({
                     onToggle={() => toggleSelection(snapshot)}
                   >
                     <TypeBadge type={option.type} />
-                    <span className="truncate">{option.label}</span>
+                    <span className="min-w-0 text-left">{option.label}</span>
                   </TrackOption>
                 )
               })}
@@ -179,7 +179,7 @@ export function MoveTrack({
         </>
       ) : (
         <>
-          <div className="group relative flex h-11 items-center gap-2 px-2.5 sm:h-10">
+          <div className="track-panel-heading group relative flex min-h-11 items-center gap-2 px-3">
             <button
               type="button"
               aria-expanded={true}

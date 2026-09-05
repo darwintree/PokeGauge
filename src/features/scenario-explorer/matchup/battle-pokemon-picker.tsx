@@ -207,8 +207,8 @@ export function BattlePokemonPicker({
           type="button"
           aria-label={intl.formatMessage({ id: "matchup.forms.open" })}
           className={cn(
-            "absolute grid size-8 place-items-center rounded-full border-2 border-ink bg-paper text-ink shadow-hud-chip outline-none transition-colors hover:bg-signal-yellow focus-visible:ring-2 focus-visible:ring-ring active:translate-y-px active:shadow-none",
-            isRail ? "-top-2 -right-2" : "-top-2 -right-2",
+            "battle-pokemon-form-trigger absolute grid size-8 place-items-center rounded-full border-2 border-ink bg-paper text-ink shadow-hud-chip outline-none transition-colors hover:bg-signal-yellow focus-visible:ring-2 focus-visible:ring-ring active:translate-y-px active:shadow-none",
+            "-top-2 -right-2",
           )}
           onClick={() => {
             resetPickerFilter(true)

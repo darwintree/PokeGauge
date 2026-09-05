@@ -48,7 +48,9 @@ export type TrackState = {
   attackerItemIds: HeldItemId[]
   defenderItemIds: HeldItemId[]
   attackerAbilityIds: number[]
+  weatherPool: Weather[]
   weathers: Weather[]
+  terrainPool: Terrain[]
   terrains: Terrain[]
   defenderMode: StatSelectMode
   defensePresetIds: string[]

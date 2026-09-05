@@ -22,7 +22,8 @@
     "release:version": "changeset version && pnpm changelog:generate",
     "pretest": "pnpm changelog:generate",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "prototype:matchup": "vite --host 127.0.0.1 --open /?variant=A"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

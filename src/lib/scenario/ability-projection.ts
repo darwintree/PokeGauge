@@ -48,6 +48,8 @@ export function projectAbilitySelections(
 
   return {
     ...state,
+    weatherPool: WEATHERS.filter((value) => value === "none" || state.weatherPool.includes(value) || state.weathers.includes(value) || weatherAdditions.has(value)),
+    terrainPool: TERRAINS.filter((value) => value === "none" || state.terrainPool.includes(value) || state.terrains.includes(value) || (value === "electric" && addElectricTerrain)),
     weathers: stageOnly
       ? state.weathers
       : WEATHERS.filter((value) => state.weathers.includes(value) || weatherAdditions.has(value)),

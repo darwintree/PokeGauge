@@ -3,6 +3,7 @@ import { FormattedMessage, useIntl } from "react-intl"
 
 import type { MatchupCatalog, MoveCategory, BattlePokemonOption } from "@/lib/catalog"
 import type { BattlePokemonId } from "@/lib/resources"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 import { AbilityTrack } from "./tracks/common/ability-track"
 import { HeldItemTrack } from "./tracks/held-item/held-item-track"
@@ -14,6 +15,8 @@ import { StatTrack } from "./tracks/stats/stat-track"
 import { TerrainTrack } from "./tracks/common/terrain-track"
 import type { ScenarioState } from "./state/use-scenario-state"
 import { WeatherTrack } from "./tracks/common/weather-track"
+
+import { MatchupCardsPrototype } from "./matchup/matchup-cards.prototype"
 
 type AccordionTrackId = "moves" | "offenseStats" | "defenseStats"
 
@@ -55,6 +58,8 @@ export function ScenarioSetupPanel({
   const intl = useIntl()
   const [activeId, setActiveId] = useState<AccordionTrackId | null>(null)
   const { trackState } = state
+  const prototyping = import.meta.env.DEV && new URLSearchParams(location.search).has("variant")
+
 
   function toggle(id: AccordionTrackId) {
     setActiveId((current) => (current === id ? null : id))
@@ -176,12 +181,16 @@ export function ScenarioSetupPanel({
     ),
     weather: (
       <WeatherTrack
+        pool={trackState.weatherPool}
+        onAdd={state.addWeather}
         values={trackState.weathers}
         onChange={state.setWeathers}
       />
     ),
     terrain: (
       <TerrainTrack
+        pool={trackState.terrainPool}
+        onAdd={state.addTerrain}
         values={trackState.terrains}
         onChange={state.setTerrains}
       />
@@ -194,35 +203,14 @@ export function ScenarioSetupPanel({
     ),
   }
 
-  function pair(leftId: TrackId | null, rightId: TrackId | null) {
-    const selected = [leftId, rightId].find((id) => id === activeId)
-    const peer = selected === leftId ? rightId : leftId
-
-    if (selected) {
-      return (
-        <div className="grid grid-cols-2 gap-2">
-          <div key={selected} data-track-id={selected} className="col-span-2">
-            {tracks[selected]}
-          </div>
-          {peer && (
-            <div key={peer} data-track-id={peer}>
-              {tracks[peer]}
-            </div>
-          )}
-        </div>
-      )
-    }
-
-    return (
-      <div className="grid grid-cols-2 gap-2">
-        {leftId ? <div data-track-id={leftId}>{tracks[leftId]}</div> : <div />}
-        {rightId ? <div data-track-id={rightId}>{tracks[rightId]}</div> : <div />}
-      </div>
-    )
-  }
-
   return (
-    <section aria-label={intl.formatMessage({ id: "app.setup" })} className="space-y-3">
+    <section aria-label={intl.formatMessage({ id: "app.setup" })} className="setup-panel flex flex-col gap-4">
+      {prototyping ? (
+        <MatchupCardsPrototype
+          attacker={{ label: intl.formatMessage({ id: "matchup.attacker" }), options: attackers, value: attackerId, onChange: onAttackerChange, spriteSide: "back" }}
+          defender={{ label: intl.formatMessage({ id: "matchup.defender" }), options: defenders, value: defenderId, onChange: onDefenderChange }}
+        />
+      ) : (
       <div className="grid grid-cols-2 gap-2">
         <BattlePokemonPicker
           label={intl.formatMessage({ id: "matchup.attacker" })}
@@ -238,14 +226,44 @@ export function ScenarioSetupPanel({
           onChange={onDefenderChange}
         />
       </div>
+      )}
 
-      <div data-track-id="moves">{tracks.moves}</div>
-      {pair("offenseStats", "defenseStats")}
-      {pair("attackerStages", "defenderStages")}
-      {pair("attackerAbilities", "defenderAbilities")}
-      {pair("attackerItems", "defenderItems")}
-      {pair("terrain", "screens")}
-      {pair("weather", null)}
+      <div className="setup-controls" data-track-id="moves">{tracks.moves}</div>
+      <div
+        className="setup-sides"
+        data-editing-stats={activeId === "offenseStats" || activeId === "defenseStats"}
+      >
+        <SetupSection title={intl.formatMessage({ id: "matchup.attacker" })}>
+          <div data-track-id="offenseStats">{tracks.offenseStats}</div>
+          <div data-track-id="attackerStages">{tracks.attackerStages}</div>
+          <div data-track-id="attackerAbilities">{tracks.attackerAbilities}</div>
+          <div data-track-id="attackerItems">{tracks.attackerItems}</div>
+        </SetupSection>
+        <SetupSection title={intl.formatMessage({ id: "matchup.defender" })}>
+          <div data-track-id="defenseStats">{tracks.defenseStats}</div>
+          <div data-track-id="defenderStages">{tracks.defenderStages}</div>
+          <div data-track-id="defenderAbilities">{tracks.defenderAbilities}</div>
+          <div data-track-id="defenderItems">{tracks.defenderItems}</div>
+          <div data-track-id="screens">{tracks.screens}</div>
+        </SetupSection>
+      </div>
+      <SetupSection title={intl.formatMessage({ id: "setup.sharedField" })}>
+        <div className="grid grid-cols-2">
+          <div className="min-w-0" data-track-id="terrain">{tracks.terrain}</div>
+          <div className="min-w-0 border-l border-hairline" data-track-id="weather">{tracks.weather}</div>
+        </div>
+      </SetupSection>
     </section>
+  )
+}
+
+function SetupSection({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <Card className="setup-controls min-w-0 gap-0 overflow-visible py-0 ring-0" role="group" aria-label={title}>
+      <CardHeader className="px-3 py-2">
+        <CardTitle className="text-xs font-extrabold">{title}</CardTitle>
+      </CardHeader>
+      <CardContent className="setup-section-tracks px-0">{children}</CardContent>
+    </Card>
   )
 }

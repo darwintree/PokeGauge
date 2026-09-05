@@ -150,15 +150,15 @@ export function ScenarioWorkspace({
           <FormattedMessage id="app.results" />
         </Button>
       </nav>
-      <div className="flex min-h-[calc(100svh-6rem)] flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
+      <div className="flex min-h-[calc(100svh-6rem)] flex-col gap-6 lg:flex-row lg:items-start">
         <aside
           id="scenario-setup"
           className={cn(
-            "lg:w-[300px] lg:sticky lg:top-16 lg:block lg:max-h-[calc(100dvh-5rem)] lg:shrink-0 lg:overflow-y-auto lg:[scrollbar-gutter:stable]",
+            "lg:w-[336px] xl:w-[360px] lg:sticky lg:top-16 lg:block lg:max-h-[calc(100dvh-5rem)] lg:shrink-0 lg:overflow-y-auto lg:[scrollbar-gutter:stable]",
             mobileView !== "setup" && "hidden",
           )}
         >
-          <div className="rounded-[14px] bg-token-bg p-2.5">
+          <div className="p-1 pb-2">
             <ScenarioSetupPanel
               catalog={catalog}
               state={state}
