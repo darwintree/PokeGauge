@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { IntlProvider } from "react-intl"
 
+import { FormPrototypeSwitcher } from "@/features/scenario-explorer/matchup/form-button.prototype"
 import { AppHeader } from "@/components/app-header"
 import { ScenarioExplorerPage } from "@/features/scenario-explorer/scenario-explorer-page"
 import { UsageTipsPrototype } from "@/features/scenario-explorer/usage-tip/usage-tips.prototype"
@@ -67,6 +68,7 @@ function App() {
             feedbackScenarioUrl={feedbackScenarioUrl}
             onBrandHomeClick={brandHomeAction}
           />
+          {import.meta.env.DEV && <FormPrototypeSwitcher />}
           <div className="mx-auto max-w-7xl">
             {usageTipsPage ? (
               <UsageTipsPrototype />

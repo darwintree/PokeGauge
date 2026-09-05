@@ -31,6 +31,7 @@ export function MatchupLanding({
   resumeMatchup,
 }: MatchupLandingProps) {
   const intl = useIntl()
+  const homePrototype = import.meta.env.DEV && new URLSearchParams(window.location.search).get("prototype") === "home"
 
   return (
     <div className="relative isolate flex min-h-[calc(100dvh-3.5rem)] flex-col">
@@ -51,11 +52,13 @@ export function MatchupLanding({
                 options={attackers}
                 value={attackerId}
                 onChange={onAttackerChange}
+                compactSide={homePrototype ? "attacker" : undefined}
                 spriteSide="back"
                 awaiting={attackerId == null && defenderId != null}
               />
               <BattlePokemonPicker
                 label={intl.formatMessage({ id: "matchup.defender" })}
+                compactSide={homePrototype ? "defender" : undefined}
                 options={defenders}
                 value={defenderId}
                 onChange={onDefenderChange}

@@ -13,6 +13,7 @@ import type { PokemonType } from "@/lib/pokemon"
 import type { BattlePokemonId } from "@/lib/resources"
 import { cn } from "@/lib/utils"
 
+import { FormButtonPrototype } from "./form-button.prototype"
 import { BattlePokemonPickerDialog } from "./battle-pokemon-picker-dialog"
 import {
   initialRankingLoadState,
@@ -49,6 +50,7 @@ export function BattlePokemonPicker({
   awaiting = false,
 }: BattlePokemonPickerProps) {
   const intl = useIntl()
+  const formPrototype = import.meta.env.DEV && ["forms", "home"].includes(new URLSearchParams(window.location.search).get("prototype") ?? "")
   const [query, setQuery] = useState("")
   const [typeFilters, setTypeFilters] = useState<PokemonType[]>([])
   const [sameSpeciesFirst, setSameSpeciesFirst] = useState(false)
@@ -119,6 +121,7 @@ export function BattlePokemonPicker({
     <div className={cn(
       "relative",
       compactSide && "battle-pokemon-identity-cell",
+      formPrototype && !compactSide && "form-prototype-home",
       disabled && "pointer-events-none opacity-40",
       className,
     )}>
@@ -192,7 +195,9 @@ export function BattlePokemonPicker({
         )}
       </Button>
 
-      {!disabled && showFormBadge && (
+      {!disabled && showFormBadge && (formPrototype ? (
+        <FormButtonPrototype onClick={() => { resetPickerFilter(true); changeOpen(true) }} />
+      ) : (
         <button
           type="button"
           aria-label={intl.formatMessage({ id: "matchup.forms.open" })}
@@ -207,7 +212,7 @@ export function BattlePokemonPicker({
         >
           <Layers3 className="size-4" aria-hidden />
         </button>
-      )}
+      ))}
 
       <BattlePokemonPickerDialog
         open={load.picker === "open"}

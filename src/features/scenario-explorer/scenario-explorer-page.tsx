@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
+import { HomePrototype } from "./matchup/home.prototype"
 import { MatchupLanding } from "./matchup/matchup-landing"
 import { ScenarioWorkspace } from "./scenario-workspace"
 import { Button } from "@/components/ui/button"
@@ -432,6 +433,10 @@ export function ScenarioExplorerPage({
         <div className="h-10 w-48 animate-pulse rounded-md bg-muted motion-reduce:animate-none" />
       </main>
     )
+  }
+
+  if (import.meta.env.DEV && new URLSearchParams(window.location.search).get("prototype") === "home") {
+    return <HomePrototype attackers={localizedOptions.attackers} defenders={localizedOptions.defenders} />
   }
 
   if (!showExplorer || !catalog || attackerId == null || defenderId == null) {

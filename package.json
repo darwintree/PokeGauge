@@ -8,6 +8,8 @@
   "scripts": {
     "predev": "pnpm changelog:generate",
     "dev": "vite",
+    "prototype:home": "vite --host 0.0.0.0 --open '/?prototype=home'",
+    "prototype:forms": "vite --host 0.0.0.0 --port 5174 --open '/?prototype=forms'",
     "prebuild": "pnpm changelog:generate",
     "build": "tsc -b && vite build",
     "changelog:generate": "node scripts/generate-changelog.ts",
