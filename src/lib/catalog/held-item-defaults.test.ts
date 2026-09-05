@@ -111,7 +111,7 @@ it("keeps none in the pool and selection when usage is empty or only form-trigge
   })
 })
 
-it("omits none when selected attacker items have under 10% no-effect usage", async () => {
+it("does not skip a top-ranked form trigger to select lower-ranked items", async () => {
   setChampionsItemUsageFetcherForTest(async (battlePokemonId) => [
     record(battlePokemonId, { itemId: 717, rank: 1, percentage: 5, championsItemName: "Charizardite Y" }),
     record(battlePokemonId, { itemId: 247, rank: 2, percentage: 30, championsItemName: "Life Orb" }),
@@ -131,12 +131,12 @@ it("omits none when selected attacker items have under 10% no-effect usage", asy
     }),
   ).resolves.toEqual({
     poolIds: ["none", 717, 247, 245, 197, 220, 214],
-    selectedIds: [247, 245, 197],
+    selectedIds: ["none"],
     status: "ready",
   })
 })
 
-it("keeps none when selected defender items have exactly 10% no-effect usage", async () => {
+it("selects only the top-ranked defender item regardless of no-effect usage", async () => {
   setChampionsItemUsageFetcherForTest(async (battlePokemonId) => [
     record(battlePokemonId, { itemId: 176, rank: 1, percentage: 40, championsItemName: "Babiri Berry" }),
     record(battlePokemonId, { itemId: 172, rank: 2, percentage: 30, championsItemName: "Charti Berry" }),
@@ -154,8 +154,34 @@ it("keeps none when selected defender items have exactly 10% no-effect usage", a
     }),
   ).resolves.toEqual({
     poolIds: ["none", 176, 172, 190],
-    selectedIds: ["none", 176, 172],
+    selectedIds: [176],
     status: "ready",
+  })
+})
+
+it.each([null, 9001])("does not backfill an unmapped or ineligible top item %s", async (itemId) => {
+  setChampionsItemUsageFetcherForTest(async (battlePokemonId) => [
+    record(battlePokemonId, { itemId, rank: 1, percentage: 60, championsItemName: "Top item" }),
+    record(battlePokemonId, { itemId: 247, rank: 2, percentage: 40, championsItemName: "Life Orb" }),
+  ])
+  await expect(resolveDefaultHeldItemPick({
+    battlePokemonId: 6, lockedItemId: null,
+    sideEligibleIds: attackerEligible, selectableIds: selectable,
+  })).resolves.toEqual({
+    poolIds: ["none", 247], selectedIds: ["none"], status: "ready",
+  })
+})
+
+it("selects the top attacker item without a minimum usage threshold", async () => {
+  setChampionsItemUsageFetcherForTest(async (battlePokemonId) => [
+    record(battlePokemonId, { itemId: 247, rank: 1, percentage: 9, championsItemName: "Life Orb" }),
+    record(battlePokemonId, { itemId: 197, rank: 2, percentage: 8, championsItemName: "Choice Band" }),
+  ])
+  await expect(resolveDefaultHeldItemPick({
+    battlePokemonId: 6, lockedItemId: null,
+    sideEligibleIds: attackerEligible, selectableIds: selectable,
+  })).resolves.toEqual({
+    poolIds: ["none", 247, 197], selectedIds: [247], status: "ready",
   })
 })
 

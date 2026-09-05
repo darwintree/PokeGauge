@@ -1,10 +1,8 @@
-import { typeEffectiveness } from "@/lib/pokemon"
 import {
   listChampionsAbilityUsageRecords,
   listChampionsMoveUsageRecords,
   listChampionsNatureUsageRecords,
   listChampionsPokemonUsageIds,
-  type ChampionsNatureUsageRecord,
 } from "@/lib/champions"
 import type {
   CatalogAbilityOption,
@@ -14,8 +12,11 @@ import type {
   BattlePokemonOption,
 } from "./types"
 import type { BattlePokemonId, UpstreamResourceId } from "@/lib/resources"
-import { NO_ABILITY_ID, abilityIsSelectable } from "@/lib/ability"
-import { offenseStatMod } from "@/lib/stat-preset"
+import { NO_ABILITY_ID } from "@/lib/ability"
+import {
+  compareMoveUsageRecords, recommendMoves, recommendAbilities,
+  recommendOffensePreset, recommendMoveCategory,
+} from "@/lib/scenario/selection/recommendations"
 import type { OffensePresetId } from "./preset-labels"
 
 export const DEFAULT_USAGE_TIMEOUT_MS = 5_000
@@ -62,19 +63,6 @@ export async function rankPokemonOptionsByChampionsUsage(
   ]
 }
 
-function compareMoveUsageRecords(
-  a: { rank: number; percentage: number | null; championsMoveName: string; moveId: number },
-  b: { rank: number; percentage: number | null; championsMoveName: string; moveId: number },
-) {
-  const byRank = a.rank - b.rank
-  if (byRank !== 0) return byRank
-  const byUsage = (b.percentage ?? Number.NEGATIVE_INFINITY) - (a.percentage ?? Number.NEGATIVE_INFINITY)
-  if (byUsage !== 0) return byUsage
-  const byMoveName = a.championsMoveName.localeCompare(b.championsMoveName)
-  if (byMoveName !== 0) return byMoveName
-  return a.moveId - b.moveId
-}
-
 export async function rankMoveOptionsByChampionsUsage(
   attackerId: BattlePokemonId,
   options: CatalogMoveOption[],
@@ -95,24 +83,6 @@ export async function rankMoveOptionsByChampionsUsage(
   return [...ranked, ...options.filter((option) => !rankedIds.has(option.id))]
 }
 
-async function resolveUsageMoves(
-  attackerId: BattlePokemonId,
-  activeMoveCategory: MoveCategory,
-  moves: CatalogMoveOption[],
-): Promise<Array<{ moveId: UpstreamResourceId; percentage: number | null }>> {
-  const moveById = new Map(moves.map((move) => [move.id, move]))
-  const ranked = (await listChampionsMoveUsageRecords(attackerId))
-    .toSorted(compareMoveUsageRecords)
-    .slice(0, 10)
-    .filter((record) => moveById.get(record.moveId)?.category === activeMoveCategory)
-
-  return [
-    ...new Map(
-      ranked.map(({ moveId, percentage }) => [moveId, { moveId, percentage }]),
-    ).values(),
-  ]
-}
-
 export async function resolveDefaultMovePick(
   attackerId: BattlePokemonId,
   activeMoveCategory: MoveCategory,
@@ -125,11 +95,12 @@ export async function resolveDefaultMovePick(
   >
 > {
   try {
-    const usageMoves = await withTimeout(
-      resolveUsageMoves(attackerId, activeMoveCategory, moves),
+    const records = await withTimeout(
+      listChampionsMoveUsageRecords(attackerId),
       DEFAULT_USAGE_TIMEOUT_MS,
     )
-    const usageMoveIds = usageMoves.map(({ moveId }) => moveId)
+    const recommendation = recommendMoves(records, activeMoveCategory, moves, defenderTypes)
+    const usageMoveIds = recommendation.poolIds
     const moveById = new Map(moves.map((move) => [move.id, move]))
     const usageMoveIdSet = new Set(usageMoveIds)
 
@@ -139,12 +110,7 @@ export async function resolveDefaultMovePick(
         ...moves.filter((move) => !usageMoveIdSet.has(move.id)),
       ],
       defaultMovePoolIds: usageMoveIds,
-      defaultMoveIds: usageMoves
-        .filter(({ moveId, percentage }) =>
-          (percentage ?? Number.NEGATIVE_INFINITY) > 50 ||
-          typeEffectiveness(moveById.get(moveId)!.type, defenderTypes) > 1,
-        )
-        .map(({ moveId }) => moveId),
+      defaultMoveIds: recommendation.selectedIds,
       defaultMovePickStatus: "ready",
     }
   } catch {
@@ -161,30 +127,13 @@ export async function resolveDefaultAbilityIds(
   battlePokemonId: BattlePokemonId,
   abilities: CatalogAbilityOption[],
 ): Promise<UpstreamResourceId[]> {
-  const identityAbilities = abilities.filter((ability) => ability.id !== NO_ABILITY_ID)
-  const selectableIds = identityAbilities
-    .filter((ability) => abilityIsSelectable(ability.id))
-    .map((ability) => ability.id)
-  const fallbackIds = selectableIds.length > 0 ? selectableIds : [NO_ABILITY_ID]
-  if (identityAbilities.length === 0) return [NO_ABILITY_ID]
+  const fallback = recommendAbilities(abilities)
+  if (fallback[0] === NO_ABILITY_ID) return fallback
   try {
-    const identityIds = new Set(identityAbilities.map((ability) => ability.id))
-    const defaultId = (await withTimeout(
-      listChampionsAbilityUsageRecords(battlePokemonId),
-      DEFAULT_USAGE_TIMEOUT_MS,
-    ))
-      .toSorted((a, b) =>
-        a.rank - b.rank ||
-        (b.percentage ?? Number.NEGATIVE_INFINITY) -
-          (a.percentage ?? Number.NEGATIVE_INFINITY) ||
-        a.championsAbilityName.localeCompare(b.championsAbilityName) ||
-        a.abilityId - b.abilityId,
-      )
-      .find((record) => identityIds.has(record.abilityId))?.abilityId
-    if (defaultId === undefined) return fallbackIds
-    return [abilityIsSelectable(defaultId) ? defaultId : NO_ABILITY_ID]
+    const records = await withTimeout(listChampionsAbilityUsageRecords(battlePokemonId), DEFAULT_USAGE_TIMEOUT_MS)
+    return recommendAbilities(abilities, records)
   } catch {
-    return fallbackIds
+    return fallback
   }
 }
 
@@ -193,44 +142,20 @@ export async function resolveDefaultOffensePresetId(
   category: MoveCategory,
 ): Promise<OffensePresetId> {
   try {
-    const topNature = (await rankedNatureUsage(battlePokemonId))[0]?.nature
-    return topNature && offenseStatMod(topNature, category) === "+"
-      ? "extreme"
-      : "neutral-max"
+    const records = await withTimeout(listChampionsNatureUsageRecords(battlePokemonId), DEFAULT_USAGE_TIMEOUT_MS)
+    return recommendOffensePreset(records, category)
   } catch {
-    return "neutral-max"
+    return recommendOffensePreset([], category)
   }
-}
-
-async function rankedNatureUsage(
-  battlePokemonId: BattlePokemonId,
-): Promise<ChampionsNatureUsageRecord[]> {
-  const records = await withTimeout(
-    listChampionsNatureUsageRecords(battlePokemonId),
-    DEFAULT_USAGE_TIMEOUT_MS,
-  )
-  return records.toSorted((a, b) =>
-    (b.percentage ?? Number.NEGATIVE_INFINITY) -
-      (a.percentage ?? Number.NEGATIVE_INFINITY) ||
-    a.rank - b.rank ||
-    a.nature.localeCompare(b.nature),
-  )
 }
 
 export async function resolveCatalogDefaultMoveCategory(
   battlePokemonId: BattlePokemonId,
 ): Promise<MoveCategory> {
   try {
-    for (const { nature } of await rankedNatureUsage(battlePokemonId)) {
-      const physical = offenseStatMod(nature, "physical")
-      const special = offenseStatMod(nature, "special")
-      if (physical === "-") return "special"
-      if (special === "-") return "physical"
-      if (physical === "+") return "physical"
-      if (special === "+") return "special"
-    }
+    const records = await withTimeout(listChampionsNatureUsageRecords(battlePokemonId), DEFAULT_USAGE_TIMEOUT_MS)
+    return recommendMoveCategory(records)
   } catch {
-    // Fall through to the product default.
+    return recommendMoveCategory([])
   }
-  return "physical"
 }

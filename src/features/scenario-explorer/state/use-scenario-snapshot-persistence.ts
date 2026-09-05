@@ -1,4 +1,4 @@
-import { useEffect, useRef, type RefObject } from "react"
+import { useEffect, useRef } from "react"
 
 import type { MatchupCatalog } from "@/lib/catalog"
 import { saveScenarioSnapshot, type ScenarioSnapshotInput } from "@/lib/scenario"
@@ -10,38 +10,17 @@ export function useScenarioSnapshotPersistence({
   enabled = true,
   catalog,
   trackState,
-  catalogTransitionPending,
-  movesTouchedRef,
-  offenseTouchedRef,
-  attackerAbilitiesTouchedRef,
-  defenderAbilitiesTouchedRef,
-  attackerItemsTouchedRef,
-  defenderItemsTouchedRef,
+  selectionSettled,
 }: {
   enabled?: boolean
   catalog: MatchupCatalog
   trackState: TrackState
-  catalogTransitionPending: boolean
-  movesTouchedRef: RefObject<boolean>
-  offenseTouchedRef: RefObject<boolean>
-  attackerAbilitiesTouchedRef: RefObject<boolean>
-  defenderAbilitiesTouchedRef: RefObject<boolean>
-  attackerItemsTouchedRef: RefObject<boolean>
-  defenderItemsTouchedRef: RefObject<boolean>
+  selectionSettled: boolean
 }) {
   const pendingScenarioSnapshotRef = useRef<ScenarioSnapshotInput | null>(null)
 
   useEffect(() => {
-    if (!enabled || catalogTransitionPending) return
-    const untouchedDefaultsPending =
-      (catalog.defaultMovePickStatus === "loading" && !movesTouchedRef.current) ||
-      (catalog.defaultStatPickStatus === "loading" && !offenseTouchedRef.current) ||
-      (catalog.defaultAbilityPickStatus === "loading" &&
-        (!attackerAbilitiesTouchedRef.current ||
-          !defenderAbilitiesTouchedRef.current)) ||
-      (catalog.defaultItemPickStatus === "loading" &&
-        (!attackerItemsTouchedRef.current || !defenderItemsTouchedRef.current))
-    if (untouchedDefaultsPending) return
+    if (!enabled || !selectionSettled) return
     const snapshot: ScenarioSnapshotInput = {
       attackerId: catalog.matchup.attackerId,
       defenderId: catalog.matchup.defenderId,
@@ -60,18 +39,8 @@ export function useScenarioSnapshotPersistence({
     catalog.matchup.attackerId,
     catalog.matchup.defenderId,
     catalog.moveCategory,
-    catalog.defaultAbilityPickStatus,
-    catalog.defaultMovePickStatus,
-    catalog.defaultItemPickStatus,
-    catalog.defaultStatPickStatus,
-    catalogTransitionPending,
+    selectionSettled,
     trackState,
-    movesTouchedRef,
-    offenseTouchedRef,
-    attackerAbilitiesTouchedRef,
-    defenderAbilitiesTouchedRef,
-    attackerItemsTouchedRef,
-    defenderItemsTouchedRef,
     enabled,
   ])
 

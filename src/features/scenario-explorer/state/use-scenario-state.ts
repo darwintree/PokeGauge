@@ -7,7 +7,7 @@ import {
   warmDefenderSpreadCache,
   type StatAxisBounds,
 } from "@/lib/stat-calculation"
-import { WEATHERS, TERRAINS, type ProbabilityMode, type StatStage } from "@/lib/damage-calculation"
+import { type ProbabilityMode, type StatStage } from "@/lib/damage-calculation"
 import type { MatchupCatalog } from "@/lib/catalog"
 import { measureInteractionWork } from "@/devtools/interaction-performance-monitor"
 import {
@@ -15,6 +15,10 @@ import {
   editMoveSnapshot,
 } from "@/lib/move"
 import {
+  buildSystemDefensePresets,
+  buildSystemOffensePresets,
+  loadUserDefensePresets,
+  loadUserOffensePresets,
   deleteUserDefensePreset,
   deleteUserOffensePreset,
   findPresetByDefenseValues,
@@ -28,27 +32,8 @@ import {
   type StatNameStrategy,
 } from "@/lib/stat-preset"
 import {
-  defensePresetsForState,
-  defaultTrackState,
-  mergeStagePool,
-  mergeStageSelection,
-  normalizeScreens,
-  offensePresetsForState,
-  projectAbilitySelections,
   restorePersistedTrackState,
   runScenarioPipeline,
-  trackStateAfterAddDefense,
-  trackStateAfterAddOffense,
-  trackStateAfterDefenseMode,
-  trackStateAfterDefenseRanges,
-  trackStateAfterOffenseMode,
-  trackStateAfterOffenseRange,
-  trackStateAfterPersistDefense,
-  trackStateAfterPersistOffense,
-  trackStateAfterRemoveDefense,
-  trackStateAfterRemoveOffense,
-  trackStateAfterToggleDefense,
-  trackStateAfterToggleOffense,
   trackStatePreviewingDefense,
   trackStatePreviewingOffense,
   type DefenderStatRanges,
@@ -60,7 +45,10 @@ import {
 
 import { groupingTrack, resultGroupingOptions, type ResultGrouping } from "../results/result-groups"
 
-import { useCatalogTransitionSync } from "./use-catalog-transition-sync"
+import {
+  createSelectionState, reduceSelection, selectionIsSettled, selectionPresets,
+  type SelectionAction,
+} from "@/lib/scenario/selection"
 import { useScenarioSnapshotPersistence } from "./use-scenario-snapshot-persistence"
 
 function defaultAxisPoint(bounds: StatAxisBounds): number {
@@ -97,29 +85,6 @@ function defenseDraftLabel(
   }).label
 }
 
-function cycleAllocationIndex(
-  indices: Record<string, number>,
-  id: string,
-): Record<string, number> {
-  return { ...indices, [id]: (indices[id] ?? 0) + 1 }
-}
-
-function appendHeldItemId(
-  poolIds: TrackState["attackerItemPoolIds"],
-  selectedIds: TrackState["attackerItemIds"],
-  id: TrackState["attackerItemIds"][number],
-): {
-  poolIds: TrackState["attackerItemPoolIds"]
-  selectedIds: TrackState["attackerItemIds"]
-} {
-  const nextPool = poolIds.includes(id) ? poolIds : [...poolIds, id]
-  const nextSelected = selectedIds.includes(id) ? selectedIds : [...selectedIds, id]
-  return {
-    poolIds: nextPool,
-    selectedIds: nextSelected.length > 0 ? nextSelected : ["none"],
-  }
-}
-
 export function useScenarioState(
   catalog: MatchupCatalog,
   statNameStrategy: StatNameStrategy,
@@ -132,7 +97,6 @@ export function useScenarioState(
   resultGrouping: ResultGrouping | null = null,
 ) {
   const { attackerCalcName, defenderCalcName } = catalog.matchup
-  const restored = restoredTrackState !== undefined
 
   const offenseBounds = useMemo(
     () => getOffenseStatBounds(attackerCalcName, catalog.moveCategory),
@@ -149,45 +113,51 @@ export function useScenarioState(
     [defenderCalcName, catalog.moveCategory],
   )
 
-  const [trackState, setTrackState] = useState<TrackState>(
-    () =>
-      restoredTrackState
-        ? restorePersistedTrackState(restoredTrackState as PersistedTrackState, catalog)
-        : defaultTrackState(catalog),
-  )
   const [userOffenseVersion, setUserOffenseVersion] = useState(0)
   const [userDefenseVersion, setUserDefenseVersion] = useState(0)
   const [offenseDraft, setOffenseDraft] = useState<number | null>(null)
   const [defenseDraft, setDefenseDraft] = useState<{ hp: number; def: number } | null>(null)
   const [sharedImportUntouched, setSharedImportUntouched] = useState(sharedImport !== undefined)
+  const selectionContext = useMemo(() => {
+    void userOffenseVersion
+    void userDefenseVersion
+    return {
+      catalog,
+      offensePresets: [
+        ...buildSystemOffensePresets(attackerCalcName, catalog.moveCategory),
+        ...loadUserOffensePresets(String(catalog.matchup.attackerId)),
+      ],
+      defensePresets: [
+        ...buildSystemDefensePresets(defenderCalcName, catalog.moveCategory),
+        ...loadUserDefensePresets(String(catalog.matchup.defenderId)),
+      ],
+    }
+  }, [catalog, attackerCalcName, defenderCalcName, userOffenseVersion, userDefenseVersion])
+  const [selection, setSelection] = useState(() => createSelectionState(
+    selectionContext,
+    restoredTrackState
+      ? restorePersistedTrackState(restoredTrackState as PersistedTrackState, catalog)
+      : undefined,
+  ))
+  const catalogTransitionPending = selection.context !== selectionContext
+  if (catalogTransitionPending) {
+    setSelection(reduceSelection(selection, { type: "context", context: selectionContext }))
+  }
+  const dispatch = useCallback((action: SelectionAction) => {
+    setSelection((current) => reduceSelection(current, action))
+  }, [])
+  const { trackState } = selection
 
-  const {
-    catalogTransitionPending,
-    movesTouchedRef,
-    offenseTouchedRef,
-    attackerAbilitiesTouchedRef,
-    defenderAbilitiesTouchedRef,
-    attackerItemsTouchedRef,
-    defenderItemsTouchedRef,
-  } = useCatalogTransitionSync(
-    catalog,
-    restored,
-    setTrackState,
-    () => setOffenseDraft(null),
-    () => setDefenseDraft(null),
-  )
+  useEffect(() => {
+    setOffenseDraft(null)
+    setDefenseDraft(null)
+  }, [catalog.matchup.attackerId, catalog.matchup.defenderId, catalog.moveCategory])
 
   useScenarioSnapshotPersistence({
     enabled: !sharedImportUntouched,
     catalog,
     trackState,
-    catalogTransitionPending,
-    movesTouchedRef,
-    offenseTouchedRef,
-    attackerAbilitiesTouchedRef,
-    defenderAbilitiesTouchedRef,
-    attackerItemsTouchedRef,
-    defenderItemsTouchedRef,
+    selectionSettled: !catalogTransitionPending && selectionIsSettled(selection),
   })
 
   useEffect(() => {
@@ -205,15 +175,9 @@ export function useScenarioState(
     return () => window.clearTimeout(id)
   }, [defenderCalcName, catalog.moveCategory])
 
-  const offensePresets = useMemo(() => {
-    void userOffenseVersion
-    return offensePresetsForState(catalog, trackState)
-  }, [catalog, trackState, userOffenseVersion])
-
-  const defensePresets = useMemo(() => {
-    void userDefenseVersion
-    return defensePresetsForState(catalog, trackState)
-  }, [catalog, trackState, userDefenseVersion])
+  const { offense: offensePresets, defense: defensePresets } = useMemo(
+    () => selectionPresets(selection), [selection],
+  )
 
   const pipelineTrackState = useMemo(() => {
     let preview = trackState
@@ -257,56 +221,22 @@ export function useScenarioState(
   }, [catalog, catalogTransitionPending, pipelineTrackState, probabilityMode, preserveTrack])
   const { rows, unavailable } = pipelineResult
 
-  function setStatMode(mode: StatSelectMode) {
-    offenseTouchedRef.current = true
-    setTrackState((s) =>
-      trackStateAfterOffenseMode(s, mode, offensePresetsForState(catalog, s)),
-    )
-  }
-
-  function setDefenderMode(mode: StatSelectMode) {
-    setTrackState((s) =>
-      trackStateAfterDefenseMode(s, mode, defensePresetsForState(catalog, s)),
-    )
-  }
-
   const toggleOffensePreset = useCallback((id: string) => {
-    offenseTouchedRef.current = true
-    setTrackState((s) =>
-      trackStateAfterToggleOffense(s, id, offensePresetsForState(catalog, s)),
-    )
-  }, [catalog, offenseTouchedRef])
+    dispatch({ type: "stat-toggle", side: "offense", id })
+  }, [dispatch])
 
   const toggleDefensePreset = useCallback((id: string) => {
-    setTrackState((s) =>
-      trackStateAfterToggleDefense(s, id, defensePresetsForState(catalog, s)),
-    )
-  }, [catalog])
-
-  function cycleOffenseAllocation(id: string) {
-    offenseTouchedRef.current = true
-    setTrackState((s) => ({
-      ...s,
-      offenseAllocationIndices: cycleAllocationIndex(s.offenseAllocationIndices, id),
-    }))
-  }
-
-  function cycleDefenseAllocation(id: string) {
-    setTrackState((s) => ({
-      ...s,
-      defenseAllocationIndices: cycleAllocationIndex(s.defenseAllocationIndices, id),
-    }))
-  }
+    dispatch({ type: "stat-toggle", side: "defense", id })
+  }, [dispatch])
 
   function persistOffensePreset(id: string) {
     const preset = offensePresets.find((t) => t.id === id)
     if (!preset || preset.kind !== "temporary") return
-    offenseTouchedRef.current = true
     const user = newUserOffensePreset(
       preset.values.kind === "offense" ? preset.values.stat : 0,
     )
     saveUserOffensePreset(String(catalog.matchup.attackerId), user)
-    setTrackState((s) => trackStateAfterPersistOffense(s, id, user))
+    dispatch({ type: "stat-persist", side: "offense", id, preset: user })
     setUserOffenseVersion((v) => v + 1)
   }
 
@@ -316,50 +246,36 @@ export function useScenarioState(
     const v = preset.values.kind === "defense" ? preset.values : { hp: 0, def: 0 }
     const user = newUserDefensePreset(v.hp, v.def)
     saveUserDefensePreset(String(catalog.matchup.defenderId), user)
-    setTrackState((s) => trackStateAfterPersistDefense(s, id, user))
+    dispatch({ type: "stat-persist", side: "defense", id, preset: user })
     setUserDefenseVersion((v) => v + 1)
   }
 
   function deleteOffensePreset(id: string) {
-    const next = trackStateAfterRemoveOffense(
-      trackState,
-      id,
-      offensePresetsForState(catalog, trackState),
-    )
-    if (!next) return
-    offenseTouchedRef.current = true
+    const next = reduceSelection(selection, { type: "stat-remove", side: "offense", id })
+    if (next === selection) return
     deleteUserOffensePreset(String(catalog.matchup.attackerId), id)
-    setTrackState(next)
+    setSelection(next)
     setUserOffenseVersion((v) => v + 1)
   }
 
   function deleteDefensePreset(id: string) {
-    const next = trackStateAfterRemoveDefense(
-      trackState,
-      id,
-      defensePresetsForState(catalog, trackState),
-    )
-    if (!next) return
+    const next = reduceSelection(selection, { type: "stat-remove", side: "defense", id })
+    if (next === selection) return
     deleteUserDefensePreset(String(catalog.matchup.defenderId), id)
-    setTrackState(next)
+    setSelection(next)
     setUserDefenseVersion((v) => v + 1)
   }
 
   function confirmAddOffense(stat: number) {
-    offenseTouchedRef.current = true
     const existing = findPresetByOffenseValue(offensePresets, stat)
     if (existing) {
-      setTrackState((s) =>
-        trackStateAfterAddOffense(s, existing, offensePresetsForState(catalog, s)),
-      )
+      dispatch({ type: "stat-add", side: "offense", preset: existing })
       setOffenseDraft(null)
       return
     }
     const user = newUserOffensePreset(stat)
     saveUserOffensePreset(String(catalog.matchup.attackerId), user)
-    setTrackState((s) =>
-      trackStateAfterAddOffense(s, user, offensePresetsForState(catalog, s)),
-    )
+    dispatch({ type: "stat-add", side: "offense", preset: user })
     setUserOffenseVersion((v) => v + 1)
     setOffenseDraft(null)
   }
@@ -367,17 +283,13 @@ export function useScenarioState(
   function confirmAddDefense(hp: number, def: number) {
     const existing = findPresetByDefenseValues(defensePresets, hp, def)
     if (existing) {
-      setTrackState((s) =>
-        trackStateAfterAddDefense(s, existing, defensePresetsForState(catalog, s)),
-      )
+      dispatch({ type: "stat-add", side: "defense", preset: existing })
       setDefenseDraft(null)
       return
     }
     const user = newUserDefensePreset(hp, def)
     saveUserDefensePreset(String(catalog.matchup.defenderId), user)
-    setTrackState((s) =>
-      trackStateAfterAddDefense(s, user, defensePresetsForState(catalog, s)),
-    )
+    dispatch({ type: "stat-add", side: "defense", preset: user })
     setUserDefenseVersion((v) => v + 1)
     setDefenseDraft(null)
   }
@@ -402,47 +314,9 @@ export function useScenarioState(
   function addMoveSnapshot(moveId: number) {
     const move = catalog.moves.find((candidate) => candidate.id === moveId)
     if (!move) return
-    movesTouchedRef.current = true
     const snapshot = createMoveSnapshot(move)
-    setTrackState((s) => ({
-      ...s,
-      moveSnapshots: [...s.moveSnapshots, snapshot],
-      selectedMoveSnapshotIds: [...s.selectedMoveSnapshotIds, snapshot.id],
-    }))
+    dispatch({ type: "move-add", snapshot })
     return snapshot.id
-  }
-
-  function updateMoveSnapshot(
-    snapshotId: string,
-    patch: Parameters<typeof editMoveSnapshot>[1],
-  ) {
-    movesTouchedRef.current = true
-    setTrackState((s) => ({
-      ...s,
-      moveSnapshots: s.moveSnapshots.map((snapshot) =>
-        snapshot.id === snapshotId ? editMoveSnapshot(snapshot, patch) : snapshot,
-      ),
-    }))
-  }
-
-  function removeMoveSnapshot(snapshotId: string) {
-    movesTouchedRef.current = true
-    setTrackState((s) => ({
-      ...s,
-      moveSnapshots: s.moveSnapshots.filter((snapshot) => snapshot.id !== snapshotId),
-      selectedMoveSnapshotIds: s.selectedMoveSnapshotIds.filter((id) => id !== snapshotId),
-    }))
-  }
-
-  function setSelectedMoveSnapshotIds(ids: string[]) {
-    movesTouchedRef.current = true
-    const selected = new Set(ids)
-    setTrackState((s) => ({
-      ...s,
-      selectedMoveSnapshotIds: s.moveSnapshots
-        .map((snapshot) => snapshot.id)
-        .filter((id) => selected.has(id)),
-    }))
   }
 
   return {
@@ -465,175 +339,44 @@ export function useScenarioState(
     toggleAddingOffense,
     toggleAddingDefense,
     addMoveSnapshot,
-    updateMoveSnapshot,
-    removeMoveSnapshot,
-    setSelectedMoveSnapshotIds,
-    setStatMode,
+    updateMoveSnapshot: (id: string, patch: Parameters<typeof editMoveSnapshot>[1]) =>
+      dispatch({ type: "move-edit", id, patch }),
+    removeMoveSnapshot: (id: string) => dispatch({ type: "move-remove", id }),
+    setSelectedMoveSnapshotIds: (ids: string[]) => dispatch({ type: "move-select", ids }),
+    setStatMode: (mode: StatSelectMode) => dispatch({ type: "stat-mode", side: "offense", mode }),
     toggleOffensePreset,
-    setStatRange: (statRange: TrackState["statRange"]) => {
-      offenseTouchedRef.current = true
-      setTrackState((s) =>
-        trackStateAfterOffenseRange(s, statRange, offensePresetsForState(catalog, s)),
-      )
-    },
-    cycleOffenseAllocation,
+    setStatRange: (range: TrackState["statRange"]) => dispatch({ type: "offense-range", range }),
+    cycleOffenseAllocation: (id: string) => dispatch({ type: "stat-allocation", side: "offense", id }),
     persistOffensePreset,
     deleteOffensePreset,
     confirmAddOffense,
-    setAttackerItemIds: (ids: TrackState["attackerItemIds"]) => {
-      if (catalog.attackerLockedItemId !== null) return
-      attackerItemsTouchedRef.current = true
-      setTrackState((s) => ({
-        ...s,
-        attackerItemIds: ids.length > 0 ? ids : ["none"],
-      }))
-    },
-    setDefenderItemIds: (ids: TrackState["defenderItemIds"]) => {
-      if (catalog.defenderLockedItemId !== null) return
-      defenderItemsTouchedRef.current = true
-      setTrackState((s) => ({
-        ...s,
-        defenderItemIds: ids.length > 0 ? ids : ["none"],
-      }))
-    },
-    addAttackerItem: (id: TrackState["attackerItemIds"][number]) => {
-      if (catalog.attackerLockedItemId !== null || id === "none") return
-      attackerItemsTouchedRef.current = true
-      setTrackState((s) => {
-        const next = appendHeldItemId(s.attackerItemPoolIds, s.attackerItemIds, id)
-        return {
-          ...s,
-          attackerItemPoolIds: next.poolIds,
-          attackerItemIds: next.selectedIds,
-        }
-      })
-    },
-    addDefenderItem: (id: TrackState["defenderItemIds"][number]) => {
-      if (catalog.defenderLockedItemId !== null || id === "none") return
-      defenderItemsTouchedRef.current = true
-      setTrackState((s) => {
-        const next = appendHeldItemId(s.defenderItemPoolIds, s.defenderItemIds, id)
-        return {
-          ...s,
-          defenderItemPoolIds: next.poolIds,
-          defenderItemIds: next.selectedIds,
-        }
-      })
-    },
-    setAttackerAbilityIds: (ids: number[]) => {
-      if (ids.length === 0) return
-      attackerAbilitiesTouchedRef.current = true
-      setTrackState((s) => projectAbilitySelections(
-        { ...s, attackerAbilityIds: ids },
-        catalog.moveCategory,
-        ids.filter((id) => !s.attackerAbilityIds.includes(id)),
-        [],
-      ))
-    },
-    resetAttackerAbilities: () => {
-      attackerAbilitiesTouchedRef.current = false
-      setTrackState((s) => {
-        const next = {
-          ...s,
-          attackerAbilityIds: [...catalog.defaultAttackerAbilityIds],
-        }
-        return catalog.defaultAbilityPickStatus === "ready"
-          ? projectAbilitySelections(next, catalog.moveCategory)
-          : next
-      })
-    },
-    addWeather: (value: TrackState["weathers"][number]) =>
-      setTrackState((s) => ({
-        ...s,
-        weatherPool: WEATHERS.filter((candidate) => candidate === "none" || candidate === value || s.weatherPool.includes(candidate)),
-        weathers: WEATHERS.filter((candidate) => candidate === value || s.weathers.includes(candidate)),
-      })),
-    setWeathers: (weathers: TrackState["weathers"]) =>
-      setTrackState((s) => ({
-        ...s,
-        weatherPool: WEATHERS.filter((value) => value === "none" || s.weatherPool.includes(value) || weathers.includes(value)),
-        weathers: weathers.length > 0 ? weathers : ["none"],
-      })),
-    addTerrain: (value: TrackState["terrains"][number]) =>
-      setTrackState((s) => ({
-        ...s,
-        terrainPool: TERRAINS.filter((candidate) => candidate === "none" || candidate === value || s.terrainPool.includes(candidate)),
-        terrains: TERRAINS.filter((candidate) => candidate === value || s.terrains.includes(candidate)),
-      })),
-    setTerrains: (terrains: TrackState["terrains"]) =>
-      setTrackState((s) => ({
-        ...s,
-        terrainPool: TERRAINS.filter((value) => value === "none" || s.terrainPool.includes(value) || terrains.includes(value)),
-        terrains: terrains.length > 0 ? terrains : ["none"],
-      })),
-    setScreens: (screens: TrackState["screens"]) =>
-      setTrackState((s) => ({
-        ...s,
-        screens: normalizeScreens(screens),
-      })),
-    setAttackerStages: (attackerStages: StatStage[]) =>
-      setTrackState((s) => ({
-        ...s,
-        attackerStages: mergeStageSelection(attackerStages),
-      })),
-    addAttackerStage: (stage: StatStage) =>
-      setTrackState((s) => ({
-        ...s,
-        attackerStagePool: mergeStagePool(s.attackerStagePool, [stage]),
-        attackerStages: mergeStageSelection(s.attackerStages, [stage]),
-      })),
-    resetAttackerStages: () =>
-      setTrackState((s) => ({
-        ...s,
-        attackerStagePool: [0],
-        attackerStages: [0],
-      })),
-    setDefenderMode,
+    setAttackerItemIds: (ids: TrackState["attackerItemIds"]) =>
+      dispatch({ type: "item-select", side: "attacker", ids }),
+    setDefenderItemIds: (ids: TrackState["defenderItemIds"]) =>
+      dispatch({ type: "item-select", side: "defender", ids }),
+    addAttackerItem: (id: TrackState["attackerItemIds"][number]) =>
+      dispatch({ type: "item-add", side: "attacker", id }),
+    addDefenderItem: (id: TrackState["defenderItemIds"][number]) =>
+      dispatch({ type: "item-add", side: "defender", id }),
+    setAttackerAbilityIds: (ids: number[]) => dispatch({ type: "ability-select", side: "attacker", ids }),
+    resetAttackerAbilities: () => dispatch({ type: "ability-reset", side: "attacker" }),
+    setDefenderAbilityIds: (ids: number[]) => dispatch({ type: "ability-select", side: "defender", ids }),
+    resetDefenderAbilities: () => dispatch({ type: "ability-reset", side: "defender" }),
+    addWeather: (value: TrackState["weathers"][number]) => dispatch({ type: "weather-add", value }),
+    setWeathers: (values: TrackState["weathers"]) => dispatch({ type: "weather-select", values }),
+    addTerrain: (value: TrackState["terrains"][number]) => dispatch({ type: "terrain-add", value }),
+    setTerrains: (values: TrackState["terrains"]) => dispatch({ type: "terrain-select", values }),
+    setScreens: (values: TrackState["screens"]) => dispatch({ type: "screen-select", values }),
+    setAttackerStages: (values: StatStage[]) => dispatch({ type: "stage-select", side: "attacker", values }),
+    addAttackerStage: (value: StatStage) => dispatch({ type: "stage-add", side: "attacker", value }),
+    resetAttackerStages: () => dispatch({ type: "stage-reset", side: "attacker" }),
+    setDefenderStages: (values: StatStage[]) => dispatch({ type: "stage-select", side: "defender", values }),
+    addDefenderStage: (value: StatStage) => dispatch({ type: "stage-add", side: "defender", value }),
+    resetDefenderStages: () => dispatch({ type: "stage-reset", side: "defender" }),
+    setDefenderMode: (mode: StatSelectMode) => dispatch({ type: "stat-mode", side: "defense", mode }),
     toggleDefensePreset,
-    setDefenderRanges: (defenderRanges: DefenderStatRanges) =>
-      setTrackState((s) =>
-        trackStateAfterDefenseRanges(s, defenderRanges, defensePresetsForState(catalog, s)),
-      ),
-    setDefenderStages: (defenderStages: StatStage[]) =>
-      setTrackState((s) => ({
-        ...s,
-        defenderStages: mergeStageSelection(defenderStages),
-      })),
-    addDefenderStage: (stage: StatStage) =>
-      setTrackState((s) => ({
-        ...s,
-        defenderStagePool: mergeStagePool(s.defenderStagePool, [stage]),
-        defenderStages: mergeStageSelection(s.defenderStages, [stage]),
-      })),
-    resetDefenderStages: () =>
-      setTrackState((s) => ({
-        ...s,
-        defenderStagePool: [0],
-        defenderStages: [0],
-      })),
-    setDefenderAbilityIds: (ids: number[]) => {
-      if (ids.length === 0) return
-      defenderAbilitiesTouchedRef.current = true
-      setTrackState((s) => projectAbilitySelections(
-        { ...s, defenderAbilityIds: ids },
-        catalog.moveCategory,
-        [],
-        ids.filter((id) => !s.defenderAbilityIds.includes(id)),
-      ))
-    },
-    resetDefenderAbilities: () => {
-      defenderAbilitiesTouchedRef.current = false
-      setTrackState((s) => {
-        const next = {
-          ...s,
-          defenderAbilityIds: [...catalog.defaultDefenderAbilityIds],
-        }
-        return catalog.defaultAbilityPickStatus === "ready"
-          ? projectAbilitySelections(next, catalog.moveCategory)
-          : next
-      })
-    },
-    cycleDefenseAllocation,
+    setDefenderRanges: (ranges: DefenderStatRanges) => dispatch({ type: "defense-range", ranges }),
+    cycleDefenseAllocation: (id: string) => dispatch({ type: "stat-allocation", side: "defense", id }),
     persistDefensePreset,
     deleteDefensePreset,
     confirmAddDefense,
