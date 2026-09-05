@@ -13,6 +13,8 @@ export {
   defaultTrackState,
   defensePresetsForState,
   expectedRowCount,
+  mergeStagePool,
+  mergeStageSelection,
   offensePresetsForState,
 } from "./state"
 export {

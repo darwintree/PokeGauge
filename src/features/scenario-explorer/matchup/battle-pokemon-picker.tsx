@@ -26,8 +26,8 @@ type BattlePokemonPickerProps = {
   value: BattlePokemonId | null
   onChange: (id: BattlePokemonId) => void
   spriteSide?: "front" | "back"
-  /** default = setup panel; rail = matchup landing instrument control */
-  presentation?: "default" | "rail"
+  /** Compact setup identity; otherwise render the landing row. */
+  compactSide?: "attacker" | "defender"
   disabled?: boolean
   className?: string
   awaiting?: boolean
@@ -43,7 +43,7 @@ export function BattlePokemonPicker({
   value,
   onChange,
   spriteSide = "front",
-  presentation = "default",
+  compactSide,
   disabled = false,
   className,
   awaiting = false,
@@ -109,33 +109,58 @@ export function BattlePokemonPicker({
     changeOpen(false)
   }
 
-  const spriteFile =
-    value == null ? null : spriteSide === "back" ? `back/${value}.png` : `${value}.png`
-  const isRail = presentation === "rail"
+  const spriteFile = value == null ? null : `${spriteSide === "back" ? "back/" : ""}${value}.png`
   const placeholder =
     selected?.label ?? intl.formatMessage({ id: "matchup.placeholder" })
 
   const showFormBadge = speciesHasMultipleBattlePokemonIdentities(options, selected)
 
   return (
-    <div className={cn("relative", disabled && "pointer-events-none opacity-40", className)}>
+    <div className={cn(
+      "relative",
+      compactSide && "battle-pokemon-identity-cell",
+      disabled && "pointer-events-none opacity-40",
+      className,
+    )}>
       <Button
         type="button"
-        variant={isRail ? "ghost" : "outline"}
+        variant={compactSide ? "outline" : "ghost"}
         disabled={disabled}
         aria-disabled={disabled || undefined}
+        data-side={compactSide}
+        aria-label={compactSide ? `${label}: ${placeholder}` : undefined}
         data-awaiting={awaiting || undefined}
         className={cn(
           "whitespace-normal transition-[transform,background-color,border-color,opacity] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.99]",
-          presentation === "default" &&
-            "h-auto min-h-32 w-full flex-col items-stretch justify-start gap-1 rounded-[10px] border-2 border-ink bg-paper p-2 text-left shadow-hud-chip hover:bg-token-bg/50",
-          isRail &&
+          compactSide && "battle-pokemon-identity",
+          !compactSide &&
             "h-14 w-full flex-row items-center justify-start gap-3 rounded-[10px] border border-card-border bg-paper px-3 shadow-none hover:bg-token-bg/50",
-          awaiting && isRail && "border-ink border-dashed",
+          awaiting && !compactSide && "border-ink border-dashed",
         )}
         onClick={() => changeOpen(true)}
       >
-        {isRail ? (
+        {compactSide ? (
+          <>
+            {spriteFile ? (
+              <img
+                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${spriteFile}`}
+                alt=""
+                className="battle-pokemon-identity-sprite"
+              />
+            ) : (
+              <span className="battle-pokemon-identity-sprite grid place-items-center" aria-hidden>
+                <Plus />
+              </span>
+            )}
+            <span className="battle-pokemon-identity-role" aria-hidden>
+              {compactSide === "attacker" ? "ATK" : "DEF"}
+            </span>
+            <span className="battle-pokemon-identity-details">
+              <span className="battle-pokemon-identity-name">{placeholder}</span>
+              {selected && <TypeBadgeList types={selected.types} />}
+            </span>
+          </>
+        ) : (
           <>
             {spriteFile ? (
               <img
@@ -164,41 +189,6 @@ export function BattlePokemonPicker({
             </span>
             {selected && <TypeBadgeList types={selected.types} />}
           </>
-        ) : (
-          <>
-            {spriteFile ? (
-              <img
-                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${spriteFile}`}
-                alt=""
-                className="mx-auto size-20 object-contain [image-rendering:pixelated]"
-              />
-            ) : (
-              <span
-                aria-hidden
-                className="mx-auto grid size-20 place-items-center rounded-full border border-dashed border-border/80 bg-muted/30"
-              >
-                <span className="bg-foreground/12 size-2 rounded-full" />
-              </span>
-            )}
-            <span className="text-muted-foreground text-[10px] font-normal tracking-wide">
-              {label}
-            </span>
-            <span className="flex min-w-0 flex-col items-stretch gap-1">
-              <span
-                className={cn(
-                  "line-clamp-2 w-full text-center text-sm font-extrabold tracking-tight whitespace-normal",
-                  !selected && "text-muted-foreground font-medium",
-                )}
-              >
-                {placeholder}
-              </span>
-              {selected && (
-                <span className="flex justify-center">
-                  <TypeBadgeList types={selected.types} />
-                </span>
-              )}
-            </span>
-          </>
         )}
       </Button>
 
@@ -207,8 +197,8 @@ export function BattlePokemonPicker({
           type="button"
           aria-label={intl.formatMessage({ id: "matchup.forms.open" })}
           className={cn(
-            "absolute grid size-8 place-items-center rounded-full border-2 border-ink bg-paper text-ink shadow-hud-chip outline-none transition-colors hover:bg-signal-yellow focus-visible:ring-2 focus-visible:ring-ring active:translate-y-px active:shadow-none",
-            isRail ? "-top-2 -right-2" : "-top-2 -right-2",
+            "battle-pokemon-form-trigger absolute grid size-8 place-items-center rounded-full border-2 border-ink bg-paper text-ink shadow-hud-chip outline-none transition-colors hover:bg-signal-yellow focus-visible:ring-2 focus-visible:ring-ring active:translate-y-px active:shadow-none",
+            "-top-2 -right-2",
           )}
           onClick={() => {
             resetPickerFilter(true)

@@ -1,19 +1,14 @@
 import { Fence } from "lucide-react"
-import { useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-import { Button } from "@/components/ui/button"
 import { SCREENS, type Screen } from "@/lib/damage-calculation"
 
 import { TrackOption, TrackOptionGroup } from "./track-option"
 import { TrackPanel } from "./track-panel"
-import { TrackDescriptionToggle } from "./track-description-toggle"
 
 type ScreenTrackProps = {
   values: Screen[]
   onChange: (values: Screen[]) => void
-  expanded?: boolean
-  onToggle?: () => void
 }
 
 function toggleScreen(values: Screen[], screen: Screen): Screen[] {
@@ -24,35 +19,16 @@ function toggleScreen(values: Screen[], screen: Screen): Screen[] {
   return next.length > 0 ? next : ["none"]
 }
 
-export function ScreenTrack({ values, onChange, expanded = true, onToggle = () => {} }: ScreenTrackProps) {
+export function ScreenTrack({ values, onChange }: ScreenTrackProps) {
   const intl = useIntl()
   const selected = new Set(values)
-  const [showDescriptions, setShowDescriptions] = useState(false)
 
   return (
     <TrackPanel
+      expandable={false}
       icon={Fence}
       label={<FormattedMessage id="track.screen" />}
-      summary={values.map((screen) => intl.formatMessage({ id: `track.screen.${screen}` })).join(", ")}
-      expanded={expanded}
-      onToggle={onToggle}
-    >
-      <div className="space-y-2">
-        <div className="flex items-center justify-end gap-1">
-          <TrackDescriptionToggle
-            checked={showDescriptions}
-            onCheckedChange={setShowDescriptions}
-          />
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            className="h-6 px-2 text-xs"
-            onClick={() => onChange(["none"])}
-          >
-            <FormattedMessage id="track.stage.reset" />
-          </Button>
-        </div>
+      summary={
         <TrackOptionGroup aria-label={intl.formatMessage({ id: "track.screen" })}>
           {SCREENS.map((screen) => {
             const label = intl.formatMessage({ id: `track.screen.${screen}` })
@@ -65,8 +41,6 @@ export function ScreenTrack({ values, onChange, expanded = true, onToggle = () =
                 onToggle={() => onChange(toggleScreen(values, screen))}
                 ariaLabel={label}
                 tooltip={description}
-                description={description}
-                showDescription={showDescriptions}
                 className="px-2"
               >
                 {label}
@@ -74,7 +48,7 @@ export function ScreenTrack({ values, onChange, expanded = true, onToggle = () =
             )
           })}
         </TrackOptionGroup>
-      </div>
-    </TrackPanel>
+      }
+    />
   )
 }

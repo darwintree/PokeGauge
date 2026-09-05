@@ -92,7 +92,6 @@ it("marks only unsupported ability effects in the Track", () => {
       ],
       selectedIds: [91],
       onChange: () => {},
-      onReset: () => {},
     }),
   ))
 
@@ -154,7 +153,6 @@ it("marks assumed-satisfied abilities with green disclosure and no red unsupport
       ],
       selectedIds: [BLAZE_ABILITY_ID],
       onChange: () => {},
-      onReset: () => {},
     }),
   ))
 
@@ -169,7 +167,7 @@ it("marks assumed-satisfied abilities with green disclosure and no red unsupport
   expect(markup).not.toMatch(/bg-destructive[^"]*bg-signal-green|bg-signal-green[^"]*bg-destructive/)
 })
 
-it("shows ability descriptions in tooltips and offers an inline-description switch", () => {
+it("shows ability descriptions in tooltips without an inline-description switch", () => {
   const markup = renderToStaticMarkup(createElement(
     IntlProvider,
     { locale: "en", messages: localeMessages.en },
@@ -180,13 +178,13 @@ it("shows ability descriptions in tooltips and offers an inline-description swit
       ],
       selectedIds: [91],
       onChange: () => {},
-      onReset: () => {},
     }),
   ))
 
   expect(markup).not.toContain("<details")
-  expect(markup).toContain("Show descriptions")
-  expect(markup).toContain('data-slot="switch"')
+  expect(markup).not.toContain("Show descriptions")
+  expect(markup).not.toContain('data-slot="switch"')
+  expect(markup).toContain('data-slot="tooltip-trigger"')
 })
 
 it("renders active abilities inline and folds inactive and unsupported states", () => {

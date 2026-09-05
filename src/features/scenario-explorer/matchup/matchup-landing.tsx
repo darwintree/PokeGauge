@@ -52,7 +52,6 @@ export function MatchupLanding({
                 value={attackerId}
                 onChange={onAttackerChange}
                 spriteSide="back"
-                presentation="rail"
                 awaiting={attackerId == null && defenderId != null}
               />
               <BattlePokemonPicker
@@ -60,7 +59,6 @@ export function MatchupLanding({
                 options={defenders}
                 value={defenderId}
                 onChange={onDefenderChange}
-                presentation="rail"
                 awaiting={defenderId == null && attackerId != null}
               />
             </div>
