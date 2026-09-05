@@ -46,16 +46,25 @@ export function projectAbilitySelections(
     stageAdditions.push(2)
   }
 
+  const weathers = stageOnly
+    ? state.weathers
+    : WEATHERS.filter((value) => state.weathers.includes(value) || weatherAdditions.has(value))
+  const terrains = stageOnly
+    ? state.terrains
+    : TERRAINS.filter((value) =>
+        state.terrains.includes(value) || (value === "electric" && addElectricTerrain),
+      )
+
   return {
     ...state,
-    weathers: stageOnly
-      ? state.weathers
-      : WEATHERS.filter((value) => state.weathers.includes(value) || weatherAdditions.has(value)),
-    terrains: stageOnly
-      ? state.terrains
-      : TERRAINS.filter((value) =>
-          state.terrains.includes(value) || (value === "electric" && addElectricTerrain),
-        ),
+    weathers,
+    terrains,
+    weatherPool: WEATHERS.filter((value) =>
+      value === "none" || state.weatherPool.includes(value) || weathers.includes(value),
+    ),
+    terrainPool: TERRAINS.filter((value) =>
+      value === "none" || state.terrainPool.includes(value) || terrains.includes(value),
+    ),
     attackerStagePool: mergeStagePool(
       state.attackerStagePool,
       [...state.attackerStages, ...stageAdditions],

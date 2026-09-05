@@ -42,7 +42,9 @@ function scenario(): ScenarioSnapshotInput {
       attackerItemIds: ["none"],
       defenderItemIds: ["none"],
       attackerAbilityIds: [8],
+      weatherPool: ["none"],
       weathers: ["none"],
+      terrainPool: ["none"],
       terrains: ["none"],
       defenderMode: "preset",
       defensePresetIds: [],
@@ -143,6 +145,20 @@ describe("scenario storage", () => {
     })
 
     expect(loadScenarioSnapshot()).toEqual({ version: 5, ...input })
+  })
+
+  it("restores missing field pools from legacy selections", () => {
+    const input = scenario()
+    const { weatherPool: _weatherPool, terrainPool: _terrainPool, ...trackState } = input.trackState
+    data[SCENARIO_STORAGE_KEY] = JSON.stringify({
+      ...input, version: 5,
+      trackState: { ...trackState, weathers: ["rain"], terrains: ["grassy"] },
+    })
+    const loaded = loadScenarioSnapshot()
+    expect(loaded?.trackState.weatherPool).toEqual(["none", "rain"])
+    expect(loaded?.trackState.terrainPool).toEqual(["none", "grassy"])
+    expect(loaded?.trackState.weathers).toEqual(["rain"])
+    expect(loaded?.trackState.terrains).toEqual(["grassy"])
   })
 
   it("fills missing stage pools from selected stages", () => {

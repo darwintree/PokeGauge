@@ -63,6 +63,8 @@ describe("audited Move and Terrain warnings", () => {
 
   it("discloses Grassy Terrain recovery without adding a result warning", () => {
     const output = markup("en", createElement(TerrainTrack, {
+      pool: ["none", "grassy"],
+      onAdd: () => {},
       values: ["grassy"],
       onChange: () => {},
     }))

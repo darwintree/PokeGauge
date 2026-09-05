@@ -62,12 +62,13 @@ export function TrackPanel({
   return (
     <section
       className={cn(
-        "overflow-hidden rounded-[14px] border-2 border-ink bg-paper shadow-hud-panel transition-colors",
+        "track-panel",
+        !expandable && "track-panel--static",
         className,
       )}
     >
       {stack ? (
-        <div className="relative flex h-11 items-center gap-2 px-2.5 sm:h-10">
+        <div className="track-panel-heading relative flex min-h-10 items-center gap-2 px-3">
           {expandable && (
             <button
               type="button"
@@ -135,7 +136,7 @@ export function TrackPanel({
         </div>
       )}
       {stack && (!expandable || !expanded) && (
-        <div className="flex items-start gap-1.5 border-t px-2.5 py-2">
+        <div className="track-panel-pool flex items-start gap-1.5 px-3 pb-3">
           <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5">
             {summary}
           </div>

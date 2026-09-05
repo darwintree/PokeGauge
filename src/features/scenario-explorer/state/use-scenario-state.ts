@@ -7,7 +7,7 @@ import {
   warmDefenderSpreadCache,
   type StatAxisBounds,
 } from "@/lib/stat-calculation"
-import type { ProbabilityMode, StatStage } from "@/lib/damage-calculation"
+import { WEATHERS, TERRAINS, type ProbabilityMode, type StatStage } from "@/lib/damage-calculation"
 import type { MatchupCatalog } from "@/lib/catalog"
 import { measureInteractionWork } from "@/devtools/interaction-performance-monitor"
 import {
@@ -534,14 +534,28 @@ export function useScenarioState(
           : next
       })
     },
+    addWeather: (value: TrackState["weathers"][number]) =>
+      setTrackState((s) => ({
+        ...s,
+        weatherPool: WEATHERS.filter((candidate) => candidate === "none" || candidate === value || s.weatherPool.includes(candidate)),
+        weathers: WEATHERS.filter((candidate) => candidate === value || s.weathers.includes(candidate)),
+      })),
     setWeathers: (weathers: TrackState["weathers"]) =>
       setTrackState((s) => ({
         ...s,
+        weatherPool: WEATHERS.filter((value) => value === "none" || s.weatherPool.includes(value) || weathers.includes(value)),
         weathers: weathers.length > 0 ? weathers : ["none"],
+      })),
+    addTerrain: (value: TrackState["terrains"][number]) =>
+      setTrackState((s) => ({
+        ...s,
+        terrainPool: TERRAINS.filter((candidate) => candidate === "none" || candidate === value || s.terrainPool.includes(candidate)),
+        terrains: TERRAINS.filter((candidate) => candidate === value || s.terrains.includes(candidate)),
       })),
     setTerrains: (terrains: TrackState["terrains"]) =>
       setTrackState((s) => ({
         ...s,
+        terrainPool: TERRAINS.filter((value) => value === "none" || s.terrainPool.includes(value) || terrains.includes(value)),
         terrains: terrains.length > 0 ? terrains : ["none"],
       })),
     setScreens: (screens: TrackState["screens"]) =>

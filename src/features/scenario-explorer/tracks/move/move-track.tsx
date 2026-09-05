@@ -8,6 +8,7 @@ import type { CatalogMoveOption, MoveCategory } from "@/lib/catalog"
 import type { MoveSnapshot } from "@/lib/move"
 import type { PokemonType } from "@/lib/pokemon"
 import type { BattlePokemonId } from "@/lib/resources"
+import { cn } from "@/lib/utils"
 import { TrackOption, TrackOptionAdd, TrackOptionGroup } from "../common/track-option"
 import { MovePickerDialog } from "./move-picker-dialog"
 import type { MoveSnapshotPatch } from "./move-snapshot-row"
@@ -112,31 +113,36 @@ export function MoveTrack({
   }
 
   return (
-    <section className="overflow-hidden rounded-[14px] border-2 border-ink bg-paper shadow-hud-panel transition-colors">
+    <section className="track-panel">
+      <div className="track-panel-heading group relative flex min-h-11 items-center gap-2 px-3">
+        <button
+          type="button"
+          aria-expanded={expanded}
+          aria-label={intl.formatMessage({ id: expanded ? "track.move.collapse" : "track.move.expand" })}
+          className="absolute inset-0 hover:bg-token-bg/60 active:bg-token-bg/80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+          onClick={onToggle}
+        />
+        <Swords
+          className="pointer-events-none relative size-3.5 shrink-0 text-muted-foreground"
+          strokeWidth={1.75}
+        />
+        <span className="pointer-events-none relative text-xs font-extrabold">{label}</span>
+        <div className="relative z-10 ml-auto">
+          <MoveCategoryControl
+            category={category}
+            onChange={onCategoryChange}
+          />
+        </div>
+        <ChevronDown
+          className={cn(
+            "pointer-events-none relative size-3.5 shrink-0 text-muted-foreground transition-transform",
+            expanded && "rotate-180",
+          )}
+        />
+      </div>
       {!expanded ? (
         <>
-          <div className="group relative flex h-11 items-center gap-2 px-2.5 sm:h-10">
-            <button
-              type="button"
-              aria-expanded={false}
-              aria-label={intl.formatMessage({ id: "track.move.expand" })}
-              className="absolute inset-0 hover:bg-token-bg/60 active:bg-token-bg/80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-              onClick={onToggle}
-            />
-            <Swords
-              className="pointer-events-none relative size-3.5 shrink-0 text-muted-foreground"
-              strokeWidth={1.75}
-            />
-            <span className="pointer-events-none relative text-xs font-extrabold">{label}</span>
-            <div className="relative z-10 ml-auto">
-              <MoveCategoryControl
-                category={category}
-                onChange={onCategoryChange}
-              />
-            </div>
-            <ChevronDown className="pointer-events-none relative size-3.5 shrink-0 text-muted-foreground" />
-          </div>
-          <div className="relative border-t px-2.5 py-2">
+          <div className="track-panel-pool relative px-3 pb-3">
             <button
               type="button"
               aria-label={intl.formatMessage({ id: "track.move.expand" })}
@@ -164,7 +170,7 @@ export function MoveTrack({
                     onToggle={() => toggleSelection(snapshot)}
                   >
                     <TypeBadge type={option.type} />
-                    <span className="truncate">{option.label}</span>
+                    <span className="min-w-0 text-left">{option.label}</span>
                   </TrackOption>
                 )
               })}
@@ -179,27 +185,6 @@ export function MoveTrack({
         </>
       ) : (
         <>
-          <div className="group relative flex h-11 items-center gap-2 px-2.5 sm:h-10">
-            <button
-              type="button"
-              aria-expanded={true}
-              aria-label={intl.formatMessage({ id: "track.move.collapse" })}
-              className="absolute inset-0 hover:bg-token-bg/60 active:bg-token-bg/80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-              onClick={onToggle}
-            />
-            <Swords
-              className="pointer-events-none relative size-3.5 shrink-0 text-muted-foreground"
-              strokeWidth={1.75}
-            />
-            <span className="pointer-events-none relative text-xs font-extrabold">{label}</span>
-            <div className="relative z-10 ml-auto">
-              <MoveCategoryControl
-                category={category}
-                onChange={onCategoryChange}
-              />
-            </div>
-            <ChevronDown className="pointer-events-none relative size-3.5 shrink-0 rotate-180 text-muted-foreground transition-transform" />
-          </div>
           <div className="border-t">
             {snapshots.map((snapshot) => {
               const option = optionById.get(snapshot.moveId)
