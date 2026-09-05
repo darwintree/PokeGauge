@@ -58,6 +58,9 @@ export function ScenarioSetupPanel({
   const intl = useIntl()
   const [activeId, setActiveId] = useState<AccordionTrackId | null>(null)
   const { trackState } = state
+  let editingSide: "attacker" | "defender" | undefined
+  if (activeId === "offenseStats") editingSide = "attacker"
+  if (activeId === "defenseStats") editingSide = "defender"
 
 
   function toggle(id: AccordionTrackId) {
@@ -225,7 +228,7 @@ export function ScenarioSetupPanel({
       <div className="setup-controls" data-track-id="moves">{tracks.moves}</div>
       <div
         className="setup-sides"
-        data-editing-stats={activeId === "offenseStats" || activeId === "defenseStats"}
+        data-editing-stats={editingSide}
       >
         <SetupSection title={intl.formatMessage({ id: "matchup.attacker" })}>
           <div data-track-id="offenseStats">{tracks.offenseStats}</div>

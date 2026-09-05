@@ -9,6 +9,7 @@ import {
   type ProbabilityInput,
   type RawScenarioPoint,
   type ScenarioSource,
+  type ScenarioTrack,
   type ScenarioSupport,
   compileScenario,
   projectMoveMechanics,
@@ -273,6 +274,7 @@ export function runScenarioPipeline(
   catalog: MatchupCatalog,
   trackState: TrackState,
   probabilityMode: ProbabilityMode = "battle-odds",
+  preserveTrack: ScenarioTrack | null = null,
 ): ScenarioPipelineResult {
   const calculableGroups = new Map<string, CalculableGroup>()
   const unavailableGroups = new Map<string, UnavailableGroupBuilder>()
@@ -332,7 +334,22 @@ export function runScenarioPipeline(
                           continue
                         }
 
-                        const identity = calculationIdentity(outcome)
+                        const calculationKey = calculationIdentity(outcome)
+                        // Keep the selected raw branch separate, even when its effect is neutral.
+                        const selections: Record<ScenarioTrack, string | number> = {
+                          "attacker-stat": offense.id,
+                          "defender-stat": defense.id,
+                          "held-item": attackerItemId,
+                          "defender-held-item": defenderItemId,
+                          "attacker-ability": attackerAbilityId,
+                          "defender-ability": defenderAbilityId,
+                          "attacker-stage": attackerStage,
+                          "defender-stage": defenderStage,
+                          weather, terrain, screen,
+                        }
+                        const identity = preserveTrack
+                          ? JSON.stringify([calculationKey, preserveTrack, selections[preserveTrack]])
+                          : calculationKey
                         const group = calculableGroups.get(identity) ?? {
                           outcome,
                           support: outcome.support,
@@ -374,11 +391,18 @@ export function runScenarioPipeline(
     }
   }
 
+  // Presentation partitions share calculation work but retain their own provenance.
+  const summaries = new Map<string, ReturnType<typeof summarizeDamage>>()
   const rows = [...calculableGroups].map(([identity, group]) => {
-    const computed = summarizeDamage(
-      calculateDamageRolls(group.outcome.calculation),
-      group.outcome.probability,
-    )
+    const calculationKey = calculationIdentity(group.outcome)
+    let computed = summaries.get(calculationKey)
+    if (!computed) {
+      computed = summarizeDamage(
+        calculateDamageRolls(group.outcome.calculation),
+        group.outcome.probability,
+      )
+      summaries.set(calculationKey, computed)
+    }
     const hitFact = group.allAlwaysHits
       ? "always-hits" as const
       : group.outcome.probability.hitProbability * 100

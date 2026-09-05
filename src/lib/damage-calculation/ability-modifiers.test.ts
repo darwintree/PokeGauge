@@ -328,6 +328,19 @@ describe("phase order, critical, and provenance", () => {
     const aura = result.rows.find((row) => row.provenance["attacker-ability"]?.active.length)
     expect(aura?.provenance["attacker-ability"]?.active).toEqual([String(FAIRY_AURA_ABILITY_ID)])
     expect(aura?.provenance["defender-ability"]?.active).toEqual([String(FAIRY_AURA_ABILITY_ID)])
+
+    // Fixing the attacker source must also remove unrelated defender sources:
+    // no attacker aura + boosted damage can only come from defender aura.
+    const partitioned = runScenarioPipeline(catalog, state, "battle-odds", "attacker-ability")
+    expect(partitioned.rows).toHaveLength(3)
+    const defenderOnly = partitioned.rows.find(row =>
+      row.provenance["attacker-ability"]?.neutral.includes(String(NO_ABILITY_ID)) &&
+      row.provenance["defender-ability"]?.active.includes(String(FAIRY_AURA_ABILITY_ID)))
+    expect(defenderOnly?.provenance["defender-ability"]?.neutral).toEqual([])
+    const attackerAura = partitioned.rows.find(row =>
+      row.provenance["attacker-ability"]?.active.includes(String(FAIRY_AURA_ABILITY_ID)))
+    expect(attackerAura?.provenance["defender-ability"]?.neutral).toEqual([String(NO_ABILITY_ID)])
+    expect(attackerAura?.provenance["defender-ability"]?.active).toEqual([String(FAIRY_AURA_ABILITY_ID)])
   })
 
   it.each([
