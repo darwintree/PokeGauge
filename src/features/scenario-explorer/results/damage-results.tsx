@@ -1,4 +1,7 @@
-import { TriangleAlert } from "lucide-react"
+import { TypeBadge } from "@/components/pokemon/type-badge"
+import { HeldItemSpriteIcon } from "../tracks/held-item/held-item-sprite-icon"
+import { FieldConditionIcon } from "../tracks/common/field-condition-icon"
+import { TriangleAlert, Fence, Sparkles, TrendingUp } from "lucide-react"
 import { Fragment, useEffect, useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
@@ -7,8 +10,9 @@ import {
   EmptyDescription,
   EmptyHeader,
 } from "@/components/ui/empty"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import type { CatalogMoveOption, MatchupCatalog } from "@/lib/catalog"
-import type { ProbabilityMode } from "@/lib/damage-calculation"
+import type { ProbabilityMode, Weather, Terrain } from "@/lib/damage-calculation"
 import {
   RANGE_DEFENDER_ID,
   RANGE_STAT_ID,
@@ -28,9 +32,11 @@ import {
   DamageRangeLegend,
   DamageResultRow,
 } from "./damage-result-row"
+import { groupResults, type ResultGrouping, type ResultGroup } from "./result-groups"
 import { rowIdentity } from "./row-labels"
 
 type DamageResultsProps = {
+  grouping?: ResultGrouping | null
   catalog: MatchupCatalog
   rows: ScenarioResult[]
   unavailable: UnavailableScenarioGroup[]
@@ -97,6 +103,7 @@ function MoveGroupHeader({ move }: { move: CatalogMoveOption }) {
 }
 
 export function DamageResults({
+  grouping = null,
   catalog,
   rows,
   unavailable,
@@ -104,6 +111,13 @@ export function DamageResults({
   statNameStrategy,
   probabilityMode,
 }: DamageResultsProps) {
+  const intl = useIntl()
+  const [selection, setSelection] = useState<{ grouping: ResultGrouping; id: string } | null>(null)
+  const groups = useMemo(() => grouping ? groupResults(rows, grouping) : [], [rows, grouping])
+  const selectedGroup = groups.find(
+    group => selection?.grouping === grouping && group.id === selection.id,
+  ) ?? groups[0]
+  const visibleRows = grouping && selectedGroup ? selectedGroup.rows : rows
   const rowLabelPresets = useMemo(
     () => ({
       offense: offensePresetsForState(catalog, trackState),
@@ -118,8 +132,8 @@ export function DamageResults({
   }, [trackState.statMode, trackState.defenderMode])
 
   const blocks = useMemo(
-    () => expandRangeParentBlocks(catalog, trackState, rows, expanded, probabilityMode),
-    [catalog, expanded, probabilityMode, rows, trackState],
+    () => expandRangeParentBlocks(catalog, trackState, visibleRows, expanded, probabilityMode),
+    [catalog, expanded, probabilityMode, visibleRows, trackState],
   )
 
   function toggleAxis(parentId: string, axis: keyof RangeAxisExpansion) {
@@ -152,6 +166,51 @@ export function DamageResults({
           </Empty>
         )}
       </>
+    )
+  }
+
+  function groupIdentity(group: ResultGroup) {
+    const row = group.rows[0]
+    if (grouping === "item" || grouping === "defender-held-item") {
+      const items = grouping === "item" ? catalog.attackerItems : catalog.defenderItems
+      const label = items.find(item => String(item.id) === group.id)?.label ?? group.id
+      return <span className="inline-flex items-center gap-2 text-ink"><HeldItemSpriteIcon id={group.id} /><span>{label}</span></span>
+    }
+    if (grouping === "attacker-ability" || grouping === "defender-ability") {
+      const abilities = grouping === "attacker-ability" ? catalog.attackerAbilities : catalog.defenderAbilities
+      const label = abilities.find(ability => String(ability.id) === group.id)?.label ?? intl.formatMessage({ id: "track.ability.unknown" })
+      return <span className="inline-flex items-center gap-2 text-ink"><Sparkles aria-hidden className="size-4 text-hud-muted" />{label}</span>
+    }
+    if (grouping === "attacker-stage" || grouping === "defender-stage") {
+      const stage = Number(group.id)
+      return <span className="inline-flex items-center gap-2 text-ink"><TrendingUp aria-hidden className="size-4 text-hud-muted" /><span className="text-base font-extrabold tabular-nums">{stage > 0 ? `+${stage}` : stage}</span></span>
+    }
+    if (grouping === "weather" || grouping === "terrain") {
+      return <span className="inline-flex items-center gap-2 text-ink"><FieldConditionIcon condition={group.id as Weather | Terrain} />{intl.formatMessage({ id: `track.${grouping}.${group.id}` })}</span>
+    }
+    if (grouping === "screen") {
+      return <span className="inline-flex items-center gap-2 text-ink"><Fence aria-hidden className="size-5 text-hud-muted" />{intl.formatMessage({ id: `track.screen.${group.id}` })}</span>
+    }
+    const identity = rowIdentity(catalog, row, trackState, statNameStrategy, rowLabelPresets)
+    if (grouping === "move") {
+      const move = catalogOption(catalog.moves, row.moveId)
+      const sameMove = groups.filter(candidate => candidate.rows[0].moveId === row.moveId)
+      const label = sameMove.length > 1 ? `${identity.move} · ${sameMove.findIndex(candidate => candidate.id === group.id) + 1}` : identity.move
+      return <span className="inline-flex items-center gap-2 text-ink"><TypeBadge type={move.type} /><span>{label}</span></span>
+    }
+    const chips = grouping === "offense" ? identity.offenseChips : identity.defenseChips
+    return (
+      <span className="inline-flex items-center gap-1.5">
+        {chips.map((chip, index) => (
+          <Fragment key={`${chip.actual}:${index}`}>
+            {index > 0 && <span className="text-hud-muted">~</span>}
+            <span className="inline-flex flex-col items-center gap-0.5">
+              <span className={cn("stat-value-chip pointer-events-none", `stat-value-chip--${chip.band}`, chip.temporary && "stat-value-chip--temporary")}>{chip.label}</span>
+              <span className="text-[10px] font-medium text-hud-muted tabular-nums">{chip.actual}</span>
+            </span>
+          </Fragment>
+        ))}
+      </span>
     )
   }
 
@@ -233,7 +292,29 @@ export function DamageResults({
   return (
     <>
       <UnavailableScenarioNotices catalog={catalog} unavailable={unavailable} />
-      {board}
+      {grouping && selectedGroup ? (
+        <Tabs
+          value={selectedGroup.id}
+          onValueChange={(id) => setSelection({ grouping, id: String(id) })}
+          className="isolate min-w-0 gap-0"
+        >
+          <div className="relative z-20 min-w-0 overflow-x-auto overflow-y-hidden px-3 pt-1">
+            <TabsList variant="folder" aria-label={intl.formatMessage({ id: "results.grouping.groups" })}>
+              {groups.map(group => (
+                <TabsTrigger key={group.id} value={group.id}>
+                  {groupIdentity(group)}
+                  <span title={intl.formatMessage({ id: "summary.rows" }, { count: group.rows.length })} className="ml-1 border-l border-card-border pl-2 text-[11px] font-medium text-hud-muted tabular-nums">{group.rows.length}</span>
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
+          {groups.map(group => (
+            <TabsContent key={group.id} value={group.id} className="-mt-0.5">
+              {group.id === selectedGroup.id && board}
+            </TabsContent>
+          ))}
+        </Tabs>
+      ) : board}
     </>
   )
 }

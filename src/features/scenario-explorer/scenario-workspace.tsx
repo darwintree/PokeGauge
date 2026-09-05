@@ -11,6 +11,7 @@ import { createScenarioSetupUrl, type TrackState } from "@/lib/scenario"
 import type { StatNameStrategy } from "@/lib/stat-preset"
 import { cn } from "@/lib/utils"
 
+import { resultGroupingOptions, type ResultGrouping } from "./results/result-groups"
 import { DamageResults } from "./results/damage-results"
 import { ScenarioSetupPanel } from "./scenario-setup-panel"
 import { ResultSetSummary } from "./results-summary"
@@ -55,6 +56,7 @@ export function ScenarioWorkspace({
   probabilityMode: ProbabilityMode
 }) {
   const intl = useIntl()
+  const [resultGrouping, setResultGrouping] = useState<ResultGrouping | null>(null)
   const state = useScenarioState(
     catalog,
     statNameStrategy,
@@ -63,7 +65,11 @@ export function ScenarioWorkspace({
     sharedSetupToken
       ? { token: sharedSetupToken, onEdited: onSharedSetupEdited }
       : undefined,
+    resultGrouping,
   )
+  const visibleGrouping = resultGroupingOptions(state.trackState).some(option => option.id === resultGrouping)
+    ? resultGrouping
+    : null
   const [mobileView, setMobileView] = useState<"setup" | "results">("results")
   const [shareStatus, setShareStatus] = useState<"idle" | "copied" | "error">("idle")
   useTrackProductEventOnce("scenario_ready", intl.locale)
@@ -213,9 +219,10 @@ export function ScenarioWorkspace({
                 <FormattedMessage id="share.copyError" />
               </p>
             ) : null}
-            <ResultSetSummary trackState={state.trackState} rowCount={state.rows.length} />
+            <ResultSetSummary trackState={state.trackState} rowCount={state.rows.length} grouping={visibleGrouping} onGroupingChange={setResultGrouping} />
           </header>
           <DamageResults
+            grouping={visibleGrouping}
             catalog={catalog}
             rows={state.rows}
             unavailable={state.unavailable}

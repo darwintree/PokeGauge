@@ -225,7 +225,7 @@ export function ScenarioSetupPanel({
       <div className="setup-controls" data-track-id="moves">{tracks.moves}</div>
       <div
         className="setup-sides"
-        data-editing-stats={activeId === "offenseStats" || activeId === "defenseStats"}
+        data-editing-stats={activeId === "offenseStats" ? "attacker" : activeId === "defenseStats" ? "defender" : undefined}
       >
         <SetupSection title={intl.formatMessage({ id: "matchup.attacker" })}>
           <div data-track-id="offenseStats">{tracks.offenseStats}</div>

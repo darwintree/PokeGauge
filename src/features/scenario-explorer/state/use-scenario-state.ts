@@ -58,6 +58,8 @@ import {
   scenarioSetupTokenFromTrackState,
 } from "@/lib/scenario"
 
+import { groupingTrack, resultGroupingOptions, type ResultGrouping } from "../results/result-groups"
+
 import { useCatalogTransitionSync } from "./use-catalog-transition-sync"
 import { useScenarioSnapshotPersistence } from "./use-scenario-snapshot-persistence"
 
@@ -127,6 +129,7 @@ export function useScenarioState(
     token: string
     onEdited: () => void
   },
+  resultGrouping: ResultGrouping | null = null,
 ) {
   const { attackerCalcName, defenderCalcName } = catalog.matchup
   const restored = restoredTrackState !== undefined
@@ -242,12 +245,16 @@ export function useScenarioState(
     trackState,
   ])
 
+  const visibleGrouping = resultGroupingOptions(trackState).some(option => option.id === resultGrouping)
+    ? resultGrouping
+    : null
+  const preserveTrack = groupingTrack(visibleGrouping)
   const pipelineResult = useMemo(() => {
     if (catalogTransitionPending) return { rows: [], unavailable: [] }
     return measureInteractionWork("runScenarioPipeline", () =>
-      runScenarioPipeline(catalog, pipelineTrackState, probabilityMode),
+      runScenarioPipeline(catalog, pipelineTrackState, probabilityMode, preserveTrack),
     )
-  }, [catalog, catalogTransitionPending, pipelineTrackState, probabilityMode])
+  }, [catalog, catalogTransitionPending, pipelineTrackState, probabilityMode, preserveTrack])
   const { rows, unavailable } = pipelineResult
 
   function setStatMode(mode: StatSelectMode) {
