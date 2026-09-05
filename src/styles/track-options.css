@@ -547,10 +547,6 @@
 }
 
 
-.setup-panel .battle-pokemon-form-trigger {
-  top: 0.25rem;
-  right: 0.25rem;
-}
 
 @media (min-width: 1024px) {
   #scenario-setup {

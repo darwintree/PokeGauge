@@ -40,22 +40,24 @@ export function MatchupLanding({
       />
 
       <div className="relative flex flex-1 flex-col items-center justify-center px-4 sm:px-6">
-        <div className="w-full max-w-3xl space-y-5">
+        <div className="flex w-full max-w-[480px] flex-col gap-5">
           <section>
             <h1 className="text-center text-xl font-extrabold tracking-tight">
               {intl.formatMessage({ id: "matchup.new" })}
             </h1>
-            <div className="mt-3 grid gap-2 rounded-2xl border-2 border-ink bg-paper p-2 shadow-hud-board sm:grid-cols-2">
+            <div className="battle-pokemon-identities matchup-landing-identities mt-3 grid grid-cols-2">
               <BattlePokemonPicker
                 label={intl.formatMessage({ id: "matchup.attacker" })}
                 options={attackers}
                 value={attackerId}
                 onChange={onAttackerChange}
+                compactSide="attacker"
                 spriteSide="back"
                 awaiting={attackerId == null && defenderId != null}
               />
               <BattlePokemonPicker
                 label={intl.formatMessage({ id: "matchup.defender" })}
+                compactSide="defender"
                 options={defenders}
                 value={defenderId}
                 onChange={onDefenderChange}
