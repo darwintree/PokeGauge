@@ -11,7 +11,7 @@ import { createScenarioSetupUrl, type TrackState } from "@/lib/scenario"
 import type { StatNameStrategy } from "@/lib/stat-preset"
 import { cn } from "@/lib/utils"
 
-import { resultGroupingOptions, type ResultGrouping } from "./results/result-groups"
+import type { ResultGrouping } from "./results/result-groups"
 import { DamageResults } from "./results/damage-results"
 import { ScenarioSetupPanel } from "./scenario-setup-panel"
 import { ResultSetSummary } from "./results-summary"
@@ -67,9 +67,7 @@ export function ScenarioWorkspace({
       : undefined,
     resultGrouping,
   )
-  const visibleGrouping = resultGroupingOptions(state.trackState).some(option => option.id === resultGrouping)
-    ? resultGrouping
-    : null
+  const { visibleGrouping } = state
   const [mobileView, setMobileView] = useState<"setup" | "results">("results")
   const [shareStatus, setShareStatus] = useState<"idle" | "copied" | "error">("idle")
   useTrackProductEventOnce("scenario_ready", intl.locale)

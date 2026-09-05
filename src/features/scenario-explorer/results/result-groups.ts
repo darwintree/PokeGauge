@@ -46,7 +46,7 @@ export function groupResults(rows: ScenarioResult[], grouping: ResultGrouping): 
         ids = [row.defenderId]
         break
       default:
-        // Merged results belong to every contributing selection, including inactive ones.
+        // Include neutral, inactive and unsupported sources when locating the group.
         ids = [...new Set(Object.values(row.provenance[grouping === "item" ? "held-item" : grouping] ?? {}).flat())]
         break
     }
@@ -67,10 +67,15 @@ export function groupResults(rows: ScenarioResult[], grouping: ResultGrouping): 
 export function groupingTrack(grouping: ResultGrouping | null): ScenarioTrack | null {
   switch (grouping) {
     case null:
-    case "move": return null
-    case "offense": return "attacker-stat"
-    case "defense": return "defender-stat"
-    case "item": return "held-item"
-    default: return grouping
+    case "move":
+      return null
+    case "offense":
+      return "attacker-stat"
+    case "defense":
+      return "defender-stat"
+    case "item":
+      return "held-item"
+    default:
+      return grouping
   }
 }

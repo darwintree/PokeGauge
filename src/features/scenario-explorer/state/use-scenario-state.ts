@@ -449,6 +449,7 @@ export function useScenarioState(
     trackState,
     pipelineTrackState,
     rows,
+    visibleGrouping,
     unavailable,
     offensePresets,
     defensePresets,
