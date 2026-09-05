@@ -4,6 +4,8 @@ Date: 2026-09-05
 Source: 用户要求环境变量配置素材路径，完成首次上传及地址替换后创建 PR，审批后再继续部署。
 Language: 简体中文
 
+当前状态：用户随后明确要求固定 URL，当前前缀为 `https://static.pokegauge.top/pokeapi`，不含 commit。第 1 条的版本路径决策已被替代；14 天 Cache Rule 保留。已配置 rclone S3 凭据，后续通过校验和增量上传。
+
 ## Entries
 
 ### 1. 一个环境变量包含完整素材版本前缀

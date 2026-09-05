@@ -6,8 +6,12 @@ status: "open"
 priority: "medium"
 labels: ["FEATURE-REQUEST", "NEEDS-TRIAGE"]
 created_at: "2026-09-05T14:04:00Z"
-updated_at: "2026-09-05T14:35:00Z"
+updated_at: "2026-09-05T15:48:00Z"
 ---
+## 最新方案
+
+用户决定改用固定 URL：`https://static.pokegauge.top/pokeapi/sprites/...`。来源 commit 只用于追踪，不进入对象路径。自动化应按校验和增量上传新增或变化文件，并刷新变化 URL 的边缘缓存；浏览器仍可缓存旧图片最多 14 天。以下版本目录、更新前缀及保留版本回滚的描述为历史方案，实施时以本节为准。Actions 仍暂不实施。
+
 ## 目标与排期
 
 将 PokeGauge 使用的 GitHub 图片素材迁移到自有 R2，并通过 GitHub Actions 自动同步，减少手工更新和用户浏览器对 GitHub 图片地址的依赖。
