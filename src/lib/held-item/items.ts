@@ -1,3 +1,4 @@
+import { staticAssetUrl } from "@/lib/assets"
 import type { CatalogOption } from "@/lib/catalog"
 import { localeMessages, type SupportedLocale } from "@/lib/i18n"
 import type { NormalizedHeldItem } from "@/lib/resources"
@@ -17,10 +18,6 @@ import {
   EXPLICIT_NO_ITEM_ID,
   type HeldItemId,
 } from "./types"
-
-/** Pinned PokeAPI/sprites commit for held-item icon hotlinks. */
-export const HELD_ITEM_SPRITES_COMMIT =
-  "81372ec151ab18f27eccfa095a24683014758918"
 
 export const HELD_ITEM_STORAGE_KEY = "pokegauge:held-item-added-boosts"
 
@@ -105,7 +102,7 @@ export function itemDescription(
 export function itemSpriteUrl(id: string | number): string | null {
   const sourcePath = spriteSourcePathFor(id)
   if (!sourcePath) return null
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/${HELD_ITEM_SPRITES_COMMIT}/${sourcePath}`
+  return staticAssetUrl(sourcePath)
 }
 
 export function itemIsHiddenNeutral(id: string | number): boolean {

@@ -5,6 +5,7 @@ import { TypeBadge, TypeBadgeList } from "@/components/pokemon/type-badge"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
+import { pokemonSpriteUrl } from "@/lib/assets"
 import type { BattlePokemonOption } from "@/lib/catalog"
 import { prioritizeBattlePokemonOptions } from "@/lib/catalog"
 import { POKEMON_TYPES, type PokemonType } from "@/lib/pokemon"
@@ -57,7 +58,7 @@ function BattlePokemonPickerItem({
         <img
           loading="lazy"
           decoding="async"
-          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${option.id}.png`}
+          src={pokemonSpriteUrl(option.id)}
           alt=""
           className="size-full object-contain [image-rendering:pixelated]"
         />
