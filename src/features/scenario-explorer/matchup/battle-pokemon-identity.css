@@ -69,14 +69,6 @@
 .battle-pokemon-identity[data-side="defender"] .battle-pokemon-identity-role {
   background: var(--battle-side-defender);
 }
-.setup-panel .battle-pokemon-identity-cell .battle-pokemon-form-trigger {
-  width: 22px;
-  height: 22px;
-}
-.battle-pokemon-identity-cell .battle-pokemon-form-trigger svg {
-  width: 12px;
-  height: 12px;
-}
 @media (hover: hover) {
   .battle-pokemon-identity:hover {
     background: var(--muted);
@@ -104,4 +96,53 @@
   .battle-pokemon-identity:hover .battle-pokemon-identity-sprite, .battle-pokemon-identity:active {
     transform: none;
   }
+}
+
+.matchup-landing-identities .battle-pokemon-identity {
+  border-radius: 8px;
+}
+
+.battle-pokemon-form-trigger {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  display: inline-flex;
+  gap: 4px;
+  min-height: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border: 1.5px solid var(--ink);
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .025em;
+  box-shadow: 0 2px 0 var(--ink);
+  cursor: pointer;
+  transition: background-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+.battle-pokemon-form-trigger svg {
+  width: 12px;
+  height: 12px;
+  stroke-width: 2.5;
+}
+@media (hover: hover) {
+  .battle-pokemon-form-trigger:hover {
+    background: var(--signal-yellow);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 0 var(--ink);
+  }
+}
+.battle-pokemon-form-trigger:active {
+  background: var(--signal-yellow);
+  transform: translateY(2px);
+  box-shadow: none;
+}
+.battle-pokemon-form-trigger:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .battle-pokemon-form-trigger { transition: none; }
 }
