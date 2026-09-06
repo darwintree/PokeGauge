@@ -122,7 +122,7 @@ describe("scenario compiler", () => {
   })
 
   it("classifies audited Move identities and Grassy Terrain as semi-supported", () => {
-    expect(calculableScenario({ snapshot: { ...snapshot, moveId: 612, power: 40 } }).support).toBe(
+    expect(calculableScenario({ snapshot: { ...snapshot, moveId: 315, power: 130 } }).support).toBe(
       "semi-supported",
     )
     expect(calculableScenario({ terrain: "grassy" }).support).toBe("semi-supported")

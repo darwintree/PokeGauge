@@ -1,3 +1,4 @@
+import { moveStatChange, type MoveStatChange } from "@/lib/move/stat-change"
 import type { MoveCategory } from "@/lib/catalog"
 import {
   AIR_LOCK_ABILITY_ID,
@@ -7,6 +8,7 @@ import {
   NO_ABILITY_ID,
   SCRAPPY_ABILITY_ID,
   SKILL_LINK_ABILITY_ID,
+  SHEER_FORCE_ABILITY_ID,
   PARENTAL_BOND_ABILITY_ID,
   TERA_SHELL_ABILITY_ID,
   UNNERVE_ABILITY_ID,
@@ -140,6 +142,7 @@ export type CalculableScenario = {
     breaksScreensBeforeDamage: boolean
   }
   calculation: CompiledDamageInput
+  statChange?: MoveStatChange
   execution: MoveExecution
   /** Display modifiers after the resistance Berry has been consumed. */
   berry?: { normalFinalModifier: number; criticalFinalModifier: number }
@@ -191,6 +194,8 @@ export function calculationIdentity(outcome: CalculableScenario): string {
     outcome.ko,
     outcome.execution,
     outcome.berry,
+    outcome.statChange,
+    ...(outcome.statChange ? [outcome.calculation.low.calc, outcome.calculation.high?.calc] : []),
   ])
 }
 
@@ -1177,8 +1182,16 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     }
   }
 
+  const change = moveStatChange(raw.snapshot.moveId)
+  const statChange = change &&
+    raw.attackerAbilityId !== SHEER_FORCE_ABILITY_ID &&
+    (raw.probabilityMode !== "classic" || change.probability === 1)
+    ? change
+    : undefined
+
   return {
     kind: "calculable",
+    ...(statChange ? { statChange } : {}),
     support: auditedMoveWarning(raw.snapshot.moveId) || raw.terrain === "grassy"
       ? "semi-supported"
       : "supported",

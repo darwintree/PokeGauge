@@ -1,6 +1,7 @@
 import { calculate, Field, Move, Pokemon, toID } from "@smogon/calc"
 import type { AbilityName, TypeName } from "@smogon/calc/dist/data/interface"
 
+import type { MoveStatChange } from "@/lib/move/stat-change"
 import type { PokemonType } from "@/lib/pokemon"
 
 import { CALC_GENERATION, VGC_LEVEL } from "./calc-constants"
@@ -117,6 +118,37 @@ function calcMove(context: CalcMoveContext, hits?: number): Move {
 export type CalcHitMatrix = {
   rolls: readonly (readonly number[])[]
   consumesBerry: boolean
+}
+
+/** Apply cumulative effects to the initial context for a subsequent move use. */
+export function applyCalcStatChanges(context: CalcContext, change: MoveStatChange, count: number): CalcContext {
+  const pokemon = context[change.side]
+  return { ...context, [change.side]: {
+    ...pokemon,
+    boosts: { ...pokemon.boosts,
+      [change.stat]: Math.max(-6, Math.min(6, pokemon.boosts[change.stat] + count * change.stages)),
+    },
+  } }
+}
+
+/** Matrices indexed by prior stat-change count within this use, including zero. */
+export function calculateHitMatrixVariants(
+  context: CalcContext,
+  hits: number,
+  critical: boolean,
+  berryConsumed: boolean,
+  resistanceBerry: boolean,
+  change?: MoveStatChange,
+): readonly CalcHitMatrix[] {
+  const base = calculateHitMatrix(context, hits, critical, berryConsumed, resistanceBerry)
+  if (!change) return [base]
+  // calc already boosts the Parental Bond child for Power-Up Punch. Reuse
+  // that row explicitly; applying the incoming boost again would double it.
+  const boostAlreadyInMatrix = context.attacker.abilityCalcName === "Parental Bond" &&
+    context.move.calcMoveName === "Power-Up Punch"
+  return Array.from({ length: hits }, (_, count) => count === 0 || boostAlreadyInMatrix
+    ? base
+    : calculateHitMatrix(applyCalcStatChanges(context, change, count), hits, critical, berryConsumed, resistanceBerry))
 }
 
 /** Read calc's per-Hit results without collapsing them or summing equal-index rolls. */
