@@ -167,7 +167,7 @@ _Avoid_: full-hit probability, Hit Fact
 _Avoid_: Scenario set, move list, fixed hit count
 
 **Resolution State（结算状态）**:
-一次执行中以及连续执行之间延续的战斗状态；当前支持抗性果是否已消费。不同 Scenario 各自从初始状态开始。
+一次执行中以及连续执行之间延续的战斗状态；当前支持抗性果是否已消费，以及已支持招式造成的防御／特防下降和攻击／特攻上升在后续攻击段及下一次执行中的阶级。不同 Scenario 各自从初始状态开始。
 _Avoid_: Track State, application state
 
 ### 概率模式（Probability Mode）
@@ -177,11 +177,11 @@ _Avoid_: Track State, application state
 _Avoid_: Probability Track, Scenario Setup field, result filter
 
 **经典模式（Classic Mode）**:
-假定每次命中检查成功，各段独立使用 16 个等概率伤害值，保留随机段数；非必定会心不参与击倒概率，必定会心照常参与。会心参考仍可展示。
+假定每次命中检查成功，各段独立使用 16 个等概率伤害值，保留随机段数；非必定会心与概率触发的能力变化不参与击倒概率，必定会心及必定触发的已支持能力变化照常参与。会心参考仍可展示。
 _Avoid_: 16-roll mode, guaranteed damage
 
 **实战模式（Battle Odds Mode）**:
-在当前支持范围内，将命中、未命中与会心概率纳入伤害分布后计算击倒概率；未命中计为零伤害。
+在当前支持范围内，将命中、未命中、会心及已支持的概率能力变化纳入条件分布后计算击倒概率；未命中计为零伤害。
 _Avoid_: Battle Mode, Actual Probability Mode, Full Odds Mode, Realistic Mode
 
 **Hit Fact（命中事实）**:

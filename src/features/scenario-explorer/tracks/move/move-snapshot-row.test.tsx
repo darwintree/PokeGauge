@@ -33,6 +33,10 @@ const POWER_UP_PUNCH: CatalogMoveOption = {
   accuracy: 100,
 }
 
+const CRUNCH: CatalogMoveOption = {
+  ...POWER_UP_PUNCH, id: 242, label: "Crunch", moveName: "crunch", type: "dark", power: 80,
+}
+
 function markup(locale: keyof typeof localeMessages, children: React.ReactNode) {
   return renderToStaticMarkup(createElement(
     IntlProvider,
@@ -42,7 +46,7 @@ function markup(locale: keyof typeof localeMessages, children: React.ReactNode) 
 }
 
 describe("audited Move and Terrain warnings", () => {
-  it.each([[DOUBLE_SLAP, false], [POWER_UP_PUNCH, true]] as const)(
+  it.each([[DOUBLE_SLAP, false], [POWER_UP_PUNCH, false], [CRUNCH, false]] as const)(
     "warns only for a relevant limitation in folded and expanded states (%j)", (option, warns) => {
     const snapshot = createMoveSnapshot(option, "test-move")
     const folded = markup("en", createElement(MoveSnapshotRow, {
@@ -87,7 +91,6 @@ describe("audited Move and Terrain warnings", () => {
 
   it("has concrete warning text in every supported locale", () => {
     for (const locale of ["en", "zh-hans", "zh-hant", "ja"] as const) {
-      expect(localeMessages[locale]["track.move.warning.target-stat-change"]).toBeTruthy()
       expect(localeMessages[locale]["track.move.warning.attacker-stat-change"]).toBeTruthy()
       expect(localeMessages[locale]["track.terrain.warning.grassy-recovery"]).toBeTruthy()
     }

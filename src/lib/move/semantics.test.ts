@@ -1,3 +1,4 @@
+import { moveStatChange } from "./stat-change"
 import { describe, expect, it } from "vitest"
 
 import {
@@ -62,22 +63,12 @@ describe("reviewed move semantics", () => {
     expect(auditedMoveWarning(id)).toBeUndefined()
   })
 
-  it("maps every audited Move identity to one warning", () => {
-    const groups = {
-      "target-stat-change": [
-        51, 94, 231, 242, 247, 249, 295, 306, 405, 411, 412, 414, 430, 465, 491,
-        534, 680, 708, 710, 787, 788, 823, 855,
-      ],
-      "attacker-stat-change": [
-        232, 246, 276, 309, 315, 318, 354, 434, 437, 451, 466, 552, 612, 705, 800,
-        871, 874, 905,
-      ],
-    } as const
-
-    expect(Object.values(groups).flat()).toHaveLength(41)
-    for (const [warning, moveIds] of Object.entries(groups)) {
-      for (const moveId of moveIds) expect(auditedMoveWarning(moveId)).toBe(warning)
+  it("warns only for unsupported self changes", () => {
+    for (let moveId = 1; moveId <= 920; moveId++) {
+      if (!moveStatChange(moveId)) continue
+      expect(auditedMoveWarning(moveId)).toBeUndefined()
     }
+    expect(auditedMoveWarning(315)).toBe("attacker-stat-change")
     expect(auditedMoveWarning(89)).toBeUndefined()
   })
 })

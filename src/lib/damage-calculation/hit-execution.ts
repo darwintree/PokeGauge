@@ -4,8 +4,11 @@ import {
   sequenceKOProbabilities,
   type Hit,
   type HitComposition,
+  type ResolutionState,
   type ValueRange,
 } from "@/lib/damage-distribution/hit-composition"
+
+import type { MoveStatChange } from "@/lib/move/stat-change"
 
 import { calculateHitMatrix } from "./calc-engine"
 import type { CompiledDamagePoint, DamageFormulaBranch } from "./damage-kernel"
@@ -29,7 +32,7 @@ function hitFormula(
   }
 }
 
-export function compileHitComposition(
+function compileUnchangedHits(
   scenario: CalculableScenario,
   point: CompiledDamagePoint,
   berryConsumed = false,
@@ -60,6 +63,53 @@ export function compileHitComposition(
   return { accuracyScope: scenario.execution.accuracyScope, choices }
 }
 
+function applyStatChanges(point: CompiledDamagePoint, change: MoveStatChange, count: number): CompiledDamagePoint {
+  const pokemon = point.calc[change.side]
+  return { ...point, calc: { ...point.calc, [change.side]: {
+    ...pokemon,
+    boosts: { ...pokemon.boosts,
+      [change.stat]: Math.max(-6, Math.min(6, pokemon.boosts[change.stat] + count * change.stages)),
+    },
+  } } }
+}
+
+export function compileHitComposition(
+  scenario: CalculableScenario,
+  point: CompiledDamagePoint,
+  berryConsumed = false,
+): HitComposition {
+  const base = compileUnchangedHits(scenario, point, berryConsumed)
+  const change = scenario.statChange
+  if (!change) return base
+  // Compile each reachable incoming stage once. The resolver selects it from
+  // the same state that carries Berry consumption and accumulated damage.
+  const byChanges = new Map<number, HitComposition>([[0, base]])
+  const afterChanges = (count: number) => {
+    let composition = byChanges.get(count)
+    if (!composition) {
+      composition = compileUnchangedHits(scenario, applyStatChanges(point, change, count), berryConsumed)
+      byChanges.set(count, composition)
+    }
+    return composition
+  }
+  // calc's public matrix already includes this guaranteed intra-use boost.
+  const boostAlreadyInMatrix = point.calc.move.calcMoveName === "Power-Up Punch"
+  return {
+    ...base,
+    statChangeProbability: change.probability,
+    choices: base.choices.map((choice, choiceIndex) => ({
+      ...choice,
+      hits: choice.hits.map((hit, index) => ({
+        ...hit,
+        ...(index > 0 && !boostAlreadyInMatrix ? {
+          afterStatChanges: Array.from({ length: index }, (_, previous) =>
+            afterChanges(previous + 1).choices[choiceIndex].hits[index]),
+        } : {}),
+      })),
+    })),
+  }
+}
+
 export type ExecutionProjection = {
   normal?: ValueRange
   critical?: ValueRange
@@ -88,11 +138,23 @@ export function evaluateExecutionPoint(scenario: CalculableScenario, point: Comp
   const composition = compileHitComposition(scenario, point)
   const { hitProbability, criticalHitProbability } = scenario.probability
   const first = resolveHitComposition(composition, hitProbability, criticalHitProbability)
-  const consumed = first.some((outcome) => outcome.berryConsumed)
-    ? resolveHitComposition(compileHitComposition(scenario, point, true), hitProbability, criticalHitProbability, true)
-    : first
+  const nextUses = new Map<number, typeof first>()
+  function afterOutcome(outcome: ResolutionState) {
+    const key = Number(outcome.berryConsumed) + 2 * outcome.statChanges
+    const cached = nextUses.get(key)
+    if (cached) return cached
+    const nextPoint = scenario.statChange && outcome.statChanges > 0
+      ? applyStatChanges(point, scenario.statChange, outcome.statChanges) : point
+    const next = key === 0 ? first : resolveHitComposition(
+      compileHitComposition(scenario, nextPoint, outcome.berryConsumed),
+      hitProbability, criticalHitProbability, outcome.berryConsumed,
+    )
+    nextUses.set(key, next)
+    return next
+  }
+
   return {
     ...projectHitComposition(composition),
-    ko: sequenceKOProbabilities(first, consumed, point.defenderHp),
+    ko: sequenceKOProbabilities(first, afterOutcome, point.defenderHp),
   }
 }

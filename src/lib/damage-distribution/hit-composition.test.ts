@@ -83,8 +83,8 @@ describe("Hit Composition", () => {
     const consumed = resolveHitComposition(sequence([hit(60)]), 0.5, 0, true)
     expect(first.find((outcome) => !outcome.landed)?.berryConsumed).toBe(false)
     expect(first.find((outcome) => outcome.landed)?.berryConsumed).toBe(true)
-    expect(sequenceKOProbabilities(first, consumed, 70)).toEqual({ ohko: 0, twoHit: 0.25 })
-    expect(sequenceKOProbabilities(first, consumed, 25)).toEqual({ ohko: 0.5, twoHit: 0.75 })
+    expect(sequenceKOProbabilities(first, (outcome) => outcome.berryConsumed ? consumed : first, 70)).toEqual({ ohko: 0, twoHit: 0.25 })
+    expect(sequenceKOProbabilities(first, (outcome) => outcome.berryConsumed ? consumed : first, 25)).toEqual({ ohko: 0.5, twoHit: 0.75 })
   })
 
   it("does not merge equal damage with different Berry states", () => {
@@ -104,7 +104,7 @@ describe("Hit Composition", () => {
     const outcomes = resolveHitComposition(sequence([hit(0)]), 0.5, 0)
     expect(outcomes).toHaveLength(2)
     expect(resolutionRange(outcomes, false)).toEqual({ min: 0, max: 0 })
-    expect(sequenceKOProbabilities(outcomes, outcomes, 1)).toEqual({ ohko: 0, twoHit: 0 })
+    expect(sequenceKOProbabilities(outcomes, () => outcomes, 1)).toEqual({ ohko: 0, twoHit: 0 })
   })
 
   it("aggregates equivalent power along the same mixed-critical paths", () => {
@@ -112,4 +112,64 @@ describe("Hit Composition", () => {
     expect(resolutionRange(outcomes, false)).toEqual({ min: 90, max: 90 })
     expect(resolutionRange(outcomes, true)).toEqual({ min: 105, max: 135 })
   })
+})
+
+describe("shared hit state transitions", () => {
+  it("retains damage/stat correlation alongside Berry consumption", () => {
+    const composition: HitComposition = {
+      accuracyScope: "move", statChangeProbability: 0.5,
+      choices: [{ probability: 1, hits: [
+        hit(10, undefined, true),
+        { ...hit(20), afterStatChanges: [hit(40)] },
+      ] }],
+    }
+    const outcomes = resolveHitComposition(composition, 0.5, 0)
+    expect(outcomes.filter((outcome) => outcome.landed).map((outcome) =>
+      [outcome.damage, outcome.statChanges, outcome.berryConsumed, outcome.probability],
+    ).sort()).toEqual([
+      [30, 0, true, 0.125], [30, 1, true, 0.125],
+      [50, 1, true, 0.125], [50, 2, true, 0.125],
+    ])
+    expect(outcomes.find((outcome) => !outcome.landed)).toMatchObject({
+      damage: 0, statChanges: 0, berryConsumed: false, probability: 0.5,
+    })
+    const result = sequenceKOProbabilities(outcomes, (outcome) => [
+      { ...outcome, damage: 10 + 10 * outcome.statChanges, probability: 1 },
+    ], 70)
+    expect(result.twoHit).toBe(0.25)
+  })
+
+  it("uses incoming state for each hit with independent critical outcomes", () => {
+    const composition: HitComposition = {
+      accuracyScope: "move", statChangeProbability: 1,
+      choices: [{ probability: 1, hits: [
+        hit(10, 15), { ...hit(20, 30), afterStatChanges: [hit(40, 60)] },
+      ] }],
+    }
+    const outcomes = resolveHitComposition(composition, 1, 0.5)
+    expect(outcomes.map((outcome) => [outcome.damage, outcome.statChanges]).sort()).toEqual([
+      [50, 2], [55, 2], [70, 2], [75, 2],
+    ])
+    expect(resolutionRange(outcomes, true)).toEqual({ min: 55, max: 75 })
+    const immune = resolveHitComposition({ ...composition,
+      choices: [{ probability: 1, hits: [hit(0), hit(0)] }],
+    }, 1, 0)
+    expect(immune[0].statChanges).toBe(0)
+  })
+})
+
+it("uses the same state transitions for a three-hit composition", () => {
+  const outcomes = resolveHitComposition({
+    accuracyScope: "move", statChangeProbability: 0.5,
+    choices: [{ probability: 1, hits: [
+      hit(10),
+      { ...hit(10), afterStatChanges: [hit(20)] },
+      { ...hit(10), afterStatChanges: [hit(20), hit(30)] },
+    ] }],
+  }, 1, 0)
+  expect(outcomes.map((outcome) => [outcome.damage, outcome.statChanges, outcome.probability]).sort())
+    .toEqual([
+      [30, 0, 0.125], [30, 1, 0.125], [40, 1, 0.125], [40, 2, 0.125],
+      [50, 1, 0.125], [50, 2, 0.125], [60, 2, 0.125], [60, 3, 0.125],
+    ])
 })
