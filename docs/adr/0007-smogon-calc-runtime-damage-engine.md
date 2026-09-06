@@ -1,5 +1,7 @@
 # @smogon/calc as the runtime damage engine
 
+Update: [ADR 0008](0008-hit-composition-and-berry-state.md) supersedes the single-result probability seam and deferred multi-hit expansion below.
+
 Runtime damage rolls now come from @smogon/calc as a black box: the local calculateDamageRolls internally calls calc.calculate() and keeps the { low: { normal, critical?, defenderHp }, high? } output shape, so the probability layer (KO convolution, hit/crit probabilities, both Probability Modes) is untouched. This overturns ADR 0001 (local product-scoped damage kernel). Critical-hit selection and accuracy stay local; calc only consumes the isCrit boolean.
 
 ## Considered Options

@@ -1,3 +1,4 @@
+import * as hitExecution from "./hit-execution"
 import { calculate, Field, Move, Pokemon } from "@smogon/calc"
 import { beforeAll, describe, expect, it, vi } from "vitest"
 
@@ -263,7 +264,7 @@ describe("screen scenario product and provenance", () => {
 
   it("keeps none and walls as two physical rows", async () => {
     const { catalog, state } = await screenTrackState()
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(hitExecution, "evaluateExecutionPoint")
 
     const result = runScenarioPipeline(catalog, state)
 
@@ -292,7 +293,7 @@ describe("screen scenario product and provenance", () => {
 
   it("merges none and walls for a critical-only snapshot", async () => {
     const { catalog, state } = await screenTrackState(3)
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(hitExecution, "evaluateExecutionPoint")
 
     const result = runScenarioPipeline(catalog, state)
 
@@ -333,7 +334,7 @@ describe("screen scenario product and provenance", () => {
       state.defenderStages = [0]
       state.defenderAbilityIds = [catalog.defenderAbilities[0].id]
       state.screens = [...SCREENS]
-      const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+      const kernel = vi.spyOn(hitExecution, "evaluateExecutionPoint")
 
       const result = runScenarioPipeline(catalog, state)
 

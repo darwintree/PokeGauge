@@ -1,4 +1,4 @@
-/** Box = main 16 rolls; whiskers = critical range when a normal branch exists. */
+/** Box = main damage range; whiskers = at-least-one-critical reference. */
 
 import { useIntl } from "react-intl"
 
@@ -293,7 +293,7 @@ export function DamageResultRow({
           </HoverRow>
           {hasReferenceCritical && (
             <HoverRow marker={<span className="inline-block size-2 rounded-full border-2 border-damage-critical bg-paper" />}>
-              <HoverLabel>{intl.formatMessage({ id: "damage.critical" })}</HoverLabel>
+              <HoverLabel>{intl.formatMessage({ id: row.moveMechanics.hits ? "damage.hit.atLeastOneCritical" : "damage.critical" })}</HoverLabel>
               <span className="tabular-nums">
                 {formatDamagePercent(row.critMinPercent, intl.locale)} ~ {formatDamagePercent(row.critMaxPercent, intl.locale)}
               </span>

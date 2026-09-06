@@ -59,24 +59,24 @@ const FROZEN_85_CONTRACT = `247|lifeorb|attacker|M|-|{"kind":"final-damage","mod
 214|softsand|attacker|M|-|{"kind":"base-power","modifier":4915,"gates":[{"kind":"move-type","types":["ground"]}]}
 224|spelltag|attacker|M|-|{"kind":"base-power","modifier":4915,"gates":[{"kind":"move-type","types":["ghost"]}]}
 225|twistedspoon|attacker|M|-|{"kind":"base-power","modifier":4915,"gates":[{"kind":"move-type","types":["psychic"]}]}
-176|babiriberry|defender|M|persistent-berry|{"kind":"final-damage","modifier":2048,"gates":[{"kind":"move-type","types":["steel"]},{"kind":"super-effective"}]}
-172|chartiberry|defender|M|persistent-berry|{"kind":"final-damage","modifier":2048,"gates":[{"kind":"move-type","types":["rock"]},{"kind":"super-effective"}]}
-177|chilanberry|defender|M|persistent-berry|{"kind":"final-damage","modifier":2048,"gates":[{"kind":"move-type","types":["normal"]}]}
-166|chopleberry|defender|M|persistent-berry|{"kind":"final-damage","modifier":2048,"gates":[{"kind":"move-type","types":["fighting"]},{"kind":"super-effective"}]}
-169|cobaberry|defender|M|persistent-berry|{"kind":"final-damage","modifier":2048,"gates":[{"kind":"move-type","types":["flying"]},{"kind":"super-effective"}]}
-175|colburberry|defender|M|persistent-berry|{"kind":"final-damage","modifier":2048,"gates":[{"kind":"move-type","types":["dark"]},{"kind":"super-effective"}]}
-174|habanberry|defender|M|persistent-berry|{"kind":"final-damage","modifier":2048,"gates":[{"kind":"move-type","types":["dragon"]},{"kind":"super-effective"}]}
-173|kasibberry|defender|M|persistent-berry|{"kind":"final-damage","modifier":2048,"gates":[{"kind":"move-type","types":["ghost"]},{"kind":"super-effective"}]}
-167|kebiaberry|defender|M|persistent-berry|{"kind":"final-damage","modifier":2048,"gates":[{"kind":"move-type","types":["poison"]},{"kind":"super-effective"}]}
-161|occaberry|defender|M|persistent-berry|{"kind":"final-damage","modifier":2048,"gates":[{"kind":"move-type","types":["fire"]},{"kind":"super-effective"}]}
-162|passhoberry|defender|M|persistent-berry|{"kind":"final-damage","modifier":2048,"gates":[{"kind":"move-type","types":["water"]},{"kind":"super-effective"}]}
-170|payapaberry|defender|M|persistent-berry|{"kind":"final-damage","modifier":2048,"gates":[{"kind":"move-type","types":["psychic"]},{"kind":"super-effective"}]}
-164|rindoberry|defender|M|persistent-berry|{"kind":"final-damage","modifier":2048,"gates":[{"kind":"move-type","types":["grass"]},{"kind":"super-effective"}]}
-723|roseliberry|defender|M|persistent-berry|{"kind":"final-damage","modifier":2048,"gates":[{"kind":"move-type","types":["fairy"]},{"kind":"super-effective"}]}
-168|shucaberry|defender|M|persistent-berry|{"kind":"final-damage","modifier":2048,"gates":[{"kind":"move-type","types":["ground"]},{"kind":"super-effective"}]}
-171|tangaberry|defender|M|persistent-berry|{"kind":"final-damage","modifier":2048,"gates":[{"kind":"move-type","types":["bug"]},{"kind":"super-effective"}]}
-163|wacanberry|defender|M|persistent-berry|{"kind":"final-damage","modifier":2048,"gates":[{"kind":"move-type","types":["electric"]},{"kind":"super-effective"}]}
-165|yacheberry|defender|M|persistent-berry|{"kind":"final-damage","modifier":2048,"gates":[{"kind":"move-type","types":["ice"]},{"kind":"super-effective"}]}
+176|babiriberry|defender|M|-|{"kind":"resistance-berry","modifier":2048,"gates":[{"kind":"move-type","types":["steel"]},{"kind":"super-effective"}]}
+172|chartiberry|defender|M|-|{"kind":"resistance-berry","modifier":2048,"gates":[{"kind":"move-type","types":["rock"]},{"kind":"super-effective"}]}
+177|chilanberry|defender|M|-|{"kind":"resistance-berry","modifier":2048,"gates":[{"kind":"move-type","types":["normal"]}]}
+166|chopleberry|defender|M|-|{"kind":"resistance-berry","modifier":2048,"gates":[{"kind":"move-type","types":["fighting"]},{"kind":"super-effective"}]}
+169|cobaberry|defender|M|-|{"kind":"resistance-berry","modifier":2048,"gates":[{"kind":"move-type","types":["flying"]},{"kind":"super-effective"}]}
+175|colburberry|defender|M|-|{"kind":"resistance-berry","modifier":2048,"gates":[{"kind":"move-type","types":["dark"]},{"kind":"super-effective"}]}
+174|habanberry|defender|M|-|{"kind":"resistance-berry","modifier":2048,"gates":[{"kind":"move-type","types":["dragon"]},{"kind":"super-effective"}]}
+173|kasibberry|defender|M|-|{"kind":"resistance-berry","modifier":2048,"gates":[{"kind":"move-type","types":["ghost"]},{"kind":"super-effective"}]}
+167|kebiaberry|defender|M|-|{"kind":"resistance-berry","modifier":2048,"gates":[{"kind":"move-type","types":["poison"]},{"kind":"super-effective"}]}
+161|occaberry|defender|M|-|{"kind":"resistance-berry","modifier":2048,"gates":[{"kind":"move-type","types":["fire"]},{"kind":"super-effective"}]}
+162|passhoberry|defender|M|-|{"kind":"resistance-berry","modifier":2048,"gates":[{"kind":"move-type","types":["water"]},{"kind":"super-effective"}]}
+170|payapaberry|defender|M|-|{"kind":"resistance-berry","modifier":2048,"gates":[{"kind":"move-type","types":["psychic"]},{"kind":"super-effective"}]}
+164|rindoberry|defender|M|-|{"kind":"resistance-berry","modifier":2048,"gates":[{"kind":"move-type","types":["grass"]},{"kind":"super-effective"}]}
+723|roseliberry|defender|M|-|{"kind":"resistance-berry","modifier":2048,"gates":[{"kind":"move-type","types":["fairy"]},{"kind":"super-effective"}]}
+168|shucaberry|defender|M|-|{"kind":"resistance-berry","modifier":2048,"gates":[{"kind":"move-type","types":["ground"]},{"kind":"super-effective"}]}
+171|tangaberry|defender|M|-|{"kind":"resistance-berry","modifier":2048,"gates":[{"kind":"move-type","types":["bug"]},{"kind":"super-effective"}]}
+163|wacanberry|defender|M|-|{"kind":"resistance-berry","modifier":2048,"gates":[{"kind":"move-type","types":["electric"]},{"kind":"super-effective"}]}
+165|yacheberry|defender|M|-|{"kind":"resistance-berry","modifier":2048,"gates":[{"kind":"move-type","types":["ice"]},{"kind":"super-effective"}]}
 190|brightpowder|defender|M|-|{"kind":"accuracy","direction":"incoming","modifier":3686,"gates":[{"kind":"numeric-accuracy"}]}
 242|widelens|attacker|M|-|{"kind":"accuracy","direction":"outgoing","modifier":4505,"gates":[{"kind":"numeric-accuracy"}]}
 209|scopelens|attacker|M|-|{"kind":"critical-stage","stage":1,"gates":[]}
@@ -139,6 +139,7 @@ function effectContract(effect: HeldItemEffect): string {
   switch (effect.kind) {
     case "base-power":
     case "final-damage":
+    case "resistance-berry":
       signature = `${effect.kind}@${effect.modifier}`
       break
     case "battle-stat":
@@ -201,6 +202,7 @@ function expectValidDescriptor(entry: FrozenHeldItem): void {
   switch (entry.effect.kind) {
     case "base-power":
     case "final-damage":
+    case "resistance-berry":
       expect(VALID_MODIFIERS.has(entry.effect.modifier)).toBe(true)
       break
     case "battle-stat":
@@ -258,9 +260,9 @@ describe("frozen Held-item inventory", () => {
     expect(FROZEN_HELD_ITEMS.filter((entry) => !entry.mb)).toHaveLength(41)
   })
 
-  it("limits warnings to 18 persistent Berries and Utility Umbrella", () => {
+  it("models 18 consumable resistance Berries and only warns for Utility Umbrella", () => {
     const berries = FROZEN_HELD_ITEMS.filter(
-      (entry) => entry.warning === "persistent-berry",
+      (entry) => entry.effect.kind === "resistance-berry",
     )
     const umbrellas = FROZEN_HELD_ITEMS.filter(
       (entry) => entry.warning === "utility-umbrella",
@@ -269,11 +271,11 @@ describe("frozen Held-item inventory", () => {
     expect(berries).toHaveLength(18)
     expect(berries.every((entry) =>
       entry.pool === "defender" &&
-      entry.effect.kind === "final-damage" &&
+      entry.effect.kind === "resistance-berry" &&
       entry.effect.modifier === 2048
     )).toBe(true)
     expect(umbrellas.map((entry) => entry.id)).toEqual([1181])
-    expect(FROZEN_HELD_ITEMS.filter((entry) => entry.warning !== undefined)).toHaveLength(19)
+    expect(FROZEN_HELD_ITEMS.filter((entry) => entry.warning !== undefined)).toHaveLength(1)
 
     const chilanGates = FROZEN_HELD_ITEM_BY_ID.get(177)?.effect.gates ?? []
     expect(chilanGates.some((gate) => gate.kind === "super-effective")).toBe(false)

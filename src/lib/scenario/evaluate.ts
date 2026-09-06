@@ -1,12 +1,9 @@
-import {
-  type DamageKernelResult,
-  calculateDamageRolls,
-} from "@/lib/damage-calculation"
+import { evaluateExecutionPoint } from "@/lib/damage-calculation/hit-execution"
 import {
   calculationIdentity,
   type ProbabilityMode,
+  type HitFact,
   type CalculableScenario,
-  type ProbabilityInput,
   type RawScenarioPoint,
   type ScenarioSource,
   type ScenarioTrack,
@@ -15,11 +12,6 @@ import {
   projectMoveMechanics,
 } from "@/lib/damage-calculation"
 import type { MatchupCatalog } from "@/lib/catalog"
-import {
-  convolveAtomicDamageDistributions,
-  createAtomicDamageDistribution,
-  calculateKOProbability,
-} from "@/lib/damage-distribution"
 import {
   defenseValuesOf,
   offenseValueOf,
@@ -53,95 +45,44 @@ type PreparedDefenseChoice = {
   high: RawScenarioPoint["defense"]
 }
 
-function average(rolls: readonly number[]): number {
-  return rolls.reduce((sum, damage) => sum + damage, 0) / rolls.length
-}
-
-function mainRolls(point: DamageKernelResult["low"]): readonly number[] {
-  const rolls = point.normal ?? point.critical
-  if (!rolls) throw new Error("Compiled damage point has no damage branch")
-  return rolls
-}
-
-function fixedKOProbabilities(
-  point: DamageKernelResult["low"],
-  probability: ProbabilityInput,
-) {
-  const atomic = createAtomicDamageDistribution({
-    ...probability,
-    normalDamageRolls: point.normal,
-    criticalDamageRolls: point.critical,
-  })
-  return {
-    ohko: calculateKOProbability(
-      convolveAtomicDamageDistributions([atomic]),
-      point.defenderHp,
-    ),
-    twoHit: calculateKOProbability(
-      convolveAtomicDamageDistributions([atomic, atomic]),
-      point.defenderHp,
-    ),
-  }
-}
-
 function percentOf(damage: number, hp: number): number {
-  return (damage / hp) * 100
+  return damage / hp * 100
 }
 
-function summarizeDamage(
-  result: DamageKernelResult,
-  probability: ProbabilityInput,
-) {
-  const low = result.low
-  const high = result.high ?? low
-  const lowMain = mainRolls(low)
-  const highMain = mainRolls(high)
+function summarizeDamage(scenario: CalculableScenario) {
+  const lowPoint = scenario.calculation.low
+  const highPoint = scenario.calculation.high ?? lowPoint
+  const low = evaluateExecutionPoint(scenario, lowPoint)
+  const high = scenario.calculation.high ? evaluateExecutionPoint(scenario, highPoint) : low
+  const lowMain = low.normal ?? low.critical ?? { min: 0, max: 0 }
+  const highMain = high.normal ?? high.critical ?? { min: 0, max: 0 }
   const lowCritical = low.critical ?? lowMain
   const highCritical = high.critical ?? highMain
-  const lowAverage = average(lowMain)
-  const highAverage = average(highMain)
-  const lowKo = fixedKOProbabilities(low, probability)
-  const highKo = fixedKOProbabilities(high, probability)
-  const minDamage = Math.min(...lowMain)
-  const maxDamage = Math.max(...highMain)
-  const critMinDamage = Math.min(...lowCritical)
-  const critMaxDamage = Math.max(...highCritical)
-  const avgDamage = result.high ? (lowAverage + highAverage) / 2 : lowAverage
   const lowBox = {
-    minPercent: percentOf(minDamage, low.defenderHp),
-    maxPercent: percentOf(Math.max(...lowMain), low.defenderHp),
+    minPercent: percentOf(lowMain.min, lowPoint.defenderHp),
+    maxPercent: percentOf(lowMain.max, lowPoint.defenderHp),
   }
   const highBox = {
-    minPercent: percentOf(Math.min(...highMain), high.defenderHp),
-    maxPercent: percentOf(maxDamage, high.defenderHp),
+    minPercent: percentOf(highMain.min, highPoint.defenderHp),
+    maxPercent: percentOf(highMain.max, highPoint.defenderHp),
   }
-
   return {
-    minDamage,
-    maxDamage,
-    avgDamage,
-    minPercent: lowBox.minPercent,
-    maxPercent: highBox.maxPercent,
-    ...(result.high ? { rangeEndpoints: { low: lowBox, high: highBox } } : {}),
-    avgPercent: result.high
-      ? (percentOf(lowAverage, low.defenderHp) + percentOf(highAverage, high.defenderHp)) / 2
-      : percentOf(avgDamage, low.defenderHp),
-    critMinDamage,
-    critMaxDamage,
-    critMinPercent: percentOf(critMinDamage, low.defenderHp),
-    critMaxPercent: percentOf(critMaxDamage, high.defenderHp),
-    koProbabilities: result.high
+    minDamage: Math.min(lowMain.min, highMain.min),
+    maxDamage: Math.max(lowMain.max, highMain.max),
+    minPercent: Math.min(lowBox.minPercent, highBox.minPercent),
+    maxPercent: Math.max(lowBox.maxPercent, highBox.maxPercent),
+    ...(scenario.calculation.high ? { rangeEndpoints: { low: lowBox, high: highBox } } : {}),
+    critMinDamage: Math.min(lowCritical.min, highCritical.min),
+    critMaxDamage: Math.max(lowCritical.max, highCritical.max),
+    critMinPercent: Math.min(percentOf(lowCritical.min, lowPoint.defenderHp), percentOf(highCritical.min, highPoint.defenderHp)),
+    critMaxPercent: Math.max(percentOf(lowCritical.max, lowPoint.defenderHp), percentOf(highCritical.max, highPoint.defenderHp)),
+    koProbabilities: scenario.calculation.high
       ? {
-          ohko: {
-            min: Math.min(lowKo.ohko, highKo.ohko),
-            max: Math.max(lowKo.ohko, highKo.ohko),
-          },
-          twoHit: {
-            min: Math.min(lowKo.twoHit, highKo.twoHit),
-            max: Math.max(lowKo.twoHit, highKo.twoHit),
-          },
+          ohko: { min: Math.min(low.ko.ohko, high.ko.ohko), max: Math.max(low.ko.ohko, high.ko.ohko) },
+          twoHit: { min: Math.min(low.ko.twoHit, high.ko.twoHit), max: Math.max(low.ko.twoHit, high.ko.twoHit) },
         }
-      : lowKo,
+      : low.ko,
+    moveMechanics: projectMoveMechanics(scenario, low),
   }
 }
 
@@ -347,9 +288,14 @@ export function runScenarioPipeline(
                           "defender-stage": defenderStage,
                           weather, terrain, screen,
                         }
-                        const identity = preserveTrack
-                          ? JSON.stringify([calculationKey, preserveTrack, selections[preserveTrack]])
+                        // Classic removes accuracy from KO math, but multi-hit details
+                        // still show the actual accuracy of each check.
+                        const presentationKey = outcome.execution.powers.length > 1
+                          ? JSON.stringify([calculationKey, outcome.hitFact === "always-hits" ? 100 : outcome.hitFact])
                           : calculationKey
+                        const identity = preserveTrack
+                          ? JSON.stringify([presentationKey, preserveTrack, selections[preserveTrack]])
+                          : presentationKey
                         const group = calculableGroups.get(identity) ?? {
                           outcome,
                           support: outcome.support,
@@ -397,23 +343,25 @@ export function runScenarioPipeline(
     const calculationKey = calculationIdentity(group.outcome)
     let computed = summaries.get(calculationKey)
     if (!computed) {
-      computed = summarizeDamage(
-        calculateDamageRolls(group.outcome.calculation),
-        group.outcome.probability,
-      )
+      computed = summarizeDamage(group.outcome)
       summaries.set(calculationKey, computed)
     }
-    const hitFact = group.allAlwaysHits
-      ? "always-hits" as const
-      : group.outcome.probability.hitProbability * 100
+    let hitFact: HitFact = group.outcome.probability.hitProbability * 100
+    if (group.allAlwaysHits) hitFact = "always-hits"
+    else if (group.outcome.execution.powers.length > 1 && group.outcome.hitFact !== "always-hits") {
+      hitFact = group.outcome.hitFact
+    }
     return {
       calculationIdentity: identity,
       support: group.support,
       ...group.context,
       provenance: group.provenance,
       criticalOnly: group.outcome.calculation.low.normal === undefined,
-      moveMechanics: projectMoveMechanics({ ...group.outcome, hitFact }),
       ...computed,
+      moveMechanics: {
+        ...computed.moveMechanics,
+        hitFact,
+      },
     }
   })
 

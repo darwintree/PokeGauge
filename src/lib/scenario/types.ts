@@ -79,10 +79,8 @@ export type ScenarioResult = {
   defenderRanges?: DefenderStatRanges
   minDamage: number
   maxDamage: number
-  avgDamage: number
   minPercent: number
   maxPercent: number
-  avgPercent: number
   /** Present when the row is a Stat Range envelope: each endpoint is its own 16-roll box. */
   rangeEndpoints?: {
     low: { minPercent: number; maxPercent: number }

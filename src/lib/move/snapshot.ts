@@ -1,4 +1,5 @@
 import type { UpstreamResourceId } from "@/lib/resources"
+import { moveHitProfile } from "./hit-profile"
 import {
   isMoveExplicitlyUnsupported,
   moveCanBecomeSpread,
@@ -48,7 +49,7 @@ export function createMoveSnapshot(
   if (isMoveExplicitlyUnsupported(template.id)) {
     throw new Error(`Unsupported Move snapshot template: ${template.id}`)
   }
-  const power = normalizeSnapshotPower(template.power)
+  const power = moveHitProfile(template.id)?.powers[0] ?? normalizeSnapshotPower(template.power)
   if (power === 0 && calcDerivedPowerDefault(template.id) === undefined) {
     throw new Error(`Unreviewed zero-power Move snapshot template: ${template.id}`)
   }
@@ -73,7 +74,9 @@ export function editMoveSnapshot(
 ): MoveSnapshot {
   return {
     ...snapshot,
-    ...(patch.power === undefined ? {} : { power: normalizeSnapshotPower(patch.power) }),
+    ...(patch.power === undefined || moveHitProfile(snapshot.moveId)
+      ? {}
+      : { power: normalizeSnapshotPower(patch.power) }),
     ...(patch.accuracy === undefined
       ? {}
       : {

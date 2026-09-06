@@ -233,6 +233,26 @@ describe("Scenario Setup sharing", () => {
     ])
   })
 
+  it.each([20, 99])("validates legacy native multi-hit power %i without migrating it", async (power) => {
+    const catalog = await getCatalogShell(445, 727, "en", "physical")
+    const state = defaultTrackState(catalog)
+    const snapshot = createMoveSnapshot({ id: 813, power: 20, accuracy: 90, isSpread: false }, "axel")
+    state.moveSnapshots = [{ ...snapshot, power }]
+    state.selectedMoveSnapshotIds = [snapshot.id]
+    const setup = scenarioSetupFromTrackState(catalog, state)
+    if (!setup.ok) throw new Error("fixture must export")
+    const token = encodeScenarioSetupToken(setup.value)
+    if (!token.ok) throw new Error("fixture must encode")
+    const decoded = decodeScenarioSetupToken(token.value)
+    if (!decoded.ok) throw new Error("fixture must decode")
+    const restored = trackStateFromScenarioSetup(decoded.value, catalog)
+    if (power === 20) expect(restored.ok).toBe(true)
+    else expect(restored).toMatchObject({
+      ok: false,
+      failures: [{ code: "fixed-multi-hit-power" }],
+    })
+  })
+
   it("creates a canonical URL without unrelated query or fragment state", async () => {
     const catalog = await getCatalogShell(445, 727, "en", "physical")
     const state = defaultTrackState(catalog)

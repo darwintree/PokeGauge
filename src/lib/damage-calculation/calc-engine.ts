@@ -97,10 +97,12 @@ function calcPokemon(context: CalcPokemonContext): Pokemon {
   })
 }
 
-function calcMove(context: CalcMoveContext): Move {
+function calcMove(context: CalcMoveContext, hits?: number): Move {
   return new Move(CALC_GENERATION, context.calcMoveName, {
     isCrit: context.isCrit,
+    ...(hits === undefined ? {} : { hits }),
     overrides: {
+      willCrit: context.isCrit,
       ...(context.powerOverride === undefined ? {} : { basePower: context.powerOverride }),
       ...(context.typeOverride === undefined
         ? {}
@@ -110,6 +112,56 @@ function calcMove(context: CalcMoveContext): Move {
       target: context.target,
     },
   })
+}
+
+export type CalcHitMatrix = {
+  rolls: readonly (readonly number[])[]
+  consumesBerry: boolean
+}
+
+/** Read calc's per-Hit results without collapsing them or summing equal-index rolls. */
+export function calculateHitMatrix(
+  context: CalcContext,
+  hits: number,
+  critical: boolean,
+  berryConsumed: boolean,
+  resistanceBerry: boolean,
+): CalcHitMatrix {
+  const defenderContext = berryConsumed && resistanceBerry
+    ? { ...context.defender, itemCalcName: undefined }
+    : context.defender
+  const defender = calcPokemon(defenderContext)
+  const result = calculate(
+    CALC_GENERATION,
+    calcPokemon(context.attacker),
+    defender,
+    calcMove({ ...context.move, isCrit: critical }, hits),
+    calcField(context.field),
+  )
+  const damage = result.damage
+  let rolls: readonly (readonly number[])[]
+  if (typeof damage === "number") {
+    rolls = Array.from({ length: hits }, () => Array(16).fill(damage))
+  } else if (Array.isArray(damage[0])) {
+    rolls = damage as number[][]
+  } else if (hits === 2 && damage.length === 2) {
+    rolls = (damage as number[]).map((value) => Array(16).fill(value))
+  } else {
+    rolls = [damage as number[]]
+  }
+  if (rolls.length !== hits) throw new Error(`Expected ${hits} Hit rows for ${context.move.calcMoveName}, got ${rolls.length}`)
+  const consumesBerry = resistanceBerry && !berryConsumed &&
+    Boolean(result.rawDesc.defenderItem) &&
+    toID(result.rawDesc.defenderItem!) === toID(defender.item) &&
+    rolls[0].some((damage) => damage > 0)
+  if (consumesBerry && context.attacker.abilityCalcName === "Parental Bond" && hits === 2) {
+    // calc 0.11.0 recursively calculates the child with the original Berry.
+    // Reuse its child calculation with the consumed item state, preserving
+    // child rounding and any within-move changes (e.g. Power-Up Punch).
+    const consumed = calculateHitMatrix(context, hits, critical, true, resistanceBerry)
+    rolls = [rolls[0], consumed.rolls[1]]
+  }
+  return { rolls, consumesBerry }
 }
 
 function calcField(context: CalcFieldContext): Field {

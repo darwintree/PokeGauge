@@ -1,3 +1,4 @@
+import * as hitExecution from "./hit-execution"
 import { calculate, Field, Move, Pokemon } from "@smogon/calc"
 import { beforeAll, describe, expect, it, vi } from "vitest"
 
@@ -406,7 +407,7 @@ describe("weather scenario product and provenance", () => {
     state.attackerItemIds = ["none"]
     state.defensePresetIds = ["standard-bulk"]
     state.weathers = [...WEATHERS]
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(hitExecution, "evaluateExecutionPoint")
 
     const result = runScenarioPipeline(catalog, state)
 

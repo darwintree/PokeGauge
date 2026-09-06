@@ -6,6 +6,8 @@ import {
   LEVITATE_ABILITY_ID,
   NO_ABILITY_ID,
   SCRAPPY_ABILITY_ID,
+  SKILL_LINK_ABILITY_ID,
+  PARENTAL_BOND_ABILITY_ID,
   TERA_SHELL_ABILITY_ID,
   UNNERVE_ABILITY_ID,
   abilityEffectIsSupported,
@@ -26,6 +28,9 @@ import {
   type MoveSnapshot,
   normalizeSnapshotAccuracy,
   normalizeSnapshotPower,
+  compileMoveExecution,
+  movePowerIsCompatible,
+  type MoveExecution,
 } from "@/lib/move"
 import {
   auditedMoveWarning,
@@ -135,6 +140,9 @@ export type CalculableScenario = {
     breaksScreensBeforeDamage: boolean
   }
   calculation: CompiledDamageInput
+  execution: MoveExecution
+  /** Display modifiers after the resistance Berry has been consumed. */
+  berry?: { normalFinalModifier: number; criticalFinalModifier: number }
   probability: ProbabilityInput
   hitFact: HitFact
   ko: KoInput
@@ -181,6 +189,8 @@ export function calculationIdentity(outcome: CalculableScenario): string {
     },
     outcome.probability,
     outcome.ko,
+    outcome.execution,
+    outcome.berry,
   ])
 }
 
@@ -324,6 +334,7 @@ function compileHeldItem(
       break
     }
     case "final-damage":
+    case "resistance-berry":
       compiled.finalModifier = effect.modifier
       break
     case "accuracy":
@@ -517,7 +528,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   const defenderHasKlutz = raw.defenderAbilityId === KLUTZ_ABILITY_ID
   const attackerHasUnnerve = raw.attackerAbilityId === UNNERVE_ABILITY_ID
   const defenderBerryEligible = Boolean(
-    defenderItemRaw?.descriptor?.warning === "persistent-berry" &&
+    defenderItemRaw?.descriptor?.effect.kind === "resistance-berry" &&
     defenderItemRaw.source.state === "active",
   )
   const attackerItem = attackerHasKlutz
@@ -974,6 +985,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     !isMoveCategory(move.category) ||
     !moveType ||
     isMoveExplicitlyUnsupported(move.id) ||
+    !movePowerIsCompatible(raw.snapshot.moveId, power) ||
     (move.power === null && calcDerivedPowerDefault(move.id) === undefined)
   ) {
     return {
@@ -1022,6 +1034,13 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     screenModifier: screen.modifier,
   }
   const calcMoveName = move.calcMoveName
+  const execution = compileMoveExecution(move.id, power, raw.attackerAbilityId, context.spread)
+  if (raw.attackerAbilityId === SKILL_LINK_ABILITY_ID || raw.attackerAbilityId === PARENTAL_BOND_ABILITY_ID) {
+    const source = sources.find((source) => source.track === "attacker-ability")
+    if (source) source.state = JSON.stringify(execution) ===
+      JSON.stringify(compileMoveExecution(move.id, power, NO_ABILITY_ID, context.spread))
+      ? "inactive" : "active"
+  }
   const calcDerivesMoveType = typeRewrite?.active === true ||
     raw.snapshot.moveId === 311 /* Weather Ball */
   const attackerCalcAbilityName = getAbilityById(raw.attackerAbilityId)?.calcAbilityName
@@ -1090,6 +1109,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       attacker: {
         calcSpeciesName: attacker.calcSpeciesName,
         ...(attackerCalcAbilityName &&
+          (raw.attackerAbilityId !== PARENTAL_BOND_ABILITY_ID || execution.parentalBond) &&
           abilityEffectIsSupported(raw.attackerAbilityId) &&
           calcRecognizesAbility(attackerCalcAbilityName)
           ? { abilityCalcName: attackerCalcAbilityName }
@@ -1171,6 +1191,21 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       low: compilePoint(raw.lowOutcome),
       ...(raw.highOutcome ? { high: compilePoint(raw.highOutcome) } : {}),
     },
+    execution,
+    ...(defenderItemRaw?.descriptor?.effect.kind === "resistance-berry"
+      ? {
+          berry: {
+            normalFinalModifier: compileBranch(raw.lowOutcome, {
+              ...context,
+              finalModifiers: [ability.finalModifier, attackerItem.finalModifier],
+            }, false).finalModifier,
+            criticalFinalModifier: compileBranch(raw.lowOutcome, {
+              ...context,
+              finalModifiers: [ability.finalModifier, attackerItem.finalModifier],
+            }, true).finalModifier,
+          },
+        }
+      : {}),
     probability: compileProbability(
       raw.probabilityMode,
       hitFact,

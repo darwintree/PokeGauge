@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import { getCatalogShell } from "@/lib/catalog"
+import { createMoveSnapshot } from "@/lib/move"
 import { defaultTrackState } from "@/lib/scenario"
 
 import {
@@ -125,6 +126,19 @@ describe("setup bookmarks", () => {
       .toEqual({ ok: false })
     expect(await restoreSetupBookmark("not-a-token", "en", new Set([445]), new Set([727])))
       .toEqual({ ok: false })
+  })
+
+  it.each([20, 99])("marks a saved multi-hit power %i loadable only when compatible", async (power) => {
+    const catalog = await getCatalogShell(445, 727, "en", "physical")
+    const state = defaultTrackState(catalog)
+    const move = createMoveSnapshot({ id: 813, power: 20, accuracy: 90, isSpread: false }, "axel")
+    state.moveSnapshots = [{ ...move, power }]
+    state.selectedMoveSnapshotIds = [move.id]
+    const saved = saveSetupBookmark("https://example.test/", catalog, state)
+    if (!saved.ok) throw new Error("fixture must save")
+    const setup = decodeSetupBookmarkToken(saved.bookmark.token)
+    expect(setupBookmarkIsLoadable(setup, new Set([445]), new Set([727]))).toBe(power === 20)
+    expect((await restoreSetupBookmark(saved.bookmark.token, "en", new Set([445]), new Set([727]))).ok).toBe(power === 20)
   })
 
   it("fits as many rows as the list height allows", () => {

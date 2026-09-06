@@ -3,7 +3,7 @@ import type { PokemonType } from "@/lib/pokemon"
 export const HELD_ITEM_POOLS = ["attacker", "defender", "lock"] as const
 
 export type HeldItemPool = (typeof HELD_ITEM_POOLS)[number]
-export type HeldItemWarning = "persistent-berry" | "utility-umbrella"
+export type HeldItemWarning = "utility-umbrella"
 export type HeldItemModifier = 2048 | 3686 | 4505 | 4915 | 5324 | 6144 | 8192
 export type HeldItemBattleStat =
   | "attack"
@@ -31,7 +31,7 @@ export type HeldItemEffect =
       stats: readonly HeldItemBattleStat[]
       modifier: HeldItemModifier
     })
-  | (GatedEffect & { kind: "final-damage"; modifier: HeldItemModifier })
+  | (GatedEffect & { kind: "final-damage" | "resistance-berry"; modifier: HeldItemModifier })
   | (GatedEffect & {
       kind: "accuracy"
       direction: "outgoing" | "incoming"
@@ -135,12 +135,11 @@ function resistanceBerry(
     calcItemName,
     "defender",
     mb,
-    finalDamage(
-      HALF,
-      moveType(type),
-      ...(requiresSuperEffective ? [superEffective()] : []),
-    ),
-    "persistent-berry",
+    {
+      kind: "resistance-berry",
+      modifier: HALF,
+      gates: [moveType(type), ...(requiresSuperEffective ? [superEffective()] : [])],
+    },
   )
 }
 

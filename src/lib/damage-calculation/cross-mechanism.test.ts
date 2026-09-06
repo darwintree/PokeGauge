@@ -1,3 +1,4 @@
+import * as hitExecution from "./hit-execution"
 import { calculate, Field, Move, Pokemon } from "@smogon/calc"
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest"
 
@@ -175,16 +176,16 @@ describe("cross-mechanism acceptance", () => {
     expect(result.rows[1].koProbabilities?.twoHit).toBeCloseTo(0.8175)
   })
 
-  it("chains Life Orb and Passho Berry once and reuses the result for two hits", async () => {
+  it("consumes Passho Berry on the first landed use while retaining Life Orb", async () => {
     const { catalog, state } = await f0HeldItemFixture()
     state.attackerItemIds = [247]
     state.defenderItemIds = [162]
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(hitExecution, "evaluateExecutionPoint")
 
     const result = runScenarioPipeline(catalog, state)
 
-    expect(kernel.mock.calls[0][0].low.normal?.finalModifier).toBe(2662)
-    expect(kernel.mock.results[0].value.low).toMatchObject({
+    expect(kernel.mock.calls[0][0].calculation.low.normal?.finalModifier).toBe(2662)
+    expect(singleHitRolls(kernel.mock.results[0].value)).toMatchObject({
       normal: [82, 83, 83, 86, 86, 87, 87, 90, 90, 91, 91, 94, 94, 95, 95, 97],
       critical: [122, 125, 126, 129, 129, 130, 133, 134, 134, 136, 138, 140, 140, 142, 144, 146],
     })
@@ -195,7 +196,9 @@ describe("cross-mechanism acceptance", () => {
       },
     })
     expect(result.rows[0].koProbabilities?.ohko).toBe(0)
-    expect(result.rows[0].koProbabilities?.twoHit).toBeCloseTo(0.06609375)
+    // HP 202: even the two minimum normal rolls KO after consumption;
+    // either use missing leaves at most one Berry-reduced hit.
+    expect(result.rows[0].koProbabilities?.twoHit).toBeCloseTo(0.9 * 0.9)
     expect(result.rows[0]).not.toHaveProperty("warning")
   })
 
@@ -217,14 +220,14 @@ describe("cross-mechanism acceptance", () => {
     })
     state.attackerItemIds = [236]
     state.screens = ["walls"]
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(hitExecution, "evaluateExecutionPoint")
 
     const result = runScenarioPipeline(catalog, state, "classic")
 
     expect(result.unavailable).toEqual([])
     expect(result.rows).toHaveLength(1)
-    expect(kernel.mock.results[0].value.low).not.toHaveProperty("normal")
-    expect(kernel.mock.results[0].value.low.critical).toEqual([
+    expect(singleHitRolls(kernel.mock.results[0].value)).not.toHaveProperty("normal")
+    expect(singleHitRolls(kernel.mock.results[0].value).critical).toEqual([
       300, 302, 306, 308, 314, 318, 320, 324,
       326, 330, 336, 338, 342, 344, 348, 354,
     ])
@@ -269,12 +272,12 @@ describe("cross-mechanism acceptance", () => {
       defenderAbilityId: 155,
     })
     deepSeaScale.state.defenderItemIds = [204]
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(hitExecution, "evaluateExecutionPoint")
 
     const scaleResult = runScenarioPipeline(deepSeaScale.catalog, deepSeaScale.state)
 
-    expect(kernel.mock.calls[0][0].low.normal?.defenseModifier).toBe(8192)
-    expect(kernel.mock.results[0].value.low).toMatchObject({
+    expect(kernel.mock.calls[0][0].calculation.low.normal?.defenseModifier).toBe(8192)
+    expect(singleHitRolls(kernel.mock.results[0].value)).toMatchObject({
       normal: [56, 58, 58, 58, 60, 60, 60, 62, 62, 62, 64, 64, 64, 66, 66, 68],
       critical: [86, 86, 88, 88, 90, 90, 92, 92, 94, 94, 96, 96, 98, 98, 100, 102],
     })
@@ -308,8 +311,8 @@ describe("cross-mechanism acceptance", () => {
 
     const evioliteResult = runScenarioPipeline(eviolite.catalog, eviolite.state)
 
-    expect(kernel.mock.calls[0][0].low.normal?.defenseModifier).toBe(6144)
-    expect(kernel.mock.results[0].value.low).toMatchObject({
+    expect(kernel.mock.calls[0][0].calculation.low.normal?.defenseModifier).toBe(6144)
+    expect(singleHitRolls(kernel.mock.results[0].value)).toMatchObject({
       normal: [136, 144, 144, 144, 144, 148, 148, 148, 156, 156, 156, 156, 160, 160, 160, 168],
       critical: [208, 216, 216, 216, 220, 220, 228, 228, 232, 232, 232, 240, 240, 244, 244, 252],
     })
@@ -327,12 +330,12 @@ describe("cross-mechanism acceptance", () => {
   it("gates Expert Belt on resolved super effectiveness", async () => {
     const positive = await f0HeldItemFixture()
     positive.state.attackerItemIds = [245]
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(hitExecution, "evaluateExecutionPoint")
 
     const positiveResult = runScenarioPipeline(positive.catalog, positive.state)
 
-    expect(kernel.mock.calls[0][0].low.normal?.finalModifier).toBe(4915)
-    expect(kernel.mock.results[0].value.low).toMatchObject({
+    expect(kernel.mock.calls[0][0].calculation.low.normal?.finalModifier).toBe(4915)
+    expect(singleHitRolls(kernel.mock.results[0].value)).toMatchObject({
       normal: [151, 154, 154, 158, 158, 161, 161, 166, 166, 168, 168, 173, 173, 175, 175, 180],
       critical: [226, 230, 233, 238, 238, 240, 245, 247, 247, 252, 254, 259, 259, 262, 266, 269],
     })
@@ -371,8 +374,8 @@ describe("cross-mechanism acceptance", () => {
 
     const negativeResult = runScenarioPipeline(negative.catalog, negative.state)
 
-    expect(kernel.mock.calls[0][0].low.normal?.finalModifier).toBe(4096)
-    expect(kernel.mock.results[0].value.low).toMatchObject({
+    expect(kernel.mock.calls[0][0].calculation.low.normal?.finalModifier).toBe(4096)
+    expect(singleHitRolls(kernel.mock.results[0].value)).toMatchObject({
       normal: [63, 64, 64, 66, 66, 67, 67, 69, 69, 70, 70, 72, 72, 73, 73, 75],
       critical: [94, 96, 97, 99, 99, 100, 102, 103, 103, 105, 106, 108, 108, 109, 111, 112],
     })
@@ -395,11 +398,11 @@ describe("cross-mechanism acceptance", () => {
   it("classifies Scope Lens by probability mode and snapshot Critical stage", async () => {
     const { catalog, state } = await f0HeldItemFixture()
     state.attackerItemIds = [209]
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(hitExecution, "evaluateExecutionPoint")
 
     const battleOddsResult = runScenarioPipeline(catalog, state)
 
-    expect(kernel.mock.results[0].value.low).toMatchObject({
+    expect(singleHitRolls(kernel.mock.results[0].value)).toMatchObject({
       normal: [126, 128, 128, 132, 132, 134, 134, 138, 138, 140, 140, 144, 144, 146, 146, 150],
       critical: [188, 192, 194, 198, 198, 200, 204, 206, 206, 210, 212, 216, 216, 218, 222, 224],
     })
@@ -426,8 +429,8 @@ describe("cross-mechanism acceptance", () => {
     kernel.mockClear()
     const guaranteedClassic = runScenarioPipeline(catalog, state, "classic")
 
-    expect(kernel.mock.results[0].value.low).not.toHaveProperty("normal")
-    expect(kernel.mock.results[0].value.low.critical).toEqual([
+    expect(singleHitRolls(kernel.mock.results[0].value)).not.toHaveProperty("normal")
+    expect(singleHitRolls(kernel.mock.results[0].value).critical).toEqual([
       188, 192, 194, 198, 198, 200, 204, 206,
       206, 210, 212, 216, 216, 218, 222, 224,
     ])
@@ -451,19 +454,19 @@ describe("cross-mechanism acceptance", () => {
     const { catalog, state } = await f0HeldItemFixture()
     state.weathers = ["rain"]
     state.defenderItemIds = ["none", 1181]
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(hitExecution, "evaluateExecutionPoint")
 
     const result = runScenarioPipeline(catalog, state)
 
     expect(result.unavailable).toEqual([])
     expect(result.rows).toHaveLength(2)
-    expect(kernel.mock.calls[0][0].low.normal?.weatherModifier).toBe(6144)
-    expect(kernel.mock.results[0].value.low).toMatchObject({
+    expect(kernel.mock.calls[0][0].calculation.low.normal?.weatherModifier).toBe(6144)
+    expect(singleHitRolls(kernel.mock.results[0].value)).toMatchObject({
       normal: [188, 192, 194, 198, 198, 200, 204, 206, 206, 210, 212, 216, 216, 218, 222, 224],
       critical: [284, 288, 290, 294, 296, 300, 302, 308, 312, 314, 318, 320, 324, 326, 330, 336],
     })
-    expect(kernel.mock.calls[1][0].low.normal?.weatherModifier).toBe(4096)
-    expect(kernel.mock.results[1].value.low).toMatchObject({
+    expect(kernel.mock.calls[1][0].calculation.low.normal?.weatherModifier).toBe(4096)
+    expect(singleHitRolls(kernel.mock.results[1].value)).toMatchObject({
       normal: [126, 128, 128, 132, 132, 134, 134, 138, 138, 140, 140, 144, 144, 146, 146, 150],
       critical: [188, 192, 194, 198, 198, 200, 204, 206, 206, 210, 212, 216, 216, 218, 222, 224],
     })
@@ -523,7 +526,7 @@ describe("cross-mechanism acceptance", () => {
     state.defenderStages = [1]
     state.defenderAbilityIds = [FIRE_MANE_ABILITY_ID]
     state.screens = ["walls"]
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(hitExecution, "evaluateExecutionPoint")
 
     const presetResult = runScenarioPipeline(catalog, state, "classic")
 
@@ -531,7 +534,7 @@ describe("cross-mechanism acceptance", () => {
     expect(presetResult.unavailable).toEqual([])
     expect(presetResult.rows).toHaveLength(1)
     expect(kernel).toHaveBeenCalledTimes(1)
-    const input = kernel.mock.calls[0][0]
+    const input = kernel.mock.calls[0][0].calculation
     expect(input.high).toBeUndefined()
     expect(input.low.normal).toMatchObject({
       power: 100,
@@ -611,8 +614,8 @@ describe("cross-mechanism acceptance", () => {
       attackerStatId: RANGE_STAT_ID,
       defenderId: RANGE_DEFENDER_ID,
     })
-    expect(kernel).toHaveBeenCalledTimes(1)
-    const rangeInput = kernel.mock.calls[0][0]
+    expect(kernel).toHaveBeenCalledTimes(2)
+    const rangeInput = kernel.mock.calls[0][0].calculation
     expect(rangeInput.high).toBeDefined()
     expect(rangeInput.low.normal?.attack).toBeLessThanOrEqual(
       rangeInput.high?.normal?.attack ?? 0,
@@ -644,7 +647,7 @@ describe("cross-mechanism acceptance", () => {
     state.defenderStages = [0, 1]
     state.defenderAbilityIds = [FIRE_MANE_ABILITY_ID, 47]
     state.screens = ["none", "walls"]
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(hitExecution, "evaluateExecutionPoint")
 
     const result = runScenarioPipeline(catalog, state)
 
@@ -673,3 +676,11 @@ describe("cross-mechanism acceptance", () => {
     })
   })
 })
+
+function singleHitRolls(result: ReturnType<typeof hitExecution.evaluateExecutionPoint>) {
+  const hit = result.hits[0]
+  return {
+    ...(hit.normal ? { normal: hit.normal.rolls } : {}),
+    ...(hit.critical ? { critical: hit.critical.rolls } : {}),
+  }
+}

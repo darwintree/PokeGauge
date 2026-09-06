@@ -6,7 +6,7 @@ import {
   setChampionsMoveUsageFetcherForTest,
   setChampionsNatureUsageFetcherForTest,
 } from "@/lib/champions"
-import * as damageKernel from "@/lib/damage-calculation"
+import * as damageKernel from "@/lib/damage-calculation/hit-execution"
 import type { ProbabilityMode } from "@/lib/damage-calculation"
 import {
   getCatalog,
@@ -323,7 +323,7 @@ describe("matchup scenario pipeline", () => {
     selectMoves(catalog, state, [89])
     state.moveSnapshots[0] = { ...state.moveSnapshots[0], power: 0, accuracy: 0 }
     state.attackerItemIds = ["none", 226, 214]
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(damageKernel, "evaluateExecutionPoint")
 
     expect(state.moveSnapshots).toHaveLength(1)
     expect(runScenarioPipeline(catalog, state)).toEqual({
@@ -417,7 +417,7 @@ describe("matchup scenario pipeline", () => {
       220,
       214,
     ]
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(damageKernel, "evaluateExecutionPoint")
 
     const { rows, unavailable } = runScenarioPipeline(catalog, state)
 
@@ -469,7 +469,7 @@ describe("matchup scenario pipeline", () => {
     state.defensePresetIds = ["hp-32"]
     state.attackerItemIds = ["none", 226, 220, 214]
     const merged = runScenarioPipeline(catalog, state)
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(damageKernel, "evaluateExecutionPoint")
     kernel.mockClear()
 
     const partitioned = runScenarioPipeline(catalog, state, "battle-odds", "held-item")
@@ -528,7 +528,7 @@ describe("matchup scenario pipeline", () => {
     state.defensePresetIds = ["hp-32"]
     state.attackerStages = [-6, -1, 0]
     state.defenderStages = [0, 1, 6]
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(damageKernel, "evaluateExecutionPoint")
 
     const { rows } = runScenarioPipeline(catalog, state)
 
@@ -599,18 +599,18 @@ describe("matchup scenario pipeline", () => {
       kind: "temporary",
       values: { kind: "defense", hp: 170, def: 153 },
     }]
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(damageKernel, "evaluateExecutionPoint")
 
     const first = runScenarioPipeline(catalog, state)
 
-    expect(kernel.mock.calls[0][0]).toMatchObject({
+    expect(kernel.mock.calls[0][0].calculation).toMatchObject({
       low: {
         defenderHp: 170,
         normal: { attack: 186, defense: 153 },
         critical: { attack: 186, defense: 153 },
       },
     })
-    expect(kernel.mock.calls[0][0].high).toBeUndefined()
+    expect(kernel.mock.calls[0][0].calculation.high).toBeUndefined()
 
     state.offenseAllocationIndices["off-grid-offense"] = 7
     state.defenseAllocationIndices["off-grid-defense"] = 9
@@ -631,11 +631,11 @@ describe("matchup scenario pipeline", () => {
     if (offense?.values.kind !== "offense" || defense?.values.kind !== "defense") {
       throw new Error("Expected reachable system Stat Presets")
     }
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(damageKernel, "evaluateExecutionPoint")
 
     runScenarioPipeline(catalog, state)
 
-    expect(kernel.mock.calls[0][0].low).toMatchObject({
+    expect(kernel.mock.calls[0][0].calculation.low).toMatchObject({
       defenderHp: defense.values.hp,
       normal: {
         attack: offense.values.stat,
@@ -749,11 +749,11 @@ describe("matchup scenario pipeline - range mode", () => {
       hp: { min: 170, max: 171 },
       def: { min: 153, max: 155 },
     }
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(damageKernel, "evaluateExecutionPoint")
 
     runScenarioPipeline(catalog, state)
 
-    expect(kernel.mock.calls[0][0]).toMatchObject({
+    expect(kernel.mock.calls[0][0].calculation).toMatchObject({
       low: {
         defenderHp: 171,
         normal: { attack: 186, defense: 155 },
