@@ -224,3 +224,187 @@ describe("calc Hit execution adapter", () => {
       .toMatchObject({ power: 20, accuracy: 80, criticalStage: 2 })
   })
 })
+
+describe("stat changes between move uses", () => {
+  it.each([242, 232, 451])("Classic excludes chance-based changes for move %i", (moveId) => {
+    const classic = scenario(moveId, { probabilityMode: "classic" })
+    expect(classic.statChange).toBeUndefined()
+    const battle = scenario(moveId)
+    expect(battle.statChange!.probability).toBeLessThan(1)
+    const actual = evaluateExecutionPoint(battle, battle.calculation.low)
+    const unchanged = evaluateExecutionPoint({ ...battle, statChange: undefined }, battle.calculation.low)
+    expect(actual.normal).toEqual(unchanged.normal)
+    expect(actual.critical).toEqual(unchanged.critical)
+    expect(actual.normalPower).toEqual(unchanged.normalPower)
+    expect(actual.ko.ohko).toBe(unchanged.ko.ohko)
+  })
+
+  it.each([491, 871, 612])("Classic retains guaranteed changes for move %i", (moveId) => {
+    expect(scenario(moveId, { probabilityMode: "classic" }).statChange?.probability).toBe(1)
+  })
+
+  it("weights Crunch's drop with misses and a consumed resistance Berry", async () => {
+    const { calculateHitMatrix } = await import("./calc-engine")
+    const compiled = scenario(242, {
+      defenderId: 65, defenderItemId: 175, // Colbur Berry, super-effective Dark
+      snapshot: createMoveSnapshot({ id: 242, power: 80, accuracy: 50, isSpread: false }, "crunch"),
+    })
+    compiled.probability.criticalHitProbability = 0
+    const point = compiled.calculation.low
+    const first = calculateHitMatrix(point.calc, 1, false, false, true)
+    expect(first.consumesBerry).toBe(true)
+    const unchanged = calculateHitMatrix(point.calc, 1, false, true, true).rolls[0]
+    const loweredContext = { ...point.calc, defender: {
+      ...point.calc.defender, boosts: { ...point.calc.defender.boosts, def: -1 },
+    } }
+    const lowered = calculateHitMatrix(loweredContext, 1, false, true, true).rolls[0]
+    let sawBenefit = false
+    for (let hp = 20; hp <= 240; hp += 10) {
+      let expected = 0
+      // Both misses, first miss then hit, first hit then miss, and both hits.
+      for (const b of first.rolls[0]) if (b >= hp) expected += 0.25 / 16
+      for (const a of first.rolls[0]) {
+        if (a >= hp) expected += 0.25 / 16
+        for (const b of unchanged) if (a + b >= hp) expected += 0.25 * 0.8 / 256
+        for (const b of lowered) if (a + b >= hp) expected += 0.25 * 0.2 / 256
+      }
+      const actual = evaluateExecutionPoint(compiled, { ...point, defenderHp: hp })
+      const without = evaluateExecutionPoint({ ...compiled, statChange: undefined }, { ...point, defenderHp: hp })
+      expect(actual.ko.twoHit).toBeCloseTo(expected, 10)
+      sawBenefit ||= actual.ko.twoHit > without.ko.twoHit + 0.001
+    }
+    expect(sawBenefit).toBe(true)
+  })
+
+  it("carries both Parental Bond Power-Up Punch boosts without applying either twice", async () => {
+    const { calculateHitMatrix } = await import("./calc-engine")
+    const compiled = scenario(612, { attackerId: 10039, attackerAbilityId: 185, probabilityMode: "classic" })
+    expect(compiled.statChange?.stages).toBe(1)
+    const point = compiled.calculation.low
+    const first = calculateHitMatrix(point.calc, 2, false, false, false).rolls
+    const nextContext = { ...point.calc, attacker: {
+      ...point.calc.attacker, boosts: { ...point.calc.attacker.boosts, atk: 2 },
+    } }
+    const second = calculateHitMatrix(nextContext, 2, false, false, false).rolls
+    const hp = first[0][15] + first[1][15] + second[0][0] + second[1][0]
+    let successes = 0
+    for (const a of first[0]) for (const b of first[1]) {
+      for (const c of second[0]) for (const d of second[1]) {
+        if (a + b + c + d >= hp) successes++
+      }
+    }
+    const actual = evaluateExecutionPoint(compiled, { ...point, defenderHp: hp })
+    expect(actual.ko.twoHit).toBeCloseTo(successes / 16 ** 4, 10)
+    expect(actual.ko.twoHit).toBeGreaterThan(0)
+    expect(actual.ko.twoHit).toBeGreaterThan(evaluateExecutionPoint(
+      { ...compiled, statChange: undefined }, { ...point, defenderHp: hp },
+    ).ko.twoHit)
+  })
+
+  it.each([
+    [491, { defenderStage: -6 }], [612, { attackerStage: 6 }],
+  ] as const)("clamps move %i at the stage limit", (moveId, overrides) => {
+    const compiled = scenario(moveId, { ...overrides, probabilityMode: "classic" })
+    const actual = evaluateExecutionPoint(compiled, compiled.calculation.low)
+    const unchanged = evaluateExecutionPoint({ ...compiled, statChange: undefined }, compiled.calculation.low)
+    expect(actual.ko).toEqual(unchanged.ko)
+  })
+
+  it("preserves immunity and supports other Parental Bond stat changes", () => {
+    const immune = scenario(612, { defenderId: 94, probabilityMode: "classic" })
+    expect(evaluateExecutionPoint(immune, immune.calculation.low).ko).toEqual({ ohko: 0, twoHit: 0 })
+    const parental = scenario(242, { attackerId: 10039, attackerAbilityId: 185 })
+    expect(parental.statChange?.probability).toBe(0.2)
+    expect(parental.support).toBe("supported")
+    const sheerForce = scenario(491, { attackerAbilityId: 125 })
+    expect(sheerForce.statChange).toBeUndefined()
+  })
+})
+
+describe("Parental Bond in the shared stat-change resolver", () => {
+  it.each([242, 232, 491, 871])("matches independent per-hit event enumeration for move %i", async (moveId) => {
+    const { calculateHitMatrix } = await import("./calc-engine")
+    const { resolveHitComposition } = await import("@/lib/damage-distribution/hit-composition")
+    const compiled = scenario(moveId, {
+      attackerId: 10039, attackerAbilityId: 185, defenderId: 65,
+      defenderItemId: moveId === 242 ? 175 : "none",
+    })
+    const point = compiled.calculation.low
+    const change = compiled.statChange!
+    const berry = Boolean(compiled.berry)
+    const actual = resolveHitComposition(compileHitComposition(compiled, point), 0.8, 0.25)
+    const key = (damage: number, count: number, consumed: boolean, critical: boolean) =>
+      JSON.stringify([damage, count, consumed, critical])
+    const expected = new Map<string, number>([[key(0, 0, false, false), 0.2]])
+    const events = [[0, 1 - change.probability], [1, change.probability]] as const
+    const criticals = [[false, 0.75], [true, 0.25]] as const
+    for (const [crit1, critWeight1] of criticals) {
+      const first = calculateHitMatrix(point.calc, 2, crit1, false, berry)
+      for (const [event1, eventWeight1] of events) {
+        if (!eventWeight1) continue
+        const pokemon = point.calc[change.side]
+        const context = { ...point.calc, [change.side]: {
+          ...pokemon, boosts: { ...pokemon.boosts, [change.stat]: event1 * change.stages },
+        } }
+        for (const [crit2, critWeight2] of criticals) {
+          const second = calculateHitMatrix(context, 2, crit2, first.consumesBerry, berry)
+          for (const [event2, eventWeight2] of events) {
+            const mass = 0.8 * critWeight1 * critWeight2 * eventWeight1 * eventWeight2 / 256
+            if (!mass) continue
+            for (const a of first.rolls[0]) for (const b of second.rolls[1]) {
+              const id = key(a + b, event1 + event2, first.consumesBerry, crit1 || crit2)
+              expected.set(id, (expected.get(id) ?? 0) + mass)
+            }
+          }
+        }
+      }
+    }
+    expect(actual).toHaveLength(expected.size)
+    for (const outcome of actual) {
+      expect(outcome.probability).toBeCloseTo(expected.get(key(
+        outcome.damage, outcome.statChanges, outcome.berryConsumed, outcome.critical,
+      ))!, 11)
+    }
+    expect(actual.reduce((sum, outcome) => sum + outcome.probability, 0)).toBeCloseTo(1, 12)
+  })
+
+  it("carries correlated first-use damage and cumulative drops into the second use", async () => {
+    const { calculateHitMatrix } = await import("./calc-engine")
+    const compiled = scenario(242, {
+      attackerId: 10039, attackerAbilityId: 185, defenderId: 65, defenderItemId: 175,
+    })
+    compiled.probability = { hitProbability: 1, criticalHitProbability: 0 }
+    const point = compiled.calculation.low
+    const matrices = Array.from({ length: 4 }, (_, count) => calculateHitMatrix({
+      ...point.calc, defender: { ...point.calc.defender, boosts: { ...point.calc.defender.boosts, def: -count } },
+    }, 2, false, count > 0, true))
+    // After the initial hit the Berry is gone, even if no drop triggered.
+    const consumedZero = calculateHitMatrix(point.calc, 2, false, true, true)
+    const rows = (count: number) => count === 0 ? consumedZero.rolls : matrices[count].rolls
+    const hp = 210
+    let expected = 0
+    for (const e1 of [0, 1]) for (const e2 of [0, 1]) for (const e3 of [0, 1]) {
+      const weight = [e1, e2, e3].reduce((mass, event) => mass * (event ? 0.2 : 0.8), 1) / 16 ** 4
+      for (const a of matrices[0].rolls[0]) for (const b of rows(e1)[1]) {
+        for (const c of rows(e1 + e2)[0]) for (const d of rows(e1 + e2 + e3)[1]) {
+          if (a + b + c + d >= hp) expected += weight
+        }
+      }
+    }
+    expect(expected).toBeGreaterThan(0)
+    expect(expected).toBeLessThan(1)
+    expect(evaluateExecutionPoint(compiled, { ...point, defenderHp: hp }).ko.twoHit).toBeCloseTo(expected, 9)
+  })
+
+  it("Classic excludes chance-based intra-hit changes but retains guaranteed changes", () => {
+    const classic = scenario(242, { attackerId: 10039, attackerAbilityId: 185, probabilityMode: "classic" })
+    expect(classic.statChange).toBeUndefined()
+    const battle = scenario(242, { attackerId: 10039, attackerAbilityId: 185 })
+    expect(evaluateExecutionPoint(battle, battle.calculation.low).normal!.max)
+      .toBeGreaterThan(evaluateExecutionPoint(classic, classic.calculation.low).normal!.max)
+    const guaranteed = scenario(491, { attackerId: 10039, attackerAbilityId: 185, probabilityMode: "classic" })
+    const composition = compileHitComposition(guaranteed, guaranteed.calculation.low)
+    expect(composition.statChangeProbability).toBe(1)
+    expect(composition.choices[0].hits[1].afterStatChanges).toHaveLength(1)
+  })
+})

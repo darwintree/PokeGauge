@@ -1,3 +1,4 @@
+import { moveStatChange } from "./stat-change"
 import type { PokemonType } from "@/lib/pokemon"
 import type { BattlePokemonId, UpstreamResourceId } from "@/lib/resources"
 
@@ -8,23 +9,15 @@ type SnapshotDefaults = {
   criticalStage: CriticalStage
 }
 
-export type MoveAuditWarning =
-  | "target-stat-change"
-  | "attacker-stat-change"
+export type MoveAuditWarning = "attacker-stat-change"
 
-const AUDITED_MOVE_WARNING_GROUPS: readonly [MoveAuditWarning, readonly UpstreamResourceId[]][] = [
-  ["target-stat-change", [
-    51, 94, 231, 242, 247, 249, 295, 306, 405, 411, 412, 414, 430, 465, 491,
-    534, 680, 708, 710, 787, 788, 823, 855,
-  ]],
-  ["attacker-stat-change", [
-    232, 246, 276, 309, 315, 318, 354, 434, 437, 451, 466, 552, 612, 705, 800,
-    871, 874, 905,
-  ]],
-]
+const UNSUPPORTED_ATTACKER_STAT_MOVES = new Set([
+  246, 276, 315, 318, 354, 434, 437, 466, 705, 800, 874, 905,
+])
 
 export function auditedMoveWarning(moveId: UpstreamResourceId): MoveAuditWarning | undefined {
-  return AUDITED_MOVE_WARNING_GROUPS.find(([, moveIds]) => moveIds.includes(moveId))?.[0]
+  if (moveStatChange(moveId)) return undefined
+  return UNSUPPORTED_ATTACKER_STAT_MOVES.has(moveId) ? "attacker-stat-change" : undefined
 }
 
 const REVIEWED_SNAPSHOT_DEFAULTS: Partial<

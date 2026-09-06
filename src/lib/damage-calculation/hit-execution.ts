@@ -4,10 +4,11 @@ import {
   sequenceKOProbabilities,
   type Hit,
   type HitComposition,
+  type ResolutionState,
   type ValueRange,
 } from "@/lib/damage-distribution/hit-composition"
 
-import { calculateHitMatrix } from "./calc-engine"
+import { applyCalcStatChanges, calculateHitMatrixVariants } from "./calc-engine"
 import type { CompiledDamagePoint, DamageFormulaBranch } from "./damage-kernel"
 import { branchEffectivePower } from "./formula-projection"
 import type { CalculableScenario } from "./scenario-compiler"
@@ -36,28 +37,42 @@ export function compileHitComposition(
 ): HitComposition {
   const choices = scenario.execution.counts.map(({ count, probability }) => {
     const normal = point.normal
-      ? calculateHitMatrix(point.calc, count, false, berryConsumed, Boolean(scenario.berry)) : undefined
+      ? calculateHitMatrixVariants(point.calc, count, false, berryConsumed, Boolean(scenario.berry), scenario.statChange)
+      : undefined
     const critical = point.critical
-      ? calculateHitMatrix(point.calc, count, true, berryConsumed, Boolean(scenario.berry)) : undefined
+      ? calculateHitMatrixVariants(point.calc, count, true, berryConsumed, Boolean(scenario.berry), scenario.statChange)
+      : undefined
     const hits: Hit[] = Array.from({ length: count }, (_, index) => {
-      function branch(criticalBranch: boolean) {
-        const matrix = criticalBranch ? critical : normal
-        const formula = criticalBranch ? point.critical : point.normal
-        if (!matrix || !formula) return undefined
-        const consumesBerry = index === 0 && matrix.consumesBerry
-        return {
-          rolls: matrix.rolls[index],
-          consumesBerry,
-          effectivePower: matrix.rolls[index].every((roll) => roll === 0) ? 0 : branchEffectivePower(
-            hitFormula(formula, scenario, index, criticalBranch, consumesBerry),
-          ),
+      function branches(previousChanges: number) {
+        function branch(criticalBranch: boolean) {
+          const matrix = (criticalBranch ? critical : normal)?.[previousChanges]
+          const formula = criticalBranch ? point.critical : point.normal
+          if (!matrix || !formula) return undefined
+          const consumesBerry = index === 0 && matrix.consumesBerry
+          return {
+            rolls: matrix.rolls[index],
+            consumesBerry,
+            effectivePower: matrix.rolls[index].every((roll) => roll === 0) ? 0 : branchEffectivePower(
+              hitFormula(formula, scenario, index, criticalBranch, consumesBerry),
+            ),
+          }
         }
+        return { normal: branch(false), critical: branch(true) }
       }
-      return { normal: branch(false), critical: branch(true) }
+      return {
+        ...branches(0),
+        ...(scenario.statChange && index > 0 ? {
+          afterStatChanges: Array.from({ length: index }, (_, previous) => branches(previous + 1)),
+        } : {}),
+      }
     })
     return { probability, hits }
   })
-  return { accuracyScope: scenario.execution.accuracyScope, choices }
+  return {
+    accuracyScope: scenario.execution.accuracyScope,
+    ...(scenario.statChange ? { statChangeProbability: scenario.statChange.probability } : {}),
+    choices,
+  }
 }
 
 export type ExecutionProjection = {
@@ -88,11 +103,23 @@ export function evaluateExecutionPoint(scenario: CalculableScenario, point: Comp
   const composition = compileHitComposition(scenario, point)
   const { hitProbability, criticalHitProbability } = scenario.probability
   const first = resolveHitComposition(composition, hitProbability, criticalHitProbability)
-  const consumed = first.some((outcome) => outcome.berryConsumed)
-    ? resolveHitComposition(compileHitComposition(scenario, point, true), hitProbability, criticalHitProbability, true)
-    : first
+  const nextUses = new Map<number, typeof first>()
+  function afterOutcome(outcome: ResolutionState) {
+    const key = Number(outcome.berryConsumed) + 2 * outcome.statChanges
+    const cached = nextUses.get(key)
+    if (cached) return cached
+    const nextPoint = scenario.statChange && outcome.statChanges > 0
+      ? { ...point, calc: applyCalcStatChanges(point.calc, scenario.statChange, outcome.statChanges) } : point
+    const next = key === 0 ? first : resolveHitComposition(
+      compileHitComposition(scenario, nextPoint, outcome.berryConsumed),
+      hitProbability, criticalHitProbability, outcome.berryConsumed,
+    )
+    nextUses.set(key, next)
+    return next
+  }
+
   return {
     ...projectHitComposition(composition),
-    ko: sequenceKOProbabilities(first, consumed, point.defenderHp),
+    ko: sequenceKOProbabilities(first, afterOutcome, point.defenderHp),
   }
 }
