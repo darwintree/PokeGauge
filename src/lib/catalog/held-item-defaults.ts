@@ -1,110 +1,25 @@
+import { listChampionsItemUsageRecords } from "@/lib/champions"
 import {
-  listChampionsItemUsageRecords,
-  type ChampionsItemUsageRecord,
-} from "@/lib/champions"
-import {
-  EXPLICIT_NO_ITEM_ID,
-  isFormTriggerItem,
-  isLegalFormTriggerTransition,
-  type HeldItemId,
-} from "@/lib/held-item"
-import type { BattlePokemonId } from "@/lib/resources"
-
+  recommendHeldItems, type HeldItemRecommendationInput,
+} from "@/lib/scenario/selection/recommendations"
 import { DEFAULT_USAGE_TIMEOUT_MS, withTimeout } from "./champions-defaults"
 
-function orderItemUsageRecords(
-  records: ChampionsItemUsageRecord[],
-): ChampionsItemUsageRecord[] {
-  const sorted = records.toSorted(
-    (a, b) =>
-      a.rank - b.rank ||
-      (b.percentage ?? Number.NEGATIVE_INFINITY) -
-        (a.percentage ?? Number.NEGATIVE_INFINITY) ||
-      a.championsItemName.localeCompare(b.championsItemName) ||
-      (a.itemId ?? Number.POSITIVE_INFINITY) - (b.itemId ?? Number.POSITIVE_INFINITY),
-  )
-
-  // Keep null itemId rows (nothing / unmapped) in the top-10 window; dedupe mapped ids only.
-  const seen = new Set<number>()
-  const ordered: ChampionsItemUsageRecord[] = []
-  for (const record of sorted) {
-    if (record.itemId != null) {
-      if (seen.has(record.itemId)) continue
-      seen.add(record.itemId)
-    }
-    ordered.push(record)
-  }
-  return ordered
-}
-
-export type DefaultHeldItemPick = {
-  poolIds: HeldItemId[]
-  selectedIds: HeldItemId[]
+export type DefaultHeldItemPick = ReturnType<typeof recommendHeldItems> & {
   status: "ready" | "unavailable"
 }
 
-export async function resolveDefaultHeldItemPick(input: {
-  battlePokemonId: BattlePokemonId
-  lockedItemId: HeldItemId | null
-  sideEligibleIds: ReadonlySet<number>
-  selectableIds: ReadonlySet<BattlePokemonId>
-}): Promise<DefaultHeldItemPick> {
-  if (input.lockedItemId !== null) {
-    return {
-      poolIds: [input.lockedItemId],
-      selectedIds: [input.lockedItemId],
-      status: "ready",
-    }
-  }
-
+export async function resolveDefaultHeldItemPick(
+  input: HeldItemRecommendationInput,
+): Promise<DefaultHeldItemPick> {
+  if (input.lockedItemId !== null) return { ...recommendHeldItems(input, []), status: "ready" }
   try {
-    const boundary = orderItemUsageRecords(
-      await withTimeout(
-        listChampionsItemUsageRecords(input.battlePokemonId),
-        DEFAULT_USAGE_TIMEOUT_MS,
-        "Default Held item pick",
-      ),
-    ).slice(0, 10)
-
-    const poolIds: HeldItemId[] = []
-    const selectedIds: HeldItemId[] = []
-    let noEffectUsage = 0
-
-    for (const row of boundary) {
-      const hasEffect = row.itemId != null && input.sideEligibleIds.has(row.itemId)
-      if (!hasEffect) noEffectUsage += row.percentage ?? 0
-      if (row.itemId == null) continue
-      if (isFormTriggerItem(row.itemId)) {
-        if (
-          isLegalFormTriggerTransition(
-            input.battlePokemonId,
-            row.itemId,
-            input.selectableIds,
-          )
-        ) {
-          poolIds.push(row.itemId)
-        }
-        continue
-      }
-      if (!hasEffect) continue
-      poolIds.push(row.itemId)
-      if (row.percentage != null && row.percentage > 10) selectedIds.push(row.itemId)
-    }
-
-    if (selectedIds.length === 0 || noEffectUsage >= 10) {
-      selectedIds.unshift(EXPLICIT_NO_ITEM_ID)
-    }
-
-    return {
-      poolIds: [EXPLICIT_NO_ITEM_ID, ...poolIds],
-      selectedIds,
-      status: "ready",
-    }
+    const records = await withTimeout(
+      listChampionsItemUsageRecords(input.battlePokemonId),
+      DEFAULT_USAGE_TIMEOUT_MS,
+      "Default Held item pick",
+    )
+    return { ...recommendHeldItems(input, records), status: "ready" }
   } catch {
-    return {
-      poolIds: [EXPLICIT_NO_ITEM_ID],
-      selectedIds: [EXPLICIT_NO_ITEM_ID],
-      status: "unavailable",
-    }
+    return { ...recommendHeldItems(input, []), status: "unavailable" }
   }
 }

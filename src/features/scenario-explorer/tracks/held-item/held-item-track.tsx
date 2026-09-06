@@ -28,7 +28,6 @@ import { TrackOption, TrackOptionAdd, TrackOptionGroup } from "../common/track-o
 import { TrackPanel } from "../common/track-panel"
 import { HeldItemPickerDialog } from "./held-item-picker-dialog"
 import { HeldItemSpriteIcon } from "./held-item-sprite-icon"
-import { orderedPoolSelection } from "./ordered-pool-selection"
 
 type HeldItemTrackProps = {
   catalog: MatchupCatalog
@@ -99,8 +98,7 @@ export function HeldItemTrack({
     const next = selectedIds.includes(id)
       ? selectedIds.filter((itemId) => itemId !== id)
       : [...selectedIds, id]
-    // Empty selection always floors to none; none may coexist with ordinary items.
-    onChange(next.length === 0 ? ["none"] : orderedPoolSelection(displayPoolIds, next))
+    onChange(next)
   }
 
   function confirmFormTrigger() {

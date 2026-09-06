@@ -148,7 +148,7 @@ describe("held-item Tracks", () => {
     )
   })
 
-  it("restores explicit no-item after clearing every selected id", async () => {
+  it("forwards an empty selection to the selection engine", async () => {
     const catalog = await getCatalogShell(445, 727, "en")
     const onChange = vi.fn()
     await renderTrack({
@@ -185,7 +185,7 @@ describe("held-item Tracks", () => {
       ) as HTMLButtonElement).click()
       await Promise.resolve()
     })
-    expect(onChange).toHaveBeenCalledWith(["none"])
+    expect(onChange).toHaveBeenCalledWith([])
   })
 
   it("keeps none selected when toggling an ordinary item on", async () => {

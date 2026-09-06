@@ -59,7 +59,7 @@ export function trackStateAfterCatalogTransition(
   }
   return identityChanged
     ? next
-    : projectAbilitySelections(next, catalog.moveCategory, undefined, undefined, true)
+    : projectAbilitySelections(next, catalog.moveCategory, { weather: true, terrain: true })
 }
 
 export function snapshotsForMoveIds(

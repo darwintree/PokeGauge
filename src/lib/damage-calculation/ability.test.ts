@@ -235,7 +235,7 @@ describe("ability compiler", () => {
 })
 
 describe("ability scenario product and provenance", () => {
-  it("keeps Defiant Stage choices independent in the row product", async () => {
+  it("adds Defiant Stage branches only when the user selects the candidates", async () => {
     const catalog = await getCatalogShell(133, 143, "en", "physical")
     const tackle = catalog.moves.find((move) => move.id === TACKLE.moveId)
     if (!tackle) throw new Error("Expected Tackle catalog option")
@@ -252,6 +252,12 @@ describe("ability scenario product and provenance", () => {
     state.defenderAbilityIds = [NO_ABILITY_ID]
     const projected = projectAbilitySelections(state, "physical")
 
+    expect(projected.attackerStages).toEqual([0])
+    expect(projected.attackerStagePool).toEqual([0, 1, 2])
+    expect(expectedRowCount(projected)).toBe(1)
+    expect(runScenarioPipeline(catalog, projected).rows).toHaveLength(1)
+
+    projected.attackerStages = [0, 1]
     const result = runScenarioPipeline(catalog, projected)
 
     expect(projected.attackerStages).toEqual([0, 1])
