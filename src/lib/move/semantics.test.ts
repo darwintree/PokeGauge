@@ -58,12 +58,12 @@ describe("reviewed move semantics", () => {
     expect(moveBreaksScreensBeforeDamage(706)).toBe(true)
   })
 
+  it.each([3, 24, 813, 818, 860, 911])("does not warn merely because move %i is multi-hit", (id) => {
+    expect(auditedMoveWarning(id)).toBeUndefined()
+  })
+
   it("maps every audited Move identity to one warning", () => {
     const groups = {
-      "multi-hit": [
-        3, 4, 24, 31, 41, 42, 131, 140, 154, 155, 167, 198, 292, 331, 333, 350,
-        458, 530, 541, 544, 594, 742, 751, 799, 813, 814, 818, 860, 865, 888, 911,
-      ],
       "target-stat-change": [
         51, 94, 231, 242, 247, 249, 295, 306, 405, 411, 412, 414, 430, 465, 491,
         534, 680, 708, 710, 787, 788, 823, 855,
@@ -74,7 +74,7 @@ describe("reviewed move semantics", () => {
       ],
     } as const
 
-    expect(Object.values(groups).flat()).toHaveLength(72)
+    expect(Object.values(groups).flat()).toHaveLength(41)
     for (const [warning, moveIds] of Object.entries(groups)) {
       for (const moveId of moveIds) expect(auditedMoveWarning(moveId)).toBe(warning)
     }

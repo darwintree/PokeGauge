@@ -1,4 +1,5 @@
 import { getCatalogShell, type MatchupCatalog } from "@/lib/catalog"
+import { moveHitProfile } from "@/lib/move"
 import type { SupportedLocale } from "@/lib/i18n"
 import {
   createScenarioSetupUrl,
@@ -136,7 +137,11 @@ export function setupBookmarkIsLoadable(
   return (
     setup !== null &&
     attackerIds.has(setup.attackerId) &&
-    defenderIds.has(setup.defenderId)
+    defenderIds.has(setup.defenderId) &&
+    setup.moveSnapshots.every((snapshot) => {
+      const profile = moveHitProfile(snapshot.moveId)
+      return !profile || snapshot.power === profile.powers[0]
+    })
   )
 }
 

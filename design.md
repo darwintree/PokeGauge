@@ -88,7 +88,7 @@ Battle-side color is always paired with `ATK` / `DEF`, a distinct icon, or a loc
 
 The damage pill is domain data ink. Crit whiskers stay `--damage-critical` and do not choose the fill.
 
-Discrete Stat Value rows use one vertical-gradient fill from the 16-roll box, matching from the top:
+Discrete Stat Value rows use one vertical-gradient fill from the main damage range, matching from the top:
 
 | Tone | When |
 | --- | --- |
@@ -99,6 +99,16 @@ Discrete Stat Value rows use one vertical-gradient fill from the 16-roll box, ma
 | Cool | otherwise |
 
 A Stat Range row is still one envelope pill (low-end min to high-end max). It does not draw endpoint boxes. Fill is one two-stop horizontal gradient from the low-end box tone's start color to the high-end box tone's end color. When both endpoints share a tone, the same formula naturally becomes that tone's start-to-end gradient; it does not use a separate same-tone branch. Damage-domain green is not `signal-green`.
+
+### Multi-hit result details
+
+The main damage range assumes every accuracy check succeeds, with all-normal hits (or guaranteed critical hits), in both Probability Modes. Random hit counts and independent damage rolls remain random. Misses and early stops enter Battle Odds KO probabilities only. Landed immune hits still show zero.
+
+Critical whiskers use the same successful-accuracy assumption and mean at least one critical hit, including mixed normal/critical hits. They can overlap the main range; Classic retains this reference even when ordinary critical hits do not enter KO odds.
+
+The existing equivalent-power position uses the same successful-accuracy assumption and shows the whole execution's normal total or range. Its details popover shows the mixed-critical total/range, every hit's base and normal/critical equivalent power, hit counts under that assumption, and accuracy scope. It must work with touch and keyboard. Each accuracy percentage means one check, labeled as move accuracy or accuracy per hit; no full-hit probability is added.
+
+The Move editor lists all native multi-hit powers as read-only. Accuracy, critical stage and existing spread controls remain editable. Single-hit snapshots remain power-editable when Parental Bond adds a child hit. Result details reflect abilities; the editor shows the native move rule.
 
 ### Stat Value Label chip
 

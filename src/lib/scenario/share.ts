@@ -11,7 +11,7 @@ import {
   type Weather,
 } from "@/lib/damage-calculation"
 import type { HeldItemId } from "@/lib/held-item"
-import { createMoveSnapshot, moveCanBecomeSpread, type CriticalStage } from "@/lib/move"
+import { createMoveSnapshot, moveCanBecomeSpread, moveHitProfile, type CriticalStage } from "@/lib/move"
 import {
   findPresetByDefenseValues,
   findPresetByOffenseValue,
@@ -603,6 +603,10 @@ export function trackStateFromScenarioSetup(
     if (!move) failures.push(failure("unknown-move", `${field}.moveId`))
     if (!Number.isInteger(snapshot.power) || snapshot.power < 0 || snapshot.power > 1_000) {
       failures.push(failure("invalid-power", `${field}.power`))
+    }
+    const hitProfile = moveHitProfile(snapshot.moveId)
+    if (hitProfile && snapshot.power !== hitProfile.powers[0]) {
+      failures.push(failure("fixed-multi-hit-power", `${field}.power`))
     }
     if (snapshot.hitFact.kind === "numeric" &&
       (!Number.isInteger(snapshot.hitFact.accuracy) || snapshot.hitFact.accuracy < 0 || snapshot.hitFact.accuracy > 100)) {

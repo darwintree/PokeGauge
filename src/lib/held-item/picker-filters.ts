@@ -66,11 +66,11 @@ export function heldItemPickerTags(itemId: number): HeldItemPickerTag[] {
 
   if (hasHolderGate(item.effect.gates)) tags.add("exclusive")
   if (item.effect.kind === "base-power") tags.add("power")
-  if (item.effect.kind === "final-damage" && item.warning !== "persistent-berry") {
+  if (item.effect.kind === "final-damage") {
     tags.add("power")
   }
   if (item.effect.kind === "battle-stat") tags.add("stat")
-  if (item.warning === "persistent-berry") tags.add("berry")
+  if (item.effect.kind === "resistance-berry") tags.add("berry")
 
   return (["exclusive", "power", "stat", "berry"] as const).filter((tag) =>
     tags.has(tag),

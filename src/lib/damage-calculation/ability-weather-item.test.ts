@@ -233,7 +233,7 @@ describe("Unnerve", () => {
   }
 
   it("suppresses all 18 frozen resistance Berries, including Chilan", () => {
-    const berries = FROZEN_HELD_ITEMS.filter((item) => item.warning === "persistent-berry")
+    const berries = FROZEN_HELD_ITEMS.filter((item) => item.effect.kind === "resistance-berry")
     expect(berries).toHaveLength(18)
 
     for (const berry of berries) {

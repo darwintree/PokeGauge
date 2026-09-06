@@ -22,6 +22,8 @@ import { cn } from "@/lib/utils"
 import { HeldItemSpriteIcon } from "../tracks/held-item/held-item-sprite-icon"
 import { StatValueChipPair } from "../tracks/stats/stat-value-chip"
 import { visibleFormulaPhases } from "./formula-details"
+import { MoveExecutionDetails } from "./move-execution-details"
+import { formatPower } from "./format-power"
 
 type DamageScenarioSummaryProps = {
   move: CatalogMoveOption
@@ -256,16 +258,16 @@ function DamageFormulaTooltip(props: DamageScenarioSummaryProps) {
   const effectivePower = mechanics.normal && mechanics.critical
     ? (
       <span className="inline-flex items-baseline gap-0.5">
-        {mechanics.normal.effectivePower}
+        {formatPower(mechanics.normal.effectivePower)}
         <span className="inline-flex items-baseline gap-0.5 text-muted-foreground">
           <span aria-hidden>(</span>
           <CritCtMark label={criticalLabel} />
-          {mechanics.critical.effectivePower}
+          {formatPower(mechanics.critical.effectivePower)}
           <span aria-hidden>)</span>
         </span>
       </span>
     )
-    : branch.effectivePower
+    : formatPower(branch.effectivePower)
 
   return (
     <Tooltip>
@@ -479,6 +481,7 @@ export function DamageRowCaption(props: DamageScenarioSummaryProps) {
   const defenseStage = activeStage(props.row, "defender-stage")
   return (
     <span className="flex min-h-3.5 min-w-0 flex-wrap items-center gap-x-0.5 gap-y-1 py-1 whitespace-nowrap sm:h-3.5 sm:min-h-0 sm:flex-nowrap sm:overflow-hidden sm:py-0">
+      {props.row.moveMechanics.hits && <MoveExecutionDetails mechanics={props.row.moveMechanics} />}
       <span className="flex shrink-0 items-center gap-0.5">
         <CaptionTypeMark type={props.row.moveType} />
         <span className="max-w-[6.5rem] truncate text-[12px] font-extrabold leading-none">
@@ -490,6 +493,11 @@ export function DamageRowCaption(props: DamageScenarioSummaryProps) {
           </span>
         )}
       </span>
+      {props.row.moveMechanics.hits && (
+        <strong className="px-1 text-[12px] tabular-nums" title={intl.formatMessage({ id: "damage.conditions.effectivePower" })}>
+          {formatPower((props.row.moveMechanics.normal ?? props.row.moveMechanics.critical)?.effectivePower)}
+        </strong>
+      )}
       <span className="flex min-w-0 items-center gap-px overflow-hidden">
         <CaptionChips
           chips={props.attackerStat.chips}
@@ -561,15 +569,15 @@ export function DamageScenarioSummary(props: DamageScenarioSummaryProps) {
   const branch = mechanics.normal ?? mechanics.critical
   const accuracy = mechanics.hitFact === "always-hits"
     ? intl.formatMessage({ id: "damage.conditions.alwaysHits" })
-    : new Intl.NumberFormat(intl.locale, { style: "percent", maximumFractionDigits: 0 }).format(mechanics.hitProbability)
+    : new Intl.NumberFormat(intl.locale, { style: "percent", maximumFractionDigits: 0 }).format(mechanics.hitFact / 100)
 
   return (
     <article className="w-full rounded-[10px] border border-card-border bg-muted/60 md:w-[14.75rem]">
       <div className="flex items-center gap-1 border-b border-card-border px-2 py-1">
         <span className="flex min-w-0 items-center gap-1"><TypeBadge type={props.row.moveType} /><span className="truncate text-[12px] font-extrabold">{props.move.label}</span></span>
-        <strong title={intl.formatMessage({ id: "damage.conditions.effectivePower" })} className="ml-auto text-[13px] font-extrabold leading-4 tabular-nums">{branch?.effectivePower}</strong>
-        {props.showAccuracy && <><span aria-hidden className="text-[10.5px] text-muted-foreground">·</span><span title={intl.formatMessage({ id: "damage.conditions.accuracy" })} className="text-[10.5px] tabular-nums">{accuracy}</span></>}
-        <DamageFormulaTooltip {...props} />
+        <strong title={intl.formatMessage({ id: "damage.conditions.effectivePower" })} className="ml-auto shrink-0 whitespace-nowrap text-[13px] font-extrabold leading-4 tabular-nums">{formatPower(branch?.effectivePower)}</strong>
+        {props.showAccuracy && <><span aria-hidden className="text-[10.5px] text-muted-foreground">·</span><span title={intl.formatMessage({ id: mechanics.accuracyScope === "hit" ? "damage.hit.accuracyPerHit" : "damage.hit.accuracyPerMove" })} className="text-[10.5px] tabular-nums">{accuracy}{mechanics.accuracyScope === "hit" && ` ${intl.formatMessage({ id: "damage.hit.perHit" })}`}</span></>}
+        {mechanics.hits ? <MoveExecutionDetails mechanics={mechanics} /> : <DamageFormulaTooltip {...props} />}
       </div>
       <div className="grid grid-cols-2 divide-x divide-hairline">
         <UnitPanel

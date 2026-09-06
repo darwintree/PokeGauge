@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import type { CatalogMoveOption } from "@/lib/catalog"
-import { auditedMoveWarning, type MoveSnapshot } from "@/lib/move"
+import { auditedMoveWarning, moveHitProfile, type MoveSnapshot } from "@/lib/move"
 import { cn } from "@/lib/utils"
 
 export type MoveSnapshotPatch = Partial<
@@ -29,10 +29,33 @@ function MoveSnapshotEditor({
   const [confirmingRemove, setConfirmingRemove] = useState(false)
   const powerErrorId = `${snapshot.id}-power-error`
   const accuracyErrorId = `${snapshot.id}-accuracy-error`
+  const hitProfile = moveHitProfile(snapshot.moveId)
+  let hitCount = String(hitProfile?.powers.length ?? 1)
+  if (hitProfile?.randomCount) hitCount = "2–5"
+  else if (hitProfile?.accuracyScope === "hit" && snapshot.accuracy < 100 && !snapshot.alwaysHits) {
+    hitCount = `1–${hitProfile.powers.length}`
+  }
 
   return (
     <div className="grid grid-cols-2 gap-2 bg-muted/40 p-2.5">
-      <label className="space-y-1">
+      {hitProfile ? (
+        <div className="col-span-2 flex flex-col gap-1.5">
+          <span className="text-[10px] text-muted-foreground">{intl.formatMessage({ id: "track.move.hitPowers" })}</span>
+          <dl className="flex flex-wrap gap-x-3 gap-y-1 text-xs tabular-nums">
+            {hitProfile.powers.map((power, index) => (
+              <div key={index} className="flex items-baseline gap-1">
+                <dt className="text-[10px] text-muted-foreground">{intl.formatMessage({ id: "damage.hit.index" }, { index: index + 1 })}</dt>
+                <dd className="font-bold">{power}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="text-[10px] text-muted-foreground">
+            {intl.formatMessage({ id: "damage.hit.count" }, {
+              count: hitCount,
+            })}
+          </p>
+        </div>
+      ) : <label className="space-y-1">
         <span className="text-[10px] text-muted-foreground">
           {intl.formatMessage({ id: "track.move.power" })}
         </span>
@@ -52,7 +75,7 @@ function MoveSnapshotEditor({
             {intl.formatMessage({ id: "track.move.powerRequired" })}
           </span>
         ) : null}
-      </label>
+      </label>}
       <label className="space-y-1">
         <span className="text-[10px] text-muted-foreground">
           {intl.formatMessage({ id: "track.move.accuracy" })}
@@ -73,6 +96,9 @@ function MoveSnapshotEditor({
             {intl.formatMessage({ id: "track.move.accuracyRequired" })}
           </span>
         ) : null}
+        {hitProfile ? <span className="block text-[10px] text-muted-foreground">
+          {intl.formatMessage({ id: hitProfile.accuracyScope === "hit" ? "damage.hit.stopOnMiss" : "damage.hit.sharedAccuracy" })}
+        </span> : null}
       </label>
       <label className="space-y-1">
         <span className="text-[10px] text-muted-foreground">

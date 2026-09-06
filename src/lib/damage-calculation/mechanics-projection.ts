@@ -1,23 +1,14 @@
+import type { ValueRange } from "@/lib/damage-distribution/hit-composition"
+
 import type { DamageFormulaBranch } from "./damage-kernel"
-import { NEUTRAL_MODIFIER, applyModifier } from "./damage-kernel"
+import { branchEffectivePower, branchPhases, type MechanicsPhase } from "./formula-projection"
+import { compileHitComposition, projectHitComposition, type ExecutionProjection } from "./hit-execution"
 import type { CalculableScenario, HitFact } from "./scenario-compiler"
 
-export type MechanicsPhaseKind =
-  | "base-power"
-  | "spread"
-  | "weather-damage"
-  | "critical"
-  | "stab"
-  | "type-effectiveness"
-  | "final"
-
-export type MechanicsPhase = {
-  kind: MechanicsPhaseKind
-  modifier: number
-}
+export type { MechanicsPhase, MechanicsPhaseKind } from "./formula-projection"
 
 export type MoveMechanicsBranch = {
-  effectivePower: number
+  effectivePower: number | ValueRange
   phases: MechanicsPhase[]
 }
 
@@ -27,47 +18,51 @@ export type MoveMechanics = {
   critical: MoveMechanicsBranch | null
   hitFact: HitFact
   hitProbability: number
+  accuracyScope?: "move" | "hit"
+  hitCounts?: ValueRange
+  hits?: Array<{ basePower: number; normal?: number; critical?: number }>
 }
 
-function branchPhases(branch: DamageFormulaBranch): MechanicsPhase[] {
-  return [
-    { kind: "base-power", modifier: branch.basePowerModifier },
-    { kind: "spread", modifier: branch.spreadModifier },
-    { kind: "weather-damage", modifier: branch.weatherModifier },
-    ...(branch.criticalModifier === NEUTRAL_MODIFIER
-      ? []
-      : [{ kind: "critical" as const, modifier: branch.criticalModifier }]),
-    { kind: "stab", modifier: branch.stabModifier },
-    { kind: "type-effectiveness", modifier: branch.typeEffectivenessModifier },
-    { kind: "final", modifier: branch.finalModifier },
-  ]
+function branchMechanics(
+  branch: DamageFormulaBranch | undefined,
+  range?: ValueRange,
+): MoveMechanicsBranch | null {
+  if (!branch) return null
+  let effectivePower: number | ValueRange
+  if (range) effectivePower = range.min === range.max ? range.min : range
+  else effectivePower = branchEffectivePower(branch)
+  return { effectivePower, phases: branchPhases(branch) }
 }
 
-function branchEffectivePower(branch: DamageFormulaBranch): number {
-  if (branch.damageNegated || branch.typeEffectivenessModifier === 0) return 0
-  let power = Math.max(1, applyModifier(branch.power, branch.basePowerModifier))
-  power = applyModifier(power, branch.spreadModifier)
-  power = applyModifier(power, branch.weatherModifier)
-  power = applyModifier(power, branch.criticalModifier)
-  power = applyModifier(power, branch.stabModifier)
-  power = Math.floor((power * branch.typeEffectivenessModifier) / NEUTRAL_MODIFIER)
-  power = applyModifier(power, branch.finalModifier)
-  return Math.max(1, power)
-}
-
-function branchMechanics(branch: DamageFormulaBranch): MoveMechanicsBranch {
-  return { effectivePower: branchEffectivePower(branch), phases: branchPhases(branch) }
-}
-
-export function projectMoveMechanics(compiled: CalculableScenario): MoveMechanics {
+export function projectMoveMechanics(compiled: CalculableScenario, projection?: ExecutionProjection): MoveMechanics {
   const point = compiled.calculation.low
   const branch = point.normal ?? point.critical
   if (!branch) throw new Error("Compiled damage point has no damage branch")
-  return {
+  const multi = compiled.execution.powers.length > 1
+  let resolved = projection
+  if (multi && !resolved) {
+    resolved = projectHitComposition(compileHitComposition(compiled, point))
+  }
+  const mechanics: MoveMechanics = {
     basePower: branch.power,
-    normal: point.normal ? branchMechanics(point.normal) : null,
-    critical: point.critical ? branchMechanics(point.critical) : null,
+    normal: branchMechanics(point.normal, resolved?.normalPower),
+    critical: branchMechanics(point.critical, resolved?.criticalPower),
     hitFact: compiled.hitFact,
     hitProbability: compiled.probability.hitProbability,
+  }
+  if (!multi || !resolved) return mechanics
+
+  return {
+    ...mechanics,
+    accuracyScope: compiled.execution.accuracyScope,
+    hitCounts: {
+      min: compiled.execution.counts[0].count,
+      max: compiled.execution.powers.length,
+    },
+    hits: resolved.hits.map((hit, index) => ({
+      basePower: compiled.execution.powers[index],
+      ...(hit.normal ? { normal: hit.normal.effectivePower } : {}),
+      ...(hit.critical ? { critical: hit.critical.effectivePower } : {}),
+    })),
   }
 }

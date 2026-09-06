@@ -230,7 +230,7 @@ describe("held-item Tracks", () => {
     expect((options[0] as HTMLButtonElement).disabled).toBe(true)
   })
 
-  it("exposes partial-support warnings in text and with a red dot", async () => {
+  it("removes the obsolete persistent-Berry warning", async () => {
     const catalog = await getCatalogShell(445, 727, "en")
     await renderTrack({
       catalog,
@@ -245,10 +245,11 @@ describe("held-item Tracks", () => {
 
     const option = Array.from(
       container.querySelectorAll<HTMLButtonElement>("button.track-option"),
-    ).find((button) => button.getAttribute("aria-label")?.startsWith("Passho Berry,"))
-    expect(option?.getAttribute("aria-label")).toContain(
+    ).find((button) => button.getAttribute("aria-label")?.startsWith("Passho Berry"))
+    expect(option).toBeDefined()
+    expect(option?.getAttribute("aria-label")).not.toContain(
       "N-hit results treat the Berry as persistently held",
     )
-    expect(option?.querySelector(".bg-destructive")).not.toBeNull()
+    expect(option?.querySelector(".bg-destructive")).toBeNull()
   })
 })

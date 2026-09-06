@@ -9,15 +9,10 @@ type SnapshotDefaults = {
 }
 
 export type MoveAuditWarning =
-  | "multi-hit"
   | "target-stat-change"
   | "attacker-stat-change"
 
 const AUDITED_MOVE_WARNING_GROUPS: readonly [MoveAuditWarning, readonly UpstreamResourceId[]][] = [
-  ["multi-hit", [
-    3, 4, 24, 31, 41, 42, 131, 140, 154, 155, 167, 198, 292, 331, 333, 350,
-    458, 530, 541, 544, 594, 742, 751, 799, 813, 814, 818, 860, 865, 888, 911,
-  ]],
   ["target-stat-change", [
     51, 94, 231, 242, 247, 249, 295, 306, 405, 411, 412, 414, 430, 465, 491,
     534, 680, 708, 710, 787, 788, 823, 855,
@@ -35,6 +30,8 @@ export function auditedMoveWarning(moveId: UpstreamResourceId): MoveAuditWarning
 const REVIEWED_SNAPSHOT_DEFAULTS: Partial<
   Record<UpstreamResourceId, SnapshotDefaults>
 > = {
+  818: { alwaysHits: false, criticalStage: 3 },
+  911: { alwaysHits: true, criticalStage: 0 },
   129: { alwaysHits: true, criticalStage: 0 },
   869: { alwaysHits: true, criticalStage: 0 },
   870: { alwaysHits: true, criticalStage: 3 },
