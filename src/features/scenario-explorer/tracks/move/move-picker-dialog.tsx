@@ -166,7 +166,7 @@ export function MovePickerDialog({
               type="button"
               aria-pressed={learnableOnly}
               className={cn(
-                "flex min-h-8 items-center justify-center rounded-[9px] border-2 px-2 text-xs font-extrabold outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                "flex min-h-8 items-center justify-center rounded-[9px] border px-2 text-xs font-extrabold outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 learnableOnly
                   ? "border-ink bg-signal-yellow shadow-hud-chip"
                   : "border-card-border bg-paper hover:bg-token-bg/60",
@@ -179,7 +179,7 @@ export function MovePickerDialog({
               type="button"
               aria-pressed={stabOn}
               className={cn(
-                "flex min-h-8 items-center justify-center rounded-[9px] border-2 px-2 text-xs font-extrabold outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                "flex min-h-8 items-center justify-center rounded-[9px] border px-2 text-xs font-extrabold outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 stabOn
                   ? "border-ink bg-signal-yellow shadow-hud-chip"
                   : "border-card-border bg-paper hover:bg-token-bg/60",
@@ -192,7 +192,7 @@ export function MovePickerDialog({
               type="button"
               aria-pressed={seOn}
               className={cn(
-                "flex min-h-8 items-center justify-center rounded-[9px] border-2 px-2 text-xs font-extrabold outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                "flex min-h-8 items-center justify-center rounded-[9px] border px-2 text-xs font-extrabold outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 seOn
                   ? "border-ink bg-signal-yellow shadow-hud-chip"
                   : "border-card-border bg-paper hover:bg-token-bg/60",
@@ -211,7 +211,7 @@ export function MovePickerDialog({
                   type="button"
                   aria-pressed={pressed}
                   className={cn(
-                    "rounded-[9px] border-2 border-card-border bg-paper px-1.5 py-1 transition-colors hover:bg-token-bg/60",
+                    "rounded-[9px] border border-card-border bg-paper px-1.5 py-1 transition-colors hover:bg-token-bg/60",
                     pressed && "border-ink bg-signal-yellow shadow-hud-chip",
                   )}
                   onClick={() => setTypeFilters((filters) => toggleType(filters, type))}
@@ -231,7 +231,7 @@ export function MovePickerDialog({
       }
     >
       {rankingPending ? (
-        <div className="m-3 flex flex-col items-center gap-3 rounded-[10px] border-2 border-ink bg-notice-bg p-4 text-center">
+        <div className="m-3 flex flex-col items-center gap-3 rounded-[10px] border border-hud-frame bg-notice-bg p-4 text-center">
           <p aria-live="polite" className="text-sm font-bold">
             <FormattedMessage id="matchup.ranking.loading" />
           </p>
@@ -239,7 +239,7 @@ export function MovePickerDialog({
             type="button"
             size="sm"
             variant="outline"
-            className="border-2 border-ink bg-paper font-bold shadow-hud-chip hover:bg-token-bg/60"
+            className="border border-hud-frame bg-paper font-bold shadow-hud-chip hover:bg-token-bg/60"
             onClick={skipRanking}
           >
             <FormattedMessage id="matchup.ranking.skip" />

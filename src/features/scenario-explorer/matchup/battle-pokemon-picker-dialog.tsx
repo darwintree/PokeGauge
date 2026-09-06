@@ -182,7 +182,7 @@ export function BattlePokemonPickerDialog({
                   type="button"
                   aria-pressed={pressed}
                   className={cn(
-                    "rounded-[9px] border-2 border-card-border bg-paper px-1.5 py-1 transition-colors hover:bg-token-bg/60",
+                    "rounded-[9px] border border-card-border bg-paper px-1.5 py-1 transition-colors hover:bg-token-bg/60",
                     pressed && "border-ink bg-signal-yellow shadow-hud-chip",
                   )}
                   onClick={() => onTypeFilterToggle(type)}
@@ -218,7 +218,7 @@ export function BattlePokemonPickerDialog({
       }
     >
       {rankingPending ? (
-        <div className="m-3 flex flex-col items-center gap-3 rounded-[10px] border-2 border-ink bg-notice-bg p-4 text-center">
+        <div className="m-3 flex flex-col items-center gap-3 rounded-[10px] border border-hud-frame bg-notice-bg p-4 text-center">
           <p aria-live="polite" className="text-sm font-bold">
             <FormattedMessage id="matchup.ranking.loading" />
           </p>
@@ -226,7 +226,7 @@ export function BattlePokemonPickerDialog({
             type="button"
             size="sm"
             variant="outline"
-            className="border-2 border-ink bg-paper font-bold shadow-hud-chip hover:bg-token-bg/60"
+            className="border border-hud-frame bg-paper font-bold shadow-hud-chip hover:bg-token-bg/60"
             onClick={onSkipRanking}
           >
             <FormattedMessage id="matchup.ranking.skip" />

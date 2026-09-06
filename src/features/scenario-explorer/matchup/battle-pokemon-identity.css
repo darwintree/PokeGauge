@@ -1,8 +1,8 @@
 .battle-pokemon-identities {
-  border: 2px solid var(--ink);
+  border: 1px solid var(--hud-frame);
   border-radius: 10px;
   background: var(--paper);
-  box-shadow: 2px 2px 0 color-mix(in srgb, var(--ink) 20%, transparent);
+  box-shadow: var(--shadow-hud-panel);
 }
 .battle-pokemon-identity-cell {
   min-width: 0;
@@ -23,7 +23,7 @@
   background: transparent;
   box-shadow: none;
   text-align: left;
-  transition: background-color 150ms ease, transform 150ms ease;
+  transition: background-color 150ms ease, transform 140ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .battle-pokemon-identity-sprite {
   width: 64px;
@@ -31,7 +31,7 @@
   object-fit: contain;
   image-rendering: pixelated;
   grid-area: 1 / 1;
-  transition: transform 150ms ease;
+  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .battle-pokemon-identity-details {
   grid-area: 1 / 2;
@@ -83,16 +83,13 @@
   outline-offset: -3px;
 }
 .battle-pokemon-identity:active {
+  transition-duration: 60ms;
   background: color-mix(in srgb, var(--signal-yellow) 20%, var(--paper));
-  transform: scale(.99);
 }
 .battle-pokemon-identity:active .battle-pokemon-identity-sprite {
   transform: translateY(0);
 }
 @media (prefers-reduced-motion: reduce) {
-  .battle-pokemon-identity, .battle-pokemon-identity-sprite {
-    transition: none;
-  }
   .battle-pokemon-identity:hover .battle-pokemon-identity-sprite, .battle-pokemon-identity:active {
     transform: none;
   }
@@ -111,16 +108,16 @@
   min-height: 24px;
   height: 24px;
   padding: 0 6px;
-  border: 1.5px solid var(--ink);
+  border: 1px solid var(--hud-frame);
   border-radius: 6px;
   background: var(--paper);
   color: var(--ink);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: .025em;
-  box-shadow: 0 2px 0 var(--ink);
+  box-shadow: var(--shadow-hud-chip);
   cursor: pointer;
-  transition: background-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+  transition: background-color 140ms ease, box-shadow 140ms ease, transform 140ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .battle-pokemon-form-trigger svg {
   width: 12px;
@@ -131,12 +128,13 @@
   .battle-pokemon-form-trigger:hover {
     background: var(--signal-yellow);
     transform: translateY(-1px);
-    box-shadow: 0 3px 0 var(--ink);
+    box-shadow: 0 3px 0 color-mix(in srgb, var(--ink) 25%, transparent);
   }
 }
 .battle-pokemon-form-trigger:active {
+  transition-duration: 60ms;
   background: var(--signal-yellow);
-  transform: translateY(2px);
+  transform: translateY(1px);
   box-shadow: none;
 }
 .battle-pokemon-form-trigger:focus-visible {
@@ -144,5 +142,5 @@
   outline-offset: 3px;
 }
 @media (prefers-reduced-motion: reduce) {
-  .battle-pokemon-form-trigger { transition: none; }
+  .battle-pokemon-form-trigger:hover, .battle-pokemon-form-trigger:active { transform: none; }
 }

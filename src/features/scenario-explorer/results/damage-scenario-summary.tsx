@@ -274,7 +274,7 @@ function DamageFormulaTooltip(props: DamageScenarioSummaryProps) {
       >
         <Info className="size-3 text-muted-foreground" />
       </TooltipTrigger>
-      <TooltipContent side="right" align="start" className="w-64 flex-col items-stretch gap-1.5 rounded-xl border-2 border-ink bg-paper p-3 shadow-hud-panel">
+      <TooltipContent side="right" align="start" className="w-64 flex-col items-stretch gap-1.5 rounded-xl border border-hud-frame bg-paper p-3 shadow-hud-panel">
         <FormulaDetailRow label={intl.formatMessage({ id: "damage.conditions.basePower" })} value={mechanics.basePower} />
         {phases.map((phase) => (
           <FormulaDetailRow key={phase.kind} label={phaseLabels[phase.kind]} value={modifierLabel(phase.modifier)} />

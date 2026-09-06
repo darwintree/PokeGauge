@@ -117,7 +117,7 @@ export function ScenarioWorkspace({
       <a
         href="#damage-results"
         onClick={() => setMobileView("results")}
-        className="focus-visible:ring-ring fixed top-12 left-2 z-50 -translate-y-40 rounded-md border-2 border-ink bg-paper px-3 py-2 text-sm font-bold shadow-hud-chip focus-visible:translate-y-0 focus-visible:ring-2 focus-visible:outline-none lg:top-16"
+        className="focus-visible:ring-ring fixed top-12 left-2 z-50 -translate-y-40 rounded-md border border-hud-frame bg-paper px-3 py-2 text-sm font-bold shadow-hud-chip focus-visible:translate-y-0 focus-visible:ring-2 focus-visible:outline-none lg:top-16"
       >
         <FormattedMessage id="app.skipToResults" />
       </a>

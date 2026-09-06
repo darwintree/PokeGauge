@@ -192,7 +192,7 @@ export function TrackOption({
       >
         {content}
       </TooltipTrigger>
-      <TooltipContent side="top" className="max-w-xs rounded-xl border-2 border-ink bg-paper p-2 text-xs shadow-hud-panel">
+      <TooltipContent side="top" className="max-w-xs rounded-xl border border-hud-frame bg-paper p-2 text-xs shadow-hud-panel">
         {tooltip}
       </TooltipContent>
     </Tooltip>

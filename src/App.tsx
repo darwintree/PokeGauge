@@ -55,7 +55,7 @@ function App() {
 
   return (
     <IntlProvider locale={locale} messages={localeMessages[locale]}>
-      <TooltipProvider delay={0}>
+      <TooltipProvider>
         <div className="min-h-dvh bg-bg-app">
           <AppHeader
             locale={locale}
