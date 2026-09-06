@@ -1,5 +1,7 @@
 /** PokeAPI's stable numeric identifier for Adaptability. */
 export const ADAPTABILITY_ABILITY_ID = 91
+export const SKILL_LINK_ABILITY_ID = 92
+export const PARENTAL_BOND_ABILITY_ID = 185
 export const BATTLE_ARMOR_ABILITY_ID = 4
 export const VOLT_ABSORB_ABILITY_ID = 10
 export const WATER_ABSORB_ABILITY_ID = 11
@@ -117,11 +119,11 @@ const UNSUPPORTED_ABILITY_IDS = new Set([
   // Generation III
   6, 16, 19, 20, 24, 29, 32, 35, 38, 41, 44, 49, 59, 60, 61, 73,
   // Generation IV
-  77, 79, 82, 86, 90, 92, 93, 98, 102, 104, 112, 115, 121,
+  77, 79, 82, 86, 90, 93, 98, 102, 104, 112, 115, 121,
   // Generation V
   126, 130, 133, 134, 135, 139, 142, 143, 145, 147, 152, 160, 161, 162, 163, 164,
   // Generation VI
-  166, 167, 185, 189, 190, 191,
+  166, 167, 189, 190, 191,
   // Generation VII
   192, 195, 197, 198, 201, 209, 211, 212, 213, 214, 217, 219, 225, 227, 228, 229,
   230,

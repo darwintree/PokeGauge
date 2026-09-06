@@ -13,18 +13,18 @@ describe("Ability support policy", () => {
     for (let id = 1; id <= 313; id += 1) counts[abilitySupport(id)] += 1
 
     expect(counts).toEqual({
-      supported: 94,
+      supported: 96,
       "assumed-satisfied": 15,
-      unsupported: 111,
+      unsupported: 109,
       none: 93,
     })
   })
 
   it.each([
     [3, 1, 76, [21, 8, 16, 31]],
-    [4, 77, 123, [23, 0, 13, 11]],
+    [4, 77, 123, [24, 0, 12, 11]],
     [5, 124, 164, [6, 4, 16, 15]],
-    [6, 165, 191, [14, 0, 6, 7]],
+    [6, 165, 191, [15, 0, 5, 7]],
     [7, 192, 233, [9, 2, 17, 14]],
     [8, 234, 267, [9, 0, 14, 11]],
     [9, 268, 313, [12, 1, 29, 4]],

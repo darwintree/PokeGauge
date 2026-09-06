@@ -111,7 +111,7 @@ _Avoid_: Move list, Move Template Track
 _Avoid_: Move Snapshot, selected Move
 
 **Move Snapshot（招式快照）**:
-由 Move Template 创建并与其解耦的独立、可编辑招式配置。相同 Template 可以创建多个 Snapshot，每个 Snapshot 都有独立身份与选择状态。
+由 Move Template 创建的独立招式配置；允许编辑的参数与模板解耦，原生连续攻击的各段威力保持招式规则规定的固定值。相同 Template 可以创建多个 Snapshot，每个 Snapshot 都有独立身份与选择状态。
 _Avoid_: Move Template, selected Move, shared Move configuration
 
 **Scenario Move Type（场景招式属性）**:
@@ -148,6 +148,28 @@ _Avoid_: Zero-damage Scenario, empty result, dropped Scenario
 将应用业务规则后计算等价的多个 Scenario 合为一个结果，同时保留它们各自的 Track 来源。
 _Avoid_: Equal-display merge, result deduplication
 
+### 招式执行
+
+**Move Execution（招式执行）**:
+一次使用招式的完整过程，可能整招未命中，也可能执行多个 Hit；逐段检查的招式可因未命中提前结束。
+_Avoid_: Hit, damage roll, turn
+
+**Hit（攻击段）**:
+招式执行中的一次攻击结算，拥有自己的威力、会心结果与伤害随机数；一个 Hit 不是一次完整招式使用。
+_Avoid_: Move Execution, KO count
+
+**Accuracy Check（命中检查）**:
+决定招式或某一段是否命中的判定；可由整招共享一次，或逐段进行并在首次失败时终止执行。
+_Avoid_: full-hit probability, Hit Fact
+
+**Hit Composition（攻击段组合）**:
+描述一次招式执行的攻击段、可能段数及命中检查顺序的规则。随机段数是同一 Scenario 内的概率，不是 Track 分支。
+_Avoid_: Scenario set, move list, fixed hit count
+
+**Resolution State（结算状态）**:
+一次执行中以及连续执行之间延续的战斗状态；当前支持抗性果是否已消费。不同 Scenario 各自从初始状态开始。
+_Avoid_: Track State, application state
+
 ### 概率模式（Probability Mode）
 
 **概率模式（Probability Mode）**:
@@ -155,7 +177,7 @@ _Avoid_: Equal-display merge, result deduplication
 _Avoid_: Probability Track, Scenario Setup field, result filter
 
 **经典模式（Classic Mode）**:
-假定招式命中，并以 16 个等概率伤害值计算击倒概率；非必定会心不参与，必定会心则使用会心伤害值。
+假定每次命中检查成功，各段独立使用 16 个等概率伤害值，保留随机段数；非必定会心不参与击倒概率，必定会心照常参与。会心参考仍可展示。
 _Avoid_: 16-roll mode, guaranteed damage
 
 **实战模式（Battle Odds Mode）**:
@@ -163,7 +185,7 @@ _Avoid_: 16-roll mode, guaranteed damage
 _Avoid_: Battle Mode, Actual Probability Mode, Full Odds Mode, Realistic Mode
 
 **Hit Fact（命中事实）**:
-一个 Scenario 中招式的最终命中语义；取值为 Numeric Accuracy 或 Always-hit Fact。
+一个 Scenario 中每次 Accuracy Check 使用的最终命中语义；取值为 Numeric Accuracy 或 Always-hit Fact。
 _Avoid_: Hit Probability, Move Snapshot Accuracy
 
 **Numeric Accuracy（数值命中）**:
@@ -179,7 +201,7 @@ _Avoid_: 100% Numeric Accuracy, guaranteed damage
 _Avoid_: Damage Range, KO Probability
 
 **Atomic Damage Distribution（原子伤害分布）**:
-一次使用 Move Snapshot 所产生的 Damage Distribution，按照当前 Probability Mode 组合未命中、普通伤害与会心伤害。
+一次 Move Execution 在给定初始状态下所产生的 Damage Distribution，按照当前 Probability Mode 组合段数、命中与逐段会心。
 _Avoid_: One-shot Damage Distribution, Actual Damage Distribution
 
 **Convolved Damage Distribution（卷积伤害分布）**:
@@ -187,7 +209,7 @@ _Avoid_: One-shot Damage Distribution, Actual Damage Distribution
 _Avoid_: Accumulated Damage Distribution, Total Damage Distribution
 
 **KO Probability（击倒概率）**:
-一个确定的 Convolved Damage Distribution 中，累计伤害达到或超过一个确定 HP 值的概率。
+在给定执行次数内，累计伤害达到或超过一个确定 HP 值的概率。≤2HKO 计至多两次完整 Move Execution，包括未命中的执行；后一次继承已支持的 Resolution State，不能一概视为独立同分布的卷积。
 _Avoid_: KO Rate, Kill Chance
 
 **KO Probability Range（击倒概率范围）**:
@@ -197,7 +219,7 @@ _Avoid_: Average KO Probability, Probability Distribution
 ### 伤害展示
 
 **等效威力（Equivalent Power）**:
-由 Scenario 编译结果按 kernel 阶段顺序折算出的展示数值，用于估算伤害：`伤害 ≈ 攻击 × 等效威力 / 防御`；按普通／会心分支分别折算，属性免疫显示 0，不是 kernel 直接使用的数值。
+按伤害修正顺序折算的展示数值，用于估算伤害：`伤害 ≈ 攻击 × 等效威力 / 防御`。在假定全部命中检查成功的情况下，多段招式逐段计入会心与树果状态再求和，保留随机段数，展示全部普通与至少一段会心的合计或范围；属性免疫显示 0。它不是伤害公式直接使用的基础威力。
 _Avoid_: 最终威力, effective power, kernel input power
 
 ## 产品表面

@@ -1,3 +1,4 @@
+import * as hitExecution from "./hit-execution"
 import { calculate, Field, Move, Pokemon } from "@smogon/calc"
 import { beforeAll, describe, expect, it, vi } from "vitest"
 
@@ -291,7 +292,7 @@ describe("ability scenario product and provenance", () => {
     state.defenderStages = [0]
     state.defenderAbilityIds = [17]
     const calculateRolls = damageKernel.calculateDamageRolls
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(hitExecution, "evaluateExecutionPoint")
 
     const result = runScenarioPipeline(catalog, state)
 
@@ -306,10 +307,10 @@ describe("ability scenario product and provenance", () => {
     )).toBe(true)
 
     const adaptabilityInput = kernel.mock.calls.find(
-      ([input]) => input.low.normal?.stabModifier === 8192,
+      ([input]) => input.calculation.low.normal?.stabModifier === 8192,
     )?.[0]
     if (!adaptabilityInput) throw new Error("Expected Adaptability kernel input")
-    const rolls = calculateRolls(adaptabilityInput).low
+    const rolls = calculateRolls(adaptabilityInput.calculation).low
     const offense = getAttackerStatSetups("special")["neutral-max"]
     const defense = getDefenderSetups("special")["standard-bulk"]
     const attacker = new Pokemon(CALC_GEN, "Eevee", {
@@ -363,7 +364,7 @@ describe("ability scenario product and provenance", () => {
     state.defensePresetIds = ["standard-bulk"]
     state.defenderStages = [0]
     state.defenderAbilityIds = [50, ADAPTABILITY_ABILITY_ID]
-    const kernel = vi.spyOn(damageKernel, "calculateDamageRolls")
+    const kernel = vi.spyOn(hitExecution, "evaluateExecutionPoint")
 
     const result = runScenarioPipeline(catalog, state)
 

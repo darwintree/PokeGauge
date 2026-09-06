@@ -23,6 +23,16 @@ const DOUBLE_SLAP: CatalogMoveOption = {
   isSpread: false,
 }
 
+const POWER_UP_PUNCH: CatalogMoveOption = {
+  ...DOUBLE_SLAP,
+  id: 612,
+  label: "Power-Up Punch",
+  moveName: "power-up-punch",
+  type: "fighting",
+  power: 40,
+  accuracy: 100,
+}
+
 function markup(locale: keyof typeof localeMessages, children: React.ReactNode) {
   return renderToStaticMarkup(createElement(
     IntlProvider,
@@ -32,11 +42,12 @@ function markup(locale: keyof typeof localeMessages, children: React.ReactNode) 
 }
 
 describe("audited Move and Terrain warnings", () => {
-  it("shows the Move warning in folded and expanded Snapshot states", () => {
-    const snapshot = createMoveSnapshot(DOUBLE_SLAP, "double-slap")
+  it.each([[DOUBLE_SLAP, false], [POWER_UP_PUNCH, true]] as const)(
+    "warns only for a relevant limitation in folded and expanded states (%j)", (option, warns) => {
+    const snapshot = createMoveSnapshot(option, "test-move")
     const folded = markup("en", createElement(MoveSnapshotRow, {
       snapshot,
-      option: DOUBLE_SLAP,
+      option,
       selected: true,
       editing: false,
       onToggle: () => {},
@@ -45,8 +56,8 @@ describe("audited Move and Terrain warnings", () => {
       onRemove: () => {},
     }))
     const expanded = markup("en", createElement(MoveSnapshotRow, {
-      snapshot: { ...snapshot, power: 30 },
-      option: DOUBLE_SLAP,
+      snapshot,
+      option,
       selected: true,
       editing: true,
       onToggle: () => {},
@@ -56,8 +67,9 @@ describe("audited Move and Terrain warnings", () => {
     }))
 
     for (const output of [folded, expanded]) {
-      expect(output).toContain("Show calculation warning for Double Slap")
-      expect(output).toContain('data-base-ui-tooltip-trigger=""')
+      const label = `Show calculation warning for ${option.label}`
+      if (warns) expect(output).toContain(label)
+      else expect(output).not.toContain(label)
     }
   })
 
@@ -75,7 +87,6 @@ describe("audited Move and Terrain warnings", () => {
 
   it("has concrete warning text in every supported locale", () => {
     for (const locale of ["en", "zh-hans", "zh-hant", "ja"] as const) {
-      expect(localeMessages[locale]["track.move.warning.multi-hit"]).toBeTruthy()
       expect(localeMessages[locale]["track.move.warning.target-stat-change"]).toBeTruthy()
       expect(localeMessages[locale]["track.move.warning.attacker-stat-change"]).toBeTruthy()
       expect(localeMessages[locale]["track.terrain.warning.grassy-recovery"]).toBeTruthy()

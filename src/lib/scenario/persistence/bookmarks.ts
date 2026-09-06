@@ -1,4 +1,5 @@
 import { getCatalogShell, type MatchupCatalog } from "@/lib/catalog"
+import { movePowerIsCompatible } from "@/lib/move"
 import type { SupportedLocale } from "@/lib/i18n"
 import {
   createScenarioSetupUrl,
@@ -136,7 +137,8 @@ export function setupBookmarkIsLoadable(
   return (
     setup !== null &&
     attackerIds.has(setup.attackerId) &&
-    defenderIds.has(setup.defenderId)
+    defenderIds.has(setup.defenderId) &&
+    setup.moveSnapshots.every((snapshot) => movePowerIsCompatible(snapshot.moveId, snapshot.power))
   )
 }
 

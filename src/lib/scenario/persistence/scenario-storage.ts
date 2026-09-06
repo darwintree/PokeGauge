@@ -6,7 +6,7 @@ import {
   getOffenseStatBounds,
 } from "@/lib/stat-calculation"
 import type { MatchupCatalog, MoveCategory } from "@/lib/catalog"
-import { moveCanBecomeSpread } from "@/lib/move"
+import { moveCanBecomeSpread, movePowerIsCompatible } from "@/lib/move"
 import {
   defensePresetsForState,
   mergeStagePool,
@@ -121,6 +121,7 @@ function isMoveSnapshot(
     isInteger(value.power) &&
     value.power >= 0 &&
     value.power <= 1000 &&
+    movePowerIsCompatible(value.moveId, value.power) &&
     isInteger(value.accuracy) &&
     value.accuracy >= 0 &&
     value.accuracy <= 100 &&

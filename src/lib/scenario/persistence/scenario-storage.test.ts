@@ -108,6 +108,16 @@ describe("scenario storage", () => {
     expect(loadScenarioSnapshot()).toEqual({ version: 5, ...input })
   })
 
+  it.each([20, 99])("restores a native multi-hit snapshot only at its fixed power (%i)", (power) => {
+    const input = scenario()
+    input.trackState.moveSnapshots[0] = {
+      ...input.trackState.moveSnapshots[0], moveId: 813, power,
+    }
+    data[SCENARIO_STORAGE_KEY] = JSON.stringify({ version: 5, ...input })
+    if (power === 20) expect(loadScenarioSnapshot()).not.toBeNull()
+    else expect(loadScenarioSnapshot()).toBeNull()
+  })
+
   it("migrates version 3 terminology without dropping the saved scenario", () => {
     const input = scenario()
     const {
