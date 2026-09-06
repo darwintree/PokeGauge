@@ -61,16 +61,14 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
   const { attackerCalcName, defenderCalcName } = catalog.matchup
   const offenseSystem = buildSystemOffensePresets(attackerCalcName, catalog.moveCategory)
   const defenseSystem = buildSystemDefensePresets(defenderCalcName, catalog.moveCategory)
-  const offenseUser = loadUserOffensePresets(String(catalog.matchup.attackerId))
-  const defenseUser = loadUserDefensePresets(String(catalog.matchup.defenderId))
   const moveSnapshots = catalog.defaultMovePoolIds.flatMap((moveId) => {
     const move = catalog.moves.find((candidate) => candidate.id === moveId)
     return move ? [createMoveSnapshot(move)] : []
   })
   const offensePresetIds = [catalog.defaultOffensePresetId]
   const defensePresetIds = defaultDefensePresetSelection(defenseSystem, [])
-  const offensePresets = mergeStatPresets(offenseSystem, offenseUser, [])
-  const defensePresets = mergeStatPresets(defenseSystem, defenseUser, [])
+  const offensePresets = offenseSystem
+  const defensePresets = defenseSystem
   const statRange = offenseEnvelopeOf(offensePresets, offensePresetIds)
   const defenderRanges = defenseEnvelopeOf(defensePresets, defensePresetIds)
   if (!statRange || !defenderRanges) {

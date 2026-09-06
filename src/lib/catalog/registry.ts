@@ -6,7 +6,8 @@ import {
   lockedHeldItemFor,
   megaStoneFor,
 } from "@/lib/held-item"
-import { NO_ABILITY_ID, abilityIsSelectable } from "@/lib/ability"
+import { NO_ABILITY_ID } from "@/lib/ability"
+import { recommendAbilities } from "@/lib/scenario/selection/recommendations"
 import type { SupportedLocale } from "@/lib/i18n"
 import { resolveReviewedMoveType } from "@/lib/move"
 import {
@@ -80,18 +81,8 @@ export async function getCatalogShell(
     : allDefenderAbilities
   const attackerAbilities = [noAbilityOption(locale), ...attackerIdentityAbilities]
   const defenderAbilities = [noAbilityOption(locale), ...defenderIdentityAbilities]
-  const selectableAttackerAbilityIds = attackerIdentityAbilities
-    .filter((ability) => abilityIsSelectable(ability.id))
-    .map((ability) => ability.id)
-  const selectableDefenderAbilityIds = defenderIdentityAbilities
-    .filter((ability) => abilityIsSelectable(ability.id))
-    .map((ability) => ability.id)
-  const initialAttackerAbilityIds = selectableAttackerAbilityIds.length > 0
-    ? selectableAttackerAbilityIds
-    : [NO_ABILITY_ID]
-  const initialDefenderAbilityIds = selectableDefenderAbilityIds.length > 0
-    ? selectableDefenderAbilityIds
-    : [NO_ABILITY_ID]
+  const initialAttackerAbilityIds = recommendAbilities(attackerIdentityAbilities)
+  const initialDefenderAbilityIds = recommendAbilities(defenderIdentityAbilities)
 
   const moves = snapshotCapableMoves.map(
     (move) => ({

@@ -5,7 +5,9 @@ import { createRoot, type Root } from "react-dom/client"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import {
+  COMPETITIVE_ABILITY_ID,
   DEFIANT_ABILITY_ID,
+  ELECTRIC_SURGE_ABILITY_ID,
   DRIZZLE_ABILITY_ID,
   DROUGHT_ABILITY_ID,
   INTIMIDATE_ABILITY_ID,
@@ -97,9 +99,9 @@ describe("async default lifecycle", () => {
       defaultAttackerAbilityIds: [DRIZZLE_ABILITY_ID],
     })
     expect(current.trackState.attackerAbilityIds).toEqual([DRIZZLE_ABILITY_ID])
-    expect(current.trackState.weathers).toEqual(["none", "rain"])
+    expect(current.trackState.weathers).toEqual(["rain"])
     expect(current.trackState.weatherPool).toContain("rain")
-    expect(current.trackState.attackerStages).toEqual([-1, 0])
+    expect(current.trackState.attackerStages).toEqual([-1])
   })
 
   it("applies the resolved offense default unless the Stat Track was touched", async () => {
@@ -131,10 +133,12 @@ describe("async default lifecycle", () => {
     await render(shell)
 
     await act(async () => current.setAttackerAbilityIds([DEFIANT_ABILITY_ID]))
-    expect(current.trackState.attackerStages).toEqual([0, 1])
+    expect(current.trackState.attackerStages).toEqual([0])
+    expect(current.trackState.attackerStagePool).toEqual([0, 1, 2])
 
     await act(async () => current.setAttackerAbilityIds([NO_ABILITY_ID]))
-    expect(current.trackState.attackerStages).toEqual([0, 1])
+    expect(current.trackState.attackerStages).toEqual([0])
+    expect(current.trackState.attackerStagePool).toEqual([0, 1, 2])
 
     await render({
       ...shell,
@@ -176,7 +180,8 @@ describe("async default lifecycle", () => {
     await act(async () => current.resetAttackerAbilities())
 
     expect(current.trackState.attackerAbilityIds).toEqual([DROUGHT_ABILITY_ID])
-    expect(current.trackState.weathers).toEqual(["none", "sun", "rain"])
+    expect(current.trackState.weathers).toEqual(["none", "rain"])
+    expect(current.trackState.weatherPool).toEqual(["none", "sun", "rain"])
   })
 
   it("resets identity targets and reapplies both sides after the new default resolves", async () => {
@@ -200,8 +205,8 @@ describe("async default lifecycle", () => {
     expect(current.trackState.attackerStages).toEqual([0])
 
     await render({ ...nextShell, defaultAbilityPickStatus: "ready" }, restored)
-    expect(current.trackState.weathers).toEqual(["none", "rain"])
-    expect(current.trackState.attackerStages).toEqual([-1, 0])
+    expect(current.trackState.weathers).toEqual(["rain"])
+    expect(current.trackState.attackerStages).toEqual([-1])
   })
 
   it("retains field pools independently from selections and persists them locally", async () => {
@@ -245,6 +250,94 @@ describe("async default lifecycle", () => {
 
     await act(async () => current.resetAttackerStages())
     expect(current.trackState.attackerStagePool).toEqual([0])
+    expect(current.trackState.attackerStages).toEqual([0])
+  })
+
+  it("recomputes untouched selections on either side's ability changes", async () => {
+    const shell = await getCatalogShell(133, 143, "en", "physical")
+    await render(shell)
+    await act(async () => current.setAttackerAbilityIds([DEFIANT_ABILITY_ID]))
+    await act(async () => current.setDefenderAbilityIds([INTIMIDATE_ABILITY_ID]))
+    expect(current.trackState.attackerStages).toEqual([1])
+    await act(async () => current.setAttackerAbilityIds([DEFIANT_ABILITY_ID, NO_ABILITY_ID]))
+    expect(current.trackState.attackerStages).toEqual([-1, 1])
+    await act(async () => current.setDefenderAbilityIds([NO_ABILITY_ID]))
+    expect(current.trackState.attackerStages).toEqual([0])
+    expect(current.trackState.attackerStagePool).toEqual([-1, 0, 1, 2])
+
+    await act(async () => current.setAttackerAbilityIds([DRIZZLE_ABILITY_ID, ELECTRIC_SURGE_ABILITY_ID]))
+    expect(current.trackState.weathers).toEqual(["rain"])
+    expect(current.trackState.terrains).toEqual(["electric"])
+    await act(async () => current.setDefenderAbilityIds([DROUGHT_ABILITY_ID]))
+    expect(current.trackState.weathers).toEqual(["sun", "rain"])
+    await act(async () => current.setAttackerAbilityIds([NO_ABILITY_ID]))
+    expect(current.trackState.weathers).toEqual(["sun"])
+    expect(current.trackState.terrains).toEqual(["none"])
+    await act(async () => current.setDefenderAbilityIds([NO_ABILITY_ID]))
+    expect(current.trackState.weathers).toEqual(["none"])
+    expect(current.trackState.weatherPool).toEqual(["none", "sun", "rain"])
+    expect(current.trackState.terrainPool).toEqual(["none", "electric"])
+  })
+
+  it("protects each manually selected track when async abilities resolve", async () => {
+    const shell = await getCatalogShell(133, 143, "en", "physical")
+    await render(shell)
+    await act(async () => {
+      current.setWeathers(["snow"])
+      current.setTerrains(["psychic"])
+      current.setAttackerStages([3])
+    })
+    await render({
+      ...shell,
+      defaultAbilityPickStatus: "ready",
+      defaultAttackerAbilityIds: [DRIZZLE_ABILITY_ID, ELECTRIC_SURGE_ABILITY_ID],
+      defaultDefenderAbilityIds: [INTIMIDATE_ABILITY_ID],
+    })
+    expect(current.trackState.weathers).toEqual(["snow"])
+    expect(current.trackState.terrains).toEqual(["psychic"])
+    expect(current.trackState.attackerStages).toEqual([3])
+    expect(current.trackState.weatherPool).toContain("rain")
+    expect(current.trackState.terrainPool).toContain("electric")
+    expect(current.trackState.attackerStagePool).toContain(-1)
+    await act(async () => current.setAttackerAbilityIds([DROUGHT_ABILITY_ID]))
+    expect(current.trackState.weathers).toEqual(["snow"])
+    expect(current.trackState.weatherPool).toContain("sun")
+  })
+
+  it("protects added selections independently and resumes stage defaults after reset", async () => {
+    const shell = await getCatalogShell(133, 143, "en", "physical")
+    await render(shell)
+    await act(async () => {
+      current.addWeather("snow")
+      current.addAttackerStage(3)
+    })
+    await act(async () => current.setAttackerAbilityIds([DRIZZLE_ABILITY_ID, ELECTRIC_SURGE_ABILITY_ID]))
+    await act(async () => current.setDefenderAbilityIds([INTIMIDATE_ABILITY_ID]))
+    expect(current.trackState.weathers).toEqual(["none", "snow"])
+    expect(current.trackState.attackerStages).toEqual([0, 3])
+    expect(current.trackState.terrains).toEqual(["electric"])
+    await act(async () => current.addTerrain("psychic"))
+    await act(async () => current.setAttackerAbilityIds([NO_ABILITY_ID]))
+    expect(current.trackState.terrains).toEqual(["electric", "psychic"])
+    await act(async () => current.resetAttackerStages())
+    expect(current.trackState.attackerStages).toEqual([-1])
+    expect(current.trackState.attackerStagePool).toEqual([-1, 0])
+    expect(current.trackState.weathers).toEqual(["none", "snow"])
+    await act(async () => current.setDefenderAbilityIds([NO_ABILITY_ID]))
+    expect(current.trackState.attackerStages).toEqual([0])
+  })
+
+  it("recomputes stages for the new move category while preserving edited weather", async () => {
+    const shell = await getCatalogShell(133, 143, "en", "physical")
+    await render(shell)
+    await act(async () => current.setAttackerAbilityIds([COMPETITIVE_ABILITY_ID]))
+    await act(async () => current.setDefenderAbilityIds([INTIMIDATE_ABILITY_ID]))
+    expect(current.trackState.attackerStages).toEqual([-1])
+    await act(async () => current.setWeathers(["snow"]))
+    await render({ ...shell, moveCategory: "special" })
+    expect(current.trackState.attackerStages).toEqual([2])
+    await act(async () => current.setAttackerAbilityIds([DRIZZLE_ABILITY_ID]))
+    expect(current.trackState.weathers).toEqual(["snow"])
     expect(current.trackState.attackerStages).toEqual([0])
   })
 

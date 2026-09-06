@@ -317,7 +317,7 @@ describe("catalog ability candidates and defaults", () => {
       },
     ])
     expect(catalog.defenderAbilities.map((ability) => ability.id)).not.toContain(26)
-    expect(catalog.defaultAttackerAbilityIds).toEqual([8, 24])
+    expect(catalog.defaultAttackerAbilityIds).toEqual([8])
     expect(catalog.defaultAbilityPickStatus).toBe("loading")
   })
 
@@ -364,7 +364,7 @@ describe("catalog ability candidates and defaults", () => {
     expect(catalog.defaultAttackerAbilityIds).toEqual([NO_ABILITY_ID])
   })
 
-  it("selects every legal ability when usage is unavailable or has no legal match", async () => {
+  it("selects the first selectable ability when usage is unavailable or has no legal match", async () => {
     setChampionsAbilityUsageFetcherForTest(async (battlePokemonId) => {
       if (battlePokemonId === 445) throw new Error("unavailable")
       return [{ battlePokemonId, abilityId: 91, format: "Doubles", season: "test", source: "test", rank: 1, percentage: 100, championsAbilityName: "Adaptability" }]
@@ -375,14 +375,14 @@ describe("catalog ability candidates and defaults", () => {
     )
 
     expect(catalog.defaultAttackerAbilityIds).toEqual(
-      catalog.attackerAbilities.slice(1).map((ability) => ability.id),
+      [catalog.attackerAbilities[1].id],
     )
     expect(catalog.defaultDefenderAbilityIds).toEqual(
-      catalog.defenderAbilities.slice(1).map((ability) => ability.id),
+      [catalog.defenderAbilities[1].id],
     )
   })
 
-  it("falls back to every legal ability when usage never responds", async () => {
+  it("falls back to the first selectable ability when usage never responds", async () => {
     vi.useFakeTimers()
     setChampionsAbilityUsageFetcherForTest(() => new Promise(() => {}))
 
@@ -391,10 +391,10 @@ describe("catalog ability candidates and defaults", () => {
     const catalog = await result
 
     expect(catalog.defaultAttackerAbilityIds).toEqual(
-      catalog.attackerAbilities.slice(1).map((ability) => ability.id),
+      [catalog.attackerAbilities[1].id],
     )
     expect(catalog.defaultDefenderAbilityIds).toEqual(
-      catalog.defenderAbilities.slice(1).map((ability) => ability.id),
+      [catalog.defenderAbilities[1].id],
     )
   })
 
