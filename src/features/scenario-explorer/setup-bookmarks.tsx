@@ -283,7 +283,7 @@ export function SetupBookmarkControls({
         <DialogContent
           ref={dialogRef}
           showCloseButton={false}
-          className="flex max-h-[min(36rem,calc(100svh-2rem))] flex-col gap-0 overflow-hidden border-2 border-ink bg-paper p-0 shadow-hud-panel sm:max-w-lg"
+          className="flex max-h-[min(36rem,calc(100svh-2rem))] flex-col gap-0 overflow-hidden border border-hud-frame bg-paper p-0 shadow-hud-panel sm:max-w-lg"
         >
           <DialogClose
             render={
@@ -351,7 +351,7 @@ export function SetupBookmarkControls({
                             value={draftTitle}
                             placeholder={title}
                             aria-label={intl.formatMessage({ id: "bookmark.title" })}
-                            className="border-2 border-ink"
+                            className="border border-hud-frame"
                             autoFocus
                             onChange={(event) => setDraftTitle(event.target.value)}
                             onBlur={() => commitRename(bookmark.id)}

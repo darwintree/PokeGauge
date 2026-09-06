@@ -84,7 +84,7 @@ type SettingsDialogProps = LocaleControlProps & Pick<
 >
 
 const SELECT_CLASS =
-  "h-10 w-full rounded-[10px] border-2 border-ink bg-paper px-3 text-sm font-bold text-ink shadow-hud-chip outline-none hover:bg-token-bg focus-visible:ring-2 focus-visible:ring-signal-yellow"
+  "h-10 w-full rounded-[10px] border border-hud-frame bg-paper px-3 text-sm font-bold text-ink shadow-hud-chip outline-none hover:bg-token-bg focus-visible:ring-2 focus-visible:ring-signal-yellow"
 const TAB_CLASS =
   "h-10 flex-none rounded-[9px] px-4 font-extrabold data-active:bg-signal-yellow data-active:shadow-hud-chip"
 
@@ -166,7 +166,7 @@ function SettingsDialog({
             type="button"
             variant="ghost"
             size="sm"
-            className="size-11 rounded-full border-2 border-ink bg-paper px-0 text-ink shadow-hud-chip hover:bg-signal-yellow hover:text-ink sm:size-10 md:w-auto md:px-2.5 lg:h-8"
+            className="size-11 rounded-full border border-hud-frame bg-paper px-0 text-ink shadow-hud-chip hover:bg-signal-yellow hover:text-ink sm:size-10 md:w-auto md:px-2.5 lg:h-8"
             aria-label={intl.formatMessage({ id: "settings.title" })}
           />
         }
@@ -178,7 +178,7 @@ function SettingsDialog({
       </DialogTrigger>
       <DialogContent
         showCloseButton={false}
-        className="h-[calc(100dvh-1rem)] max-h-[calc(100dvh-1rem)] max-w-[calc(100%-1rem)] grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden border-2 border-ink bg-paper p-0 shadow-hud-panel sm:h-auto sm:max-h-[min(82dvh,42rem)] sm:max-w-2xl"
+        className="h-[calc(100dvh-1rem)] max-h-[calc(100dvh-1rem)] max-w-[calc(100%-1rem)] grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden border border-hud-frame bg-paper p-0 shadow-hud-panel sm:h-auto sm:max-h-[min(82dvh,42rem)] sm:max-w-2xl"
       >
         <DialogClose
           render={
@@ -193,7 +193,7 @@ function SettingsDialog({
         >
           <XIcon aria-hidden />
         </DialogClose>
-        <DialogHeader className="border-b-2 border-ink px-5 py-4 pr-14">
+        <DialogHeader className="border-b border-hairline px-5 py-4 pr-14">
           <DialogTitle className="text-lg font-extrabold">
             <FormattedMessage id="settings.title" />
           </DialogTitle>
@@ -369,7 +369,7 @@ export function AppHeader({
   )
 
   return (
-    <header className="z-40 h-14 border-b-2 border-ink bg-[var(--appbar)] text-paper lg:sticky lg:top-0">
+    <header className="z-40 h-14 border-b border-hud-frame bg-[var(--appbar)] text-paper lg:sticky lg:top-0">
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-1 px-4 sm:gap-3 sm:px-6">
         <div className="flex min-w-0 items-center gap-3">
           {onBrandHomeClick ? (
@@ -408,7 +408,7 @@ export function AppHeader({
             }
             variant="ghost"
             size="sm"
-            className="size-11 rounded-full border-2 border-ink bg-paper px-0 text-ink shadow-hud-chip hover:bg-signal-yellow hover:text-ink sm:size-10 md:w-auto md:px-2.5 lg:h-8"
+            className="size-11 rounded-full border border-hud-frame bg-paper px-0 text-ink shadow-hud-chip hover:bg-signal-yellow hover:text-ink sm:size-10 md:w-auto md:px-2.5 lg:h-8"
           >
             <MessageSquareWarningIcon aria-hidden />
             <span className="hidden md:inline">

@@ -70,7 +70,7 @@ export function MatchupLanding({
             <Button
               type="button"
               variant="outline"
-              className="h-auto w-full justify-between rounded-xl border-2 border-ink bg-paper px-4 py-3 text-left shadow-hud-chip hover:bg-signal-yellow"
+              className="h-auto w-full justify-between rounded-xl border border-hud-frame bg-paper px-4 py-3 text-left shadow-hud-chip hover:bg-signal-yellow"
               onClick={resumeMatchup.onResume}
             >
               <span className="flex min-w-0 items-center gap-3">

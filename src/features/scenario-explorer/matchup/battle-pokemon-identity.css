@@ -1,8 +1,8 @@
 .battle-pokemon-identities {
-  border: 2px solid var(--ink);
+  border: 1px solid var(--hud-frame);
   border-radius: 10px;
   background: var(--paper);
-  box-shadow: 2px 2px 0 color-mix(in srgb, var(--ink) 20%, transparent);
+  box-shadow: var(--shadow-hud-panel);
 }
 .battle-pokemon-identity-cell {
   min-width: 0;
@@ -111,14 +111,14 @@
   min-height: 24px;
   height: 24px;
   padding: 0 6px;
-  border: 1.5px solid var(--ink);
+  border: 1px solid var(--hud-frame);
   border-radius: 6px;
   background: var(--paper);
   color: var(--ink);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: .025em;
-  box-shadow: 0 2px 0 var(--ink);
+  box-shadow: var(--shadow-hud-chip);
   cursor: pointer;
   transition: background-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
 }
@@ -131,7 +131,7 @@
   .battle-pokemon-form-trigger:hover {
     background: var(--signal-yellow);
     transform: translateY(-1px);
-    box-shadow: 0 3px 0 var(--ink);
+    box-shadow: 0 3px 0 color-mix(in srgb, var(--ink) 25%, transparent);
   }
 }
 .battle-pokemon-form-trigger:active {

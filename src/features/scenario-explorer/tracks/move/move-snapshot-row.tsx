@@ -268,7 +268,7 @@ export function MoveSnapshotRow({
             >
               <CircleAlert aria-hidden="true" className="size-3.5" strokeWidth={2.5} />
             </TooltipTrigger>
-            <TooltipContent side="top" className="max-w-xs rounded-xl border-2 border-ink bg-paper p-2 text-xs shadow-hud-panel">
+            <TooltipContent side="top" className="max-w-xs rounded-xl border border-hud-frame bg-paper p-2 text-xs shadow-hud-panel">
               {intl.formatMessage({ id: `track.move.warning.${warning}` })}
             </TooltipContent>
           </Tooltip>

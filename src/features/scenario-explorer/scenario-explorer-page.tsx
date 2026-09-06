@@ -389,7 +389,7 @@ export function ScenarioExplorerPage({
   if (shareFailures) {
     return (
       <main className="grid min-h-[calc(100dvh-3.5rem)] place-items-center p-6">
-        <div className="max-w-md space-y-4 rounded-2xl border-2 border-ink bg-paper p-6 text-center shadow-hud-board">
+        <div className="max-w-md space-y-4 rounded-2xl border border-hud-frame bg-paper p-6 text-center shadow-hud-board">
           <h1 className="text-xl font-extrabold tracking-tight">
             <FormattedMessage id="share.invalidTitle" />
           </h1>
@@ -407,7 +407,7 @@ export function ScenarioExplorerPage({
   if (loadError) {
     return (
       <main className="grid min-h-[calc(100dvh-3.5rem)] place-items-center p-6">
-        <div className="max-w-sm space-y-4 rounded-2xl border-2 border-ink bg-paper p-6 text-center shadow-hud-board">
+        <div className="max-w-sm space-y-4 rounded-2xl border border-hud-frame bg-paper p-6 text-center shadow-hud-board">
           <h1 className="text-xl font-extrabold tracking-tight">
             <FormattedMessage id="app.loadError" />
           </h1>
@@ -489,7 +489,7 @@ export function ScenarioExplorerPage({
       <Dialog open={confirmResetOpen} onOpenChange={setConfirmResetOpen}>
         <DialogContent
           showCloseButton={false}
-          className="gap-5 border-2 border-ink bg-paper shadow-hud-panel sm:max-w-md"
+          className="gap-5 border border-hud-frame bg-paper shadow-hud-panel sm:max-w-md"
         >
           <DialogHeader>
             <DialogTitle>

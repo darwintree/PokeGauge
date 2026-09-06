@@ -47,7 +47,7 @@ PokeGauge uses one light theme. The design direction is recorded in [`docs/adr/0
 
 ## Principles
 
-1. **Frames outside, play inside.** Concentrate thick borders and hard shadows on major containers and pressable controls. Keep dense, repeated content flat and quiet.
+1. **Frames outside, play inside.** Use clear, fine borders and short hard shadows on major containers and pressable controls. Keep dense, repeated content flat and quiet.
 2. **Signals stay rare.** Saturated color and badge treatments communicate meaningful state. Repetition turns a signal into decoration.
 3. **Shadow communicates hierarchy.** Major containers and pressable controls may cast hard offset shadows. Inner and repeated content does not.
 4. **Toy language lives in the data ink.** Rounded type, ink borders, pills, and controlled gradients may emphasize data-bearing marks. Supporting structure stays quiet.
@@ -111,7 +111,7 @@ The Stat Value Label chip is domain data ink: a compact pill whose face is the S
 | Teal | `#0a5c50` | `#c8e8e1` | Bonus 5–31 |
 | Cobalt | `#1d4ed8` | `#c9d9ff` | Bonus ≥ 32 and not EX |
 
-Fill encoding: background, border, and text share the band hue. Temporary Stat Values add a dashed border only. Hover or keyboard focus turns the chip border to `ink` and reveals actual stat, SP allocation, and nature adjustment (none / `+` / `-`).
+Fill encoding: background, border, and text share the band hue. The fine border uses a quieter blend of the foreground and background so small labels remain clear. Temporary Stat Values retain the full band foreground on a dashed border. Hover or keyboard focus turns the chip border to `ink` and reveals actual stat, SP allocation, and nature adjustment (none / `+` / `-`).
 
 Result-row chips are data marks and do not use Choice selected yellow. Choice TrackOption selected state uses `signal-yellow` fill, an `ink` frame, and a hard chip shadow; the investment band stays on a left tab in the band foreground. Unselected Choice keeps paper fill with band border and text. A Stat Range is two endpoint chips, not one interval block, and does not assign a single band color to an envelope row. HUD yellow, green, red, and damage orange are not used for these bands.
 
@@ -128,7 +128,7 @@ Result-row chips are data marks and do not use Choice selected yellow. Choice Tr
 
 - Use the rounded HUD stack declared in the document metadata. Locale-specific fallback may refine the stack without changing its rounded character.
 - Use tabular numerals for numeric data.
-- Weight follows role: 800 for primary data and identity, 700 for emphasis, 500 for controls, and 400 for supplementary notes.
+- Weight follows role: 800 for primary data and identity, 700 for emphasis and compact Stat Value Label chips, 500 for controls, and 400 for supplementary notes.
 - Primary values must not be smaller or lighter than their labels.
 - Do not introduce one-off font sizes or weights when an existing role is sufficient.
 
@@ -147,13 +147,13 @@ Result-row chips are data marks and do not use Choice selected yellow. Choice Tr
 
 - Shadows are hard offsets only. Blur shadows are not part of the HUD language.
 - Major containers may use the strongest elevation.
-- Pressable controls may use a smaller elevation. Active feedback may reduce that elevation without shifting surrounding layout.
-- Inner surfaces and static repeated content remain flat.
+- Pressable controls may use a smaller elevation concentrated on the bottom edge. A subtle inner top highlight may define the face. Active feedback lowers the face and retracts the shadow without shifting surrounding layout.
+- Inner surfaces and static repeated content remain flat. Damage marks may use subtle inset edge lighting without an outer shadow; their domain gradients and critical references retain their meaning.
 - Do not use elevation solely to decorate empty space.
 
 ## Shape
 
-- Thick ink borders define major chrome and pressable affordances.
+- Major workspace surfaces use fine, softened ink borders; pressable controls keep a fine ink frame when selected. Apply the same fine-border treatment to app chrome, dialogs, tooltips, pickers, inputs, and auxiliary states. Thicker strokes are reserved for focus indicators, selected-tab underlines, slider handles, and critical-reference endpoints.
 - Thin ink borders define data-bearing marks.
 - Hairline and quiet borders separate supporting structure.
 - Radius scales with surface size.

@@ -234,7 +234,7 @@ export function DamageResultRow({
           {/* Data ink: pill box, ink frame, and damage-domain gradient. */}
           <div
             className={cn(
-              "absolute top-1/2 h-3.5 -translate-y-1/2 rounded-sm border border-ink md:h-7",
+              "damage-box-surface absolute top-1/2 h-3.5 -translate-y-1/2 rounded-sm border border-ink md:h-7",
               fill.className,
             )}
             style={fill.style}
@@ -278,7 +278,7 @@ export function DamageResultRow({
           side="top"
           sideOffset={8}
           align="center"
-          className="flex-col items-stretch gap-1.5 max-w-[18rem] rounded-xl border-2 border-ink bg-paper px-3 py-2 shadow-hud-panel"
+          className="flex-col items-stretch gap-1.5 max-w-[18rem] rounded-xl border border-hud-frame bg-paper px-3 py-2 shadow-hud-panel"
         >
           <HoverRow marker={toneMarker(row)}>
             <HoverLabel>
