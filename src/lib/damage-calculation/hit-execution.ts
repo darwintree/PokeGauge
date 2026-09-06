@@ -8,9 +8,7 @@ import {
   type ValueRange,
 } from "@/lib/damage-distribution/hit-composition"
 
-import type { MoveStatChange } from "@/lib/move/stat-change"
-
-import { calculateHitMatrix } from "./calc-engine"
+import { applyCalcStatChanges, calculateHitMatrixVariants } from "./calc-engine"
 import type { CompiledDamagePoint, DamageFormulaBranch } from "./damage-kernel"
 import { branchEffectivePower } from "./formula-projection"
 import type { CalculableScenario } from "./scenario-compiler"
@@ -32,81 +30,48 @@ function hitFormula(
   }
 }
 
-function compileUnchangedHits(
+export function compileHitComposition(
   scenario: CalculableScenario,
   point: CompiledDamagePoint,
   berryConsumed = false,
 ): HitComposition {
   const choices = scenario.execution.counts.map(({ count, probability }) => {
     const normal = point.normal
-      ? calculateHitMatrix(point.calc, count, false, berryConsumed, Boolean(scenario.berry)) : undefined
+      ? calculateHitMatrixVariants(point.calc, count, false, berryConsumed, Boolean(scenario.berry), scenario.statChange)
+      : undefined
     const critical = point.critical
-      ? calculateHitMatrix(point.calc, count, true, berryConsumed, Boolean(scenario.berry)) : undefined
+      ? calculateHitMatrixVariants(point.calc, count, true, berryConsumed, Boolean(scenario.berry), scenario.statChange)
+      : undefined
     const hits: Hit[] = Array.from({ length: count }, (_, index) => {
-      function branch(criticalBranch: boolean) {
-        const matrix = criticalBranch ? critical : normal
-        const formula = criticalBranch ? point.critical : point.normal
-        if (!matrix || !formula) return undefined
-        const consumesBerry = index === 0 && matrix.consumesBerry
-        return {
-          rolls: matrix.rolls[index],
-          consumesBerry,
-          effectivePower: matrix.rolls[index].every((roll) => roll === 0) ? 0 : branchEffectivePower(
-            hitFormula(formula, scenario, index, criticalBranch, consumesBerry),
-          ),
+      function branches(previousChanges: number) {
+        function branch(criticalBranch: boolean) {
+          const matrix = (criticalBranch ? critical : normal)?.[previousChanges]
+          const formula = criticalBranch ? point.critical : point.normal
+          if (!matrix || !formula) return undefined
+          const consumesBerry = index === 0 && matrix.consumesBerry
+          return {
+            rolls: matrix.rolls[index],
+            consumesBerry,
+            effectivePower: matrix.rolls[index].every((roll) => roll === 0) ? 0 : branchEffectivePower(
+              hitFormula(formula, scenario, index, criticalBranch, consumesBerry),
+            ),
+          }
         }
+        return { normal: branch(false), critical: branch(true) }
       }
-      return { normal: branch(false), critical: branch(true) }
+      return {
+        ...branches(0),
+        ...(scenario.statChange && index > 0 ? {
+          afterStatChanges: Array.from({ length: index }, (_, previous) => branches(previous + 1)),
+        } : {}),
+      }
     })
     return { probability, hits }
   })
-  return { accuracyScope: scenario.execution.accuracyScope, choices }
-}
-
-function applyStatChanges(point: CompiledDamagePoint, change: MoveStatChange, count: number): CompiledDamagePoint {
-  const pokemon = point.calc[change.side]
-  return { ...point, calc: { ...point.calc, [change.side]: {
-    ...pokemon,
-    boosts: { ...pokemon.boosts,
-      [change.stat]: Math.max(-6, Math.min(6, pokemon.boosts[change.stat] + count * change.stages)),
-    },
-  } } }
-}
-
-export function compileHitComposition(
-  scenario: CalculableScenario,
-  point: CompiledDamagePoint,
-  berryConsumed = false,
-): HitComposition {
-  const base = compileUnchangedHits(scenario, point, berryConsumed)
-  const change = scenario.statChange
-  if (!change) return base
-  // Compile each reachable incoming stage once. The resolver selects it from
-  // the same state that carries Berry consumption and accumulated damage.
-  const byChanges = new Map<number, HitComposition>([[0, base]])
-  const afterChanges = (count: number) => {
-    let composition = byChanges.get(count)
-    if (!composition) {
-      composition = compileUnchangedHits(scenario, applyStatChanges(point, change, count), berryConsumed)
-      byChanges.set(count, composition)
-    }
-    return composition
-  }
-  // calc's public matrix already includes this guaranteed intra-use boost.
-  const boostAlreadyInMatrix = point.calc.move.calcMoveName === "Power-Up Punch"
   return {
-    ...base,
-    statChangeProbability: change.probability,
-    choices: base.choices.map((choice, choiceIndex) => ({
-      ...choice,
-      hits: choice.hits.map((hit, index) => ({
-        ...hit,
-        ...(index > 0 && !boostAlreadyInMatrix ? {
-          afterStatChanges: Array.from({ length: index }, (_, previous) =>
-            afterChanges(previous + 1).choices[choiceIndex].hits[index]),
-        } : {}),
-      })),
-    })),
+    accuracyScope: scenario.execution.accuracyScope,
+    ...(scenario.statChange ? { statChangeProbability: scenario.statChange.probability } : {}),
+    choices,
   }
 }
 
@@ -144,7 +109,7 @@ export function evaluateExecutionPoint(scenario: CalculableScenario, point: Comp
     const cached = nextUses.get(key)
     if (cached) return cached
     const nextPoint = scenario.statChange && outcome.statChanges > 0
-      ? applyStatChanges(point, scenario.statChange, outcome.statChanges) : point
+      ? { ...point, calc: applyCalcStatChanges(point.calc, scenario.statChange, outcome.statChanges) } : point
     const next = key === 0 ? first : resolveHitComposition(
       compileHitComposition(scenario, nextPoint, outcome.berryConsumed),
       hitProbability, criticalHitProbability, outcome.berryConsumed,

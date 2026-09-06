@@ -158,6 +158,21 @@ describe("shared hit state transitions", () => {
   })
 })
 
+it("requires explicit rows for reachable stat changes, including unchanged damage", () => {
+  const unchanged = hit(10)
+  const composition: HitComposition = {
+    accuracyScope: "move", statChangeProbability: 1,
+    choices: [{ probability: 1, hits: [unchanged, unchanged] }],
+  }
+  expect(() => resolveHitComposition(composition, 1, 0)).toThrow("Missing Hit variant for 1 prior stat changes at hit 2")
+  const explicit = { ...composition, choices: [{ probability: 1, hits: [
+    unchanged, { ...unchanged, afterStatChanges: [unchanged] },
+  ] }] }
+  expect(resolveHitComposition(explicit, 1, 0)).toMatchObject([
+    { damage: 20, statChanges: 2, probability: 1 },
+  ])
+})
+
 it("uses the same state transitions for a three-hit composition", () => {
   const outcomes = resolveHitComposition({
     accuracyScope: "move", statChangeProbability: 0.5,

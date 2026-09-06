@@ -4,7 +4,8 @@ Branch: `codex/stat-change-ko`, created from synchronized main `7b29f9c` after P
 Contract: [discussion](../traces/discussion/2026-09-06-stat-change-ko.md), including revisions 4 and 5.
 Implementation boundaries: [trace](../traces/implementations/2026-09-06-stat-change-ko.md), with entry 4 superseding the initial deferral.
 
-- 83 test files, 835 tests pass. Build, lint and diff checks pass; existing lint and bundle-size warnings remain.
+- 83 test files, 836 tests pass. Build, lint and diff checks pass; existing lint and bundle-size warnings remain.
+- Architecture follow-up: calc owns incoming-stage matrices and explicitly reuses its Power-Up Punch matrix. The resolver rejects missing reachable variants; a contract test verifies both rejection and deliberate reuse. Existing independent enumeration tests retain the same damage and KO expectations.
 - Single-hit Crunch with 50% accuracy and a resistance Berry matches independent enumeration of miss/hit paths and 20% Defense-drop outcomes over multiple HP thresholds.
 - Parental Bond Crunch, Metal Claw, Acid Spray and Torch Song match independent per-hit enumeration of damage rolls, critical hits and stat-change events, including Berry consumption. A four-hit/two-use Crunch enumeration verifies cumulative stage carry-over and correlation between damage and the number of drops.
 - Parental Bond Power-Up Punch matches a second-use calc matrix starting at +2 Attack without double-applying the existing intra-use boost.

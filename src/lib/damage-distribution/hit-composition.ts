@@ -10,7 +10,7 @@ export type HitBranches = {
 }
 
 export type Hit = HitBranches & {
-  /** Alternative rolls after 1, 2, ... prior on-hit stat changes in this use. */
+  /** Explicit rows after 1, 2, ... prior effects; required for every reachable count. */
   afterStatChanges?: readonly HitBranches[]
 }
 
@@ -69,7 +69,8 @@ export function resolveHitComposition(
         const state = key % stateCount
         const damage = Math.floor(key / stateCount)
         const changes = Math.floor(state / FLAG_COUNT)
-        const branches = variants[changes] ?? variants[0]
+        const branches = variants[changes]
+        if (!branches) throw new Error(`Missing Hit variant for ${changes} prior stat changes at hit ${index + 1}`)
         for (const [branch, critical, weight] of branches) {
           if (!branch || weight === 0) continue
           const nextState = (state | LANDED | (critical ? CRITICAL : 0) |
