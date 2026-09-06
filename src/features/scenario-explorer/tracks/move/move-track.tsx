@@ -55,7 +55,8 @@ function MoveCategoryControl({
         <ToggleGroupItem
           key={value}
           value={value}
-          className="h-6 min-h-0! min-w-0 rounded-[9px] border-2 border-card-border bg-paper px-2 py-0.5 text-[10px] font-extrabold hover:bg-token-bg/60 aria-pressed:border-ink aria-pressed:bg-signal-yellow aria-pressed:shadow-hud-chip aria-pressed:hover:bg-signal-yellow"
+          variant="hud"
+          className="h-6 min-h-0! min-w-0 rounded-[9px] px-2 py-0.5 text-[10px] font-extrabold"
         >
           {intl.formatMessage({ id: `track.moveSide.${value}` })}
         </ToggleGroupItem>

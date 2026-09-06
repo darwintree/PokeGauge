@@ -35,14 +35,15 @@
     --color-hud-muted: var(--hud-muted);
     --color-hairline: var(--hairline);
     --color-card-border: var(--card-border);
+    --color-hud-frame: var(--hud-frame);
     --color-token-bg: var(--token-bg);
     --color-signal-yellow: var(--signal-yellow);
     --color-signal-green: var(--signal-green);
     --color-damage-critical: var(--damage-critical);
     --color-notice-bg: var(--notice-bg);
-    --shadow-hud-chip: 2px 2px 0 0 color-mix(in srgb, var(--ink) 25%, transparent);
-    --shadow-hud-panel: 3px 3px 0 0 color-mix(in srgb, var(--ink) 18%, transparent);
-    --shadow-hud-board: 4px 4px 0 0 color-mix(in srgb, var(--ink) 18%, transparent);
+    --shadow-hud-chip: 0 2px 0 0 color-mix(in srgb, var(--ink) 25%, transparent);
+    --shadow-hud-panel: 2px 2px 0 0 color-mix(in srgb, var(--ink) 16%, transparent);
+    --shadow-hud-board: 3px 3px 0 0 color-mix(in srgb, var(--ink) 16%, transparent);
 
     --radius-sm: calc(var(--radius) * 0.6);
     --radius-md: calc(var(--radius) * 0.8);
@@ -67,6 +68,10 @@
     /* HUD primitives: design.md § Color */
     --ink: #1f2430;
     --paper: #ffffff;
+    --hud-frame: color-mix(in srgb, var(--ink) 65%, var(--paper));
+    --hud-control-border: color-mix(in srgb, var(--card-border) 80%, var(--ink));
+    --hud-selected-surface: linear-gradient(180deg, color-mix(in srgb, var(--signal-yellow) 80%, var(--paper)), var(--signal-yellow));
+    --hud-selected-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 40%, transparent), 0 2px 0 color-mix(in srgb, var(--ink) 30%, transparent);
     --bg-app: #e8ecfa;
     --hud-muted: #606776; /* AA on every surface muted text sits on: paper 5.7, card tint 5.3, token-bg 4.8 (design.md § Accessibility) */
     --hairline: #e3e6f2;

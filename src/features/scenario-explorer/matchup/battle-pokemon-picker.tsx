@@ -132,7 +132,7 @@ export function BattlePokemonPicker({
         aria-label={compactSide ? `${label}: ${placeholder}` : undefined}
         data-awaiting={awaiting || undefined}
         className={cn(
-          "whitespace-normal transition-[transform,background-color,border-color,opacity] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.99]",
+          "whitespace-normal",
           compactSide && "battle-pokemon-identity",
           !compactSide &&
             "h-14 w-full flex-row items-center justify-start gap-3 rounded-[10px] border border-card-border bg-paper px-3 shadow-none hover:bg-token-bg/50",

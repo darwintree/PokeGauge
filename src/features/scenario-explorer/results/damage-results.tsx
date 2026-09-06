@@ -67,7 +67,7 @@ function UnavailableScenarioNotices({
         return (
           <li
             key={group.snapshotId}
-            className="flex items-center gap-2.5 rounded-[10px] border-2 border-ink bg-notice-bg py-2 pr-3 pl-4 text-[11px] font-bold shadow-[inset_8px_0_0_0_var(--signal-yellow)]"
+            className="flex items-center gap-2.5 rounded-[10px] border border-hud-frame bg-notice-bg py-2 pr-3 pl-4 text-[11px] font-bold shadow-[inset_8px_0_0_0_var(--signal-yellow)]"
           >
             <span aria-hidden className="grid size-5 shrink-0 place-items-center rounded-full bg-signal-yellow">
               <TriangleAlert className="size-3 text-ink" strokeWidth={2.5} />
@@ -157,7 +157,7 @@ export function DamageResults({
       <>
         <UnavailableScenarioNotices catalog={catalog} unavailable={unavailable} />
         {unavailable.length === 0 && (
-          <Empty className="rounded-2xl border-2 border-ink bg-paper shadow-hud-board">
+          <Empty className="rounded-2xl border border-hud-frame bg-paper shadow-hud-board">
             <EmptyHeader>
               <EmptyDescription>
                 <FormattedMessage id="app.empty" />
@@ -215,7 +215,7 @@ export function DamageResults({
   }
 
   const board = (
-    <div className="rounded-[16px] border-2 border-ink bg-paper shadow-hud-board">
+    <div className="rounded-[16px] border border-hud-frame bg-paper shadow-hud-board">
       <DamagePercentAxis />
       <ul className="pb-2">
         {blocks.flatMap((block) => {
@@ -275,7 +275,7 @@ export function DamageResults({
                   "px-2 py-0.5 hover:bg-token-bg/55 md:rounded-[10px] md:px-3 md:pt-2.5 md:pb-3 lg:px-4",
                   index > 0 &&
                     (startsMoveGroup
-                      ? "md:mt-3 md:border-t-2 md:border-ink/35 md:pt-3"
+                      ? "md:mt-3 md:border-t md:border-ink/35 md:pt-3"
                       : "md:border-t md:border-hairline"),
                 )}
               >

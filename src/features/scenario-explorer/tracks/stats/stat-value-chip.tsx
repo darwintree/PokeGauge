@@ -55,7 +55,7 @@ export function StatValueChip({
       >
         {chip.label}
       </TooltipTrigger>
-      <TooltipContent side="top" className="rounded-xl border-2 border-ink bg-paper p-2 shadow-hud-panel">
+      <TooltipContent side="top" className="rounded-xl border border-hud-frame bg-paper p-2 shadow-hud-panel">
         <StatValueChipTooltipBody chip={chip} />
       </TooltipContent>
     </Tooltip>

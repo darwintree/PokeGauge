@@ -329,7 +329,7 @@ export function ScenarioExplorerPage({
       return
     }
     setLeavingHome(true)
-    const timer = window.setTimeout(() => setShowExplorer(true), 420)
+    const timer = window.setTimeout(() => setShowExplorer(true), 120)
     return () => window.clearTimeout(timer)
   }, [bothSelected, catalog])
 
@@ -389,7 +389,7 @@ export function ScenarioExplorerPage({
   if (shareFailures) {
     return (
       <main className="grid min-h-[calc(100dvh-3.5rem)] place-items-center p-6">
-        <div className="max-w-md space-y-4 rounded-2xl border-2 border-ink bg-paper p-6 text-center shadow-hud-board">
+        <div className="max-w-md space-y-4 rounded-2xl border border-hud-frame bg-paper p-6 text-center shadow-hud-board">
           <h1 className="text-xl font-extrabold tracking-tight">
             <FormattedMessage id="share.invalidTitle" />
           </h1>
@@ -407,7 +407,7 @@ export function ScenarioExplorerPage({
   if (loadError) {
     return (
       <main className="grid min-h-[calc(100dvh-3.5rem)] place-items-center p-6">
-        <div className="max-w-sm space-y-4 rounded-2xl border-2 border-ink bg-paper p-6 text-center shadow-hud-board">
+        <div className="max-w-sm space-y-4 rounded-2xl border border-hud-frame bg-paper p-6 text-center shadow-hud-board">
           <h1 className="text-xl font-extrabold tracking-tight">
             <FormattedMessage id="app.loadError" />
           </h1>
@@ -445,8 +445,8 @@ export function ScenarioExplorerPage({
     return (
       <div
         className={cn(
-          "transition-[opacity,transform] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]",
-          leavingHome && "translate-y-2 opacity-0",
+          "transition-[opacity,transform] duration-120 ease-[cubic-bezier(0.16,1,0.3,1)]",
+          leavingHome && "translate-y-1 opacity-0",
         )}
       >
         <MatchupLanding
@@ -467,7 +467,7 @@ export function ScenarioExplorerPage({
   }
 
   return (
-    <div className="motion-safe:animate-[home-rise_500ms_cubic-bezier(0.16,1,0.3,1)_both]">
+    <div className="motion-safe:animate-[home-rise_200ms_cubic-bezier(0.16,1,0.3,1)_both]">
       <ScenarioWorkspace
         key={workspaceEpoch}
         attackers={localizedOptions.attackers}
@@ -489,7 +489,7 @@ export function ScenarioExplorerPage({
       <Dialog open={confirmResetOpen} onOpenChange={setConfirmResetOpen}>
         <DialogContent
           showCloseButton={false}
-          className="gap-5 border-2 border-ink bg-paper shadow-hud-panel sm:max-w-md"
+          className="gap-5 border border-hud-frame bg-paper shadow-hud-panel sm:max-w-md"
         >
           <DialogHeader>
             <DialogTitle>

@@ -98,7 +98,7 @@ export function HeldItemPickerDialog({
             type="button"
             aria-pressed={tag === null}
             className={cn(
-              "flex min-h-8 shrink-0 items-center rounded-full border-2 px-3 text-[11px] font-extrabold",
+              "flex min-h-8 shrink-0 items-center rounded-full border px-3 text-[11px] font-extrabold",
               tag === null
                 ? "border-ink bg-ink text-paper"
                 : "border-card-border bg-paper text-muted-foreground hover:bg-token-bg/60",
@@ -115,7 +115,7 @@ export function HeldItemPickerDialog({
                 type="button"
                 aria-pressed={pressed}
                 className={cn(
-                  "flex min-h-8 shrink-0 items-center rounded-full border-2 px-3 text-[11px] font-extrabold",
+                  "flex min-h-8 shrink-0 items-center rounded-full border px-3 text-[11px] font-extrabold",
                   pressed
                     ? "border-ink bg-signal-yellow shadow-hud-chip"
                     : "border-card-border bg-paper hover:bg-token-bg/60",
