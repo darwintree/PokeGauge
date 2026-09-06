@@ -181,11 +181,11 @@
     font-weight: 800;
     font-variant-numeric: tabular-nums;
     transition:
-      background 0.12s,
-      border-color 0.12s,
-      box-shadow 0.12s,
-      color 0.12s,
-      transform 0.12s;
+      background 0.14s,
+      border-color 0.14s,
+      box-shadow 0.14s,
+      color 0.14s,
+      transform 0.14s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .track-option--neutral-disabled,
@@ -464,6 +464,7 @@
   }
 
   .track-option:not(:disabled):active {
+    transition-duration: 60ms;
     transform: translateY(1px);
     box-shadow: inset 0 1px 1px color-mix(in srgb, var(--ink) 10%, transparent);
   }
@@ -476,10 +477,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .track-option {
-      transition: none;
-    }
-
     .track-option:not(:disabled):active {
       transform: none;
     }

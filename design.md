@@ -163,8 +163,8 @@ Result-row chips are data marks and do not use Choice selected yellow. Choice Tr
 ## Motion
 
 - Motion must explain feedback, hierarchy, or state change.
-- Most HUD interactions should feel immediate.
-- When motion helps, keep it short and physical.
+- Most HUD interactions should feel immediate. Ordinary tooltip hover may wait briefly for intent; keyboard focus and damage readouts remain immediate.
+- When motion helps, keep it short and physical. Press feedback is faster than release, with matching shadow retraction. Dialogs use a shallow scale change; workspace entry uses a small rise.
 - Animate transform and opacity rather than layout dimensions.
 - Honor `prefers-reduced-motion` by removing nonessential movement.
 

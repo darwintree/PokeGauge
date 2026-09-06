@@ -224,6 +224,7 @@ export function DamageResultRow({
 
       <Tooltip>
         <TooltipTrigger
+          delay={0}
           render={<div tabIndex={0} className="relative h-8 min-w-0 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/40 md:h-10" />}
         >
           <div

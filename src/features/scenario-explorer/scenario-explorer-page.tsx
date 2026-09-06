@@ -329,7 +329,7 @@ export function ScenarioExplorerPage({
       return
     }
     setLeavingHome(true)
-    const timer = window.setTimeout(() => setShowExplorer(true), 420)
+    const timer = window.setTimeout(() => setShowExplorer(true), 120)
     return () => window.clearTimeout(timer)
   }, [bothSelected, catalog])
 
@@ -445,8 +445,8 @@ export function ScenarioExplorerPage({
     return (
       <div
         className={cn(
-          "transition-[opacity,transform] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]",
-          leavingHome && "translate-y-2 opacity-0",
+          "transition-[opacity,transform] duration-120 ease-[cubic-bezier(0.16,1,0.3,1)]",
+          leavingHome && "translate-y-1 opacity-0",
         )}
       >
         <MatchupLanding
@@ -467,7 +467,7 @@ export function ScenarioExplorerPage({
   }
 
   return (
-    <div className="motion-safe:animate-[home-rise_500ms_cubic-bezier(0.16,1,0.3,1)_both]">
+    <div className="motion-safe:animate-[home-rise_200ms_cubic-bezier(0.16,1,0.3,1)_both]">
       <ScenarioWorkspace
         key={workspaceEpoch}
         attackers={localizedOptions.attackers}
