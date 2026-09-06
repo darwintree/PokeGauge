@@ -2,6 +2,7 @@ import { ChevronDown, Info, MoreHorizontal } from "lucide-react"
 import { useIntl } from "react-intl"
 
 import { TypeBadge } from "@/components/pokemon/type-badge"
+import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import {
   NEUTRAL_MODIFIER,
@@ -272,9 +273,9 @@ function DamageFormulaTooltip(props: DamageScenarioSummaryProps) {
   return (
     <Tooltip>
       <TooltipTrigger
-        render={<button type="button" aria-label={intl.formatMessage({ id: "damage.conditions.details" })} className="rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring" />}
+        render={<Button variant="ghost" size="icon-xs" aria-label={intl.formatMessage({ id: "damage.conditions.details" })} />}
       >
-        <Info className="size-3 text-muted-foreground" />
+        <Info className="text-muted-foreground" />
       </TooltipTrigger>
       <TooltipContent side="right" align="start" className="w-64 flex-col items-stretch gap-1.5 rounded-xl border border-hud-frame bg-paper p-3 shadow-hud-panel">
         <FormulaDetailRow label={intl.formatMessage({ id: "damage.conditions.basePower" })} value={mechanics.basePower} />
@@ -481,7 +482,7 @@ export function DamageRowCaption(props: DamageScenarioSummaryProps) {
   const defenseStage = activeStage(props.row, "defender-stage")
   return (
     <span className="flex min-h-3.5 min-w-0 flex-wrap items-center gap-x-0.5 gap-y-1 py-1 whitespace-nowrap sm:h-3.5 sm:min-h-0 sm:flex-nowrap sm:overflow-hidden sm:py-0">
-      {props.row.moveMechanics.hits && <MoveExecutionDetails mechanics={props.row.moveMechanics} />}
+      {props.row.moveMechanics.hits && <MoveExecutionDetails mechanics={props.row.moveMechanics} touch />}
       <span className="flex shrink-0 items-center gap-0.5">
         <CaptionTypeMark type={props.row.moveType} />
         <span className="max-w-[6.5rem] truncate text-[12px] font-extrabold leading-none">

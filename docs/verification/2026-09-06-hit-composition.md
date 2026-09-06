@@ -49,3 +49,9 @@ Following user review, removed the blanket multi-hit and Parental Bond warnings 
 ## Output-reference revision
 
 Per discussion decision 18, damage, mixed-critical and equivalent-power references now assume successful accuracy checks in both modes. Tests verify identical references at 50% and 90% accuracy while KO odds differ, and preserve random 2–5 hit ranges. The probability resolver's stopping and Berry-state tests remain unchanged.
+
+## PR review and main integration
+
+Rebased onto main `1d8a5ac` (HUD borders and motion) before opening the PR. The hit details surface uses the updated fine border. Desktop details now use the same Tooltip interaction and icon as ordinary moves, with hover and keyboard focus; mobile retains a tap-open Popover. Reviewed both at 1280px and 390px, including Escape and overflow. After integration, all 814 tests, build, lint and diff checks pass (existing warnings remain).
+
+The standards review identified a repeated native-power compatibility predicate; `movePowerIsCompatible` now owns it for compilation, shares, bookmarks and workspace restoration. The spec review identified a stale desktop-only sentence in the design spec; it now states the mobile multi-hit exception.

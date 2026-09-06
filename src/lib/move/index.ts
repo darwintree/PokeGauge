@@ -20,5 +20,5 @@ export {
   calcDerivedPowerDefault,
 } from "./semantics"
 export type { MoveAuditWarning } from "./semantics"
-export { compileMoveExecution, moveAllowsParentalBond, moveHitProfile } from "./hit-profile"
+export { compileMoveExecution, moveAllowsParentalBond, moveHitProfile, movePowerIsCompatible } from "./hit-profile"
 export type { MoveExecution, MoveHitProfile } from "./hit-profile"

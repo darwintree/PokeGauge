@@ -32,6 +32,12 @@ export function moveHitProfile(moveId: number): MoveHitProfile | undefined {
   return MOVE_HIT_PROFILES[moveId]
 }
 
+/** Native multi-hit powers are fixed; other moves retain their editable power. */
+export function movePowerIsCompatible(moveId: number, power: number): boolean {
+  const profile = moveHitProfile(moveId)
+  return !profile || power === profile.powers[0]
+}
+
 // Charge, recharge, future-move and explicit noparentalbond rules are not all
 // present in generated PokeAPI flags. Keep this reviewed identity list explicit.
 const NO_PARENTAL_BOND = new Set([

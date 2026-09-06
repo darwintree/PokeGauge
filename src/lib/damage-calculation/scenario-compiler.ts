@@ -29,7 +29,7 @@ import {
   normalizeSnapshotAccuracy,
   normalizeSnapshotPower,
   compileMoveExecution,
-  moveHitProfile,
+  movePowerIsCompatible,
   type MoveExecution,
 } from "@/lib/move"
 import {
@@ -978,7 +978,6 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       sources,
     }
   }
-  const hitProfile = moveHitProfile(raw.snapshot.moveId)
   if (
     !attacker ||
     !defender ||
@@ -986,7 +985,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     !isMoveCategory(move.category) ||
     !moveType ||
     isMoveExplicitlyUnsupported(move.id) ||
-    (hitProfile && power !== hitProfile.powers[0]) ||
+    !movePowerIsCompatible(raw.snapshot.moveId, power) ||
     (move.power === null && calcDerivedPowerDefault(move.id) === undefined)
   ) {
     return {

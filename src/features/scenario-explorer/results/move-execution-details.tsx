@@ -1,24 +1,24 @@
 import { Info } from "lucide-react"
 import { useIntl } from "react-intl"
 
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
-import { Popover, PopoverContent, PopoverTitle, PopoverTrigger } from "@/components/ui/popover"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import type { MoveMechanics } from "@/lib/damage-calculation"
 import { formatPower } from "./format-power"
 
-export function MoveExecutionDetails({ mechanics }: { mechanics: MoveMechanics }) {
+export function MoveExecutionDetails({ mechanics, touch = false }: { mechanics: MoveMechanics; touch?: boolean }) {
   const intl = useIntl()
   if (!mechanics.hits) return null
   const accuracy = mechanics.hitFact === "always-hits"
     ? intl.formatMessage({ id: "damage.conditions.alwaysHits" })
     : intl.formatNumber(mechanics.hitFact / 100, { style: "percent", maximumFractionDigits: 0 })
-  return (
-    <Popover>
-      <PopoverTrigger render={<Button variant="ghost" size="icon-xs" aria-label={intl.formatMessage({ id: "damage.hit.details" })} />}>
-        <Info />
-      </PopoverTrigger>
-      <PopoverContent align="end" className="max-h-[min(32rem,80dvh)] w-80 max-w-[calc(100vw-2rem)] gap-3 overflow-y-auto rounded-xl border-2 border-ink bg-paper p-3 shadow-hud-panel ring-0">
-        <PopoverTitle>{intl.formatMessage({ id: "damage.hit.details" })}</PopoverTitle>
+  const trigger = <Button variant="ghost" size="icon-xs" aria-label={intl.formatMessage({ id: "damage.hit.details" })} />
+  const icon = <Info className="text-muted-foreground" />
+  const contentClassName = "max-h-[min(32rem,80dvh)] w-80 max-w-[calc(100vw-2rem)] flex-col items-stretch gap-3 overflow-y-auto rounded-xl border border-hud-frame bg-paper p-3 shadow-hud-panel ring-0"
+  const content = (
+    <>
+        <p className="font-medium">{intl.formatMessage({ id: "damage.hit.details" })}</p>
         <div className="flex flex-col gap-1 text-xs">
           <p>{intl.formatMessage({ id: "damage.hit.count" }, { count: formatPower(mechanics.hitCounts) })}</p>
           <p>{intl.formatMessage({ id: mechanics.accuracyScope === "hit" ? "damage.hit.accuracyPerHit" : "damage.hit.accuracyPerMove" })}{": "}{accuracy}</p>
@@ -58,7 +58,17 @@ export function MoveExecutionDetails({ mechanics }: { mechanics: MoveMechanics }
             ))}
           </tbody>
         </table>
-      </PopoverContent>
+    </>
+  )
+  return touch ? (
+    <Popover>
+      <PopoverTrigger render={trigger}>{icon}</PopoverTrigger>
+      <PopoverContent align="end" aria-label={intl.formatMessage({ id: "damage.hit.details" })} className={contentClassName}>{content}</PopoverContent>
     </Popover>
+  ) : (
+    <Tooltip>
+      <TooltipTrigger render={trigger}>{icon}</TooltipTrigger>
+      <TooltipContent side="right" align="start" className={contentClassName}>{content}</TooltipContent>
+    </Tooltip>
   )
 }
