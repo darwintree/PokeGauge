@@ -93,15 +93,15 @@ export function AbilityTrack({
                     {[option.summary, disclosureLabel].filter(Boolean).join("\n")}
                   </span>
                 )}
-                className={disabled ? "track-option--neutral-disabled px-2" : "px-2"}
+                className={disabled ? "track-option--neutral-disabled relative px-2" : "relative px-2"}
               >
                 <span>{option.label}</span>
                 {unsupported && (
                   /* State also lives in the accessible name, never color alone. */
-                  <span aria-hidden className="size-2 rounded-full border border-ink bg-destructive" />
+                  <span aria-hidden className="absolute top-0.5 right-0.5 size-2 rounded-full border border-ink bg-destructive" />
                 )}
                 {assumedFamily && (
-                  <span aria-hidden className="size-2 rounded-full border border-ink bg-signal-green" />
+                  <span aria-hidden className="absolute top-0.5 right-0.5 size-2 rounded-full border border-ink bg-signal-green" />
                 )}
               </TrackOption>
             )
