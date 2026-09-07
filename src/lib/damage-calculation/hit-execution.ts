@@ -4,12 +4,12 @@ import {
   sequenceKOProbabilities,
   type Hit,
   type HitComposition,
-  type ResolutionState,
+  type ResolutionOutcome,
   type ValueRange,
 } from "@/lib/damage-distribution/hit-composition"
 
-import { applyCalcStatChanges, calculateHitMatrixVariants } from "./calc-engine"
-import type { CompiledDamagePoint, DamageFormulaBranch } from "./damage-kernel"
+import { applyCalcStatChanges, calculateHitMatrixVariants, hasFullHpProtection } from "./calc-engine"
+import type { CompiledDamagePoint, DamageFormulaBranch } from "./damage-input"
 import { branchEffectivePower } from "./formula-projection"
 import type { CalculableScenario } from "./scenario-compiler"
 
@@ -27,6 +27,8 @@ function hitFormula(
     ...(scenario.berry && !consumesBerry
       ? { finalModifier: critical ? scenario.berry.criticalFinalModifier : scenario.berry.normalFinalModifier }
       : {}),
+    ...(index > 0 && branch.afterDamageFinalModifier !== undefined
+      ? { finalModifier: branch.afterDamageFinalModifier } : {}),
   }
 }
 
@@ -99,18 +101,30 @@ export function projectHitComposition(
   }
 }
 
-export function evaluateExecutionPoint(scenario: CalculableScenario, point: CompiledDamagePoint) {
+export function evaluateExecutionPoint(
+  scenario: CalculableScenario,
+  point: CompiledDamagePoint = scenario.calculation.low,
+) {
   const composition = compileHitComposition(scenario, point)
   const { hitProbability, criticalHitProbability } = scenario.probability
   const first = resolveHitComposition(composition, hitProbability, criticalHitProbability)
-  const nextUses = new Map<number, typeof first>()
-  function afterOutcome(outcome: ResolutionState) {
-    const key = Number(outcome.berryConsumed) + 2 * outcome.statChanges
+  const initialHp = point.calc.defender.currentHp ?? point.calc.defender.exactStats.hp
+  const trackDamage = hasFullHpProtection(point.calc)
+  const nextUses = new Map<string, typeof first>()
+  function afterOutcome(outcome: ResolutionOutcome) {
+    const currentHp = trackDamage
+      ? Math.max(1, initialHp - outcome.damage) : initialHp
+    if (!outcome.berryConsumed && outcome.statChanges === 0 && currentHp === initialHp) return first
+    const key = `${currentHp}:${Number(outcome.berryConsumed)}:${outcome.statChanges}`
     const cached = nextUses.get(key)
     if (cached) return cached
-    const nextPoint = scenario.statChange && outcome.statChanges > 0
-      ? { ...point, calc: applyCalcStatChanges(point.calc, scenario.statChange, outcome.statChanges) } : point
-    const next = key === 0 ? first : resolveHitComposition(
+    const calc = scenario.statChange && outcome.statChanges > 0
+      ? applyCalcStatChanges(point.calc, scenario.statChange, outcome.statChanges) : point.calc
+    const nextPoint = {
+      ...point,
+      calc: { ...calc, defender: { ...calc.defender, currentHp } },
+    }
+    const next = resolveHitComposition(
       compileHitComposition(scenario, nextPoint, outcome.berryConsumed),
       hitProbability, criticalHitProbability, outcome.berryConsumed,
     )

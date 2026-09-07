@@ -10,18 +10,16 @@ export type {
 } from "./calc-engine"
 export { compileAbilityEffect } from "./ability"
 export {
-  calculateDamageRolls,
   applyModifier,
   chainModifiers,
   NEUTRAL_MODIFIER,
-} from "./damage-kernel"
+} from "./damage-input"
 export type {
   CompiledDamageInput,
   CompiledDamagePoint,
   DamageFormulaBranch,
-  DamageKernelResult,
-  DamageRollPoint,
-} from "./damage-kernel"
+} from "./damage-input"
+export { evaluateExecutionPoint } from "./hit-execution"
 export { calculationIdentity, compileScenario } from "./scenario-compiler"
 export type {
   CalculableScenario,

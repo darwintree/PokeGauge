@@ -67,7 +67,7 @@ import {
 import type { MoveCategory } from "@/lib/catalog"
 import type { PokemonType } from "@/lib/pokemon"
 
-import { chainModifiers, NEUTRAL_MODIFIER } from "./damage-kernel"
+import { chainModifiers, NEUTRAL_MODIFIER } from "./damage-input"
 import type { TrackSelectionActivation } from "./scenario-compiler"
 import type { Weather } from "./weather"
 

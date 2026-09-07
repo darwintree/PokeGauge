@@ -15,7 +15,7 @@ import {
   CALC_GEN,
   NEUTRAL_MODIFIER,
   VGC_LEVEL,
-  calculateDamageRolls,
+  evaluateExecutionPoint,
   compileScenario,
   type CalculableScenario,
   type RawScenario,
@@ -349,24 +349,24 @@ describe("@smogon/calc oracle", () => {
       },
     })
     const unawareField = new Field()
-    const unawareRolls = calculateDamageRolls(unawareLocal.calculation).low
-    expect(unawareRolls.normal).toEqual(
+    const unawareRolls = evaluateExecutionPoint(unawareLocal)
+    expect([unawareRolls.normal!.min, unawareRolls.normal!.max]).toEqual(
       calculate(
         CALC_GEN,
         unawareAttacker,
         boostedSnorlax,
         new Move(CALC_GEN, "Moonblast"),
         unawareField,
-      ).damage,
+      ).range(),
     )
-    expect(unawareRolls.critical).toEqual(
+    expect([unawareRolls.critical!.min, unawareRolls.critical!.max]).toEqual(
       calculate(
         CALC_GEN,
         unawareAttacker,
         boostedSnorlax,
         new Move(CALC_GEN, "Moonblast", { isCrit: true }),
         unawareField,
-      ).damage,
+      ).range(),
     )
 
     const infiltratorAttacker = new Pokemon(CALC_GEN, "Crobat", {
@@ -400,24 +400,24 @@ describe("@smogon/calc oracle", () => {
       },
     })
     const infiltratorField = new Field({ defenderSide: { isReflect: true } })
-    const infiltratorRolls = calculateDamageRolls(infiltratorLocal.calculation).low
-    expect(infiltratorRolls.normal).toEqual(
+    const infiltratorRolls = evaluateExecutionPoint(infiltratorLocal)
+    expect([infiltratorRolls.normal!.min, infiltratorRolls.normal!.max]).toEqual(
       calculate(
         CALC_GEN,
         infiltratorAttacker,
         snorlax,
         new Move(CALC_GEN, "Brave Bird"),
         infiltratorField,
-      ).damage,
+      ).range(),
     )
-    expect(infiltratorRolls.critical).toEqual(
+    expect([infiltratorRolls.critical!.min, infiltratorRolls.critical!.max]).toEqual(
       calculate(
         CALC_GEN,
         infiltratorAttacker,
         snorlax,
         new Move(CALC_GEN, "Brave Bird", { isCrit: true }),
         infiltratorField,
-      ).damage,
+      ).range(),
     )
   })
 })

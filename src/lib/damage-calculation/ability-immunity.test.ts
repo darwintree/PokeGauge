@@ -16,7 +16,7 @@ import {
   WATER_ABSORB_ABILITY_ID,
 } from "@/lib/ability"
 import {
-  calculateDamageRolls,
+  evaluateExecutionPoint,
   compileScenario,
   projectMoveMechanics,
   type CalculableScenario,
@@ -24,11 +24,6 @@ import {
   type ScenarioTrack,
 } from "@/lib/damage-calculation"
 import { listResources } from "@/lib/resources"
-import {
-  calculateKOProbability,
-  convolveAtomicDamageDistributions,
-  createAtomicDamageDistribution,
-} from "@/lib/damage-distribution"
 
 const MOVE = {
   id: "ability-immunity",
@@ -99,13 +94,13 @@ describe("ability immunity gates", () => {
       snapshot: { ...MOVE, moveId, power },
     })
     const branch = outcome.calculation.low.normal!
-    const rolls = calculateDamageRolls(outcome.calculation).low
+    const execution = evaluateExecutionPoint(outcome)
 
     expect(outcome.kind).toBe("calculable")
     expect(branch.damageNegated).toBe(true)
     expect(branch.typeEffectivenessModifier).toBeGreaterThan(0)
-    expect(rolls.normal).toEqual(Array(16).fill(0))
-    expect(rolls.critical).toEqual(Array(16).fill(0))
+    expect(execution.normal).toEqual({ min: 0, max: 0 })
+    expect(execution.critical).toEqual({ min: 0, max: 0 })
     expect(projectMoveMechanics(outcome).normal?.effectivePower).toBe(0)
     expect(outcome.hitFact).toBe(100)
     expect(outcome.probability.hitProbability).toBe(1)
@@ -131,15 +126,8 @@ describe("ability immunity gates", () => {
       defenderAbilityId: FLASH_FIRE_ABILITY_ID,
       snapshot: { ...MOVE, moveId: 52, power: 95 },
     })
-    const rolls = calculateDamageRolls(outcome.calculation).low
-    const atomic = createAtomicDamageDistribution({
-      ...outcome.probability,
-      normalDamageRolls: rolls.normal,
-      criticalDamageRolls: rolls.critical,
-    })
-
-    expect(calculateKOProbability(convolveAtomicDamageDistributions([atomic]), 200)).toBe(0)
-    expect(calculateKOProbability(convolveAtomicDamageDistributions([atomic, atomic]), 200)).toBe(0)
+    const execution = evaluateExecutionPoint(outcome)
+    expect(execution.ko).toEqual({ ohko: 0, twoHit: 0 })
     expect(outcome.hitFact).toBe(100)
     expect(projectMoveMechanics(outcome).normal?.effectivePower).toBe(0)
   })

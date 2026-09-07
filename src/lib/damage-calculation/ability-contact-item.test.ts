@@ -14,7 +14,7 @@ import { listResources } from "@/lib/resources"
 import {
   CALC_GEN,
   VGC_LEVEL,
-  calculateDamageRolls,
+  evaluateExecutionPoint,
   chainModifiers,
   compileAbilityEffect,
   compileScenario,
@@ -225,8 +225,9 @@ describe("Fluffy and Long Reach", () => {
         defense: { hp: defender.maxHP(), def: defender.rawStats.def },
       },
     })
-    expect(calculateDamageRolls(bodySlam.calculation).low.normal).toEqual(
-      calculate(CALC_GEN, machamp, defender, new Move(CALC_GEN, "Body Slam"), field).damage,
+    const bodySlamDamage = evaluateExecutionPoint(bodySlam).normal!
+    expect([bodySlamDamage.min, bodySlamDamage.max]).toEqual(
+      calculate(CALC_GEN, machamp, defender, new Move(CALC_GEN, "Body Slam"), field).range(),
     )
 
     const flamethrower = calculable({
@@ -239,8 +240,9 @@ describe("Fluffy and Long Reach", () => {
         defense: { hp: defender.maxHP(), def: defender.rawStats.spd },
       },
     })
-    expect(calculateDamageRolls(flamethrower.calculation).low.normal).toEqual(
-      calculate(CALC_GEN, charizard, defender, new Move(CALC_GEN, "Flamethrower"), field).damage,
+    const flamethrowerDamage = evaluateExecutionPoint(flamethrower).normal!
+    expect([flamethrowerDamage.min, flamethrowerDamage.max]).toEqual(
+      calculate(CALC_GEN, charizard, defender, new Move(CALC_GEN, "Flamethrower"), field).range(),
     )
 
     const firePunch = calculable({
@@ -253,8 +255,9 @@ describe("Fluffy and Long Reach", () => {
         defense: { hp: defender.maxHP(), def: defender.rawStats.def },
       },
     })
-    expect(calculateDamageRolls(firePunch.calculation).low.normal).toEqual(
-      calculate(CALC_GEN, machamp, defender, new Move(CALC_GEN, "Fire Punch"), field).damage,
+    const firePunchDamage = evaluateExecutionPoint(firePunch).normal!
+    expect([firePunchDamage.min, firePunchDamage.max]).toEqual(
+      calculate(CALC_GEN, machamp, defender, new Move(CALC_GEN, "Fire Punch"), field).range(),
     )
 
     const longReachBodySlam = calculable({
@@ -269,8 +272,9 @@ describe("Fluffy and Long Reach", () => {
       },
     })
     expect(sourceState(longReachBodySlam, "attacker-ability")).toBe("active")
-    expect(calculateDamageRolls(longReachBodySlam.calculation).low.normal).toEqual(
-      calculate(CALC_GEN, decidueye, defender, new Move(CALC_GEN, "Body Slam"), field).damage,
+    const longReachBodySlamDamage = evaluateExecutionPoint(longReachBodySlam).normal!
+    expect([longReachBodySlamDamage.min, longReachBodySlamDamage.max]).toEqual(
+      calculate(CALC_GEN, decidueye, defender, new Move(CALC_GEN, "Body Slam"), field).range(),
     )
   })
 })

@@ -4,7 +4,7 @@ import { getCatalogShell } from "@/lib/catalog"
 import { defaultTrackState, runScenarioPipeline } from "@/lib/scenario"
 import { createMoveSnapshot, editMoveSnapshot, moveHitProfile } from "@/lib/move"
 import { getMoveById, listResources } from "@/lib/resources"
-import { compileScenario, type RawScenario } from "./scenario-compiler"
+import { calculationIdentity, compileScenario, type RawScenario } from "./scenario-compiler"
 import { compileHitComposition, evaluateExecutionPoint, projectHitComposition } from "./hit-execution"
 import { projectMoveMechanics } from "./mechanics-projection"
 
@@ -33,6 +33,88 @@ function scenario(moveId: number, overrides: Partial<RawScenario> = {}) {
 
 beforeAll(async () => {
   await Promise.all([listResources("pokemon", "en"), listResources("move", "en"), listResources("ability", "en")])
+})
+
+describe("initial full-HP conditions across Move Executions", () => {
+  it.each([136, 231])("carries damage through two single uses just as two hits for Ability %i", (defenderAbilityId) => {
+    const common: Partial<RawScenario> = {
+      defenderId: 149,
+      defenderAbilityId,
+      probabilityMode: "classic",
+      lowOutcome: { offense: 150, defense: { hp: 34, def: 100 } },
+    }
+    const double = scenario(458, common) // Double Hit: two Normal-type, 35-power hits.
+    const single = scenario(1, {
+      ...common,
+      snapshot: createMoveSnapshot({ id: 1, power: 35, accuracy: 100, isSpread: false }, "pound"),
+    })
+    const doubleResult = evaluateExecutionPoint(double, double.calculation.low)
+    const singleResult = evaluateExecutionPoint(single, single.calculation.low)
+
+    expect(singleResult.normal).toEqual({ min: 10, max: 12 })
+    expect(doubleResult.normal).toEqual({ min: 31, max: 37 })
+    expect(doubleResult.ko.ohko).toBeGreaterThan(0)
+    expect(doubleResult.ko.ohko).toBeLessThan(1)
+    expect(singleResult.ko.ohko).toBe(0)
+    expect(singleResult.ko.twoHit).toBeCloseTo(doubleResult.ko.ohko, 12)
+  })
+
+  it("keeps full-HP protection after a miss and does not reset it after damage", () => {
+    const compiled = scenario(1, {
+      defenderId: 149, defenderAbilityId: 136,
+      snapshot: createMoveSnapshot({ id: 1, power: 35, accuracy: 50, isSpread: false }, "pound"),
+      lowOutcome: { offense: 150, defense: { hp: 20, def: 100 } },
+    })
+    compiled.probability.criticalHitProbability = 0
+    // A first-use miss leaves the second hit reduced to 10–12, below 20 HP.
+    // Only the two-hit path KOs: 0.5 × 0.5.
+    expect(evaluateExecutionPoint(compiled).ko).toEqual({ ohko: 0, twoHit: 0.25 })
+  })
+
+  it("carries damage, Berry consumption, and a chance-based defense drop together", () => {
+    const compiled = scenario(242, {
+      defenderId: 65, defenderAbilityId: 136, defenderItemId: 175,
+      snapshot: createMoveSnapshot({ id: 242, power: 80, accuracy: 50, isSpread: false }, "crunch"),
+      lowOutcome: { offense: 150, defense: { hp: 140, def: 100 } },
+    })
+    compiled.probability.criticalHitProbability = 0
+    // First hit: 22–27 after Multiscale and Colbur Berry. Second hit without
+    // either defense: 90–108, or 138–164 after Crunch's drop. Only the drop path KOs.
+    expect(evaluateExecutionPoint(compiled).ko.ohko).toBe(0)
+    expect(evaluateExecutionPoint(compiled).ko.twoHit).toBeCloseTo(0.5 * 0.2 * 0.5, 12)
+  })
+
+  it("retains Tera Shell for the first entire execution, but not the second", () => {
+    const compiled = scenario(458, {
+      defenderId: 149, defenderAbilityId: 305, probabilityMode: "classic",
+      lowOutcome: { offense: 150, defense: { hp: 55, def: 100 } },
+    })
+    const result = evaluateExecutionPoint(compiled)
+    expect(result.normal).toEqual({ min: 20, max: 24 })
+    expect(result.ko).toEqual({ ohko: 0, twoHit: 1 })
+  })
+
+  it("does not merge initial-only protection with an otherwise equal persistent reduction", () => {
+    const common: Partial<RawScenario> = {
+      defenderId: 149, probabilityMode: "classic",
+      lowOutcome: { offense: 150, defense: { hp: 40, def: 100 } },
+    }
+    const multiscale = scenario(33, { ...common, defenderAbilityId: 136 })
+    const fluffy = scenario(33, { ...common, defenderAbilityId: 218 })
+    expect(evaluateExecutionPoint(multiscale).normal).toEqual(evaluateExecutionPoint(fluffy).normal)
+    expect(calculationIdentity(multiscale)).not.toBe(calculationIdentity(fluffy))
+    expect(evaluateExecutionPoint(multiscale).ko.twoHit).toBeGreaterThan(evaluateExecutionPoint(fluffy).ko.twoHit)
+  })
+
+  it("projects full-HP damage reduction only on the first damaging hit", () => {
+    const compiled = scenario(458, { defenderId: 149, defenderAbilityId: 136, probabilityMode: "classic" })
+    const result = evaluateExecutionPoint(compiled)
+    expect(result.normalPower).toEqual({ min: 52, max: 52 })
+    expect(projectMoveMechanics(compiled, result).hits).toEqual([
+      { basePower: 35, normal: 17, critical: 26 },
+      { basePower: 35, normal: 35, critical: 52 },
+    ])
+  })
 })
 
 describe("calc Hit execution adapter", () => {

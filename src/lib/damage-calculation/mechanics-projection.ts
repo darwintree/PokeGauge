@@ -1,6 +1,6 @@
 import type { ValueRange } from "@/lib/damage-distribution/hit-composition"
 
-import type { DamageFormulaBranch } from "./damage-kernel"
+import type { DamageFormulaBranch } from "./damage-input"
 import { branchEffectivePower, branchPhases, type MechanicsPhase } from "./formula-projection"
 import { compileHitComposition, projectHitComposition, type ExecutionProjection } from "./hit-execution"
 import type { CalculableScenario, HitFact } from "./scenario-compiler"

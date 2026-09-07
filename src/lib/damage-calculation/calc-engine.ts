@@ -64,6 +64,11 @@ export type CalcContext = {
   field: CalcFieldContext
 }
 
+/** These defenses depend on the HP entering a move use; calc handles their distinct hit rules. */
+export function hasFullHpProtection(context: CalcContext): boolean {
+  return ["Multiscale", "Shadow Shield", "Tera Shell"].includes(context.defender.abilityCalcName ?? "")
+}
+
 /**
  * @smogon/calc at level 50 with IV 31, EV 0, Serious nature computes
  * non-HP stat = base + 20 and HP = base + 75. Inverting lets the adapter feed
@@ -207,41 +212,4 @@ function calcField(context: CalcFieldContext): Field {
       ...(context.defenderIsSwitchingOut ? { isSwitching: "out" as const } : {}),
     },
   })
-}
-
-/** Normalize a calc damage result into the 16-roll array for one hit. */
-export function rollsFromCalcDamage(
-  damage: number | number[] | [number, number] | number[][],
-): number[] {
-  if (typeof damage === "number") return Array(16).fill(damage)
-  if (damage.length === 0) return Array(16).fill(0)
-  if (Array.isArray(damage[0])) {
-    // Multi-hit matrix: use the first hit's rolls (single-hit product contract).
-    return (damage[0] as number[]).slice()
-  }
-  return (damage as number[]).slice()
-}
-
-/** Compute the 16 normal rolls via @smogon/calc. */
-export function calculateNormalRolls(context: CalcContext): number[] {
-  const result = calculate(
-    CALC_GENERATION,
-    calcPokemon(context.attacker),
-    calcPokemon(context.defender),
-    calcMove({ ...context.move, isCrit: false }),
-    calcField(context.field),
-  )
-  return rollsFromCalcDamage(result.damage)
-}
-
-/** Compute the 16 critical rolls via @smogon/calc. */
-export function calculateCriticalRolls(context: CalcContext): number[] {
-  const result = calculate(
-    CALC_GENERATION,
-    calcPokemon(context.attacker),
-    calcPokemon(context.defender),
-    calcMove({ ...context.move, isCrit: true }),
-    calcField(context.field),
-  )
-  return rollsFromCalcDamage(result.damage)
 }

@@ -21,7 +21,7 @@ import {
   NO_ABILITY_ID,
 } from "@/lib/ability"
 import { CALC_GEN, VGC_LEVEL } from "@/lib/damage-calculation"
-import * as damageKernel from "@/lib/damage-calculation"
+import * as damageCalculation from "@/lib/damage-calculation"
 import { defenderStatValues, offenseStatValue } from "@/lib/stat-calculation"
 import { getAttackerStatSetups, getDefenderSetups } from "@/lib/stat-calculation"
 import {
@@ -177,8 +177,8 @@ describe("ability compiler", () => {
       defenderAbilityId: NO_ABILITY_ID,
     })
 
-    expect(damageKernel.calculateDamageRolls(none.calculation)).toEqual(
-      damageKernel.calculateDamageRolls(ordinary.calculation),
+    expect(damageCalculation.evaluateExecutionPoint(none)).toEqual(
+      damageCalculation.evaluateExecutionPoint(ordinary),
     )
     expect(none.sources).toEqual(expect.arrayContaining([
       { track: "attacker-ability", optionId: String(NO_ABILITY_ID), state: "neutral" },
@@ -206,7 +206,7 @@ describe("ability compiler", () => {
       attackerAbilityId: ADAPTABILITY_ABILITY_ID,
       lowOutcome: exactPoint("physical"),
     })
-    const rolls = damageKernel.calculateDamageRolls(outcome.calculation).low
+    const execution = damageCalculation.evaluateExecutionPoint(outcome)
     const attacker = new Pokemon(CALC_GEN, "Eevee", {
       level: VGC_LEVEL,
       ability: "Adaptability",
@@ -220,17 +220,17 @@ describe("ability compiler", () => {
     })
     const field = new Field()
 
-    expect(rolls.normal).toEqual(
-      calculate(CALC_GEN, attacker, defender, new Move(CALC_GEN, "Tackle"), field).damage,
+    expect([execution.normal!.min, execution.normal!.max]).toEqual(
+      calculate(CALC_GEN, attacker, defender, new Move(CALC_GEN, "Tackle"), field).range(),
     )
-    expect(rolls.critical).toEqual(
+    expect([execution.critical!.min, execution.critical!.max]).toEqual(
       calculate(
         CALC_GEN,
         attacker,
         defender,
         new Move(CALC_GEN, "Tackle", { isCrit: true }),
         field,
-      ).damage,
+      ).range(),
     )
   })
 })
@@ -291,7 +291,6 @@ describe("ability scenario product and provenance", () => {
     state.defensePresetIds = ["standard-bulk"]
     state.defenderStages = [0]
     state.defenderAbilityIds = [17]
-    const calculateRolls = damageKernel.calculateDamageRolls
     const kernel = vi.spyOn(hitExecution, "evaluateExecutionPoint")
 
     const result = runScenarioPipeline(catalog, state)
@@ -310,7 +309,7 @@ describe("ability scenario product and provenance", () => {
       ([input]) => input.calculation.low.normal?.stabModifier === 8192,
     )?.[0]
     if (!adaptabilityInput) throw new Error("Expected Adaptability kernel input")
-    const rolls = calculateRolls(adaptabilityInput.calculation).low
+    const execution = damageCalculation.evaluateExecutionPoint(adaptabilityInput)
     const offense = getAttackerStatSetups("special")["neutral-max"]
     const defense = getDefenderSetups("special")["standard-bulk"]
     const attacker = new Pokemon(CALC_GEN, "Eevee", {
@@ -326,23 +325,23 @@ describe("ability scenario product and provenance", () => {
     })
     const field = new Field()
 
-    expect(rolls.normal).toEqual(
+    expect([execution.normal!.min, execution.normal!.max]).toEqual(
       calculate(
         CALC_GEN,
         attacker,
         defender,
         new Move(CALC_GEN, "Revelation Dance"),
         field,
-      ).damage,
+      ).range(),
     )
-    expect(rolls.critical).toEqual(
+    expect([execution.critical!.min, execution.critical!.max]).toEqual(
       calculate(
         CALC_GEN,
         attacker,
         defender,
         new Move(CALC_GEN, "Revelation Dance", { isCrit: true }),
         field,
-      ).damage,
+      ).range(),
     )
     kernel.mockRestore()
   })

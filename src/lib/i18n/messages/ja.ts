@@ -146,7 +146,7 @@ export const jaMessages: Record<string, string> = {
     "track.item.formTrigger.cancel": "キャンセル",
     "track.item.warning.utility-umbrella": "晴れ・雨による通常のほのお・みず技のダメージ補正だけに対応しています。その他の天候効果には未対応です。",
     "track.ability.unsupported": "効果は未対応",
-    "track.ability.assumed.fullHp": "HP満タンとして計算",
+    "track.ability.assumed.fullHp": "初期HPは満タン",
     "track.ability.assumed.lowHp": "HP⅓以下として計算",
     "track.ability.assumed.status": "状態異常として計算",
     "track.ability.assumed.targetPoisoned": "相手がどく／もうどくとして計算",

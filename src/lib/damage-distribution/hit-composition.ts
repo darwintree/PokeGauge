@@ -143,6 +143,10 @@ export function sequenceKOProbabilities(
   const queries = new Map<readonly ResolutionOutcome[], (hp: number) => number>()
   let twoHit = 0
   for (const outcome of first) {
+    if (outcome.damage >= hp) {
+      twoHit += outcome.probability
+      continue
+    }
     const next = nextUse(outcome)
     let nextKO = queries.get(next)
     if (!nextKO) {

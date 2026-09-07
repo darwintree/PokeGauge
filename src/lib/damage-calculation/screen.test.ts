@@ -20,7 +20,7 @@ import {
 } from "@/lib/scenario"
 
 import { CALC_GEN, VGC_LEVEL } from "@/lib/damage-calculation"
-import * as damageKernel from "@/lib/damage-calculation"
+import * as damageCalculation from "@/lib/damage-calculation"
 import {
   defenderStatValuesForPokemon,
   offenseStatValueForPokemon,
@@ -120,7 +120,7 @@ function screenSource(outcome: CalculableScenario) {
   return outcome.sources.find((source) => source.track === "screen")
 }
 
-function oracleRolls(testCase: ScreenCase, critical: boolean) {
+function oracleRange(testCase: ScreenCase, critical: boolean) {
   const move = getMoveById(testCase.moveId)
   if (!move || move.category === "status") throw new Error("Expected damage move")
   const offense = getAttackerStatSetups(move.category)["neutral-max"]
@@ -149,7 +149,7 @@ function oracleRolls(testCase: ScreenCase, critical: boolean) {
     defender,
     new Move(CALC_GEN, move.calcMoveName, { isCrit: critical }),
     field,
-  ).damage
+  ).range()
 }
 
 beforeAll(async () => {
@@ -197,8 +197,9 @@ describe("screen compiler", () => {
       optionId: "reflect",
       state: "inactive",
     })
-    expect(damageKernel.calculateDamageRolls(outcome.calculation).low.critical).toEqual(
-      oracleRolls(testCase, true),
+    const result = damageCalculation.evaluateExecutionPoint(outcome)
+    expect([result.critical!.min, result.critical!.max]).toEqual(
+      oracleRange(testCase, true),
     )
   })
 
@@ -225,13 +226,13 @@ describe("screen compiler", () => {
     { attackerId: 133, attackerName: "Eevee", moveId: 706, screen: "walls" },
     { attackerId: 10251, attackerName: "Tauros-Paldea-Blaze", moveId: 873, screen: "walls" },
   ] as const)(
-    "matches all @smogon/calc normal and critical rolls for move $moveId under $screen",
+    "matches @smogon/calc normal and critical ranges for move $moveId under $screen",
     (testCase) => {
       const outcome = calculable(testCase)
-      const rolls = damageKernel.calculateDamageRolls(outcome.calculation).low
+      const execution = damageCalculation.evaluateExecutionPoint(outcome)
 
-      expect(rolls.normal).toEqual(oracleRolls(testCase, false))
-      expect(rolls.critical).toEqual(oracleRolls(testCase, true))
+      expect([execution.normal!.min, execution.normal!.max]).toEqual(oracleRange(testCase, false))
+      expect([execution.critical!.min, execution.critical!.max]).toEqual(oracleRange(testCase, true))
     },
   )
 })

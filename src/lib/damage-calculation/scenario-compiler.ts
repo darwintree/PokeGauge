@@ -5,10 +5,12 @@ import {
   CLOUD_NINE_ABILITY_ID,
   KLUTZ_ABILITY_ID,
   LEVITATE_ABILITY_ID,
+  MULTISCALE_ABILITY_ID,
   NO_ABILITY_ID,
   SCRAPPY_ABILITY_ID,
   SKILL_LINK_ABILITY_ID,
   SHEER_FORCE_ABILITY_ID,
+  SHADOW_SHIELD_ABILITY_ID,
   PARENTAL_BOND_ABILITY_ID,
   TERA_SHELL_ABILITY_ID,
   UNNERVE_ABILITY_ID,
@@ -53,6 +55,7 @@ import { allStatValues } from "@/lib/stat-calculation"
 
 import { calcRecognizesAbility, calcRecognizesItem } from "./calc-recognition"
 import type { CalcContext, CalcPokemonContext } from "./calc-engine"
+import { hasFullHpProtection } from "./calc-engine"
 import { compileAbilityEffect } from "./ability"
 import {
   type CompiledDamageInput,
@@ -60,7 +63,7 @@ import {
   applyModifier,
   chainModifiers,
   NEUTRAL_MODIFIER,
-} from "./damage-kernel"
+} from "./damage-input"
 import { resolveAbilityScenarioMoveType } from "./scenario-move-type"
 import { compileScreenEffect, type Screen } from "./screen"
 import {
@@ -195,7 +198,8 @@ export function calculationIdentity(outcome: CalculableScenario): string {
     outcome.execution,
     outcome.berry,
     outcome.statChange,
-    ...(outcome.statChange ? [outcome.calculation.low.calc, outcome.calculation.high?.calc] : []),
+    ...(outcome.statChange || hasFullHpProtection(outcome.calculation.low.calc)
+      ? [outcome.calculation.low.calc, outcome.calculation.high?.calc] : []),
   ])
 }
 
@@ -401,6 +405,7 @@ type BranchContext = {
   attackModifier: number
   defenseModifier: number
   finalModifiers: readonly number[]
+  afterDamageFinalModifiers?: readonly number[]
   criticalAttackerFinalModifier: number
   spread: boolean
   weatherModifier: number
@@ -416,6 +421,10 @@ function compileBranch(
   context: BranchContext,
   critical: boolean,
 ): DamageFormulaBranch {
+  const finalModifiers = [
+    critical ? NEUTRAL_MODIFIER : context.screenModifier,
+    critical ? context.criticalAttackerFinalModifier : NEUTRAL_MODIFIER,
+  ]
   return {
     damageNegated: context.damageNegated,
     power: context.power,
@@ -436,10 +445,12 @@ function compileBranch(
     stabModifier: context.stabModifier,
     typeEffectivenessModifier: context.typeEffectivenessModifier,
     finalModifier: chainModifiers([
-      critical ? NEUTRAL_MODIFIER : context.screenModifier,
-      critical ? context.criticalAttackerFinalModifier : NEUTRAL_MODIFIER,
+      ...finalModifiers,
       ...context.finalModifiers,
     ]),
+    ...(context.afterDamageFinalModifiers ? {
+      afterDamageFinalModifier: chainModifiers([...finalModifiers, ...context.afterDamageFinalModifiers]),
+    } : {}),
   }
 }
 
@@ -1024,6 +1035,13 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       attackerItem.finalModifier,
       defenderItem?.finalModifier ?? NEUTRAL_MODIFIER,
     ],
+    ...([MULTISCALE_ABILITY_ID, SHADOW_SHIELD_ABILITY_ID].includes(raw.defenderAbilityId) ? {
+      afterDamageFinalModifiers: [
+        attackerItem.finalModifier,
+        defenderItemRaw?.descriptor?.effect.kind === "resistance-berry"
+          ? NEUTRAL_MODIFIER : defenderItem?.finalModifier ?? NEUTRAL_MODIFIER,
+      ],
+    } : {}),
     criticalAttackerFinalModifier: ability.criticalFinalModifier,
     spread:
       (move.isSpread || terrain.makesSpread) &&

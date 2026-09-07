@@ -18,7 +18,7 @@ import {
   type CalculableScenario,
   type RawScenario,
 } from "@/lib/damage-calculation"
-import * as damageKernel from "@/lib/damage-calculation"
+import * as damageCalculation from "@/lib/damage-calculation"
 import { createMoveSnapshot, type MoveSnapshot } from "@/lib/move"
 import { getMoveById, listResources } from "@/lib/resources"
 import {
@@ -300,7 +300,7 @@ describe("reviewed weather compiler", () => {
     const sandForce = calculable(311, "sand", { attackerAbilityId: SAND_FORCE_ABILITY_ID })
     expect(sandForce.move.type).toBe("rock")
     expect(normalBranch(sandForce).basePowerModifier).toBe(
-      damageKernel.chainModifiers([5325, 8192]),
+      damageCalculation.chainModifiers([5325, 8192]),
     )
     expect(weatherSource(sandForce)?.state).toBe("active")
   })
@@ -329,7 +329,7 @@ describe("reviewed weather compiler", () => {
     [311, "Weather Ball", "sand", "Sand"],
     [311, "Weather Ball", "snow", "Snow"],
   ] as const)(
-    "matches all @smogon/calc normal and critical rolls for %s in %s",
+    "matches @smogon/calc normal and critical ranges for %s in %s",
     (moveId, moveName, weather, calcWeather) => {
       const move = getMoveById(moveId)
       if (!move || move.category === "status") throw new Error("Expected damage move")
@@ -337,7 +337,7 @@ describe("reviewed weather compiler", () => {
       const offense = getAttackerStatSetups(category)["neutral-max"]
       const defense = getDefenderSetups(category)["standard-bulk"]
       const outcome = calculable(moveId, weather)
-      const rolls = damageKernel.calculateDamageRolls(outcome.calculation).low
+      const execution = damageCalculation.evaluateExecutionPoint(outcome)
       const attacker = new Pokemon(CALC_GEN, ATTACKER[category].name, {
         level: VGC_LEVEL,
         nature: offense.nature,
@@ -350,17 +350,17 @@ describe("reviewed weather compiler", () => {
       })
       const field = new Field({ weather: calcWeather })
 
-      expect(rolls.normal).toEqual(
-        calculate(CALC_GEN, attacker, defender, new Move(CALC_GEN, moveName), field).damage,
+      expect([execution.normal!.min, execution.normal!.max]).toEqual(
+        calculate(CALC_GEN, attacker, defender, new Move(CALC_GEN, moveName), field).range(),
       )
-      expect(rolls.critical).toEqual(
+      expect([execution.critical!.min, execution.critical!.max]).toEqual(
         calculate(
           CALC_GEN,
           attacker,
           defender,
           new Move(CALC_GEN, moveName, { isCrit: true }),
           field,
-        ).damage,
+        ).range(),
       )
     },
   )

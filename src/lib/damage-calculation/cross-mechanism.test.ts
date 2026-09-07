@@ -15,7 +15,7 @@ import {
 
 import { ADAPTABILITY_ABILITY_ID, FIRE_MANE_ABILITY_ID } from "@/lib/ability"
 import { CALC_GEN, VGC_LEVEL } from "@/lib/damage-calculation"
-import * as damageKernel from "@/lib/damage-calculation"
+import * as damageCalculation from "@/lib/damage-calculation"
 import { getAttackerStatSetups, getDefenderSetups } from "@/lib/stat-calculation"
 
 const ATTACKER_ID = 342
@@ -589,18 +589,18 @@ describe("cross-mechanism acceptance", () => {
       weather: "Rain",
       defenderSide: { isReflect: true },
     })
-    const rolls = damageKernel.calculateDamageRolls(input).low
-    expect(rolls.normal).toEqual(
-      calculate(CALC_GEN, attacker, defender, new Move(CALC_GEN, "Crabhammer"), field).damage,
+    const execution = damageCalculation.evaluateExecutionPoint(kernel.mock.calls[0][0])
+    expect([execution.normal!.min, execution.normal!.max]).toEqual(
+      calculate(CALC_GEN, attacker, defender, new Move(CALC_GEN, "Crabhammer"), field).range(),
     )
-    expect(rolls.critical).toEqual(
+    expect([execution.critical!.min, execution.critical!.max]).toEqual(
       calculate(
         CALC_GEN,
         attacker,
         defender,
         new Move(CALC_GEN, "Crabhammer", { isCrit: true }),
         field,
-      ).damage,
+      ).range(),
     )
 
     kernel.mockClear()

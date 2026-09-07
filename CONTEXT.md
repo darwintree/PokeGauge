@@ -59,7 +59,7 @@ Choice Track 中作为默认比较基准的 Selection。
 _Avoid_: Inactive Selection, Unsupported Selection
 
 **Assumed-Satisfied Ability Selection（假设条件已满足的特性选择）**:
-对缺少战斗条件输入（如 HP%、异常状态）的 Ability，选中该 Ability 即表示该条件在本 Scenario 中已满足；Track 可用独立披露提示这一假设，但 Track Selection Activation 仍只报告机械效果是否贡献。
+对缺少战斗条件输入（如 HP%、异常状态）的 Ability，选中该 Ability 即表示该条件在本 Scenario 的初始状态中已满足；已支持的后续状态变化不会重新施加初始假设。Track 可用独立披露提示这一假设，但 Track Selection Activation 仍只报告机械效果是否贡献。
 _Avoid_: abilityOn, charged Ability, green-dot Activation, Conditional Active state
 
 **Range Track**:
@@ -151,11 +151,11 @@ _Avoid_: Equal-display merge, result deduplication
 ### 招式执行
 
 **Move Execution（招式执行）**:
-一次使用招式的完整过程，可能整招未命中，也可能执行多个 Hit；逐段检查的招式可因未命中提前结束。
+一次使用招式的完整过程，可能整招未命中，也可能执行多个 Hit；逐段检查的招式可因未命中提前结束。一次新的执行继承已有的 Resolution State，不重新初始化对战条件。
 _Avoid_: Hit, damage roll, turn
 
 **Hit（攻击段）**:
-招式执行中的一次攻击结算，拥有自己的威力、会心结果与伤害随机数；一个 Hit 不是一次完整招式使用。
+招式执行中的一次攻击结算，基于进入时的 Resolution State，拥有自己的威力、会心结果与伤害随机数，并将已支持的状态变化传给后续结算；一个 Hit 不是一次完整招式使用。
 _Avoid_: Move Execution, KO count
 
 **Accuracy Check（命中检查）**:
@@ -167,7 +167,7 @@ _Avoid_: full-hit probability, Hit Fact
 _Avoid_: Scenario set, move list, fixed hit count
 
 **Resolution State（结算状态）**:
-一次执行中以及连续执行之间延续的战斗状态；当前支持抗性果是否已消费，以及已支持招式造成的防御／特防下降和攻击／特攻上升在后续攻击段及下一次执行中的阶级。不同 Scenario 各自从初始状态开始。
+一次执行中以及连续执行之间延续的战斗状态；当前支持满 HP 防护所需的受伤状态、抗性果是否已消费，以及已支持招式造成的防御／特防下降和攻击／特攻上升在后续攻击段及下一次执行中的阶级。不同 Scenario 各自从初始状态开始。
 _Avoid_: Track State, application state
 
 ### 概率模式（Probability Mode）

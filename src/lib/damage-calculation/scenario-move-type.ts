@@ -11,7 +11,7 @@ import {
 import type { MoveCategory } from "@/lib/catalog"
 import type { PokemonType } from "@/lib/pokemon"
 
-import { NEUTRAL_MODIFIER } from "./damage-kernel"
+import { NEUTRAL_MODIFIER } from "./damage-input"
 
 /** Judgment, Multi-Attack, Natural Gift, Revelation Dance, Techno Blast, Terrain Pulse, Weather Ball. */
 const ATE_EXCLUDED_MOVE_IDS = new Set([449, 718, 363, 686, 546, 805, 311])

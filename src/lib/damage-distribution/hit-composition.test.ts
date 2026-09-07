@@ -29,6 +29,27 @@ function damageProbabilities(composition: HitComposition, accuracy = 1, critical
 }
 
 describe("Hit Composition", () => {
+  it("combines misses, criticals, and duplicate zero rolls through the execution seam", () => {
+    const mixed = resolveHitComposition(sequence([hit(10, 20)]), 0.75, 0.2)
+    expect(sequenceKOProbabilities(mixed, () => mixed, 10).ohko).toBeCloseTo(0.75)
+    expect(sequenceKOProbabilities(mixed, () => mixed, 20).ohko).toBeCloseTo(0.15)
+    expect(sequenceKOProbabilities(mixed, () => mixed, 21).ohko).toBe(0)
+
+    const zeros = resolveHitComposition(sequence([{
+      normal: { rolls: [0, 0, 10, 10], effectivePower: 10, consumesBerry: false },
+    }]), 0.5, 0)
+    expect(sequenceKOProbabilities(zeros, () => zeros, 10).ohko).toBeCloseTo(0.25)
+    expect(zeros.reduce((sum, outcome) => sum + outcome.probability, 0)).toBeCloseTo(1)
+  })
+
+  it("accepts a guaranteed-critical execution without an ordinary branch", () => {
+    const outcomes = resolveHitComposition(sequence([{
+      critical: { rolls: [20], effectivePower: 20, consumesBerry: false },
+    }]), 0.5, 1)
+    expect(sequenceKOProbabilities(outcomes, () => outcomes, 20).ohko).toBe(0.5)
+    expect(resolutionRange(outcomes, false)).toBeUndefined()
+  })
+
   it("checks shared accuracy once for the whole move", () => {
     expect(damageProbabilities(sequence([hit(30), hit(30), hit(30)]), 0.5))
       .toEqual(new Map([[0, 0.5], [90, 0.5]]))
