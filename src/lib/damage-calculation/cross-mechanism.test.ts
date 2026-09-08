@@ -1,3 +1,4 @@
+import { INITIAL_RESOLUTION_STATE } from "@/lib/damage-distribution/hit-composition"
 import * as hitExecution from "./hit-execution"
 import { calculate, Field, Move, Pokemon } from "@smogon/calc"
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest"
@@ -185,7 +186,7 @@ describe("cross-mechanism acceptance", () => {
     const result = runScenarioPipeline(catalog, state)
 
     expect(kernel.mock.calls[0][0].calculation.low.normal?.finalModifier).toBe(2662)
-    expect(singleHitRolls(kernel.mock.results[0].value)).toMatchObject({
+    expect(initialHitRolls(...kernel.mock.calls[0])).toMatchObject({
       normal: [82, 83, 83, 86, 86, 87, 87, 90, 90, 91, 91, 94, 94, 95, 95, 97],
       critical: [122, 125, 126, 129, 129, 130, 133, 134, 134, 136, 138, 140, 140, 142, 144, 146],
     })
@@ -226,8 +227,8 @@ describe("cross-mechanism acceptance", () => {
 
     expect(result.unavailable).toEqual([])
     expect(result.rows).toHaveLength(1)
-    expect(singleHitRolls(kernel.mock.results[0].value)).not.toHaveProperty("normal")
-    expect(singleHitRolls(kernel.mock.results[0].value).critical).toEqual([
+    expect(initialHitRolls(...kernel.mock.calls[0])).not.toHaveProperty("normal")
+    expect(initialHitRolls(...kernel.mock.calls[0]).critical).toEqual([
       300, 302, 306, 308, 314, 318, 320, 324,
       326, 330, 336, 338, 342, 344, 348, 354,
     ])
@@ -277,7 +278,7 @@ describe("cross-mechanism acceptance", () => {
     const scaleResult = runScenarioPipeline(deepSeaScale.catalog, deepSeaScale.state)
 
     expect(kernel.mock.calls[0][0].calculation.low.normal?.defenseModifier).toBe(8192)
-    expect(singleHitRolls(kernel.mock.results[0].value)).toMatchObject({
+    expect(initialHitRolls(...kernel.mock.calls[0])).toMatchObject({
       normal: [56, 58, 58, 58, 60, 60, 60, 62, 62, 62, 64, 64, 64, 66, 66, 68],
       critical: [86, 86, 88, 88, 90, 90, 92, 92, 94, 94, 96, 96, 98, 98, 100, 102],
     })
@@ -312,7 +313,7 @@ describe("cross-mechanism acceptance", () => {
     const evioliteResult = runScenarioPipeline(eviolite.catalog, eviolite.state)
 
     expect(kernel.mock.calls[0][0].calculation.low.normal?.defenseModifier).toBe(6144)
-    expect(singleHitRolls(kernel.mock.results[0].value)).toMatchObject({
+    expect(initialHitRolls(...kernel.mock.calls[0])).toMatchObject({
       normal: [136, 144, 144, 144, 144, 148, 148, 148, 156, 156, 156, 156, 160, 160, 160, 168],
       critical: [208, 216, 216, 216, 220, 220, 228, 228, 232, 232, 232, 240, 240, 244, 244, 252],
     })
@@ -335,7 +336,7 @@ describe("cross-mechanism acceptance", () => {
     const positiveResult = runScenarioPipeline(positive.catalog, positive.state)
 
     expect(kernel.mock.calls[0][0].calculation.low.normal?.finalModifier).toBe(4915)
-    expect(singleHitRolls(kernel.mock.results[0].value)).toMatchObject({
+    expect(initialHitRolls(...kernel.mock.calls[0])).toMatchObject({
       normal: [151, 154, 154, 158, 158, 161, 161, 166, 166, 168, 168, 173, 173, 175, 175, 180],
       critical: [226, 230, 233, 238, 238, 240, 245, 247, 247, 252, 254, 259, 259, 262, 266, 269],
     })
@@ -375,7 +376,7 @@ describe("cross-mechanism acceptance", () => {
     const negativeResult = runScenarioPipeline(negative.catalog, negative.state)
 
     expect(kernel.mock.calls[0][0].calculation.low.normal?.finalModifier).toBe(4096)
-    expect(singleHitRolls(kernel.mock.results[0].value)).toMatchObject({
+    expect(initialHitRolls(...kernel.mock.calls[0])).toMatchObject({
       normal: [63, 64, 64, 66, 66, 67, 67, 69, 69, 70, 70, 72, 72, 73, 73, 75],
       critical: [94, 96, 97, 99, 99, 100, 102, 103, 103, 105, 106, 108, 108, 109, 111, 112],
     })
@@ -402,7 +403,7 @@ describe("cross-mechanism acceptance", () => {
 
     const battleOddsResult = runScenarioPipeline(catalog, state)
 
-    expect(singleHitRolls(kernel.mock.results[0].value)).toMatchObject({
+    expect(initialHitRolls(...kernel.mock.calls[0])).toMatchObject({
       normal: [126, 128, 128, 132, 132, 134, 134, 138, 138, 140, 140, 144, 144, 146, 146, 150],
       critical: [188, 192, 194, 198, 198, 200, 204, 206, 206, 210, 212, 216, 216, 218, 222, 224],
     })
@@ -429,8 +430,8 @@ describe("cross-mechanism acceptance", () => {
     kernel.mockClear()
     const guaranteedClassic = runScenarioPipeline(catalog, state, "classic")
 
-    expect(singleHitRolls(kernel.mock.results[0].value)).not.toHaveProperty("normal")
-    expect(singleHitRolls(kernel.mock.results[0].value).critical).toEqual([
+    expect(initialHitRolls(...kernel.mock.calls[0])).not.toHaveProperty("normal")
+    expect(initialHitRolls(...kernel.mock.calls[0]).critical).toEqual([
       188, 192, 194, 198, 198, 200, 204, 206,
       206, 210, 212, 216, 216, 218, 222, 224,
     ])
@@ -461,12 +462,12 @@ describe("cross-mechanism acceptance", () => {
     expect(result.unavailable).toEqual([])
     expect(result.rows).toHaveLength(2)
     expect(kernel.mock.calls[0][0].calculation.low.normal?.weatherModifier).toBe(6144)
-    expect(singleHitRolls(kernel.mock.results[0].value)).toMatchObject({
+    expect(initialHitRolls(...kernel.mock.calls[0])).toMatchObject({
       normal: [188, 192, 194, 198, 198, 200, 204, 206, 206, 210, 212, 216, 216, 218, 222, 224],
       critical: [284, 288, 290, 294, 296, 300, 302, 308, 312, 314, 318, 320, 324, 326, 330, 336],
     })
     expect(kernel.mock.calls[1][0].calculation.low.normal?.weatherModifier).toBe(4096)
-    expect(singleHitRolls(kernel.mock.results[1].value)).toMatchObject({
+    expect(initialHitRolls(...kernel.mock.calls[1])).toMatchObject({
       normal: [126, 128, 128, 132, 132, 134, 134, 138, 138, 140, 140, 144, 144, 146, 146, 150],
       critical: [188, 192, 194, 198, 198, 200, 204, 206, 206, 210, 212, 216, 216, 218, 222, 224],
     })
@@ -677,8 +678,9 @@ describe("cross-mechanism acceptance", () => {
   })
 })
 
-function singleHitRolls(result: ReturnType<typeof hitExecution.evaluateExecutionPoint>) {
-  const hit = result.hits[0]
+function initialHitRolls(...[scenario, point = scenario.calculation.low]: Parameters<typeof hitExecution.evaluateExecutionPoint>) {
+  const composition = hitExecution.compileHitComposition(scenario, point)
+  const hit = composition.choices[0].hits[0](INITIAL_RESOLUTION_STATE, INITIAL_RESOLUTION_STATE)
   return {
     ...(hit.normal ? { normal: hit.normal.rolls } : {}),
     ...(hit.critical ? { critical: hit.critical.rolls } : {}),

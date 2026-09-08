@@ -61,8 +61,8 @@ export function projectMoveMechanics(compiled: CalculableScenario, projection?: 
     },
     hits: resolved.hits.map((hit, index) => ({
       basePower: compiled.execution.powers[index],
-      ...(hit.normal ? { normal: hit.normal.effectivePower } : {}),
-      ...(hit.critical ? { critical: hit.critical.effectivePower } : {}),
+      ...(hit.normal !== undefined ? { normal: hit.normal } : {}),
+      ...(hit.critical !== undefined ? { critical: hit.critical } : {}),
     })),
   }
 }

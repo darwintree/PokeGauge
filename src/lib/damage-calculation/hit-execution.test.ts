@@ -1,12 +1,31 @@
 import { beforeAll, describe, expect, it } from "vitest"
 
 import { getCatalogShell } from "@/lib/catalog"
+import {
+  INITIAL_RESOLUTION_STATE,
+  resolveHitComposition,
+  sequenceKOProbabilities,
+  type HitComposition,
+  type ResolutionState,
+} from "@/lib/damage-distribution/hit-composition"
 import { defaultTrackState, runScenarioPipeline } from "@/lib/scenario"
 import { createMoveSnapshot, editMoveSnapshot, moveHitProfile } from "@/lib/move"
 import { getMoveById, listResources } from "@/lib/resources"
 import { calculationIdentity, compileScenario, type RawScenario } from "./scenario-compiler"
 import { compileHitComposition, evaluateExecutionPoint, projectHitComposition } from "./hit-execution"
 import { projectMoveMechanics } from "./mechanics-projection"
+
+function referenceHits(composition: HitComposition, choiceIndex = 0, initial: ResolutionState = INITIAL_RESOLUTION_STATE) {
+  let state = initial
+  return composition.choices[choiceIndex].hits.map((hit) => {
+    const branches = hit(state, initial)
+    const outcomes = resolveHitComposition({ ...composition,
+      choices: [{ probability: 1, hits: [(incoming) => hit(incoming, initial)] }],
+    }, 1, 0, state)
+    state = outcomes[0]
+    return branches
+  })
+}
 
 function scenario(moveId: number, overrides: Partial<RawScenario> = {}) {
   const move = getMoveById(moveId)!
@@ -126,7 +145,8 @@ describe("calc Hit execution adapter", () => {
       expect(composition.choices.map((choice) => choice.hits.length)).toEqual(compiled.execution.counts.map((choice) => choice.count))
       for (const choice of composition.choices) {
         for (const hit of choice.hits) {
-          expect(hit.normal?.rolls ?? hit.critical?.rolls, `move ${id}`).toHaveLength(16)
+          const branches = hit(INITIAL_RESOLUTION_STATE, INITIAL_RESOLUTION_STATE)
+          expect(branches.normal?.rolls ?? branches.critical?.rolls, `move ${id}`).toHaveLength(16)
         }
       }
     }
@@ -135,7 +155,7 @@ describe("calc Hit execution adapter", () => {
   it("uses the same full-hit Triple Axel references in Battle Odds and Classic", () => {
     const compiled = scenario(813)
     const composition = compileHitComposition(compiled, compiled.calculation.low)
-    const hits = composition.choices[0].hits
+    const hits = referenceHits(composition)
     expect(compiled.execution.powers).toEqual([20, 40, 60])
     expect(hits[1].normal!.rolls[0]).toBeGreaterThan(hits[0].normal!.rolls[15])
     expect(hits[2].normal!.rolls[0]).toBeGreaterThan(hits[1].normal!.rolls[15])
@@ -151,10 +171,10 @@ describe("calc Hit execution adapter", () => {
   })
 
   it("shows 90 normal and 105–135 mixed-critical damage for three 30-power hits", () => {
-    const hit = {
+    const hit = () => ({
       normal: { rolls: [30], effectivePower: 30, consumesBerry: false },
       critical: { rolls: [45], effectivePower: 45, consumesBerry: false },
-    }
+    })
     const reference = projectHitComposition({ accuracyScope: "hit", choices: [{ probability: 1, hits: [hit, hit, hit] }] })
     expect(reference.normal).toEqual({ min: 90, max: 90 })
     expect(reference.critical).toEqual({ min: 105, max: 135 })
@@ -185,8 +205,8 @@ describe("calc Hit execution adapter", () => {
     const compiled = scenario(331, { probabilityMode })
     const composition = compileHitComposition(compiled, compiled.calculation.low)
     const result = evaluateExecutionPoint(compiled, compiled.calculation.low)
-    const firstChoice = composition.choices[0].hits
-    const lastChoice = composition.choices[composition.choices.length - 1].hits
+    const firstChoice = referenceHits(composition)
+    const lastChoice = referenceHits(composition, composition.choices.length - 1)
     expect(result.normal!.min).toBe(firstChoice.reduce((sum, hit) => sum + hit.normal!.rolls[0], 0))
     expect(result.normal!.max).toBe(lastChoice.reduce((sum, hit) => sum + hit.normal!.rolls[15], 0))
     expect(projectMoveMechanics(compiled).hitCounts).toEqual({ min: 2, max: 5 })
@@ -205,9 +225,9 @@ describe("calc Hit execution adapter", () => {
   it("applies a resistance Berry only to the first hit and removes it for the next use", () => {
     const withBerry = scenario(24, { defenderItemId: 166 })
     const neutral = scenario(24)
-    const first = compileHitComposition(withBerry, withBerry.calculation.low).choices[0].hits
-    const none = compileHitComposition(neutral, neutral.calculation.low).choices[0].hits
-    const consumed = compileHitComposition(withBerry, withBerry.calculation.low, true).choices[0].hits
+    const first = referenceHits(compileHitComposition(withBerry, withBerry.calculation.low))
+    const none = referenceHits(compileHitComposition(neutral, neutral.calculation.low))
+    const consumed = referenceHits(compileHitComposition(withBerry, withBerry.calculation.low), 0, { ...INITIAL_RESOLUTION_STATE, berryConsumed: true })
     expect(first[0].normal!.consumesBerry).toBe(true)
     expect(first[1].normal!.consumesBerry).toBe(false)
     expect(first[0].normal!.rolls[15]).toBeLessThan(none[0].normal!.rolls[0])
@@ -222,7 +242,7 @@ describe("calc Hit execution adapter", () => {
       { defenderId: 94 },
     ]) {
       const compiled = scenario(24, { defenderItemId: 166, ...overrides })
-      const hits = compileHitComposition(compiled, compiled.calculation.low).choices[0].hits
+      const hits = referenceHits(compileHitComposition(compiled, compiled.calculation.low))
       expect(hits.every((hit) => !hit.normal!.consumesBerry)).toBe(true)
     }
   })
@@ -230,7 +250,7 @@ describe("calc Hit execution adapter", () => {
   it("keeps Parental Bond's child and mixed-critical reference without duplicating hits", () => {
     const compiled = scenario(1, { attackerAbilityId: 185 })
     const composition = compileHitComposition(compiled, compiled.calculation.low)
-    const hits = composition.choices[0].hits
+    const hits = referenceHits(composition)
     expect(hits).toHaveLength(2)
     expect(hits[1].normal!.rolls[15]).toBeLessThan(hits[0].normal!.rolls[0])
     const projection = projectHitComposition(composition)
@@ -244,8 +264,8 @@ describe("calc Hit execution adapter", () => {
   it("consumes Chilan Berry before the Parental Bond child hit", () => {
     const compiled = scenario(1, { attackerAbilityId: 185, defenderItemId: 177 })
     const neutral = scenario(1, { attackerAbilityId: 185 })
-    const hits = compileHitComposition(compiled, compiled.calculation.low).choices[0].hits
-    const without = compileHitComposition(neutral, neutral.calculation.low).choices[0].hits
+    const hits = referenceHits(compileHitComposition(compiled, compiled.calculation.low))
+    const without = referenceHits(compileHitComposition(neutral, neutral.calculation.low))
     expect(hits[0].normal!.consumesBerry).toBe(true)
     expect(hits[0].normal!.rolls[15]).toBeLessThan(without[0].normal!.rolls[0])
     expect(hits[1].normal!.rolls).toEqual(without[1].normal!.rolls)
@@ -487,6 +507,40 @@ describe("Parental Bond in the shared stat-change resolver", () => {
     const guaranteed = scenario(491, { attackerId: 10039, attackerAbilityId: 185, probabilityMode: "classic" })
     const composition = compileHitComposition(guaranteed, guaranteed.calculation.low)
     expect(composition.statChangeProbability).toBe(1)
-    expect(composition.choices[0].hits[1].afterStatChanges).toHaveLength(1)
+    expect(resolveHitComposition(composition, 1, 0).every((outcome) => outcome.statChanges === 2)).toBe(true)
   })
+})
+
+it.each([-6, -1, 0, 5, 6] as const)("projects cumulative Power-Up Punch state at initial stage %i", async (attackerStage) => {
+  const { applyCalcStatChanges, calculateHitMatrix } = await import("./calc-engine")
+  const compiled = scenario(612, {
+    attackerId: 10039, attackerAbilityId: 185, attackerStage, probabilityMode: "classic",
+  })
+  const composition = compileHitComposition(compiled, compiled.calculation.low)
+  const first = resolveHitComposition(composition, 1, 0)
+  expect(first.every((outcome) => outcome.statChanges === 2)).toBe(true)
+  const start = first[0]
+  const second = resolveHitComposition(composition, 1, 0, start)
+  expect(second.every((outcome) => outcome.statChanges === 4)).toBe(true)
+  const expected = calculateHitMatrix(
+    applyCalcStatChanges(compiled.calculation.low.calc, compiled.statChange!, 2), 2, false, false, false,
+  ).rolls
+  expect(Math.min(...second.map((outcome) => outcome.damage))).toBe(expected[0][0] + expected[1][0])
+  expect(Math.max(...second.map((outcome) => outcome.damage))).toBe(expected[0][15] + expected[1][15])
+  expect(second.every((outcome) => outcome.damageTaken === start.damageTaken + outcome.damage)).toBe(true)
+})
+
+it.each([-1, 136, 305])("preserves ten-hit KO probabilities when reusing equivalent states for Ability %i", (defenderAbilityId) => {
+  const compiled = scenario(860, {
+    defenderAbilityId, defenderId: 149,
+    lowOutcome: { offense: 150, defense: { hp: 200, def: 100 } },
+  })
+  const composition = compileHitComposition(compiled, compiled.calculation.low)
+  const { hitProbability, criticalHitProbability } = compiled.probability
+  const actual = sequenceKOProbabilities(composition, hitProbability, criticalHitProbability, 200)
+  const uncached = sequenceKOProbabilities({ ...composition, damageStateKey: undefined }, hitProbability, criticalHitProbability, 200)
+  expect(actual.twoHit).toBeGreaterThan(0.001)
+  expect(actual.twoHit).toBeLessThan(0.999)
+  expect(actual.ohko).toBeCloseTo(uncached.ohko, 12)
+  expect(actual.twoHit).toBeCloseTo(uncached.twoHit, 12)
 })

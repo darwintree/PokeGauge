@@ -9,25 +9,34 @@ export type HitBranches = {
   critical?: HitBranch
 }
 
-export type Hit = HitBranches & {
-  /** Explicit rows after 1, 2, ... prior effects; required for every reachable count. */
-  afterStatChanges?: readonly HitBranches[]
+export type ResolutionState = {
+  damageTaken: number
+  berryConsumed: boolean
+  /** Cumulative supported stat-change events, across execution boundaries. */
+  statChanges: number
 }
+
+export const INITIAL_RESOLUTION_STATE: Readonly<ResolutionState> = {
+  damageTaken: 0, berryConsumed: false, statChanges: 0,
+}
+
+/** The execution start is available for effects that last for the whole move. */
+export type Hit = (state: Readonly<ResolutionState>, executionStart: Readonly<ResolutionState>) => HitBranches
 
 export type HitComposition = {
   accuracyScope: "move" | "hit"
   statChangeProbability?: number
+  /** Equal keys guarantee equal per-execution damage distributions; state itself stays intact. */
+  damageStateKey?: (state: Readonly<ResolutionState>) => string
   choices: readonly { probability: number; hits: readonly Hit[] }[]
 }
 
-export type ResolutionState = {
-  berryConsumed: boolean
-  /** Number of the move's supported stat-change events within this use. */
-  statChanges: number
-}
+export type ValueRange = { min: number; max: number }
 
 export type ResolutionOutcome = ResolutionState & {
+  /** Damage and reference power produced by this execution only. */
   damage: number
+  power: ValueRange
   probability: number
   critical: boolean
   landed: boolean
@@ -38,60 +47,70 @@ const CRITICAL = 2
 const LANDED = 4
 const FLAG_COUNT = 8
 
-function add(result: Map<number, number>, key: number, probability: number): void {
-  if (probability > 0) result.set(key, (result.get(key) ?? 0) + probability)
+type Path = { probability: number; power: ValueRange }
+
+function add(result: Map<number, Path>, key: number, probability: number, power: ValueRange): void {
+  if (probability <= 0) return
+  const existing = result.get(key)
+  if (existing) {
+    existing.probability += probability
+    existing.power.min = Math.min(existing.power.min, power.min)
+    existing.power.max = Math.max(existing.power.max, power.max)
+  } else result.set(key, { probability, power: { ...power } })
 }
 
-/** Aggregate only at the same execution position; do not enumerate roll histories. */
+/** Every landed hit updates state here, regardless of execution boundaries. */
 export function resolveHitComposition(
   composition: HitComposition,
   hitProbability: number,
   criticalProbability: number,
-  berryConsumed = false,
-  value: "damage" | "power" = "damage",
+  initial: Readonly<ResolutionState> = INITIAL_RESOLUTION_STATE,
 ): ResolutionOutcome[] {
-  // Keep effect counts separate even when damage and Berry state are equal.
-  const stateCount = FLAG_COUNT * (1 + Math.max(...composition.choices.map((choice) => choice.hits.length)))
-  const ended = new Map<number, number>()
-  const initial = berryConsumed ? CONSUMED : 0
+  const maxHits = Math.max(...composition.choices.map((choice) => choice.hits.length))
+  const stateCount = FLAG_COUNT * (1 + initial.statChanges + maxHits)
+  const ended = new Map<number, Path>()
+  const initialKey = initial.statChanges * FLAG_COUNT + (initial.berryConsumed ? CONSUMED : 0)
   for (const choice of composition.choices) {
-    let paths = new Map([[initial, choice.probability]])
+    let paths = new Map<number, Path>([[initialKey, {
+      probability: choice.probability, power: { min: 0, max: 0 },
+    }]])
     for (let index = 0; index < choice.hits.length; index += 1) {
-      const step = choice.hits[index]
-      const variants = [step, ...(step.afterStatChanges ?? [])].map((hit) => [
-        [hit.normal, false, hit.critical ? 1 - criticalProbability : 1],
-        [hit.critical, true, hit.normal ? criticalProbability : 1],
-      ] as const)
-      const next = new Map<number, number>()
+      const next = new Map<number, Path>()
       const accuracy = index === 0 || composition.accuracyScope === "hit" ? hitProbability : 1
-      for (const [key, probability] of paths) {
-        add(ended, key, probability * (1 - accuracy))
-        const state = key % stateCount
+      for (const [key, { probability, power }] of paths) {
+        add(ended, key, probability * (1 - accuracy), power)
+        if (accuracy === 0) continue
+        const flags = key % stateCount
         const damage = Math.floor(key / stateCount)
-        const changes = Math.floor(state / FLAG_COUNT)
-        const branches = variants[changes]
-        if (!branches) throw new Error(`Missing Hit variant for ${changes} prior stat changes at hit ${index + 1}`)
-        for (const [branch, critical, weight] of branches) {
+        const changes = Math.floor(flags / FLAG_COUNT)
+        const branches = choice.hits[index]({
+          damageTaken: initial.damageTaken + damage,
+          berryConsumed: Boolean(flags & CONSUMED), statChanges: changes,
+        }, initial)
+        for (const [branch, critical, weight] of [
+          [branches.normal, false, branches.critical ? 1 - criticalProbability : 1],
+          [branches.critical, true, branches.normal ? criticalProbability : 1],
+        ] as const) {
           if (!branch || weight === 0) continue
-          const nextState = (state | LANDED | (critical ? CRITICAL : 0) |
-            (branch.consumesBerry ? CONSUMED : 0))
-          const rolls = value === "power" ? [branch.effectivePower] : branch.rolls
-          const chance = composition.statChangeProbability && branch.rolls.some((damage) => damage > 0)
-            ? composition.statChangeProbability : 0
-          for (const roll of rolls) {
-            const mass = probability * accuracy * weight / rolls.length
-            add(next, (damage + roll) * stateCount + nextState, mass * (1 - chance))
-            add(next, (damage + roll) * stateCount + nextState + FLAG_COUNT, mass * chance)
+          const nextPower = { min: power.min + branch.effectivePower, max: power.max + branch.effectivePower }
+          for (const roll of branch.rolls) {
+            const nextFlags = flags | LANDED | (critical ? CRITICAL : 0) |
+              (roll > 0 && branch.consumesBerry ? CONSUMED : 0)
+            const chance = roll > 0 ? composition.statChangeProbability ?? 0 : 0
+            const mass = probability * accuracy * weight / branch.rolls.length
+            add(next, (damage + roll) * stateCount + nextFlags, mass * (1 - chance), nextPower)
+            add(next, (damage + roll) * stateCount + nextFlags + FLAG_COUNT, mass * chance, nextPower)
           }
         }
       }
       paths = next
     }
-    for (const [key, probability] of paths) add(ended, key, probability)
+    for (const [key, path] of paths) add(ended, key, path.probability, path.power)
   }
-  return [...ended].map(([key, probability]) => ({
+  return [...ended].map(([key, path]) => ({
     damage: Math.floor(key / stateCount),
-    probability,
+    damageTaken: initial.damageTaken + Math.floor(key / stateCount),
+    ...path,
     berryConsumed: Boolean(key % stateCount & CONSUMED),
     critical: Boolean(key % stateCount & CRITICAL),
     landed: Boolean(key % stateCount & LANDED),
@@ -99,61 +118,53 @@ export function resolveHitComposition(
   }))
 }
 
-export type ValueRange = { min: number; max: number }
-
 export function resolutionRange(
   outcomes: readonly ResolutionOutcome[],
   critical: boolean,
+  value: "damage" | "power" = "damage",
 ): ValueRange | undefined {
   let min = Infinity
   let max = -Infinity
   for (const outcome of outcomes) {
     if (!outcome.landed || outcome.critical !== critical) continue
-    min = Math.min(min, outcome.damage)
-    max = Math.max(max, outcome.damage)
+    min = Math.min(min, value === "power" ? outcome.power.min : outcome.damage)
+    max = Math.max(max, value === "power" ? outcome.power.max : outcome.damage)
   }
   return Number.isFinite(min) ? { min, max } : undefined
 }
 
-function koQuery(outcomes: readonly ResolutionOutcome[]): (hp: number) => number {
-  const sorted = [...outcomes].sort((a, b) => a.damage - b.damage)
-  const suffix = Array<number>(sorted.length + 1).fill(0)
-  for (let index = sorted.length - 1; index >= 0; index -= 1) {
-    suffix[index] = suffix[index + 1] + sorted[index].probability
+type DamageOutcome = Pick<ResolutionOutcome, "damage" | "probability">
+
+function koProbability(outcomes: readonly DamageOutcome[], hp: number): number {
+  let probability = 0
+  for (const outcome of outcomes) {
+    if (outcome.damage >= hp) probability += outcome.probability
   }
-  return (hp) => {
-    let low = 0
-    let high = sorted.length
-    while (low < high) {
-      const middle = (low + high) >>> 1
-      if (sorted[middle].damage < hp) low = middle + 1
-      else high = middle
-    }
-    return Math.min(1, Math.max(0, suffix[low]))
-  }
+  return Math.min(1, Math.max(0, probability))
 }
 
 /** Query the second use conditioned on the first use's outcome. */
 export function sequenceKOProbabilities(
-  first: readonly ResolutionOutcome[],
-  nextUse: (outcome: ResolutionOutcome) => readonly ResolutionOutcome[],
+  composition: HitComposition,
+  hitProbability: number,
+  criticalProbability: number,
   hp: number,
 ): { ohko: number; twoHit: number } {
-  const availableKO = koQuery(first)
-  const queries = new Map<readonly ResolutionOutcome[], (hp: number) => number>()
+  const first = resolveHitComposition(composition, hitProbability, criticalProbability)
   let twoHit = 0
+  const continuations = new Map<string, readonly DamageOutcome[]>()
   for (const outcome of first) {
     if (outcome.damage >= hp) {
       twoHit += outcome.probability
       continue
     }
-    const next = nextUse(outcome)
-    let nextKO = queries.get(next)
-    if (!nextKO) {
-      nextKO = koQuery(next)
-      queries.set(next, nextKO)
+    const key = composition.damageStateKey?.(outcome)
+    let next = key === undefined ? undefined : continuations.get(key)
+    if (!next) {
+      next = resolveHitComposition(composition, hitProbability, criticalProbability, outcome)
+      if (key !== undefined) continuations.set(key, next)
     }
-    twoHit += outcome.probability * nextKO(hp - outcome.damage)
+    twoHit += outcome.probability * koProbability(next, hp - outcome.damage)
   }
-  return { ohko: availableKO(hp), twoHit: Math.min(1, Math.max(0, twoHit)) }
+  return { ohko: koProbability(first, hp), twoHit: Math.min(1, Math.max(0, twoHit)) }
 }

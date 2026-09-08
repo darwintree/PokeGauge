@@ -122,10 +122,11 @@ function calcMove(context: CalcMoveContext, hits?: number): Move {
 
 export type CalcHitMatrix = {
   rolls: readonly (readonly number[])[]
+  /** Whether calc applies a resistance Berry on the first row. */
   consumesBerry: boolean
 }
 
-/** Apply cumulative effects to the initial context for a subsequent move use. */
+/** Project cumulative hit effects onto the initial calc context. */
 export function applyCalcStatChanges(context: CalcContext, change: MoveStatChange, count: number): CalcContext {
   const pokemon = context[change.side]
   return { ...context, [change.side]: {
@@ -134,26 +135,6 @@ export function applyCalcStatChanges(context: CalcContext, change: MoveStatChang
       [change.stat]: Math.max(-6, Math.min(6, pokemon.boosts[change.stat] + count * change.stages)),
     },
   } }
-}
-
-/** Matrices indexed by prior stat-change count within this use, including zero. */
-export function calculateHitMatrixVariants(
-  context: CalcContext,
-  hits: number,
-  critical: boolean,
-  berryConsumed: boolean,
-  resistanceBerry: boolean,
-  change?: MoveStatChange,
-): readonly CalcHitMatrix[] {
-  const base = calculateHitMatrix(context, hits, critical, berryConsumed, resistanceBerry)
-  if (!change) return [base]
-  // calc already boosts the Parental Bond child for Power-Up Punch. Reuse
-  // that row explicitly; applying the incoming boost again would double it.
-  const boostAlreadyInMatrix = context.attacker.abilityCalcName === "Parental Bond" &&
-    context.move.calcMoveName === "Power-Up Punch"
-  return Array.from({ length: hits }, (_, count) => count === 0 || boostAlreadyInMatrix
-    ? base
-    : calculateHitMatrix(applyCalcStatChanges(context, change, count), hits, critical, berryConsumed, resistanceBerry))
 }
 
 /** Read calc's per-Hit results without collapsing them or summing equal-index rolls. */
@@ -191,13 +172,6 @@ export function calculateHitMatrix(
     Boolean(result.rawDesc.defenderItem) &&
     toID(result.rawDesc.defenderItem!) === toID(defender.item) &&
     rolls[0].some((damage) => damage > 0)
-  if (consumesBerry && context.attacker.abilityCalcName === "Parental Bond" && hits === 2) {
-    // calc 0.11.0 recursively calculates the child with the original Berry.
-    // Reuse its child calculation with the consumed item state, preserving
-    // child rounding and any within-move changes (e.g. Power-Up Punch).
-    const consumed = calculateHitMatrix(context, hits, critical, true, resistanceBerry)
-    rolls = [rolls[0], consumed.rolls[1]]
-  }
   return { rolls, consumesBerry }
 }
 

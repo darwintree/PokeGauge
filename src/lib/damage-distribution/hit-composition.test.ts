@@ -4,17 +4,20 @@ import {
   resolutionRange,
   sequenceKOProbabilities,
   type Hit,
+  type HitBranches,
   type HitComposition,
 } from "./hit-composition"
 
 function hit(normal: number, critical?: number, consumesBerry = false): Hit {
-  return {
+  return () => ({
     normal: { rolls: [normal], effectivePower: normal, consumesBerry },
     ...(critical === undefined ? {} : {
       critical: { rolls: [critical], effectivePower: critical, consumesBerry },
     }),
-  }
+  })
 }
+
+function fixed(branches: HitBranches): Hit { return () => branches }
 
 function sequence(hits: Hit[], accuracyScope: "move" | "hit" = "move"): HitComposition {
   return { accuracyScope, choices: [{ probability: 1, hits }] }
@@ -30,23 +33,23 @@ function damageProbabilities(composition: HitComposition, accuracy = 1, critical
 
 describe("Hit Composition", () => {
   it("combines misses, criticals, and duplicate zero rolls through the execution seam", () => {
-    const mixed = resolveHitComposition(sequence([hit(10, 20)]), 0.75, 0.2)
-    expect(sequenceKOProbabilities(mixed, () => mixed, 10).ohko).toBeCloseTo(0.75)
-    expect(sequenceKOProbabilities(mixed, () => mixed, 20).ohko).toBeCloseTo(0.15)
-    expect(sequenceKOProbabilities(mixed, () => mixed, 21).ohko).toBe(0)
+    const mixed = sequence([hit(10, 20)])
+    expect(sequenceKOProbabilities(mixed, 0.75, 0.2, 10).ohko).toBeCloseTo(0.75)
+    expect(sequenceKOProbabilities(mixed, 0.75, 0.2, 20).ohko).toBeCloseTo(0.15)
+    expect(sequenceKOProbabilities(mixed, 0.75, 0.2, 21).ohko).toBe(0)
 
-    const zeros = resolveHitComposition(sequence([{
+    const zeros = resolveHitComposition(sequence([fixed({
       normal: { rolls: [0, 0, 10, 10], effectivePower: 10, consumesBerry: false },
-    }]), 0.5, 0)
-    expect(sequenceKOProbabilities(zeros, () => zeros, 10).ohko).toBeCloseTo(0.25)
+    })]), 0.5, 0)
+    expect(zeros.filter((outcome) => outcome.damage >= 10).reduce((sum, outcome) => sum + outcome.probability, 0)).toBeCloseTo(0.25)
     expect(zeros.reduce((sum, outcome) => sum + outcome.probability, 0)).toBeCloseTo(1)
   })
 
   it("accepts a guaranteed-critical execution without an ordinary branch", () => {
-    const outcomes = resolveHitComposition(sequence([{
+    const outcomes = resolveHitComposition(sequence([fixed({
       critical: { rolls: [20], effectivePower: 20, consumesBerry: false },
-    }]), 0.5, 1)
-    expect(sequenceKOProbabilities(outcomes, () => outcomes, 20).ohko).toBe(0.5)
+    })]), 0.5, 1)
+    expect(outcomes.filter((outcome) => outcome.damage >= 20).reduce((sum, outcome) => sum + outcome.probability, 0)).toBe(0.5)
     expect(resolutionRange(outcomes, false)).toBeUndefined()
   })
 
@@ -78,7 +81,7 @@ describe("Hit Composition", () => {
   })
 
   it("combines independent rolls instead of adding equal roll indices", () => {
-    const rolled: Hit = { normal: { rolls: [10, 20], effectivePower: 10, consumesBerry: false } }
+    const rolled = fixed({ normal: { rolls: [10, 20], effectivePower: 10, consumesBerry: false } })
     expect(damageProbabilities(sequence([rolled, rolled])))
       .toEqual(new Map([[20, 0.25], [30, 0.5], [40, 0.25]]))
   })
@@ -100,12 +103,12 @@ describe("Hit Composition", () => {
   })
 
   it("carries Berry consumption across uses, including a miss on either use", () => {
-    const first = resolveHitComposition(sequence([hit(30, undefined, true)]), 0.5, 0)
-    const consumed = resolveHitComposition(sequence([hit(60)]), 0.5, 0, true)
+    const composition = sequence([(state, start) => hit(state.berryConsumed ? 60 : 30, undefined, !state.berryConsumed)(state, start)])
+    const first = resolveHitComposition(composition, 0.5, 0)
     expect(first.find((outcome) => !outcome.landed)?.berryConsumed).toBe(false)
     expect(first.find((outcome) => outcome.landed)?.berryConsumed).toBe(true)
-    expect(sequenceKOProbabilities(first, (outcome) => outcome.berryConsumed ? consumed : first, 70)).toEqual({ ohko: 0, twoHit: 0.25 })
-    expect(sequenceKOProbabilities(first, (outcome) => outcome.berryConsumed ? consumed : first, 25)).toEqual({ ohko: 0.5, twoHit: 0.75 })
+    expect(sequenceKOProbabilities(composition, 0.5, 0, 70)).toEqual({ ohko: 0, twoHit: 0.25 })
+    expect(sequenceKOProbabilities(composition, 0.5, 0, 25)).toEqual({ ohko: 0.5, twoHit: 0.75 })
   })
 
   it("does not merge equal damage with different Berry states", () => {
@@ -125,13 +128,13 @@ describe("Hit Composition", () => {
     const outcomes = resolveHitComposition(sequence([hit(0)]), 0.5, 0)
     expect(outcomes).toHaveLength(2)
     expect(resolutionRange(outcomes, false)).toEqual({ min: 0, max: 0 })
-    expect(sequenceKOProbabilities(outcomes, () => outcomes, 1)).toEqual({ ohko: 0, twoHit: 0 })
+    expect(sequenceKOProbabilities(sequence([hit(0)]), 0.5, 0, 1)).toEqual({ ohko: 0, twoHit: 0 })
   })
 
   it("aggregates equivalent power along the same mixed-critical paths", () => {
-    const outcomes = resolveHitComposition(sequence([hit(30, 45, true), hit(60, 90)]), 1, 0.5, false, "power")
-    expect(resolutionRange(outcomes, false)).toEqual({ min: 90, max: 90 })
-    expect(resolutionRange(outcomes, true)).toEqual({ min: 105, max: 135 })
+    const outcomes = resolveHitComposition(sequence([hit(30, 45, true), hit(60, 90)]), 1, 0.5)
+    expect(resolutionRange(outcomes, false, "power")).toEqual({ min: 90, max: 90 })
+    expect(resolutionRange(outcomes, true, "power")).toEqual({ min: 105, max: 135 })
   })
 })
 
@@ -141,7 +144,7 @@ describe("shared hit state transitions", () => {
       accuracyScope: "move", statChangeProbability: 0.5,
       choices: [{ probability: 1, hits: [
         hit(10, undefined, true),
-        { ...hit(20), afterStatChanges: [hit(40)] },
+        (state, start) => hit(state.statChanges ? 40 : 20)(state, start),
       ] }],
     }
     const outcomes = resolveHitComposition(composition, 0.5, 0)
@@ -154,17 +157,13 @@ describe("shared hit state transitions", () => {
     expect(outcomes.find((outcome) => !outcome.landed)).toMatchObject({
       damage: 0, statChanges: 0, berryConsumed: false, probability: 0.5,
     })
-    const result = sequenceKOProbabilities(outcomes, (outcome) => [
-      { ...outcome, damage: 10 + 10 * outcome.statChanges, probability: 1 },
-    ], 70)
-    expect(result.twoHit).toBe(0.25)
   })
 
   it("uses incoming state for each hit with independent critical outcomes", () => {
     const composition: HitComposition = {
       accuracyScope: "move", statChangeProbability: 1,
       choices: [{ probability: 1, hits: [
-        hit(10, 15), { ...hit(20, 30), afterStatChanges: [hit(40, 60)] },
+        hit(10, 15), (state, start) => hit(state.statChanges ? 40 : 20, state.statChanges ? 60 : 30)(state, start),
       ] }],
     }
     const outcomes = resolveHitComposition(composition, 1, 0.5)
@@ -179,28 +178,13 @@ describe("shared hit state transitions", () => {
   })
 })
 
-it("requires explicit rows for reachable stat changes, including unchanged damage", () => {
-  const unchanged = hit(10)
-  const composition: HitComposition = {
-    accuracyScope: "move", statChangeProbability: 1,
-    choices: [{ probability: 1, hits: [unchanged, unchanged] }],
-  }
-  expect(() => resolveHitComposition(composition, 1, 0)).toThrow("Missing Hit variant for 1 prior stat changes at hit 2")
-  const explicit = { ...composition, choices: [{ probability: 1, hits: [
-    unchanged, { ...unchanged, afterStatChanges: [unchanged] },
-  ] }] }
-  expect(resolveHitComposition(explicit, 1, 0)).toMatchObject([
-    { damage: 20, statChanges: 2, probability: 1 },
-  ])
-})
-
 it("uses the same state transitions for a three-hit composition", () => {
   const outcomes = resolveHitComposition({
     accuracyScope: "move", statChangeProbability: 0.5,
     choices: [{ probability: 1, hits: [
       hit(10),
-      { ...hit(10), afterStatChanges: [hit(20)] },
-      { ...hit(10), afterStatChanges: [hit(20), hit(30)] },
+      (state, start) => hit(10 * (state.statChanges + 1))(state, start),
+      (state, start) => hit(10 * (state.statChanges + 1))(state, start),
     ] }],
   }, 1, 0)
   expect(outcomes.map((outcome) => [outcome.damage, outcome.statChanges, outcome.probability]).sort())
@@ -208,4 +192,65 @@ it("uses the same state transitions for a three-hit composition", () => {
       [30, 0, 0.125], [30, 1, 0.125], [40, 1, 0.125], [40, 2, 0.125],
       [50, 1, 0.125], [50, 2, 0.125], [60, 2, 0.125], [60, 3, 0.125],
     ])
+})
+
+it("applies one state-dependent Hit identically within and across executions", () => {
+  const adaptive: Hit = (state) => {
+    const power = (state.berryConsumed ? 20 : 10) + state.statChanges * 5 + Math.min(state.damageTaken, 10)
+    return {
+      normal: { rolls: [0, power], effectivePower: power, consumesBerry: !state.berryConsumed },
+      critical: { rolls: [power * 2], effectivePower: power * 2, consumesBerry: !state.berryConsumed },
+    }
+  }
+  const single = { ...sequence([adaptive]), statChangeProbability: 0.3 }
+  const double = { ...sequence([adaptive, adaptive]), statChangeProbability: 0.3 }
+  const joined = new Map<string, number>()
+  const key = (outcome: { damageTaken: number; berryConsumed: boolean; statChanges: number; critical: boolean }) =>
+    JSON.stringify([outcome.damageTaken, outcome.berryConsumed, outcome.statChanges, outcome.critical])
+  for (const first of resolveHitComposition(single, 1, 0.25)) {
+    for (const second of resolveHitComposition(single, 1, 0.25, first)) {
+      const id = key({ ...second, critical: first.critical || second.critical })
+      joined.set(id, (joined.get(id) ?? 0) + first.probability * second.probability)
+    }
+  }
+  const together = resolveHitComposition(double, 1, 0.25)
+  expect(together).toHaveLength(joined.size)
+  for (const outcome of together) expect(outcome.probability).toBeCloseTo(joined.get(key(outcome))!, 12)
+  for (const hp of [1, 15, 30, 60, 90]) {
+    expect(sequenceKOProbabilities(single, 1, 0.25, hp).twoHit)
+      .toBeCloseTo(sequenceKOProbabilities(double, 1, 0.25, hp).ohko, 12)
+  }
+})
+
+it("updates damage, Berry and stats per actual roll, never from reference power", () => {
+  const composition = { ...sequence([fixed({
+    normal: { rolls: [0, 10], effectivePower: 1000, consumesBerry: true },
+  })]), statChangeProbability: 1 }
+  const outcomes = resolveHitComposition(composition, 1, 0)
+  expect(outcomes).toMatchObject([
+    { damage: 0, damageTaken: 0, berryConsumed: false, statChanges: 0, probability: 0.5 },
+    { damage: 10, damageTaken: 10, berryConsumed: true, statChanges: 1, probability: 0.5 },
+  ])
+  expect(resolutionRange(outcomes, false, "power")).toEqual({ min: 1000, max: 1000 })
+  const next = resolveHitComposition(composition, 0, 0, outcomes[1])
+  expect(next).toMatchObject([
+    { damage: 0, damageTaken: 10, berryConsumed: true, statChanges: 1, probability: 1, landed: false },
+  ])
+})
+
+it("keeps execution-wide effects distinct from state changes after each Hit", () => {
+  const shell: Hit = (state, start) => hit(start.damageTaken === 0 ? 10 : 20)(state, start)
+  const double = sequence([shell, shell])
+  const first = resolveHitComposition(double, 1, 0)
+  expect(first[0]).toMatchObject({ damage: 20, damageTaken: 20 })
+  expect(resolveHitComposition(double, 1, 0, first[0])[0]).toMatchObject({ damage: 40, damageTaken: 60 })
+  expect(sequenceKOProbabilities(sequence([shell]), 1, 0, 30).twoHit).toBe(1)
+  expect(sequenceKOProbabilities(double, 1, 0, 30).ohko).toBe(0)
+})
+
+it("restarts accuracy checks at each execution while keeping early termination within one", () => {
+  const single = sequence([hit(10)], "hit")
+  const double = sequence([hit(10), hit(10)], "hit")
+  expect(sequenceKOProbabilities(single, 0.5, 0, 10).twoHit).toBe(0.75)
+  expect(sequenceKOProbabilities(double, 0.5, 0, 10).ohko).toBe(0.5)
 })
