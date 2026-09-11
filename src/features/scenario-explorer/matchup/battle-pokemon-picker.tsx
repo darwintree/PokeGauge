@@ -13,6 +13,7 @@ import {
 import type { PokemonType } from "@/lib/pokemon"
 import type { BattlePokemonId } from "@/lib/resources"
 import { cn } from "@/lib/utils"
+import { getUsageSource, setUsageSource } from "@/lib/champions"
 
 import { BattlePokemonPickerDialog } from "./battle-pokemon-picker-dialog"
 import {
@@ -103,6 +104,13 @@ export function BattlePokemonPicker({
   function skipRanking() {
     rankingGeneration.current += 1
     setLoad((current) => reduceRankingLoad(current, "skip"))
+  }
+  function changeUsageSource(source: "champions" | "smogon") {
+    setUsageSource(source)
+    rankingGeneration.current += 1
+    setRankedIds(null)
+    setLoad(initialRankingLoadState())
+    setLoad((current) => reduceRankingLoad(current, "open"))
   }
 
   function select(id: BattlePokemonId) {
@@ -215,6 +223,8 @@ export function BattlePokemonPicker({
         label={label}
         options={visibleOptions}
         rankingPending={load.picker === "open" && load.list === "hidden"}
+        usageSource={getUsageSource()}
+        onUsageSourceChange={changeUsageSource}
         onSkipRanking={skipRanking}
         value={value}
         query={query}

@@ -20,6 +20,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CHANGELOG_ENTRIES } from "@/lib/changelog"
 import { trackProductEvent } from "@/lib/analytics"
 import type { ProbabilityMode } from "@/lib/damage-calculation"
+import type { UsageSource } from "@/lib/usage-source-preference"
 import { createFeedbackUrl } from "@/lib/feedback"
 import { SUPPORTED_LOCALES, type SupportedLocale } from "@/lib/i18n"
 import {
@@ -71,6 +72,8 @@ type AppHeaderProps = LocaleControlProps & {
   onProbabilityModeChange: (mode: ProbabilityMode) => void
   statNameStrategy: StatNameStrategy
   onStatNameStrategyChange: (strategy: StatNameStrategy) => void
+  usageSource?: UsageSource
+  onUsageSourceChange?: (source: UsageSource) => void
   /** When set, brand is a control that requests return to matchup landing. */
   onBrandHomeClick?: (() => void) | null
 }
@@ -81,6 +84,8 @@ type SettingsDialogProps = LocaleControlProps & Pick<
   | "onProbabilityModeChange"
   | "statNameStrategy"
   | "onStatNameStrategyChange"
+  | "usageSource"
+  | "onUsageSourceChange"
 >
 
 const SELECT_CLASS =
@@ -152,8 +157,12 @@ function SettingsDialog({
   onProbabilityModeChange,
   statNameStrategy,
   onStatNameStrategyChange,
+  usageSource,
+  onUsageSourceChange,
 }: SettingsDialogProps) {
   const intl = useIntl()
+  usageSource ??= "champions"
+  onUsageSourceChange ??= () => {}
   const probabilityHintId = probabilityMode === "battle-odds"
     ? "probability.mode.battleOdds.hint"
     : "probability.mode.classic.hint"
@@ -233,6 +242,12 @@ function SettingsDialog({
                     {intl.formatMessage({ id: `locale.${value}` })}
                   </option>
                 ))}
+              </select>
+            </PreferenceRow>
+            <PreferenceRow htmlFor="settings-usage-source" label="Usage source" description="Choose the source used for usage ranking and recommendations.">
+              <select id="settings-usage-source" value={usageSource} onChange={(event) => onUsageSourceChange(event.target.value as UsageSource)} className={SELECT_CLASS}>
+                <option value="champions">Pokémon Champions</option>
+                <option value="smogon">Smogon</option>
               </select>
             </PreferenceRow>
 
@@ -346,6 +361,8 @@ export function AppHeader({
   onProbabilityModeChange,
   statNameStrategy,
   onStatNameStrategyChange,
+  usageSource,
+  onUsageSourceChange,
   feedbackScenarioUrl,
   onBrandHomeClick = null,
 }: AppHeaderProps) {
@@ -423,6 +440,8 @@ export function AppHeader({
             onProbabilityModeChange={onProbabilityModeChange}
             statNameStrategy={statNameStrategy}
             onStatNameStrategyChange={onStatNameStrategyChange}
+            usageSource={usageSource}
+            onUsageSourceChange={onUsageSourceChange}
           />
         </nav>
       </div>
