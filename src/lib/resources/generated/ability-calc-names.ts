@@ -310,5 +310,6 @@ export const GENERATED_ABILITY_CALC_NAMES = {
   "309": "Dragonize",
   "310": "Mega Sol",
   "312": "Eelevate",
-  "313": "Fire Mane"
+  "313": "Fire Mane",
+  "314": "Aura Guard"
 } as const satisfies Record<UpstreamResourceId, string>

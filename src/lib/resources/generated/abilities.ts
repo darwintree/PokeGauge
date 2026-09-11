@@ -5580,5 +5580,23 @@ export const GENERATED_ABILITIES = {
       "en": "Boosts the power of the Pokémon's Fire-type moves by 50%.",
       "ja": "Boosts the power of the Pokémon's Fire-type moves by 50%."
     }
+  },
+  "314": {
+    "resourceType": "ability",
+    "id": 314,
+    "slug": "aura-guard",
+    "calcAbilityName": "Aura Guard",
+    "names": {
+      "zh-hans": "Aura Guard",
+      "zh-hant": "Aura Guard",
+      "en": "Aura Guard",
+      "ja": "Aura Guard"
+    },
+    "descriptions": {
+      "zh-hans": "A Pokémon with Aura Guard takes half damage from moves that make contact. Moves affected by Long Reach which make contact will deal regular damage.",
+      "zh-hant": "A Pokémon with Aura Guard takes half damage from moves that make contact. Moves affected by Long Reach which make contact will deal regular damage.",
+      "en": "A Pokémon with Aura Guard takes half damage from moves that make contact. Moves affected by Long Reach which make contact will deal regular damage.",
+      "ja": "A Pokémon with Aura Guard takes half damage from moves that make contact. Moves affected by Long Reach which make contact will deal regular damage."
+    }
   }
 } as const satisfies Record<UpstreamResourceId, NormalizedAbility>
