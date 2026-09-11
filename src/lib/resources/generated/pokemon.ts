@@ -54808,7 +54808,9 @@ export const GENERATED_POKEMON = {
       "dark",
       "ghost"
     ],
-    "abilityIds": [],
+    "abilityIds": [
+      292
+    ],
     "baseStats": {
       "hp": 65,
       "atk": 154,
@@ -54893,7 +54895,9 @@ export const GENERATED_POKEMON = {
     "types": [
       "dragon"
     ],
-    "abilityIds": [],
+    "abilityIds": [
+      26
+    ],
     "baseStats": {
       "hp": 108,
       "atk": 130,
@@ -54935,7 +54939,9 @@ export const GENERATED_POKEMON = {
       "fighting",
       "steel"
     ],
-    "abilityIds": [],
+    "abilityIds": [
+      314
+    ],
     "baseStats": {
       "hp": 70,
       "atk": 100,
@@ -55191,7 +55197,9 @@ export const GENERATED_POKEMON = {
       "bug",
       "steel"
     ],
-    "abilityIds": [],
+    "abilityIds": [
+      181
+    ],
     "baseStats": {
       "hp": 75,
       "atk": 150,
@@ -55570,7 +55578,9 @@ export const GENERATED_POKEMON = {
       "dragon",
       "ice"
     ],
-    "abilityIds": [],
+    "abilityIds": [
+      270
+    ],
     "baseStats": {
       "hp": 115,
       "atk": 175,

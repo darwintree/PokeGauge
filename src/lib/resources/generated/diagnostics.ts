@@ -2605,7 +2605,8 @@ export const RESOURCE_DIAGNOSTICS = {
     309,
     310,
     312,
-    313
+    313,
+    314
   ],
   "itemIds": [
     247,
@@ -5408,6 +5409,24 @@ export const RESOURCE_DIAGNOSTICS = {
     },
     {
       "resourceType": "ability",
+      "id": 314,
+      "locale": "zh-hans",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 314,
+      "locale": "zh-hant",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
+      "id": 314,
+      "locale": "ja",
+      "fallbackLocale": "en"
+    },
+    {
+      "resourceType": "ability",
       "id": 10001,
       "locale": "zh-hans",
       "fallbackLocale": "en"
@@ -6497,28 +6516,12 @@ export const RESOURCE_DIAGNOSTICS = {
       "reason": "pokemon/10301 has no current ability relation"
     },
     {
-      "id": 10307,
-      "reason": "pokemon/10307 has no current ability relation"
-    },
-    {
-      "id": 10309,
-      "reason": "pokemon/10309 has no current ability relation"
-    },
-    {
-      "id": 10310,
-      "reason": "pokemon/10310 has no current ability relation"
-    },
-    {
       "id": 10311,
       "reason": "pokemon/10311 has no current ability relation"
     },
     {
       "id": 10312,
       "reason": "pokemon/10312 has no current ability relation"
-    },
-    {
-      "id": 10316,
-      "reason": "pokemon/10316 has no current ability relation"
     },
     {
       "id": 10317,
@@ -6547,10 +6550,6 @@ export const RESOURCE_DIAGNOSTICS = {
     {
       "id": 10324,
       "reason": "pokemon/10324 has no current ability relation"
-    },
-    {
-      "id": 10325,
-      "reason": "pokemon/10325 has no current ability relation"
     },
     {
       "id": 10326,
