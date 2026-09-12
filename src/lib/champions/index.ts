@@ -16,6 +16,8 @@ export {
   setChampionsMoveUsageFetcherForTest,
   setChampionsNatureUsageFetcherForTest,
   setChampionsPokemonUsageFetcherForTest,
+  setUsageSource,
+  getUsageSource,
 } from "./move-usage"
 export type {
   ChampionsAbilityUsageRecord,

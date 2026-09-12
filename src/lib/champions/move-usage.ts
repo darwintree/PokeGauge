@@ -13,9 +13,12 @@ import type {
   ChampionsMoveUsageRecord,
   ChampionsNatureUsageRecord,
 } from "./types"
+import type { UsageSource } from "@/lib/usage-source-preference"
 
 const CHAMPIONS_FORMAT: ChampionsBattleFormat = "Doubles"
 const CHAMPIONS_INDEX_URL = "https://championsbattledata.com/api"
+// Smogon publishes the Pokémon Champions VGC ladder separately from Doubles OU.
+// Use the all-rating aggregate so it is comparable to the unfiltered Champions source.
 
 type ChampionsIndexPokemon = {
   name: string
@@ -93,6 +96,20 @@ let pokemonUsageFetcher: () => Promise<BattlePokemonId[]> = fetchChampionsPokemo
 let championsIndexPromise: Promise<ChampionsIndexApi> | undefined
 const battleRowsCache = new Map<BattlePokemonId, Promise<ChampionsBattleApi | null>>()
 let jsonFetcher: (url: string) => Promise<unknown> = fetchJsonFromNetwork
+let usageSource: UsageSource = "champions"
+let smogonPokemonUsagePromise: Promise<BattlePokemonId[]> | undefined
+const smogonChaosCache = new Map<BattlePokemonId, Promise<Record<string, unknown> | null>>()
+export function setUsageSource(source: UsageSource): void {
+  usageSource = source
+  usageCache.clear()
+  abilityUsageCache.clear()
+  itemUsageCache.clear()
+  natureUsageCache.clear()
+  pokemonUsagePromise = undefined
+  smogonPokemonUsagePromise = undefined
+  smogonChaosCache.clear()
+}
+export function getUsageSource(): UsageSource { return usageSource }
 
 function normalizeJoinName(name: string): string {
   return name
@@ -173,6 +190,55 @@ async function fetchChampionsPokemonUsageOnline(): Promise<BattlePokemonId[]> {
     .sort((a, b) => a.rank - b.rank)
 
   return [...new Set(ranked.map(({ id }) => id))]
+}
+async function fetchSmogonPokemonUsageOnline(): Promise<BattlePokemonId[]> {
+  const pokemon = await listResources("pokemon", "en")
+  const byName = new Map(pokemon.flatMap((resource) => [resource.name, resource.pokemonSlug, resource.calcSpeciesName].map((name) => [normalizeJoinName(name), resource.battlePokemonId] as const)))
+  const response = await fetchJson<{ data?: Record<string, Record<string, unknown>> }>("/api/smogon/latest")
+  const data = response.data ?? {}
+  return Object.entries(data)
+    .sort(([, a], [, b]) => Number(b.usage ?? 0) - Number(a.usage ?? 0))
+    .flatMap(([name]) => {
+      const id = byName.get(normalizeJoinName(name))
+      return id == null ? [] : [id]
+    })
+}
+
+async function fetchSmogonChaos(battlePokemonId: BattlePokemonId): Promise<Record<string, unknown> | null> {
+  const resource = await getResource("pokemon", battlePokemonId, "en")
+  const slug = normalizeJoinName(resource.calcSpeciesName || resource.name)
+  try {
+    const response = await fetchJson<{ data?: Record<string, Record<string, unknown>> }>("/api/smogon/latest")
+    const data = response.data ?? {}
+    return data[resource.name] ?? data[slug] ?? Object.entries(data).find(([name]) => normalizeJoinName(name) === slug)?.[1] ?? null
+  } catch { return null }
+}
+
+function smogonPercent(value: unknown, total: number): number | null {
+  return typeof value === "number" && total > 0 ? (value / total) * 100 : null
+}
+function smogonRows(data: Record<string, unknown> | null, key: string): Array<[string, number]> {
+  const values = data?.[key]
+  if (!values || typeof values !== "object") return []
+  return Object.entries(values as Record<string, unknown>).flatMap(([name, value]) => typeof value === "number" ? [[name, value]] : [])
+}
+function smogonRowsWithPercent(data: Record<string, unknown> | null, key: string): Array<[string, number, number | null]> {
+  const rows = smogonRows(data, key)
+  const total = rows.reduce((sum, [, value]) => sum + value, 0)
+  return rows.sort(([, a], [, b]) => b - a).map(([name, value]) => [name, value, smogonPercent(value, total)])
+}
+
+async function fetchSmogonMoveUsageOnline(id: BattlePokemonId): Promise<ChampionsMoveUsageRecord[]> {
+  const data = await fetchSmogonChaos(id); return smogonRowsWithPercent(data, "Moves").map(([name, , percentage], index) => ({ battlePokemonId: id, moveId: getMoveIdByJoinName(name) ?? -1, format: "Doubles" as const, season: "latest", source: "Smogon", dataVersion: "chaos", rank: index + 1, percentage, championsMoveName: name })).filter((row) => row.moveId !== -1)
+}
+async function fetchSmogonAbilityUsageOnline(id: BattlePokemonId): Promise<ChampionsAbilityUsageRecord[]> {
+  const data = await fetchSmogonChaos(id); return smogonRowsWithPercent(data, "Abilities").map(([name, , percentage], index) => ({ battlePokemonId: id, abilityId: getAbilityIdByJoinName(name) ?? -1, format: "Doubles" as const, season: "latest", source: "Smogon", rank: index + 1, percentage, championsAbilityName: name })).filter((row) => row.abilityId !== -1)
+}
+async function fetchSmogonItemUsageOnline(id: BattlePokemonId): Promise<ChampionsItemUsageRecord[]> {
+  const data = await fetchSmogonChaos(id); return smogonRowsWithPercent(data, "Items").map(([name, , percentage], index) => ({ battlePokemonId: id, itemId: getItemIdByJoinName(name) ?? null, format: "Doubles", season: "latest", source: "Smogon", dataVersion: "chaos", rank: index + 1, percentage, championsItemName: name }))
+}
+async function fetchSmogonNatureUsageOnline(id: BattlePokemonId): Promise<ChampionsNatureUsageRecord[]> {
+  const data = await fetchSmogonChaos(id); return smogonRowsWithPercent(data, "Spreads").map(([name, , percentage], index) => ({ battlePokemonId: id, format: "Doubles", season: "latest", source: "Smogon", dataVersion: "chaos", rank: index + 1, percentage, nature: name.split(":")[0] }))
 }
 
 async function fetchChampionsBattleRows(
@@ -320,6 +386,7 @@ async function fetchChampionsNatureUsageOnline(
 export async function listChampionsMoveUsageRecords(
   battlePokemonId: BattlePokemonId,
 ): Promise<ChampionsMoveUsageRecord[]> {
+  if (usageSource === "smogon") return fetchSmogonMoveUsageOnline(battlePokemonId)
   let promise = usageCache.get(battlePokemonId)
   if (!promise) {
     promise = usageFetcher(battlePokemonId)
@@ -348,6 +415,7 @@ export function resetChampionsMoveUsageFetcherForTest(): void {
 export async function listChampionsAbilityUsageRecords(
   battlePokemonId: BattlePokemonId,
 ): Promise<ChampionsAbilityUsageRecord[]> {
+  if (usageSource === "smogon") return fetchSmogonAbilityUsageOnline(battlePokemonId)
   let promise = abilityUsageCache.get(battlePokemonId)
   if (!promise) {
     promise = abilityUsageFetcher(battlePokemonId)
@@ -376,6 +444,7 @@ export function resetChampionsAbilityUsageFetcherForTest(): void {
 export async function listChampionsItemUsageRecords(
   battlePokemonId: BattlePokemonId,
 ): Promise<ChampionsItemUsageRecord[]> {
+  if (usageSource === "smogon") return fetchSmogonItemUsageOnline(battlePokemonId)
   let promise = itemUsageCache.get(battlePokemonId)
   if (!promise) {
     promise = itemUsageFetcher(battlePokemonId)
@@ -404,6 +473,7 @@ export function resetChampionsItemUsageFetcherForTest(): void {
 export async function listChampionsNatureUsageRecords(
   battlePokemonId: BattlePokemonId,
 ): Promise<ChampionsNatureUsageRecord[]> {
+  if (usageSource === "smogon") return fetchSmogonNatureUsageOnline(battlePokemonId)
   let promise = natureUsageCache.get(battlePokemonId)
   if (!promise) {
     promise = natureUsageFetcher(battlePokemonId)
@@ -430,6 +500,7 @@ export function resetChampionsNatureUsageFetcherForTest(): void {
 }
 
 export function listChampionsPokemonUsageIds(): Promise<BattlePokemonId[]> {
+  if (usageSource === "smogon") { smogonPokemonUsagePromise ??= fetchSmogonPokemonUsageOnline(); smogonPokemonUsagePromise.catch(() => { smogonPokemonUsagePromise = undefined }); return smogonPokemonUsagePromise }
   pokemonUsagePromise ??= pokemonUsageFetcher()
   return pokemonUsagePromise
 }

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { pokemonSpriteUrl } from "@/lib/assets"
+import { getUsageSource } from "@/lib/champions"
 import type { BattlePokemonOption } from "@/lib/catalog"
 import { prioritizeBattlePokemonOptions } from "@/lib/catalog"
 import { POKEMON_TYPES, type PokemonType } from "@/lib/pokemon"
@@ -94,6 +95,8 @@ export function BattlePokemonPickerDialog({
   onMegaFirstChange,
   rankingPending,
   onSkipRanking,
+  usageSource = "champions",
+  onUsageSourceChange,
   onSelect,
 }: {
   open: boolean
@@ -110,6 +113,8 @@ export function BattlePokemonPickerDialog({
   megaFirst: boolean
   onMegaFirstChange: (checked: boolean) => void
   rankingPending?: boolean
+  usageSource?: "champions" | "smogon"
+  onUsageSourceChange?: (source: "champions" | "smogon") => void
   onSkipRanking?: () => void
   onSelect: (id: BattlePokemonId) => void
 }) {
@@ -220,8 +225,9 @@ export function BattlePokemonPickerDialog({
       {rankingPending ? (
         <div className="m-3 flex flex-col items-center gap-3 rounded-[10px] border border-hud-frame bg-notice-bg p-4 text-center">
           <p aria-live="polite" className="text-sm font-bold">
-            <FormattedMessage id="matchup.ranking.loading" />
+            <FormattedMessage id="matchup.ranking.loading" /> ({getUsageSource() === "smogon" ? "Smogon" : "Pokémon Champions"})
           </p>
+          <select aria-label="Usage source" value={usageSource} onChange={(event) => onUsageSourceChange?.(event.target.value as "champions" | "smogon")} className="h-9 rounded-md border border-hud-frame bg-paper px-2 text-xs font-bold"><option value="champions">Pokémon Champions</option><option value="smogon">Smogon</option></select>
           <Button
             type="button"
             size="sm"
