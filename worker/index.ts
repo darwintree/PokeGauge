@@ -12,9 +12,9 @@ const EDGE_CACHE_TTL_SECONDS = 3600
 const EDGE_CACHE_NAME = "usage-upstream"
 
 /**
- * Cache Worker responses at the edge so repeated requests neither re-fetch the
- * upstream nor re-parse it. The key is derived from the path only, so query
- * strings cannot fragment the cache.
+ * Cache Worker responses at the edge so repeated requests skip the upstream
+ * call. The key is taken from the path only, so query strings cannot fragment
+ * the cache.
  */
 function edgeCacheKey(request: Request): Request {
   const url = new URL(request.url)
@@ -115,33 +115,25 @@ export function resetPikalyticsFormatCacheForTest(): void {
   pikalyticsFormatCache = undefined
 }
 
-async function latestPikalyticsUsage(): Promise<Response> {
+/** Pikalytics keys every data endpoint by the discovered date and format. */
+async function fetchPikalytics(resource: string): Promise<Response> {
   const resolved = await resolvePikalyticsFormat()
   if (!resolved) return new Response("Pikalytics stats unavailable", { status: 502 })
-  const upstream = await fetch(`${PIKALYTICS_ORIGIN}/api/l/${resolved.date}/${resolved.format}`, { headers: UPSTREAM_HEADERS })
+  const upstream = await fetch(`${PIKALYTICS_ORIGIN}/api/${resource}/${resolved.date}/${resolved.format}`, { headers: UPSTREAM_HEADERS })
   if (!upstream.ok) return new Response("Pikalytics stats unavailable", { status: upstream.status })
   const data: unknown = await upstream.json()
-  return Response.json({ ...resolved, data }, { headers: { "cache-control": "public, max-age=3600" } })
-}
-
-async function pikalyticsPokemon(pokemon: string): Promise<Response> {
-  const resolved = await resolvePikalyticsFormat()
-  if (!resolved) return new Response("Pikalytics stats unavailable", { status: 502 })
-  const upstream = await fetch(`${PIKALYTICS_ORIGIN}/api/p/${resolved.date}/${resolved.format}/${encodeURIComponent(pokemon)}`, { headers: UPSTREAM_HEADERS })
-  if (!upstream.ok) return new Response("Pikalytics stats unavailable", { status: upstream.status })
-  const data: unknown = await upstream.json()
-  return Response.json({ ...resolved, data }, { headers: { "cache-control": "public, max-age=3600" } })
+  return Response.json({ ...resolved, data }, { headers: { "cache-control": `public, max-age=${EDGE_CACHE_TTL_SECONDS}` } })
 }
 
 export async function proxyPikalytics(request: Request, ctx: ExecutionContext): Promise<Response> {
   if (request.method !== "GET") return new Response("Method Not Allowed", { status: 405, headers: { allow: "GET" } })
   const path = decodeURIComponent(new URL(request.url).pathname.replace(/^\/api\/pikalytics\//, ""))
   return withEdgeCache(request, ctx, async () => {
-    if (path === "latest") return latestPikalyticsUsage()
+    if (path === "latest") return fetchPikalytics("l")
     if (path.startsWith("pokemon/")) {
       const pokemon = path.slice("pokemon/".length)
       if (!/^[\w .'’-]+$/.test(pokemon)) return new Response("Bad Request", { status: 400 })
-      return pikalyticsPokemon(pokemon)
+      return fetchPikalytics(`p/${encodeURIComponent(pokemon)}`)
     }
     return new Response("Not Found", { status: 404 })
   })

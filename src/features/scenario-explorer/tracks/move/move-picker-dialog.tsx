@@ -3,7 +3,6 @@ import { FormattedMessage, useIntl } from "react-intl"
 
 import { TypeBadge } from "@/components/pokemon/type-badge"
 import { getUsageSource, setUsageSource } from "@/lib/champions"
-import { Button } from "@/components/ui/button"
 import {
   rankMoveOptionsByChampionsUsage,
   type CatalogMoveOption,
@@ -11,7 +10,7 @@ import {
 } from "@/lib/catalog"
 import { POKEMON_TYPES, typeEffectiveness, type PokemonType } from "@/lib/pokemon"
 import type { BattlePokemonId } from "@/lib/resources"
-import { usageSourceMessageId, type UsageSource } from "@/lib/usage-source-preference"
+import type { UsageSource } from "@/lib/usage-source-preference"
 import { cn } from "@/lib/utils"
 
 import {
@@ -20,7 +19,7 @@ import {
   reduceRankingLoad,
 } from "../../matchup/ranking-load"
 import { PickerDialog } from "../../pickers/picker-dialog"
-import { UsageSourceSelect } from "../../pickers/usage-source-select"
+import { RankingPendingNotice } from "../../pickers/ranking-pending-notice"
 
 function sameTypeSet(left: readonly PokemonType[], right: readonly PokemonType[]) {
   if (left.length !== right.length) return false
@@ -241,25 +240,11 @@ export function MovePickerDialog({
       }
     >
       {rankingPending ? (
-        <div className="m-3 flex flex-col items-center gap-3 rounded-[10px] border border-hud-frame bg-notice-bg p-4 text-center">
-          <p aria-live="polite" className="text-sm font-bold">
-            <FormattedMessage id="matchup.ranking.loading" /> ({intl.formatMessage({ id: usageSourceMessageId(getUsageSource()) })})
-          </p>
-          <UsageSourceSelect
-            value={getUsageSource()}
-            onChange={changeUsageSource}
-            className="h-9 px-2 text-xs"
-          />
-          <Button
-            type="button"
-            size="sm"
-            variant="outline"
-            className="border border-hud-frame bg-paper font-bold shadow-hud-chip hover:bg-token-bg/60"
-            onClick={skipRanking}
-          >
-            <FormattedMessage id="matchup.ranking.skip" />
-          </Button>
-        </div>
+        <RankingPendingNotice
+          usageSource={getUsageSource()}
+          onUsageSourceChange={changeUsageSource}
+          onSkip={skipRanking}
+        />
       ) : (
         visibleOptions.map((option) => (
           <button

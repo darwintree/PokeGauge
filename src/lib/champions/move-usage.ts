@@ -100,8 +100,9 @@ let usageSource: UsageSource = "champions"
 let smogonPokemonUsagePromise: Promise<BattlePokemonId[]> | undefined
 let pikalyticsPokemonUsagePromise: Promise<BattlePokemonId[]> | undefined
 const smogonChaosCache = new Map<BattlePokemonId, Promise<Record<string, unknown> | null>>()
-export function setUsageSource(source: UsageSource): void {
-  usageSource = source
+
+/** Drop every cached usage result so the next read reflects current state. */
+function clearUsageCaches(): void {
   usageCache.clear()
   abilityUsageCache.clear()
   itemUsageCache.clear()
@@ -111,6 +112,11 @@ export function setUsageSource(source: UsageSource): void {
   pikalyticsPokemonUsagePromise = undefined
   smogonChaosCache.clear()
   resetPikalyticsCache()
+}
+
+export function setUsageSource(source: UsageSource): void {
+  usageSource = source
+  clearUsageCaches()
 }
 export function getUsageSource(): UsageSource { return usageSource }
 
@@ -633,29 +639,13 @@ export function setChampionsJsonFetcherForTest(
 ): void {
   championsIndexPromise = undefined
   battleRowsCache.clear()
-  usageCache.clear()
-  abilityUsageCache.clear()
-  itemUsageCache.clear()
-  natureUsageCache.clear()
-  pokemonUsagePromise = undefined
-  smogonPokemonUsagePromise = undefined
-  pikalyticsPokemonUsagePromise = undefined
-  smogonChaosCache.clear()
-  resetPikalyticsCache()
+  clearUsageCaches()
   jsonFetcher = fetcher
 }
 
 export function resetChampionsJsonFetcherForTest(): void {
   championsIndexPromise = undefined
   battleRowsCache.clear()
-  usageCache.clear()
-  abilityUsageCache.clear()
-  itemUsageCache.clear()
-  natureUsageCache.clear()
-  pokemonUsagePromise = undefined
-  smogonPokemonUsagePromise = undefined
-  pikalyticsPokemonUsagePromise = undefined
-  smogonChaosCache.clear()
-  resetPikalyticsCache()
+  clearUsageCaches()
   jsonFetcher = fetchJsonFromNetwork
 }

@@ -5,8 +5,11 @@ export const USAGE_SOURCE_STORAGE_KEY = "pokegauge.usage-source"
 export function usageSourceMessageId(source: UsageSource): string {
   return `usageSource.${source}`
 }
+function isUsageSource(value: string | null): value is UsageSource {
+  return USAGE_SOURCES.some((source) => source === value)
+}
 export function loadUsageSource(): UsageSource {
-  try { const value = localStorage.getItem(USAGE_SOURCE_STORAGE_KEY); if (value === "champions" || value === "smogon" || value === "pikalytics") return value } catch {}
+  try { const value = localStorage.getItem(USAGE_SOURCE_STORAGE_KEY); if (isUsageSource(value)) return value } catch {}
   return "champions"
 }
 export function saveUsageSource(source: UsageSource): void { try { localStorage.setItem(USAGE_SOURCE_STORAGE_KEY, source) } catch {} }

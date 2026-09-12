@@ -250,8 +250,18 @@ function SettingsDialog({
                 ))}
               </select>
             </PreferenceRow>
-            <PreferenceRow htmlFor="settings-usage-source" label={<FormattedMessage id="settings.usageSource.label" />} description={<FormattedMessage id="settings.usageSource.description" />}>
-              <UsageSourceSelect id="settings-usage-source" describedBy="settings-usage-source-description" value={usageSource} onChange={onUsageSourceChange} className={SELECT_CLASS} />
+            <PreferenceRow
+              htmlFor="settings-usage-source"
+              label={<FormattedMessage id="settings.usageSource.label" />}
+              description={<FormattedMessage id="settings.usageSource.description" />}
+            >
+              <UsageSourceSelect
+                id="settings-usage-source"
+                describedBy="settings-usage-source-description"
+                value={usageSource}
+                onChange={onUsageSourceChange}
+                className={SELECT_CLASS}
+              />
             </PreferenceRow>
 
             <PreferenceRow
