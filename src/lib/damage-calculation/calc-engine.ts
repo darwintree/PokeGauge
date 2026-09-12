@@ -64,6 +64,11 @@ export type CalcContext = {
   field: CalcFieldContext
 }
 
+/** These defenses depend on the HP entering a move use; calc handles their distinct hit rules. */
+export function hasFullHpProtection(context: CalcContext): boolean {
+  return ["Multiscale", "Shadow Shield", "Tera Shell"].includes(context.defender.abilityCalcName ?? "")
+}
+
 /**
  * @smogon/calc at level 50 with IV 31, EV 0, Serious nature computes
  * non-HP stat = base + 20 and HP = base + 75. Inverting lets the adapter feed
@@ -117,10 +122,11 @@ function calcMove(context: CalcMoveContext, hits?: number): Move {
 
 export type CalcHitMatrix = {
   rolls: readonly (readonly number[])[]
+  /** Whether calc applies a resistance Berry on the first row. */
   consumesBerry: boolean
 }
 
-/** Apply cumulative effects to the initial context for a subsequent move use. */
+/** Project cumulative hit effects onto the initial calc context. */
 export function applyCalcStatChanges(context: CalcContext, change: MoveStatChange, count: number): CalcContext {
   const pokemon = context[change.side]
   return { ...context, [change.side]: {
@@ -129,26 +135,6 @@ export function applyCalcStatChanges(context: CalcContext, change: MoveStatChang
       [change.stat]: Math.max(-6, Math.min(6, pokemon.boosts[change.stat] + count * change.stages)),
     },
   } }
-}
-
-/** Matrices indexed by prior stat-change count within this use, including zero. */
-export function calculateHitMatrixVariants(
-  context: CalcContext,
-  hits: number,
-  critical: boolean,
-  berryConsumed: boolean,
-  resistanceBerry: boolean,
-  change?: MoveStatChange,
-): readonly CalcHitMatrix[] {
-  const base = calculateHitMatrix(context, hits, critical, berryConsumed, resistanceBerry)
-  if (!change) return [base]
-  // calc already boosts the Parental Bond child for Power-Up Punch. Reuse
-  // that row explicitly; applying the incoming boost again would double it.
-  const boostAlreadyInMatrix = context.attacker.abilityCalcName === "Parental Bond" &&
-    context.move.calcMoveName === "Power-Up Punch"
-  return Array.from({ length: hits }, (_, count) => count === 0 || boostAlreadyInMatrix
-    ? base
-    : calculateHitMatrix(applyCalcStatChanges(context, change, count), hits, critical, berryConsumed, resistanceBerry))
 }
 
 /** Read calc's per-Hit results without collapsing them or summing equal-index rolls. */
@@ -186,13 +172,6 @@ export function calculateHitMatrix(
     Boolean(result.rawDesc.defenderItem) &&
     toID(result.rawDesc.defenderItem!) === toID(defender.item) &&
     rolls[0].some((damage) => damage > 0)
-  if (consumesBerry && context.attacker.abilityCalcName === "Parental Bond" && hits === 2) {
-    // calc 0.11.0 recursively calculates the child with the original Berry.
-    // Reuse its child calculation with the consumed item state, preserving
-    // child rounding and any within-move changes (e.g. Power-Up Punch).
-    const consumed = calculateHitMatrix(context, hits, critical, true, resistanceBerry)
-    rolls = [rolls[0], consumed.rolls[1]]
-  }
   return { rolls, consumesBerry }
 }
 
@@ -207,41 +186,4 @@ function calcField(context: CalcFieldContext): Field {
       ...(context.defenderIsSwitchingOut ? { isSwitching: "out" as const } : {}),
     },
   })
-}
-
-/** Normalize a calc damage result into the 16-roll array for one hit. */
-export function rollsFromCalcDamage(
-  damage: number | number[] | [number, number] | number[][],
-): number[] {
-  if (typeof damage === "number") return Array(16).fill(damage)
-  if (damage.length === 0) return Array(16).fill(0)
-  if (Array.isArray(damage[0])) {
-    // Multi-hit matrix: use the first hit's rolls (single-hit product contract).
-    return (damage[0] as number[]).slice()
-  }
-  return (damage as number[]).slice()
-}
-
-/** Compute the 16 normal rolls via @smogon/calc. */
-export function calculateNormalRolls(context: CalcContext): number[] {
-  const result = calculate(
-    CALC_GENERATION,
-    calcPokemon(context.attacker),
-    calcPokemon(context.defender),
-    calcMove({ ...context.move, isCrit: false }),
-    calcField(context.field),
-  )
-  return rollsFromCalcDamage(result.damage)
-}
-
-/** Compute the 16 critical rolls via @smogon/calc. */
-export function calculateCriticalRolls(context: CalcContext): number[] {
-  const result = calculate(
-    CALC_GENERATION,
-    calcPokemon(context.attacker),
-    calcPokemon(context.defender),
-    calcMove({ ...context.move, isCrit: true }),
-    calcField(context.field),
-  )
-  return rollsFromCalcDamage(result.damage)
 }

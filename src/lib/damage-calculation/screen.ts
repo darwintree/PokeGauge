@@ -1,6 +1,6 @@
 import type { MoveCategory } from "@/lib/catalog"
 
-import { NEUTRAL_MODIFIER } from "./damage-kernel"
+import { NEUTRAL_MODIFIER } from "./damage-input"
 
 export const SCREENS = ["none", "walls"] as const
 

@@ -158,7 +158,7 @@ it("marks assumed-satisfied abilities with green disclosure and no red unsupport
 
   expect(markup).toContain("Resolved at HP ≤ ⅓")
   expect(markup).toContain("Resolved as statused")
-  expect(markup).toContain("Resolved at full HP")
+  expect(markup).toContain("Starts at full HP")
   expect(markup).toContain("Resolved as target poisoned")
   expect(markup).toContain("bg-signal-green")
   expect(markup).toContain("Effect not supported yet")

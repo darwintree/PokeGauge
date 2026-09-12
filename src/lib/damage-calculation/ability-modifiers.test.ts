@@ -43,7 +43,7 @@ import { defaultTrackState, runScenarioPipeline } from "@/lib/scenario"
 import {
   CALC_GEN,
   VGC_LEVEL,
-  calculateDamageRolls,
+  evaluateExecutionPoint,
   calculationIdentity,
   chainModifiers,
   compileAbilityEffect,
@@ -388,18 +388,18 @@ function oracleRolls(options: {
     defenderAbilityId: options.defenderAbilityId ?? NO_ABILITY_ID,
     lowOutcome: { offense, defense: { hp: options.defender.maxHP(), def: defense } },
   })
-  const actual = calculateDamageRolls(outcome.calculation).low
+  const actual = evaluateExecutionPoint(outcome)
   const field = new Field()
-  expect(actual.normal).toEqual(
-    calculate(CALC_GEN, options.attacker, options.defender, new Move(CALC_GEN, options.moveName), field).damage,
+  expect([actual.normal!.min, actual.normal!.max]).toEqual(
+    calculate(CALC_GEN, options.attacker, options.defender, new Move(CALC_GEN, options.moveName), field).range(),
   )
-  expect(actual.critical).toEqual(
-    calculate(CALC_GEN, options.attacker, options.defender, new Move(CALC_GEN, options.moveName, { isCrit: true }), field).damage,
+  expect([actual.critical!.min, actual.critical!.max]).toEqual(
+    calculate(CALC_GEN, options.attacker, options.defender, new Move(CALC_GEN, options.moveName, { isCrit: true }), field).range(),
   )
 }
 
-describe("16-roll oracles and deliberate differences", () => {
-  it("matches representative Ability normal/critical rolls", () => {
+describe("execution references and deliberate differences", () => {
+  it("matches representative Ability normal/critical references", () => {
     oracleRolls({
       attacker: new Pokemon(CALC_GEN, "Azumarill", { level: VGC_LEVEL, ability: "Huge Power", nature: "Adamant", evs: { atk: 252 } }),
       defender: new Pokemon(CALC_GEN, "Snorlax", { level: VGC_LEVEL, nature: "Impish", evs: { hp: 252, def: 252 } }),
@@ -465,8 +465,8 @@ describe("16-roll oracles and deliberate differences", () => {
       attackerAbilityId: NO_ABILITY_ID,
       lowOutcome: { offense: 120, defense: { hp: 200, def: 100 } },
     })
-    expect(calculateDamageRolls(outcome.calculation)).toEqual(
-      calculateDamageRolls(neutral.calculation),
+    expect(evaluateExecutionPoint(outcome)).toEqual(
+      evaluateExecutionPoint(neutral),
     )
   })
 })

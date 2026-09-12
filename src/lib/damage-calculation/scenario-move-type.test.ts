@@ -22,7 +22,7 @@ import { defaultTrackState, runScenarioPipeline } from "@/lib/scenario"
 import {
   CALC_GEN,
   VGC_LEVEL,
-  calculateDamageRolls,
+  evaluateExecutionPoint,
   calculationIdentity,
   chainModifiers,
   compileAbilityEffect,
@@ -455,19 +455,19 @@ describe("scenario move type compiler coverage", () => {
         defense: { hp: defender.maxHP(), def: defender.rawStats.def },
       },
     })
-    const rolls = calculateDamageRolls(outcome.calculation).low
+    const execution = evaluateExecutionPoint(outcome)
     const field = new Field()
-    expect(rolls.normal).toEqual(
-      calculate(CALC_GEN, attacker, defender, new Move(CALC_GEN, "Tackle"), field).damage,
+    expect([execution.normal!.min, execution.normal!.max]).toEqual(
+      calculate(CALC_GEN, attacker, defender, new Move(CALC_GEN, "Tackle"), field).range(),
     )
-    expect(rolls.critical).toEqual(
+    expect([execution.critical!.min, execution.critical!.max]).toEqual(
       calculate(
         CALC_GEN,
         attacker,
         defender,
         new Move(CALC_GEN, "Tackle", { isCrit: true }),
         field,
-      ).damage,
+      ).range(),
     )
   })
 

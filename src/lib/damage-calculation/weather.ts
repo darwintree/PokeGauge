@@ -1,6 +1,6 @@
 import type { PokemonType } from "@/lib/pokemon"
 
-import { NEUTRAL_MODIFIER } from "./damage-kernel"
+import { NEUTRAL_MODIFIER } from "./damage-input"
 import type { ProbabilityMode } from "./types"
 
 export const WEATHERS = ["none", "sun", "rain", "sand", "snow"] as const

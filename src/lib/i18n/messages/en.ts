@@ -146,7 +146,7 @@ export const enMessages: Record<string, string> = {
     "track.item.formTrigger.cancel": "Cancel",
     "track.item.warning.utility-umbrella": "Only ordinary sun or rain Fire and Water damage is supported; other Weather interactions are not.",
     "track.ability.unsupported": "Effect not supported yet",
-    "track.ability.assumed.fullHp": "Resolved at full HP",
+    "track.ability.assumed.fullHp": "Starts at full HP",
     "track.ability.assumed.lowHp": "Resolved at HP ≤ ⅓",
     "track.ability.assumed.status": "Resolved as statused",
     "track.ability.assumed.targetPoisoned": "Resolved as target poisoned",

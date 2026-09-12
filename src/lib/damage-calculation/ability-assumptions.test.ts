@@ -22,7 +22,7 @@ import { type MoveSnapshot } from "@/lib/move"
 import { listResources } from "@/lib/resources"
 
 import {
-  calculateDamageRolls,
+  evaluateExecutionPoint,
   compileScenario,
   type CalculableScenario,
   type RawScenario,
@@ -66,9 +66,9 @@ function calculable(overrides: Partial<RawScenario> = {}): CalculableScenario {
 }
 
 function maxNormal(overrides: Partial<RawScenario> = {}): number {
-  const rolls = calculateDamageRolls(calculable(overrides).calculation).low.normal
-  if (!rolls) throw new Error("Expected normal damage")
-  return Math.max(...rolls)
+  const execution = evaluateExecutionPoint(calculable(overrides)).normal
+  if (!execution) throw new Error("Expected normal damage")
+  return execution.max
 }
 
 beforeAll(async () => {
@@ -139,9 +139,9 @@ describe("assumed-satisfied calc inputs", () => {
 
   it("makes Merciless critical without a separate poison input", () => {
     const outcome = calculable({ attackerAbilityId: MERCILESS_ABILITY_ID })
-    const rolls = calculateDamageRolls(outcome.calculation).low
-    expect(rolls.normal).toBeUndefined()
-    expect(Math.max(...rolls.critical!)).toBeGreaterThan(maxNormal())
+    const execution = evaluateExecutionPoint(outcome)
+    expect(execution.normal).toBeUndefined()
+    expect(execution.critical!.max).toBeGreaterThan(maxNormal())
   })
 
   it("activates Analytic on Pursuit without applying Pursuit's switching boost", () => {

@@ -3,7 +3,7 @@ import { LEVITATE_ABILITY_ID } from "@/lib/ability"
 
 export { LEVITATE_ABILITY_ID }
 
-import { chainModifiers, NEUTRAL_MODIFIER } from "./damage-kernel"
+import { chainModifiers, NEUTRAL_MODIFIER } from "./damage-input"
 
 export const TERRAINS = [
   "none",

@@ -1,6 +1,6 @@
 import type { ValueRange } from "@/lib/damage-distribution/hit-composition"
 
-import type { DamageFormulaBranch } from "./damage-kernel"
+import type { DamageFormulaBranch } from "./damage-input"
 import { branchEffectivePower, branchPhases, type MechanicsPhase } from "./formula-projection"
 import { compileHitComposition, projectHitComposition, type ExecutionProjection } from "./hit-execution"
 import type { CalculableScenario, HitFact } from "./scenario-compiler"
@@ -61,8 +61,8 @@ export function projectMoveMechanics(compiled: CalculableScenario, projection?: 
     },
     hits: resolved.hits.map((hit, index) => ({
       basePower: compiled.execution.powers[index],
-      ...(hit.normal ? { normal: hit.normal.effectivePower } : {}),
-      ...(hit.critical ? { critical: hit.critical.effectivePower } : {}),
+      ...(hit.normal !== undefined ? { normal: hit.normal } : {}),
+      ...(hit.critical !== undefined ? { critical: hit.critical } : {}),
     })),
   }
 }

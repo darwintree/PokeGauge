@@ -1,35 +1,14 @@
 import { describe, expect, it } from "vitest"
 
 import {
-  calculateDamageRolls,
   chainModifiers,
   type CalcContext,
-  type CompiledDamageInput,
-  type DamageFormulaBranch,
   NEUTRAL_MODIFIER,
 } from "@/lib/damage-calculation"
 
-const N = NEUTRAL_MODIFIER
+import { calculateHitMatrix } from "./calc-engine"
 
-function branch(): DamageFormulaBranch {
-  return {
-    damageNegated: false,
-    power: 0,
-    basePowerModifier: N,
-    attack: 0,
-    attackStage: 0,
-    attackModifier: N,
-    defense: 0,
-    defenseStage: 0,
-    defenseModifier: N,
-    spreadModifier: N,
-    weatherModifier: N,
-    criticalModifier: N,
-    stabModifier: N,
-    typeEffectivenessModifier: N,
-    finalModifier: N,
-  }
-}
+const N = NEUTRAL_MODIFIER
 
 function calcPoint(overrides: Partial<CalcContext> = {}): CalcContext {
   return {
@@ -49,17 +28,10 @@ function calcPoint(overrides: Partial<CalcContext> = {}): CalcContext {
   }
 }
 
-function input(
-  point: CalcContext,
-  branches: { normal?: boolean; critical?: boolean } = { normal: true, critical: true },
-): CompiledDamageInput {
+function hitRolls(context: CalcContext) {
   return {
-    low: {
-      defenderHp: 170,
-      calc: point,
-      ...(branches.normal ? { normal: branch() } : {}),
-      ...(branches.critical ? { critical: branch() } : {}),
-    },
+    normal: calculateHitMatrix(context, 1, false, false, false).rolls[0],
+    critical: calculateHitMatrix(context, 1, true, false, false).rolls[0],
   }
 }
 
@@ -71,7 +43,7 @@ describe("calc-engine adapter", () => {
   })
 
   it("produces 16 normal and critical rolls for a spread STAB move", () => {
-    const result = calculateDamageRolls(input(calcPoint())).low
+    const result = hitRolls(calcPoint())
 
     expect(result.normal).toHaveLength(16)
     expect(result.critical).toHaveLength(16)
@@ -87,31 +59,31 @@ describe("calc-engine adapter", () => {
   })
 
   it("maps the spread-off toggle to a normal target", () => {
-    const single = calculateDamageRolls(input(calcPoint({
+    const single = hitRolls(calcPoint({
       move: { calcMoveName: "Earthquake", target: "normal", isCrit: false },
-    }))).low
-    const spread = calculateDamageRolls(input(calcPoint())).low
+    }))
+    const spread = hitRolls(calcPoint())
 
     expect(single.normal![0]).toBeGreaterThan(spread.normal![0])
   })
 
   it("feeds exact stats and stages into calc", () => {
-    const boosted = calculateDamageRolls(input(calcPoint({
+    const boosted = hitRolls(calcPoint({
       attacker: {
         calcSpeciesName: "Garchomp",
         exactStats: { hp: 183, atk: 186, def: 100, spa: 100, spd: 100, spe: 122 },
         boosts: { atk: 2, def: 0, spa: 0, spd: 0, spe: 0 },
       },
-    }))).low
-    const neutral = calculateDamageRolls(input(calcPoint())).low
+    }))
+    const neutral = hitRolls(calcPoint())
 
     expect(boosted.normal![0]).toBeGreaterThan(neutral.normal![0])
   })
 
   it("derives dynamic move power from calc instead of a fixed snapshot", () => {
-    const lowKick = calculateDamageRolls(input(calcPoint({
+    const lowKick = hitRolls(calcPoint({
       move: { calcMoveName: "Low Kick", target: "normal", isCrit: false },
-    }))).low
+    }))
 
     expect(lowKick.normal).toHaveLength(16)
     // Garchomp (95 kg) vs Snorlax (460 kg): Low Kick = 120 BP, neutral, L50 exact stats.
@@ -119,17 +91,16 @@ describe("calc-engine adapter", () => {
       112, 112, 114, 116, 116, 118, 120, 120, 122, 124, 124, 126, 128, 128, 130, 132,
     ])
 
-    const grassKnot = calculateDamageRolls(input(calcPoint({
+    const grassKnot = hitRolls(calcPoint({
       move: { calcMoveName: "Grass Knot", target: "normal", isCrit: false },
-    }))).low
-    // Garchomp 95 kg vs Snorlax 460 kg: Grass Knot = 80 BP (weight band), but Grass Knot
-    // hits the special side (spd) so the values differ from Low Kick.
+    }))
+    // Grass Knot uses the same defender weight band but attacks the special side.
     expect(grassKnot.normal).toHaveLength(16)
     expect(grassKnot.normal![0]).toBeGreaterThan(0)
   })
 
   it("applies weather and terrain through the calc field", () => {
-    const sunFire = calculateDamageRolls(input(calcPoint({
+    const sunFire = hitRolls(calcPoint({
       attacker: {
         calcSpeciesName: "Charizard",
         exactStats: { hp: 170, atk: 100, def: 100, spa: 160, spd: 120, spe: 150 },
@@ -137,8 +108,8 @@ describe("calc-engine adapter", () => {
       },
       move: { calcMoveName: "Flamethrower", target: "normal", isCrit: false },
       field: { gameType: "Doubles", weather: "Sun" },
-    }))).low
-    const noSun = calculateDamageRolls(input(calcPoint({
+    }))
+    const noSun = hitRolls(calcPoint({
       attacker: {
         calcSpeciesName: "Charizard",
         exactStats: { hp: 170, atk: 100, def: 100, spa: 160, spd: 120, spe: 150 },
@@ -146,13 +117,13 @@ describe("calc-engine adapter", () => {
       },
       move: { calcMoveName: "Flamethrower", target: "normal", isCrit: false },
       field: { gameType: "Doubles" },
-    }))).low
+    }))
 
     expect(sunFire.normal![0]).toBeGreaterThan(noSun.normal![0])
   })
 
   it("applies recognized ability and item names through calc", () => {
-    const hugePower = calculateDamageRolls(input(calcPoint({
+    const hugePower = hitRolls(calcPoint({
       attacker: {
         calcSpeciesName: "Azumarill",
         abilityCalcName: "Huge Power",
@@ -160,28 +131,28 @@ describe("calc-engine adapter", () => {
         boosts: { atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
       },
       move: { calcMoveName: "Tackle", target: "normal", isCrit: false },
-    }))).low
-    const noAbility = calculateDamageRolls(input(calcPoint({
+    }))
+    const noAbility = hitRolls(calcPoint({
       attacker: {
         calcSpeciesName: "Azumarill",
         exactStats: { hp: 170, atk: 100, def: 100, spa: 100, spd: 100, spe: 100 },
         boosts: { atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
       },
       move: { calcMoveName: "Tackle", target: "normal", isCrit: false },
-    }))).low
+    }))
 
     expect(hugePower.normal![0]).toBeGreaterThan(noAbility.normal![0])
   })
 
   it("returns zero rolls for a type immunity", () => {
-    const immune = calculateDamageRolls(input(calcPoint({
+    const immune = hitRolls(calcPoint({
       defender: {
         calcSpeciesName: "Charizard",
         exactStats: { hp: 170, atk: 100, def: 100, spa: 100, spd: 100, spe: 100 },
         boosts: { atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
       },
       move: { calcMoveName: "Earthquake", target: "normal", isCrit: false },
-    }))).low
+    }))
 
     expect(immune.normal).toEqual(Array(16).fill(0))
   })

@@ -146,7 +146,7 @@ export const zhHantMessages: Record<string, string> = {
     "track.item.formTrigger.cancel": "取消",
     "track.item.warning.utility-umbrella": "僅支援抑制晴天或雨天下一般火、水屬性傷害修正；其他天氣互動暫不支援。",
     "track.ability.unsupported": "效果暫未支援",
-    "track.ability.assumed.fullHp": "按滿 HP 結算",
+    "track.ability.assumed.fullHp": "初始為滿 HP",
     "track.ability.assumed.lowHp": "按 HP≤⅓ 結算",
     "track.ability.assumed.status": "按已陷入異常狀態結算",
     "track.ability.assumed.targetPoisoned": "按對手中毒／劇毒結算",

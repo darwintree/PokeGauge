@@ -7,7 +7,7 @@ import { EELEVATE_ABILITY_ID, LEVITATE_ABILITY_ID } from "@/lib/ability"
 import { getMoveById, listResources } from "@/lib/resources"
 
 import { CALC_GEN, VGC_LEVEL } from "@/lib/damage-calculation"
-import { calculateDamageRolls, chainModifiers } from "@/lib/damage-calculation"
+import { evaluateExecutionPoint, chainModifiers } from "@/lib/damage-calculation"
 import { defenderStatValues, offenseStatValue } from "@/lib/stat-calculation"
 import { getAttackerStatSetups, getDefenderSetups } from "@/lib/stat-calculation"
 import {
@@ -171,8 +171,9 @@ describe("terrain compiler", () => {
       expect(outcome.calculation.low.normal?.spreadModifier).toBe(
         spread ? 3072 : 4096,
       )
-      expect(calculateDamageRolls(outcome.calculation).low.normal).toEqual(
-        calculate(CALC_GEN, attacker, defender, move, field).damage,
+      const outcomeDamage = evaluateExecutionPoint(outcome).normal!
+      expect([outcomeDamage.min, outcomeDamage.max]).toEqual(
+        calculate(CALC_GEN, attacker, defender, move, field).range(),
       )
     },
   )

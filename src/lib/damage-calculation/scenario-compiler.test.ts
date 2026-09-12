@@ -9,7 +9,7 @@ import {
   normalizeSnapshotPower,
 } from "@/lib/move"
 
-import { calculateDamageRolls, type DamageFormulaBranch } from "@/lib/damage-calculation"
+import { evaluateExecutionPoint, type DamageFormulaBranch } from "@/lib/damage-calculation"
 import { CALC_GEN, VGC_LEVEL } from "@/lib/damage-calculation"
 import { defenderStatValues, offenseStatValue } from "@/lib/stat-calculation"
 import {
@@ -711,25 +711,25 @@ describe("scenario compiler", () => {
       },
     })
     const field = new Field({ gameType: "Doubles" })
-    const result = calculateDamageRolls(compiled.calculation).low
+    const result = evaluateExecutionPoint(compiled)
 
-    expect(result.normal).toEqual(
+    expect([result.normal!.min, result.normal!.max]).toEqual(
       calculate(
         CALC_GEN,
         attacker,
         defender,
         new Move(CALC_GEN, testCase.moveName),
         field,
-      ).damage,
+      ).range(),
     )
-    expect(result.critical).toEqual(
+    expect([result.critical!.min, result.critical!.max]).toEqual(
       calculate(
         CALC_GEN,
         attacker,
         defender,
         new Move(CALC_GEN, testCase.moveName, { isCrit: true }),
         field,
-      ).damage,
+      ).range(),
     )
   })
 
@@ -900,8 +900,8 @@ describe("scenario compiler", () => {
       const variant = structuredClone(outcome)
       variant.calculation.low.normal!.finalModifier += 1
 
-      expect(calculateDamageRolls(variant.calculation)).toEqual(
-        calculateDamageRolls(outcome.calculation),
+      expect(evaluateExecutionPoint(variant)).toEqual(
+        evaluateExecutionPoint(outcome),
       )
       expect(calculationIdentity(variant)).not.toBe(calculationIdentity(outcome))
     })

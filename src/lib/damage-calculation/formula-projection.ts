@@ -1,4 +1,4 @@
-import { NEUTRAL_MODIFIER, applyModifier, type DamageFormulaBranch } from "./damage-kernel"
+import { NEUTRAL_MODIFIER, applyModifier, type DamageFormulaBranch } from "./damage-input"
 
 export type MechanicsPhaseKind =
   | "base-power" | "spread" | "weather-damage" | "critical" | "stab" | "type-effectiveness" | "final"
