@@ -59,6 +59,11 @@ const CREDIT_LINKS = [
     href: "https://championsbattledata.com/",
     descriptionId: "credits.champions",
   },
+  {
+    name: "Pikalytics",
+    href: "https://www.pikalytics.com/pokedex",
+    descriptionId: "credits.pikalytics",
+  },
 ] as const
 
 type LocaleControlProps = {
@@ -244,10 +249,10 @@ function SettingsDialog({
                 ))}
               </select>
             </PreferenceRow>
-            <PreferenceRow htmlFor="settings-usage-source" label="Usage source" description="Choose the source used for usage ranking and recommendations.">
+            <PreferenceRow htmlFor="settings-usage-source" label={<FormattedMessage id="settings.usageSource.label" />} description={<FormattedMessage id="settings.usageSource.description" />}>
               <select id="settings-usage-source" value={usageSource} onChange={(event) => onUsageSourceChange(event.target.value as UsageSource)} className={SELECT_CLASS}>
                 <option value="champions">Pokémon Champions</option>
-                <option value="smogon">Smogon</option>
+                <option value="smogon">Smogon</option><option value="pikalytics">Pikalytics</option>
               </select>
             </PreferenceRow>
 

@@ -105,7 +105,7 @@ export function BattlePokemonPicker({
     rankingGeneration.current += 1
     setLoad((current) => reduceRankingLoad(current, "skip"))
   }
-  function changeUsageSource(source: "champions" | "smogon") {
+  function changeUsageSource(source: "champions" | "smogon" | "pikalytics") {
     setUsageSource(source)
     rankingGeneration.current += 1
     setRankedIds(null)

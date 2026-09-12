@@ -1,6 +1,8 @@
 const PRODUCT_EVENTS = new Set(["page_view", "scenario_ready", "share", "feedback"])
 const SUPPORTED_LOCALES = new Set(["zh-hans", "zh-hant", "en", "ja"])
 const SMOGON_ORIGIN = "https://www.smogon.com/stats/"
+const PIKALYTICS_ORIGIN = "https://www.pikalytics.com"
+const PIKALYTICS_FORMAT = "gen9championsvgc2026regmc"
 
 async function latestSmogonChampions(): Promise<Response> {
   const now = new Date()
@@ -30,6 +32,16 @@ export async function proxySmogonStats(request: Request): Promise<Response> {
   const upstream = await fetch(SMOGON_ORIGIN + path)
   if (!upstream.ok) return new Response("Smogon stats unavailable", { status: upstream.status })
   return new Response(upstream.body, { status: 200, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "public, max-age=3600" } })
+}
+
+async function proxyPikalytics(request: Request): Promise<Response> {
+  if (request.method !== "GET") return new Response("Method Not Allowed", { status: 405, headers: { allow: "GET" } })
+  const path = new URL(request.url).pathname.replace(/^\/api\/pikalytics\//, "")
+  if (path === "format") return fetch(`${PIKALYTICS_ORIGIN}/ai/pokedex/${PIKALYTICS_FORMAT}`)
+  if (!/^[A-Za-z0-9-]+$/.test(path)) return new Response("Bad Request", { status: 400 })
+  const upstream = await fetch(`${PIKALYTICS_ORIGIN}/ai/pokedex/${PIKALYTICS_FORMAT}/${path}`)
+  if (!upstream.ok) return new Response("Pikalytics stats unavailable", { status: upstream.status })
+  return new Response(upstream.body, { headers: { "content-type": "text/markdown; charset=utf-8", "cache-control": "public, max-age=3600" } })
 }
 
 function referrerHost(request: Request): string {
@@ -94,6 +106,7 @@ export default {
       return recordProductEvent(request, env)
     }
     if (new URL(request.url).pathname.startsWith("/api/smogon/")) return proxySmogonStats(request)
+    if (new URL(request.url).pathname.startsWith("/api/pikalytics/")) return proxyPikalytics(request)
     return env.ASSETS.fetch(request)
   },
 } satisfies ExportedHandler<Env>
