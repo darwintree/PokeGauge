@@ -17,6 +17,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { UsageSourceSelect } from "@/features/scenario-explorer/pickers/usage-source-select"
 import { CHANGELOG_ENTRIES } from "@/lib/changelog"
 import { trackProductEvent } from "@/lib/analytics"
 import type { ProbabilityMode } from "@/lib/damage-calculation"
@@ -250,10 +251,7 @@ function SettingsDialog({
               </select>
             </PreferenceRow>
             <PreferenceRow htmlFor="settings-usage-source" label={<FormattedMessage id="settings.usageSource.label" />} description={<FormattedMessage id="settings.usageSource.description" />}>
-              <select id="settings-usage-source" value={usageSource} onChange={(event) => onUsageSourceChange(event.target.value as UsageSource)} className={SELECT_CLASS}>
-                <option value="champions">Pokémon Champions</option>
-                <option value="smogon">Smogon</option><option value="pikalytics">Pikalytics</option>
-              </select>
+              <UsageSourceSelect id="settings-usage-source" describedBy="settings-usage-source-description" value={usageSource} onChange={onUsageSourceChange} className={SELECT_CLASS} />
             </PreferenceRow>
 
             <PreferenceRow

@@ -2,7 +2,11 @@ const PRODUCT_EVENTS = new Set(["page_view", "scenario_ready", "share", "feedbac
 const SUPPORTED_LOCALES = new Set(["zh-hans", "zh-hant", "en", "ja"])
 const SMOGON_ORIGIN = "https://www.smogon.com/stats/"
 const PIKALYTICS_ORIGIN = "https://www.pikalytics.com"
-const PIKALYTICS_FORMAT = "gen9championsvgc2026regmc"
+
+const UPSTREAM_HEADERS = {
+  accept: "application/json",
+  "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+} as const
 
 async function latestSmogonChampions(): Promise<Response> {
   const now = new Date()
@@ -34,14 +38,71 @@ export async function proxySmogonStats(request: Request): Promise<Response> {
   return new Response(upstream.body, { status: 200, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "public, max-age=3600" } })
 }
 
+type PikalyticsFormat = { format: string; date: string }
+
+const PIKALYTICS_FORMAT_TTL_MS = 60 * 60 * 1000
+let pikalyticsFormatCache: { value: PikalyticsFormat; expiresAt: number } | undefined
+
+/**
+ * Pikalytics discovers its own dataset from the site's GameConfig: the pokedex
+ * page marks the active ladder format (including its rating suffix) with
+ * `selected`, and the AI pokedex header carries the "Data Date" it is published
+ * under. The pokedex response is large, so keep the resolved pair per isolate.
+ */
+export async function resolvePikalyticsFormat(): Promise<PikalyticsFormat | null> {
+  if (pikalyticsFormatCache && pikalyticsFormatCache.expiresAt > Date.now()) {
+    return pikalyticsFormatCache.value
+  }
+  const [pokedex, aiIndex] = await Promise.all([
+    fetch(`${PIKALYTICS_ORIGIN}/pokedex`, { headers: UPSTREAM_HEADERS }),
+    fetch(`${PIKALYTICS_ORIGIN}/ai/pokedex`, { headers: UPSTREAM_HEADERS }),
+  ])
+  if (!pokedex.ok || !aiIndex.ok) return null
+  const pokedexHtml = await pokedex.text()
+  const aiMarkdown = await aiIndex.text()
+  // `selected` marks the active ladder format; keep its rating suffix because the
+  // data endpoint is keyed by the full value.
+  const selected = pokedexHtml
+    .match(/<option[^>]*\bvalue="([a-z0-9][a-z0-9-]*)"[^>]*\bselected\b[^>]*>/)?.[1]
+  const date = aiMarkdown.match(/- \*\*Data Date\*\*: `?([0-9]{4}-[0-9]{2})`?/)?.[1]
+  if (!selected || !date) return null
+  const value = { format: selected, date }
+  pikalyticsFormatCache = { value, expiresAt: Date.now() + PIKALYTICS_FORMAT_TTL_MS }
+  return value
+}
+
+export function resetPikalyticsFormatCacheForTest(): void {
+  pikalyticsFormatCache = undefined
+}
+
+async function latestPikalyticsUsage(): Promise<Response> {
+  const resolved = await resolvePikalyticsFormat()
+  if (!resolved) return new Response("Pikalytics stats unavailable", { status: 502 })
+  const upstream = await fetch(`${PIKALYTICS_ORIGIN}/api/l/${resolved.date}/${resolved.format}`, { headers: UPSTREAM_HEADERS })
+  if (!upstream.ok) return new Response("Pikalytics stats unavailable", { status: upstream.status })
+  const data: unknown = await upstream.json()
+  return Response.json({ ...resolved, data }, { headers: { "cache-control": "public, max-age=3600" } })
+}
+
+async function pikalyticsPokemon(pokemon: string): Promise<Response> {
+  const resolved = await resolvePikalyticsFormat()
+  if (!resolved) return new Response("Pikalytics stats unavailable", { status: 502 })
+  const upstream = await fetch(`${PIKALYTICS_ORIGIN}/api/p/${resolved.date}/${resolved.format}/${encodeURIComponent(pokemon)}`, { headers: UPSTREAM_HEADERS })
+  if (!upstream.ok) return new Response("Pikalytics stats unavailable", { status: upstream.status })
+  const data: unknown = await upstream.json()
+  return Response.json({ ...resolved, data }, { headers: { "cache-control": "public, max-age=3600" } })
+}
+
 async function proxyPikalytics(request: Request): Promise<Response> {
   if (request.method !== "GET") return new Response("Method Not Allowed", { status: 405, headers: { allow: "GET" } })
-  const path = new URL(request.url).pathname.replace(/^\/api\/pikalytics\//, "")
-  if (path === "format") return fetch(`${PIKALYTICS_ORIGIN}/ai/pokedex/${PIKALYTICS_FORMAT}`)
-  if (!/^[A-Za-z0-9-]+$/.test(path)) return new Response("Bad Request", { status: 400 })
-  const upstream = await fetch(`${PIKALYTICS_ORIGIN}/ai/pokedex/${PIKALYTICS_FORMAT}/${path}`)
-  if (!upstream.ok) return new Response("Pikalytics stats unavailable", { status: upstream.status })
-  return new Response(upstream.body, { headers: { "content-type": "text/markdown; charset=utf-8", "cache-control": "public, max-age=3600" } })
+  const path = decodeURIComponent(new URL(request.url).pathname.replace(/^\/api\/pikalytics\//, ""))
+  if (path === "latest") return latestPikalyticsUsage()
+  if (path.startsWith("pokemon/")) {
+    const pokemon = path.slice("pokemon/".length)
+    if (!/^[\w .'’-]+$/.test(pokemon)) return new Response("Bad Request", { status: 400 })
+    return pikalyticsPokemon(pokemon)
+  }
+  return new Response("Not Found", { status: 404 })
 }
 
 function referrerHost(request: Request): string {

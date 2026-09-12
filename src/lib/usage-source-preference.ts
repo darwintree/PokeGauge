@@ -1,5 +1,10 @@
 export type UsageSource = "champions" | "smogon" | "pikalytics"
+export const USAGE_SOURCES: readonly UsageSource[] = ["champions", "smogon", "pikalytics"]
 export const USAGE_SOURCE_STORAGE_KEY = "pokegauge.usage-source"
+/** Message id for the display name of a usage source. */
+export function usageSourceMessageId(source: UsageSource): string {
+  return `usageSource.${source}`
+}
 export function loadUsageSource(): UsageSource {
   try { const value = localStorage.getItem(USAGE_SOURCE_STORAGE_KEY); if (value === "champions" || value === "smogon" || value === "pikalytics") return value } catch {}
   return "champions"

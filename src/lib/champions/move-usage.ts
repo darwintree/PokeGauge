@@ -98,6 +98,7 @@ const battleRowsCache = new Map<BattlePokemonId, Promise<ChampionsBattleApi | nu
 let jsonFetcher: (url: string) => Promise<unknown> = fetchJsonFromNetwork
 let usageSource: UsageSource = "champions"
 let smogonPokemonUsagePromise: Promise<BattlePokemonId[]> | undefined
+let pikalyticsPokemonUsagePromise: Promise<BattlePokemonId[]> | undefined
 const smogonChaosCache = new Map<BattlePokemonId, Promise<Record<string, unknown> | null>>()
 export function setUsageSource(source: UsageSource): void {
   usageSource = source
@@ -107,7 +108,9 @@ export function setUsageSource(source: UsageSource): void {
   natureUsageCache.clear()
   pokemonUsagePromise = undefined
   smogonPokemonUsagePromise = undefined
+  pikalyticsPokemonUsagePromise = undefined
   smogonChaosCache.clear()
+  resetPikalyticsCache()
 }
 export function getUsageSource(): UsageSource { return usageSource }
 
@@ -241,28 +244,108 @@ async function fetchSmogonNatureUsageOnline(id: BattlePokemonId): Promise<Champi
   const data = await fetchSmogonChaos(id); return smogonRowsWithPercent(data, "Spreads").map(([name, , percentage], index) => ({ battlePokemonId: id, format: "Doubles", season: "latest", source: "Smogon", dataVersion: "chaos", rank: index + 1, percentage, nature: name.split(":")[0] }))
 }
 
-async function fetchPikalyticsMarkdown(path: string): Promise<string> {
-  const response = await fetch(`/api/pikalytics/${path}`)
-  if (!response.ok) throw new Error(`Pikalytics request failed ${response.status}`)
-  return response.text()
+type PikalyticsEntry = {
+  name: string
+  rank: string
+  percent: string
+  abilities: Array<{ ability: string; percent: string }> | null
+  items: Array<{ item: string; percent: string }> | null
+  moves: Array<{ move: string; percent: string }> | null
+  natures: Array<{ nature: string; percent: string }> | null
 }
-function pikalyticsRows(markdown: string, heading: string): Array<[string, number]> {
-  const section = markdown.split(`## ${heading}`)[1]?.split(/^## /m)[0] ?? ""
-  return [...section.matchAll(/^[-*] \*\*(.+?)\*\*: ([0-9.]+)%/gm)].map(([, name, value]) => [name, Number(value)])
+
+type PikalyticsLatest = {
+  format: string
+  date: string
+  data: PikalyticsEntry[]
 }
-async function fetchPikalyticsPokemonUsageOnline(): Promise<BattlePokemonId[]> {
-  const pokemon = await listResources("pokemon", "en")
-  const byName = new Map(pokemon.flatMap((resource) => [resource.name, resource.pokemonSlug, resource.calcSpeciesName].map((name) => [normalizeJoinName(name), resource.battlePokemonId] as const)))
-  const markdown = await fetchPikalyticsMarkdown("format")
-  return [...markdown.matchAll(/^\| (\d+) \| \*\*(.+?)\*\* \| ([0-9.]+)%/gm)].sort((a, b) => Number(a[1]) - Number(b[1])).flatMap(([, , name]) => { const id = byName.get(normalizeJoinName(name)); return id == null ? [] : [id] })
+
+type PikalyticsDetail = { format: string; date: string; data: PikalyticsEntry }
+
+const pikalyticsEntryCache = new Map<BattlePokemonId, Promise<PikalyticsEntry | null>>()
+let pikalyticsRosterPromise: Promise<Array<{ id: BattlePokemonId; name: string }>> | undefined
+
+function resetPikalyticsCache(): void {
+  pikalyticsRosterPromise = undefined
+  pikalyticsEntryCache.clear()
 }
-async function fetchPikalyticsUsage(id: BattlePokemonId, heading: string): Promise<Array<[string, number]>> {
-  const resource = await getResource("pokemon", id, "en")
-  return pikalyticsRows(await fetchPikalyticsMarkdown(encodeURIComponent(resource.calcSpeciesName || resource.name)), heading)
+
+/**
+ * Pikalytics publishes the ranked roster in one request per format and keeps
+ * per-Pokemon move/ability/item breakdowns on a separate request. Join the
+ * roster onto local resources once so every lookup reuses the same index.
+ */
+function fetchPikalyticsRoster(): Promise<Array<{ id: BattlePokemonId; name: string }>> {
+  if (!pikalyticsRosterPromise) {
+    pikalyticsRosterPromise = (async () => {
+      const [latest, pokemon] = await Promise.all([
+        fetchJson<PikalyticsLatest>("/api/pikalytics/latest"),
+        listResources("pokemon", "en"),
+      ])
+      const byName = new Map(
+        pokemon.flatMap((entry) =>
+          [entry.name, entry.pokemonSlug, entry.calcSpeciesName].map(
+            (name) => [normalizeJoinName(name), entry.battlePokemonId] as const,
+          ),
+        ),
+      )
+      return latest.data
+        .toSorted((a, b) => Number(a.rank) - Number(b.rank))
+        .flatMap((entry) => {
+          const id = byName.get(normalizeJoinName(entry.name))
+          return id == null ? [] : [{ id, name: entry.name }]
+        })
+    })()
+    pikalyticsRosterPromise.catch(resetPikalyticsCache)
+  }
+  return pikalyticsRosterPromise
 }
-async function fetchPikalyticsMoveUsageOnline(id: BattlePokemonId): Promise<ChampionsMoveUsageRecord[]> { return (await fetchPikalyticsUsage(id, "Common Moves")).map(([name, percentage], index) => ({ battlePokemonId: id, moveId: getMoveIdByJoinName(name) ?? -1, format: "Doubles" as const, season: "latest", source: "Pikalytics", dataVersion: "ai-markdown", rank: index + 1, percentage, championsMoveName: name })).filter((row) => row.moveId !== -1) }
-async function fetchPikalyticsAbilityUsageOnline(id: BattlePokemonId): Promise<ChampionsAbilityUsageRecord[]> { return (await fetchPikalyticsUsage(id, "Common Abilities")).map(([name, percentage], index) => ({ battlePokemonId: id, abilityId: getAbilityIdByJoinName(name) ?? -1, format: "Doubles" as const, season: "latest", source: "Pikalytics", dataVersion: "ai-markdown", rank: index + 1, percentage, championsAbilityName: name })).filter((row) => row.abilityId !== -1) }
-async function fetchPikalyticsItemUsageOnline(id: BattlePokemonId): Promise<ChampionsItemUsageRecord[]> { return (await fetchPikalyticsUsage(id, "Common Items")).map(([name, percentage], index) => ({ battlePokemonId: id, itemId: getItemIdByJoinName(name) ?? null, format: "Doubles" as const, season: "latest", source: "Pikalytics", dataVersion: "ai-markdown", rank: index + 1, percentage, championsItemName: name })) }
+
+function fetchPikalyticsEntry(battlePokemonId: BattlePokemonId): Promise<PikalyticsEntry | null> {
+  let promise = pikalyticsEntryCache.get(battlePokemonId)
+  if (!promise) {
+    promise = (async () => {
+      // The roster only carries usage for the ranking; per-Pokemon breakdowns
+      // (moves, abilities, items, natures) come from the detail endpoint.
+      const roster = await fetchPikalyticsRoster()
+      const entry = roster.find((member) => member.id === battlePokemonId)
+      if (entry == null) return null
+      const detail = await fetchJson<PikalyticsDetail>(
+        `/api/pikalytics/pokemon/${encodeURIComponent(entry.name)}`,
+      )
+      return detail.data
+    })()
+    pikalyticsEntryCache.set(battlePokemonId, promise)
+    promise.catch(() => {
+      if (pikalyticsEntryCache.get(battlePokemonId) === promise) {
+        pikalyticsEntryCache.delete(battlePokemonId)
+      }
+    })
+  }
+  return promise
+}
+
+function pikalyticsPercent(value: string | undefined): number | null {
+  const parsed = Number(value)
+  return Number.isFinite(parsed) ? parsed : null
+}
+
+async function fetchPikalyticsMoveUsageOnline(id: BattlePokemonId): Promise<ChampionsMoveUsageRecord[]> {
+  const entry = await fetchPikalyticsEntry(id)
+  return (entry?.moves ?? []).map(({ move, percent }, index) => ({ battlePokemonId: id, moveId: getMoveIdByJoinName(move) ?? -1, format: "Doubles" as const, season: "latest", source: "Pikalytics", dataVersion: "pokedex", rank: index + 1, percentage: pikalyticsPercent(percent), championsMoveName: move })).filter((row) => row.moveId !== -1)
+}
+async function fetchPikalyticsAbilityUsageOnline(id: BattlePokemonId): Promise<ChampionsAbilityUsageRecord[]> {
+  const entry = await fetchPikalyticsEntry(id)
+  return (entry?.abilities ?? []).map(({ ability, percent }, index) => ({ battlePokemonId: id, abilityId: getAbilityIdByJoinName(ability) ?? -1, format: "Doubles" as const, season: "latest", source: "Pikalytics", rank: index + 1, percentage: pikalyticsPercent(percent), championsAbilityName: ability })).filter((row) => row.abilityId !== -1)
+}
+async function fetchPikalyticsItemUsageOnline(id: BattlePokemonId): Promise<ChampionsItemUsageRecord[]> {
+  const entry = await fetchPikalyticsEntry(id)
+  return (entry?.items ?? []).map(({ item, percent }, index) => ({ battlePokemonId: id, itemId: getItemIdByJoinName(item) ?? null, format: "Doubles", season: "latest", source: "Pikalytics", dataVersion: "pokedex", rank: index + 1, percentage: pikalyticsPercent(percent), championsItemName: item }))
+}
+async function fetchPikalyticsNatureUsageOnline(id: BattlePokemonId): Promise<ChampionsNatureUsageRecord[]> {
+  const entry = await fetchPikalyticsEntry(id)
+  return (entry?.natures ?? []).map(({ nature, percent }, index) => ({ battlePokemonId: id, format: "Doubles", season: "latest", source: "Pikalytics", dataVersion: "pokedex", rank: index + 1, percentage: pikalyticsPercent(percent), nature }))
+}
 
 async function fetchChampionsBattleRows(
   pokemon: ChampionsIndexPokemon,
@@ -500,6 +583,7 @@ export async function listChampionsNatureUsageRecords(
   battlePokemonId: BattlePokemonId,
 ): Promise<ChampionsNatureUsageRecord[]> {
   if (usageSource === "smogon") return fetchSmogonNatureUsageOnline(battlePokemonId)
+  if (usageSource === "pikalytics") return fetchPikalyticsNatureUsageOnline(battlePokemonId)
   let promise = natureUsageCache.get(battlePokemonId)
   if (!promise) {
     promise = natureUsageFetcher(battlePokemonId)
@@ -527,7 +611,7 @@ export function resetChampionsNatureUsageFetcherForTest(): void {
 
 export function listChampionsPokemonUsageIds(): Promise<BattlePokemonId[]> {
   if (usageSource === "smogon") { smogonPokemonUsagePromise ??= fetchSmogonPokemonUsageOnline(); smogonPokemonUsagePromise.catch(() => { smogonPokemonUsagePromise = undefined }); return smogonPokemonUsagePromise }
-  if (usageSource === "pikalytics") { smogonPokemonUsagePromise ??= fetchPikalyticsPokemonUsageOnline(); smogonPokemonUsagePromise.catch(() => { smogonPokemonUsagePromise = undefined }); return smogonPokemonUsagePromise }
+  if (usageSource === "pikalytics") { pikalyticsPokemonUsagePromise ??= fetchPikalyticsRoster().then((roster) => roster.map((member) => member.id)); pikalyticsPokemonUsagePromise.catch(() => { pikalyticsPokemonUsagePromise = undefined }); return pikalyticsPokemonUsagePromise }
   pokemonUsagePromise ??= pokemonUsageFetcher()
   return pokemonUsagePromise
 }
@@ -554,6 +638,10 @@ export function setChampionsJsonFetcherForTest(
   itemUsageCache.clear()
   natureUsageCache.clear()
   pokemonUsagePromise = undefined
+  smogonPokemonUsagePromise = undefined
+  pikalyticsPokemonUsagePromise = undefined
+  smogonChaosCache.clear()
+  resetPikalyticsCache()
   jsonFetcher = fetcher
 }
 
@@ -565,5 +653,9 @@ export function resetChampionsJsonFetcherForTest(): void {
   itemUsageCache.clear()
   natureUsageCache.clear()
   pokemonUsagePromise = undefined
+  smogonPokemonUsagePromise = undefined
+  pikalyticsPokemonUsagePromise = undefined
+  smogonChaosCache.clear()
+  resetPikalyticsCache()
   jsonFetcher = fetchJsonFromNetwork
 }
