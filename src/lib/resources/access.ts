@@ -37,6 +37,13 @@ let moveIdByJoinName: Map<string, UpstreamResourceId> | undefined
 let abilityIdByJoinName: Map<string, UpstreamResourceId> | undefined
 let itemIdByJoinName: Map<string, UpstreamResourceId> | undefined
 
+/** Let the browser paint interaction feedback before parsing large generated modules. */
+function yieldToBrowser(): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, 0)
+  })
+}
+
 function buildFirstByName<T>(values: T[], getName: (value: T) => string): Map<string, T> {
   const byName = new Map<string, T>()
   for (const value of values) {
@@ -55,7 +62,7 @@ export class ResourceLookupError extends Error {
 
 async function loadPokemonResources(): Promise<Record<UpstreamResourceId, NormalizedBattlePokemon>> {
   if (pokemonResources) return pokemonResources
-  pokemonResourcesPromise ??= import("./generated/pokemon").then(({ GENERATED_POKEMON }) => {
+  pokemonResourcesPromise ??= yieldToBrowser().then(() => import("./generated/pokemon")).then(({ GENERATED_POKEMON }) => {
     pokemonResources = GENERATED_POKEMON
     pokemonByCalcName = buildFirstByName(
       Object.values(GENERATED_POKEMON),
@@ -68,7 +75,7 @@ async function loadPokemonResources(): Promise<Record<UpstreamResourceId, Normal
 
 async function loadMoveResources(): Promise<Record<UpstreamResourceId, NormalizedMove>> {
   if (moveResources) return moveResources
-  moveResourcesPromise ??= import("./generated/moves").then(({ GENERATED_MOVES }) => {
+  moveResourcesPromise ??= yieldToBrowser().then(() => import("./generated/moves")).then(({ GENERATED_MOVES }) => {
     moveResources = GENERATED_MOVES
     moveByCalcName = buildFirstByName(
       Object.values(GENERATED_MOVES),
@@ -82,7 +89,7 @@ async function loadMoveResources(): Promise<Record<UpstreamResourceId, Normalize
 
 async function loadAbilityResources(): Promise<Record<UpstreamResourceId, NormalizedAbility>> {
   if (abilityResources) return abilityResources
-  abilityResourcesPromise ??= import("./generated/abilities").then(({ GENERATED_ABILITIES }) => {
+  abilityResourcesPromise ??= yieldToBrowser().then(() => import("./generated/abilities")).then(({ GENERATED_ABILITIES }) => {
     abilityResources = GENERATED_ABILITIES
     abilityIdByJoinName = buildAbilityIdByJoinName(GENERATED_ABILITIES)
     return GENERATED_ABILITIES
@@ -106,7 +113,7 @@ async function loadResourceDiagnostics(): Promise<GeneratedResourceDiagnostics> 
 }
 
 async function loadHistoricalLearnsets(): Promise<HistoricalLearnsetIndex> {
-  historicalLearnsetsPromise ??= import("./generated/learnsets").then(
+  historicalLearnsetsPromise ??= yieldToBrowser().then(() => import("./generated/learnsets")).then(
     ({ GENERATED_HISTORICAL_LEARNSETS }) => GENERATED_HISTORICAL_LEARNSETS,
   )
   return historicalLearnsetsPromise
@@ -233,7 +240,14 @@ export async function getResourceDiagnostics(): Promise<GeneratedResourceDiagnos
 export async function listHistoricalLearnableMoveIds(
   battlePokemonId: UpstreamResourceId,
 ): Promise<readonly UpstreamResourceId[]> {
-  return (await loadHistoricalLearnsets())[battlePokemonId] ?? []
+  const learnsets = await loadHistoricalLearnsets()
+  const direct = learnsets[battlePokemonId]
+  if (direct) return direct
+
+  // Battle-only Mega identities use the base identity's learnset unless a
+  // form-specific historical table exists.
+  const pokemon = getBattlePokemonById(battlePokemonId)
+  return pokemon?.isMega ? learnsets[pokemon.speciesId] ?? [] : []
 }
 
 export function getBattlePokemonById(

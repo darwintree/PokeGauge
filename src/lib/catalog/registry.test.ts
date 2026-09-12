@@ -58,6 +58,12 @@ describe("catalog move candidate ordering", () => {
     expect(bulbasaur.moveCandidates.some((move) => move.id === 885)).toBe(true)
   })
 
+  it("uses Garchomp's learnset for Mega Garchomp Z when its form has no own table", async () => {
+    const catalog = await getCatalogShell(10301, 727, "en", "physical")
+
+    expect(catalog.moveCandidates.some((move) => move.id === 89)).toBe(true)
+  })
+
   it.each([
     [741, "special", 686, "fire"],
     [445, "special", 686, "dragon"],
