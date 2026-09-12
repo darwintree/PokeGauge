@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import { resetPikalyticsFormatCacheForTest, resolvePikalyticsFormat } from "./index"
+import { proxyPikalytics, resetPikalyticsFormatCacheForTest, resolvePikalyticsFormat } from "./index"
 
 const POKEDEX_HTML = `
   <select id="format_dd">
@@ -79,5 +79,26 @@ describe("Pikalytics format discovery", () => {
     await resolvePikalyticsFormat()
 
     expect(requested).toHaveLength(2)
+  })
+})
+
+describe("Pikalytics request paths", () => {
+  const ctx = { waitUntil: (promise: Promise<unknown>) => promise, passThroughOnException: () => {} } as unknown as ExecutionContext
+
+  it("keys the roster without a Pokemon and the detail with it last", async () => {
+    const requested: string[] = []
+    vi.stubGlobal("fetch", (input: RequestInfo | URL) => {
+      const url = String(input)
+      requested.push(url)
+      if (url.endsWith("/ai/pokedex")) return Promise.resolve(new Response(AI_POKEDEX_MARKDOWN))
+      if (url.endsWith("/pokedex")) return Promise.resolve(new Response(POKEDEX_HTML))
+      return Promise.resolve(Response.json([]))
+    })
+
+    await proxyPikalytics(new Request("https://pokegauge.example/api/pikalytics/latest"), ctx)
+    await proxyPikalytics(new Request("https://pokegauge.example/api/pikalytics/pokemon/Rillaboom"), ctx)
+
+    expect(requested).toContain("https://www.pikalytics.com/api/l/2026-05/gen9championsvgc2026regmc-1760")
+    expect(requested).toContain("https://www.pikalytics.com/api/p/2026-05/gen9championsvgc2026regmc-1760/Rillaboom")
   })
 })

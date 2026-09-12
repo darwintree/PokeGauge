@@ -115,11 +115,12 @@ export function resetPikalyticsFormatCacheForTest(): void {
   pikalyticsFormatCache = undefined
 }
 
-/** Pikalytics keys every data endpoint by the discovered date and format. */
-async function fetchPikalytics(resource: string): Promise<Response> {
+/** Pikalytics keys both data endpoints by date and format, but the Pokemon comes last on detail. */
+async function fetchPikalytics(endpoint: "l" | "p", pokemon?: string): Promise<Response> {
   const resolved = await resolvePikalyticsFormat()
   if (!resolved) return new Response("Pikalytics stats unavailable", { status: 502 })
-  const upstream = await fetch(`${PIKALYTICS_ORIGIN}/api/${resource}/${resolved.date}/${resolved.format}`, { headers: UPSTREAM_HEADERS })
+  const suffix = pokemon == null ? "" : `/${encodeURIComponent(pokemon)}`
+  const upstream = await fetch(`${PIKALYTICS_ORIGIN}/api/${endpoint}/${resolved.date}/${resolved.format}${suffix}`, { headers: UPSTREAM_HEADERS })
   if (!upstream.ok) return new Response("Pikalytics stats unavailable", { status: upstream.status })
   const data: unknown = await upstream.json()
   return Response.json({ ...resolved, data }, { headers: { "cache-control": `public, max-age=${EDGE_CACHE_TTL_SECONDS}` } })
@@ -133,7 +134,7 @@ export async function proxyPikalytics(request: Request, ctx: ExecutionContext): 
     if (path.startsWith("pokemon/")) {
       const pokemon = path.slice("pokemon/".length)
       if (!/^[\w .'’-]+$/.test(pokemon)) return new Response("Bad Request", { status: 400 })
-      return fetchPikalytics(`p/${encodeURIComponent(pokemon)}`)
+      return fetchPikalytics("p", pokemon)
     }
     return new Response("Not Found", { status: 404 })
   })
