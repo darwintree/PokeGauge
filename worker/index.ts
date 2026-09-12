@@ -8,6 +8,44 @@ const UPSTREAM_HEADERS = {
   "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
 } as const
 
+const EDGE_CACHE_TTL_SECONDS = 3600
+const EDGE_CACHE_NAME = "usage-upstream"
+
+/**
+ * Cache Worker responses at the edge so repeated requests neither re-fetch the
+ * upstream nor re-parse it. The key is derived from the path only, so query
+ * strings cannot fragment the cache.
+ */
+function edgeCacheKey(request: Request): Request {
+  const url = new URL(request.url)
+  return new Request(`${url.origin}${url.pathname}`, { method: "GET" })
+}
+
+async function withEdgeCache(
+  request: Request,
+  ctx: ExecutionContext,
+  produce: () => Promise<Response>,
+): Promise<Response> {
+  if (typeof caches === "undefined") return produce()
+  const key = edgeCacheKey(request)
+  let cache: Cache
+  try {
+    cache = await caches.open(EDGE_CACHE_NAME)
+    // A cache read failure must not take the endpoint down.
+    const hit = await cache.match(key)
+    if (hit) return hit
+  } catch {
+    return produce()
+  }
+  const response = await produce()
+  if (!response.ok) return response
+  const headers = new Headers(response.headers)
+  headers.set("cache-control", `public, max-age=${EDGE_CACHE_TTL_SECONDS}`)
+  const stored = new Response(response.clone().body, { status: response.status, headers })
+  ctx.waitUntil(cache.put(key, stored).catch(() => {}))
+  return response
+}
+
 async function latestSmogonChampions(): Promise<Response> {
   const now = new Date()
   for (const offset of [0, 1]) {
@@ -27,15 +65,17 @@ async function latestSmogonChampions(): Promise<Response> {
   return new Response("Smogon stats unavailable", { status: 404 })
 }
 
-export async function proxySmogonStats(request: Request): Promise<Response> {
+export async function proxySmogonStats(request: Request, ctx: ExecutionContext): Promise<Response> {
   if (request.method !== "GET") return new Response("Method Not Allowed", { status: 405, headers: { allow: "GET" } })
-  const requestPath = new URL(request.url).pathname
-  if (requestPath === "/api/smogon/latest") return latestSmogonChampions()
-  const path = requestPath.replace(/^\/api\/smogon\//, "")
-  if (!/^[0-9]{4}-[0-9]{2}\/chaos\/gen[0-9a-z-]+\.json(?:\.gz)?$/.test(path)) return new Response("Bad Request", { status: 400 })
-  const upstream = await fetch(SMOGON_ORIGIN + path)
-  if (!upstream.ok) return new Response("Smogon stats unavailable", { status: upstream.status })
-  return new Response(upstream.body, { status: 200, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "public, max-age=3600" } })
+  return withEdgeCache(request, ctx, async () => {
+    const requestPath = new URL(request.url).pathname
+    if (requestPath === "/api/smogon/latest") return latestSmogonChampions()
+    const path = requestPath.replace(/^\/api\/smogon\//, "")
+    if (!/^[0-9]{4}-[0-9]{2}\/chaos\/gen[0-9a-z-]+\.json(?:\.gz)?$/.test(path)) return new Response("Bad Request", { status: 400 })
+    const upstream = await fetch(SMOGON_ORIGIN + path)
+    if (!upstream.ok) return new Response("Smogon stats unavailable", { status: upstream.status })
+    return new Response(upstream.body, { status: 200, headers: { "content-type": "application/json; charset=utf-8" } })
+  })
 }
 
 type PikalyticsFormat = { format: string; date: string }
@@ -93,16 +133,18 @@ async function pikalyticsPokemon(pokemon: string): Promise<Response> {
   return Response.json({ ...resolved, data }, { headers: { "cache-control": "public, max-age=3600" } })
 }
 
-async function proxyPikalytics(request: Request): Promise<Response> {
+export async function proxyPikalytics(request: Request, ctx: ExecutionContext): Promise<Response> {
   if (request.method !== "GET") return new Response("Method Not Allowed", { status: 405, headers: { allow: "GET" } })
   const path = decodeURIComponent(new URL(request.url).pathname.replace(/^\/api\/pikalytics\//, ""))
-  if (path === "latest") return latestPikalyticsUsage()
-  if (path.startsWith("pokemon/")) {
-    const pokemon = path.slice("pokemon/".length)
-    if (!/^[\w .'’-]+$/.test(pokemon)) return new Response("Bad Request", { status: 400 })
-    return pikalyticsPokemon(pokemon)
-  }
-  return new Response("Not Found", { status: 404 })
+  return withEdgeCache(request, ctx, async () => {
+    if (path === "latest") return latestPikalyticsUsage()
+    if (path.startsWith("pokemon/")) {
+      const pokemon = path.slice("pokemon/".length)
+      if (!/^[\w .'’-]+$/.test(pokemon)) return new Response("Bad Request", { status: 400 })
+      return pikalyticsPokemon(pokemon)
+    }
+    return new Response("Not Found", { status: 404 })
+  })
 }
 
 function referrerHost(request: Request): string {
@@ -162,12 +204,12 @@ export async function recordProductEvent(
 }
 
 export default {
-  async fetch(request, env): Promise<Response> {
+  async fetch(request, env, ctx): Promise<Response> {
     if (new URL(request.url).pathname === "/api/events") {
       return recordProductEvent(request, env)
     }
-    if (new URL(request.url).pathname.startsWith("/api/smogon/")) return proxySmogonStats(request)
-    if (new URL(request.url).pathname.startsWith("/api/pikalytics/")) return proxyPikalytics(request)
+    if (new URL(request.url).pathname.startsWith("/api/smogon/")) return proxySmogonStats(request, ctx)
+    if (new URL(request.url).pathname.startsWith("/api/pikalytics/")) return proxyPikalytics(request, ctx)
     return env.ASSETS.fetch(request)
   },
 } satisfies ExportedHandler<Env>
