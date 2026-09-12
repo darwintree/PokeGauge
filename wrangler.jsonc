@@ -4,9 +4,9 @@
   "main": "./worker/index.ts",
   "compatibility_date": "2026-08-26",
   "assets": {
-    // The Cloudflare Vite plugin rewrites this in the generated deploy config;
-    // keeping it here also lets a plain `wrangler deploy` ship the built client.
-    "directory": "./dist/client",
+    // `vite build` emits the client straight into ./dist; the Cloudflare Vite
+    // plugin is only active for `vite dev` so the deployed asset root stays here.
+    "directory": "./dist",
     "binding": "ASSETS",
     "not_found_handling": "single-page-application",
     "run_worker_first": ["/api/events", "/api/smogon/*", "/api/pikalytics/*"]
