@@ -128,8 +128,7 @@ const UNSUPPORTED_ABILITY_IDS = new Set([
   // Generation VI
   166, 167, 189, 190, 191,
   // Generation VII
-  192, 195, 197, 198, 201, 209, 211, 212, 213, 214, 217, 219, 225, 227, 228, 229,
-  230,
+  192, 195, 197, 198, 201, 209, 211, 212, 213, 214, 217, 219, 225, 230,
   // Generation VIII
   240, 247, 248, 249, 250, 251, 254, 256, 257, 258, 261, 263, 266, 267,
   // Generation IX
@@ -213,6 +212,8 @@ export const MISTY_SURGE_ABILITY_ID = 228
 export const GRASSY_SURGE_ABILITY_ID = 229
 export const SAND_SPIT_ABILITY_ID = 245
 
+// These abilities are supported through explicit weather, terrain, or stage inputs.
+// Their own result source is neutral so those inputs are not counted twice.
 const PROJECTION_ABILITY_IDS = new Set([
   DRIZZLE_ABILITY_ID,
   INTIMIDATE_ABILITY_ID,

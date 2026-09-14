@@ -4,6 +4,7 @@ import { IntlProvider } from "react-intl"
 import { expect, it } from "vitest"
 
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { CalculationRulesContext } from "@/lib/calculation-rules-context"
 import { localeMessages } from "@/lib/i18n"
 import type { ScenarioResult } from "@/lib/scenario"
 
@@ -277,4 +278,25 @@ it("renders active abilities inline and folds inactive and unsupported states", 
   expect(markup).not.toContain("Drought")
   expect(markup).toContain(">-1<")
   expect(markup).toContain("Always hits")
+})
+
+it.each(["champions", "gen9"] as const)("renders supported terrain setters under %s rules", (rules) => {
+  const options = [
+    { id: 226, label: "电气制造者", summary: "" },
+    { id: 227, label: "精神制造者", summary: "" },
+    { id: 228, label: "薄雾制造者", summary: "" },
+    { id: 229, label: "青草制造者", summary: "" },
+  ]
+  const markup = renderToStaticMarkup(createElement(
+    IntlProvider,
+    { locale: "zh-Hans", messages: localeMessages["zh-hans"] },
+    createElement(CalculationRulesContext.Provider, { value: rules },
+      createElement(AbilityTrack, {
+        labelId: "track.attackerAbility", options,
+        selectedIds: options.map(({ id }) => id), onChange: () => {},
+      }),
+    ),
+  ))
+  for (const { label } of options) expect(markup).toContain(`aria-label="${label}"`)
+  expect(markup.match(/aria-pressed="true"/g)).toHaveLength(4)
 })
