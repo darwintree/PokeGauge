@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, type ReactNode } from "react"
 import { createPortal } from "react-dom"
 import { useIntl } from "react-intl"
-import { ArrowLeftRight, ChartNoAxesCombined, Gauge, X } from "lucide-react"
+import { ChartNoAxesCombined, Gauge, Minimize2, Ungroup, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTitle, PopoverTrigger } from "@/components/ui/popover"
@@ -31,6 +31,9 @@ export function StatTrack({ side, catalog, state }: StatTrackProps): ReactNode {
   const offense = side === "offense"
   const label = offense ? catalog.offenseStatLabel : `HP / ${catalog.defenseStatLabel}`
   const mode = offense ? state.trackState.statMode : state.trackState.defenderMode
+  const modeAction = message(mode === "preset" ? "stat.editor.aggregate" : "stat.editor.split")
+  const targetModeLabel = message(mode === "preset" ? "track.range" : "track.choice")
+  const ModeActionIcon = mode === "preset" ? Minimize2 : Ungroup
   const selectedIds = offense ? state.trackState.offensePresetIds : state.trackState.defensePresetIds
   const empty = selectedIds.length === 0
   const active = editing?.side === side
@@ -164,20 +167,17 @@ export function StatTrack({ side, catalog, state }: StatTrackProps): ReactNode {
           icon={Gauge}
           label={label}
           expandable={false}
-          headerTrailing={
+          headerTrailing={selectedIds.length >= 2 ? (
             <Button
               variant="ghost"
               size="xs"
               onClick={switchMode}
-              aria-label={intl.formatMessage(
-                { id: "stat.editor.switchMode" },
-                { mode: message(mode === "preset" ? "track.range" : "track.choice") },
-              )}
+              aria-label={`${modeAction}: ${targetModeLabel}`}
             >
-              <ArrowLeftRight className="size-3" />
-              {message(mode === "preset" ? "track.choice" : "track.range")}
+              <ModeActionIcon className="size-3" aria-hidden />
+              {modeAction}
             </Button>
-          }
+          ) : null}
           summary={mode === "preset" ? (
             <div className="flex w-full flex-wrap items-center gap-1.5">
               <div className="contents [&>div]:contents">{choicePool}</div>
