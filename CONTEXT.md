@@ -170,6 +170,12 @@ _Avoid_: Scenario set, move list, fixed hit count
 一次执行中以及连续执行之间延续的战斗状态；当前支持满 HP 防护所需的受伤状态、抗性果是否已消费，以及已支持招式造成的防御／特防下降和攻击／特攻上升在后续攻击段及下一次执行中的阶级。不同 Scenario 各自从初始状态开始。
 _Avoid_: Track State, application state
 
+### 计算规则（Calculation Rules）
+
+**计算规则（Calculation Rules）**:
+应用中所有 Scenario 采用的游戏计算规则，取值为第九世代或 Champions，并决定特性、道具等效果的支持状态。它是应用级设置，不写入 Scenario Setup、书签或分享链接；载入配置时使用当前计算规则。
+_Avoid_: Engine Version, Generation Track, Probability Mode
+
 ### 概率模式（Probability Mode）
 
 **概率模式（Probability Mode）**:

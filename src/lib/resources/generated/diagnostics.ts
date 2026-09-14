@@ -2602,8 +2602,10 @@ export const RESOURCE_DIAGNOSTICS = {
     305,
     306,
     307,
+    308,
     309,
     310,
+    311,
     312,
     313,
     314
@@ -6508,10 +6510,6 @@ export const RESOURCE_DIAGNOSTICS = {
   ],
   "unsupportedBattleIdentities": [
     {
-      "id": 10287,
-      "reason": "pokemon/10287 has no current ability relation"
-    },
-    {
       "id": 10301,
       "reason": "pokemon/10301 has no current ability relation"
     },
@@ -6536,10 +6534,6 @@ export const RESOURCE_DIAGNOSTICS = {
       "reason": "pokemon/10319 has no current ability relation"
     },
     {
-      "id": 10320,
-      "reason": "pokemon/10320 has no current ability relation"
-    },
-    {
       "id": 10322,
       "reason": "pokemon/10322 has no current ability relation"
     },
@@ -6553,7 +6547,7 @@ export const RESOURCE_DIAGNOSTICS = {
     },
     {
       "id": 10326,
-      "reason": "pokemon/10326 has no @smogon/calc 0.11.0 species mapping"
+      "reason": "pokemon/10326 has no pinned calc species mapping"
     }
   ]
 } as const satisfies GeneratedResourceDiagnostics

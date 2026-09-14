@@ -4,8 +4,6 @@ import { beforeAll, describe, expect, it } from "vitest"
 import {
   ADAPTABILITY_ABILITY_ID,
   BLAZE_ABILITY_ID,
-  DRAGONIZE_ABILITY_ID,
-  EELEVATE_ABILITY_ID,
   FAIRY_AURA_ABILITY_ID,
   FILTER_ABILITY_ID,
   FIRE_MANE_ABILITY_ID,
@@ -17,7 +15,6 @@ import {
   IRON_FIST_ABILITY_ID,
   MARVEL_SCALE_ABILITY_ID,
   MEGA_LAUNCHER_ABILITY_ID,
-  MEGA_SOL_ABILITY_ID,
   MULTISCALE_ABILITY_ID,
   NO_ABILITY_ID,
   OVERGROW_ABILITY_ID,
@@ -206,31 +203,20 @@ describe("PokeAPI move flags", () => {
     expect(getMoveById(857)?.flags).toEqual([])
   })
 
-  it("treats PokeAPI's known missing Jet Punch mapping as inactive without fallback", () => {
+  it("uses engine punch metadata for Jet Punch", () => {
     const outcome = calculable({
       snapshot: { ...TACKLE, id: "jet-punch", moveId: 857, power: 60 },
       attackerAbilityId: IRON_FIST_ABILITY_ID,
     })
-    expect(normal(outcome).basePowerModifier).toBe(N)
+    expect(normal(outcome).basePowerModifier).toBe(4915)
     expect(outcome.sources).toContainEqual({
       track: "attacker-ability",
       optionId: String(IRON_FIST_ABILITY_ID),
-      state: "inactive",
+      state: "active",
     })
   })
 
-  it.each([
-    DRAGONIZE_ABILITY_ID,
-    MEGA_SOL_ABILITY_ID,
-    EELEVATE_ABILITY_ID,
-    FIRE_MANE_ABILITY_ID,
-  ])("keeps calc-missing Ability %i fully unsupported", (abilityId) => {
-    const outcome = calculable({ attackerAbilityId: abilityId, defenderAbilityId: abilityId })
-    expect(outcome.sources).toEqual(expect.arrayContaining([
-      { track: "attacker-ability", optionId: String(abilityId), state: "unsupported" },
-      { track: "defender-ability", optionId: String(abilityId), state: "unsupported" },
-    ]))
-  })
+
 })
 
 describe("phase order, critical, and provenance", () => {
@@ -447,25 +433,24 @@ describe("execution references and deliberate differences", () => {
     })
   })
 
-  it("keeps calc-missing Fire Mane inert and unsupported", () => {
+  it("applies Fire Mane to Fire damage and its display modifier", () => {
     const outcome = calculable({
       snapshot: { ...TACKLE, id: "fire-mane", moveId: 53, power: 90 },
       attackerAbilityId: FIRE_MANE_ABILITY_ID,
       lowOutcome: { offense: 120, defense: { hp: 200, def: 100 } },
     })
-    expect(FIRE_MANE_ABILITY_ID).toBe(313)
-    expect(normal(outcome).attackModifier).toBe(N)
+    expect(normal(outcome).attackModifier).toBe(6144)
     expect(outcome.sources).toContainEqual({
       track: "attacker-ability",
       optionId: String(FIRE_MANE_ABILITY_ID),
-      state: "unsupported",
+      state: "active",
     })
     const neutral = calculable({
       snapshot: { ...TACKLE, id: "fire-mane-neutral", moveId: 53, power: 90 },
       attackerAbilityId: NO_ABILITY_ID,
       lowOutcome: { offense: 120, defense: { hp: 200, def: 100 } },
     })
-    expect(evaluateExecutionPoint(outcome)).toEqual(
+    expect(evaluateExecutionPoint(outcome)).not.toEqual(
       evaluateExecutionPoint(neutral),
     )
   })

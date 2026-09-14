@@ -1,5 +1,6 @@
 import {
   AERILATE_ABILITY_ID,
+  DRAGONIZE_ABILITY_ID,
   GALVANIZE_ABILITY_ID,
   LIBERO_ABILITY_ID,
   LIQUID_VOICE_ABILITY_ID,
@@ -14,13 +15,14 @@ import type { PokemonType } from "@/lib/pokemon"
 import { NEUTRAL_MODIFIER } from "./damage-input"
 
 /** Judgment, Multi-Attack, Natural Gift, Revelation Dance, Techno Blast, Terrain Pulse, Weather Ball. */
-const ATE_EXCLUDED_MOVE_IDS = new Set([449, 718, 363, 686, 546, 805, 311])
+const ATE_EXCLUDED_MOVE_IDS = new Set([449, 718, 363, 686, 546, 805, 311, 165])
 
 /** Normalize also excludes Hidden Power and Struggle. */
 const NORMALIZE_EXCLUDED_MOVE_IDS = new Set([...ATE_EXCLUDED_MOVE_IDS, 237, 165])
 
 const ATE_TARGETS: Partial<Record<number, PokemonType>> = {
   [AERILATE_ABILITY_ID]: "flying",
+  [DRAGONIZE_ABILITY_ID]: "dragon",
   [PIXILATE_ABILITY_ID]: "fairy",
   [REFRIGERATE_ABILITY_ID]: "ice",
   [GALVANIZE_ABILITY_ID]: "electric",

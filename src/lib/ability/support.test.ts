@@ -13,9 +13,9 @@ describe("Ability support policy", () => {
     for (let id = 1; id <= 313; id += 1) counts[abilitySupport(id)] += 1
 
     expect(counts).toEqual({
-      supported: 96,
+      supported: 100,
       "assumed-satisfied": 15,
-      unsupported: 109,
+      unsupported: 105,
       none: 93,
     })
   })
@@ -27,7 +27,7 @@ describe("Ability support policy", () => {
     [6, 165, 191, [15, 0, 5, 7]],
     [7, 192, 233, [9, 2, 17, 14]],
     [8, 234, 267, [9, 0, 14, 11]],
-    [9, 268, 313, [12, 1, 29, 4]],
+    [9, 268, 313, [16, 1, 25, 4]],
   ] as const)("matches the Generation %i reviewed counts", (_generation, first, last, expected) => {
     const statuses = Array.from({ length: last - first + 1 }, (_, index) =>
       abilitySupport(first + index))

@@ -307,8 +307,10 @@ export const GENERATED_ABILITY_CALC_NAMES = {
   "305": "Tera Shell",
   "306": "Teraform Zero",
   "307": "Poison Puppeteer",
+  "308": "Piercing Drill",
   "309": "Dragonize",
   "310": "Mega Sol",
+  "311": "Spicy Spray",
   "312": "Eelevate",
   "313": "Fire Mane",
   "314": "Aura Guard"

@@ -1,3 +1,9 @@
+import { toID } from "@smogon/calc"
+import { calcGeneration } from "@/lib/damage-calculation/calc-constants"
+import { getMoveById } from "@/lib/resources"
+import type { PokemonType } from "@/lib/pokemon"
+import { useCalculationRules } from "@/lib/calculation-rules-context"
+import { moveEffectIsSupported } from "@/lib/move/rules-support"
 import { Check, ChevronDown, CircleAlert, Trash2 } from "lucide-react"
 import { useState } from "react"
 import { useIntl } from "react-intl"
@@ -29,7 +35,8 @@ function MoveSnapshotEditor({
   const [confirmingRemove, setConfirmingRemove] = useState(false)
   const powerErrorId = `${snapshot.id}-power-error`
   const accuracyErrorId = `${snapshot.id}-accuracy-error`
-  const hitProfile = moveHitProfile(snapshot.moveId)
+  const rules = useCalculationRules()
+  const hitProfile = moveHitProfile(snapshot.moveId, rules)
   let hitCount = String(hitProfile?.powers.length ?? 1)
   if (hitProfile?.randomCount) hitCount = "2–5"
   else if (hitProfile?.accuracyScope === "hit" && snapshot.accuracy < 100 && !snapshot.alwaysHits) {
@@ -231,6 +238,12 @@ export function MoveSnapshotRow({
   onRemove: () => void
 }) {
   const intl = useIntl()
+  const rules = useCalculationRules()
+  const unsupported = !moveEffectIsSupported(snapshot.moveId, rules)
+  const displayPower = moveHitProfile(snapshot.moveId, rules)?.powers[0] ?? snapshot.power
+  const resource = getMoveById(snapshot.moveId)
+  const engineType = resource && calcGeneration(rules).moves.get(toID(resource.calcMoveName))?.type
+  const displayType = engineType?.toLowerCase() as PokemonType | undefined
   const warning = auditedMoveWarning(snapshot.moveId)
 
   return (
@@ -243,7 +256,7 @@ export function MoveSnapshotRow({
           className="grid h-full min-h-11 min-w-0 grid-cols-[auto_minmax(0,1fr)_2rem_2rem_auto] items-center gap-2 px-2.5 text-left hover:bg-muted/60 active:bg-muted/80 focus-visible:outline-2 focus-visible:outline-ring sm:min-h-8"
           onClick={onEdit}
         >
-          <TypeBadge type={option.type} />
+          <TypeBadge type={displayType ?? option.type} />
           <span className="truncate text-xs font-medium">{option.label}</span>
           <span
             className={cn(
@@ -251,7 +264,7 @@ export function MoveSnapshotRow({
               snapshot.power === 0 ? "text-destructive" : "text-muted-foreground",
             )}
           >
-            {snapshot.power || "-"}
+            {displayPower || "-"}
             {snapshot.power === 0 ? (
               <span className="sr-only">
                 {intl.formatMessage({ id: "track.move.powerRequired" })}
@@ -278,7 +291,7 @@ export function MoveSnapshotRow({
             )}
           />
         </button>
-        {warning ? (
+        {(warning || unsupported) ? (
           <Tooltip>
             <TooltipTrigger
               render={
@@ -295,7 +308,7 @@ export function MoveSnapshotRow({
               <CircleAlert aria-hidden="true" className="size-3.5" strokeWidth={2.5} />
             </TooltipTrigger>
             <TooltipContent side="top" className="max-w-xs rounded-xl border border-hud-frame bg-paper p-2 text-xs shadow-hud-panel">
-              {intl.formatMessage({ id: `track.move.warning.${warning}` })}
+              {unsupported ? intl.formatMessage({ id: "track.effect.unsupportedRules" }) : intl.formatMessage({ id: `track.move.warning.${warning!}` })}
             </TooltipContent>
           </Tooltip>
         ) : null}

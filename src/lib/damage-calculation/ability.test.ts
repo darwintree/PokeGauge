@@ -16,7 +16,7 @@ import {
   ADAPTABILITY_ABILITY_ID,
   DEFIANT_ABILITY_ID,
   DROUGHT_ABILITY_ID,
-  FIRE_MANE_ABILITY_ID,
+  ROUGH_SKIN_ABILITY_ID,
   INTIMIDATE_ABILITY_ID,
   NO_ABILITY_ID,
 } from "@/lib/ability"
@@ -159,14 +159,14 @@ describe("ability compiler", () => {
 
   it("keeps unsupported abilities calculable with neutral ability input", () => {
     const outcome = calculable({
-      attackerAbilityId: FIRE_MANE_ABILITY_ID,
-      defenderAbilityId: FIRE_MANE_ABILITY_ID,
+      attackerAbilityId: ROUGH_SKIN_ABILITY_ID,
+      defenderAbilityId: ROUGH_SKIN_ABILITY_ID,
     })
 
     expect(normalBranch(outcome).stabModifier).toBe(6144)
     expect(outcome.sources).toEqual(expect.arrayContaining([
-      { track: "attacker-ability", optionId: String(FIRE_MANE_ABILITY_ID), state: "unsupported" },
-      { track: "defender-ability", optionId: String(FIRE_MANE_ABILITY_ID), state: "unsupported" },
+      { track: "attacker-ability", optionId: String(ROUGH_SKIN_ABILITY_ID), state: "unsupported" },
+      { track: "defender-ability", optionId: String(ROUGH_SKIN_ABILITY_ID), state: "unsupported" },
     ]))
   })
 

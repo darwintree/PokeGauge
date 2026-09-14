@@ -1,3 +1,5 @@
+import { CalculationRulesContext } from "@/lib/calculation-rules-context"
+import { loadCalculationRules, saveCalculationRules, type CalculationRules } from "@/lib/calculation-rules"
 import { useCallback, useEffect, useState } from "react"
 import { IntlProvider } from "react-intl"
 
@@ -22,6 +24,7 @@ function isUsageTipsPage() {
 }
 
 function App() {
+  const [calculationRules, setCalculationRulesState] = useState<CalculationRules>(loadCalculationRules)
   const [locale, setLocaleState] = useState<SupportedLocale>(loadInitialLocale)
   const [probabilityMode, setProbabilityModeState] = useState<ProbabilityMode>(loadProbabilityMode)
   const [statNameStrategy, setStatNameStrategyState] = useState<StatNameStrategy>(loadStatNameStrategy)
@@ -43,6 +46,11 @@ function App() {
     setLocaleState(locale)
   }
 
+  function setCalculationRules(rules: CalculationRules) {
+    saveCalculationRules(rules)
+    setCalculationRulesState(rules)
+  }
+
   function setProbabilityMode(mode: ProbabilityMode) {
     saveProbabilityMode(mode)
     setProbabilityModeState(mode)
@@ -60,35 +68,39 @@ function App() {
 
   return (
     <IntlProvider locale={locale} messages={localeMessages[locale]}>
-      <TooltipProvider>
-        <div className="min-h-dvh bg-bg-app">
-          <AppHeader
-            locale={locale}
-            onLocaleChange={setLocale}
-            probabilityMode={probabilityMode}
-            onProbabilityModeChange={setProbabilityMode}
-            statNameStrategy={statNameStrategy}
-            onStatNameStrategyChange={setStatNameStrategy}
-            usageSource={usageSource}
-            onUsageSourceChange={setUsageSourcePreference}
-            feedbackScenarioUrl={feedbackScenarioUrl}
-            onBrandHomeClick={brandHomeAction}
-          />
-          <div className="mx-auto max-w-7xl">
-            {usageTipsPage ? (
-              <UsageTipsPrototype />
-            ) : (
-              <ScenarioExplorerPage
-                locale={locale}
-                probabilityMode={probabilityMode}
-                statNameStrategy={statNameStrategy}
-                onFeedbackScenarioUrlChange={setFeedbackScenarioUrl}
-                onBrandHomeActionChange={handleBrandHomeActionChange}
-              />
-            )}
+      <CalculationRulesContext value={calculationRules}>
+        <TooltipProvider>
+          <div className="min-h-dvh bg-bg-app">
+            <AppHeader
+              locale={locale}
+              onLocaleChange={setLocale}
+              calculationRules={calculationRules}
+              onCalculationRulesChange={setCalculationRules}
+              probabilityMode={probabilityMode}
+              onProbabilityModeChange={setProbabilityMode}
+              statNameStrategy={statNameStrategy}
+              onStatNameStrategyChange={setStatNameStrategy}
+              usageSource={usageSource}
+              onUsageSourceChange={setUsageSourcePreference}
+              feedbackScenarioUrl={feedbackScenarioUrl}
+              onBrandHomeClick={brandHomeAction}
+            />
+            <div className="mx-auto max-w-7xl">
+              {usageTipsPage ? (
+                <UsageTipsPrototype />
+              ) : (
+                <ScenarioExplorerPage
+                  locale={locale}
+                  probabilityMode={probabilityMode}
+                  statNameStrategy={statNameStrategy}
+                  onFeedbackScenarioUrlChange={setFeedbackScenarioUrl}
+                  onBrandHomeActionChange={handleBrandHomeActionChange}
+                />
+              )}
+            </div>
           </div>
-        </div>
-      </TooltipProvider>
+        </TooltipProvider>
+      </CalculationRulesContext>
     </IntlProvider>
   )
 }

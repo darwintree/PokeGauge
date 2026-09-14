@@ -15,8 +15,8 @@ importers:
         specifier: ^5.3.0
         version: 5.3.0
       '@smogon/calc':
-        specifier: 0.11.0
-        version: 0.11.0
+        specifier: file:vendor/smogon-calc-e7fd7e59.tgz
+        version: file:vendor/smogon-calc-e7fd7e59.tgz
       '@tailwindcss/vite':
         specifier: ^4.3.1
         version: 4.3.1(vite@8.1.0(@types/node@24.13.2)(esbuild@0.28.1)(jiti@2.7.0)(tsx@4.22.4)(yaml@2.9.0))
@@ -84,6 +84,9 @@ importers:
       typescript:
         specifier: ~6.0.2
         version: 6.0.3
+      typescript-calc:
+        specifier: npm:typescript@4.9.5
+        version: typescript@4.9.5
       vite:
         specifier: ^8.1.0
         version: 8.1.0(@types/node@24.13.2)(esbuild@0.28.1)(jiti@2.7.0)(tsx@4.22.4)(yaml@2.9.0)
@@ -1058,8 +1061,9 @@ packages:
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
 
-  '@smogon/calc@0.11.0':
-    resolution: {integrity: sha512-ixP+IgQhI12R68FXxyt8+f4EZM/jdqBXZ2oCKu5zuUWXls4kYbIVdgE7t6+pkn/y6VxU+cXJhRgMkiU7wG8JHQ==}
+  '@smogon/calc@file:vendor/smogon-calc-e7fd7e59.tgz':
+    resolution: {integrity: sha512-yS0yS4TE5/MyneOITlD7Lw8vW994mJL2AJA3ZJ2dMKlauOx4X1CThxVkbJ1tZE8aUhSWJL0b+I9Sl10gJtHBSA==, tarball: file:vendor/smogon-calc-e7fd7e59.tgz}
+    version: 0.11.0-pokegauge.e7fd7e59
 
   '@speed-highlight/core@1.2.24':
     resolution: {integrity: sha512-qeW2e1l78afw8VhRPfPQ1Gjj+KU5XFQ/OFV5ti6eTa9bruO7mJyZtA4vw0ofqmA3tKCkROE9xLk3VZoeRc98nw==}
@@ -1175,9 +1179,6 @@ packages:
 
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
-
-  '@types/node@18.19.130':
-    resolution: {integrity: sha512-GRaXQx6jGfL8sKfaIDD6OupbIHBr9jv7Jnaml9tB7l4v068PAOXqfcujMMo5PhbIs6ggR1XODELqahT2R8v0fg==}
 
   '@types/node@24.13.2':
     resolution: {integrity: sha512-fRa09kZTgu8o71KFcDjUFuc7F+dEbZYZmkI0mg5YBTRs0yMKjYHsq/c0urDKeDb+D5qVgXOdFcuu+DZPKOITwA==}
@@ -2552,13 +2553,15 @@ packages:
     resolution: {integrity: sha512-faYHw0anBbc/kWF3zFTEnxSFOAGUX9GFbOBthvDdLsIlEoWOFOtS0zgCiQYwIskL9iGXZL3kAXD8OoZ4GmMATA==}
     engines: {node: '>= 18'}
 
+  typescript@4.9.5:
+    resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+
   typescript@6.0.3:
     resolution: {integrity: sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==}
     engines: {node: '>=14.17'}
     hasBin: true
-
-  undici-types@5.26.5:
-    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
   undici-types@7.18.2:
     resolution: {integrity: sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w==}
@@ -3630,9 +3633,7 @@ snapshots:
 
   '@sindresorhus/merge-streams@4.0.0': {}
 
-  '@smogon/calc@0.11.0':
-    dependencies:
-      '@types/node': 18.19.130
+  '@smogon/calc@file:vendor/smogon-calc-e7fd7e59.tgz': {}
 
   '@speed-highlight/core@1.2.24': {}
 
@@ -3725,10 +3726,6 @@ snapshots:
   '@types/deep-eql@4.0.2': {}
 
   '@types/estree@1.0.9': {}
-
-  '@types/node@18.19.130':
-    dependencies:
-      undici-types: 5.26.5
 
   '@types/node@24.13.2':
     dependencies:
@@ -5076,9 +5073,9 @@ snapshots:
       media-typer: 1.1.0
       mime-types: 3.0.2
 
-  typescript@6.0.3: {}
+  typescript@4.9.5: {}
 
-  undici-types@5.26.5: {}
+  typescript@6.0.3: {}
 
   undici-types@7.18.2: {}
 

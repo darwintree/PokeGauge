@@ -1,7 +1,8 @@
+import { CALC_GENERATION } from "../src/lib/damage-calculation/calc-constants"
 import { mkdir, readFile, writeFile } from "node:fs/promises"
 import path from "node:path"
 
-import { Generations, toID } from "@smogon/calc"
+import { toID } from "@smogon/calc"
 
 import { FROZEN_HELD_ITEMS } from "../src/lib/held-item/inventory"
 
@@ -27,23 +28,16 @@ const GEN_9_ITEM_SPRITES = new Set([2105, 2106, 2107, 2108])
  * PokeAPI ability -> Smogon calc ability name.
  * Most match by toID of the English name. "As One" exists as two calc entries
  * keyed by rider; PokeAPI ids 266/267 disambiguate. Entries with no calc
- * counterpart (newer than @smogon/calc 0.11.0, or non-main-series XD) are dropped.
+ * counterpart (newer than the pinned calc, or non-main-series XD) are dropped.
  */
 const ABILITY_CALC_NAME_OVERRIDES: Record<number, string> = {
   266: "As One (Glastrier)",
   267: "As One (Spectrier)",
 }
 
-/**
- * Abilities without a @smogon/calc 0.11.0 gen9 counterpart that are excluded
- * from generated resources. The four main-series entries the product still
- * exposes as explicitly unsupported (Dragonize 309, Mega Sol 310, Eelevate 312,
- * Fire Mane 313) are kept and resolved through the runtime calc-missing check;
- * remaining newer entries (303, 308, 311) and non-main-series XD entries
- * (10002+) are dropped.
- */
+/** PokeAPI's undifferentiated Embody Aspect has no matching calc identity. */
 const ABILITY_IDS_WITHOUT_CALC = new Set([
-  303, 308, 311,
+  303,
 ])
 
 /**
@@ -134,8 +128,8 @@ const CALC_SPECIES_TOKEN_ALIAS: Record<string, string> = {
 /** Map a PokeAPI Battle Pokemon display name to the @smogon/calc species name. */
 function calcSpeciesNameFor(pokemonId: number, displayName: string): string {
   const special = CALC_SPECIES_NAME_BY_ID[pokemonId]
-  if (special) return special
-  if (Generations.get(9).species.get(toID(displayName))) return displayName
+  if (special) return special.replace(/-Gmax$/, "")
+  if (CALC_GENERATION.species.get(toID(displayName))) return displayName
 
   let name = displayName
     .normalize("NFKD")
@@ -166,8 +160,8 @@ function calcSpeciesNameFor(pokemonId: number, displayName: string): string {
     tokens[tokens.length - 1].toLowerCase() === tokens[0].toLowerCase()
     ? tokens.slice(0, -1)
     : tokens
-  const merged = dedupedTrailingSpecies.join("-")
-  return Generations.get(9).species.get(toID(merged))
+  const merged = dedupedTrailingSpecies.join("-").replace(/-Gmax$/, "")
+  return CALC_GENERATION.species.get(toID(merged))
     ? merged
     : displayName
 }
@@ -478,10 +472,10 @@ async function main() {
 
     const names = composeNames(id, pokemon.is_default === "1", speciesNames, formNames)
     const calcSpeciesName = calcSpeciesNameFor(id, names.en || pokemon.identifier)
-    if (!Generations.get(9).species.get(toID(calcSpeciesName))) {
+    if (!CALC_GENERATION.species.get(toID(calcSpeciesName))) {
       unsupportedBattleIdentities.push({
         id,
-        reason: `pokemon/${id} has no @smogon/calc 0.11.0 species mapping`,
+        reason: `pokemon/${id} has no pinned calc species mapping`,
       })
       return []
     }

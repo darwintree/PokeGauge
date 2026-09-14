@@ -9,9 +9,12 @@ import { localeMessages, type SupportedLocale } from "@/lib/i18n"
 import type { ProbabilityMode } from "@/lib/damage-calculation"
 import type { StatNameStrategy } from "@/lib/stat-preset"
 
+import type { CalculationRules } from "@/lib/calculation-rules"
+
 import { AppHeader } from "./app-header"
 
 function Harness() {
+  const [calculationRules, setCalculationRules] = useState<CalculationRules>("champions")
   const [locale, setLocale] = useState<SupportedLocale>("en")
   const [probabilityMode, setProbabilityMode] = useState<ProbabilityMode>("battle-odds")
   const [statNameStrategy, setStatNameStrategy] = useState<StatNameStrategy>("habcds")
@@ -19,6 +22,8 @@ function Harness() {
   return (
     <IntlProvider locale={locale} messages={localeMessages[locale]}>
       <AppHeader
+        calculationRules={calculationRules}
+        onCalculationRulesChange={setCalculationRules}
         locale={locale}
         onLocaleChange={setLocale}
         probabilityMode={probabilityMode}
@@ -63,11 +68,15 @@ describe("app settings", () => {
     vi.restoreAllMocks()
   })
 
-  it("opens on Preferences and applies all three global preferences", () => {
+  it("opens on Preferences and applies all global preferences", () => {
     click(document.querySelector('[aria-label="Settings"]'))
 
     expect(document.querySelector('[role="tab"][aria-selected="true"]')?.textContent)
       .toContain("Preferences")
+
+    expect(document.querySelector<HTMLSelectElement>("#settings-calculation-rules")?.value).toBe("champions")
+    choose("settings-calculation-rules", "gen9")
+    expect(document.querySelector<HTMLSelectElement>("#settings-calculation-rules")?.value).toBe("gen9")
 
     choose("settings-locale", "ja")
     expect(document.documentElement.textContent).toContain("環境設定")

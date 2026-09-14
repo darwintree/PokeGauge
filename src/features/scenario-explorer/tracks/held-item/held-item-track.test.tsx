@@ -5,6 +5,8 @@ import { createRoot, type Root } from "react-dom/client"
 import { IntlProvider } from "react-intl"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
+import { CalculationRulesContext } from "@/lib/calculation-rules-context"
+import type { CalculationRules } from "@/lib/calculation-rules"
 import { getCatalogShell } from "@/lib/catalog"
 import { localeMessages } from "@/lib/i18n"
 
@@ -39,15 +41,34 @@ describe("held-item Tracks", () => {
 
   async function renderTrack(
     props: React.ComponentProps<typeof HeldItemTrack>,
+    rules: CalculationRules = "champions",
   ) {
     await act(async () => {
       root.render(
         <IntlProvider locale="en" messages={localeMessages.en}>
-          <HeldItemTrack {...props} />
+          <CalculationRulesContext value={rules}>
+            <HeldItemTrack {...props} />
+          </CalculationRulesContext>
         </IntlProvider>,
       )
     })
   }
+
+  it("updates support markings while keeping the selected Choice Specs", async () => {
+    const catalog = await getCatalogShell(445, 727, "en")
+    const props = {
+      catalog, poolIds: [274], selectedIds: [274],
+      selectableIds: new Set([445, 727]),
+      onChange: vi.fn(), onAdd: vi.fn(), onFormTriggerConfirm: vi.fn(),
+    }
+    for (const rules of ["champions", "gen9", "champions"] as const) {
+      await renderTrack(props, rules)
+      const option = container.querySelector('button.track-option[aria-label^="Choice Specs"]')!
+      expect(option.getAttribute("aria-pressed")).toBe("true")
+      expect(option.getAttribute("aria-label")?.includes("not supported")).toBe(rules === "champions")
+      expect(props.onChange).not.toHaveBeenCalled()
+    }
+  })
 
   it.each([
     ["attacker", 10034, 9, 699, "Charizardite X"],
@@ -226,7 +247,7 @@ describe("held-item Tracks", () => {
 
     const options = container.querySelectorAll("button.track-option")
     expect(options).toHaveLength(1)
-    expect(options[0].getAttribute("aria-label")).toBe("Wellspring Mask")
+    expect(options[0].getAttribute("aria-label")).toBe("Wellspring Mask, Effect not supported by the current rules.")
     expect((options[0] as HTMLButtonElement).disabled).toBe(true)
   })
 

@@ -1,3 +1,4 @@
+import { useCalculationRules } from "@/lib/calculation-rules-context"
 import { useCallback, useEffect, useMemo, useState } from "react"
 
 import {
@@ -96,6 +97,7 @@ export function useScenarioState(
   },
   resultGrouping: ResultGrouping | null = null,
 ) {
+  const rules = useCalculationRules()
   const { attackerCalcName, defenderCalcName } = catalog.matchup
 
   const offenseBounds = useMemo(
@@ -216,9 +218,9 @@ export function useScenarioState(
   const pipelineResult = useMemo(() => {
     if (catalogTransitionPending) return { rows: [], unavailable: [] }
     return measureInteractionWork("runScenarioPipeline", () =>
-      runScenarioPipeline(catalog, pipelineTrackState, probabilityMode, preserveTrack),
+      runScenarioPipeline(catalog, pipelineTrackState, probabilityMode, preserveTrack, rules),
     )
-  }, [catalog, catalogTransitionPending, pipelineTrackState, probabilityMode, preserveTrack])
+  }, [catalog, catalogTransitionPending, pipelineTrackState, probabilityMode, preserveTrack, rules])
   const { rows, unavailable } = pipelineResult
 
   const toggleOffensePreset = useCallback((id: string) => {

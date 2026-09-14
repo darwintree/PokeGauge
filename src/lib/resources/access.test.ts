@@ -1,6 +1,7 @@
+import { CALC_GENERATION } from "@/lib/damage-calculation/calc-constants"
 import { describe, expect, it } from "vitest"
 
-import { Generations, toID } from "@smogon/calc"
+import { toID } from "@smogon/calc"
 
 import {
   getBattlePokemonById,
@@ -155,7 +156,7 @@ describe("localized resource access", () => {
 
   it("merges every PokeAPI form to a @smogon/calc Gen 9 species name", async () => {
     const pokemon = await listResources("pokemon", "en")
-    const gen = Generations.get(9)
+    const gen = CALC_GENERATION
     const unresolvable = pokemon.filter(
       (resource) => !gen.species.get(toID(resource.calcSpeciesName)),
     )

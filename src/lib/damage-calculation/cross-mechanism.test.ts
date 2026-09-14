@@ -14,7 +14,7 @@ import {
   runScenarioPipeline,
 } from "@/lib/scenario"
 
-import { ADAPTABILITY_ABILITY_ID, FIRE_MANE_ABILITY_ID } from "@/lib/ability"
+import { ADAPTABILITY_ABILITY_ID, ROUGH_SKIN_ABILITY_ID } from "@/lib/ability"
 import { CALC_GEN, VGC_LEVEL } from "@/lib/damage-calculation"
 import * as damageCalculation from "@/lib/damage-calculation"
 import { getAttackerStatSetups, getDefenderSetups } from "@/lib/stat-calculation"
@@ -525,7 +525,7 @@ describe("cross-mechanism acceptance", () => {
     state.weathers = ["rain"]
     state.defensePresetIds = ["standard-bulk"]
     state.defenderStages = [1]
-    state.defenderAbilityIds = [FIRE_MANE_ABILITY_ID]
+    state.defenderAbilityIds = [ROUGH_SKIN_ABILITY_ID]
     state.screens = ["walls"]
     const kernel = vi.spyOn(hitExecution, "evaluateExecutionPoint")
 
@@ -565,7 +565,7 @@ describe("cross-mechanism acceptance", () => {
       "attacker-ability": { active: ["91"] },
       weather: { active: ["rain"] },
       "defender-stage": { active: ["1"] },
-      "defender-ability": { unsupported: [String(FIRE_MANE_ABILITY_ID)] },
+      "defender-ability": { unsupported: [String(ROUGH_SKIN_ABILITY_ID)] },
       screen: { active: ["reflect"] },
     })
 
@@ -642,11 +642,11 @@ describe("cross-mechanism acceptance", () => {
     state.offensePresetIds = ["neutral-max"]
     state.attackerStages = [-1, 0]
     state.attackerItemIds = ["none", 226]
-    state.attackerAbilityIds = [FIRE_MANE_ABILITY_ID, 75]
+    state.attackerAbilityIds = [ROUGH_SKIN_ABILITY_ID, 75]
     state.weathers = ["none", "sand"]
     state.defensePresetIds = ["standard-bulk"]
     state.defenderStages = [0, 1]
-    state.defenderAbilityIds = [FIRE_MANE_ABILITY_ID, 47]
+    state.defenderAbilityIds = [ROUGH_SKIN_ABILITY_ID, 47]
     state.screens = ["none", "walls"]
     const kernel = vi.spyOn(hitExecution, "evaluateExecutionPoint")
 
@@ -662,13 +662,13 @@ describe("cross-mechanism acceptance", () => {
       "held-item": { inactive: ["226"], neutral: ["none"] },
       "attacker-ability": {
         inactive: ["75"],
-        unsupported: [String(FIRE_MANE_ABILITY_ID)],
+        unsupported: [String(ROUGH_SKIN_ABILITY_ID)],
       },
       weather: { inactive: ["sand"], neutral: ["none"] },
       "defender-stage": { inactive: ["1"], neutral: ["0"] },
       "defender-ability": {
         inactive: ["47"],
-        unsupported: [String(FIRE_MANE_ABILITY_ID)],
+        unsupported: [String(ROUGH_SKIN_ABILITY_ID)],
       },
       screen: {
         inactive: ["reflect"],

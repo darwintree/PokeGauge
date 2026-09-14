@@ -1,3 +1,4 @@
+import { useCalculationRules } from "@/lib/calculation-rules-context"
 import { Sparkles } from "lucide-react"
 import { FormattedMessage, useIntl } from "react-intl"
 
@@ -37,6 +38,7 @@ export function AbilityTrack({
   onChange,
 }: AbilityTrackProps) {
   const intl = useIntl()
+  const rules = useCalculationRules()
   const selected = new Set(selectedIds)
 
   function toggle(id: number) {
@@ -54,7 +56,7 @@ export function AbilityTrack({
     Number(b.id === NO_ABILITY_ID) - Number(a.id === NO_ABILITY_ID),
   )
   const describedOptions = orderedOptions.map((option) => {
-    const support = abilitySupport(option.id)
+    const support = abilitySupport(option.id, rules)
     const disabled = support === "none"
     const unsupported = support === "unsupported"
     const assumedFamily = !unsupported

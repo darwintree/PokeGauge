@@ -1,5 +1,6 @@
 import {
   ADAPTABILITY_ABILITY_ID,
+  AURA_GUARD_ABILITY_ID,
   ANALYTIC_ABILITY_ID,
   BATTLE_ARMOR_ABILITY_ID,
   BULLETPROOF_ABILITY_ID,
@@ -7,6 +8,8 @@ import {
   COMPOUND_EYES_ABILITY_ID,
   DRY_SKIN_ABILITY_ID,
   EARTH_EATER_ABILITY_ID,
+  EELEVATE_ABILITY_ID,
+  FIRE_MANE_ABILITY_ID,
   FAIRY_AURA_ABILITY_ID,
   FLARE_BOOST_ABILITY_ID,
   FLASH_FIRE_ABILITY_ID,
@@ -156,6 +159,10 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
   }
 
   switch (context.attackerAbilityId) {
+    case FIRE_MANE_ABILITY_ID:
+      attackerActive = context.moveType === "fire"
+      if (attackerActive) attackerModifiers.attack = 6144
+      break
     case ADAPTABILITY_ABILITY_ID:
       attackerActive = context.hasStab
       if (attackerActive) attackerModifiers.stab = 8192
@@ -261,11 +268,12 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
     case LONG_REACH_ABILITY_ID:
       // Active only when cancelling defender Fluffy's contact facet.
       attackerActive = flags.has("contact") &&
-        context.defenderAbilityId === FLUFFY_ABILITY_ID
+        [FLUFFY_ABILITY_ID, AURA_GUARD_ABILITY_ID].includes(context.defenderAbilityId)
       break
     case SCRAPPY_ABILITY_ID:
       // Effectiveness is resolved by the Scenario compiler before Held-item gates.
       break
+    case AURA_GUARD_ABILITY_ID:
     case FLUFFY_ABILITY_ID:
     case KLUTZ_ABILITY_ID:
       break
@@ -289,6 +297,7 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
     case SAP_SIPPER_ABILITY_ID:
       activateImmunity(context.moveType === "grass")
       break
+    case EELEVATE_ABILITY_ID:
     case LEVITATE_ABILITY_ID:
     case EARTH_EATER_ABILITY_ID:
       activateImmunity(context.moveType === "ground")
@@ -354,9 +363,10 @@ export function compileAbilityEffect(context: AbilityContext): CompiledAbilityEf
       defenderActive = context.category === "physical"
       if (defenderActive) defenderModifiers.defense = 6144
       break
+    case AURA_GUARD_ABILITY_ID:
     case FLUFFY_ABILITY_ID: {
       const contactFacet = effectiveContact
-      const fireFacet = context.moveType === "fire"
+      const fireFacet = context.defenderAbilityId === FLUFFY_ABILITY_ID && context.moveType === "fire"
       defenderActive = contactFacet || fireFacet
       if (contactFacet && fireFacet) {
         defenderModifiers.final = chainModifiers([2048, 8192])
