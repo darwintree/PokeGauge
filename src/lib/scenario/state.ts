@@ -114,6 +114,7 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
 }
 
 export function expectedRowCount(trackState: TrackState): number {
+  if (trackState.offensePresetIds.length === 0 || trackState.defensePresetIds.length === 0) return 0
   const offenseCount = trackState.statMode === "range" ? 1 : trackState.offensePresetIds.length
   const defenderCount = trackState.defenderMode === "range" ? 1 : trackState.defensePresetIds.length
   return (

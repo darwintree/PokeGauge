@@ -1,452 +1,232 @@
-import type { ReactNode } from "react"
-import { Gauge } from "lucide-react"
-import { FormattedMessage, useIntl } from "react-intl"
+import { useContext, useEffect, useRef, type ReactNode } from "react"
+import { createPortal } from "react-dom"
+import { useIntl } from "react-intl"
+import { ArrowLeftRight, ChartNoAxesCombined, Gauge, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import type { MatchupCatalog } from "@/lib/catalog"
-import {
-  defensePresetsForState,
-  offensePresetsForState,
-  type StatSelectMode,
-} from "@/lib/scenario"
-import {
-  fallbackStatValueChip,
-  resolveDefenseChip,
-  resolveOffenseChip,
-  resolvePresetChip,
-  uniqueEndpointChips,
-  type StatPreset,
-  type StatValueChipModel,
-} from "@/lib/stat-preset"
-import { cn } from "@/lib/utils"
-
-import { defenseAxisMarks, offenseAxisMarks } from "./stat-axis-marks"
-import { StatRangeInput } from "./stat-range-input"
-import { StatPresetChoices } from "./stat-preset-choices"
-import { StatValueChip, StatValueChipPair } from "./stat-value-chip"
-import { StatModeControl, StatModeWell } from "./stat-mode-switch"
+import { Popover, PopoverContent, PopoverTitle, PopoverTrigger } from "@/components/ui/popover"
+import { resolveDefenseChip, resolveOffenseChip, uniqueEndpointChips } from "@/lib/stat-preset"
 import { TrackPanel } from "../common/track-panel"
+import { StatPresetChoices } from "./stat-preset-choices"
+import { RangeMark } from "./range-mark"
+import { StatValueChipPair, StatValueChip } from "./stat-value-chip"
+import { StatTrackEditor } from "./stat-track-editor"
+import type { MatchupCatalog } from "@/lib/catalog"
 import type { ScenarioState } from "../../state/use-scenario-state"
+import { StatEditorContext } from "./stat-editor-context"
 
 export type StatTrackProps = {
   side: "offense" | "defense"
   catalog: MatchupCatalog
   state: ScenarioState
-  expanded: boolean
-  onToggle: () => void
 }
 
-function ChipSummary({
-  chips,
-  ranged,
-}: {
-  chips: StatValueChipModel[]
-  ranged: boolean
-}): ReactNode {
-  if (ranged) {
-    return <StatValueChipPair chips={chips} compact />
-  }
-  return (
-    <span className="flex w-full min-w-0 flex-wrap items-center gap-1">
-      {chips.map((chip, index) => (
-        <StatValueChip
-          key={`${chip.label}:${chip.actual}:${index}`}
-          chip={chip}
-          compact
-        />
-      ))}
-    </span>
-  )
-}
-
-function offenseSummary(catalog: MatchupCatalog, state: ScenarioState): ReactNode {
-  const { trackState } = state
-  const category = catalog.moveCategory
-  if (trackState.statMode === "range") {
-    return (
-      <ChipSummary
-        ranged
-        chips={uniqueEndpointChips(
-          resolveOffenseChip({
-            calcName: catalog.matchup.attackerCalcName,
-            category,
-            stat: trackState.statRange.min,
-            strategy: state.statNameStrategy,
-          }),
-          resolveOffenseChip({
-            calcName: catalog.matchup.attackerCalcName,
-            category,
-            stat: trackState.statRange.max,
-            strategy: state.statNameStrategy,
-          }),
-        )}
-      />
-    )
-  }
-  const presets = offensePresetsForState(catalog, trackState)
-  const chips = trackState.offensePresetIds.map((id) => {
-    const preset = presets.find((candidate) => candidate.id === id)
-    return preset
-      ? resolvePresetChip(
-          preset,
-          catalog.matchup.attackerCalcName,
-          category,
-          trackState.offenseAllocationIndices[id] ?? 0,
-          state.statNameStrategy,
-        )
-      : fallbackStatValueChip(id)
-  })
-  return <ChipSummary chips={chips} ranged={false} />
-}
-
-function defenseSummary(catalog: MatchupCatalog, state: ScenarioState): ReactNode {
-  const { trackState } = state
-  const category = catalog.moveCategory
-  if (trackState.defenderMode === "range") {
-    return (
-      <ChipSummary
-        ranged
-        chips={uniqueEndpointChips(
-          resolveDefenseChip({
-            calcName: catalog.matchup.defenderCalcName,
-            category,
-            hp: trackState.defenderRanges.hp.min,
-            def: trackState.defenderRanges.def.min,
-            strategy: state.statNameStrategy,
-          }),
-          resolveDefenseChip({
-            calcName: catalog.matchup.defenderCalcName,
-            category,
-            hp: trackState.defenderRanges.hp.max,
-            def: trackState.defenderRanges.def.max,
-            strategy: state.statNameStrategy,
-          }),
-        )}
-      />
-    )
-  }
-  const presets = defensePresetsForState(catalog, trackState)
-  const chips = trackState.defensePresetIds.map((id) => {
-    const preset = presets.find((candidate) => candidate.id === id)
-    return preset
-      ? resolvePresetChip(
-          preset,
-          catalog.matchup.defenderCalcName,
-          category,
-          trackState.defenseAllocationIndices[id] ?? 0,
-          state.statNameStrategy,
-        )
-      : fallbackStatValueChip(id)
-  })
-  return <ChipSummary chips={chips} ranged={false} />
-}
-
-function ConfirmCancelActions({
-  onCancel,
-  onConfirm,
-}: {
-  onCancel: () => void
-  onConfirm: () => void
-}) {
+export function StatTrack({ side, catalog, state }: StatTrackProps): ReactNode {
   const intl = useIntl()
-  return (
-    <div className="flex shrink-0 justify-end gap-1">
-      <Button type="button" variant="ghost" size="xs" className="h-7 text-xs" onClick={onCancel}>
-        {intl.formatMessage({ id: "action.cancel" })}
-      </Button>
-      <Button type="button" size="xs" className="h-7 text-xs" onClick={onConfirm}>
-        {intl.formatMessage({ id: "action.confirm" })}
-      </Button>
-    </div>
-  )
-}
-
-function CurrentBadge() {
-  return (
-    <span className="rounded-[5px] border border-ink bg-signal-yellow px-1 text-[9px] font-extrabold">
-      <FormattedMessage id="track.mode.current" />
-    </span>
-  )
-}
-
-function ModePane({
-  current,
-  labelId,
-  trailing,
-  onActivate,
-  children,
-}: {
-  current: boolean
-  labelId: "track.range" | "track.choice" | "stat.range.dragToPlace"
-  trailing: ReactNode
-  onActivate?: () => void
-  children: ReactNode
-}) {
-  const labelClass = cn(
-    "text-[10px] font-extrabold leading-none transition-colors",
-    current ? "text-ink" : "text-hud-muted hover:text-ink",
-  )
-  return (
-    <div className="p-2">
-      {/* Fixed h-7 header: Current / Confirm swap in-place so + draft does not shift the axis. */}
-      <div className="mb-2 flex h-7 flex-nowrap items-center justify-between gap-2">
-        {onActivate ? (
-          <button type="button" onClick={onActivate} className={labelClass}>
-            <FormattedMessage id={labelId} />
-          </button>
-        ) : (
-          <span className={labelClass}>
-            <FormattedMessage id={labelId} />
-          </span>
-        )}
-        <div className="flex h-7 min-w-0 items-center justify-end">
-          {trailing}
-        </div>
-      </div>
-      {children}
-    </div>
-  )
-}
-
-function statTrackMode(
-  side: StatTrackProps["side"],
-  state: ScenarioState,
-): StatSelectMode {
-  return side === "offense" ? state.trackState.statMode : state.trackState.defenderMode
-}
-
-function StatTrackSummary({
-  side,
-  catalog,
-  state,
-}: Pick<StatTrackProps, "side" | "catalog" | "state">) {
-  const offense = side === "offense"
-  const onMode = (next: StatSelectMode) =>
-    offense ? state.setStatMode(next) : state.setDefenderMode(next)
-  const summary = offense ? offenseSummary(catalog, state) : defenseSummary(catalog, state)
-  return (
-    <StatModeWell mode={statTrackMode(side, state)} onMode={onMode}>
-      {summary}
-    </StatModeWell>
-  )
-}
-
-function StatTrackEditor({
-  side,
-  catalog,
-  state,
-  sections,
-}: Pick<StatTrackProps, "side" | "catalog" | "state"> & {
-  sections: "range" | "choice"
-}) {
-  const intl = useIntl()
-  const { trackState } = state
-  const offense = side === "offense"
-  const offenseDraft = state.offenseDraft
-  const defenseDraft = state.defenseDraft
-  const hasDraft = offense ? offenseDraft != null : defenseDraft != null
-  function bandOf(preset: StatPreset) {
-    return resolvePresetChip(
-      preset,
-      offense ? catalog.matchup.attackerCalcName : catalog.matchup.defenderCalcName,
-      catalog.moveCategory,
-      (offense
-        ? trackState.offenseAllocationIndices
-        : trackState.defenseAllocationIndices)[preset.id] ?? 0,
-      state.statNameStrategy,
-    ).band
+  function message(id: string): string {
+    return intl.formatMessage({ id })
   }
-
-  if (sections === "range") {
-    return (
-      <>
-        {offense ? (
-          <StatRangeInput
-            statLabel={catalog.offenseStatLabel}
-            bounds={state.offenseBounds}
-            value={trackState.statRange}
-            onChange={state.setStatRange}
-            marks={offenseAxisMarks(
-              state.offensePresets,
-              trackState.offensePresetIds,
-              bandOf,
-            )}
-            draftValue={hasDraft ? (offenseDraft ?? undefined) : undefined}
-            onDraftChange={hasDraft ? (stat) => state.setOffenseDraft(stat) : undefined}
-          />
-        ) : (
-          <>
-            <StatRangeInput
-              statLabel="HP"
-              bounds={state.defenderHpBounds}
-              value={trackState.defenderRanges.hp}
-              onChange={(hp) =>
-                state.setDefenderRanges({ hp, def: trackState.defenderRanges.def })
-              }
-              marks={defenseAxisMarks(
-                state.defensePresets,
-                trackState.defensePresetIds,
-                "hp",
-                bandOf,
-              )}
-              draftValue={hasDraft ? defenseDraft?.hp : undefined}
-              onDraftChange={
-                hasDraft
-                  ? (hp) =>
-                      state.setDefenseDraft((current) =>
-                        current ? { ...current, hp } : current,
-                      )
-                  : undefined
-              }
-            />
-            <StatRangeInput
-              statLabel={catalog.defenseStatLabel}
-              bounds={state.defenderDefBounds}
-              value={trackState.defenderRanges.def}
-              onChange={(def) =>
-                state.setDefenderRanges({ hp: trackState.defenderRanges.hp, def })
-              }
-              marks={defenseAxisMarks(
-                state.defensePresets,
-                trackState.defensePresetIds,
-                "def",
-                bandOf,
-              )}
-              draftValue={hasDraft ? defenseDraft?.def : undefined}
-              onDraftChange={
-                hasDraft
-                  ? (def) =>
-                      state.setDefenseDraft((current) =>
-                        current ? { ...current, def } : current,
-                      )
-                  : undefined
-              }
-            />
-          </>
-        )}
-      </>
-    )
-  }
-
-  return offense ? (
-    <StatPresetChoices
-      presets={state.offensePresets}
-      selectedIds={trackState.offensePresetIds}
-      calcName={catalog.matchup.attackerCalcName}
-      category={catalog.moveCategory}
-      statNameStrategy={state.statNameStrategy}
-      allocationIndices={trackState.offenseAllocationIndices}
-      onToggle={state.toggleOffensePreset}
-      onCycleAllocation={state.cycleOffenseAllocation}
-      onDelete={state.deleteOffensePreset}
-      onPersist={state.persistOffensePreset}
-      adding={state.addingOffense}
-      onAddClick={() => {
-        if (offenseDraft == null) state.setStatMode("preset")
-        state.toggleAddingOffense()
-      }}
-      addAriaLabel={intl.formatMessage({ id: "statPreset.addAttacker" })}
-    />
-  ) : (
-    <StatPresetChoices
-      presets={state.defensePresets}
-      selectedIds={trackState.defensePresetIds}
-      calcName={catalog.matchup.defenderCalcName}
-      category={catalog.moveCategory}
-      statNameStrategy={state.statNameStrategy}
-      allocationIndices={trackState.defenseAllocationIndices}
-      onToggle={state.toggleDefensePreset}
-      onCycleAllocation={state.cycleDefenseAllocation}
-      onDelete={state.deleteDefensePreset}
-      onPersist={state.persistDefensePreset}
-      adding={state.addingDefense}
-      onAddClick={() => {
-        if (defenseDraft == null) state.setDefenderMode("preset")
-        state.toggleAddingDefense()
-      }}
-      addAriaLabel={intl.formatMessage({ id: "statPreset.addDefender" })}
-    />
-  )
-}
-
-export function StatTrack({
-  side,
-  catalog,
-  state,
-  expanded,
-  onToggle,
-}: StatTrackProps) {
+  const context = useContext(StatEditorContext)!
+  const { editing, setEditing, previewTarget, showResults, showSetup } = context
   const offense = side === "offense"
   const label = offense ? catalog.offenseStatLabel : `HP / ${catalog.defenseStatLabel}`
-  const mode = statTrackMode(side, state)
-  const adding = offense ? state.addingOffense : state.addingDefense
-  const setMode = (next: StatSelectMode) =>
-    offense ? state.setStatMode(next) : state.setDefenderMode(next)
-  function cancelDraft() {
-    if (offense) state.setOffenseDraft(null)
-    else state.setDefenseDraft(null)
+  const mode = offense ? state.trackState.statMode : state.trackState.defenderMode
+  const selectedIds = offense ? state.trackState.offensePresetIds : state.trackState.defensePresetIds
+  const empty = selectedIds.length === 0
+  const active = editing?.side === side
+  const adding = active && editing.kind === "add"
+  const docked = active && editing.placement === "results"
+  const headingRef = useRef<HTMLHeadingElement>(null)
+
+  useEffect(() => {
+    if (!docked || !previewTarget) return
+    const frame = requestAnimationFrame(() => {
+      headingRef.current?.focus({ preventScroll: true })
+      previewTarget.scrollIntoView({ block: "start", behavior: "instant" })
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [docked, previewTarget])
+
+  function clearDrafts() {
+    state.setOffenseDraft(null)
+    state.setDefenseDraft(null)
   }
 
-  return (
-    <TrackPanel
-      icon={Gauge}
-      label={label}
-      summary={<StatTrackSummary side={side} catalog={catalog} state={state} />}
-      summaryLayout="stack"
-      expanded={expanded}
-      onToggle={onToggle}
-      headerTrailing={
-        <StatModeControl
-          mode={adding ? "range" : mode}
-          onMode={(next) => {
-            cancelDraft()
-            setMode(next)
-          }}
-        />
-      }
-    >
-      <div className="space-y-2">
-        <ModePane
-          current={adding || mode === "range"}
-          labelId={adding ? "stat.range.dragToPlace" : "track.range"}
-          onActivate={
-            adding
-              ? undefined
-              : () => {
-                  cancelDraft()
-                  setMode("range")
-                }
-          }
-          trailing={
-            adding ? (
-              <ConfirmCancelActions
-                onCancel={cancelDraft}
-                onConfirm={() => {
-                  if (offense) {
-                    if (state.offenseDraft != null) state.confirmAddOffense(state.offenseDraft)
-                    return
-                  }
-                  if (state.defenseDraft != null) {
-                    state.confirmAddDefense(state.defenseDraft.hp, state.defenseDraft.def)
-                  }
-                }}
-              />
-            ) : mode === "range" ? (
-              <CurrentBadge />
-            ) : null
-          }
-        >
-          <StatTrackEditor side={side} catalog={catalog} state={state} sections="range" />
-        </ModePane>
-        <ModePane
-          current={!adding && mode === "preset"}
-          labelId="track.choice"
-          onActivate={() => setMode("preset")}
-          trailing={!adding && mode === "preset" ? <CurrentBadge /> : null}
-        >
-          <StatTrackEditor side={side} catalog={catalog} state={state} sections="choice" />
-        </ModePane>
+  function open(kind: "add" | "range") {
+    clearDrafts()
+    if (kind === "add") {
+      if (offense) state.setOffenseDraft(state.offenseBounds.snapPoints[1]?.value ?? state.offenseBounds.min)
+      else state.setDefenseDraft({
+        hp: state.defenderHpBounds.snapPoints[1]?.value ?? state.defenderHpBounds.min,
+        def: state.defenderDefBounds.snapPoints[0]?.value ?? state.defenderDefBounds.min,
+      })
+    }
+    setEditing({ side, kind, placement: "popover" })
+  }
+
+  function close() {
+    clearDrafts()
+    setEditing(null)
+  }
+
+  function confirm() {
+    if (adding) {
+      if (offense && state.offenseDraft !== null) state.confirmAddOffense(state.offenseDraft)
+      if (!offense && state.defenseDraft !== null) state.confirmAddDefense(state.defenseDraft.hp, state.defenseDraft.def)
+    }
+    close()
+  }
+
+  function switchMode() {
+    close()
+    const next = mode === "preset" ? "range" : "preset"
+    if (offense) state.setStatMode(next)
+    else state.setDefenderMode(next)
+  }
+
+  const title = `${message(adding ? "stat.editor.add" : "stat.editor.range")} · ${label}`
+  let draftChip = null
+  if (adding && offense && state.offenseDraft !== null) {
+    draftChip = resolveOffenseChip({ calcName: catalog.matchup.attackerCalcName, category: catalog.moveCategory, stat: state.offenseDraft, strategy: state.statNameStrategy, temporary: true })
+  }
+  if (adding && !offense && state.defenseDraft !== null) {
+    draftChip = resolveDefenseChip({ calcName: catalog.matchup.defenderCalcName, category: catalog.moveCategory, hp: state.defenseDraft.hp, def: state.defenseDraft.def, strategy: state.statNameStrategy, temporary: true })
+  }
+
+  function resolveRangeEndpoint(endpoint: "min" | "max") {
+    if (offense) {
+      return resolveOffenseChip({
+        calcName: catalog.matchup.attackerCalcName,
+        category: catalog.moveCategory,
+        stat: state.trackState.statRange[endpoint],
+        strategy: state.statNameStrategy,
+      })
+    }
+    return resolveDefenseChip({
+      calcName: catalog.matchup.defenderCalcName,
+      category: catalog.moveCategory,
+      hp: state.trackState.defenderRanges.hp[endpoint],
+      def: state.trackState.defenderRanges.def[endpoint],
+      strategy: state.statNameStrategy,
+    })
+  }
+  const rangeChips = uniqueEndpointChips(resolveRangeEndpoint("min"), resolveRangeEndpoint("max"))
+
+  const controls = (
+    <div className="space-y-3">
+      <div className="flex min-h-7 items-center justify-between gap-2 text-xs">
+        <span className="text-muted-foreground">{adding ? message("stat.editor.drag") : message("stat.editor.nudge")}</span>
+        <div className="flex items-center gap-1">
+          {draftChip ? <StatValueChip chip={draftChip} compact /> : <StatValueChipPair chips={rangeChips} compact />}
+        </div>
       </div>
-    </TrackPanel>
+      <div className="space-y-3 px-2">
+        <StatTrackEditor side={side} catalog={catalog} state={state} />
+      </div>
+      <div className="flex flex-wrap items-center justify-end gap-2 border-t border-hairline pt-3">
+        {!docked && (
+          <Button variant="outline" size="sm" className="mr-auto lg:hidden" onClick={() => {
+            setEditing({ side, kind: adding ? "add" : "range", placement: "results" })
+            showResults()
+          }}>
+            <ChartNoAxesCombined className="size-3.5" />{message("stat.editor.previewDamage")}
+          </Button>
+        )}
+        {docked && <Button variant="ghost" size="sm" className="mr-auto" onClick={() => {
+          setEditing({ side, kind: adding ? "add" : "range", placement: "popover" })
+          showSetup()
+        }}>{message("stat.editor.return")}</Button>}
+        {adding && <Button variant="ghost" size="sm" onClick={close}>{message("action.cancel")}</Button>}
+        <Button size="sm" onClick={confirm}>{message(adding ? "stat.editor.confirmAdd" : "stat.editor.done")}</Button>
+      </div>
+    </div>
+  )
+
+  const choicePool = (
+    <StatPresetChoices
+      presets={offense ? state.offensePresets : state.defensePresets}
+      selectedIds={selectedIds}
+      calcName={offense ? catalog.matchup.attackerCalcName : catalog.matchup.defenderCalcName}
+      category={catalog.moveCategory}
+      statNameStrategy={state.statNameStrategy}
+      allocationIndices={offense ? state.trackState.offenseAllocationIndices : state.trackState.defenseAllocationIndices}
+      onToggle={offense ? state.toggleOffensePreset : state.toggleDefensePreset}
+      onCycleAllocation={offense ? state.cycleOffenseAllocation : state.cycleDefenseAllocation}
+      onDelete={offense ? state.deleteOffensePreset : state.deleteDefensePreset}
+      onPersist={offense ? state.persistOffensePreset : state.persistDefensePreset}
+    />
+  )
+
+  return (
+    <>
+      <Popover open={active && !docked} onOpenChange={open => { if (!open && active && !docked) close() }}>
+        <TrackPanel
+          icon={Gauge}
+          label={label}
+          expandable={false}
+          headerTrailing={
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={switchMode}
+              aria-label={intl.formatMessage(
+                { id: "stat.editor.switchMode" },
+                { mode: message(mode === "preset" ? "track.range" : "track.choice") },
+              )}
+            >
+              <ArrowLeftRight className="size-3" />
+              {message(mode === "preset" ? "track.choice" : "track.range")}
+            </Button>
+          }
+          summary={mode === "preset" ? (
+            <div className="flex w-full flex-wrap items-center gap-1.5">
+              <div className="contents [&>div]:contents">{choicePool}</div>
+              <PopoverTrigger
+                render={<Button variant="ghost" size="sm" className="track-option track-option--add track-option--add-text" />}
+                aria-label={intl.formatMessage({ id: "stat.editor.addLabel" }, { stat: label })}
+                onClick={() => open("add")}
+              >+</PopoverTrigger>
+            </div>
+          ) : (
+            <div className="relative flex w-full min-w-0 flex-col gap-1.5 rounded-lg border border-hairline bg-token-bg/50 p-2">
+              <PopoverTrigger
+                render={<Button variant="ghost" className="absolute inset-0 h-full w-full rounded-lg p-0 hover:bg-ink/5" />}
+                aria-label={intl.formatMessage({ id: "stat.editor.editLabel" }, { stat: label, range: empty ? message("stat.editor.empty") : rangeChips.map(chip => chip.label).join(" ~ ") })}
+                onClick={() => open("range")}
+              ><span className="sr-only">{message("stat.editor.range")}</span></PopoverTrigger>
+              <div className="pointer-events-none relative z-10 flex min-h-5 min-w-0 items-center">
+                {empty ? <span className="text-xs text-muted-foreground">{message("stat.editor.empty")}</span> : (
+                  <span className="flex min-w-0 flex-wrap items-center gap-1">
+                    {rangeChips.map((chip, index) => <span key={index} className="inline-flex items-center gap-1">
+                      {index > 0 && <span className="text-xs text-muted-foreground">~</span>}
+                      <span className={`stat-value-chip stat-value-chip--compact stat-value-chip--${chip.band}`}>{chip.label}</span>
+                    </span>)}
+                  </span>
+                )}
+              </div>
+              <div className="pointer-events-none relative flex h-3.5 items-center gap-2 text-muted-foreground">
+                <RangeMark />
+              </div>
+            </div>
+          )}
+        />
+        {!docked && <PopoverContent align="start" sideOffset={8} className="w-[360px] max-w-[calc(100vw-1.5rem)] max-h-[calc(100dvh-2rem)] overflow-y-auto border border-hud-frame bg-paper p-4 shadow-hud-panel">
+          <div className="flex items-center justify-between gap-2">
+            <PopoverTitle className="font-bold">{title}</PopoverTitle>
+            <Button variant="ghost" size="icon-sm" aria-label={message("app.close")} onClick={close}><X /></Button>
+          </div>
+          {controls}
+        </PopoverContent>}
+      </Popover>
+      {docked && previewTarget && createPortal(
+        <section aria-label={title} className="rounded-xl border border-hud-frame bg-paper p-3 shadow-hud-panel">
+          <div className="mb-2 flex items-center justify-between gap-2">
+            <h2 ref={headingRef} tabIndex={-1} className="text-sm font-bold outline-none">{title}</h2>
+            <span className="text-[10px] text-muted-foreground">{message("stat.editor.live")}</span>
+          </div>
+          {controls}
+        </section>, previewTarget,
+      )}
+    </>
   )
 }

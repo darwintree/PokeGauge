@@ -6,7 +6,6 @@ import {
   getDefenderHpBounds,
   getOffenseStatBounds,
   warmDefenderSpreadCache,
-  type StatAxisBounds,
 } from "@/lib/stat-calculation"
 import { type ProbabilityMode, type StatStage } from "@/lib/damage-calculation"
 import type { MatchupCatalog } from "@/lib/catalog"
@@ -51,10 +50,6 @@ import {
   type SelectionAction,
 } from "@/lib/scenario/selection"
 import { useScenarioSnapshotPersistence } from "./use-scenario-snapshot-persistence"
-
-function defaultAxisPoint(bounds: StatAxisBounds): number {
-  return bounds.snapPoints[1]?.value ?? Math.round((bounds.min + bounds.max) / 2)
-}
 
 function offenseDraftLabel(
   catalog: MatchupCatalog,
@@ -216,7 +211,9 @@ export function useScenarioState(
     : null
   const preserveTrack = groupingTrack(visibleGrouping)
   const pipelineResult = useMemo(() => {
-    if (catalogTransitionPending) return { rows: [], unavailable: [] }
+    if (catalogTransitionPending) {
+      return { rows: [], unavailable: [] }
+    }
     return measureInteractionWork("runScenarioPipeline", () =>
       runScenarioPipeline(catalog, pipelineTrackState, probabilityMode, preserveTrack, rules),
     )
@@ -296,23 +293,6 @@ export function useScenarioState(
     setDefenseDraft(null)
   }
 
-  function toggleAddingOffense() {
-    setOffenseDraft((current) =>
-      current == null ? defaultAxisPoint(offenseBounds) : null,
-    )
-  }
-
-  function toggleAddingDefense() {
-    setDefenseDraft((current) =>
-      current == null
-        ? {
-            hp: defaultAxisPoint(defenderHpBounds),
-            def: defaultAxisPoint(defenderDefBounds),
-          }
-        : null,
-    )
-  }
-
   function addMoveSnapshot(moveId: number) {
     const move = catalog.moves.find((candidate) => candidate.id === moveId)
     if (!move) return
@@ -332,14 +312,10 @@ export function useScenarioState(
     offenseBounds,
     defenderHpBounds,
     defenderDefBounds,
-    addingOffense: offenseDraft != null,
-    addingDefense: defenseDraft != null,
     offenseDraft,
     defenseDraft,
     setOffenseDraft,
     setDefenseDraft,
-    toggleAddingOffense,
-    toggleAddingDefense,
     addMoveSnapshot,
     updateMoveSnapshot: (id: string, patch: Parameters<typeof editMoveSnapshot>[1]) =>
       dispatch({ type: "move-edit", id, patch }),

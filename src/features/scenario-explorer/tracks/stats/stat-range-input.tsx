@@ -1,5 +1,5 @@
-import { useEffect, useId, useRef, useState } from "react"
-import { Minus, Plus } from "lucide-react"
+import { useState } from "react"
+import { Triangle } from "lucide-react"
 import { useIntl } from "react-intl"
 
 import { Button } from "@/components/ui/button"
@@ -58,25 +58,15 @@ export function StatRangeInput({
   onDraftChange,
 }: StatRangeInputProps) {
   const intl = useIntl()
-  const rootRef = useRef<HTMLDivElement>(null)
-  const fineTuneId = useId()
-  const [fineTune, setFineTune] = useState<RangeHandle | null>(null)
+  const [selectedHandle, setSelectedHandle] = useState<RangeHandle>("min")
   const snapValues = bounds.snapPoints.map((snap) => snap.value)
   const drafting = draftValue != null && onDraftChange != null
   const collapsed = value.min === value.max
   const leftPct = pctForValue(value.min, bounds.min, bounds.max)
   const widthPct = collapsed ? 0.8 : pctForValue(value.max, bounds.min, bounds.max) - leftPct
 
-  function toggleFineTune(handle: RangeHandle) {
-    setFineTune((current) => (current === handle ? null : handle))
-  }
-
-  function swapFineTuneRoles() {
-    setFineTune((current) => {
-      if (current === "min") return "max"
-      if (current === "max") return "min"
-      return current
-    })
+  function swapHandleRoles() {
+    setSelectedHandle(current => current === "min" ? "max" : "min")
   }
 
   const drag = useDualHandleDrag({
@@ -85,28 +75,19 @@ export function StatRangeInput({
     value: drafting ? { min: draftValue, max: draftValue } : value,
     snapValues,
     onChange: drafting ? (next) => onDraftChange(next.min) : onChange,
-    onHandleTap: toggleFineTune,
-    onRolesSwapped: swapFineTuneRoles,
+    onHandleTap: setSelectedHandle,
+    onRolesSwapped: swapHandleRoles,
     singlePoint: drafting,
   })
-
-  useEffect(() => {
-    function onPointerDown(event: PointerEvent) {
-      if (!rootRef.current?.contains(event.target as Node)) {
-        setFineTune(null)
-      }
-    }
-    document.addEventListener("pointerdown", onPointerDown)
-    return () => document.removeEventListener("pointerdown", onPointerDown)
-  }, [])
-
-  useEffect(() => {
-    if (!drafting) setFineTune(null)
-  }, [drafting])
 
   function nudge(handle: RangeHandle, delta: number) {
     if (drafting) {
       onDraftChange(clampStat(draftValue + delta, bounds.min, bounds.max))
+      return
+    }
+    if (collapsed) {
+      const point = clampStat(value.min + delta, bounds.min, bounds.max)
+      onChange({ min: point, max: point })
       return
     }
     if (handle === "min") {
@@ -134,16 +115,16 @@ export function StatRangeInput({
     (mark) => !isEndpoint(mark.value) && !(drafting && mark.value === draftValue),
   )
   const unlabeledInterior = interiorMarks.filter((mark) => !snapValues.includes(mark.value))
-  let fineTuneValue = value.min
-  if (drafting) fineTuneValue = draftValue
-  else if (fineTune === "max") fineTuneValue = value.max
+  const activePoint = drafting ? draftValue : value[selectedHandle]
+  const lowerLimit = drafting || collapsed || selectedHandle === "min" ? bounds.min : value.min
+  const upperLimit = drafting || collapsed || selectedHandle === "max" ? bounds.max : value.max
 
   return (
-    <div ref={rootRef} className="space-y-1.5">
+    <div className="space-y-1.5">
       <div className="grid grid-cols-[2.25rem_minmax(0,1fr)] items-start gap-x-2">
         <span className="text-muted-foreground pt-0.5 text-[11px] leading-none">{statLabel}</span>
 
-        <div className="relative space-y-1 px-1">
+        <div className="relative mx-9 space-y-1 px-1">
           <div className="relative h-4">
             {bounds.snapPoints.map((snap) => {
               const pct = pctForValue(snap.value, bounds.min, bounds.max)
@@ -166,8 +147,8 @@ export function StatRangeInput({
             ref={drag.railRef}
             className={cn("relative h-8 touch-none", drafting && "cursor-grab")}
             onPointerDown={(event) => {
-              if (drafting || fineTune) return
-              // Tap the empty track (not a handle): open fine-tune on the nearest endpoint.
+              if (drafting) return
+              // The side buttons adjust the endpoint nearest to the tapped position.
               if (!(event.target instanceof Element)) return
               if (event.target.closest("button")) return
               const rail = drag.railRef.current?.getBoundingClientRect()
@@ -177,9 +158,31 @@ export function StatRangeInput({
                 bounds.min,
                 bounds.max,
               )
-              setFineTune(Math.abs(pointer - value.min) <= Math.abs(pointer - value.max) ? "min" : "max")
+              setSelectedHandle(Math.abs(pointer - value.min) <= Math.abs(pointer - value.max) ? "min" : "max")
             }}
           >
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-xs"
+              className="absolute top-1 -left-10 z-30 size-6 rounded-sm transition-colors active:not-aria-[haspopup]:translate-y-0"
+              aria-label={intl.formatMessage({ id: "stat.range.decrement" })}
+              disabled={activePoint <= lowerLimit}
+              onClick={() => nudge(selectedHandle, -1)}
+            >
+              <Triangle className="size-3 -rotate-90 fill-current" />
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-xs"
+              className="absolute top-1 -right-10 z-30 size-6 rounded-sm transition-colors active:not-aria-[haspopup]:translate-y-0"
+              aria-label={intl.formatMessage({ id: "stat.range.increment" })}
+              disabled={activePoint >= upperLimit}
+              onClick={() => nudge(selectedHandle, 1)}
+            >
+              <Triangle className="size-3 rotate-90 fill-current" />
+            </Button>
             <div
               className={cn(
                 "absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-full",
@@ -245,11 +248,17 @@ export function StatRangeInput({
                       { id: handle === "min" ? "stat.range.min" : "stat.range.max" },
                       { stat: statLabel },
                     )}
-                    aria-expanded={fineTune === handle}
-                    aria-controls={fineTune === handle ? fineTuneId : undefined}
+                    aria-pressed={selectedHandle === handle}
+                    onFocus={() => setSelectedHandle(handle)}
+                    onKeyDown={event => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault()
+                        setSelectedHandle(handle)
+                      }
+                    }}
                     className="group/handle absolute top-1/2 z-10 size-8 -translate-x-1/2 -translate-y-1/2 rounded-full focus-visible:outline-none"
                     style={handleStyle(point)}
-                    onPointerDown={drag.onPointerDown(handle)}
+                    onPointerDown={event => { setSelectedHandle(handle); drag.onPointerDown(handle)(event) }}
                     onPointerMove={drag.onPointerMove}
                     onPointerUp={drag.onPointerUp(handle)}
                     onPointerCancel={drag.onPointerUp(handle)}
@@ -259,7 +268,7 @@ export function StatRangeInput({
                       className={cn(
                         HANDLE_FACE,
                         "group-focus-visible/handle:ring-ring group-focus-visible/handle:ring-2",
-                        fineTune === handle && "ring-primary/40 ring-2",
+                        selectedHandle === handle && "ring-primary/40 ring-2",
                         drag.activeHandle === handle && "scale-110",
                       )}
                     />
@@ -272,8 +281,6 @@ export function StatRangeInput({
               <button
                 type="button"
                 aria-label={intl.formatMessage({ id: "stat.range.draft" }, { stat: statLabel })}
-                aria-expanded={fineTune === "min"}
-                aria-controls={fineTune === "min" ? fineTuneId : undefined}
                 className={cn(
                   "absolute inset-0 z-20 cursor-grab active:cursor-grabbing",
                   "focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none",
@@ -290,7 +297,7 @@ export function StatRangeInput({
                   aria-hidden
                   className={cn(
                     "border-ink bg-signal-yellow shadow-hud-chip absolute top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2",
-                    fineTune === "min" && "ring-primary/40 ring-2",
+                    "ring-primary/40 ring-2",
                     drag.activeHandle === "min" && "scale-110",
                   )}
                   style={handleStyle(draftValue)}
@@ -345,34 +352,6 @@ export function StatRangeInput({
         </div>
       </div>
 
-      {fineTune && (
-        <div
-          id={fineTuneId}
-          className="flex items-center justify-center gap-2 pl-[2.75rem]"
-        >
-          <Button
-            type="button"
-            variant="outline"
-            size="icon-xs"
-            aria-label={intl.formatMessage({ id: "stat.range.decrement" })}
-            onClick={() => nudge(fineTune, -1)}
-          >
-            <Minus />
-          </Button>
-          <span className="min-w-[3rem] text-center text-xs tabular-nums">
-            {fineTuneValue}
-          </span>
-          <Button
-            type="button"
-            variant="outline"
-            size="icon-xs"
-            aria-label={intl.formatMessage({ id: "stat.range.increment" })}
-            onClick={() => nudge(fineTune, 1)}
-          >
-            <Plus />
-          </Button>
-        </div>
-      )}
     </div>
   )
 }

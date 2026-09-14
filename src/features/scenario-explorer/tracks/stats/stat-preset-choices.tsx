@@ -12,7 +12,6 @@ import {
 
 import {
   TrackOption,
-  TrackOptionAdd,
   TrackOptionGroup,
   type TrackOptionAction,
   type TrackOptionModifier,
@@ -30,9 +29,6 @@ type StatPresetChoicesProps = {
   onCycleAllocation: (id: string) => void
   onDelete?: (id: string) => void
   onPersist?: (id: string) => void
-  adding?: boolean
-  onAddClick?: () => void
-  addAriaLabel?: string
 }
 
 type StatPresetChoiceProps = {
@@ -162,11 +158,7 @@ export function StatPresetChoices({
   onCycleAllocation,
   onDelete,
   onPersist,
-  adding = false,
-  onAddClick,
-  addAriaLabel,
 }: StatPresetChoicesProps) {
-  const intl = useIntl()
   return (
     <TrackOptionGroup className="w-full overflow-visible">
       {presets.map((preset) => {
@@ -201,14 +193,7 @@ export function StatPresetChoices({
           />
         )
       })}
-      {onAddClick && (
-        <TrackOptionAdd
-          layout="text"
-          ariaLabel={addAriaLabel ?? intl.formatMessage({ id: "statPreset.add" })}
-          pressed={adding}
-          onClick={onAddClick}
-        />
-      )}
+
     </TrackOptionGroup>
   )
 }

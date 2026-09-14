@@ -91,6 +91,7 @@ function offenseChoices(
   trackState: TrackState,
   presets: StatPreset[],
 ): PreparedStatChoice[] {
+  if (trackState.offensePresetIds.length === 0) return []
   if (trackState.statMode === "range") {
     return [{
       id: RANGE_STAT_ID,
@@ -111,6 +112,7 @@ function defenseChoices(
   trackState: TrackState,
   presets: StatPreset[],
 ): PreparedDefenseChoice[] {
+  if (trackState.defensePresetIds.length === 0) return []
   if (trackState.defenderMode === "range") {
     return [{
       id: RANGE_DEFENDER_ID,
