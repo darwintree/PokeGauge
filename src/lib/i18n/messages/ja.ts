@@ -113,6 +113,8 @@ export const jaMessages: Record<string, string> = {
     "locale.en": "English",
     "locale.ja": "日本語",
     "matchup.section": "対戦",
+    "matchup.swapShort": "攻守交代",
+    "matchup.swap": "攻撃側と防御側を入れ替える",
     "matchup.attacker": "攻撃側",
     "matchup.defender": "防御側",
     "matchup.placeholder": "ポケモンを選択",

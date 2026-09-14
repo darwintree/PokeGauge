@@ -113,6 +113,8 @@ export const zhHantMessages: Record<string, string> = {
     "locale.en": "English",
     "locale.ja": "日本語",
     "matchup.section": "對戰",
+    "matchup.swapShort": "交換攻防",
+    "matchup.swap": "交換攻防方",
     "matchup.attacker": "進攻方",
     "matchup.defender": "防守方",
     "matchup.placeholder": "選擇寶可夢",

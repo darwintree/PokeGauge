@@ -1,6 +1,8 @@
+import { ArrowLeftRight } from "lucide-react"
 import { useEffect, useState, type ReactNode } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
+import { Button } from "@/components/ui/button"
 import type { MatchupCatalog, MoveCategory, BattlePokemonOption } from "@/lib/catalog"
 import type { BattlePokemonId } from "@/lib/resources"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
@@ -197,23 +199,54 @@ export function ScenarioSetupPanel({
 
   return (
     <section aria-label={intl.formatMessage({ id: "app.setup" })} className="setup-panel flex flex-col gap-4">
-      <div className="battle-pokemon-identities grid grid-cols-2">
-        <BattlePokemonPicker
-          label={intl.formatMessage({ id: "matchup.attacker" })}
-          options={attackers}
-          value={attackerId}
-          onChange={onAttackerChange}
-          compactSide="attacker"
-          spriteSide="back"
-        />
-        <BattlePokemonPicker
-          label={intl.formatMessage({ id: "matchup.defender" })}
-          compactSide="defender"
-          options={defenders}
-          value={defenderId}
-          onChange={onDefenderChange}
-        />
-      </div>
+      <section className="battle-pokemon-identities" aria-label={intl.formatMessage({ id: "matchup.section" })}>
+        <div className="track-panel-heading flex min-h-11 items-center gap-2 px-3">
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.75}
+            className="size-3.5 shrink-0 text-muted-foreground"
+          >
+            <circle cx="12" cy="12" r="9" />
+            <path d="M3 12h6m6 0h6" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+          <h2 className="text-xs font-extrabold"><FormattedMessage id="matchup.section" /></h2>
+          <Button
+            variant="ghost"
+            size="xs"
+            className="ml-auto"
+            aria-label={intl.formatMessage({ id: "matchup.swap" })}
+            title={intl.formatMessage({ id: "matchup.swap" })}
+            onClick={() => {
+              onAttackerChange(defenderId)
+              onDefenderChange(attackerId)
+            }}
+          >
+            <ArrowLeftRight aria-hidden="true" className="size-3" />
+            <FormattedMessage id="matchup.swapShort" />
+          </Button>
+        </div>
+        <div className="grid grid-cols-2">
+          <BattlePokemonPicker
+            label={intl.formatMessage({ id: "matchup.attacker" })}
+            options={attackers}
+            value={attackerId}
+            onChange={onAttackerChange}
+            compactSide="attacker"
+            spriteSide="back"
+          />
+          <BattlePokemonPicker
+            label={intl.formatMessage({ id: "matchup.defender" })}
+            compactSide="defender"
+            options={defenders}
+            value={defenderId}
+            onChange={onDefenderChange}
+          />
+        </div>
+      </section>
 
       <div className="setup-controls" data-track-id="moves">{tracks.moves}</div>
       <div className="setup-sides">
