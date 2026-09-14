@@ -220,7 +220,7 @@ export function trackStateAfterOffenseMode(
 ): TrackState {
   if (mode === state.statMode) return state
   const next = { ...state, statMode: mode }
-  return mode === "range" ? withOffenseRangeEndpoints(next, presets) : next
+  return mode === "range" && next.offensePresetIds.length > 0 ? withOffenseRangeEndpoints(next, presets) : next
 }
 
 export function trackStateAfterDefenseMode(
@@ -230,7 +230,7 @@ export function trackStateAfterDefenseMode(
 ): TrackState {
   if (mode === state.defenderMode) return state
   const next = { ...state, defenderMode: mode }
-  return mode === "range" ? withDefenseRangeEndpoints(next, presets) : next
+  return mode === "range" && next.defensePresetIds.length > 0 ? withDefenseRangeEndpoints(next, presets) : next
 }
 
 export function trackStateAfterToggleOffense(
@@ -240,7 +240,6 @@ export function trackStateAfterToggleOffense(
 ): TrackState {
   const selected = new Set(state.offensePresetIds)
   if (selected.has(id)) {
-    if (selected.size === 1) return state
     selected.delete(id)
   } else {
     const incoming = presets.find((preset) => preset.id === id)
@@ -277,7 +276,6 @@ export function trackStateAfterToggleDefense(
 ): TrackState {
   const selected = new Set(state.defensePresetIds)
   if (selected.has(id)) {
-    if (selected.size === 1) return state
     selected.delete(id)
   } else {
     const incoming = presets.find((preset) => preset.id === id)
@@ -370,10 +368,7 @@ export function trackStateAfterRemoveOffense(
   state: TrackState,
   id: string,
   presets: StatPreset[],
-): TrackState | null {
-  if (state.offensePresetIds.includes(id) && state.offensePresetIds.length === 1) {
-    return null
-  }
+): TrackState {
   const offensePresetIds = state.offensePresetIds.filter((presetId) => presetId !== id)
   return withOffenseEnvelope(
     { ...state, offensePresetIds },
@@ -385,10 +380,7 @@ export function trackStateAfterRemoveDefense(
   state: TrackState,
   id: string,
   presets: StatPreset[],
-): TrackState | null {
-  if (state.defensePresetIds.includes(id) && state.defensePresetIds.length === 1) {
-    return null
-  }
+): TrackState {
   const defensePresetIds = state.defensePresetIds.filter((presetId) => presetId !== id)
   return withDefenseEnvelope(
     { ...state, defensePresetIds },

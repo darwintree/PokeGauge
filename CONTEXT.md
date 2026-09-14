@@ -67,7 +67,7 @@ _Avoid_: abilityOn, charged Ability, green-dot Activation, Conditional Active st
 _Avoid_: Slider, range filter
 
 **Stat Track（能力值 Track）**:
-以伤害计算实际使用的最终能力值为分支的一类 Track；分为 Offense Stat Track 与 Defense Stat Track，不把性格、SP 分配或能力阶级本身作为分支。一条 Stat Track 只有一组选中的 Stat Value（即该 Track 作为 Choice Track 时的已选中值），且至少含一个，按 Stat Value 去重；Choice 与 Range 是这组值的两种模式。选中集合与 Stat Preset 正交。
+以伤害计算实际使用的最终能力值为分支的一类 Track；分为 Offense Stat Track 与 Defense Stat Track，不把性格、SP 分配或能力阶级本身作为分支。一条 Stat Track 只有一组选中的 Stat Value（即该 Track 作为 Choice Track 时的已选中值），允许为空，按 Stat Value 去重；Choice 与 Range 是这组值的两种模式。空集合不生成 Scenario；选中集合与 Stat Preset 正交。
 _Avoid_: EV Track, Build Track, Stat Stage Track, dual stat stores
 
 **Offense Stat Track（进攻能力值 Track）**:

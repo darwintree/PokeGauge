@@ -18,10 +18,10 @@ import { WeatherTrack } from "./tracks/common/weather-track"
 
 import "./matchup/battle-pokemon-identity.css"
 
-type AccordionTrackId = "moves" | "offenseStats" | "defenseStats"
-
 type TrackId =
-  | AccordionTrackId
+  | "moves"
+  | "offenseStats"
+  | "defenseStats"
   | "attackerStages"
   | "defenderStages"
   | "attackerItems"
@@ -56,28 +56,20 @@ export function ScenarioSetupPanel({
   onMoveCategoryChange,
 }: ScenarioSetupPanelProps) {
   const intl = useIntl()
-  const [activeId, setActiveId] = useState<AccordionTrackId | null>(null)
+  const [movesExpanded, setMovesExpanded] = useState(false)
   const { trackState } = state
-  let editingSide: "attacker" | "defender" | undefined
-  if (activeId === "offenseStats") editingSide = "attacker"
-  if (activeId === "defenseStats") editingSide = "defender"
-
-
-  function toggle(id: AccordionTrackId) {
-    setActiveId((current) => (current === id ? null : id))
-  }
 
   useEffect(() => {
-    if (!activeId) return
+    if (!movesExpanded) return
     const frame = requestAnimationFrame(() => {
-      const target = document.querySelector(`[data-track-id="${activeId}"]`)
+      const target = document.querySelector('[data-track-id="moves"]')
       const rect = target?.getBoundingClientRect()
       if (rect && (rect.top < 0 || rect.top > window.innerHeight)) {
         target?.scrollIntoView({ block: "nearest" })
       }
     })
     return () => cancelAnimationFrame(frame)
-  }, [activeId])
+  }, [movesExpanded])
 
   const tracks: Record<TrackId, ReactNode> = {
     moves: (
@@ -94,28 +86,26 @@ export function ScenarioSetupPanel({
         onChange={state.updateMoveSnapshot}
         onRemove={state.removeMoveSnapshot}
         onSelectionChange={state.setSelectedMoveSnapshotIds}
-        expanded={activeId === "moves"}
-        onToggle={() => toggle("moves")}
+        expanded={movesExpanded}
+        onToggle={() => setMovesExpanded(current => !current)}
         category={catalog.moveCategory}
         onCategoryChange={onMoveCategoryChange}
       />
     ),
     offenseStats: (
       <StatTrack
+        key={`offense-${catalog.matchup.attackerCalcName}-${catalog.moveCategory}`}
         side="offense"
         catalog={catalog}
         state={state}
-        expanded={activeId === "offenseStats"}
-        onToggle={() => toggle("offenseStats")}
       />
     ),
     defenseStats: (
       <StatTrack
+        key={`defense-${catalog.matchup.defenderCalcName}-${catalog.moveCategory}`}
         side="defense"
         catalog={catalog}
         state={state}
-        expanded={activeId === "defenseStats"}
-        onToggle={() => toggle("defenseStats")}
       />
     ),
     attackerStages: (
@@ -226,10 +216,7 @@ export function ScenarioSetupPanel({
       </div>
 
       <div className="setup-controls" data-track-id="moves">{tracks.moves}</div>
-      <div
-        className="setup-sides"
-        data-editing-stats={editingSide}
-      >
+      <div className="setup-sides">
         <SetupSection title={intl.formatMessage({ id: "matchup.attacker" })}>
           <div data-track-id="offenseStats">{tracks.offenseStats}</div>
           <div data-track-id="attackerStages">{tracks.attackerStages}</div>

@@ -16,6 +16,8 @@ import {
 import { getCatalogShell, type MatchupCatalog } from "@/lib/catalog"
 import {
   defaultTrackState,
+  loadScenarioSnapshot,
+  expectedRowCount,
   scenarioSetupTokenFromTrackState,
   SCENARIO_STORAGE_KEY,
   type TrackState,
@@ -44,6 +46,7 @@ function Harness({
     sharedToken && onSharedEdited
       ? { token: sharedToken, onEdited: onSharedEdited }
       : undefined,
+    null,
   )
   return null
 }
@@ -82,6 +85,80 @@ describe("async default lifecycle", () => {
       await Promise.resolve()
     })
   }
+
+  it.each(["offense", "defense"] as const)("keeps a cleared %s stat track empty across default refresh", async side => {
+    const catalog: MatchupCatalog = {
+      ...await getCatalogShell(445, 143, "en", "physical"),
+      defaultMovePickStatus: "ready",
+      defaultStatPickStatus: "ready",
+      defaultAbilityPickStatus: "ready",
+      defaultItemPickStatus: "ready",
+    }
+    await render(catalog)
+    await act(async () => {
+      const selected = side === "offense" ? current.trackState.offensePresetIds : current.trackState.defensePresetIds
+      for (const id of selected) {
+        if (side === "offense") current.toggleOffensePreset(id)
+        else current.toggleDefensePreset(id)
+      }
+    })
+    const ids = side === "offense" ? "offensePresetIds" : "defensePresetIds"
+    expect(current.trackState[ids]).toEqual([])
+    expect(current.rows).toEqual([])
+    expect(current.unavailable).toEqual([])
+    await act(async () => {
+      if (side === "offense") current.setStatMode("range")
+      else current.setDefenderMode("range")
+    })
+    expect(current.trackState[ids]).toEqual([])
+    expect(current.rows).toEqual([])
+    expect(expectedRowCount(current.trackState)).toBe(0)
+    window.dispatchEvent(new Event("pagehide"))
+    const saved = loadScenarioSnapshot()
+    expect(saved?.trackState[ids]).toEqual([])
+    await act(async () => root.unmount())
+    root = createRoot(container)
+    await render(catalog, saved?.trackState)
+    expect(current.trackState[ids]).toEqual([])
+    expect(current.rows).toEqual([])
+
+    await render({ ...catalog, defaultStatPickStatus: "ready", defaultOffensePresetId: "extreme" })
+    expect(current.trackState[ids]).toEqual([])
+    expect(current.rows).toEqual([])
+    await act(async () => {
+      if (side === "offense") current.toggleOffensePreset(current.offensePresets[0].id)
+      else current.toggleDefensePreset(current.defensePresets[0].id)
+    })
+    expect(current.trackState[ids]).toHaveLength(1)
+  })
+
+  it("previews a draft without saving it, then restores a confirmed custom choice", async () => {
+    const catalog: MatchupCatalog = {
+      ...await getCatalogShell(445, 143, "en", "physical"),
+      defaultMovePickStatus: "ready",
+      defaultStatPickStatus: "ready",
+      defaultAbilityPickStatus: "ready",
+      defaultItemPickStatus: "ready",
+    }
+    await render(catalog)
+    const initial = current.trackState
+    const stat = current.offenseBounds.min + 1
+    await act(async () => current.setOffenseDraft(stat))
+    expect(current.trackState).toBe(initial)
+    expect(current.pipelineTrackState.offensePresetIds).toHaveLength(1)
+    await act(async () => current.confirmAddOffense(stat))
+    const added = current.offensePresets.find(preset => preset.values.kind === "offense" && preset.values.stat === stat)
+    expect(added?.kind).toBe("user")
+    expect(current.trackState.offensePresetIds).toContain(added?.id)
+    expect(current.offenseDraft).toBeNull()
+    window.dispatchEvent(new Event("pagehide"))
+    const saved = loadScenarioSnapshot()
+    await act(async () => root.unmount())
+    root = createRoot(container)
+    await render(catalog, saved?.trackState)
+    expect(current.offensePresets).toContainEqual(added)
+    expect(current.trackState.offensePresetIds).toContain(added?.id)
+  })
 
   it("waits for final async defaults before projecting", async () => {
     const shell = {

@@ -4,7 +4,7 @@ import { useIntl } from "react-intl"
 
 import { cn } from "@/lib/utils"
 
-import { RangeMark } from "../tracks/stats/stat-mode-switch"
+import { RangeMark } from "../tracks/stats/range-mark"
 import {
   isUsageTipMutedOn,
   muteUsageTipsForLocalDay,

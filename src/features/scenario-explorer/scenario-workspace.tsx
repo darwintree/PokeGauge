@@ -19,6 +19,8 @@ import { SetupBookmarkControls } from "./setup-bookmarks"
 import { useScenarioState } from "./state/use-scenario-state"
 import { UsageTip } from "./usage-tip/usage-tip"
 
+import { StatEditorContext, type StatEditSession } from "./tracks/stats/stat-editor-context"
+
 type LocalizedCatalogState = {
   attackers: BattlePokemonOption[]
   defenders: BattlePokemonOption[]
@@ -67,6 +69,17 @@ export function ScenarioWorkspace({
       : undefined,
     resultGrouping,
   )
+  const [statEditing, setStatEditing] = useState<StatEditSession | null>(null)
+  const [statPreviewTarget, setStatPreviewTarget] = useState<HTMLDivElement | null>(null)
+  useEffect(() => setStatEditing(null), [attackerId, defenderId, catalog.moveCategory])
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 1024px)")
+    function returnToPopover() {
+      if (desktop.matches) setStatEditing(current => current ? { ...current, placement: "popover" } : null)
+    }
+    desktop.addEventListener("change", returnToPopover)
+    return () => desktop.removeEventListener("change", returnToPopover)
+  }, [])
   const { visibleGrouping } = state
   const [mobileView, setMobileView] = useState<"setup" | "results">("results")
   const [shareStatus, setShareStatus] = useState<"idle" | "copied" | "error">("idle")
@@ -113,6 +126,13 @@ export function ScenarioWorkspace({
   }
 
   return (
+    <StatEditorContext value={{
+      editing: statEditing,
+      setEditing: setStatEditing,
+      previewTarget: statPreviewTarget,
+      showResults: () => setMobileView("results"),
+      showSetup: () => changeMobileView("setup"),
+    }}>
     <div className="p-4 pb-12 sm:p-6">
       <a
         href="#damage-results"
@@ -185,6 +205,7 @@ export function ScenarioWorkspace({
             mobileView !== "results" && "hidden",
           )}
         >
+          <div ref={setStatPreviewTarget} className="scroll-mt-14 empty:hidden lg:hidden" />
           <header className="space-y-1.5">
             <div className="flex items-center justify-between gap-2">
               <h1 className="min-w-0 truncate text-[19px] font-extrabold tracking-tight [text-shadow:1px_1px_0_var(--paper)]">
@@ -240,5 +261,6 @@ export function ScenarioWorkspace({
         </main>
       </div>
     </div>
+    </StatEditorContext>
   )
 }

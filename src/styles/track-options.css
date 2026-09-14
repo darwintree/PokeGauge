@@ -41,16 +41,7 @@
     gap: 0.75rem;
   }
 
-  @container (max-width: 560px) {
-    .setup-sides[data-editing-stats] {
-      grid-template-columns: minmax(0, 1fr);
-    }
 
-    /* Keep the opened defender header at the top, beside its original click position. */
-    .setup-sides[data-editing-stats="defender"] > :last-child {
-      order: -1;
-    }
-  }
 
   .track-panel {
     min-width: 0;

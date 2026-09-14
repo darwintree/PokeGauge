@@ -208,7 +208,6 @@ export function reduceSelection(state: SelectionState, action: SelectionAction):
           const next = offense
             ? trackStateAfterRemoveOffense(tracks, action.id, presets.offense)
             : trackStateAfterRemoveDefense(tracks, action.id, presets.defense)
-          if (!next) return state
           tracks = next
           break
         }

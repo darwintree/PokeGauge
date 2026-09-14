@@ -214,21 +214,21 @@ describe("scenario pure transitions", () => {
     ])
   })
 
-  it("does not deselect the last remaining Stat Value", async () => {
+  it("allows deselecting or removing the final Stat Value", async () => {
     const catalog = await getCatalogShell(6, 9, "en")
     const state = defaultTrackState(catalog)
     state.statMode = "preset"
     state.offensePresetIds = ["extreme"]
     const presets = offensePresetsForState(catalog, state)
 
-    expect(trackStateAfterToggleOffense(state, "extreme", presets)).toBe(state)
-    expect(trackStateAfterRemoveOffense(state, "extreme", presets)).toBeNull()
+    expect(trackStateAfterToggleOffense(state, "extreme", presets).offensePresetIds).toEqual([])
+    expect(trackStateAfterRemoveOffense(state, "extreme", presets).offensePresetIds).toEqual([])
 
     state.defenderMode = "preset"
     state.defensePresetIds = ["hp-32"]
     const defensePresets = defensePresetsForState(catalog, state)
-    expect(trackStateAfterToggleDefense(state, "hp-32", defensePresets)).toBe(state)
-    expect(trackStateAfterRemoveDefense(state, "hp-32", defensePresets)).toBeNull()
+    expect(trackStateAfterToggleDefense(state, "hp-32", defensePresets).defensePresetIds).toEqual([])
+    expect(trackStateAfterRemoveDefense(state, "hp-32", defensePresets).defensePresetIds).toEqual([])
   })
 
   it("keeps interior points when a Range boundary is dragged outward", async () => {
