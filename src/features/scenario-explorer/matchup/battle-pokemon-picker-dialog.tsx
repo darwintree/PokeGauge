@@ -1,10 +1,9 @@
-import { useMemo } from "react"
+import { useMemo, useRef } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-import { TypeBadge, TypeBadgeList } from "@/components/pokemon/type-badge"
+import { TypeBadge } from "@/components/pokemon/type-badge"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import { pokemonSpriteUrl } from "@/lib/assets"
 import type { BattlePokemonOption } from "@/lib/catalog"
 import { prioritizeBattlePokemonOptions } from "@/lib/catalog"
 import { POKEMON_TYPES, type PokemonType } from "@/lib/pokemon"
@@ -14,6 +13,8 @@ import { cn } from "@/lib/utils"
 
 import { PickerDialog } from "../pickers/picker-dialog"
 import { RankingPendingNotice } from "../pickers/ranking-pending-notice"
+import { BattlePokemonPickerItem } from "./battle-pokemon-picker-item"
+import { BattlePokemonVirtualList } from "./battle-pokemon-virtual-list"
 
 function battlePokemonMatches(
   option: BattlePokemonOption,
@@ -28,55 +29,6 @@ function battlePokemonMatches(
     String(option.id).includes(q)
   const matchesTypes = typeFilters.every((type) => option.types.includes(type))
   return matchesQuery && matchesTypes
-}
-
-function BattlePokemonPickerItem({
-  option,
-  current,
-  shortLabel,
-  onSelect,
-  compact = false,
-}: {
-  option: BattlePokemonOption
-  current: boolean
-  shortLabel?: string
-  onSelect: () => void
-  compact?: boolean
-}) {
-  return (
-    <button
-      type="button"
-      aria-current={current ? "true" : undefined}
-      className={cn(
-        "hover:bg-token-bg/60 aria-current:bg-signal-yellow/55 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        compact
-          ? "w-24 shrink-0 rounded-[9px] border border-card-border p-2"
-          : "flex w-full items-center gap-3 border-b px-3 py-2 last:border-b-0 [content-visibility:auto] [contain-intrinsic-size:auto_64px]",
-      )}
-      onClick={onSelect}
-    >
-      <span className={cn("shrink-0", compact ? "mx-auto block size-14" : "size-12")}>
-        <img
-          loading="lazy"
-          decoding="async"
-          src={pokemonSpriteUrl(option.id)}
-          alt=""
-          className="size-full object-contain [image-rendering:pixelated]"
-        />
-      </span>
-      <span className={cn("min-w-0", compact && "mt-1 block text-center")}>
-        <span className={cn("block truncate font-bold", compact ? "text-xs" : "text-sm")}>
-          {shortLabel ?? option.label}
-        </span>
-        {!compact && (
-          <span className="text-muted-foreground block truncate text-xs">
-            {option.species}
-          </span>
-        )}
-      </span>
-      {!compact && <span className="ml-auto"><TypeBadgeList types={option.types} /></span>}
-    </button>
-  )
 }
 
 export function BattlePokemonPickerDialog({
@@ -119,6 +71,7 @@ export function BattlePokemonPickerDialog({
   onSelect: (id: BattlePokemonId) => void
 }) {
   const intl = useIntl()
+  const scrollRef = useRef<HTMLDivElement>(null)
   const selected = useMemo(
     () => (value == null ? null : (options.find((option) => option.id === value) ?? null)),
     [options, value],
@@ -215,6 +168,7 @@ export function BattlePokemonPickerDialog({
           )}
         </>
       }
+      bodyRef={scrollRef}
       bodyClassName={cn("rounded-lg border border-card-border", !showList && "hidden")}
       empty={
         rankingPending || listOptions.length > 0
@@ -229,14 +183,13 @@ export function BattlePokemonPickerDialog({
           onSkip={() => onSkipRanking?.()}
         />
       ) : (
-        listOptions.map((option) => (
-          <BattlePokemonPickerItem
-            key={option.id}
-            option={option}
-            current={option.id === value}
-            onSelect={() => onSelect(option.id)}
-          />
-        ))
+        <BattlePokemonVirtualList
+          key={`${query}:${typeFilters.join(",")}:${sameSpeciesFirst}:${megaFirst}`}
+          options={listOptions}
+          value={value}
+          onSelect={onSelect}
+          scrollRef={scrollRef}
+        />
       )}
     </PickerDialog>
   )

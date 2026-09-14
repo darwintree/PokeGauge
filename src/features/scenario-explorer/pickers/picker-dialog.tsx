@@ -1,4 +1,4 @@
-import { type ReactNode, useId } from "react"
+import { type ReactNode, type Ref, useId } from "react"
 import { Search } from "lucide-react"
 
 import {
@@ -22,6 +22,7 @@ export function PickerDialog({
   filtersClassName,
   beforeList,
   bodyClassName,
+  bodyRef,
   empty,
   children,
 }: {
@@ -36,6 +37,7 @@ export function PickerDialog({
   filtersClassName?: string
   beforeList?: ReactNode
   bodyClassName?: string
+  bodyRef?: Ref<HTMLDivElement>
   empty?: ReactNode
   children?: ReactNode
 }) {
@@ -72,7 +74,7 @@ export function PickerDialog({
         </DialogHeader>
         <div className="flex min-h-0 min-w-0 flex-col gap-3 p-4">
           {filtersClassName ? <div className={filtersClassName}>{filters}</div> : filters}
-          <div className={cn("min-h-0 flex-1 overflow-y-auto overscroll-contain", bodyClassName)}>
+          <div ref={bodyRef} className={cn("min-h-0 flex-1 overflow-y-auto overscroll-contain", bodyClassName)}>
             {empty != null ? (
               <div className="text-muted-foreground p-6 text-center text-sm">{empty}</div>
             ) : (
