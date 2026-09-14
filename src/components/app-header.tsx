@@ -17,6 +17,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { UsageSourceSelect } from "@/features/scenario-explorer/pickers/usage-source-select"
 import { CHANGELOG_ENTRIES } from "@/lib/changelog"
 import { trackProductEvent } from "@/lib/analytics"
 import type { ProbabilityMode } from "@/lib/damage-calculation"
@@ -58,6 +59,11 @@ const CREDIT_LINKS = [
     name: "Pokémon Champions Battle Data",
     href: "https://championsbattledata.com/",
     descriptionId: "credits.champions",
+  },
+  {
+    name: "Pikalytics",
+    href: "https://www.pikalytics.com/pokedex",
+    descriptionId: "credits.pikalytics",
   },
 ] as const
 
@@ -244,11 +250,18 @@ function SettingsDialog({
                 ))}
               </select>
             </PreferenceRow>
-            <PreferenceRow htmlFor="settings-usage-source" label="Usage source" description="Choose the source used for usage ranking and recommendations.">
-              <select id="settings-usage-source" value={usageSource} onChange={(event) => onUsageSourceChange(event.target.value as UsageSource)} className={SELECT_CLASS}>
-                <option value="champions">Pokémon Champions</option>
-                <option value="smogon">Smogon</option>
-              </select>
+            <PreferenceRow
+              htmlFor="settings-usage-source"
+              label={<FormattedMessage id="settings.usageSource.label" />}
+              description={<FormattedMessage id="settings.usageSource.description" />}
+            >
+              <UsageSourceSelect
+                id="settings-usage-source"
+                describedBy="settings-usage-source-description"
+                value={usageSource}
+                onChange={onUsageSourceChange}
+                className={SELECT_CLASS}
+              />
             </PreferenceRow>
 
             <PreferenceRow

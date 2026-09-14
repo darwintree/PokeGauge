@@ -43,6 +43,7 @@
   "devDependencies": {
     "@changesets/cli": "^3.0.1",
     "@changesets/read": "^1.0.0",
+    "@cloudflare/vite-plugin": "^1.54.8",
     "@types/node": "^24.13.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
@@ -53,6 +54,6 @@
     "typescript": "~6.0.2",
     "vite": "^8.1.0",
     "vitest": "^4.1.9",
-    "wrangler": "^4.126.0"
+    "wrangler": "^4.131.1"
   }
 }

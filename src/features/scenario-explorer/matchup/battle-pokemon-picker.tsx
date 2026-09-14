@@ -12,6 +12,7 @@ import {
 } from "@/lib/catalog"
 import type { PokemonType } from "@/lib/pokemon"
 import type { BattlePokemonId } from "@/lib/resources"
+import type { UsageSource } from "@/lib/usage-source-preference"
 import { cn } from "@/lib/utils"
 import { getUsageSource, setUsageSource } from "@/lib/champions"
 
@@ -105,7 +106,7 @@ export function BattlePokemonPicker({
     rankingGeneration.current += 1
     setLoad((current) => reduceRankingLoad(current, "skip"))
   }
-  function changeUsageSource(source: "champions" | "smogon") {
+  function changeUsageSource(source: UsageSource) {
     setUsageSource(source)
     rankingGeneration.current += 1
     setRankedIds(null)
