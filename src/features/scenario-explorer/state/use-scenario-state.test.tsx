@@ -134,11 +134,11 @@ describe("async default lifecycle", () => {
 
     await act(async () => current.setAttackerAbilityIds([DEFIANT_ABILITY_ID]))
     expect(current.trackState.attackerStages).toEqual([0])
-    expect(current.trackState.attackerStagePool).toEqual([0, 1, 2])
+    expect(current.trackState.attackerStagePool).toEqual([-1, 0, 1, 2])
 
     await act(async () => current.setAttackerAbilityIds([NO_ABILITY_ID]))
     expect(current.trackState.attackerStages).toEqual([0])
-    expect(current.trackState.attackerStagePool).toEqual([0, 1, 2])
+    expect(current.trackState.attackerStagePool).toEqual([-1, 0, 1, 2])
 
     await render({
       ...shell,
@@ -235,21 +235,25 @@ describe("async default lifecycle", () => {
     vi.useRealTimers()
   })
 
-  it("adds a stage to the Choice Pool and reset shrinks the pool to 0", async () => {
-    const shell = await getCatalogShell(133, 143, "en")
+  it.each([
+    ["physical", [-1, 0], [-1, 0, 2]],
+    ["special", [0], [0, 2]],
+  ] as const)("adds a stage and resets the %s Choice Pool to its defaults", async (category, pool, expandedPool) => {
+    const shell = await getCatalogShell(133, 143, "en", category)
     await render(shell)
-    expect(current.trackState.attackerStagePool).toEqual([0])
+    expect(current.trackState.attackerStagePool).toEqual(pool)
+    expect(current.trackState.attackerStages).toEqual([0])
 
     await act(async () => current.addAttackerStage(2))
-    expect(current.trackState.attackerStagePool).toEqual([0, 2])
+    expect(current.trackState.attackerStagePool).toEqual(expandedPool)
     expect(current.trackState.attackerStages).toEqual([0, 2])
 
     await act(async () => current.setAttackerStages([2]))
-    expect(current.trackState.attackerStagePool).toEqual([0, 2])
+    expect(current.trackState.attackerStagePool).toEqual(expandedPool)
     expect(current.trackState.attackerStages).toEqual([2])
 
     await act(async () => current.resetAttackerStages())
-    expect(current.trackState.attackerStagePool).toEqual([0])
+    expect(current.trackState.attackerStagePool).toEqual(pool)
     expect(current.trackState.attackerStages).toEqual([0])
   })
 

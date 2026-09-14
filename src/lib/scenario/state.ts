@@ -86,7 +86,7 @@ export function defaultTrackState(catalog: MatchupCatalog): TrackState {
     statRange,
     offenseAllocationIndices: {},
     attackerStages: [0],
-    attackerStagePool: [0],
+    attackerStagePool: catalog.moveCategory === "physical" ? [-1, 0] : [0],
     attackerItemPoolIds: [...catalog.defaultAttackerItemPoolIds],
     defenderItemPoolIds: [...catalog.defaultDefenderItemPoolIds],
     attackerItemIds: [...catalog.defaultAttackerItemIds],

@@ -74,7 +74,7 @@ describe("selection engine", () => {
     catalog.defaultDefenderAbilityIds = [INTIMIDATE_ABILITY_ID]
     let state = createSelectionState(context(catalog))
     expect(state.trackState.attackerStages).toEqual([1])
-    expect(state.trackState.attackerStagePool).toEqual([0, 1, 2])
+    expect(state.trackState.attackerStagePool).toEqual([-1, 0, 1, 2])
     state = reduceSelection(state, { type: "ability-select", side: "attacker", ids: [DEFIANT_ABILITY_ID, CLEAR_BODY_ABILITY_ID] })
     expect(state.trackState.attackerStages).toEqual([0, 1])
     state = reduceSelection(state, { type: "stage-select", side: "attacker", values: [3] })
@@ -82,7 +82,7 @@ describe("selection engine", () => {
     expect(state.trackState.attackerStages).toEqual([3])
     state = reduceSelection(state, { type: "stage-reset", side: "attacker" })
     expect(state.trackState.attackerStages).toEqual([0])
-    expect(state.trackState.attackerStagePool).toEqual([0, 1, 2])
+    expect(state.trackState.attackerStagePool).toEqual([-1, 0, 1, 2])
   })
 
   it("protects manual weather while adding new candidates and preserves restored selections", async () => {
