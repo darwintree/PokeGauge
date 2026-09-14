@@ -114,6 +114,8 @@ export const zhHansMessages: Record<string, string> = {
     "locale.en": "English",
     "locale.ja": "日本語",
     "matchup.section": "对战",
+    "matchup.swapShort": "交换攻防",
+    "matchup.swap": "交换攻防方",
     "matchup.attacker": "进攻方",
     "matchup.defender": "防守方",
     "matchup.placeholder": "选择宝可梦",

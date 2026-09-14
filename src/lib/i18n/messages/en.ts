@@ -114,6 +114,8 @@ export const enMessages: Record<string, string> = {
     "locale.en": "English",
     "locale.ja": "日本語",
     "matchup.section": "Matchup",
+    "matchup.swapShort": "Swap sides",
+    "matchup.swap": "Swap attacker and defender",
     "matchup.attacker": "Attacker",
     "matchup.defender": "Defender",
     "matchup.placeholder": "Choose Pokemon",
