@@ -1,6 +1,9 @@
 import { beforeAll, describe, expect, it } from "vitest"
 
 import { abilitySupport } from "@/lib/ability"
+import { getCatalogShell } from "@/lib/catalog"
+import { projectAbilitySelections } from "@/lib/scenario/ability-projection"
+import { defaultTrackState } from "@/lib/scenario/state"
 import type { CalculationRules } from "@/lib/calculation-rules"
 import { listResources } from "@/lib/resources"
 import { calculateHitMatrix } from "./calc-engine"
@@ -35,6 +38,42 @@ function rolls(result: CalculableScenario): readonly number[] {
 }
 
 describe.each<CalculationRules>(["champions", "gen9"])("%s rules", (rules) => {
+  it.each([
+    [226, "electric", 85, 90],
+    [227, "psychic", 94, 90],
+    [228, "misty", 337, 80],
+    [229, "grassy", 412, 90],
+  ] as const)("supports terrain setter %i through explicit field inputs", async (abilityId, terrain, moveId, power) => {
+    const defaults = defaultTrackState(await getCatalogShell(133, 831, "en", "physical"))
+    for (const side of ["attacker", "defender"] as const) {
+      const selected = {
+        ...defaults,
+        attackerAbilityIds: [side === "attacker" ? abilityId : -1],
+        defenderAbilityIds: [side === "defender" ? abilityId : -1],
+      }
+      const projected = projectAbilitySelections(selected, "physical")
+      expect(projected.terrains).toEqual([terrain])
+      expect(abilitySupport(abilityId, rules)).toBe("supported")
+      const raw = input({
+        rules, terrain: projected.terrains[0],
+        attackerAbilityId: selected.attackerAbilityIds[0],
+        defenderAbilityId: selected.defenderAbilityIds[0],
+      })
+      raw.snapshot = { ...raw.snapshot, moveId, power }
+      const result = scenario(raw)
+      expect(result.sources).toContainEqual({ track: `${side}-ability`, optionId: String(abilityId), state: "neutral" })
+      expect(result.sources).toContainEqual({ track: "terrain", optionId: terrain, state: "active" })
+      const explicitField = { ...raw, attackerAbilityId: -1, defenderAbilityId: -1 }
+      expect(rolls(result)).toEqual(rolls(scenario(explicitField)))
+      expect(rolls(result)).not.toEqual(rolls(scenario({ ...explicitField, terrain: "none" })))
+      expect(result.support).toBe(terrain === "grassy" ? "semi-supported" : "supported")
+
+      const manual = projectAbilitySelections({ ...selected, terrains: ["none"] }, "physical", { terrain: true })
+      expect(manual.terrains).toEqual(["none"])
+      expect(manual.terrainPool).toContain(terrain)
+    }
+  })
+
   it("feeds exact stats through clones and returns known neutral rolls", () => {
     // L50, 40 BP, 100/100 offense/defense, STAB: 22*40/50 + 2 = 19 before random and STAB.
     const result = scenario(input({ rules }))
