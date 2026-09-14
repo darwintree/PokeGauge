@@ -254,7 +254,7 @@ describe("ability scenario product and provenance", () => {
     const projected = projectAbilitySelections(state, "physical")
 
     expect(projected.attackerStages).toEqual([0])
-    expect(projected.attackerStagePool).toEqual([0, 1, 2])
+    expect(projected.attackerStagePool).toEqual([-1, 0, 1, 2])
     expect(expectedRowCount(projected)).toBe(1)
     expect(runScenarioPipeline(catalog, projected).rows).toHaveLength(1)
 
