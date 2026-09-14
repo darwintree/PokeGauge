@@ -61,6 +61,12 @@ describe("Pokemon selector interactions", () => {
   let container: HTMLDivElement
 
   beforeEach(() => {
+    // happy-dom does not lay out elements; provide the viewport and row sizes
+    // that the virtualizer observes in a browser.
+    vi.spyOn(HTMLElement.prototype, "offsetHeight", "get").mockImplementation(function (this: HTMLElement) {
+      return this.hasAttribute("data-index") ? 65 : 400
+    })
+    vi.spyOn(HTMLElement.prototype, "offsetWidth", "get").mockReturnValue(360)
     Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })
     container = document.createElement("div")
     document.body.append(container)
@@ -74,6 +80,7 @@ describe("Pokemon selector interactions", () => {
     container.remove()
     document.body.innerHTML = ""
     resetChampionsPokemonUsageFetcherForTest()
+    vi.restoreAllMocks()
   })
 
   async function click(element: Element | null) {
@@ -124,6 +131,40 @@ describe("Pokemon selector interactions", () => {
     })
     return onChange
   }
+
+  it("keeps a large catalog bounded and lets the keyboard select beyond the window", async () => {
+    const options = Array.from({ length: 1300 }, (_, index) => option(index + 1, index + 1))
+    const onChange = await renderPicker(options)
+    await click(container.querySelector('[data-slot="button"]'))
+    await settleRanking()
+
+    expect(dialogImgSrcs().length).toBeGreaterThan(0)
+    expect(dialogImgSrcs().length).toBeLessThan(30)
+    const first = document.querySelector<HTMLButtonElement>('[role="listitem"] button')!
+    await act(async () => {
+      first.focus()
+      first.dispatchEvent(new KeyboardEvent("keydown", { key: "End", bubbles: true }))
+    })
+    expect(document.activeElement?.closest('[role="listitem"]')?.getAttribute("aria-posinset")).toBe("1300")
+    expect(dialogImgSrcs().length).toBeLessThan(30)
+    await click(document.activeElement)
+    expect(onChange).toHaveBeenCalledWith(1300)
+  })
+
+  it("searches the entire catalog, including options outside the rendered window", async () => {
+    const options = Array.from({ length: 1300 }, (_, index) => option(index + 1, index + 1))
+    const onChange = await renderPicker(options)
+    await click(container.querySelector('[data-slot="button"]'))
+    await settleRanking()
+    const search = document.querySelector<HTMLInputElement>('[data-slot="input"]')!
+    await act(async () => {
+      Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set?.call(search, "1300")
+      search.dispatchEvent(new Event("input", { bubbles: true }))
+    })
+    expect(dialogImgSrcs()).toHaveLength(1)
+    await click(document.querySelector('[role="listitem"] button'))
+    expect(onChange).toHaveBeenCalledWith(1300)
+  })
 
   const formOptions = [
     { ...option(1, 1), label: "Base" },
