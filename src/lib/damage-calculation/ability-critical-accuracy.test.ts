@@ -3,9 +3,6 @@ import { beforeAll, describe, expect, it } from "vitest"
 import {
   BATTLE_ARMOR_ABILITY_ID,
   COMPOUND_EYES_ABILITY_ID,
-  EELEVATE_ABILITY_ID,
-  FIRE_MANE_ABILITY_ID,
-  MEGA_SOL_ABILITY_ID,
   ROUGH_SKIN_ABILITY_ID,
   SUPREME_OVERLORD_ABILITY_ID,
   HUSTLE_ABILITY_ID,
@@ -355,10 +352,7 @@ describe("accuracy abilities", () => {
 
 describe("support boundary", () => {
   it.each([
-    FIRE_MANE_ABILITY_ID,
-    MEGA_SOL_ABILITY_ID,
-    EELEVATE_ABILITY_ID,
-    ROUGH_SKIN_ABILITY_ID,
+          ROUGH_SKIN_ABILITY_ID,
     SUPREME_OVERLORD_ABILITY_ID,
   ])(
     "keeps reviewed Ability %i unsupported",

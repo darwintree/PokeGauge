@@ -1,3 +1,5 @@
+import type { CalculationRules } from "@/lib/calculation-rules"
+
 /** PokeAPI's stable numeric identifier for Adaptability. */
 export const ADAPTABILITY_ABILITY_ID = 91
 export const SKILL_LINK_ABILITY_ID = 92
@@ -80,6 +82,7 @@ export const DRAGONIZE_ABILITY_ID = 309
 export const MEGA_SOL_ABILITY_ID = 310
 export const EELEVATE_ABILITY_ID = 312
 export const FIRE_MANE_ABILITY_ID = 313
+export const AURA_GUARD_ABILITY_ID = 314
 
 export type AbilitySupport =
   | "supported"
@@ -131,7 +134,7 @@ const UNSUPPORTED_ABILITY_IDS = new Set([
   240, 247, 248, 249, 250, 251, 254, 256, 257, 258, 261, 263, 266, 267,
   // Generation IX
   268, 269, 270, 271, 275, 277, 278, 279, 280, 281, 282, 290, 291, 293, 294, 295,
-  296, 299, 300, 302, 303, 304, 306, 307, 309, 310, 311, 312, 313,
+  296, 299, 300, 302, 303, 304, 306, 307, 311,
 ])
 
 const NONE_ABILITY_IDS = new Set([
@@ -152,7 +155,14 @@ const NONE_ABILITY_IDS = new Set([
   283, 298, 301, 308,
 ])
 
-export function abilitySupport(id: number): AbilitySupport {
+// Missing damage mechanisms, not simply names absent from the Champions roster.
+const CHAMPIONS_UNSUPPORTED_ABILITIES = new Set([
+  25, 88, 96, 110, 114, 122, 137, 138, 188, 200, 206, 231, 232, 233,
+  234, 235, 246, 255, 262, 273, 274, 276, 284, 285, 286, 287, 288, 289, 305,
+])
+
+export function abilitySupport(id: number, rules: CalculationRules = "gen9"): AbilitySupport {
+  if (rules === "champions" && CHAMPIONS_UNSUPPORTED_ABILITIES.has(id)) return "unsupported"
   if (ASSUMED_SATISFIED_ABILITY_FAMILY[id]) return "assumed-satisfied"
   if (UNSUPPORTED_ABILITY_IDS.has(id)) return "unsupported"
   if (NONE_ABILITY_IDS.has(id)) return "none"
@@ -163,8 +173,8 @@ export function abilityIsSelectable(id: number): boolean {
   return abilitySupport(id) !== "none"
 }
 
-export function abilityEffectIsSupported(id: number): boolean {
-  const support = abilitySupport(id)
+export function abilityEffectIsSupported(id: number, rules: CalculationRules = "gen9"): boolean {
+  const support = abilitySupport(id, rules)
   return support === "supported" || support === "assumed-satisfied"
 }
 

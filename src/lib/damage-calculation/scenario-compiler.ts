@@ -1,10 +1,12 @@
-import { moveStatChange, type MoveStatChange } from "@/lib/move/stat-change"
-import type { MoveCategory } from "@/lib/catalog"
+import { toID } from "@smogon/calc"
+
 import {
   AIR_LOCK_ABILITY_ID,
   CLOUD_NINE_ABILITY_ID,
   KLUTZ_ABILITY_ID,
   LEVITATE_ABILITY_ID,
+  EELEVATE_ABILITY_ID,
+  MEGA_SOL_ABILITY_ID,
   MULTISCALE_ABILITY_ID,
   NO_ABILITY_ID,
   SCRAPPY_ABILITY_ID,
@@ -19,6 +21,8 @@ import {
   assumedSatisfiedAbilityFamily,
   type AssumedSatisfiedAbilityFamily,
 } from "@/lib/ability"
+import type { CalculationRules } from "@/lib/calculation-rules"
+import type { MoveCategory } from "@/lib/catalog"
 import {
   FROZEN_HELD_ITEM_BY_ID,
   isMegaStone,
@@ -27,15 +31,19 @@ import {
   type HeldItemGate,
   type HeldItemId,
 } from "@/lib/held-item"
+import { heldItemEffectIsSupported } from "@/lib/held-item/support"
 import {
   type CriticalStage,
   type MoveSnapshot,
   normalizeSnapshotAccuracy,
   normalizeSnapshotPower,
   compileMoveExecution,
+  moveHitProfile,
   movePowerIsCompatible,
   type MoveExecution,
 } from "@/lib/move"
+import { moveEffectIsSupported } from "@/lib/move/rules-support"
+import { moveStatChange, type MoveStatChange } from "@/lib/move/stat-change"
 import {
   auditedMoveWarning,
   calcDerivedPowerDefault,
@@ -53,6 +61,7 @@ import {
 } from "@/lib/resources"
 import { allStatValues } from "@/lib/stat-calculation"
 
+import { calcGeneration } from "./calc-constants"
 import { calcRecognizesAbility, calcRecognizesItem } from "./calc-recognition"
 import type { CalcContext, CalcPokemonContext } from "./calc-engine"
 import { hasFullHpProtection } from "./calc-engine"
@@ -83,6 +92,7 @@ export type RawScenarioPoint = {
 }
 
 export type RawScenario = {
+  rules?: CalculationRules
   snapshot: MoveSnapshot
   attackerId: BattlePokemonId
   defenderId: BattlePokemonId
@@ -472,11 +482,32 @@ function weatherMechanicsIdentity(
   ])
 }
 
-export function compileScenario(raw: RawScenario): CompilerOutcome {
+export function compileScenario(selected: RawScenario): CompilerOutcome {
+  const rules = selected.rules ?? "gen9"
+  // Normalize unsupported effects once, before every damage/probability/display path.
+  const raw: RawScenario = {
+    ...selected,
+    attackerAbilityId: abilityEffectIsSupported(selected.attackerAbilityId, rules) ? selected.attackerAbilityId : NO_ABILITY_ID,
+    defenderAbilityId: abilityEffectIsSupported(selected.defenderAbilityId, rules) ? selected.defenderAbilityId : NO_ABILITY_ID,
+    attackerItemId: heldItemEffectIsSupported(selected.attackerItemId, rules) ? selected.attackerItemId : "none",
+    defenderItemId: selected.defenderItemId === undefined || heldItemEffectIsSupported(selected.defenderItemId, rules)
+      ? selected.defenderItemId : "none",
+  }
   const attacker = getBattlePokemonById(raw.attackerId)
   const defender = getBattlePokemonById(raw.defenderId)
-  const move = getMoveById(raw.snapshot.moveId)
-  const power = normalizeSnapshotPower(raw.snapshot.power)
+  const resourceMove = getMoveById(raw.snapshot.moveId)
+  const calcMoveData = resourceMove && calcGeneration(rules).moves.get(toID(resourceMove.calcMoveName))
+  const move = resourceMove && calcMoveData ? {
+    ...resourceMove,
+    type: calcMoveData.type.toLowerCase(),
+    flags: [...new Set([
+      ...resourceMove.flags,
+      ...Object.keys(calcMoveData.flags).filter(
+        flag => calcMoveData.flags[flag as keyof typeof calcMoveData.flags],
+      ),
+    ])],
+  } : resourceMove
+  const power = moveHitProfile(raw.snapshot.moveId, rules)?.powers[0] ?? normalizeSnapshotPower(raw.snapshot.power)
   const accuracy = normalizeSnapshotAccuracy(raw.snapshot.accuracy)
   const moveCategory = move && isMoveCategory(move.category) ? move.category : undefined
   const attackerNullifiesWeather = raw.attackerAbilityId === CLOUD_NINE_ABILITY_ID ||
@@ -484,7 +515,9 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   const defenderNullifiesWeather = raw.defenderAbilityId === CLOUD_NINE_ABILITY_ID ||
     raw.defenderAbilityId === AIR_LOCK_ABILITY_ID
   const hasWeatherNullifier = attackerNullifiesWeather || defenderNullifiesWeather
-  const effectiveWeather: Weather = hasWeatherNullifier ? "none" : raw.weather
+  const fieldWeather: Weather = hasWeatherNullifier ? "none" : raw.weather
+  const megaSol = raw.attackerAbilityId === MEGA_SOL_ABILITY_ID
+  const effectiveWeather: Weather = megaSol ? "sun" : fieldWeather
   const identityMoveType = move && isPokemonType(move.type)
     ? resolveWeatherMoveType(
         move.id,
@@ -581,6 +614,17 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     raw.probabilityMode,
     utilityUmbrellaSuppressesActual,
   )
+  // Mega Sol changes move effects (including accuracy), not other abilities.
+  // The pinned Gen 9 engine retains Solar Beam's weather penalty.
+  if (megaSol && rules === "gen9" && raw.snapshot.moveId !== 311) {
+    weather.basePowerModifier = compileWeatherEffect(
+      raw.snapshot.moveId,
+      moveType,
+      fieldWeather,
+      raw.probabilityMode,
+      utilityUmbrellaSuppressesActual,
+    ).basePowerModifier
+  }
   function compileTerrainFor(attackerAbilityId: number, defenderAbilityId: number) {
     return compileTerrainEffect(
       raw.snapshot.moveId,
@@ -591,8 +635,8 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     )
   }
   const terrain = compileTerrainFor(raw.attackerAbilityId, raw.defenderAbilityId)
-  const attackerAirborneAbility = raw.attackerAbilityId === LEVITATE_ABILITY_ID
-  const defenderAirborneAbility = raw.defenderAbilityId === LEVITATE_ABILITY_ID
+  const attackerAirborneAbility = [LEVITATE_ABILITY_ID, EELEVATE_ABILITY_ID].includes(raw.attackerAbilityId)
+  const defenderAirborneAbility = [LEVITATE_ABILITY_ID, EELEVATE_ABILITY_ID].includes(raw.defenderAbilityId)
   const terrainMechanicsIdentity = (effect: ReturnType<typeof compileTerrainEffect>) =>
     JSON.stringify([effect.basePowerModifier, effect.makesSpread, effect.unavailable])
   const terrainWithoutAttackerAirborne = attackerAirborneAbility
@@ -601,7 +645,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   const terrainWithoutDefenderAirborne = defenderAirborneAbility
     ? compileTerrainFor(raw.attackerAbilityId, NO_ABILITY_ID)
     : terrain
-  const ability = compileAbilityForWeather(effectiveWeather)
+  const ability = compileAbilityForWeather(fieldWeather)
   const attackerAirborneActive = attackerAirborneAbility &&
     effectiveness > 0 &&
     !ability.damageNegated
@@ -912,11 +956,16 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
   } else if (ability.activatesWeather) {
     weatherState = "active"
   }
-  if (abilitySupport(raw.attackerAbilityId) === "unsupported") {
-    attackerAbilityState = "unsupported"
-  }
-  if (abilitySupport(raw.defenderAbilityId) === "unsupported") {
-    defenderAbilityState = "unsupported"
+  if (megaSol) {
+    const withoutMegaSol = compileWeatherEffect(raw.snapshot.moveId, moveType, fieldWeather, raw.probabilityMode)
+    const weatherChanged = JSON.stringify(weather) !== JSON.stringify(withoutMegaSol)
+    const weatherBall = raw.snapshot.moveId === 311
+    const weatherDefense = rules === "champions" && (
+      (fieldWeather === "sand" && defender?.types.includes("rock") && moveCategory === "special") ||
+      (fieldWeather === "snow" && defender?.types.includes("ice") && moveCategory === "physical")
+    )
+    attackerAbilityState = weatherChanged || weatherBall || weatherDefense ? "active" : "inactive"
+    if (fieldWeather !== "sun" && raw.weather !== "none") weatherState = "inactive"
   }
 
   const sources: ScenarioSource[] = [
@@ -932,14 +981,25 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       optionId: String(raw.attackerStage),
       state: attackerStageState,
     },
-    { ...attackerItem.source, state: attackerItemState },
+    {
+      ...attackerItem.source,
+      optionId: String(selected.attackerItemId),
+      state: heldItemEffectIsSupported(selected.attackerItemId, rules)
+        ? attackerItemState : "unsupported",
+    },
     ...(defenderItem === undefined
       ? []
-      : [{ ...defenderItem.source, state: defenderItemState ?? defenderItem.source.state }]),
+      : [{
+          ...defenderItem.source,
+          optionId: String(selected.defenderItemId),
+          state: selected.defenderItemId !== undefined && !heldItemEffectIsSupported(selected.defenderItemId, rules)
+            ? "unsupported" : defenderItemState ?? defenderItem.source.state,
+        }]),
     {
       track: "attacker-ability",
-      optionId: String(raw.attackerAbilityId),
-      state: attackerAbilityState,
+      optionId: String(selected.attackerAbilityId),
+      state: abilitySupport(selected.attackerAbilityId, rules) === "unsupported"
+        ? "unsupported" : attackerAbilityState,
     },
     {
       track: "weather",
@@ -965,8 +1025,9 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     },
     {
       track: "defender-ability",
-      optionId: String(raw.defenderAbilityId),
-      state: defenderAbilityState,
+      optionId: String(selected.defenderAbilityId),
+      state: abilitySupport(selected.defenderAbilityId, rules) === "unsupported"
+        ? "unsupported" : defenderAbilityState,
     },
     {
       track: "screen",
@@ -1001,7 +1062,8 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     !isMoveCategory(move.category) ||
     !moveType ||
     isMoveExplicitlyUnsupported(move.id) ||
-    !movePowerIsCompatible(raw.snapshot.moveId, power) ||
+    !moveEffectIsSupported(move.id, rules) ||
+    !movePowerIsCompatible(raw.snapshot.moveId, raw.snapshot.power) ||
     (move.power === null && calcDerivedPowerDefault(move.id) === undefined)
   ) {
     return {
@@ -1057,11 +1119,11 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
     screenModifier: screen.modifier,
   }
   const calcMoveName = move.calcMoveName
-  const execution = compileMoveExecution(move.id, power, raw.attackerAbilityId, context.spread)
+  const execution = compileMoveExecution(move.id, power, raw.attackerAbilityId, context.spread, rules)
   if (raw.attackerAbilityId === SKILL_LINK_ABILITY_ID || raw.attackerAbilityId === PARENTAL_BOND_ABILITY_ID) {
     const source = sources.find((source) => source.track === "attacker-ability")
     if (source) source.state = JSON.stringify(execution) ===
-      JSON.stringify(compileMoveExecution(move.id, power, NO_ABILITY_ID, context.spread))
+      JSON.stringify(compileMoveExecution(move.id, power, NO_ABILITY_ID, context.spread, rules))
       ? "inactive" : "active"
   }
   const calcDerivesMoveType = typeRewrite?.active === true ||
@@ -1114,10 +1176,10 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       spe: 0,
     }
     const weather: CalcContext["field"]["weather"] =
-      effectiveWeather === "sun" ? "Sun"
-      : effectiveWeather === "rain" ? "Rain"
-      : effectiveWeather === "sand" ? "Sand"
-      : effectiveWeather === "snow" ? "Snow"
+      fieldWeather === "sun" ? "Sun"
+      : fieldWeather === "rain" ? "Rain"
+      : fieldWeather === "sand" ? "Sand"
+      : fieldWeather === "snow" ? "Snow"
       : undefined
     const terrain: CalcContext["field"]["terrain"] =
       raw.terrain === "electric" ? "Electric"
@@ -1129,6 +1191,7 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
       ? screen.applied
       : undefined
     return {
+      rules,
       attacker: {
         calcSpeciesName: attacker.calcSpeciesName,
         ...(attackerCalcAbilityName &&
@@ -1170,8 +1233,8 @@ export function compileScenario(raw: RawScenario): CompilerOutcome {
         calcMoveName,
         target: spreadTarget,
         ...(calcDerivedPowerDefault(raw.snapshot.moveId) === undefined &&
-          move.power !== null && move.power > 0 && raw.snapshot.power !== move.power
-          ? { powerOverride: raw.snapshot.power }
+          move.power !== null && move.power > 0
+          ? { powerOverride: power }
           : {}),
         ...(!calcDerivesMoveType && moveType !== move.type ? { typeOverride: moveType } : {}),
         isCrit: false,

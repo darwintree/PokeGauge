@@ -20,7 +20,7 @@ import {
   DROUGHT_ABILITY_ID,
   BATTLE_ARMOR_ABILITY_ID,
   COMPOUND_EYES_ABILITY_ID,
-  FIRE_MANE_ABILITY_ID,
+  ROUGH_SKIN_ABILITY_ID,
   FLASH_FIRE_ABILITY_ID,
   GUTS_ABILITY_ID,
   HUSTLE_ABILITY_ID,
@@ -54,7 +54,7 @@ it("marks only unsupported ability effects in the Track", () => {
       labelId: "track.attackerAbility",
       options: [
         { id: 91, label: "Adaptability", summary: "" },
-        { id: FIRE_MANE_ABILITY_ID, label: "Fire Mane", summary: "" },
+        { id: ROUGH_SKIN_ABILITY_ID, label: "Rough Skin", summary: "" },
         { id: BATTLE_ARMOR_ABILITY_ID, label: "Battle Armor", summary: "" },
         { id: COMPOUND_EYES_ABILITY_ID, label: "Compound Eyes", summary: "" },
         { id: HUSTLE_ABILITY_ID, label: "Hustle", summary: "" },
@@ -99,7 +99,7 @@ it("marks only unsupported ability effects in the Track", () => {
   expect(markup).toMatch(/aria-label="Run Away"[^>]*disabled/)
   expect(markup).toMatch(/aria-label="Keen Eye"[^>]*disabled/)
   expect(markup.match(/track-option--neutral-disabled/g)).toHaveLength(2)
-  expect(markup).toContain("Fire Mane")
+  expect(markup).toContain("Rough Skin")
   expect(markup).toContain("Sharpness")
   expect(markup).toContain("Reckless")
   expect(markup).toContain("Sheer Force")
@@ -107,9 +107,9 @@ it("marks only unsupported ability effects in the Track", () => {
   expect(markup).not.toMatch(/Cloud Nine[^"]*Effect not supported yet/)
   expect(markup).not.toMatch(/Air Lock[^"]*Effect not supported yet/)
   expect(markup).not.toMatch(/Unnerve[^"]*Effect not supported yet/)
-  expect(markup).toMatch(/Fire Mane[^"]*Effect not supported yet/)
-  expect(markup).toMatch(/Mega Sol[^"]*Effect not supported yet/)
-  expect(markup).toMatch(/Eelevate[^"]*Effect not supported yet/)
+  expect(markup).toMatch(/Rough Skin[^"]*Effect not supported yet/)
+  expect(markup).toContain('aria-label="Mega Sol"')
+  expect(markup).toContain('aria-label="Eelevate"')
   expect(markup).toMatch(/Illuminate[^"]*Effect not supported yet/)
   expect(markup).toMatch(/Rough Skin[^"]*Effect not supported yet/)
   expect(markup).toMatch(/Supreme Overlord[^"]*Effect not supported yet/)
@@ -130,7 +130,7 @@ it("marks only unsupported ability effects in the Track", () => {
     expect(markup).not.toMatch(new RegExp(`${label}[^"]*Effect not supported yet`))
   }
   expect(markup).not.toContain("bg-signal-green")
-  expect(markup.match(/Effect not supported yet/g)).toHaveLength(6)
+  expect(markup.match(/Effect not supported yet/g)).toHaveLength(4)
   expect(markup.indexOf('aria-label="No ability"')).toBeLessThan(
     markup.indexOf('aria-label="Adaptability"'),
   )
@@ -148,7 +148,7 @@ it("marks assumed-satisfied abilities with green disclosure and no red unsupport
         { id: GUTS_ABILITY_ID, label: "Guts", summary: "" },
         { id: MULTISCALE_ABILITY_ID, label: "Multiscale", summary: "" },
         { id: MERCILESS_ABILITY_ID, label: "Merciless", summary: "" },
-        { id: FIRE_MANE_ABILITY_ID, label: "Fire Mane", summary: "" },
+        { id: ROUGH_SKIN_ABILITY_ID, label: "Rough Skin", summary: "" },
         { id: NO_ABILITY_ID, label: "—", accessibleLabel: "No ability", summary: "" },
       ],
       selectedIds: [BLAZE_ABILITY_ID],

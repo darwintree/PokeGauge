@@ -1,3 +1,4 @@
+import { useCalculationRules } from "@/lib/calculation-rules-context"
 import { TypeBadge } from "@/components/pokemon/type-badge"
 import { HeldItemSpriteIcon } from "../tracks/held-item/held-item-sprite-icon"
 import { FieldConditionIcon } from "../tracks/common/field-condition-icon"
@@ -112,6 +113,7 @@ export function DamageResults({
   probabilityMode,
 }: DamageResultsProps) {
   const intl = useIntl()
+  const rules = useCalculationRules()
   const [selection, setSelection] = useState<{ grouping: ResultGrouping; id: string } | null>(null)
   const groups = useMemo(() => grouping ? groupResults(rows, grouping) : [], [rows, grouping])
   const selectedGroup = groups.find(
@@ -132,8 +134,8 @@ export function DamageResults({
   }, [trackState.statMode, trackState.defenderMode])
 
   const blocks = useMemo(
-    () => expandRangeParentBlocks(catalog, trackState, visibleRows, expanded, probabilityMode),
-    [catalog, expanded, probabilityMode, visibleRows, trackState],
+    () => expandRangeParentBlocks(catalog, trackState, visibleRows, expanded, probabilityMode, rules),
+    [catalog, expanded, probabilityMode, visibleRows, trackState, rules],
   )
 
   function toggleAxis(parentId: string, axis: keyof RangeAxisExpansion) {

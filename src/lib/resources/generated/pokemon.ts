@@ -49787,7 +49787,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "venusaur-gmax",
     "speciesSlug": "venusaur",
-    "calcSpeciesName": "Venusaur-Gmax",
+    "calcSpeciesName": "Venusaur",
     "names": {
       "zh-hans": "妙蛙花-Gigantamax Form",
       "zh-hant": "妙蛙花-Gigantamax Form",
@@ -49832,7 +49832,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "charizard-gmax",
     "speciesSlug": "charizard",
-    "calcSpeciesName": "Charizard-Gmax",
+    "calcSpeciesName": "Charizard",
     "names": {
       "zh-hans": "喷火龙-Gigantamax Form",
       "zh-hant": "噴火龍-Gigantamax Form",
@@ -49877,7 +49877,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "blastoise-gmax",
     "speciesSlug": "blastoise",
-    "calcSpeciesName": "Blastoise-Gmax",
+    "calcSpeciesName": "Blastoise",
     "names": {
       "zh-hans": "水箭龟-Gigantamax Form",
       "zh-hant": "水箭龜-Gigantamax Form",
@@ -49921,7 +49921,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "butterfree-gmax",
     "speciesSlug": "butterfree",
-    "calcSpeciesName": "Butterfree-Gmax",
+    "calcSpeciesName": "Butterfree",
     "names": {
       "zh-hans": "巴大蝶-Gigantamax Form",
       "zh-hant": "巴大蝶-Gigantamax Form",
@@ -49966,7 +49966,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "pikachu-gmax",
     "speciesSlug": "pikachu",
-    "calcSpeciesName": "Pikachu-Gmax",
+    "calcSpeciesName": "Pikachu",
     "names": {
       "zh-hans": "皮卡丘-Gigantamax Form",
       "zh-hant": "皮卡丘-Gigantamax Form",
@@ -50010,7 +50010,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "meowth-gmax",
     "speciesSlug": "meowth",
-    "calcSpeciesName": "Meowth-Gmax",
+    "calcSpeciesName": "Meowth",
     "names": {
       "zh-hans": "喵喵-Gigantamax Form",
       "zh-hant": "喵喵-Gigantamax Form",
@@ -50055,7 +50055,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "machamp-gmax",
     "speciesSlug": "machamp",
-    "calcSpeciesName": "Machamp-Gmax",
+    "calcSpeciesName": "Machamp",
     "names": {
       "zh-hans": "怪力-Gigantamax Form",
       "zh-hant": "怪力-Gigantamax Form",
@@ -50100,7 +50100,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "gengar-gmax",
     "speciesSlug": "gengar",
-    "calcSpeciesName": "Gengar-Gmax",
+    "calcSpeciesName": "Gengar",
     "names": {
       "zh-hans": "耿鬼-Gigantamax Form",
       "zh-hant": "耿鬼-Gigantamax Form",
@@ -50144,7 +50144,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "kingler-gmax",
     "speciesSlug": "kingler",
-    "calcSpeciesName": "Kingler-Gmax",
+    "calcSpeciesName": "Kingler",
     "names": {
       "zh-hans": "巨钳蟹-Gigantamax Form",
       "zh-hant": "巨鉗蟹-Gigantamax Form",
@@ -50189,7 +50189,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "lapras-gmax",
     "speciesSlug": "lapras",
-    "calcSpeciesName": "Lapras-Gmax",
+    "calcSpeciesName": "Lapras",
     "names": {
       "zh-hans": "拉普拉斯-Gigantamax Form",
       "zh-hant": "拉普拉斯-Gigantamax Form",
@@ -50235,7 +50235,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "eevee-gmax",
     "speciesSlug": "eevee",
-    "calcSpeciesName": "Eevee-Gmax",
+    "calcSpeciesName": "Eevee",
     "names": {
       "zh-hans": "伊布-Gigantamax Form",
       "zh-hant": "伊布-Gigantamax Form",
@@ -50280,7 +50280,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "snorlax-gmax",
     "speciesSlug": "snorlax",
-    "calcSpeciesName": "Snorlax-Gmax",
+    "calcSpeciesName": "Snorlax",
     "names": {
       "zh-hans": "卡比兽-Gigantamax Form",
       "zh-hant": "卡比獸-Gigantamax Form",
@@ -50325,7 +50325,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "garbodor-gmax",
     "speciesSlug": "garbodor",
-    "calcSpeciesName": "Garbodor-Gmax",
+    "calcSpeciesName": "Garbodor",
     "names": {
       "zh-hans": "灰尘山-Gigantamax Form",
       "zh-hant": "灰塵山-Gigantamax Form",
@@ -50370,7 +50370,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "melmetal-gmax",
     "speciesSlug": "melmetal",
-    "calcSpeciesName": "Melmetal-Gmax",
+    "calcSpeciesName": "Melmetal",
     "names": {
       "zh-hans": "美录梅塔-Gigantamax Form",
       "zh-hant": "美錄梅塔-Gigantamax Form",
@@ -50413,7 +50413,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "rillaboom-gmax",
     "speciesSlug": "rillaboom",
-    "calcSpeciesName": "Rillaboom-Gmax",
+    "calcSpeciesName": "Rillaboom",
     "names": {
       "zh-hans": "轰擂金刚猩-Gigantamax Form",
       "zh-hant": "轟擂金剛猩-Gigantamax Form",
@@ -50457,7 +50457,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "cinderace-gmax",
     "speciesSlug": "cinderace",
-    "calcSpeciesName": "Cinderace-Gmax",
+    "calcSpeciesName": "Cinderace",
     "names": {
       "zh-hans": "闪焰王牌-Gigantamax Form",
       "zh-hant": "閃焰王牌-Gigantamax Form",
@@ -50501,7 +50501,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "inteleon-gmax",
     "speciesSlug": "inteleon",
-    "calcSpeciesName": "Inteleon-Gmax",
+    "calcSpeciesName": "Inteleon",
     "names": {
       "zh-hans": "千面避役-Gigantamax Form",
       "zh-hant": "千面避役-Gigantamax Form",
@@ -50545,7 +50545,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "corviknight-gmax",
     "speciesSlug": "corviknight",
-    "calcSpeciesName": "Corviknight-Gmax",
+    "calcSpeciesName": "Corviknight",
     "names": {
       "zh-hans": "钢铠鸦-Gigantamax Form",
       "zh-hant": "鋼鎧鴉-Gigantamax Form",
@@ -50591,7 +50591,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "orbeetle-gmax",
     "speciesSlug": "orbeetle",
-    "calcSpeciesName": "Orbeetle-Gmax",
+    "calcSpeciesName": "Orbeetle",
     "names": {
       "zh-hans": "以欧路普-Gigantamax Form",
       "zh-hant": "以歐路普-Gigantamax Form",
@@ -50637,7 +50637,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "drednaw-gmax",
     "speciesSlug": "drednaw",
-    "calcSpeciesName": "Drednaw-Gmax",
+    "calcSpeciesName": "Drednaw",
     "names": {
       "zh-hans": "暴噬龟-Gigantamax Form",
       "zh-hant": "暴噬龜-Gigantamax Form",
@@ -50683,7 +50683,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "coalossal-gmax",
     "speciesSlug": "coalossal",
-    "calcSpeciesName": "Coalossal-Gmax",
+    "calcSpeciesName": "Coalossal",
     "names": {
       "zh-hans": "巨炭山-Gigantamax Form",
       "zh-hant": "巨炭山-Gigantamax Form",
@@ -50729,7 +50729,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "flapple-gmax",
     "speciesSlug": "flapple",
-    "calcSpeciesName": "Flapple-Gmax",
+    "calcSpeciesName": "Flapple",
     "names": {
       "zh-hans": "苹裹龙-Gigantamax Form",
       "zh-hant": "蘋裹龍-Gigantamax Form",
@@ -50775,7 +50775,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "appletun-gmax",
     "speciesSlug": "appletun",
-    "calcSpeciesName": "Appletun-Gmax",
+    "calcSpeciesName": "Appletun",
     "names": {
       "zh-hans": "丰蜜龙-Gigantamax Form",
       "zh-hant": "豐蜜龍-Gigantamax Form",
@@ -50821,7 +50821,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "sandaconda-gmax",
     "speciesSlug": "sandaconda",
-    "calcSpeciesName": "Sandaconda-Gmax",
+    "calcSpeciesName": "Sandaconda",
     "names": {
       "zh-hans": "沙螺蟒-Gigantamax Form",
       "zh-hant": "沙螺蟒-Gigantamax Form",
@@ -50866,7 +50866,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "toxtricity-amped-gmax",
     "speciesSlug": "toxtricity",
-    "calcSpeciesName": "Toxtricity-Gmax",
+    "calcSpeciesName": "Toxtricity",
     "names": {
       "zh-hans": "颤弦蝾螈-Gigantamax Form",
       "zh-hant": "顫弦蠑螈-Gigantamax Form",
@@ -50912,7 +50912,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "centiskorch-gmax",
     "speciesSlug": "centiskorch",
-    "calcSpeciesName": "Centiskorch-Gmax",
+    "calcSpeciesName": "Centiskorch",
     "names": {
       "zh-hans": "焚焰蚣-Gigantamax Form",
       "zh-hant": "焚焰蚣-Gigantamax Form",
@@ -50958,7 +50958,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "hatterene-gmax",
     "speciesSlug": "hatterene",
-    "calcSpeciesName": "Hatterene-Gmax",
+    "calcSpeciesName": "Hatterene",
     "names": {
       "zh-hans": "布莉姆温-Gigantamax Form",
       "zh-hant": "布莉姆溫-Gigantamax Form",
@@ -51004,7 +51004,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "grimmsnarl-gmax",
     "speciesSlug": "grimmsnarl",
-    "calcSpeciesName": "Grimmsnarl-Gmax",
+    "calcSpeciesName": "Grimmsnarl",
     "names": {
       "zh-hans": "长毛巨魔-Gigantamax Form",
       "zh-hant": "長毛巨魔-Gigantamax Form",
@@ -51050,7 +51050,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "alcremie-gmax",
     "speciesSlug": "alcremie",
-    "calcSpeciesName": "Alcremie-Gmax",
+    "calcSpeciesName": "Alcremie",
     "names": {
       "zh-hans": "霜奶仙-Gigantamax Form",
       "zh-hant": "霜奶仙-Gigantamax Form",
@@ -51094,7 +51094,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "copperajah-gmax",
     "speciesSlug": "copperajah",
-    "calcSpeciesName": "Copperajah-Gmax",
+    "calcSpeciesName": "Copperajah",
     "names": {
       "zh-hans": "大王铜象-Gigantamax Form",
       "zh-hant": "大王銅象-Gigantamax Form",
@@ -51138,7 +51138,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "duraludon-gmax",
     "speciesSlug": "duraludon",
-    "calcSpeciesName": "Duraludon-Gmax",
+    "calcSpeciesName": "Duraludon",
     "names": {
       "zh-hans": "铝钢龙-Gigantamax Form",
       "zh-hant": "鋁鋼龍-Gigantamax Form",
@@ -51184,7 +51184,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "urshifu-single-strike-gmax",
     "speciesSlug": "urshifu",
-    "calcSpeciesName": "Urshifu-Gmax",
+    "calcSpeciesName": "Urshifu",
     "names": {
       "zh-hans": "武道熊师-Gigantamax Form",
       "zh-hant": "武道熊師-Gigantamax Form",
@@ -51228,7 +51228,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "urshifu-rapid-strike-gmax",
     "speciesSlug": "urshifu",
-    "calcSpeciesName": "Urshifu-Gmax",
+    "calcSpeciesName": "Urshifu",
     "names": {
       "zh-hans": "武道熊师-Gigantamax Form",
       "zh-hant": "武道熊師-Gigantamax Form",
@@ -51272,7 +51272,7 @@ export const GENERATED_POKEMON = {
     "evioliteEligible": false,
     "pokemonSlug": "toxtricity-low-key-gmax",
     "speciesSlug": "toxtricity",
-    "calcSpeciesName": "Toxtricity-Low-Key-Gmax",
+    "calcSpeciesName": "Toxtricity-Low-Key",
     "names": {
       "zh-hans": "颤弦蝾螈-Gigantamax Form",
       "zh-hant": "顫弦蠑螈-Gigantamax Form",
@@ -53937,7 +53937,9 @@ export const GENERATED_POKEMON = {
       "ground",
       "steel"
     ],
-    "abilityIds": [],
+    "abilityIds": [
+      308
+    ],
     "baseStats": {
       "hp": 110,
       "atk": 165,
@@ -55366,7 +55368,9 @@ export const GENERATED_POKEMON = {
       "grass",
       "fire"
     ],
-    "abilityIds": [],
+    "abilityIds": [
+      311
+    ],
     "baseStats": {
       "hp": 65,
       "atk": 138,

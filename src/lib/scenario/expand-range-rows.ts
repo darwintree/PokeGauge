@@ -1,3 +1,4 @@
+import type { CalculationRules } from "@/lib/calculation-rules"
 import type { MatchupCatalog } from "@/lib/catalog"
 import type { ProbabilityMode, ScenarioTrack } from "@/lib/damage-calculation"
 
@@ -101,6 +102,7 @@ export function expandRangeParentBlocks(
   parents: ScenarioResult[],
   expanded: Record<string, RangeAxisExpansion>,
   probabilityMode: ProbabilityMode = "battle-odds",
+  rules: CalculationRules = "gen9",
 ): RangeParentBlock[] {
   const cache = new Map<string, ScenarioResult[]>()
 
@@ -117,6 +119,8 @@ export function expandRangeParentBlocks(
         catalog,
         trackStateForExpansion(trackState, expansion),
         probabilityMode,
+        null,
+        rules,
       ).rows
       cache.set(signature, extras)
     }

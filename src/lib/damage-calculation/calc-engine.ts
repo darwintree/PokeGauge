@@ -1,10 +1,11 @@
 import { calculate, Field, Move, Pokemon, toID } from "@smogon/calc"
 import type { AbilityName, TypeName } from "@smogon/calc/dist/data/interface"
 
+import type { CalculationRules } from "@/lib/calculation-rules"
 import type { MoveStatChange } from "@/lib/move/stat-change"
 import type { PokemonType } from "@/lib/pokemon"
 
-import { CALC_GENERATION, VGC_LEVEL } from "./calc-constants"
+import { calcGeneration, VGC_LEVEL } from "./calc-constants"
 
 /** Stat values (final, after nature/EVs/SP) fed to the calc engine. */
 export type CalcExactStats = {
@@ -58,6 +59,7 @@ export type CalcFieldContext = {
 }
 
 export type CalcContext = {
+  rules?: CalculationRules
   attacker: CalcPokemonContext
   defender: CalcPokemonContext
   move: CalcMoveContext
@@ -85,8 +87,9 @@ function invertedBaseStats(stats: CalcExactStats) {
   }
 }
 
-function calcPokemon(context: CalcPokemonContext): Pokemon {
-  return new Pokemon(CALC_GENERATION, context.calcSpeciesName, {
+function calcPokemon(context: CalcPokemonContext, rules: CalculationRules): Pokemon {
+  const generation = calcGeneration(rules)
+  return new Pokemon(generation, context.calcSpeciesName, {
     level: VGC_LEVEL,
     ability: (context.abilityCalcName ?? "No Ability") as AbilityName,
     ...(context.currentHp === undefined ? {} : { curHP: context.currentHp }),
@@ -94,7 +97,7 @@ function calcPokemon(context: CalcPokemonContext): Pokemon {
     ...(context.abilityOn ? { abilityOn: true } : {}),
     ...(context.itemCalcName
       ? {
-          item: CALC_GENERATION.items.get(toID(context.itemCalcName))?.name
+          item: generation.items.get(toID(context.itemCalcName))?.name
             ?? context.itemCalcName,
         }
       : {}),
@@ -103,8 +106,8 @@ function calcPokemon(context: CalcPokemonContext): Pokemon {
   })
 }
 
-function calcMove(context: CalcMoveContext, hits?: number): Move {
-  return new Move(CALC_GENERATION, context.calcMoveName, {
+function calcMove(context: CalcMoveContext, rules: CalculationRules, hits?: number): Move {
+  return new Move(calcGeneration(rules), context.calcMoveName, {
     isCrit: context.isCrit,
     ...(hits === undefined ? {} : { hits }),
     overrides: {
@@ -145,15 +148,16 @@ export function calculateHitMatrix(
   berryConsumed: boolean,
   resistanceBerry: boolean,
 ): CalcHitMatrix {
+  const rules = context.rules ?? "gen9"
   const defenderContext = berryConsumed && resistanceBerry
     ? { ...context.defender, itemCalcName: undefined }
     : context.defender
-  const defender = calcPokemon(defenderContext)
+  const defender = calcPokemon(defenderContext, rules)
   const result = calculate(
-    CALC_GENERATION,
-    calcPokemon(context.attacker),
+    calcGeneration(rules),
+    calcPokemon(context.attacker, rules),
     defender,
-    calcMove({ ...context.move, isCrit: critical }, hits),
+    calcMove({ ...context.move, isCrit: critical }, rules, hits),
     calcField(context.field),
   )
   const damage = result.damage

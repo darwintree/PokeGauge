@@ -1,3 +1,5 @@
+import { useCalculationRules } from "@/lib/calculation-rules-context"
+import { heldItemEffectIsSupported } from "@/lib/held-item/support"
 import { useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
@@ -41,6 +43,7 @@ export function HeldItemPickerDialog({
   onFormTrigger,
 }: HeldItemPickerDialogProps) {
   const intl = useIntl()
+  const rules = useCalculationRules()
   const [query, setQuery] = useState("")
   const [tag, setTag] = useState<HeldItemPickerTag | null>(null)
 
@@ -151,6 +154,9 @@ export function HeldItemPickerDialog({
               <span className="block text-sm font-bold">{option.label}</span>
               <span className="mt-0.5 block text-xs leading-snug text-muted-foreground">
                 {option.summary}
+                {!heldItemEffectIsSupported(option.id, rules) && (
+                  <span className="mt-1 block font-semibold text-destructive"><FormattedMessage id="track.effect.unsupportedRules" /></span>
+                )}
               </span>
             </span>
             {formTrigger ? (

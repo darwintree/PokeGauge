@@ -198,15 +198,15 @@ describe("Cloud Nine and Air Lock", () => {
 })
 
 describe("Mega Sol", () => {
-  it("keeps calc-missing Mega Sol unsupported without replacing weather", () => {
+  it("uses Mega Sol sunshine for the attacker damage", () => {
     const attacker = calculable({
       snapshot: snapshot(52, 40),
       weather: "rain",
       attackerAbilityId: MEGA_SOL_ABILITY_ID,
     })
-    expect(normal(attacker).weatherModifier).toBe(2048)
-    expect(state(attacker, "attacker-ability")).toBe("unsupported")
-    expect(state(attacker, "weather")).toBe("active")
+    expect(normal(attacker).weatherModifier).toBe(6144)
+    expect(state(attacker, "attacker-ability")).toBe("active")
+    expect(state(attacker, "weather")).toBe("inactive")
   })
 })
 

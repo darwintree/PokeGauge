@@ -1,3 +1,4 @@
+import type { CalculationRules } from "@/lib/calculation-rules"
 import { evaluateExecutionPoint } from "@/lib/damage-calculation/hit-execution"
 import {
   calculationIdentity,
@@ -216,6 +217,7 @@ export function runScenarioPipeline(
   trackState: TrackState,
   probabilityMode: ProbabilityMode = "battle-odds",
   preserveTrack: ScenarioTrack | null = null,
+  rules: CalculationRules = "gen9",
 ): ScenarioPipelineResult {
   const calculableGroups = new Map<string, CalculableGroup>()
   const unavailableGroups = new Map<string, UnavailableGroupBuilder>()
@@ -239,6 +241,7 @@ export function runScenarioPipeline(
                     for (const offense of preparedOffense) {
                       for (const defense of preparedDefense) {
                         const outcome = compileScenario({
+                          rules,
                           snapshot,
                           attackerId: catalog.matchup.attackerId,
                           defenderId: catalog.matchup.defenderId,

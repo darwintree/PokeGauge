@@ -241,7 +241,7 @@ describe("ability immunity gates", () => {
     },
   )
 
-  it("keeps calc-missing Eelevate unsupported and grounded for Terrain", () => {
+  it("uses Eelevate to stay airborne above Electric Terrain", () => {
     const outcome = calculable({
       attackerId: 25,
       attackerAbilityId: EELEVATE_ABILITY_ID,
@@ -249,6 +249,6 @@ describe("ability immunity gates", () => {
       snapshot: { ...MOVE, moveId: 85, power: 90 },
     })
 
-    expect(selectionActivation(outcome, "attacker-ability")).toBe("unsupported")
+    expect(selectionActivation(outcome, "attacker-ability")).toBe("active")
   })
 })

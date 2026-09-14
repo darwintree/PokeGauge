@@ -1,3 +1,5 @@
+import type { CalculationRules } from "@/lib/calculation-rules"
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
 import {
   ExternalLinkIcon,
   MessageSquareWarningIcon,
@@ -74,6 +76,8 @@ type LocaleControlProps = {
 
 type AppHeaderProps = LocaleControlProps & {
   feedbackScenarioUrl: string | null
+  calculationRules: CalculationRules
+  onCalculationRulesChange: (rules: CalculationRules) => void
   probabilityMode: ProbabilityMode
   onProbabilityModeChange: (mode: ProbabilityMode) => void
   statNameStrategy: StatNameStrategy
@@ -86,6 +90,8 @@ type AppHeaderProps = LocaleControlProps & {
 
 type SettingsDialogProps = LocaleControlProps & Pick<
   AppHeaderProps,
+  | "calculationRules"
+  | "onCalculationRulesChange"
   | "probabilityMode"
   | "onProbabilityModeChange"
   | "statNameStrategy"
@@ -159,6 +165,8 @@ function PreferenceRow({
 function SettingsDialog({
   locale,
   onLocaleChange,
+  calculationRules,
+  onCalculationRulesChange,
   probabilityMode,
   onProbabilityModeChange,
   statNameStrategy,
@@ -285,6 +293,27 @@ function SettingsDialog({
             </PreferenceRow>
 
             <PreferenceRow
+              htmlFor="settings-calculation-rules"
+              label={<FormattedMessage id="settings.calculationRules" />}
+              description={<FormattedMessage id="settings.calculationRules.description" />}
+            >
+              <NativeSelect
+                id="settings-calculation-rules"
+                aria-describedby="settings-calculation-rules-description"
+                value={calculationRules}
+                onChange={(event) => onCalculationRulesChange(event.target.value as CalculationRules)}
+                className={SELECT_CLASS}
+              >
+                <NativeSelectOption value="champions">
+                  {intl.formatMessage({ id: "calculationRules.champions" })}
+                </NativeSelectOption>
+                <NativeSelectOption value="gen9">
+                  {intl.formatMessage({ id: "calculationRules.gen9" })}
+                </NativeSelectOption>
+              </NativeSelect>
+            </PreferenceRow>
+
+            <PreferenceRow
               htmlFor="settings-probability-mode"
               label={<FormattedMessage id="settings.probabilityMode" />}
               description={<FormattedMessage id={probabilityHintId} />}
@@ -370,6 +399,8 @@ function SettingsDialog({
 export function AppHeader({
   locale,
   onLocaleChange,
+  calculationRules,
+  onCalculationRulesChange,
   probabilityMode,
   onProbabilityModeChange,
   statNameStrategy,
@@ -449,6 +480,8 @@ export function AppHeader({
           <SettingsDialog
             locale={locale}
             onLocaleChange={onLocaleChange}
+            calculationRules={calculationRules}
+            onCalculationRulesChange={onCalculationRulesChange}
             probabilityMode={probabilityMode}
             onProbabilityModeChange={onProbabilityModeChange}
             statNameStrategy={statNameStrategy}

@@ -1,3 +1,5 @@
+import { useCalculationRules } from "@/lib/calculation-rules-context"
+import { heldItemEffectIsSupported } from "@/lib/held-item/support"
 import { PackageOpen } from "lucide-react"
 import { useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -53,6 +55,7 @@ export function HeldItemTrack({
   lockedId = null,
 }: HeldItemTrackProps) {
   const intl = useIntl()
+  const rules = useCalculationRules()
   const locale = intl.locale as SupportedLocale
   const [pickerOpen, setPickerOpen] = useState(false)
   const [pendingFormItemId, setPendingFormItemId] = useState<number | null>(null)
@@ -127,6 +130,8 @@ export function HeldItemTrack({
               const option = optionById.get(id)
               const label = option?.label ?? itemAriaLabel(id, locale)
               const description = option?.summary ?? itemDescription(id, locale)
+              const unsupported = !heldItemEffectIsSupported(id, rules)
+              const supportText = unsupported ? intl.formatMessage({ id: "track.effect.unsupportedRules" }) : null
               const warning = heldItemWarning(id)
               const warningText = warning
                 ? intl.formatMessage({ id: `track.item.warning.${warning}` })
@@ -137,8 +142,8 @@ export function HeldItemTrack({
               const formHint = formTrigger
                 ? intl.formatMessage({ id: "track.item.formTrigger.hint" })
                 : null
-              const ariaParts = [label, formHint, warningText].filter(Boolean)
-              const detailParts = [label, description, formHint, warningText].filter(Boolean)
+              const ariaParts = [label, formHint, supportText, warningText].filter(Boolean)
+              const detailParts = [label, description, formHint, supportText, warningText].filter(Boolean)
 
               return (
                 <TrackOption
@@ -158,7 +163,7 @@ export function HeldItemTrack({
                   onToggle={() => toggle(id)}
                 >
                   <HeldItemSpriteIcon id={id} className="size-full" />
-                  {warning && (
+                  {(warning || unsupported) && (
                     <span
                       aria-hidden
                       className="absolute top-0.5 right-0.5 size-2 rounded-full border border-ink bg-destructive"

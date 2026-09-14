@@ -228,17 +228,17 @@ describe("scenario move type compiler coverage", () => {
     })
   })
 
-  it("marks Liquid Voice inactive when PokeAPI sound flag is missing", () => {
+  it("uses engine sound metadata for Liquid Voice", () => {
     const outcome = calculable({
       snapshot: { ...TACKLE, id: "torch-song", moveId: 871, power: 80 },
       attackerAbilityId: LIQUID_VOICE_ABILITY_ID,
     })
-    expect(outcome.move.type).toBe("fire")
+    expect(outcome.move.type).toBe("water")
     expect(normal(outcome).basePowerModifier).toBe(N)
     expect(outcome.sources).toContainEqual({
       track: "attacker-ability",
       optionId: String(LIQUID_VOICE_ABILITY_ID),
-      state: "inactive",
+      state: "active",
     })
   })
 
@@ -277,14 +277,14 @@ describe("scenario move type compiler coverage", () => {
     })
   })
 
-  it("keeps calc-missing Dragonize unsupported without rewriting the move type", () => {
+  it("applies Dragonize type conversion and its power boost", () => {
     const outcome = calculable({ attackerAbilityId: DRAGONIZE_ABILITY_ID })
-    expect(outcome.move.type).toBe("normal")
-    expect(normal(outcome).basePowerModifier).toBe(N)
+    expect(outcome.move.type).toBe("dragon")
+    expect(normal(outcome).basePowerModifier).toBe(4915)
     expect(outcome.sources).toContainEqual({
       track: "attacker-ability",
       optionId: String(DRAGONIZE_ABILITY_ID),
-      state: "unsupported",
+      state: "active",
     })
   })
 

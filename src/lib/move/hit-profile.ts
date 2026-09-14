@@ -1,3 +1,4 @@
+import type { CalculationRules } from "@/lib/calculation-rules"
 /** Reviewed Gen 9 execution rules; minHits/maxHits alone do not define accuracy. */
 export type MoveHitProfile = {
   powers: readonly number[]
@@ -28,14 +29,18 @@ const MOVE_HIT_PROFILES: Readonly<Record<number, MoveHitProfile>> = {
   865: fixed(30, 3), 888: fixed(40, 2), 911: fixed(50, 2),
 }
 
-export function moveHitProfile(moveId: number): MoveHitProfile | undefined {
-  return MOVE_HIT_PROFILES[moveId]
+const CHAMPIONS_HIT_PROFILES: Readonly<Record<number, MoveHitProfile>> = {
+  198: random(30), 544: fixed(60, 2), 865: fixed(35, 3),
+}
+
+export function moveHitProfile(moveId: number, rules: CalculationRules = "gen9"): MoveHitProfile | undefined {
+  return (rules === "champions" ? CHAMPIONS_HIT_PROFILES[moveId] : undefined) ?? MOVE_HIT_PROFILES[moveId]
 }
 
 /** Native multi-hit powers are fixed; other moves retain their editable power. */
 export function movePowerIsCompatible(moveId: number, power: number): boolean {
   const profile = moveHitProfile(moveId)
-  return !profile || power === profile.powers[0]
+  return !profile || power === profile.powers[0] || power === CHAMPIONS_HIT_PROFILES[moveId]?.powers[0]
 }
 
 // Charge, recharge, future-move and explicit noparentalbond rules are not all
@@ -62,8 +67,9 @@ export function compileMoveExecution(
   power: number,
   attackerAbilityId: number,
   spread: boolean,
+  rules: CalculationRules = "gen9",
 ): MoveExecution {
-  const profile = moveHitProfile(moveId)
+  const profile = moveHitProfile(moveId, rules)
   const parentalBond = attackerAbilityId === 185 && moveAllowsParentalBond(moveId, spread)
   const powers = profile?.powers ?? (parentalBond ? [power, power] : [power])
   const skillLink = attackerAbilityId === 92

@@ -5509,6 +5509,24 @@ export const GENERATED_ABILITIES = {
       "ja": "モモワロウの 技によって どく状態に なった 相手は こんらん状態にも なってしまう。"
     }
   },
+  "308": {
+    "resourceType": "ability",
+    "id": 308,
+    "slug": "piercing-drill",
+    "calcAbilityName": "Piercing Drill",
+    "names": {
+      "zh-hans": "贯穿钻",
+      "zh-hant": "貫穿鑽",
+      "en": "Piercing Drill",
+      "ja": "かんつうドリル"
+    },
+    "descriptions": {
+      "zh-hans": "When the Pokémon uses contact moves, it can hit even targets that are protecting themselves, dealing 1/4 of the damage that the move would otherwise deal. Everything aside from the target's protective effects is still triggered.",
+      "zh-hant": "When the Pokémon uses contact moves, it can hit even targets that are protecting themselves, dealing 1/4 of the damage that the move would otherwise deal. Everything aside from the target's protective effects is still triggered.",
+      "en": "When the Pokémon uses contact moves, it can hit even targets that are protecting themselves, dealing 1/4 of the damage that the move would otherwise deal. Everything aside from the target's protective effects is still triggered.",
+      "ja": "接触技を使う時 相手の守りの効果を無視して 本来の1/4のダメージを与える。 相手の守りの効果以外は発動される。"
+    }
+  },
   "309": {
     "resourceType": "ability",
     "id": 309,
@@ -5543,6 +5561,24 @@ export const GENERATED_ABILITIES = {
       "zh-hant": "Even when the sunlight has not turned harsh, the Pokémon can use its moves as if the weather were harsh sunlight.",
       "en": "Even when the sunlight has not turned harsh, the Pokémon can use its moves as if the weather were harsh sunlight.",
       "ja": "天気が にほんばれ状態でなくても にほんばれ状態として 技を使うことができる。"
+    }
+  },
+  "311": {
+    "resourceType": "ability",
+    "id": 311,
+    "slug": "spicy-spray",
+    "calcAbilityName": "Spicy Spray",
+    "names": {
+      "zh-hans": "辣椒喷发",
+      "zh-hant": "辣椒噴發",
+      "en": "Spicy Spray",
+      "ja": "とびだすハバネロ"
+    },
+    "descriptions": {
+      "zh-hans": "When the Pokémon takes damage from a move, it burns the attacker.",
+      "zh-hant": "When the Pokémon takes damage from a move, it burns the attacker.",
+      "en": "When the Pokémon takes damage from a move, it burns the attacker.",
+      "ja": "技のダメージを受けると 相手をやけど状態にする。"
     }
   },
   "312": {
