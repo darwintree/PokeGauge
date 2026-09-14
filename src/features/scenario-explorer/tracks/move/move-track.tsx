@@ -92,9 +92,7 @@ export function MoveTrack({
   )
   const selectedIds = useMemo(() => new Set(selectedSnapshotIds), [selectedSnapshotIds])
   function add(moveId: number) {
-    const snapshotId = onAdd(moveId)
-    if (snapshotId) setEditingId(snapshotId)
-    if (!expanded) onToggle()
+    onAdd(moveId)
     setOpen(false)
   }
 

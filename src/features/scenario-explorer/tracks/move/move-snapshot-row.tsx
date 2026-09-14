@@ -33,6 +33,8 @@ function MoveSnapshotEditor({
 }) {
   const intl = useIntl()
   const [confirmingRemove, setConfirmingRemove] = useState(false)
+  const [powerEmpty, setPowerEmpty] = useState(false)
+  const powerInvalid = !powerEmpty && snapshot.power === 0
   const powerErrorId = `${snapshot.id}-power-error`
   const accuracyErrorId = `${snapshot.id}-accuracy-error`
   const rules = useCalculationRules()
@@ -67,17 +69,22 @@ function MoveSnapshotEditor({
           {intl.formatMessage({ id: "track.move.power" })}
         </span>
         <Input
-          type="number"
-          min={0}
-          max={1000}
-          step={1}
-          value={snapshot.power}
-          aria-invalid={snapshot.power === 0}
-          aria-describedby={snapshot.power === 0 ? powerErrorId : undefined}
+          type="text"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          value={powerEmpty ? "" : snapshot.power}
+          aria-invalid={powerInvalid}
+          aria-describedby={powerInvalid ? powerErrorId : undefined}
           className="h-7 text-xs tabular-nums"
-          onChange={(event) => onChange({ power: Number(event.target.value) })}
+          onChange={(event) => {
+            const value = event.target.value
+            if (!/^[0-9]*$/.test(value)) return
+            setPowerEmpty(value === "")
+            if (value !== "") onChange({ power: Number(value) })
+          }}
+          onBlur={() => setPowerEmpty(false)}
         />
-        {snapshot.power === 0 ? (
+        {powerInvalid ? (
           <span id={powerErrorId} className="block text-xs text-destructive">
             {intl.formatMessage({ id: "track.move.powerRequired" })}
           </span>
