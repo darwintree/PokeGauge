@@ -167,12 +167,18 @@ async function fetchChampionsPokemonUsageOnline(): Promise<BattlePokemonId[]> {
     fetchChampionsIndex(),
   ])
   const pokemonByName = new Map(
-    pokemon.flatMap((resource) =>
-      [resource.name, resource.pokemonSlug, resource.calcSpeciesName].map(
-        (name) => [normalizeJoinName(name), resource.battlePokemonId] as const,
-      ),
+    pokemon.map((resource) =>
+      [normalizeJoinName(resource.calcSpeciesName), resource.battlePokemonId] as const,
     ),
   )
+  // Exact identities take precedence over calculator aliases shared by multiple forms.
+  for (const resource of pokemon) {
+    pokemonByName.set(normalizeJoinName(resource.name), resource.battlePokemonId)
+  }
+  // Slugs distinguish identities even when their display names are identical.
+  for (const resource of pokemon) {
+    pokemonByName.set(normalizeJoinName(resource.pokemonSlug), resource.battlePokemonId)
+  }
   const season = index.defaultSeason ?? "Current"
   const ranked = (index.pokemon ?? [])
     .flatMap((entry) => {

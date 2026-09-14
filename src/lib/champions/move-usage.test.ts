@@ -5,6 +5,7 @@ import {
   listChampionsItemUsageRecords,
   listChampionsMoveUsageRecords,
   listChampionsNatureUsageRecords,
+  listChampionsPokemonUsageIds,
   resetChampionsJsonFetcherForTest,
   setChampionsJsonFetcherForTest,
 } from "@/lib/champions"
@@ -225,4 +226,27 @@ it("returns no held-item usage rows when the base species has no Champions entry
   setChampionsJsonFetcherForTest(fetcher)
 
   await expect(listChampionsItemUsageRecords(10043)).resolves.toEqual([])
+})
+
+it.each([
+  ["Rillaboom", 812],
+  ["Charizard", 6],
+  ["Pikachu", 25],
+  ["Toxtricity-Low-Key", 10184],
+])("resolves ranked %s usage to its selectable battle identity", async (name, id) => {
+  setChampionsJsonFetcherForTest(async () => ({
+    defaultSeason: "Current",
+    pokemon: [{
+      name,
+      slug: name.toLowerCase(),
+      battleName: name,
+      showdownId: name.toLowerCase(),
+      showdownName: name,
+      summary: { battleSummary: { Current: { Doubles: {
+        top: { move: { position: 2, column_position: 2 } },
+      } } } },
+    }],
+  }))
+
+  await expect(listChampionsPokemonUsageIds()).resolves.toEqual([id])
 })
