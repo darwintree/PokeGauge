@@ -91,6 +91,7 @@ export function projectAbilitySelections(
     ),
   ))
   const stageCandidates = [...stageRecommendations]
+  if (category === "physical") stageCandidates.push(-1)
   if (category === "physical" && state.attackerAbilityIds.includes(DEFIANT_ABILITY_ID)) {
     stageCandidates.push(1, 2)
   }

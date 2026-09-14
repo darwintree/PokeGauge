@@ -56,8 +56,8 @@ describe("ability default projection", () => {
   })
 
   it.each([
-    ["physical", DEFIANT_ABILITY_ID, [0, 1, 2]],
-    ["special", COMPETITIVE_ABILITY_ID, [0, 2]],
+    ["physical", DEFIANT_ABILITY_ID, [-1, 0, 1, 2]],
+    ["special", COMPETITIVE_ABILITY_ID, [-1, 0, 2]],
   ] as const)("keeps an untriggered %s boost in the pool only", async (category, ability, pool) => {
     const projected = projectAbilitySelections(await stateWithAbilities([ability]), category)
     expect(projected.attackerStages).toEqual([0])
