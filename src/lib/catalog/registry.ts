@@ -43,6 +43,7 @@ const DEFAULT_MATCHUP = {
 
 export { listAttackers, listDefenders } from "./resource-options"
 export {
+  orderPokemonOptionsByUsageIds,
   rankMoveOptionsByChampionsUsage,
   rankPokemonOptionsByChampionsUsage,
   resolveCatalogDefaultMoveCategory,

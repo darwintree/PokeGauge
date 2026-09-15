@@ -1,4 +1,4 @@
-import { afterEach, expect, it } from "vitest"
+import { afterEach, expect, it, vi } from "vitest"
 
 import {
   listChampionsAbilityUsageRecords,
@@ -6,11 +6,17 @@ import {
   listChampionsMoveUsageRecords,
   listChampionsNatureUsageRecords,
   listChampionsPokemonUsageIds,
+  listChampionsUsageRules,
   resetChampionsJsonFetcherForTest,
   setChampionsJsonFetcherForTest,
+  setUsageSource,
 } from "@/lib/champions"
 
-afterEach(resetChampionsJsonFetcherForTest)
+afterEach(() => {
+  vi.unstubAllGlobals()
+  resetChampionsJsonFetcherForTest()
+  setUsageSource("champions")
+})
 
 function championsFixture(): {
   fetcher: (url: string) => Promise<unknown>
@@ -228,6 +234,45 @@ it("returns no held-item usage rows when the base species has no Champions entry
   await expect(listChampionsItemUsageRecords(10043)).resolves.toEqual([])
 })
 
+it("fetches battle rows for the selected Champions season", async () => {
+  setChampionsJsonFetcherForTest(async (url) => {
+    if (url === "https://championsbattledata.com/api") {
+      return {
+        defaultSeason: "Current",
+        seasons: ["Current", "M6", "M5"],
+        pokemon: [{
+          name: "Charizard",
+          slug: "charizard",
+          battleName: "Charizard",
+        }],
+      }
+    }
+    if (url.includes("season=M6")) {
+      return {
+        pokemon: "Charizard",
+        format: "Doubles",
+        season: "M6",
+        source: "M6.csv",
+        rows: [{ category: "move", rank: 1, name: "Flamethrower", percentage_value: 10 }],
+      }
+    }
+    throw new Error(`unexpected Champions URL: ${url}`)
+  })
+  setUsageSource("champions", "M6")
+  await expect(listChampionsUsageRules()).resolves.toEqual({
+    defaultId: "Current",
+    rules: [
+      { id: "Current", label: "Current" },
+      { id: "M6", label: "M6" },
+      { id: "M5", label: "M5" },
+    ],
+  })
+  await expect(listChampionsMoveUsageRecords(6)).resolves.toEqual([
+    expect.objectContaining({ season: "M6", championsMoveName: "Flamethrower" }),
+  ])
+  setUsageSource("champions")
+})
+
 it.each([
   ["Rillaboom", 812],
   ["Charizard", 6],
@@ -249,4 +294,90 @@ it.each([
   }))
 
   await expect(listChampionsPokemonUsageIds()).resolves.toEqual([id])
+})
+
+it("ranks a historical Champions season from battle row positions, not Current summaries", async () => {
+  const storage = new Map<string, string>()
+  vi.stubGlobal("localStorage", {
+    getItem: (key: string) => storage.get(key) ?? null,
+    setItem: (key: string, value: string) => {
+      storage.set(key, value)
+    },
+  })
+  const battleCalls: string[] = []
+  setChampionsJsonFetcherForTest(async (url) => {
+    if (url === "https://championsbattledata.com/api") {
+      return {
+        defaultSeason: "Current",
+        seasons: ["Current", "M4"],
+        pokemon: [
+          {
+            name: "Pikachu",
+            slug: "pikachu",
+            battleName: "Pikachu",
+            showdownName: "Pikachu",
+            summary: { battleSummary: { Current: { Doubles: {
+              top: { move: { position: 1, column_position: 1 } },
+            } } } },
+          },
+          {
+            name: "Charizard",
+            slug: "charizard",
+            battleName: "Charizard",
+            showdownName: "Charizard",
+            summary: { battleSummary: { Current: { Doubles: {
+              top: { move: { position: 2, column_position: 2 } },
+            } } } },
+          },
+        ],
+      }
+    }
+    battleCalls.push(url)
+    if (url.includes("season=M4") && url.includes("Pikachu")) {
+      return {
+        pokemon: "Pikachu",
+        format: "Doubles",
+        season: "M4",
+        source: "M4.csv",
+        rows: [{ category: "move", rank: 1, name: "Thunderbolt", column_position: 8 }],
+      }
+    }
+    if (url.includes("season=M4") && url.includes("Charizard")) {
+      return {
+        pokemon: "Charizard",
+        format: "Doubles",
+        season: "M4",
+        source: "M4.csv",
+        rows: [{ category: "move", rank: 1, name: "Flamethrower", column_position: 1 }],
+      }
+    }
+    throw new Error(`unexpected Champions URL: ${url}`)
+  })
+  setUsageSource("champions", "M4")
+
+  await expect(listChampionsPokemonUsageIds()).resolves.toEqual([6, 25])
+  expect(battleCalls).toHaveLength(2)
+})
+
+it("maps Pikalytics Rillaboom to the selectable species instead of Gigantamax", async () => {
+  vi.stubGlobal("localStorage", {
+    getItem: () => null,
+    setItem: () => {},
+  })
+  setChampionsJsonFetcherForTest(async (url) => {
+    if (url.includes("/api/pikalytics/")) {
+      return {
+        format: "gen9championsvgc2026regmc-1760",
+        date: "2026-05",
+        data: [
+          { name: "Rillaboom", rank: "1", percent: "37.61" },
+          { name: "Sneasler", rank: "2", percent: "36.64" },
+        ],
+      }
+    }
+    throw new Error(`unexpected URL: ${url}`)
+  })
+  setUsageSource("pikalytics", "gen9championsvgc2026regmc-1760", { pikalyticsDate: "2026-05" })
+
+  await expect(listChampionsPokemonUsageIds()).resolves.toEqual([812, 903])
 })

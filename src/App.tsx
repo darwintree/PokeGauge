@@ -11,8 +11,7 @@ import { useTrackProductEventOnce } from "@/lib/analytics"
 import type { ProbabilityMode } from "@/lib/damage-calculation"
 import { loadInitialLocale, localeMessages, saveLocale, type SupportedLocale } from "@/lib/i18n"
 import { loadProbabilityMode, saveProbabilityMode } from "@/lib/probability-mode-preference"
-import { loadUsageSource, saveUsageSource, type UsageSource } from "@/lib/usage-source-preference"
-import { setUsageSource } from "@/lib/champions"
+import { startUsageSession } from "@/lib/usage-store"
 import {
   loadStatNameStrategy,
   saveStatNameStrategy,
@@ -28,12 +27,14 @@ function App() {
   const [locale, setLocaleState] = useState<SupportedLocale>(loadInitialLocale)
   const [probabilityMode, setProbabilityModeState] = useState<ProbabilityMode>(loadProbabilityMode)
   const [statNameStrategy, setStatNameStrategyState] = useState<StatNameStrategy>(loadStatNameStrategy)
-  const [usageSource, setUsageSourceState] = useState<UsageSource>(loadUsageSource)
-  useEffect(() => { setUsageSource(usageSource) }, [usageSource])
   const [feedbackScenarioUrl, setFeedbackScenarioUrl] = useState<string | null>(null)
   const [brandHomeAction, setBrandHomeAction] = useState<(() => void) | null>(null)
   const usageTipsPage = isUsageTipsPage()
   useTrackProductEventOnce("page_view", locale)
+
+  useEffect(() => {
+    void startUsageSession()
+  }, [])
 
   useEffect(() => {
     document.documentElement.lang = locale
@@ -60,7 +61,6 @@ function App() {
     saveStatNameStrategy(strategy)
     setStatNameStrategyState(strategy)
   }
-  function setUsageSourcePreference(source: UsageSource) { saveUsageSource(source); setUsageSourceState(source) }
 
   const handleBrandHomeActionChange = useCallback((action: (() => void) | null) => {
     setBrandHomeAction(() => action)
@@ -80,8 +80,6 @@ function App() {
               onProbabilityModeChange={setProbabilityMode}
               statNameStrategy={statNameStrategy}
               onStatNameStrategyChange={setStatNameStrategy}
-              usageSource={usageSource}
-              onUsageSourceChange={setUsageSourcePreference}
               feedbackScenarioUrl={feedbackScenarioUrl}
               onBrandHomeClick={brandHomeAction}
             />

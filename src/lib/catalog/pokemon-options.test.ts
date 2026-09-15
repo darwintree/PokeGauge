@@ -6,6 +6,7 @@ import {
 } from "@/lib/champions"
 import {
   listAttackers,
+  orderPokemonOptionsByUsageIds,
   rankPokemonOptionsByChampionsUsage,
 } from "@/lib/catalog"
 
@@ -41,6 +42,29 @@ describe("Pokemon option ranking", () => {
 
     expect(ranked.slice(0, 3).map((option) => option.id)).toEqual([6, 10034, 10035])
     expect(ranked.filter((option) => option.id === 10034)).toHaveLength(1)
+  })
+
+  it("places megas after their base form from a raw usage cache", async () => {
+    const options = await listAttackers("en")
+    const ranked = orderPokemonOptionsByUsageIds(options, [6, 445])
+
+    expect(ranked.slice(0, 4).map((option) => option.id)).toEqual([6, 10034, 10035, 445])
+    expect(ranked.filter((option) => option.id === 10034)).toHaveLength(1)
+  })
+
+  it("does not drop megas or duplicate them when the ranking already includes them", async () => {
+    const options = await listAttackers("en")
+    const ranked = orderPokemonOptionsByUsageIds(options, [6, 10034, 10035, 445])
+
+    expect(ranked.slice(0, 4).map((option) => option.id)).toEqual([6, 10034, 10035, 445])
+  })
+
+  it("attaches sibling megas when the source ranked a mega identity", async () => {
+    const options = await listAttackers("en")
+    const ranked = orderPokemonOptionsByUsageIds(options, [10034])
+
+    expect(ranked.slice(0, 2).map((option) => option.id)).toEqual([10034, 10035])
+    expect(ranked.map((option) => option.id)).toContain(6)
   })
 
   it("uses only the form name for Mega display labels", async () => {

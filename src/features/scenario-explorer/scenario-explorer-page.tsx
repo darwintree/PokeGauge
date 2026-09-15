@@ -27,6 +27,7 @@ import type { SupportedLocale } from "@/lib/i18n"
 import type { ProbabilityMode } from "@/lib/damage-calculation"
 import type { BattlePokemonId } from "@/lib/resources"
 import type { StatNameStrategy } from "@/lib/stat-preset"
+import { useUsageStore } from "@/lib/usage-store"
 import {
   discardScenarioSnapshot,
   loadScenarioSnapshot,
@@ -70,6 +71,7 @@ export function ScenarioExplorerPage({
   onBrandHomeActionChange,
 }: ScenarioExplorerPageProps) {
   const intl = useIntl()
+  const usage = useUsageStore()
   const [confirmResetOpen, setConfirmResetOpen] = useState(false)
   const [initialUrlState] = useState(() => readScenarioSetupUrl(window.location.href))
   const [storedScenario, setStoredScenario] = useState(() =>
@@ -285,7 +287,7 @@ export function ScenarioExplorerPage({
     return () => {
       cancelled = true
     }
-  }, [attackerId, defenderId, locale, moveCategory, optionsReady])
+  }, [attackerId, defenderId, locale, moveCategory, optionsReady, usage.generation])
 
   useEffect(() => {
     if (!catalog || catalog.defaultMovePickStatus !== "loading") return

@@ -5,6 +5,7 @@ export {
   getDefaultMoveCategory,
   listAttackers,
   listDefenders,
+  orderPokemonOptionsByUsageIds,
   rankMoveOptionsByChampionsUsage,
   rankPokemonOptionsByChampionsUsage,
   resolveCatalogDefaultMoveCategory,

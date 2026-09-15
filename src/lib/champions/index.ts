@@ -4,6 +4,9 @@ export {
   listChampionsMoveUsageRecords,
   listChampionsNatureUsageRecords,
   listChampionsPokemonUsageIds,
+  listChampionsUsageRules,
+  peekCachedPokemonUsageIds,
+  fetchUsageRanking,
   resetChampionsJsonFetcherForTest,
   resetChampionsAbilityUsageFetcherForTest,
   resetChampionsItemUsageFetcherForTest,
@@ -17,7 +20,6 @@ export {
   setChampionsNatureUsageFetcherForTest,
   setChampionsPokemonUsageFetcherForTest,
   setUsageSource,
-  getUsageSource,
 } from "./move-usage"
 export type {
   ChampionsAbilityUsageRecord,
