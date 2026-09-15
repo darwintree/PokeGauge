@@ -125,3 +125,18 @@ Reason:
 Mega 跟种族走是已有选择器行为；缓存不该改变合并规则。一个函数避免缓存 / 实时两条路再次分叉。
 
 Follow-up: None
+
+### 9. Pikalytics 排名把共享 calc 名解析成可选手身份
+
+Type: bugfix
+
+Context:
+Pikalytics 默认 `gen9championsvgc2026regmc-1760` 的 roster 第一名是 `Rillaboom`（37.61%）。图鉴里 Gigantamax 轰擂金刚猩（10209）的 `calcSpeciesName` 也是 `Rillaboom`，且 `isBattleOnly`，选择器会过滤掉。join-name Map 后写覆盖，排名 id 变成 10209，列表里找不到就掉到字母序尾巴。
+
+Decision:
+共享名字优先落到非 Mega、非 battle-only 的可选手身份；battle-only 非 Mega 记 `speciesId`。Smogon / Champions 同一张 join 表。Pikalytics 缓存 key 加 `v2`，丢掉已经存了 Gigantamax id 的快照（一次 HTTP，不是 M4 那种扇出）。
+
+Reason:
+来源排的是物种名；选择器没有极巨化身份。一个函数避免三条来源再分叉。
+
+Follow-up: None

@@ -186,6 +186,35 @@ function normalizeJoinName(name: string): string {
     .replace(/[^a-z0-9]+/g, "")
 }
 
+type UsageJoinPokemon = {
+  name: string
+  pokemonSlug: string
+  calcSpeciesName: string
+  battlePokemonId: BattlePokemonId
+  speciesId: BattlePokemonId
+  isMega: boolean
+  isBattleOnly: boolean
+}
+
+/** Picker-visible identity. Gigantamax and other battle-only forms share calc names with the species. */
+function rankingBattlePokemonId(pokemon: UsageJoinPokemon): BattlePokemonId {
+  return pokemon.isMega || !pokemon.isBattleOnly ? pokemon.battlePokemonId : pokemon.speciesId
+}
+
+function battlePokemonIdsByJoinName(pokemon: readonly UsageJoinPokemon[]): Map<string, BattlePokemonId> {
+  const byName = new Map<string, BattlePokemonId>()
+  for (const entry of pokemon) {
+    const id = rankingBattlePokemonId(entry)
+    const isCanonical = entry.battlePokemonId === entry.speciesId && !entry.isMega
+    for (const alias of [entry.name, entry.pokemonSlug, entry.calcSpeciesName]) {
+      const key = normalizeJoinName(alias)
+      if (!key) continue
+      if (!byName.has(key) || isCanonical) byName.set(key, id)
+    }
+  }
+  return byName
+}
+
 async function fetchJsonFromNetwork<T>(url: string): Promise<T> {
   const response = await fetch(url)
   if (!response.ok) throw new Error(`Usage request failed ${response.status}: ${url}`)
@@ -293,19 +322,7 @@ async function fetchChampionsPokemonUsageOnline(): Promise<BattlePokemonId[]> {
     listResources("pokemon", "en"),
     fetchChampionsIndex(),
   ])
-  const pokemonByName = new Map(
-    pokemon.map((resource) =>
-      [normalizeJoinName(resource.calcSpeciesName), resource.battlePokemonId] as const,
-    ),
-  )
-  // Exact identities take precedence over calculator aliases shared by multiple forms.
-  for (const resource of pokemon) {
-    pokemonByName.set(normalizeJoinName(resource.name), resource.battlePokemonId)
-  }
-  // Slugs distinguish identities even when their display names are identical.
-  for (const resource of pokemon) {
-    pokemonByName.set(normalizeJoinName(resource.pokemonSlug), resource.battlePokemonId)
-  }
+  const pokemonByName = battlePokemonIdsByJoinName(pokemon)
   const season = championsSeason(index)
   const entries = index.pokemon ?? []
   let ranked = entries
@@ -327,7 +344,7 @@ async function fetchChampionsPokemonUsageOnline(): Promise<BattlePokemonId[]> {
 }
 async function fetchSmogonPokemonUsageOnline(): Promise<BattlePokemonId[]> {
   const pokemon = await listResources("pokemon", "en")
-  const byName = new Map(pokemon.flatMap((resource) => [resource.name, resource.pokemonSlug, resource.calcSpeciesName].map((name) => [normalizeJoinName(name), resource.battlePokemonId] as const)))
+  const byName = battlePokemonIdsByJoinName(pokemon)
   const response = await fetchJson<{ data?: Record<string, Record<string, unknown>> }>(smogonStatsUrl())
   const data = response.data ?? {}
   return Object.entries(data)
@@ -403,20 +420,9 @@ function resetPikalyticsCache(): void {
 
 function mapPikalyticsRoster(
   latest: PikalyticsLatest,
-  pokemon: Array<{
-    name: string
-    pokemonSlug: string
-    calcSpeciesName: string
-    battlePokemonId: BattlePokemonId
-  }>,
+  pokemon: readonly UsageJoinPokemon[],
 ): Array<{ id: BattlePokemonId; name: string }> {
-  const byName = new Map(
-    pokemon.flatMap((entry) =>
-      [entry.name, entry.pokemonSlug, entry.calcSpeciesName].map(
-        (name) => [normalizeJoinName(name), entry.battlePokemonId] as const,
-      ),
-    ),
-  )
+  const byName = battlePokemonIdsByJoinName(pokemon)
   return latest.data
     .toSorted((a, b) => Number(a.rank) - Number(b.rank))
     .flatMap((entry) => {

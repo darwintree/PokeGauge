@@ -358,3 +358,26 @@ it("ranks a historical Champions season from battle row positions, not Current s
   await expect(listChampionsPokemonUsageIds()).resolves.toEqual([6, 25])
   expect(battleCalls).toHaveLength(2)
 })
+
+it("maps Pikalytics Rillaboom to the selectable species instead of Gigantamax", async () => {
+  vi.stubGlobal("localStorage", {
+    getItem: () => null,
+    setItem: () => {},
+  })
+  setChampionsJsonFetcherForTest(async (url) => {
+    if (url.includes("/api/pikalytics/")) {
+      return {
+        format: "gen9championsvgc2026regmc-1760",
+        date: "2026-05",
+        data: [
+          { name: "Rillaboom", rank: "1", percent: "37.61" },
+          { name: "Sneasler", rank: "2", percent: "36.64" },
+        ],
+      }
+    }
+    throw new Error(`unexpected URL: ${url}`)
+  })
+  setUsageSource("pikalytics", "gen9championsvgc2026regmc-1760", { pikalyticsDate: "2026-05" })
+
+  await expect(listChampionsPokemonUsageIds()).resolves.toEqual([812, 903])
+})

@@ -28,6 +28,8 @@ export function usageSourceMessageId(source: UsageSource): string {
 }
 
 export function usageCacheStorageKey(source: UsageSource, ruleId: string): string {
+  // v2 drops Pikalytics snapshots that ranked Gigantamax ids the picker cannot show.
+  if (source === "pikalytics") return `${USAGE_CACHE_STORAGE_PREFIX}v2:${source}:${ruleId}`
   return `${USAGE_CACHE_STORAGE_PREFIX}${source}:${ruleId}`
 }
 
