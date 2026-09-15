@@ -4,11 +4,11 @@
 
 <!-- changelog:start -->
 <!-- changelog:en -->
-Choose a usage source first, then a rule from that source. Pokémon and move pickers show that pair on one compact row until you expand it to change, fetch, or apply an update. Usage settings live on their own tab. Current-series VGC and Pokémon Champions formats are shown by default, with an option to see the full list. Cached ranking appears immediately; when newer usage data is ready, apply it from a text button in the picker.
+You can pick a usage source, then a format from that source. In Pokémon and move pickers, that choice starts as one compact row; open it to change, refresh, or apply newer usage. Usage has its own page in Settings. The format list starts with the current VGC and Pokémon Champions series; you can turn that filter off to see every format. Last time’s usage shows first. When newer usage is ready, apply it with a button in the picker.
 <!-- changelog:zh-hans -->
-先选使用率来源，再从该来源的规则里选。宝可梦和招式选择里默认只显示一行来源与规则，点开后再改组合、立即拉取或应用更新。使用率设置单独成页。默认只显示当前系列的 VGC 与 Pokémon Champions 赛制，也可在设置里查看全表。有缓存会马上按上次结果排序；有新使用率时，在选择对话里用文字按钮应用。
+你可以先选使用率来源，再选该来源下的赛制。宝可梦和招式选择里，这项选择先收成一行，点开后再改、刷新，或套用更新的使用率。设置里有单独的使用率页。赛制列表默认只显示当前系列的 VGC 和 Pokémon Champions，关掉过滤就能看到全部。上次的使用率会先出现；有更新时，在选择里用按钮套用。
 <!-- changelog:zh-hant -->
-先選使用率來源，再從該來源的規則裡選。寶可夢和招式選擇裡預設只顯示一行來源與規則，點開後再改組合、立即拉取或套用更新。使用率設定獨立成頁。預設只顯示目前系列的 VGC 與 Pokémon Champions 賽制，也可在設定裡查看全表。有快取會立刻依上次結果排序；有新使用率時，在選擇對話裡用文字按鈕套用。
+你可以先選使用率來源，再選該來源下的賽制。寶可夢和招式選擇裡，這項選擇先收成一行，點開後再改、重新整理，或套用更新的使用率。設定裡有單獨的使用率頁。賽制列表預設只顯示目前系列的 VGC 和 Pokémon Champions，關掉過濾就能看到全部。上次的使用率會先出現；有更新時，在選擇裡用按鈕套用。
 <!-- changelog:ja -->
-使用率は先にソース、続けてそのソースのルールを選びます。ポケモン・わざピッカーでは初期状態で1行にまとめ、開くと切り替え・取得・更新の適用ができます。使用率の設定は専用タブです。既定では現行シリーズの VGC と Pokémon Champions のフォーマットだけを出し、設定で全リストも見られます。キャッシュがあればすぐに並び、新しい使用率はピッカーの文字ボタンで適用します。
+使用率は先に出典を選び、続けてその出典のフォーマットを選べます。ポケモンとわざの選択では、最初は1行にまとまり、開くと切り替え・更新の取得・新しい使用率の適用ができます。設定に使用率専用のページがあります。フォーマット一覧はまず現行シリーズの VGC と Pokémon Champions だけを出し、フィルタをオフにすると全部見られます。前回の使用率が先に出ます。新しい使用率の準備ができたら、選択画面のボタンで適用します。
 <!-- changelog:end -->
