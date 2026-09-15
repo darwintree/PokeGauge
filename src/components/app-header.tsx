@@ -19,17 +19,23 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { UsageFetchStatus } from "@/features/scenario-explorer/pickers/usage-chrome"
+import { UsageRuleSelect } from "@/features/scenario-explorer/pickers/usage-rule-select"
 import { UsageSourceSelect } from "@/features/scenario-explorer/pickers/usage-source-select"
 import { CHANGELOG_ENTRIES } from "@/lib/changelog"
 import { trackProductEvent } from "@/lib/analytics"
 import type { ProbabilityMode } from "@/lib/damage-calculation"
-import type { UsageSource } from "@/lib/usage-source-preference"
 import { createFeedbackUrl } from "@/lib/feedback"
 import { SUPPORTED_LOCALES, type SupportedLocale } from "@/lib/i18n"
 import {
   STAT_NAME_STRATEGY_OPTIONS,
   type StatNameStrategy,
 } from "@/lib/stat-preset"
+import {
+  setUsageStoreRule,
+  setUsageStoreSource,
+  useUsageStore,
+} from "@/lib/usage-store"
 
 const SOURCE_URL = "https://github.com/darwintree/PokeGauge"
 
@@ -82,8 +88,6 @@ type AppHeaderProps = LocaleControlProps & {
   onProbabilityModeChange: (mode: ProbabilityMode) => void
   statNameStrategy: StatNameStrategy
   onStatNameStrategyChange: (strategy: StatNameStrategy) => void
-  usageSource?: UsageSource
-  onUsageSourceChange?: (source: UsageSource) => void
   /** When set, brand is a control that requests return to matchup landing. */
   onBrandHomeClick?: (() => void) | null
 }
@@ -96,8 +100,6 @@ type SettingsDialogProps = LocaleControlProps & Pick<
   | "onProbabilityModeChange"
   | "statNameStrategy"
   | "onStatNameStrategyChange"
-  | "usageSource"
-  | "onUsageSourceChange"
 >
 
 const SELECT_CLASS =
@@ -171,12 +173,9 @@ function SettingsDialog({
   onProbabilityModeChange,
   statNameStrategy,
   onStatNameStrategyChange,
-  usageSource,
-  onUsageSourceChange,
 }: SettingsDialogProps) {
   const intl = useIntl()
-  usageSource ??= "champions"
-  onUsageSourceChange ??= () => {}
+  const usage = useUsageStore()
   const probabilityHintId = probabilityMode === "battle-odds"
     ? "probability.mode.battleOdds.hint"
     : "probability.mode.classic.hint"
@@ -266,10 +265,31 @@ function SettingsDialog({
               <UsageSourceSelect
                 id="settings-usage-source"
                 describedBy="settings-usage-source-description"
-                value={usageSource}
-                onChange={onUsageSourceChange}
+                value={usage.source}
+                onChange={(source) => void setUsageStoreSource(source)}
                 className={SELECT_CLASS}
               />
+            </PreferenceRow>
+            <PreferenceRow
+              htmlFor="settings-usage-rule"
+              label={<FormattedMessage id="settings.usageRule.label" />}
+              description={<FormattedMessage id="settings.usageRule.description" />}
+            >
+              <UsageRuleSelect
+                id="settings-usage-rule"
+                describedBy="settings-usage-rule-description"
+                value={usage.ruleId}
+                rules={usage.rules}
+                onChange={(ruleId) => void setUsageStoreRule(ruleId)}
+                className={SELECT_CLASS}
+              />
+            </PreferenceRow>
+            <PreferenceRow
+              htmlFor="settings-usage-fetched"
+              label={<FormattedMessage id="settings.usageFetched.label" />}
+              description={<FormattedMessage id="settings.usageFetched.description" />}
+            >
+              <UsageFetchStatus id="settings-usage-fetched" />
             </PreferenceRow>
 
             <PreferenceRow
@@ -405,8 +425,6 @@ export function AppHeader({
   onProbabilityModeChange,
   statNameStrategy,
   onStatNameStrategyChange,
-  usageSource,
-  onUsageSourceChange,
   feedbackScenarioUrl,
   onBrandHomeClick = null,
 }: AppHeaderProps) {
@@ -486,8 +504,6 @@ export function AppHeader({
             onProbabilityModeChange={onProbabilityModeChange}
             statNameStrategy={statNameStrategy}
             onStatNameStrategyChange={onStatNameStrategyChange}
-            usageSource={usageSource}
-            onUsageSourceChange={onUsageSourceChange}
           />
         </nav>
       </div>

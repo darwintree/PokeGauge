@@ -13,7 +13,12 @@ import type {
   ChampionsMoveUsageRecord,
   ChampionsNatureUsageRecord,
 } from "./types"
-import type { UsageSource } from "@/lib/usage-source-preference"
+import type { UsageRule, UsageSource } from "@/lib/usage-source-preference"
+import {
+  loadUsageCache,
+  saveUsageCache,
+  usageFingerprint,
+} from "@/lib/usage-source-preference"
 
 const CHAMPIONS_FORMAT: ChampionsBattleFormat = "Doubles"
 const CHAMPIONS_INDEX_URL = "https://championsbattledata.com/api"
@@ -45,6 +50,7 @@ type ChampionsIndexPokemon = {
 
 type ChampionsIndexApi = {
   defaultSeason?: string
+  seasons?: string[]
   dataVersion?: string
   pokemon?: ChampionsIndexPokemon[]
 }
@@ -97,6 +103,8 @@ let championsIndexPromise: Promise<ChampionsIndexApi> | undefined
 const battleRowsCache = new Map<BattlePokemonId, Promise<ChampionsBattleApi | null>>()
 let jsonFetcher: (url: string) => Promise<unknown> = fetchJsonFromNetwork
 let usageSource: UsageSource = "champions"
+let usageRuleId: string | null = null
+let pikalyticsDate: string | null = null
 let smogonPokemonUsagePromise: Promise<BattlePokemonId[]> | undefined
 let pikalyticsPokemonUsagePromise: Promise<BattlePokemonId[]> | undefined
 const smogonChaosCache = new Map<BattlePokemonId, Promise<Record<string, unknown> | null>>()
@@ -107,6 +115,7 @@ function clearUsageCaches(): void {
   abilityUsageCache.clear()
   itemUsageCache.clear()
   natureUsageCache.clear()
+  battleRowsCache.clear()
   pokemonUsagePromise = undefined
   smogonPokemonUsagePromise = undefined
   pikalyticsPokemonUsagePromise = undefined
@@ -114,11 +123,61 @@ function clearUsageCaches(): void {
   resetPikalyticsCache()
 }
 
-export function setUsageSource(source: UsageSource): void {
+export function setUsageSource(
+  source: UsageSource,
+  ruleId?: string | null,
+  extras?: { pikalyticsDate?: string | null },
+): void {
   usageSource = source
+  usageRuleId = ruleId ?? null
+  if (extras && "pikalyticsDate" in extras) pikalyticsDate = extras.pikalyticsDate ?? null
+  else if (source !== "pikalytics") pikalyticsDate = null
   clearUsageCaches()
 }
 export function getUsageSource(): UsageSource { return usageSource }
+export function getUsageRuleId(): string | null { return usageRuleId }
+
+function championsSeason(index: ChampionsIndexApi): string {
+  return usageRuleId ?? index.defaultSeason ?? "Current"
+}
+
+function smogonStatsUrl(): string {
+  if (!usageRuleId) return "/api/smogon/latest"
+  const sep = usageRuleId.indexOf("/")
+  if (sep <= 0) return "/api/smogon/latest"
+  return `/api/smogon/${usageRuleId.slice(0, sep)}/chaos/${usageRuleId.slice(sep + 1)}.json`
+}
+
+function pikalyticsRosterUrl(): string {
+  if (usageRuleId && pikalyticsDate) return `/api/pikalytics/l/${pikalyticsDate}/${usageRuleId}`
+  return "/api/pikalytics/latest"
+}
+
+function pikalyticsPokemonUrl(name: string): string {
+  if (usageRuleId && pikalyticsDate) {
+    return `/api/pikalytics/p/${pikalyticsDate}/${usageRuleId}/${encodeURIComponent(name)}`
+  }
+  return `/api/pikalytics/pokemon/${encodeURIComponent(name)}`
+}
+
+export function peekCachedPokemonUsageIds(): BattlePokemonId[] | null {
+  if (!usageRuleId) return null
+  const snapshot = loadUsageCache(usageSource, usageRuleId)
+  return snapshot?.pokemonIds ?? null
+}
+
+function rememberRanking(pokemonIds: BattlePokemonId[]): void {
+  if (!usageRuleId) return
+  saveUsageCache(usageSource, usageRuleId, {
+    fetchedAt: Date.now(),
+    fingerprint: rankingFingerprint(pokemonIds),
+    pokemonIds,
+  })
+}
+
+function rankingFingerprint(pokemonIds: BattlePokemonId[]): string {
+  return usageFingerprint([usageSource, usageRuleId ?? "", pikalyticsDate ?? "", ...pokemonIds])
+}
 
 function normalizeJoinName(name: string): string {
   return name
@@ -179,7 +238,7 @@ async function fetchChampionsPokemonUsageOnline(): Promise<BattlePokemonId[]> {
   for (const resource of pokemon) {
     pokemonByName.set(normalizeJoinName(resource.pokemonSlug), resource.battlePokemonId)
   }
-  const season = index.defaultSeason ?? "Current"
+  const season = championsSeason(index)
   const ranked = (index.pokemon ?? [])
     .flatMap((entry) => {
       const row = entry.summary?.battleSummary?.[season]?.[CHAMPIONS_FORMAT]?.top?.move
@@ -209,7 +268,7 @@ async function fetchChampionsPokemonUsageOnline(): Promise<BattlePokemonId[]> {
 async function fetchSmogonPokemonUsageOnline(): Promise<BattlePokemonId[]> {
   const pokemon = await listResources("pokemon", "en")
   const byName = new Map(pokemon.flatMap((resource) => [resource.name, resource.pokemonSlug, resource.calcSpeciesName].map((name) => [normalizeJoinName(name), resource.battlePokemonId] as const)))
-  const response = await fetchJson<{ data?: Record<string, Record<string, unknown>> }>("/api/smogon/latest")
+  const response = await fetchJson<{ data?: Record<string, Record<string, unknown>> }>(smogonStatsUrl())
   const data = response.data ?? {}
   return Object.entries(data)
     .sort(([, a], [, b]) => Number(b.usage ?? 0) - Number(a.usage ?? 0))
@@ -223,7 +282,7 @@ async function fetchSmogonChaos(battlePokemonId: BattlePokemonId): Promise<Recor
   const resource = await getResource("pokemon", battlePokemonId, "en")
   const slug = normalizeJoinName(resource.calcSpeciesName || resource.name)
   try {
-    const response = await fetchJson<{ data?: Record<string, Record<string, unknown>> }>("/api/smogon/latest")
+    const response = await fetchJson<{ data?: Record<string, Record<string, unknown>> }>(smogonStatsUrl())
     const data = response.data ?? {}
     return data[resource.name] ?? data[slug] ?? Object.entries(data).find(([name]) => normalizeJoinName(name) === slug)?.[1] ?? null
   } catch { return null }
@@ -282,6 +341,30 @@ function resetPikalyticsCache(): void {
   pikalyticsEntryCache.clear()
 }
 
+function mapPikalyticsRoster(
+  latest: PikalyticsLatest,
+  pokemon: Array<{
+    name: string
+    pokemonSlug: string
+    calcSpeciesName: string
+    battlePokemonId: BattlePokemonId
+  }>,
+): Array<{ id: BattlePokemonId; name: string }> {
+  const byName = new Map(
+    pokemon.flatMap((entry) =>
+      [entry.name, entry.pokemonSlug, entry.calcSpeciesName].map(
+        (name) => [normalizeJoinName(name), entry.battlePokemonId] as const,
+      ),
+    ),
+  )
+  return latest.data
+    .toSorted((a, b) => Number(a.rank) - Number(b.rank))
+    .flatMap((entry) => {
+      const id = byName.get(normalizeJoinName(entry.name))
+      return id == null ? [] : [{ id, name: entry.name }]
+    })
+}
+
 /**
  * Pikalytics publishes the ranked roster in one request per format and keeps
  * per-Pokemon move/ability/item breakdowns on a separate request. Join the
@@ -291,22 +374,10 @@ function fetchPikalyticsRoster(): Promise<Array<{ id: BattlePokemonId; name: str
   if (!pikalyticsRosterPromise) {
     pikalyticsRosterPromise = (async () => {
       const [latest, pokemon] = await Promise.all([
-        fetchJson<PikalyticsLatest>("/api/pikalytics/latest"),
+        fetchJson<PikalyticsLatest>(pikalyticsRosterUrl()),
         listResources("pokemon", "en"),
       ])
-      const byName = new Map(
-        pokemon.flatMap((entry) =>
-          [entry.name, entry.pokemonSlug, entry.calcSpeciesName].map(
-            (name) => [normalizeJoinName(name), entry.battlePokemonId] as const,
-          ),
-        ),
-      )
-      return latest.data
-        .toSorted((a, b) => Number(a.rank) - Number(b.rank))
-        .flatMap((entry) => {
-          const id = byName.get(normalizeJoinName(entry.name))
-          return id == null ? [] : [{ id, name: entry.name }]
-        })
+      return mapPikalyticsRoster(latest, pokemon)
     })()
     pikalyticsRosterPromise.catch(resetPikalyticsCache)
   }
@@ -322,9 +393,7 @@ function fetchPikalyticsEntry(battlePokemonId: BattlePokemonId): Promise<Pikalyt
       const roster = await fetchPikalyticsRoster()
       const entry = roster.find((member) => member.id === battlePokemonId)
       if (entry == null) return null
-      const detail = await fetchJson<PikalyticsDetail>(
-        `/api/pikalytics/pokemon/${encodeURIComponent(entry.name)}`,
-      )
+      const detail = await fetchJson<PikalyticsDetail>(pikalyticsPokemonUrl(entry.name))
       return detail.data
     })()
     pikalyticsEntryCache.set(battlePokemonId, promise)
@@ -398,7 +467,7 @@ async function fetchChampionsSourceBattleData(
   if (!championsPokemon) return null
   const battleData = await fetchChampionsBattleRows(
     championsPokemon,
-    index.defaultSeason ?? "Current",
+    championsSeason(index),
   )
   return { ...battleData, dataVersion: index.dataVersion ?? "" }
 }
@@ -621,10 +690,63 @@ export function resetChampionsNatureUsageFetcherForTest(): void {
   natureUsageFetcher = fetchChampionsNatureUsageOnline
 }
 
+export async function listChampionsUsageRules(): Promise<{ defaultId: string; rules: UsageRule[] }> {
+  const index = await fetchChampionsIndex()
+  const seasons = index.seasons?.length
+    ? index.seasons
+    : [index.defaultSeason ?? "Current"]
+  const defaultId = index.defaultSeason ?? seasons[0] ?? "Current"
+  return {
+    defaultId,
+    rules: seasons.map((id) => ({ id, label: id })),
+  }
+}
+
+export async function fetchUsageRanking(): Promise<{
+  pokemonIds: BattlePokemonId[]
+  fingerprint: string
+}> {
+  const pokemonIds = await fetchPokemonUsageIdsOnline()
+  return { pokemonIds, fingerprint: rankingFingerprint(pokemonIds) }
+}
+
+async function fetchPokemonUsageIdsOnline(): Promise<BattlePokemonId[]> {
+  if (usageSource === "smogon") return fetchSmogonPokemonUsageOnline()
+  if (usageSource === "pikalytics") {
+    const [latest, pokemon] = await Promise.all([
+      fetchJson<PikalyticsLatest>(pikalyticsRosterUrl()),
+      listResources("pokemon", "en"),
+    ])
+    return mapPikalyticsRoster(latest, pokemon).map((member) => member.id)
+  }
+  championsIndexPromise = undefined
+  return fetchChampionsPokemonUsageOnline()
+}
+
 export function listChampionsPokemonUsageIds(): Promise<BattlePokemonId[]> {
-  if (usageSource === "smogon") { smogonPokemonUsagePromise ??= fetchSmogonPokemonUsageOnline(); smogonPokemonUsagePromise.catch(() => { smogonPokemonUsagePromise = undefined }); return smogonPokemonUsagePromise }
-  if (usageSource === "pikalytics") { pikalyticsPokemonUsagePromise ??= fetchPikalyticsRoster().then((roster) => roster.map((member) => member.id)); pikalyticsPokemonUsagePromise.catch(() => { pikalyticsPokemonUsagePromise = undefined }); return pikalyticsPokemonUsagePromise }
-  pokemonUsagePromise ??= pokemonUsageFetcher()
+  const cached = peekCachedPokemonUsageIds()
+  if (cached && cached.length > 0) return Promise.resolve(cached)
+  if (usageSource === "smogon") {
+    smogonPokemonUsagePromise ??= fetchSmogonPokemonUsageOnline().then((ids) => {
+      rememberRanking(ids)
+      return ids
+    })
+    smogonPokemonUsagePromise.catch(() => { smogonPokemonUsagePromise = undefined })
+    return smogonPokemonUsagePromise
+  }
+  if (usageSource === "pikalytics") {
+    pikalyticsPokemonUsagePromise ??= fetchPikalyticsRoster().then((roster) => {
+      const ids = roster.map((member) => member.id)
+      rememberRanking(ids)
+      return ids
+    })
+    pikalyticsPokemonUsagePromise.catch(() => { pikalyticsPokemonUsagePromise = undefined })
+    return pikalyticsPokemonUsagePromise
+  }
+  pokemonUsagePromise ??= pokemonUsageFetcher().then((ids) => {
+    rememberRanking(ids)
+    return ids
+  })
   return pokemonUsagePromise
 }
 

@@ -8,11 +8,11 @@ import type { BattlePokemonOption } from "@/lib/catalog"
 import { prioritizeBattlePokemonOptions } from "@/lib/catalog"
 import { POKEMON_TYPES, type PokemonType } from "@/lib/pokemon"
 import type { BattlePokemonId } from "@/lib/resources"
-import type { UsageSource } from "@/lib/usage-source-preference"
 import { cn } from "@/lib/utils"
 
 import { PickerDialog } from "../pickers/picker-dialog"
 import { RankingPendingNotice } from "../pickers/ranking-pending-notice"
+import { UsagePickerChrome } from "../pickers/usage-chrome"
 import { BattlePokemonPickerItem } from "./battle-pokemon-picker-item"
 import { BattlePokemonVirtualList } from "./battle-pokemon-virtual-list"
 
@@ -47,8 +47,6 @@ export function BattlePokemonPickerDialog({
   onMegaFirstChange,
   rankingPending,
   onSkipRanking,
-  usageSource = "champions",
-  onUsageSourceChange,
   onSelect,
 }: {
   open: boolean
@@ -65,8 +63,6 @@ export function BattlePokemonPickerDialog({
   megaFirst: boolean
   onMegaFirstChange: (checked: boolean) => void
   rankingPending?: boolean
-  usageSource?: UsageSource
-  onUsageSourceChange?: (source: UsageSource) => void
   onSkipRanking?: () => void
   onSelect: (id: BattlePokemonId) => void
 }) {
@@ -106,6 +102,7 @@ export function BattlePokemonPickerDialog({
       onQueryChange={onQueryChange}
       beforeList={
         <>
+          <UsagePickerChrome />
           <div
             className={cn(
               "grid shrink-0 gap-3 border-y border-hairline py-3",
@@ -177,11 +174,7 @@ export function BattlePokemonPickerDialog({
       }
     >
       {rankingPending ? (
-        <RankingPendingNotice
-          usageSource={usageSource}
-          onUsageSourceChange={(source) => onUsageSourceChange?.(source)}
-          onSkip={() => onSkipRanking?.()}
-        />
+        <RankingPendingNotice onSkip={() => onSkipRanking?.()} />
       ) : (
         <BattlePokemonVirtualList
           key={`${query}:${typeFilters.join(",")}:${sameSpeciesFirst}:${megaFirst}`}

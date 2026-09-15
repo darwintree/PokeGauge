@@ -101,4 +101,35 @@ describe("Pikalytics request paths", () => {
     expect(requested).toContain("https://www.pikalytics.com/api/l/2026-05/gen9championsvgc2026regmc-1760")
     expect(requested).toContain("https://www.pikalytics.com/api/p/2026-05/gen9championsvgc2026regmc-1760/Rillaboom")
   })
+
+  it("lists every ladder option and fetches a chosen format without rediscovery", async () => {
+    const requested: string[] = []
+    vi.stubGlobal("fetch", (input: RequestInfo | URL) => {
+      const url = String(input)
+      requested.push(url)
+      if (url.endsWith("/ai/pokedex")) return Promise.resolve(new Response(AI_POKEDEX_MARKDOWN))
+      if (url.endsWith("/pokedex")) return Promise.resolve(new Response(POKEDEX_HTML))
+      return Promise.resolve(Response.json([{ name: "Incineroar", rank: "1" }]))
+    })
+
+    const formats = await proxyPikalytics(new Request("https://pokegauge.example/api/pikalytics/formats"), ctx)
+    await expect(formats.json()).resolves.toEqual({
+      defaultId: "gen9championsvgc2026regmc-1760",
+      date: "2026-05",
+      rules: [
+        { id: "gen9championsvgc2026regma-1760", label: "Pokemon Champions VGC 2026 Regulation Set M-A Showdown" },
+        { id: "gen9championsvgc2026regmc-1760", label: "Pokemon Champions VGC 2026 Regulation Set M-C Showdown" },
+      ],
+    })
+
+    requested.length = 0
+    const roster = await proxyPikalytics(
+      new Request("https://pokegauge.example/api/pikalytics/l/2026-05/gen9championsvgc2026regma-1760"),
+      ctx,
+    )
+    expect(roster.status).toBe(200)
+    expect(requested).toEqual([
+      "https://www.pikalytics.com/api/l/2026-05/gen9championsvgc2026regma-1760",
+    ])
+  })
 })

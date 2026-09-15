@@ -6,8 +6,10 @@ import {
   listChampionsMoveUsageRecords,
   listChampionsNatureUsageRecords,
   listChampionsPokemonUsageIds,
+  listChampionsUsageRules,
   resetChampionsJsonFetcherForTest,
   setChampionsJsonFetcherForTest,
+  setUsageSource,
 } from "@/lib/champions"
 
 afterEach(resetChampionsJsonFetcherForTest)
@@ -226,6 +228,45 @@ it("returns no held-item usage rows when the base species has no Champions entry
   setChampionsJsonFetcherForTest(fetcher)
 
   await expect(listChampionsItemUsageRecords(10043)).resolves.toEqual([])
+})
+
+it("fetches battle rows for the selected Champions season", async () => {
+  setChampionsJsonFetcherForTest(async (url) => {
+    if (url === "https://championsbattledata.com/api") {
+      return {
+        defaultSeason: "Current",
+        seasons: ["Current", "M6", "M5"],
+        pokemon: [{
+          name: "Charizard",
+          slug: "charizard",
+          battleName: "Charizard",
+        }],
+      }
+    }
+    if (url.includes("season=M6")) {
+      return {
+        pokemon: "Charizard",
+        format: "Doubles",
+        season: "M6",
+        source: "M6.csv",
+        rows: [{ category: "move", rank: 1, name: "Flamethrower", percentage_value: 10 }],
+      }
+    }
+    throw new Error(`unexpected Champions URL: ${url}`)
+  })
+  setUsageSource("champions", "M6")
+  await expect(listChampionsUsageRules()).resolves.toEqual({
+    defaultId: "Current",
+    rules: [
+      { id: "Current", label: "Current" },
+      { id: "M6", label: "M6" },
+      { id: "M5", label: "M5" },
+    ],
+  })
+  await expect(listChampionsMoveUsageRecords(6)).resolves.toEqual([
+    expect.objectContaining({ season: "M6", championsMoveName: "Flamethrower" }),
+  ])
+  setUsageSource("champions")
 })
 
 it.each([

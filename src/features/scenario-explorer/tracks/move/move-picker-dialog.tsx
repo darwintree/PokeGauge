@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { TypeBadge } from "@/components/pokemon/type-badge"
-import { getUsageSource, setUsageSource } from "@/lib/champions"
 import {
   rankMoveOptionsByChampionsUsage,
   type CatalogMoveOption,
@@ -10,7 +9,7 @@ import {
 } from "@/lib/catalog"
 import { POKEMON_TYPES, typeEffectiveness, type PokemonType } from "@/lib/pokemon"
 import type { BattlePokemonId } from "@/lib/resources"
-import type { UsageSource } from "@/lib/usage-source-preference"
+import { noteUsageRankingSaved, useUsageStore } from "@/lib/usage-store"
 import { cn } from "@/lib/utils"
 
 import {
@@ -20,6 +19,7 @@ import {
 } from "../../matchup/ranking-load"
 import { PickerDialog } from "../../pickers/picker-dialog"
 import { RankingPendingNotice } from "../../pickers/ranking-pending-notice"
+import { UsagePickerChrome } from "../../pickers/usage-chrome"
 
 function sameTypeSet(left: readonly PokemonType[], right: readonly PokemonType[]) {
   if (left.length !== right.length) return false
@@ -90,6 +90,7 @@ export function MovePickerDialog({
   const rankingGeneration = useRef(0)
   const openRef = useRef(open)
   openRef.current = open
+  const usage = useUsageStore()
 
   const powerOrdered = useMemo(() => sortMovesByPower(options), [options])
   const learnableMoveIdSet = useMemo(() => new Set(learnableMoveIds), [learnableMoveIds])
@@ -97,13 +98,6 @@ export function MovePickerDialog({
   const stabOn = sameTypeSet(typeFilters, attackerTypes) && attackerTypes.length > 0
   const seOn = sameTypeSet(typeFilters, seTypes) && seTypes.length > 0
   const rankingPending = open && load.list === "hidden"
-  function changeUsageSource(source: UsageSource) {
-    setUsageSource(source)
-    rankingGeneration.current += 1
-    setRankedIds(null)
-    setLoad(initialRankingLoadState())
-    if (openRef.current) setLoad((current) => reduceRankingLoad(current, "open"))
-  }
   const visibleOptions = useMemo(() => {
     const ordered =
       load.list === "usageOrder" && rankedIds
@@ -124,7 +118,7 @@ export function MovePickerDialog({
       const reset = initialRankingLoadState()
       return openRef.current ? reduceRankingLoad(reset, "open") : reset
     })
-  }, [attackerId, moveCategory])
+  }, [attackerId, moveCategory, usage.generation])
 
   useEffect(() => {
     setLoad((current) => reduceRankingLoad(current, open ? "open" : "close"))
@@ -144,6 +138,7 @@ export function MovePickerDialog({
         if (ignore || generation !== rankingGeneration.current) return
         setRankedIds(ranked.map((option) => option.id))
         setLoad((current) => reduceRankingLoad(current, "queryOk"))
+        noteUsageRankingSaved()
       })
       .catch(() => {
         if (ignore || generation !== rankingGeneration.current) return
@@ -170,6 +165,7 @@ export function MovePickerDialog({
       onQueryChange={setQuery}
       beforeList={
         <>
+          <UsagePickerChrome />
           <div className="grid shrink-0 grid-cols-3 gap-2 border-y border-hairline py-3">
             <button
               type="button"
@@ -240,11 +236,7 @@ export function MovePickerDialog({
       }
     >
       {rankingPending ? (
-        <RankingPendingNotice
-          usageSource={getUsageSource()}
-          onUsageSourceChange={changeUsageSource}
-          onSkip={skipRanking}
-        />
+        <RankingPendingNotice onSkip={skipRanking} />
       ) : (
         visibleOptions.map((option) => (
           <button

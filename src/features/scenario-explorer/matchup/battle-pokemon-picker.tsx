@@ -12,9 +12,9 @@ import {
 } from "@/lib/catalog"
 import type { PokemonType } from "@/lib/pokemon"
 import type { BattlePokemonId } from "@/lib/resources"
-import type { UsageSource } from "@/lib/usage-source-preference"
 import { cn } from "@/lib/utils"
-import { getUsageSource, setUsageSource } from "@/lib/champions"
+import { peekCachedPokemonUsageIds } from "@/lib/champions"
+import { noteUsageRankingSaved, useUsageStore } from "@/lib/usage-store"
 
 import { BattlePokemonPickerDialog } from "./battle-pokemon-picker-dialog"
 import {
@@ -59,6 +59,7 @@ export function BattlePokemonPicker({
   const [load, setLoad] = useState(initialRankingLoadState)
   const [rankedIds, setRankedIds] = useState<BattlePokemonId[] | null>(null)
   const rankingGeneration = useRef(0)
+  const usage = useUsageStore()
   const selected = useMemo(
     () => (value == null ? null : (options.find((option) => option.id === value) ?? null)),
     [options, value],
@@ -71,6 +72,25 @@ export function BattlePokemonPicker({
   }, [load.list, options, rankedIds])
 
   useEffect(() => {
+    rankingGeneration.current += 1
+    const cached = peekCachedPokemonUsageIds()
+    if (cached && cached.length > 0) {
+      setRankedIds(cached)
+      setLoad((current) => (
+        current.picker === "open"
+          ? { picker: "open", list: "usageOrder", query: "ready", skippedThisOpen: false }
+          : { ...current, query: "ready", list: current.list === "hidden" ? "hidden" : "usageOrder" }
+      ))
+      return
+    }
+    setRankedIds(null)
+    setLoad((current) => {
+      if (current.picker !== "open") return initialRankingLoadState()
+      return reduceRankingLoad(initialRankingLoadState(), "open")
+    })
+  }, [usage.generation])
+
+  useEffect(() => {
     if (load.query !== "inFlight") return
     const generation = rankingGeneration.current
     let ignore = false
@@ -79,6 +99,7 @@ export function BattlePokemonPicker({
         if (ignore || generation !== rankingGeneration.current) return
         setRankedIds(ranked.map((option) => option.id))
         setLoad((current) => reduceRankingLoad(current, "queryOk"))
+        noteUsageRankingSaved()
       })
       .catch(() => {
         if (ignore || generation !== rankingGeneration.current) return
@@ -99,19 +120,18 @@ export function BattlePokemonPicker({
   function changeOpen(nextOpen: boolean) {
     if (disabled) return
     if (!nextOpen) resetPickerFilter()
+    const cached = peekCachedPokemonUsageIds()
+    if (nextOpen && cached && cached.length > 0) {
+      setRankedIds(cached)
+      setLoad({ picker: "open", list: "usageOrder", query: "ready", skippedThisOpen: false })
+      return
+    }
     setLoad((current) => reduceRankingLoad(current, nextOpen ? "open" : "close"))
   }
 
   function skipRanking() {
     rankingGeneration.current += 1
     setLoad((current) => reduceRankingLoad(current, "skip"))
-  }
-  function changeUsageSource(source: UsageSource) {
-    setUsageSource(source)
-    rankingGeneration.current += 1
-    setRankedIds(null)
-    setLoad(initialRankingLoadState())
-    setLoad((current) => reduceRankingLoad(current, "open"))
   }
 
   function select(id: BattlePokemonId) {
@@ -224,8 +244,6 @@ export function BattlePokemonPicker({
         label={label}
         options={visibleOptions}
         rankingPending={load.picker === "open" && load.list === "hidden"}
-        usageSource={getUsageSource()}
-        onUsageSourceChange={changeUsageSource}
         onSkipRanking={skipRanking}
         value={value}
         query={query}
