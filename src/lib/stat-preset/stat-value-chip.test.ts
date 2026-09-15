@@ -52,7 +52,7 @@ describe("Stat Value Label chip", () => {
     expect(max.nature).toBe("none")
     expect(max.band).toBe(investBand(Number(max.actual) - Number(zero.actual), false))
     expect(ex).toMatchObject({ label: "EX", band: "ex", nature: "plus" })
-    expect(bulky.label).toBe("32H0B")
+    expect(bulky.label).toBe("32H")
     expect(bulky.band).toBe("heavy")
   })
 
@@ -105,7 +105,7 @@ describe("Stat Value Label chip", () => {
       def: getDefenderDefStat(defenderCalcName, category, maxSetup),
       strategy,
     })
-    expect(min.label).toBe("0H0B")
+    expect(min.label).toBe("0H")
     expect(max.label).toBe("EX")
     expect(uniqueEndpointChips(min, max)).toHaveLength(2)
   })

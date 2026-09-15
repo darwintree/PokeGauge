@@ -60,6 +60,7 @@ export function defenseStatValueLabel(
 ): string {
   if (isDefenseEx(hpPoints, defPoints, defMod)) return EX_LABEL
   const hpName = statDisplayName(strategy, "hp")
+  if (defPoints === 0) return `${hpPoints}${hpName}${defMod}`
   const defName = statDisplayName(strategy, defenseStatKey(category))
   return `${hpPoints}${hpName}${defPoints}${defName}${defMod}`
 }
