@@ -80,3 +80,18 @@ Reason:
 跟 Darwin 举的 current-series VGC/Champions 一致，又不把年份写死成 2026。不另做搜索/chip UI。
 
 Follow-up: 明年默认规则换年份后过滤自动跟着走。
+
+### 6. 历史 Champions 赛季用 battle rows 的 column_position 排名
+
+Type: tradeoff
+
+Context:
+Champions `/api` 的 `seasons` 含 `Current` / `M6` / `M5` / `M4`，但每个 Pokémon 的 `summary.battleSummary` 只有 `Current`。选 M4 时按 `battleSummary[M4]` 取值得到空列表，选择器退回字母序（阿柏怪 / 阿柏蛇）。M4 的使用率名次在 `/api/battle/Doubles/{name}?season=M4` 的 `column_position`（与 Current 索引里的 `position` 同义）；没有按赛季的批量排名接口。归档季的 CSV 不再单独托管。
+
+Decision:
+Current 仍走索引 `battleSummary`。索引该赛季没有名次时，对索引里的条目按 `battleName` 去重，分批（8）请求已有的 battle rows 端点，用首行 `column_position` 排序。结果仍写入 12 小时排名缓存。不在本票做 Worker 聚合（归 `a6d04964`）。
+
+Reason:
+规则下拉已经列出 M4，产品要求换规则立刻改宝可梦排序。客户端 fan-out 是现有 CORS 端点上最小的补法。
+
+Follow-up: Worker 若缓存赛季排名快照，可去掉首次约 200 次 HTTP。

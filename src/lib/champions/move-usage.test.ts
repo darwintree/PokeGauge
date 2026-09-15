@@ -1,4 +1,4 @@
-import { afterEach, expect, it } from "vitest"
+import { afterEach, expect, it, vi } from "vitest"
 
 import {
   listChampionsAbilityUsageRecords,
@@ -12,7 +12,11 @@ import {
   setUsageSource,
 } from "@/lib/champions"
 
-afterEach(resetChampionsJsonFetcherForTest)
+afterEach(() => {
+  vi.unstubAllGlobals()
+  resetChampionsJsonFetcherForTest()
+  setUsageSource("champions")
+})
 
 function championsFixture(): {
   fetcher: (url: string) => Promise<unknown>
@@ -290,4 +294,67 @@ it.each([
   }))
 
   await expect(listChampionsPokemonUsageIds()).resolves.toEqual([id])
+})
+
+it("ranks a historical Champions season from battle row positions, not Current summaries", async () => {
+  const storage = new Map<string, string>()
+  vi.stubGlobal("localStorage", {
+    getItem: (key: string) => storage.get(key) ?? null,
+    setItem: (key: string, value: string) => {
+      storage.set(key, value)
+    },
+  })
+  const battleCalls: string[] = []
+  setChampionsJsonFetcherForTest(async (url) => {
+    if (url === "https://championsbattledata.com/api") {
+      return {
+        defaultSeason: "Current",
+        seasons: ["Current", "M4"],
+        pokemon: [
+          {
+            name: "Pikachu",
+            slug: "pikachu",
+            battleName: "Pikachu",
+            showdownName: "Pikachu",
+            summary: { battleSummary: { Current: { Doubles: {
+              top: { move: { position: 1, column_position: 1 } },
+            } } } },
+          },
+          {
+            name: "Charizard",
+            slug: "charizard",
+            battleName: "Charizard",
+            showdownName: "Charizard",
+            summary: { battleSummary: { Current: { Doubles: {
+              top: { move: { position: 2, column_position: 2 } },
+            } } } },
+          },
+        ],
+      }
+    }
+    battleCalls.push(url)
+    if (url.includes("season=M4") && url.includes("Pikachu")) {
+      return {
+        pokemon: "Pikachu",
+        format: "Doubles",
+        season: "M4",
+        source: "M4.csv",
+        rows: [{ category: "move", rank: 1, name: "Thunderbolt", column_position: 8 }],
+      }
+    }
+    if (url.includes("season=M4") && url.includes("Charizard")) {
+      return {
+        pokemon: "Charizard",
+        format: "Doubles",
+        season: "M4",
+        source: "M4.csv",
+        rows: [{ category: "move", rank: 1, name: "Flamethrower", column_position: 1 }],
+      }
+    }
+    throw new Error(`unexpected Champions URL: ${url}`)
+  })
+  setUsageSource("champions", "M4")
+
+  await expect(listChampionsPokemonUsageIds()).resolves.toEqual([6, 25])
+  expect(battleCalls).toHaveLength(2)
 })

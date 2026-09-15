@@ -60,6 +60,8 @@ type ChampionsBattleRow = {
   rank: number
   name: string
   percentage_value?: number | null
+  column_position?: number
+  position?: number
 }
 
 type ChampionsBattleApi = {
@@ -220,6 +222,74 @@ function championsIndexByName(index: ChampionsIndexApi): Map<string, ChampionsIn
   )
 }
 
+function resolveChampionsBattlePokemonId(
+  entry: ChampionsIndexPokemon,
+  pokemonByName: Map<string, BattlePokemonId>,
+): BattlePokemonId | undefined {
+  const aliases = [
+    entry.showdownId,
+    entry.showdownName,
+    entry.name,
+    entry.battleName,
+    entry.slug,
+  ]
+  return aliases.reduce<BattlePokemonId | undefined>(
+    (match, name) =>
+      match ??
+      (name
+        ? CHAMPIONS_POKEMON_ID_OVERRIDES[normalizeJoinName(name)] ??
+          pokemonByName.get(normalizeJoinName(name))
+        : undefined),
+    undefined,
+  )
+}
+
+function championsIndexUsageRank(entry: ChampionsIndexPokemon, season: string): number | undefined {
+  const row = entry.summary?.battleSummary?.[season]?.[CHAMPIONS_FORMAT]?.top?.move
+  return row?.position ?? row?.column_position
+}
+
+function battleRowUsageRank(battle: ChampionsBattleApi): number | undefined {
+  const row = (battle.data ?? battle.rows ?? [])[0]
+  // Battle rows use column_position for the Pokémon's usage rank; `rank` is the move/item slot.
+  return row?.column_position ?? row?.position
+}
+
+async function mapInBatches<T, R>(
+  items: T[],
+  batchSize: number,
+  mapper: (item: T) => Promise<R>,
+): Promise<R[]> {
+  const out: R[] = []
+  for (let i = 0; i < items.length; i += batchSize) {
+    out.push(...await Promise.all(items.slice(i, i + batchSize).map(mapper)))
+  }
+  return out
+}
+
+async function rankChampionsPokemonFromBattleRows(
+  entries: ChampionsIndexPokemon[],
+  season: string,
+  pokemonByName: Map<string, BattlePokemonId>,
+): Promise<Array<{ id: BattlePokemonId; rank: number }>> {
+  const battleByName = new Map<string, Promise<ChampionsBattleApi | null>>()
+  const rows = await mapInBatches(entries, 8, async (entry) => {
+    const id = resolveChampionsBattlePokemonId(entry, pokemonByName)
+    if (id === undefined) return []
+    const key = entry.battleName || entry.name
+    let battlePromise = battleByName.get(key)
+    if (!battlePromise) {
+      battlePromise = fetchChampionsBattleRows(entry, season).catch(() => null)
+      battleByName.set(key, battlePromise)
+    }
+    const battle = await battlePromise
+    if (!battle) return []
+    const rank = battleRowUsageRank(battle)
+    return rank === undefined ? [] : [{ id, rank }]
+  })
+  return rows.flat().sort((a, b) => a.rank - b.rank)
+}
+
 async function fetchChampionsPokemonUsageOnline(): Promise<BattlePokemonId[]> {
   const [pokemon, index] = await Promise.all([
     listResources("pokemon", "en"),
@@ -239,29 +309,21 @@ async function fetchChampionsPokemonUsageOnline(): Promise<BattlePokemonId[]> {
     pokemonByName.set(normalizeJoinName(resource.pokemonSlug), resource.battlePokemonId)
   }
   const season = championsSeason(index)
-  const ranked = (index.pokemon ?? [])
+  const entries = index.pokemon ?? []
+  let ranked = entries
     .flatMap((entry) => {
-      const row = entry.summary?.battleSummary?.[season]?.[CHAMPIONS_FORMAT]?.top?.move
-      const rank = row?.position ?? row?.column_position
-      const aliases = [
-        entry.showdownId,
-        entry.showdownName,
-        entry.name,
-        entry.battleName,
-        entry.slug,
-      ]
-      const id = aliases.reduce<BattlePokemonId | undefined>(
-        (match, name) =>
-          match ??
-          (name
-            ? CHAMPIONS_POKEMON_ID_OVERRIDES[normalizeJoinName(name)] ??
-              pokemonByName.get(normalizeJoinName(name))
-            : undefined),
-        undefined,
-      )
+      const rank = championsIndexUsageRank(entry, season)
+      const id = resolveChampionsBattlePokemonId(entry, pokemonByName)
       return rank === undefined || id === undefined ? [] : [{ id, rank }]
     })
     .sort((a, b) => a.rank - b.rank)
+
+  // Index battleSummary only ships Current. M4/M5/M6 ranks live on battle rows.
+  // ponytail: first historical-season rank is ~200 HTTP requests (batch 8), then 12h cache.
+  // Upgrade: Worker ranking snapshot so the client does not fan out.
+  if (ranked.length === 0 && entries.length > 0) {
+    ranked = await rankChampionsPokemonFromBattleRows(entries, season, pokemonByName)
+  }
 
   return [...new Set(ranked.map(({ id }) => id))]
 }
