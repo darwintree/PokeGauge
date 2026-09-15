@@ -225,7 +225,7 @@ export function MovePickerDialog({
                   )}
                   onClick={() => setTypeFilters((filters) => toggleType(filters, type))}
                 >
-                  <TypeBadge type={type} />
+                  <TypeBadge type={type} variant="text" />
                 </button>
               )
             })}

@@ -343,21 +343,6 @@ function stageLabel(value: number): string {
   return value > 0 ? `+${value}` : String(value)
 }
 
-function CaptionTypeMark({ type }: { type: DamageScenarioSummaryProps["row"]["moveType"] }) {
-  const intl = useIntl()
-  return (
-    <span
-      className="inline-flex h-3.5 shrink-0 items-center rounded-[4px] border border-ink px-0.5 text-[8px] font-extrabold leading-none"
-      style={{
-        backgroundColor: `var(--pokemon-type-${type})`,
-        color: `var(--pokemon-type-${type}-foreground)`,
-      }}
-    >
-      {intl.formatMessage({ id: `type.${type}` })}
-    </span>
-  )
-}
-
 function CaptionChip({ chip }: { chip: StatValueChipModel }) {
   return (
     <span
@@ -484,7 +469,7 @@ export function DamageRowCaption(props: DamageScenarioSummaryProps) {
     <span className="flex min-h-3.5 min-w-0 flex-wrap items-center gap-x-0.5 gap-y-1 py-1 whitespace-nowrap sm:h-3.5 sm:min-h-0 sm:flex-nowrap sm:overflow-hidden sm:py-0">
       {props.row.moveMechanics.hits && <MoveExecutionDetails mechanics={props.row.moveMechanics} touch />}
       <span className="flex shrink-0 items-center gap-0.5">
-        <CaptionTypeMark type={props.row.moveType} />
+        <TypeBadge type={props.row.moveType} className="size-4" />
         <span className="max-w-[6.5rem] truncate text-[12px] font-extrabold leading-none">
           {props.move.label}
         </span>

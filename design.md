@@ -72,6 +72,8 @@ Colors are semantic. They communicate hierarchy or state, never decoration.
 | `destructive` | `#e0352f` | Destructive and invalid states |
 | `appbar` | `#33426e` | Top application bar |
 
+Pokémon type badges have two forms: the existing localized text badge for type filters, and the Gen9 small icon everywhere else. Icons render at 20px, or 16px in compact mobile result captions, and retain a localized accessible name and hover title. Do not combine text and icon in one type badge.
+
 Pokémon types, effectiveness, Stat Value Label chips, HP, and damage use separate domain tokens. Domain colors must not be reused as general HUD chrome.
 
 Battle-side identity markers use their own domain tokens so their meaning remains independent of damage and Stat Value colors:

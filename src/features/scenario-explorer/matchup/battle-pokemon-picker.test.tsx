@@ -98,8 +98,8 @@ describe("Pokemon selector interactions", () => {
     })
   }
 
-  function dialogImgSrcs() {
-    return [...document.querySelectorAll('[data-slot="dialog-content"] img')].map((img) =>
+  function dialogPokemonSpriteSrcs() {
+    return [...document.querySelectorAll('[data-slot="dialog-content"] img[src*="/sprites/pokemon/"]')].map((img) =>
       img.getAttribute("src"),
     )
   }
@@ -138,15 +138,15 @@ describe("Pokemon selector interactions", () => {
     await click(container.querySelector('[data-slot="button"]'))
     await settleRanking()
 
-    expect(dialogImgSrcs().length).toBeGreaterThan(0)
-    expect(dialogImgSrcs().length).toBeLessThan(30)
+    expect(dialogPokemonSpriteSrcs().length).toBeGreaterThan(0)
+    expect(dialogPokemonSpriteSrcs().length).toBeLessThan(30)
     const first = document.querySelector<HTMLButtonElement>('[role="listitem"] button')!
     await act(async () => {
       first.focus()
       first.dispatchEvent(new KeyboardEvent("keydown", { key: "End", bubbles: true }))
     })
     expect(document.activeElement?.closest('[role="listitem"]')?.getAttribute("aria-posinset")).toBe("1300")
-    expect(dialogImgSrcs().length).toBeLessThan(30)
+    expect(dialogPokemonSpriteSrcs().length).toBeLessThan(30)
     await click(document.activeElement)
     expect(onChange).toHaveBeenCalledWith(1300)
   })
@@ -161,7 +161,7 @@ describe("Pokemon selector interactions", () => {
       Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set?.call(search, "1300")
       search.dispatchEvent(new Event("input", { bubbles: true }))
     })
-    expect(dialogImgSrcs()).toHaveLength(1)
+    expect(dialogPokemonSpriteSrcs()).toHaveLength(1)
     await click(document.querySelector('[role="listitem"] button'))
     expect(onChange).toHaveBeenCalledWith(1300)
   })
@@ -232,7 +232,7 @@ describe("Pokemon selector interactions", () => {
     await click(container.querySelector('[data-slot="button"]'))
 
     expect(document.body.textContent).toContain("正在读取使用率顺序")
-    expect(document.querySelector('[data-slot="dialog-content"] img')).toBeNull()
+    expect(dialogPokemonSpriteSrcs()).toEqual([])
 
     await act(async () => {
       resolveUsage([3, 1])
@@ -242,7 +242,7 @@ describe("Pokemon selector interactions", () => {
     await flush()
 
     expect(document.body.textContent).not.toContain("正在读取使用率顺序")
-    const imgs = dialogImgSrcs()
+    const imgs = dialogPokemonSpriteSrcs()
     expect(imgs[0]?.endsWith("/3.png")).toBe(true)
     expect(imgs[1]?.endsWith("/1.png")).toBe(true)
   })
@@ -264,7 +264,7 @@ describe("Pokemon selector interactions", () => {
       await vi.advanceTimersByTimeAsync(6_000)
     })
     expect(document.body.textContent).toContain("正在读取使用率顺序")
-    expect(dialogImgSrcs()).toEqual([])
+    expect(dialogPokemonSpriteSrcs()).toEqual([])
 
     await act(async () => {
       resolveUsage([3, 1])
@@ -274,7 +274,7 @@ describe("Pokemon selector interactions", () => {
     await flush()
 
     expect(document.body.textContent).not.toContain("正在读取使用率顺序")
-    expect(dialogImgSrcs()[0]?.endsWith("/3.png")).toBe(true)
+    expect(dialogPokemonSpriteSrcs()[0]?.endsWith("/3.png")).toBe(true)
     vi.useRealTimers()
   })
 
@@ -293,7 +293,7 @@ describe("Pokemon selector interactions", () => {
     )
     await click(skip ?? null)
 
-    expect(dialogImgSrcs()[0]?.endsWith("/1.png")).toBe(true)
+    expect(dialogPokemonSpriteSrcs()[0]?.endsWith("/1.png")).toBe(true)
 
     await act(async () => {
       resolveUsage([3, 1])
@@ -302,8 +302,8 @@ describe("Pokemon selector interactions", () => {
     })
     await flush()
 
-    expect(dialogImgSrcs()[0]?.endsWith("/1.png")).toBe(true)
-    expect(dialogImgSrcs()[0]?.endsWith("/3.png")).toBe(false)
+    expect(dialogPokemonSpriteSrcs()[0]?.endsWith("/1.png")).toBe(true)
+    expect(dialogPokemonSpriteSrcs()[0]?.endsWith("/3.png")).toBe(false)
   })
 
   it("shows usage order on reopen when ranking finished while closed", async () => {
@@ -327,7 +327,7 @@ describe("Pokemon selector interactions", () => {
 
     await click(container.querySelector('[data-slot="button"]'))
     expect(document.body.textContent).not.toContain("正在读取使用率顺序")
-    expect(dialogImgSrcs()[0]?.endsWith("/3.png")).toBe(true)
+    expect(dialogPokemonSpriteSrcs()[0]?.endsWith("/3.png")).toBe(true)
   })
 
   it("queries again after skip, close, and reopen", async () => {
@@ -341,7 +341,7 @@ describe("Pokemon selector interactions", () => {
     await click(document.querySelector('[data-slot="dialog-close"]'))
     await click(container.querySelector('[data-slot="button"]'))
     expect(document.body.textContent).toContain("正在读取使用率顺序")
-    expect(document.querySelector('[data-slot="dialog-content"] img')).toBeNull()
+    expect(dialogPokemonSpriteSrcs()).toEqual([])
   })
 
   it("shows default order when ranking fails", async () => {
@@ -352,6 +352,6 @@ describe("Pokemon selector interactions", () => {
     await click(container.querySelector('[data-slot="button"]'))
     await settleRanking()
     expect(document.body.textContent).not.toContain("正在读取使用率顺序")
-    expect(dialogImgSrcs()[0]?.endsWith("/1.png")).toBe(true)
+    expect(dialogPokemonSpriteSrcs()[0]?.endsWith("/1.png")).toBe(true)
   })
 })
