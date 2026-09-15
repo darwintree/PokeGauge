@@ -145,7 +145,7 @@ export function BattlePokemonPickerDialog({
                   )}
                   onClick={() => onTypeFilterToggle(type)}
                 >
-                  <TypeBadge type={type} />
+                  <TypeBadge type={type} variant="text" />
                 </button>
               )
             })}
