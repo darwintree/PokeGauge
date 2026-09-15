@@ -102,7 +102,7 @@ export function BattlePokemonPickerDialog({
       onQueryChange={onQueryChange}
       beforeList={
         <>
-          <UsagePickerChrome />
+          <UsagePickerChrome key={open ? "open" : "closed"} />
           <div
             className={cn(
               "grid shrink-0 gap-3 border-y border-hairline py-3",

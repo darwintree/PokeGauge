@@ -1,4 +1,5 @@
-import { RefreshCw } from "lucide-react"
+import { useId, useState } from "react"
+import { ChevronDown, RefreshCw } from "lucide-react"
 import { FormattedMessage, FormattedRelativeTime, useIntl } from "react-intl"
 
 import { Button } from "@/components/ui/button"
@@ -9,7 +10,7 @@ import {
   setUsageStoreSource,
   useUsageStore,
 } from "@/lib/usage-store"
-import type { UsageSource } from "@/lib/usage-source-preference"
+import { usageSourceMessageId, type UsageSource } from "@/lib/usage-source-preference"
 import { cn } from "@/lib/utils"
 
 import { UsageRuleSelect } from "./usage-rule-select"
@@ -74,23 +75,57 @@ export function UsageFetchStatus({
   )
 }
 
-/** Always-visible usage controls for Pokémon / move pickers. Source, then that source's rules. */
+/** Picker usage chrome: one summary row until the player expands it. */
 export function UsagePickerChrome({ className }: { className?: string }) {
+  const intl = useIntl()
   const usage = useUsageStore()
+  const [expanded, setExpanded] = useState(false)
+  const panelId = useId()
+  const sourceLabel = intl.formatMessage({ id: usageSourceMessageId(usage.source) })
+  const ruleLabel = usage.rules.find((rule) => rule.id === usage.ruleId)?.label ?? usage.ruleId ?? ""
+
   return (
     <div className={cn("flex shrink-0 flex-col gap-2", className)}>
-      <UsageSourceSelect
-        value={usage.source}
-        onChange={(source: UsageSource) => void setUsageStoreSource(source)}
-        className="h-8 w-full px-2 text-xs"
-      />
-      <UsageRuleSelect
-        value={usage.ruleId}
-        rules={usage.rules}
-        onChange={(ruleId) => void setUsageStoreRule(ruleId)}
-        className="h-8 w-full px-2 text-xs"
-      />
-      <UsageFetchStatus showPending />
+      <button
+        type="button"
+        aria-expanded={expanded}
+        aria-controls={panelId}
+        className="flex h-8 min-w-0 items-center gap-2 rounded-md border border-hud-frame bg-paper px-2 text-left text-xs font-bold shadow-hud-chip hover:bg-token-bg/60"
+        onClick={() => setExpanded((open) => !open)}
+      >
+        <span className="min-w-0 flex-1 truncate">
+          {sourceLabel}
+          {ruleLabel ? <span className="text-hud-muted font-medium"> {ruleLabel}</span> : null}
+        </span>
+        {!expanded && usage.pendingUpdate ? (
+          <span className="text-hud-muted shrink-0 text-[10px] font-medium">
+            <FormattedMessage id="usage.updateHint" />
+          </span>
+        ) : null}
+        <ChevronDown
+          aria-hidden
+          className={cn(
+            "text-hud-muted size-3.5 shrink-0 transition-transform motion-reduce:transition-none",
+            expanded && "rotate-180",
+          )}
+        />
+      </button>
+      {expanded ? (
+        <div id={panelId} className="flex flex-col gap-2">
+          <UsageSourceSelect
+            value={usage.source}
+            onChange={(source: UsageSource) => void setUsageStoreSource(source)}
+            className="h-8 w-full px-2 text-xs"
+          />
+          <UsageRuleSelect
+            value={usage.ruleId}
+            rules={usage.rules}
+            onChange={(ruleId) => void setUsageStoreRule(ruleId)}
+            className="h-8 w-full px-2 text-xs"
+          />
+          <UsageFetchStatus showPending />
+        </div>
+      ) : null}
     </div>
   )
 }

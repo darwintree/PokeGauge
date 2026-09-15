@@ -103,6 +103,7 @@ export const enMessages: Record<string, string> = {
     "settings.usageFilter.description": "When on, the rule list shows current-series VGC and Pokémon Champions formats. Turn it off to see every format this source lists.",
     "usage.pendingUpdate": "New usage data is ready. Click to apply.",
     "usage.applyUpdate": "Apply update",
+    "usage.updateHint": "Update",
     "usageSource.champions": "Pokémon Champions",
     "usageSource.smogon": "Smogon",
     "usageSource.pikalytics": "Pikalytics",

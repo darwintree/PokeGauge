@@ -95,3 +95,18 @@ Reason:
 规则下拉已经列出 M4，产品要求换规则立刻改宝可梦排序。客户端 fan-out 是现有 CORS 端点上最小的补法。
 
 Follow-up: Worker 若缓存赛季排名快照，可去掉首次约 200 次 HTTP。
+
+### 7. 对话使用率 chrome 用摘要行 disclosure，不用弹层
+
+Type: interpretation
+
+Context:
+评审说三行太高。产品要求默认一行看当前来源 + 规则，按需展开才能改、看相对时间、立即拉取、应用更新。设置页保持展开。
+
+Decision:
+对话用与 Track 面板相同的 `aria-expanded` 摘要按钮：一行显示来源（ink）+ 规则（muted）+ 可选「有更新」提示 + chevron。展开后在下方级联露出两个下拉和 Fetch status。关闭对话时用 `key` 重置为收起。不用 `<dialog>` / 绿点 / 独立提示条。
+
+Reason:
+最小增量，沿用已有 HUD 展开控件，不另装 Collapsible。
+
+Follow-up: None

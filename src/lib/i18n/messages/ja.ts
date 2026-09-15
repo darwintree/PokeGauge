@@ -103,6 +103,7 @@ export const jaMessages: Record<string, string> = {
     "settings.usageFilter.description": "オンにすると、ルール一覧は現行シリーズの VGC と Pokémon Champions のフォーマットだけになります。オフにするとソースの全リストを表示します。",
     "usage.pendingUpdate": "新しい使用率データがあります。クリックして適用します。",
     "usage.applyUpdate": "更新を適用",
+    "usage.updateHint": "更新あり",
     "usageSource.champions": "Pokémon Champions",
     "usageSource.smogon": "Smogon",
     "usageSource.pikalytics": "Pikalytics",

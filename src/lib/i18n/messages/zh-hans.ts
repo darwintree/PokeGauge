@@ -103,6 +103,7 @@ export const zhHansMessages: Record<string, string> = {
     "settings.usageFilter.description": "开启后，规则列表只显示当前系列的 VGC 与 Pokémon Champions 赛制。关掉即可看到该来源的全部格式。",
     "usage.pendingUpdate": "有新的使用率数据，点击应用。",
     "usage.applyUpdate": "应用更新",
+    "usage.updateHint": "有更新",
     "usageSource.champions": "Pokémon Champions",
     "usageSource.smogon": "Smogon",
     "usageSource.pikalytics": "Pikalytics",

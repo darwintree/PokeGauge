@@ -165,7 +165,7 @@ export function MovePickerDialog({
       onQueryChange={setQuery}
       beforeList={
         <>
-          <UsagePickerChrome />
+          <UsagePickerChrome key={open ? "open" : "closed"} />
           <div className="grid shrink-0 grid-cols-3 gap-2 border-y border-hairline py-3">
             <button
               type="button"
