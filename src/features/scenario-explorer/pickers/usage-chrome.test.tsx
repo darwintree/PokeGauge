@@ -64,6 +64,7 @@ describe("UsagePickerChrome", () => {
     await renderChrome()
     const toggle = container.querySelector("[aria-expanded]")
     expect(toggle?.getAttribute("aria-expanded")).toBe("false")
+    expect(toggle?.hasAttribute("aria-controls")).toBe(false)
     expect(toggle?.textContent).toContain("Pokémon Champions")
     expect(toggle?.textContent).toContain("M4")
     expect(container.querySelector('[aria-label="Usage source"]')).toBeNull()
@@ -84,6 +85,7 @@ describe("UsagePickerChrome", () => {
     })
 
     expect(toggle.getAttribute("aria-expanded")).toBe("true")
+    expect(toggle.getAttribute("aria-controls")).toBeTruthy()
     expect(container.querySelector('[aria-label="Usage source"]')).not.toBeNull()
     expect(container.querySelector('[aria-label="Usage rule"]')).not.toBeNull()
     expect(container.textContent).toContain("Fetch now")

@@ -136,8 +136,6 @@ export function setUsageSource(
   else if (source !== "pikalytics") pikalyticsDate = null
   clearUsageCaches()
 }
-export function getUsageSource(): UsageSource { return usageSource }
-export function getUsageRuleId(): string | null { return usageRuleId }
 
 function championsSeason(index: ChampionsIndexApi): string {
   return usageRuleId ?? index.defaultSeason ?? "Current"
@@ -190,7 +188,7 @@ function normalizeJoinName(name: string): string {
 
 async function fetchJsonFromNetwork<T>(url: string): Promise<T> {
   const response = await fetch(url)
-  if (!response.ok) throw new Error(`Champions API request failed ${response.status}: ${url}`)
+  if (!response.ok) throw new Error(`Usage request failed ${response.status}: ${url}`)
   return response.json() as Promise<T>
 }
 
@@ -809,6 +807,7 @@ export function listChampionsPokemonUsageIds(): Promise<BattlePokemonId[]> {
     rememberRanking(ids)
     return ids
   })
+  pokemonUsagePromise.catch(() => { pokemonUsagePromise = undefined })
   return pokemonUsagePromise
 }
 

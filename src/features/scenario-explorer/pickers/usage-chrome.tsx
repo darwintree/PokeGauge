@@ -89,7 +89,7 @@ export function UsagePickerChrome({ className }: { className?: string }) {
       <button
         type="button"
         aria-expanded={expanded}
-        aria-controls={panelId}
+        aria-controls={expanded ? panelId : undefined}
         className="flex h-8 min-w-0 items-center gap-2 rounded-md border border-hud-frame bg-paper px-2 text-left text-xs font-bold shadow-hud-chip hover:bg-token-bg/60"
         onClick={() => setExpanded((open) => !open)}
       >

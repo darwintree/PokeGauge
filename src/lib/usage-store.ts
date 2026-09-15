@@ -7,6 +7,7 @@ import {
   setUsageSource,
 } from "@/lib/champions"
 import {
+  currentSeriesYearFromDefaultId,
   loadUsageCache,
   loadUsagePreference,
   rememberedRuleId,
@@ -14,7 +15,6 @@ import {
   saveUsagePreference,
   usageIsStale,
   visibleUsageRules,
-  currentSeriesYearFromDefaultId,
   withRememberedRule,
   type UsageRule,
   type UsageSource,

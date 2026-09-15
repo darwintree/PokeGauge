@@ -9,7 +9,6 @@ import {
   isCurrentSeriesUsageRule,
   loadUsageCache,
   loadUsagePreference,
-  loadUsageSource,
   rememberedRuleId,
   saveUsageCache,
   saveUsagePreference,
@@ -36,7 +35,6 @@ describe("usage preference", () => {
   it("cold-starts on Champions with no remembered rule", () => {
     vi.stubGlobal("localStorage", memoryStorage())
     expect(loadUsagePreference()).toEqual(defaultUsagePreference())
-    expect(loadUsageSource()).toBe("champions")
   })
 
   it("migrates a legacy source-only key and keeps per-source rules", () => {
@@ -58,6 +56,7 @@ describe("usage preference", () => {
     })
     expect(rememberedRuleId(loadUsagePreference(), "champions")).toBeUndefined()
     expect(storage.getItem(USAGE_PREFERENCE_STORAGE_KEY)).toContain("pikalytics")
+    expect(storage.getItem(USAGE_SOURCE_STORAGE_KEY)).toBe("pikalytics")
   })
 
   it("treats a 12-hour-old snapshot as stale and a newer one as fresh", () => {

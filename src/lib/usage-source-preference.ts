@@ -150,15 +150,6 @@ export function saveUsagePreference(preference: UsagePreference): void {
   }
 }
 
-export function loadUsageSource(): UsageSource {
-  return loadUsagePreference().source
-}
-
-export function saveUsageSource(source: UsageSource): void {
-  const current = loadUsagePreference()
-  saveUsagePreference({ ...current, source })
-}
-
 export function rememberedRuleId(preference: UsagePreference, source: UsageSource): string | undefined {
   return preference.ruleBySource[source]
 }
@@ -170,7 +161,6 @@ export function withRememberedRule(
 ): UsagePreference {
   return {
     ...preference,
-    source: preference.source,
     ruleBySource: { ...preference.ruleBySource, [source]: ruleId },
   }
 }
