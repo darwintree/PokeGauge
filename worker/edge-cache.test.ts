@@ -4,7 +4,7 @@ import { proxyPikalytics, resetPikalyticsFormatCacheForTest } from "./index"
 
 const STORE = "gen9championsvgc2026regmc-1760"
 
-const POKEDEX_HTML = `<option value="${STORE}" selected>Format</option>`
+const POKEDEX_HTML = `<select id="format_dd"><option value="${STORE}" selected>Format</option></select>`
 const AI_MARKDOWN = "- **Data Date**: 2026-05"
 
 function memoryCache(): Cache {
