@@ -12,6 +12,8 @@ export type UsagePreference = {
   source: UsageSource
   /** Last chosen rule per source. Missing key → that source's own default. */
   ruleBySource: Partial<Record<UsageSource, string>>
+  /** Default true: the rule dropdown shows current-series VGC / Champions formats. */
+  currentSeriesOnly: boolean
 }
 
 export type UsageCacheSnapshot = {
@@ -77,7 +79,43 @@ function isCacheSnapshot(value: unknown): value is UsageCacheSnapshot {
 
 /** Global cold start: Pokémon Champions. Rule is filled from that source's default. */
 export function defaultUsagePreference(): UsagePreference {
-  return { source: "champions", ruleBySource: {} }
+  return { source: "champions", ruleBySource: {}, currentSeriesOnly: true }
+}
+
+/** Year stamped on the source's own default rule, else the UTC calendar year. */
+export function currentSeriesYearFromDefaultId(defaultId: string, now = new Date()): number {
+  const match = defaultId.match(/vgc(\d{4})/i)
+  return match ? Number(match[1]) : now.getUTCFullYear()
+}
+
+/**
+ * Current-series VGC / Pokémon Champions VGC formats for `year`.
+ * Champions seasons are already that series, so they all stay.
+ */
+export function isCurrentSeriesUsageRule(
+  rule: UsageRule,
+  source: UsageSource,
+  year: number,
+): boolean {
+  if (source === "champions") return true
+  const id = rule.id.toLowerCase()
+  return id.includes(`championsvgc${year}`) || id.includes(`vgc${year}`)
+}
+
+export function visibleUsageRules(
+  rules: readonly UsageRule[],
+  source: UsageSource,
+  currentSeriesOnly: boolean,
+  selectedId: string | null,
+  year: number,
+): UsageRule[] {
+  if (!currentSeriesOnly) return [...rules]
+  const kept = rules.filter((rule) => isCurrentSeriesUsageRule(rule, source, year))
+  if (selectedId && !kept.some((rule) => rule.id === selectedId)) {
+    const selected = rules.find((rule) => rule.id === selectedId)
+    if (selected) return [selected, ...kept]
+  }
+  return kept
 }
 
 export function loadUsagePreference(): UsagePreference {
@@ -88,11 +126,15 @@ export function loadUsagePreference(): UsagePreference {
       const ruleId = stored.ruleBySource[source]
       if (typeof ruleId === "string" && ruleId.length > 0) ruleBySource[source] = ruleId
     }
-    return { source: stored.source, ruleBySource }
+    return {
+      source: stored.source,
+      ruleBySource,
+      currentSeriesOnly: stored.currentSeriesOnly !== false,
+    }
   }
   try {
     const legacy = localStorage.getItem(USAGE_SOURCE_STORAGE_KEY)
-    if (isUsageSource(legacy)) return { source: legacy, ruleBySource: {} }
+    if (isUsageSource(legacy)) return { source: legacy, ruleBySource: {}, currentSeriesOnly: true }
   } catch {
     // Fall through to the global default.
   }
@@ -127,6 +169,7 @@ export function withRememberedRule(
   ruleId: string,
 ): UsagePreference {
   return {
+    ...preference,
     source: preference.source,
     ruleBySource: { ...preference.ruleBySource, [source]: ruleId },
   }

@@ -44,9 +44,39 @@ Context:
 产品禁止后台更新自动换排序，也要求手动拉取随时可用。
 
 Decision:
-`refreshUsageStore` 走 apply；超过 12 小时的自动拉取走 pending。设置页没有绿点。
+`refreshUsageStore` 走 apply；超过 12 小时的自动拉取走 pending。设置页没有待应用按钮。
 
 Reason:
-手动拉取是用户明确要新数据；绿点只承担「应用有更新」那一类安静指示。
+手动拉取是用户明确要新数据；待应用按钮只承担「应用有更新」那一类安静指示。
 
 Follow-up: None
+
+### 4. Pikalytics 规则只从 `#format_dd` 读
+
+Type: bugfix
+
+Context:
+评审看到 Naive / Modest。Pikalytics 图鉴 HTML 里除了赛制下拉，还有性格下拉 `#nature_select`（value 为 `modest` / `naive`）。第一版用页面上全部 `<option>` 当规则。
+
+Decision:
+Worker 只解析第一个 `#format_dd`，按 id 去重。性格 / 招式 / 道具选项不进目录。
+
+Reason:
+那些名字是性格，不是赛制；产品要求规则跟来源的赛制列表走。
+
+Follow-up: None
+
+### 5. 默认「当前系列」过滤的年份取自来源默认规则
+
+Type: tradeoff
+
+Context:
+Pikalytics 全表 100+ 项（旧世代、OU、ZA…）。产品要求一个小过滤：当前系列 VGC / Champions，默认开，设置可关。
+
+Decision:
+开着时只留 id 含 `championsvgc{year}` 或 `vgc{year}` 的规则。`year` 从来源自己的 defaultId 里的 `vgcYYYY` 取（没有则用 UTC 年）。Champions 赛季列表全留。当前选中项若被过滤掉，仍钉在列表最前。过滤开关持久化，默认开。
+
+Reason:
+跟 Darwin 举的 current-series VGC/Champions 一致，又不把年份写死成 2026。不另做搜索/chip UI。
+
+Follow-up: 明年默认规则换年份后过滤自动跟着走。

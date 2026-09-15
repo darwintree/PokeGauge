@@ -1,11 +1,21 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import { proxyPikalytics, resetPikalyticsFormatCacheForTest, resolvePikalyticsFormat } from "./index"
+import {
+  parsePikalyticsFormatOptions,
+  proxyPikalytics,
+  resetPikalyticsFormatCacheForTest,
+  resolvePikalyticsFormat,
+} from "./index"
 
 const POKEDEX_HTML = `
-  <select id="format_dd">
+  <select id="format_dd" class="pokedex-format-select">
     <option value="gen9championsvgc2026regma-1760">Pokemon Champions VGC 2026 Regulation Set M-A Showdown</option>
     <option value="gen9championsvgc2026regmc-1760" selected>Pokemon Champions VGC 2026 Regulation Set M-C Showdown</option>
+    <option value="gen9ou-1825">OverUsed</option>
+  </select>
+  <select id="nature_select" name="nature_select" class="nature-select">
+    <option value="modest">Modest (+SpA/-Atk)</option>
+    <option value="naive">Naive (+Spe/-SpD)</option>
   </select>
 `
 
@@ -38,6 +48,16 @@ beforeEach(() => {
 })
 
 describe("Pikalytics format discovery", () => {
+  it("reads ladder options from #format_dd and ignores nature selects", () => {
+    const options = parsePikalyticsFormatOptions(POKEDEX_HTML)
+    expect(options.map((option) => option.id)).toEqual([
+      "gen9championsvgc2026regma-1760",
+      "gen9championsvgc2026regmc-1760",
+      "gen9ou-1825",
+    ])
+    expect(options.some((option) => option.id === "naive" || option.id === "modest")).toBe(false)
+  })
+
   it("reads the selected ladder format and the published data date", async () => {
     const requested = stubUpstream({
       pokedex: new Response(POKEDEX_HTML),
@@ -119,6 +139,7 @@ describe("Pikalytics request paths", () => {
       rules: [
         { id: "gen9championsvgc2026regma-1760", label: "Pokemon Champions VGC 2026 Regulation Set M-A Showdown" },
         { id: "gen9championsvgc2026regmc-1760", label: "Pokemon Champions VGC 2026 Regulation Set M-C Showdown" },
+        { id: "gen9ou-1825", label: "OverUsed" },
       ],
     })
 

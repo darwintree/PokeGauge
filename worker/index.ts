@@ -125,14 +125,27 @@ type PikalyticsCatalog = PikalyticsFormat & { rules: PikalyticsRule[] }
 const PIKALYTICS_FORMAT_TTL_MS = 60 * 60 * 1000
 let pikalyticsCatalogCache: { value: PikalyticsCatalog; expiresAt: number } | undefined
 
-function parsePikalyticsOptions(html: string): Array<{ id: string; label: string; selected: boolean }> {
-  return [...html.matchAll(/<option([^>]*)\bvalue="([a-z0-9][a-z0-9-]*)"([^>]*)>([^<]*)/gi)].map(
-    (match) => ({
-      id: match[2],
+const PIKALYTICS_FORMAT_SELECT = /<select[^>]*\bid=["']format_dd["'][^>]*>([\s\S]*?)<\/select>/i
+
+/** Ladder formats only. The pokedex page also has nature/move/item <option>s. */
+export function parsePikalyticsFormatOptions(
+  html: string,
+): Array<{ id: string; label: string; selected: boolean }> {
+  const select = html.match(PIKALYTICS_FORMAT_SELECT)
+  if (!select) return []
+  const seen = new Set<string>()
+  const options: Array<{ id: string; label: string; selected: boolean }> = []
+  for (const match of select[1].matchAll(/<option([^>]*)\bvalue="([a-z0-9][a-z0-9-]*)"([^>]*)>([^<]*)/gi)) {
+    const id = match[2]
+    if (seen.has(id)) continue
+    seen.add(id)
+    options.push({
+      id,
       label: match[4].trim(),
       selected: /\bselected\b/i.test(`${match[1]} ${match[3]}`),
-    }),
-  )
+    })
+  }
+  return options
 }
 
 /**
@@ -152,7 +165,7 @@ export async function resolvePikalyticsCatalog(): Promise<PikalyticsCatalog | nu
   if (!pokedex.ok || !aiIndex.ok) return null
   const pokedexHtml = await pokedex.text()
   const aiMarkdown = await aiIndex.text()
-  const options = parsePikalyticsOptions(pokedexHtml)
+  const options = parsePikalyticsFormatOptions(pokedexHtml)
   const selected = options.find((option) => option.selected)?.id ?? options[0]?.id
   const date = aiMarkdown.match(/- \*\*Data Date\*\*: `?([0-9]{4}-[0-9]{2})`?/)?.[1]
   if (!selected || !date || options.length === 0) return null

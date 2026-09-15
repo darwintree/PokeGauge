@@ -9,6 +9,7 @@ import {
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { Button } from "@/components/ui/button"
+import { Switch } from "@/components/ui/switch"
 import {
   Dialog,
   DialogClose,
@@ -32,6 +33,7 @@ import {
   type StatNameStrategy,
 } from "@/lib/stat-preset"
 import {
+  setUsageStoreCurrentSeriesOnly,
   setUsageStoreRule,
   setUsageStoreSource,
   useUsageStore,
@@ -229,6 +231,9 @@ function SettingsDialog({
             <TabsTrigger className={TAB_CLASS} value="preferences">
               <FormattedMessage id="settings.preferences" />
             </TabsTrigger>
+            <TabsTrigger className={TAB_CLASS} value="usage">
+              <FormattedMessage id="settings.usage" />
+            </TabsTrigger>
             <TabsTrigger className={TAB_CLASS} value="changelog">
               <FormattedMessage id="settings.changelog" />
             </TabsTrigger>
@@ -257,41 +262,6 @@ function SettingsDialog({
                 ))}
               </select>
             </PreferenceRow>
-            <PreferenceRow
-              htmlFor="settings-usage-source"
-              label={<FormattedMessage id="settings.usageSource.label" />}
-              description={<FormattedMessage id="settings.usageSource.description" />}
-            >
-              <UsageSourceSelect
-                id="settings-usage-source"
-                describedBy="settings-usage-source-description"
-                value={usage.source}
-                onChange={(source) => void setUsageStoreSource(source)}
-                className={SELECT_CLASS}
-              />
-            </PreferenceRow>
-            <PreferenceRow
-              htmlFor="settings-usage-rule"
-              label={<FormattedMessage id="settings.usageRule.label" />}
-              description={<FormattedMessage id="settings.usageRule.description" />}
-            >
-              <UsageRuleSelect
-                id="settings-usage-rule"
-                describedBy="settings-usage-rule-description"
-                value={usage.ruleId}
-                rules={usage.rules}
-                onChange={(ruleId) => void setUsageStoreRule(ruleId)}
-                className={SELECT_CLASS}
-              />
-            </PreferenceRow>
-            <PreferenceRow
-              htmlFor="settings-usage-fetched"
-              label={<FormattedMessage id="settings.usageFetched.label" />}
-              description={<FormattedMessage id="settings.usageFetched.description" />}
-            >
-              <UsageFetchStatus id="settings-usage-fetched" />
-            </PreferenceRow>
-
             <PreferenceRow
               htmlFor="settings-stat-display"
               label={<FormattedMessage id="stat.display" />}
@@ -352,6 +322,57 @@ function SettingsDialog({
                   {intl.formatMessage({ id: "probability.mode.classic" })}
                 </option>
               </select>
+            </PreferenceRow>
+          </TabsContent>
+
+          <TabsContent value="usage" className="min-h-0 overscroll-contain overflow-y-auto px-5 py-2 sm:px-6">
+            <PreferenceRow
+              htmlFor="settings-usage-source"
+              label={<FormattedMessage id="settings.usageSource.label" />}
+              description={<FormattedMessage id="settings.usageSource.description" />}
+            >
+              <UsageSourceSelect
+                id="settings-usage-source"
+                describedBy="settings-usage-source-description"
+                value={usage.source}
+                onChange={(source) => void setUsageStoreSource(source)}
+                className={SELECT_CLASS}
+              />
+            </PreferenceRow>
+            <PreferenceRow
+              htmlFor="settings-usage-rule"
+              label={<FormattedMessage id="settings.usageRule.label" />}
+              description={<FormattedMessage id="settings.usageRule.description" />}
+            >
+              <UsageRuleSelect
+                id="settings-usage-rule"
+                describedBy="settings-usage-rule-description"
+                value={usage.ruleId}
+                rules={usage.rules}
+                onChange={(ruleId) => void setUsageStoreRule(ruleId)}
+                className={SELECT_CLASS}
+              />
+            </PreferenceRow>
+            <PreferenceRow
+              htmlFor="settings-usage-fetched"
+              label={<FormattedMessage id="settings.usageFetched.label" />}
+              description={<FormattedMessage id="settings.usageFetched.description" />}
+            >
+              <UsageFetchStatus id="settings-usage-fetched" />
+            </PreferenceRow>
+            <PreferenceRow
+              htmlFor="settings-usage-filter"
+              label={<FormattedMessage id="settings.usageFilter.label" />}
+              description={<FormattedMessage id="settings.usageFilter.description" />}
+            >
+              <div className="flex justify-end sm:justify-start">
+                <Switch
+                  id="settings-usage-filter"
+                  checked={usage.currentSeriesOnly}
+                  onCheckedChange={setUsageStoreCurrentSeriesOnly}
+                  aria-describedby="settings-usage-filter-description"
+                />
+              </div>
             </PreferenceRow>
           </TabsContent>
 

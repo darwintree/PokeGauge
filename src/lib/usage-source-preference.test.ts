@@ -4,7 +4,9 @@ import {
   USAGE_PREFERENCE_STORAGE_KEY,
   USAGE_SOURCE_STORAGE_KEY,
   USAGE_STALE_MS,
+  currentSeriesYearFromDefaultId,
   defaultUsagePreference,
+  isCurrentSeriesUsageRule,
   loadUsageCache,
   loadUsagePreference,
   loadUsageSource,
@@ -13,6 +15,7 @@ import {
   saveUsagePreference,
   usageFingerprint,
   usageIsStale,
+  visibleUsageRules,
   withRememberedRule,
 } from "./usage-source-preference"
 
@@ -41,7 +44,7 @@ describe("usage preference", () => {
     storage.setItem(USAGE_SOURCE_STORAGE_KEY, "pikalytics")
     vi.stubGlobal("localStorage", storage)
 
-    expect(loadUsagePreference()).toEqual({ source: "pikalytics", ruleBySource: {} })
+    expect(loadUsagePreference()).toEqual({ source: "pikalytics", ruleBySource: {}, currentSeriesOnly: true })
 
     saveUsagePreference(withRememberedRule(loadUsagePreference(), "pikalytics", "gen9championsvgc2026regma-1760"))
     saveUsagePreference(withRememberedRule(loadUsagePreference(), "smogon", "2026-08/gen9championsvgc2026regmb-0"))
@@ -51,6 +54,7 @@ describe("usage preference", () => {
         pikalytics: "gen9championsvgc2026regma-1760",
         smogon: "2026-08/gen9championsvgc2026regmb-0",
       },
+      currentSeriesOnly: true,
     })
     expect(rememberedRuleId(loadUsagePreference(), "champions")).toBeUndefined()
     expect(storage.getItem(USAGE_PREFERENCE_STORAGE_KEY)).toContain("pikalytics")
@@ -72,5 +76,32 @@ describe("usage preference", () => {
     saveUsageCache("champions", "Current", snapshot)
     expect(loadUsageCache("champions", "Current")).toEqual(snapshot)
     expect(loadUsageCache("champions", "M6")).toBeNull()
+  })
+
+  it("keeps current-series VGC/Champions formats and can pin a selected outlier", () => {
+    expect(currentSeriesYearFromDefaultId("gen9championsvgc2026regmc-1760")).toBe(2026)
+    const rules = [
+      { id: "modest", label: "Modest" },
+      { id: "gen9championsvgc2026regmc-1760", label: "Champions VGC 2026 M-C" },
+      { id: "gen9vgc2026regi-1760", label: "VGC 2026 Reg I" },
+      { id: "gen9ou-1825", label: "OverUsed" },
+      { id: "gen9vgc2025regh-1760", label: "VGC 2025 Reg H" },
+    ]
+    expect(rules.filter((rule) => isCurrentSeriesUsageRule(rule, "pikalytics", 2026)).map((rule) => rule.id)).toEqual([
+      "gen9championsvgc2026regmc-1760",
+      "gen9vgc2026regi-1760",
+    ])
+    expect(visibleUsageRules(rules, "pikalytics", true, "gen9ou-1825", 2026).map((rule) => rule.id)).toEqual([
+      "gen9ou-1825",
+      "gen9championsvgc2026regmc-1760",
+      "gen9vgc2026regi-1760",
+    ])
+    expect(visibleUsageRules(
+      [{ id: "Current", label: "Current" }, { id: "M6", label: "M6" }],
+      "champions",
+      true,
+      "Current",
+      2026,
+    ).map((rule) => rule.id)).toEqual(["Current", "M6"])
   })
 })

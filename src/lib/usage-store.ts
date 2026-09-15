@@ -13,6 +13,8 @@ import {
   saveUsageCache,
   saveUsagePreference,
   usageIsStale,
+  visibleUsageRules,
+  currentSeriesYearFromDefaultId,
   withRememberedRule,
   type UsageRule,
   type UsageSource,
@@ -22,6 +24,7 @@ export type UsageStoreSnapshot = {
   source: UsageSource
   ruleId: string | null
   rules: UsageRule[]
+  currentSeriesOnly: boolean
   fetchedAt: number | null
   pendingUpdate: boolean
   refreshing: boolean
@@ -42,7 +45,8 @@ type PendingRanking = {
 
 let preference = loadUsagePreference()
 let ruleId: string | null = rememberedRuleId(preference, preference.source) ?? null
-let rules: UsageRule[] = []
+let catalogRules: UsageRule[] = []
+let catalogDefaultId: string | null = null
 let pikalyticsDate: string | null = null
 let fetchedAt: number | null = null
 let pending: PendingRanking | null = null
@@ -53,11 +57,22 @@ const listeners = new Set<() => void>()
 const catalogs = new Map<UsageSource, Promise<RemoteCatalog>>()
 let started = false
 
+function visibleCatalogRules(): UsageRule[] {
+  return visibleUsageRules(
+    catalogRules,
+    preference.source,
+    preference.currentSeriesOnly,
+    ruleId,
+    currentSeriesYearFromDefaultId(catalogDefaultId ?? ""),
+  )
+}
+
 function makeSnapshot(): UsageStoreSnapshot {
   return {
     source: preference.source,
     ruleId,
-    rules,
+    rules: visibleCatalogRules(),
+    currentSeriesOnly: preference.currentSeriesOnly,
     fetchedAt,
     pendingUpdate: pending != null,
     refreshing,
@@ -136,7 +151,8 @@ async function selectSource(source: UsageSource, explicitRuleId?: string): Promi
   const nextRule = explicitRuleId ?? ruleFromCatalog(catalog, source)
   preference = { ...withRememberedRule(preference, source, nextRule), source }
   ruleId = nextRule
-  rules = catalog.rules
+  catalogRules = catalog.rules
+  catalogDefaultId = catalog.defaultId
   pikalyticsDate = source === "pikalytics" ? catalog.date ?? null : null
   pending = null
   persist()
@@ -236,12 +252,20 @@ export function applyUsageStorePending(): void {
   emit()
 }
 
+export function setUsageStoreCurrentSeriesOnly(currentSeriesOnly: boolean): void {
+  if (preference.currentSeriesOnly === currentSeriesOnly) return
+  preference = { ...preference, currentSeriesOnly }
+  persist()
+  emit()
+}
+
 export function resetUsageStoreForTest(): void {
   catalogs.clear()
   started = false
   preference = loadUsagePreference()
   ruleId = rememberedRuleId(preference, preference.source) ?? null
-  rules = []
+  catalogRules = []
+  catalogDefaultId = null
   pikalyticsDate = null
   fetchedAt = null
   pending = null
