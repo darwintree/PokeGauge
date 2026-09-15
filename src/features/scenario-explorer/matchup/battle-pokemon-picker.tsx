@@ -6,6 +6,7 @@ import { TypeBadgeList } from "@/components/pokemon/type-badge"
 import { Button } from "@/components/ui/button"
 import { pokemonSpriteUrl } from "@/lib/assets"
 import {
+  orderPokemonOptionsByUsageIds,
   rankPokemonOptionsByChampionsUsage,
   speciesHasMultipleBattlePokemonIdentities,
   type BattlePokemonOption,
@@ -19,7 +20,6 @@ import { noteUsageRankingSaved, useUsageStore } from "@/lib/usage-store"
 import { BattlePokemonPickerDialog } from "./battle-pokemon-picker-dialog"
 import {
   initialRankingLoadState,
-  orderOptionsByIds,
   reduceRankingLoad,
 } from "./ranking-load"
 
@@ -66,7 +66,7 @@ export function BattlePokemonPicker({
   )
   const visibleOptions = useMemo(() => {
     if (load.list === "usageOrder" && rankedIds) {
-      return orderOptionsByIds(options, rankedIds)
+      return orderPokemonOptionsByUsageIds(options, rankedIds)
     }
     return options
   }, [load.list, options, rankedIds])

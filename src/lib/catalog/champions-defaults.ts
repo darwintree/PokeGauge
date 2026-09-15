@@ -37,11 +37,15 @@ export function withTimeout<T>(
   })
 }
 
-export async function rankPokemonOptionsByChampionsUsage(
+/**
+ * Usage caches store ranked battle ids from the source. Mega identities are
+ * dex-only, so attach them after the matching species whenever that species
+ * (or one of its Megas) appears in the ranking.
+ */
+export function orderPokemonOptionsByUsageIds(
   options: BattlePokemonOption[],
-): Promise<BattlePokemonOption[]> {
-  // ponytail: picker ranking has an explicit skip; do not share default-pick's 5s timeout
-  const usageIds = await listChampionsPokemonUsageIds()
+  usageIds: readonly number[],
+): BattlePokemonOption[] {
   if (usageIds.length === 0) return options
 
   const byId = new Map(options.map((option) => [option.id, option]))
@@ -52,15 +56,31 @@ export async function rankPokemonOptionsByChampionsUsage(
     if (megas) megas.push(option)
     else megasBySpecies.set(option.speciesId, [option])
   }
-  const ranked = usageIds.flatMap((id) => {
-    const base = byId.get(id)
-    return base ? [base, ...(megasBySpecies.get(base.speciesId) ?? [])] : []
-  })
-  const rankedIds = new Set(ranked.map((option) => option.id))
-  return [
-    ...ranked,
-    ...options.filter((option) => !rankedIds.has(option.id)),
-  ]
+
+  const ranked: BattlePokemonOption[] = []
+  const seen = new Set<number>()
+  const push = (option: BattlePokemonOption) => {
+    if (seen.has(option.id)) return
+    seen.add(option.id)
+    ranked.push(option)
+  }
+  for (const id of usageIds) {
+    const option = byId.get(id)
+    if (!option) continue
+    push(option)
+    for (const mega of megasBySpecies.get(option.speciesId) ?? []) push(mega)
+  }
+  for (const option of options) {
+    if (!seen.has(option.id)) ranked.push(option)
+  }
+  return ranked
+}
+
+export async function rankPokemonOptionsByChampionsUsage(
+  options: BattlePokemonOption[],
+): Promise<BattlePokemonOption[]> {
+  // ponytail: picker ranking has an explicit skip; do not share default-pick's 5s timeout
+  return orderPokemonOptionsByUsageIds(options, await listChampionsPokemonUsageIds())
 }
 
 export async function rankMoveOptionsByChampionsUsage(

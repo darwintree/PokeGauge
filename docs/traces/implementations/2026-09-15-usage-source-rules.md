@@ -110,3 +110,18 @@ Reason:
 最小增量，沿用已有 HUD 展开控件，不另装 Collapsible。
 
 Follow-up: None
+
+### 8. 缓存排名 id 在展示时再挂上 Mega
+
+Type: bugfix
+
+Context:
+12 小时缓存只存来源给出的 `pokemonIds`。Champions 条目是基础形态 id（喷火龙 6），Mega 身份只存在本地图鉴。有缓存时选择器直接按缓存 id 排序，Mega 被丢到列表末尾，看起来像从使用率列表里消失。无缓存的第一次拉取会把 Mega 插在基础形态后面，所以是「有时」缺失。Mega 优先开关只是把已在列表里的 Mega 提前，不负责把它们挂回对应种族。
+
+Decision:
+把「按使用率 id 排序并在该种族后挂上 Mega」收成 `orderPokemonOptionsByUsageIds`，缓存路径和网络路径共用。缓存仍只存来源 id，不把 Mega 写进 12h 快照。
+
+Reason:
+Mega 跟种族走是已有选择器行为；缓存不该改变合并规则。一个函数避免缓存 / 实时两条路再次分叉。
+
+Follow-up: None
