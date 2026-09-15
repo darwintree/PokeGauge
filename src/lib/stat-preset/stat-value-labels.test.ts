@@ -40,20 +40,27 @@ describe("SP label engine", () => {
     expect(statPresetLabel(ex, attackerCalcName, category, 0, strategy)).toBe(EX_LABEL)
   })
 
-  it("maps system defense presets to 0H0B / 32H0B / EX", () => {
+  it("maps system defense presets to 0H / 32H / EX", () => {
     const presets = buildSystemDefensePresets(defenderCalcName, category)
     const zero = presets.find((t) => t.id === "min-bulk")!
     const hp32 = presets.find((t) => t.id === "hp-32")!
     const ex = presets.find((t) => t.id === "standard-bulk")!
 
-    expect(statPresetLabel(zero, defenderCalcName, category, 0, strategy)).toBe("0H0B")
-    expect(statPresetLabel(hp32, defenderCalcName, category, 0, strategy)).toBe("32H0B")
+    expect(statPresetLabel(zero, defenderCalcName, category, 0, strategy)).toBe("0H")
+    expect(statPresetLabel(hp32, defenderCalcName, category, 0, strategy)).toBe("32H")
     expect(statPresetLabel(ex, defenderCalcName, category, 0, strategy)).toBe(EX_LABEL)
   })
 
   it("formats offense and defense SP segments", () => {
     expect(offenseStatValueLabel(32, "+", "physical", strategy)).toBe(EX_LABEL)
     expect(offenseStatValueLabel(0, "-", "physical", strategy)).toBe("0A-")
+    expect(defenseStatValueLabel(32, 0, "", "physical", strategy)).toBe("32H")
+    expect(defenseStatValueLabel(0, 0, "", "physical", strategy)).toBe("0H")
+    expect(defenseStatValueLabel(32, 0, "+", "physical", strategy)).toBe("32H+")
+    expect(defenseStatValueLabel(32, 0, "", "special", strategy)).toBe("32H")
+    expect(defenseStatValueLabel(0, 0, "", "special", strategy)).toBe("0H")
+    expect(defenseStatValueLabel(32, 0, "+", "special", strategy)).toBe("32H+")
+    expect(defenseStatValueLabel(32, 20, "+", "special", strategy)).toBe("32H20D+")
     expect(defenseStatValueLabel(32, 20, "+", "physical", strategy)).toBe("32H20B+")
     expect(defenseStatValueLabel(32, 32, "+", "physical", strategy)).toBe(EX_LABEL)
   })

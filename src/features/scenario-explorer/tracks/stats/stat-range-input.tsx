@@ -15,7 +15,7 @@ import { STAT_AXIS_SNAP_CLASS } from "./stat-tier-colors"
 import type { StatAxisMark } from "./stat-axis-marks"
 import { cn } from "@/lib/utils"
 
-import { useDualHandleDrag, type RangeHandle } from "../../state/use-dual-handle-drag"
+import { dragRangeFromAnchor, useDualHandleDrag, type RangeHandle } from "../../state/use-dual-handle-drag"
 
 const STAT_AXIS_MARK_BAND_CLASS: Record<InvestBand, string> = {
   none: "stat-axis-mark--none",
@@ -58,7 +58,7 @@ export function StatRangeInput({
   onDraftChange,
 }: StatRangeInputProps) {
   const intl = useIntl()
-  const [selectedHandle, setSelectedHandle] = useState<RangeHandle>("min")
+  const [selectedHandle, setSelectedHandle] = useState<RangeHandle | null>(null)
   const snapValues = bounds.snapPoints.map((snap) => snap.value)
   const drafting = draftValue != null && onDraftChange != null
   const collapsed = value.min === value.max
@@ -66,7 +66,10 @@ export function StatRangeInput({
   const widthPct = collapsed ? 0.8 : pctForValue(value.max, bounds.min, bounds.max) - leftPct
 
   function swapHandleRoles() {
-    setSelectedHandle(current => current === "min" ? "max" : "min")
+    setSelectedHandle(current => {
+      if (current === null) return null
+      return current === "min" ? "max" : "min"
+    })
   }
 
   const drag = useDualHandleDrag({
@@ -85,22 +88,11 @@ export function StatRangeInput({
       onDraftChange(clampStat(draftValue + delta, bounds.min, bounds.max))
       return
     }
-    if (collapsed) {
-      const point = clampStat(value.min + delta, bounds.min, bounds.max)
-      onChange({ min: point, max: point })
-      return
-    }
-    if (handle === "min") {
-      onChange({
-        min: clampStat(value.min + delta, bounds.min, value.max),
-        max: value.max,
-      })
-      return
-    }
-    onChange({
-      min: value.min,
-      max: clampStat(value.max + delta, value.min, bounds.max),
-    })
+    const pointer = clampStat(value[handle] + delta, bounds.min, bounds.max)
+    const anchor = handle === "min" ? value.max : value.min
+    const next = dragRangeFromAnchor(pointer, anchor, handle)
+    setSelectedHandle(next.handle)
+    onChange(next.range)
   }
 
   function handleStyle(point: number) {
@@ -115,9 +107,7 @@ export function StatRangeInput({
     (mark) => !isEndpoint(mark.value) && !(drafting && mark.value === draftValue),
   )
   const unlabeledInterior = interiorMarks.filter((mark) => !snapValues.includes(mark.value))
-  const activePoint = drafting ? draftValue : value[selectedHandle]
-  const lowerLimit = drafting || collapsed || selectedHandle === "min" ? bounds.min : value.min
-  const upperLimit = drafting || collapsed || selectedHandle === "max" ? bounds.max : value.max
+  const activePoint = drafting ? draftValue : value[selectedHandle ?? "min"]
 
   return (
     <div className="space-y-1.5">
@@ -146,43 +136,33 @@ export function StatRangeInput({
           <div
             ref={drag.railRef}
             className={cn("relative h-8 touch-none", drafting && "cursor-grab")}
-            onPointerDown={(event) => {
-              if (drafting) return
-              // The side buttons adjust the endpoint nearest to the tapped position.
-              if (!(event.target instanceof Element)) return
-              if (event.target.closest("button")) return
-              const rail = drag.railRef.current?.getBoundingClientRect()
-              if (!rail || rail.width === 0) return
-              const pointer = clampStat(
-                Math.round(bounds.min + ((event.clientX - rail.left) / rail.width) * (bounds.max - bounds.min)),
-                bounds.min,
-                bounds.max,
-              )
-              setSelectedHandle(Math.abs(pointer - value.min) <= Math.abs(pointer - value.max) ? "min" : "max")
-            }}
           >
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-xs"
-              className="absolute top-1 -left-10 z-30 size-6 rounded-sm transition-colors active:not-aria-[haspopup]:translate-y-0"
-              aria-label={intl.formatMessage({ id: "stat.range.decrement" })}
-              disabled={activePoint <= lowerLimit}
-              onClick={() => nudge(selectedHandle, -1)}
-            >
-              <Triangle className="size-3 -rotate-90 fill-current" />
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-xs"
-              className="absolute top-1 -right-10 z-30 size-6 rounded-sm transition-colors active:not-aria-[haspopup]:translate-y-0"
-              aria-label={intl.formatMessage({ id: "stat.range.increment" })}
-              disabled={activePoint >= upperLimit}
-              onClick={() => nudge(selectedHandle, 1)}
-            >
-              <Triangle className="size-3 rotate-90 fill-current" />
-            </Button>
+            {selectedHandle !== null ? (
+              <>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-xs"
+                  className="absolute top-1 -left-10 z-30 size-6 rounded-sm transition-colors active:not-aria-[haspopup]:translate-y-0"
+                  aria-label={intl.formatMessage({ id: "stat.range.decrement" })}
+                  disabled={activePoint <= bounds.min}
+                  onClick={() => nudge(selectedHandle, -1)}
+                >
+                  <Triangle className="size-3 -rotate-90 fill-current" />
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-xs"
+                  className="absolute top-1 -right-10 z-30 size-6 rounded-sm transition-colors active:not-aria-[haspopup]:translate-y-0"
+                  aria-label={intl.formatMessage({ id: "stat.range.increment" })}
+                  disabled={activePoint >= bounds.max}
+                  onClick={() => nudge(selectedHandle, 1)}
+                >
+                  <Triangle className="size-3 rotate-90 fill-current" />
+                </Button>
+              </>
+            ) : null}
             <div
               className={cn(
                 "absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-full",
@@ -240,6 +220,7 @@ export function StatRangeInput({
                     />
                   )
                 }
+                const selected = selectedHandle !== null && (collapsed || selectedHandle === handle)
                 return (
                   <button
                     key={handle}
@@ -248,7 +229,7 @@ export function StatRangeInput({
                       { id: handle === "min" ? "stat.range.min" : "stat.range.max" },
                       { stat: statLabel },
                     )}
-                    aria-pressed={selectedHandle === handle}
+                    aria-pressed={selected}
                     onFocus={() => setSelectedHandle(handle)}
                     onKeyDown={event => {
                       if (event.key === "Enter" || event.key === " ") {
@@ -268,7 +249,7 @@ export function StatRangeInput({
                       className={cn(
                         HANDLE_FACE,
                         "group-focus-visible/handle:ring-ring group-focus-visible/handle:ring-2",
-                        selectedHandle === handle && "ring-primary/40 ring-2",
+                        selected && "ring-primary/40 ring-2",
                         drag.activeHandle === handle && "scale-110",
                       )}
                     />
@@ -285,7 +266,9 @@ export function StatRangeInput({
                   "absolute inset-0 z-20 cursor-grab active:cursor-grabbing",
                   "focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none",
                 )}
+                onFocus={() => setSelectedHandle("min")}
                 onPointerDown={(event) => {
+                  setSelectedHandle("min")
                   event.stopPropagation()
                   drag.onPointerDown("min")(event)
                 }}

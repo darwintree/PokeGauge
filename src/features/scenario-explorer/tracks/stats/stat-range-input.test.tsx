@@ -68,6 +68,9 @@ it("nudges the selected endpoint and a draft point from the axis sides", () => {
   const increase = () => button(localeMessages.en["stat.range.increment"])
   const decrease = () => button(localeMessages.en["stat.range.decrement"])
   act(() => root.render(<Harness />))
+  expect(increase()).toBeNull()
+  expect(decrease()).toBeNull()
+  act(() => button("Min Atk").focus())
   act(() => increase().click())
   expect(actual).toEqual({ min: 121, max: 180 })
   act(() => button("Max Atk").focus())
@@ -79,4 +82,42 @@ it("nudges the selected endpoint and a draft point from the axis sides", () => {
   expect(actual).toEqual({ min: 121, max: 179 })
   act(() => root.unmount())
   container.remove()
+})
+
+it.each([
+  { direction: -1, opened: { min: 149, max: 150 }, extended: { min: 148, max: 150 }, crossed: { min: 150, max: 151 } },
+  { direction: 1, opened: { min: 150, max: 151 }, extended: { min: 150, max: 152 }, crossed: { min: 149, max: 150 } },
+])("opens coincident endpoints in direction $direction and follows the moving endpoint", ({ direction, opened, extended, crossed }) => {
+  Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })
+  const container = document.createElement("div")
+  document.body.append(container)
+  const root = createRoot(container)
+  let actual = { min: 150, max: 150 }
+  function Harness() {
+    const [value, setValue] = useState(actual)
+    actual = value
+    return <IntlProvider locale="en" messages={localeMessages.en}>
+      <StatRangeInput statLabel="Atk" bounds={{ min: 100, max: 200, snapPoints: [] }}
+        value={value} onChange={setValue} />
+    </IntlProvider>
+  }
+  const arrow = (delta: number) => container.querySelector<HTMLButtonElement>(
+    `[aria-label="${localeMessages.en[delta < 0 ? "stat.range.decrement" : "stat.range.increment"]}"]`,
+  )!
+  try {
+    act(() => root.render(<Harness />))
+    act(() => container.querySelector<HTMLButtonElement>('[aria-label="Min Atk"]')!.focus())
+    act(() => arrow(direction).click())
+    expect(actual).toEqual(opened)
+    act(() => arrow(direction).click())
+    expect(actual).toEqual(extended)
+    act(() => arrow(-direction).click())
+    act(() => arrow(-direction).click())
+    expect(actual).toEqual({ min: 150, max: 150 })
+    act(() => arrow(-direction).click())
+    expect(actual).toEqual(crossed)
+  } finally {
+    act(() => root.unmount())
+    container.remove()
+  }
 })
