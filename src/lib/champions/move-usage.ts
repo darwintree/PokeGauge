@@ -8,7 +8,6 @@ import {
 } from "@/lib/resources"
 import type {
   ChampionsAbilityUsageRecord,
-  ChampionsBattleFormat,
   ChampionsItemUsageRecord,
   ChampionsMoveUsageRecord,
   ChampionsNatureUsageRecord,
@@ -19,71 +18,31 @@ import {
   saveUsageCache,
   usageFingerprint,
 } from "@/lib/usage-source-preference"
+import {
+  CHAMPIONS_FORMAT,
+  CHAMPIONS_INDEX_URL,
+  CHAMPIONS_NAME_OVERRIDES,
+  battlePokemonIdsByJoinName,
+  battleRowUsageRank,
+  championsBattleRows,
+  championsBattleRowsUrl,
+  championsDetailSourceId,
+  championsIndexByName,
+  championsIndexUsageRank,
+  championsSeason,
+  normalizeJoinName,
+  resolveChampionsBattlePokemonId,
+  type ChampionsBattleApi,
+  type ChampionsBattleRow,
+  type ChampionsIndexApi,
+  type ChampionsIndexPokemon,
+  type UsageJoinPokemon,
+} from "./upstream"
+import { loadUsageArtifact, loadUsageManifest, reloadUsageArtifacts } from "./artifact-client"
+import type { UsageArtifact, UsageArtifactBucket } from "./usage-artifact"
 
-const CHAMPIONS_FORMAT: ChampionsBattleFormat = "Doubles"
-const CHAMPIONS_INDEX_URL = "https://championsbattledata.com/api"
 // Smogon publishes the Pokémon Champions VGC ladder separately from Doubles OU.
 // Use the all-rating aggregate so it is comparable to the unfiltered Champions source.
-
-type ChampionsIndexPokemon = {
-  name: string
-  slug: string
-  battleName: string
-  showdownId?: string
-  showdownName?: string
-  battleDataCsvs?: Array<{
-    season: string
-    format: ChampionsBattleFormat
-    path: string
-  }>
-  summary?: {
-    battleSummary?: Record<
-      string,
-      Partial<
-        Record<ChampionsBattleFormat, {
-          top?: { move?: { position?: number; column_position?: number } }
-        }>
-      >
-    >
-  }
-}
-
-type ChampionsIndexApi = {
-  defaultSeason?: string
-  seasons?: string[]
-  dataVersion?: string
-  pokemon?: ChampionsIndexPokemon[]
-}
-
-type ChampionsBattleRow = {
-  category: string
-  rank: number
-  name: string
-  percentage_value?: number | null
-  column_position?: number
-  position?: number
-}
-
-type ChampionsBattleApi = {
-  pokemon: string
-  format: ChampionsBattleFormat
-  season: string
-  source: string
-  dataVersion?: string
-  data?: ChampionsBattleRow[]
-  rows?: ChampionsBattleRow[]
-}
-
-const CHAMPIONS_NAME_OVERRIDES: Partial<Record<BattlePokemonId, string>> = {
-  10021: "Landorus Therian",
-}
-
-const CHAMPIONS_POKEMON_ID_OVERRIDES: Record<string, BattlePokemonId> = {
-  taurospaldeaaqua: 10252,
-  taurospaldeablaze: 10251,
-  taurospaldeacombat: 10250,
-  vivillonfancy: 666,
-}
 
 const usageCache = new Map<BattlePokemonId, Promise<ChampionsMoveUsageRecord[]>>()
 let usageFetcher: (battlePokemonId: BattlePokemonId) => Promise<ChampionsMoveUsageRecord[]> =
@@ -109,7 +68,6 @@ let usageRuleId: string | null = null
 let pikalyticsDate: string | null = null
 let smogonPokemonUsagePromise: Promise<BattlePokemonId[]> | undefined
 let pikalyticsPokemonUsagePromise: Promise<BattlePokemonId[]> | undefined
-const smogonChaosCache = new Map<BattlePokemonId, Promise<Record<string, unknown> | null>>()
 
 /** Drop every cached usage result so the next read reflects current state. */
 function clearUsageCaches(): void {
@@ -121,7 +79,6 @@ function clearUsageCaches(): void {
   pokemonUsagePromise = undefined
   smogonPokemonUsagePromise = undefined
   pikalyticsPokemonUsagePromise = undefined
-  smogonChaosCache.clear()
   resetPikalyticsCache()
 }
 
@@ -135,10 +92,6 @@ export function setUsageSource(
   if (extras && "pikalyticsDate" in extras) pikalyticsDate = extras.pikalyticsDate ?? null
   else if (source !== "pikalytics") pikalyticsDate = null
   clearUsageCaches()
-}
-
-function championsSeason(index: ChampionsIndexApi): string {
-  return usageRuleId ?? index.defaultSeason ?? "Current"
 }
 
 function smogonStatsUrl(): string {
@@ -160,6 +113,76 @@ function pikalyticsPokemonUrl(name: string): string {
   return `/api/pikalytics/pokemon/${encodeURIComponent(name)}`
 }
 
+/** Map an artifact bucket back to battle rows so the detail readers stay shared. */
+function artifactBucketRows(
+  bucket: UsageArtifactBucket | undefined,
+  category: string,
+): ChampionsBattleRow[] {
+  if (!bucket?.length) return []
+  return bucket.map(([name, percentage], index) => ({
+    category,
+    rank: index + 1,
+    name,
+    percentage_value: percentage,
+  }))
+}
+
+/**
+ * Rebuild a battle payload from the compiled artifact. Everything downstream of
+ * this point — the four detail readers, their generated-table joins, and the
+ * ranking sort — is shared with proxy mode, so artifact and proxy reads cannot
+ * diverge in shape.
+ */
+function battleDataFromArtifact(
+  artifact: UsageArtifact,
+  battlePokemonId: BattlePokemonId,
+): ChampionsBattleApi | null {
+  const entry = artifact.pokemon[String(battlePokemonId)]
+  if (!entry) return null
+  return {
+    pokemon: String(battlePokemonId),
+    format: artifact.format,
+    season: artifact.rule,
+    source: `usage/${artifact.source}/${artifact.rule}.json`,
+    dataVersion: artifact.dataVersion,
+    rows: [
+      ...artifactBucketRows(entry.m, "move"),
+      ...artifactBucketRows(entry.a, "ability"),
+      ...artifactBucketRows(entry.i, "held_item"),
+      ...artifactBucketRows(entry.n, "stat_alignment"),
+    ],
+  }
+}
+
+/**
+ * The rule whose artifact applies to the current read.
+ *
+ * A cold start has no explicit rule yet, but the champion source still resolves
+ * one (the upstream default season). The manifest carries that default, so the
+ * artifact stays usable before the store has picked a rule.
+ */
+async function compiledRuleId(): Promise<string | null> {
+  if (usageRuleId) return usageRuleId
+  const manifest = await loadUsageManifest(usageSource)
+  return manifest?.defaultId ?? null
+}
+
+/** Re-read `(source, rule)` data, bypassing every in-memory cache. */
+function reloadUsageData(): void {
+  reloadUsageArtifacts()
+  championsIndexPromise = undefined
+  // Detail caches are keyed by Pokemon id alone, not by `(source, rule)`, so a
+  // reload must drop them or a manual refresh would re-fetch the artifact and
+  // still serve the previous breakdown for every Pokemon.
+  clearUsageCaches()
+}
+
+async function loadCompiledArtifact(reload = false): Promise<UsageArtifact | null> {
+  const rule = await compiledRuleId()
+  if (!rule) return null
+  return loadUsageArtifact(usageSource, rule, { reload })
+}
+
 export function peekCachedPokemonUsageIds(): BattlePokemonId[] | null {
   if (!usageRuleId) return null
   const snapshot = loadUsageCache(usageSource, usageRuleId)
@@ -179,44 +202,19 @@ function rankingFingerprint(pokemonIds: BattlePokemonId[]): string {
   return usageFingerprint([usageSource, usageRuleId ?? "", pikalyticsDate ?? "", ...pokemonIds])
 }
 
-function normalizeJoinName(name: string): string {
-  return name
-    .normalize("NFKD")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "")
-}
-
-type UsageJoinPokemon = {
-  name: string
-  pokemonSlug: string
-  calcSpeciesName: string
-  battlePokemonId: BattlePokemonId
-  speciesId: BattlePokemonId
-  isMega: boolean
-  isBattleOnly: boolean
-}
-
-/** Picker-visible identity. Gigantamax and other battle-only forms share calc names with the species. */
-function rankingBattlePokemonId(pokemon: UsageJoinPokemon): BattlePokemonId {
-  return pokemon.isMega || !pokemon.isBattleOnly ? pokemon.battlePokemonId : pokemon.speciesId
-}
-
-function battlePokemonIdsByJoinName(pokemon: readonly UsageJoinPokemon[]): Map<string, BattlePokemonId> {
-  const byName = new Map<string, BattlePokemonId>()
-  for (const entry of pokemon) {
-    const id = rankingBattlePokemonId(entry)
-    const isCanonical = entry.battlePokemonId === entry.speciesId && !entry.isMega
-    for (const alias of [entry.name, entry.pokemonSlug, entry.calcSpeciesName]) {
-      const key = normalizeJoinName(alias)
-      if (!key) continue
-      if (!byName.has(key) || isCanonical) byName.set(key, id)
-    }
-  }
-  return byName
-}
+/**
+ * Bound every usage request so its promise always settles.
+ *
+ * The detail caches store the in-flight promise and only evict it on rejection.
+ * A request that never settles would therefore stay cached for the whole
+ * session, and every later read — including a retry after the caller's own
+ * timeout fired — would await the same dead promise. Timing out here guarantees
+ * the cache sees a rejection and can drop it.
+ */
+const USAGE_REQUEST_TIMEOUT_MS = 15_000
 
 async function fetchJsonFromNetwork<T>(url: string): Promise<T> {
-  const response = await fetch(url)
+  const response = await fetch(url, { signal: AbortSignal.timeout(USAGE_REQUEST_TIMEOUT_MS) })
   if (!response.ok) throw new Error(`Usage request failed ${response.status}: ${url}`)
   return response.json() as Promise<T>
 }
@@ -231,55 +229,6 @@ function fetchChampionsIndex(): Promise<ChampionsIndexApi> {
     championsIndexPromise = undefined
   })
   return championsIndexPromise
-}
-
-function championsIndexByName(index: ChampionsIndexApi): Map<string, ChampionsIndexPokemon> {
-  return new Map(
-    (index.pokemon ?? []).flatMap((pokemon) =>
-      [
-        pokemon.showdownId,
-        pokemon.showdownName,
-        pokemon.name,
-        pokemon.battleName,
-        pokemon.slug,
-      ]
-        .filter((name): name is string => Boolean(name))
-        .map((name) => [normalizeJoinName(name), pokemon] as const),
-    ),
-  )
-}
-
-function resolveChampionsBattlePokemonId(
-  entry: ChampionsIndexPokemon,
-  pokemonByName: Map<string, BattlePokemonId>,
-): BattlePokemonId | undefined {
-  const aliases = [
-    entry.showdownId,
-    entry.showdownName,
-    entry.name,
-    entry.battleName,
-    entry.slug,
-  ]
-  return aliases.reduce<BattlePokemonId | undefined>(
-    (match, name) =>
-      match ??
-      (name
-        ? CHAMPIONS_POKEMON_ID_OVERRIDES[normalizeJoinName(name)] ??
-          pokemonByName.get(normalizeJoinName(name))
-        : undefined),
-    undefined,
-  )
-}
-
-function championsIndexUsageRank(entry: ChampionsIndexPokemon, season: string): number | undefined {
-  const row = entry.summary?.battleSummary?.[season]?.[CHAMPIONS_FORMAT]?.top?.move
-  return row?.position ?? row?.column_position
-}
-
-function battleRowUsageRank(battle: ChampionsBattleApi): number | undefined {
-  const row = (battle.data ?? battle.rows ?? [])[0]
-  // Battle rows use column_position for the Pokémon's usage rank; `rank` is the move/item slot.
-  return row?.column_position ?? row?.position
 }
 
 async function mapInBatches<T, R>(
@@ -317,13 +266,18 @@ async function rankChampionsPokemonFromBattleRows(
   return rows.flat().sort((a, b) => a.rank - b.rank)
 }
 
-async function fetchChampionsPokemonUsageOnline(): Promise<BattlePokemonId[]> {
+async function fetchChampionsPokemonUsageOnline(reload = false): Promise<BattlePokemonId[]> {
+  // The compiled artifact already carries the ranking, so a compiled rule needs
+  // neither the multi-megabyte index nor the per-season battle-row fan-out.
+  const artifact = await loadCompiledArtifact(reload)
+  if (artifact && artifact.ranking.length > 0) return artifact.ranking
+
   const [pokemon, index] = await Promise.all([
     listResources("pokemon", "en"),
     fetchChampionsIndex(),
   ])
   const pokemonByName = battlePokemonIdsByJoinName(pokemon)
-  const season = championsSeason(index)
+  const season = championsSeason(usageRuleId, index)
   const entries = index.pokemon ?? []
   let ranked = entries
     .flatMap((entry) => {
@@ -498,21 +452,17 @@ async function fetchChampionsBattleRows(
   pokemon: ChampionsIndexPokemon,
   season: string,
 ): Promise<ChampionsBattleApi> {
-  const url = `https://championsbattledata.com/api/battle/${CHAMPIONS_FORMAT}/${encodeURIComponent(pokemon.battleName || pokemon.name)}?season=${encodeURIComponent(season)}`
-  return fetchJson<ChampionsBattleApi>(url)
+  return fetchJson<ChampionsBattleApi>(championsBattleRowsUrl(pokemon, season))
 }
 
 async function fetchChampionsBattleData(
   battlePokemonId: BattlePokemonId,
 ): Promise<ChampionsBattleApi | null> {
-  const [pokemon, index] = await Promise.all([
-    getResource("pokemon", battlePokemonId, "en"),
-    fetchChampionsIndex(),
-  ])
-  const sourceId = pokemon.isMega ? pokemon.speciesId : battlePokemonId
+  const pokemon = await getResource("pokemon", battlePokemonId, "en")
+  const sourceId = championsDetailSourceId(pokemon)
   let promise = battleRowsCache.get(sourceId)
   if (!promise) {
-    promise = fetchChampionsSourceBattleData(sourceId, index)
+    promise = fetchChampionsSourceBattleData(sourceId)
     battleRowsCache.set(sourceId, promise)
     promise.catch(() => {
       if (battleRowsCache.get(sourceId) === promise) {
@@ -523,17 +473,31 @@ async function fetchChampionsBattleData(
   return promise
 }
 
+/**
+ * Read one Pokemon's breakdown, preferring the compiled artifact.
+ *
+ * The artifact carries both ranking and detail for a `(source, rule)` pair, so
+ * when it is present there is nothing to fan out and nothing to time out. When
+ * it is absent — an uncompiled rule, or a dev server that never ran the compiler
+ * — this falls back to the upstream index plus a per-Pokemon battle read.
+ */
 async function fetchChampionsSourceBattleData(
   sourceId: BattlePokemonId,
-  index: ChampionsIndexApi,
 ): Promise<ChampionsBattleApi | null> {
+  const artifact = await loadCompiledArtifact()
+  if (artifact) {
+    const fromArtifact = battleDataFromArtifact(artifact, sourceId)
+    if (fromArtifact) return fromArtifact
+  }
+
+  const index = await fetchChampionsIndex()
   const pokemon = await getResource("pokemon", sourceId, "en")
   const preferredName = CHAMPIONS_NAME_OVERRIDES[sourceId] ?? pokemon.name
   const championsPokemon = championsIndexByName(index).get(normalizeJoinName(preferredName))
   if (!championsPokemon) return null
   const battleData = await fetchChampionsBattleRows(
     championsPokemon,
-    championsSeason(index),
+    championsSeason(usageRuleId, index),
   )
   return { ...battleData, dataVersion: index.dataVersion ?? "" }
 }
@@ -547,7 +511,7 @@ async function fetchChampionsMoveUsageOnline(
   ])
   if (!battleData) return []
 
-  return (battleData.data ?? battleData.rows ?? [])
+  return championsBattleRows(battleData)
     .filter((row) => row.category === "move")
     .flatMap((row) => {
       const moveId = getMoveIdByJoinName(row.name)
@@ -575,7 +539,7 @@ async function fetchChampionsAbilityUsageOnline(
   ])
   if (!battleData) return []
 
-  return (battleData.data ?? battleData.rows ?? [])
+  return championsBattleRows(battleData)
     .filter((row) => row.category === "ability")
     .flatMap((row) => {
       const abilityId = getAbilityIdByJoinName(row.name)
@@ -601,7 +565,7 @@ async function fetchChampionsItemUsageOnline(
 
   // Champions emits `held_item` (not `item`); keep unmapped/`nothing` rows with null itemId
   // so the top-10 boundary can skip without backfill.
-  return (battleData.data ?? battleData.rows ?? [])
+  return championsBattleRows(battleData)
     .filter((row) => row.category === "held_item")
     .map((row) => ({
       battlePokemonId,
@@ -622,7 +586,7 @@ async function fetchChampionsNatureUsageOnline(
   const battleData = await fetchChampionsBattleData(battlePokemonId)
   if (!battleData) return []
 
-  return (battleData.data ?? battleData.rows ?? [])
+  return championsBattleRows(battleData)
     .filter((row) => row.category === "stat_alignment")
     .map((row) => ({
       battlePokemonId,
@@ -757,6 +721,12 @@ export function resetChampionsNatureUsageFetcherForTest(): void {
 }
 
 export async function listChampionsUsageRules(): Promise<{ defaultId: string; rules: UsageRule[] }> {
+  // The manifest repeats the upstream season list, so the picker can populate
+  // without downloading the multi-megabyte index.
+  const manifest = await loadUsageManifest(usageSource)
+  if (manifest && manifest.rules.length > 0) {
+    return { defaultId: manifest.defaultId, rules: manifest.rules }
+  }
   const index = await fetchChampionsIndex()
   const seasons = index.seasons?.length
     ? index.seasons
@@ -768,15 +738,19 @@ export async function listChampionsUsageRules(): Promise<{ defaultId: string; ru
   }
 }
 
-export async function fetchUsageRanking(): Promise<{
+/**
+ * Read the ranking. `reload` bypasses the in-memory artifact cache so a manual
+ * refresh can pick up a newer deployment without reloading the page.
+ */
+export async function fetchUsageRanking(options?: { reload?: boolean }): Promise<{
   pokemonIds: BattlePokemonId[]
   fingerprint: string
 }> {
-  const pokemonIds = await fetchPokemonUsageIdsOnline()
+  const pokemonIds = await fetchPokemonUsageIdsOnline(options?.reload ?? false)
   return { pokemonIds, fingerprint: rankingFingerprint(pokemonIds) }
 }
 
-async function fetchPokemonUsageIdsOnline(): Promise<BattlePokemonId[]> {
+async function fetchPokemonUsageIdsOnline(reload = false): Promise<BattlePokemonId[]> {
   if (usageSource === "smogon") return fetchSmogonPokemonUsageOnline()
   if (usageSource === "pikalytics") {
     const [latest, pokemon] = await Promise.all([
@@ -785,8 +759,12 @@ async function fetchPokemonUsageIdsOnline(): Promise<BattlePokemonId[]> {
     ])
     return mapPikalyticsRoster(latest, pokemon).map((member) => member.id)
   }
-  championsIndexPromise = undefined
-  return fetchChampionsPokemonUsageOnline()
+  // The index carries every season's summary, so it is independent of the
+  // selected rule. It is only dropped for an explicit manual refresh, which must
+  // be able to re-read upstream; a rule change reuses the in-flight fetch instead
+  // of discarding it and re-downloading several megabytes.
+  if (reload) reloadUsageData()
+  return fetchChampionsPokemonUsageOnline(reload)
 }
 
 export function listChampionsPokemonUsageIds(): Promise<BattlePokemonId[]> {

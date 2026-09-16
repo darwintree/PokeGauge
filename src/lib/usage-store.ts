@@ -52,6 +52,7 @@ let fetchedAt: number | null = null
 let pending: PendingRanking | null = null
 let refreshing = false
 let generation = 0
+let selectionRequest = 0
 let snapshot: UsageStoreSnapshot = makeSnapshot()
 const listeners = new Set<() => void>()
 const catalogs = new Map<UsageSource, Promise<RemoteCatalog>>()
@@ -147,7 +148,11 @@ function ruleFromCatalog(catalog: RemoteCatalog, source: UsageSource): string {
 }
 
 async function selectSource(source: UsageSource, explicitRuleId?: string): Promise<void> {
+  // Loading a catalog is async, so two rapid picks could otherwise finish out of
+  // order and leave the store on whichever resolved last rather than chosen last.
+  const request = ++selectionRequest
   const catalog = await loadCatalog(source)
+  if (request !== selectionRequest) return
   const nextRule = explicitRuleId ?? ruleFromCatalog(catalog, source)
   preference = { ...withRememberedRule(preference, source, nextRule), source }
   ruleId = nextRule
@@ -166,23 +171,30 @@ async function selectSource(source: UsageSource, explicitRuleId?: string): Promi
 
 async function refreshRanking(mode: "apply" | "pending"): Promise<void> {
   if (!ruleId) return
+  // Capture the identity before awaiting. Reading it afterwards let a switch to
+  // another source during the fetch write this source's ranking into the new
+  // source's cache slot.
+  const source = preference.source
+  const rule = ruleId
+  const reload = mode === "apply"
   refreshing = true
   emit()
   try {
-    const result = await fetchUsageRanking()
+    const result = await fetchUsageRanking({ reload })
     const now = Date.now()
-    const current = loadUsageCache(preference.source, ruleId)
+    const current = loadUsageCache(source, rule)
     if (mode === "pending" && current && current.fingerprint !== result.fingerprint) {
       pending = { ...result, fetchedAt: now }
     } else {
       const changed = !current || current.fingerprint !== result.fingerprint
       pending = null
-      saveUsageCache(preference.source, ruleId, {
+      saveUsageCache(source, rule, {
         fetchedAt: now,
         fingerprint: result.fingerprint,
         pokemonIds: result.pokemonIds,
       })
-      fetchedAt = now
+      // Only adopt the timestamp if the selection still matches this fetch.
+      if (source === preference.source && rule === ruleId) fetchedAt = now
       if (changed) {
         bumpGeneration()
         syncModuleSelection()
