@@ -1,4 +1,4 @@
-import type { BattlePokemonId, UpstreamResourceId } from "@/lib/resources"
+import type { BattlePokemonId } from "@/lib/resources"
 
 import type { ChampionsBattleFormat } from "./types"
 
@@ -71,7 +71,7 @@ export type UsageManifest = {
  * this never binds today; it only stops a pathological upstream payload from
  * bloating the artifact.
  */
-export const USAGE_ARTIFACT_ROW_GUARD = 64
+const USAGE_ARTIFACT_ROW_GUARD = 64
 
 /** Stable per-rule URL. Served as a static asset, never through the Worker. */
 export function usageArtifactUrl(source: string, rule: string): string {
@@ -81,11 +81,6 @@ export function usageArtifactUrl(source: string, rule: string): string {
 /** Stable per-source manifest URL. */
 export function usageManifestUrl(source: string): string {
   return `/usage/${encodeURIComponent(source)}/manifest.json`
-}
-
-/** Numeric-id key shared by the compiler and the runtime readers. */
-export function usageArtifactKey(id: BattlePokemonId | UpstreamResourceId): string {
-  return String(id)
 }
 
 function isBucket(value: unknown): value is UsageArtifactBucket {
@@ -122,8 +117,7 @@ export function toBucket(
   rows: readonly { name: string; percentage?: number | null }[] | undefined,
 ): UsageArtifactBucket | undefined {
   if (!rows?.length) return undefined
-  const bucket = rows
+  return rows
     .slice(0, USAGE_ARTIFACT_ROW_GUARD)
     .map((row) => [row.name, row.percentage ?? null] as UsageArtifactRow)
-  return bucket.length > 0 ? bucket : undefined
 }

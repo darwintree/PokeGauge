@@ -24,6 +24,7 @@ import { mkdir, rm, writeFile } from "node:fs/promises"
 import path from "node:path"
 
 import { getMoveIdByJoinName, getAbilityIdByJoinName, listResources } from "../src/lib/resources"
+import type { BattlePokemonId } from "../src/lib/resources"
 import {
   CHAMPIONS_FORMAT,
   CHAMPIONS_INDEX_URL,
@@ -118,6 +119,21 @@ type CompiledBuckets = {
   unresolved: number
 }
 
+/** A row awaiting projection, already reduced to its share value. */
+type CollectedRow = { name: string; percentage: number | null }
+
+/**
+ * Upstream category names, mapped to the artifact's bucket keys. `Partial`
+ * because upstream can publish a category this build does not compile, which is
+ * skipped rather than stored.
+ */
+const BUCKET_KEY_BY_CATEGORY: Partial<Record<string, keyof UsageArtifactBuckets>> = {
+  move: "m",
+  ability: "a",
+  held_item: "i",
+  stat_alignment: "n",
+}
+
 /**
  * Project battle rows into the artifact buckets, resolving names to local ids.
  *
@@ -126,46 +142,61 @@ type CompiledBuckets = {
  * away only makes the loss visible at build time instead of silently in the UI.
  */
 function compileBuckets(rows: ChampionsBattleApi["data"]): CompiledBuckets {
-  const all = rows ?? []
+  const collected: Record<keyof UsageArtifactBuckets, CollectedRow[]> = { m: [], a: [], i: [], n: [] }
   let unresolved = 0
 
-  const moves: Array<{ name: string; percentage: number | null }> = []
-  for (const row of all) {
-    if (row.category !== "move") continue
-    if (getMoveIdByJoinName(row.name) == null) { unresolved += 1; continue }
-    moves.push({ name: row.name, percentage: row.percentage_value ?? null })
-  }
-
-  const abilities: Array<{ name: string; percentage: number | null }> = []
-  for (const row of all) {
-    if (row.category !== "ability") continue
-    if (getAbilityIdByJoinName(row.name) == null) { unresolved += 1; continue }
-    abilities.push({ name: row.name, percentage: row.percentage_value ?? null })
-  }
-
-  // Champions emits `held_item` (not `item`). Unmapped names and `nothing` stay,
-  // because the runtime keeps them in the top-10 boundary without backfilling.
-  const items: Array<{ name: string; percentage: number | null }> = []
-  for (const row of all) {
-    if (row.category !== "held_item") continue
-    items.push({ name: row.name, percentage: row.percentage_value ?? null })
-  }
-
-  const natures: Array<{ name: string; percentage: number | null }> = []
-  for (const row of all) {
-    if (row.category !== "stat_alignment") continue
-    natures.push({ name: row.name, percentage: row.percentage_value ?? null })
+  // A single pass keeps each bucket in upstream order, because rows of the same
+  // category stay in their original relative order within the source array.
+  for (const row of rows ?? []) {
+    const key = BUCKET_KEY_BY_CATEGORY[row.category]
+    if (!key) continue
+    // Moves and abilities must resolve, since the runtime drops unresolvable rows;
+    // counting them here surfaces upstream drift at build time. Items deliberately
+    // keep unmapped names and `nothing`, and natures resolve through another table.
+    if (row.category === "move" && getMoveIdByJoinName(row.name) == null) {
+      unresolved += 1
+      continue
+    }
+    if (row.category === "ability" && getAbilityIdByJoinName(row.name) == null) {
+      unresolved += 1
+      continue
+    }
+    collected[key].push({ name: row.name, percentage: row.percentage_value ?? null })
   }
 
   return {
     pokemon: {
-      m: toBucket(moves),
-      a: toBucket(abilities),
-      i: toBucket(items),
-      n: toBucket(natures),
+      m: toBucket(collected.m),
+      a: toBucket(collected.a),
+      i: toBucket(collected.i),
+      n: toBucket(collected.n),
     },
     unresolved,
   }
+}
+
+type RankedId = { id: BattlePokemonId; rank: number }
+
+function byUsageRank(a: RankedId, b: RankedId): number {
+  return a.rank - b.rank
+}
+
+/**
+ * Rank from the battle rows themselves, for seasons the index summary omits.
+ * `column_position` on the first row is the Pokemon's own usage rank.
+ */
+function rankFromBattleRows(
+  targeted: readonly { id: BattlePokemonId }[],
+  detailById: Map<BattlePokemonId, ChampionsBattleApi["data"]>,
+): RankedId[] {
+  return targeted
+    .flatMap(({ id }) => {
+      const rows = detailById.get(id)
+      if (!rows) return []
+      const rank = battleRowUsageRank({ data: rows } as ChampionsBattleApi)
+      return rank === undefined ? [] : [{ id, rank }]
+    })
+    .sort(byUsageRank)
 }
 
 async function compileArtifact(
@@ -183,39 +214,31 @@ async function compileArtifact(
   const pokemonByName = battlePokemonIdsByJoinName(pokemon)
   const entries = index.pokemon ?? []
 
-  // Ranking: prefer the index summary; fall back to battle rows for seasons the
-  // summary omits (everything except `Current` today).
-  let ranked = entries
-    .flatMap((entry) => {
-      const rank = championsIndexUsageRank(entry, season)
-      const id = resolveChampionsBattlePokemonId(entry, pokemonByName)
-      return rank === undefined || id === undefined ? [] : [{ id, rank }]
-    })
-    .sort((a, b) => a.rank - b.rank)
-
-  // Detail rows are needed for every ranked Pokemon regardless of ranking source.
+  // Join every index entry to a local id once; both the ranking and the detail
+  // fetch need the result, and name resolution is the expensive part.
   const targeted = entries.flatMap((entry) => {
     const id = resolveChampionsBattlePokemonId(entry, pokemonByName)
     return id === undefined ? [] : [{ entry, id }]
   })
+
+  // Ranking: prefer the index summary; fall back to battle rows for seasons the
+  // summary omits (everything except `Current` today).
+  const byIndexRank = targeted
+    .flatMap(({ entry, id }) => {
+      const rank = championsIndexUsageRank(entry, season)
+      return rank === undefined ? [] : [{ id, rank }]
+    })
+    .sort(byUsageRank)
 
   const detail = await mapWithConcurrency(targeted, concurrency, async ({ entry, id }) => {
     const battle = await fetchBattleRows(entry, season)
     return battle === null ? null : { id, rows: championsBattleRows(battle) }
   })
 
-  const detailById = new Map<number, ChampionsBattleApi["data"]>()
+  const detailById = new Map<BattlePokemonId, ChampionsBattleApi["data"]>()
   for (const item of detail) if (item !== null) detailById.set(item.id, item.rows)
 
-  if (ranked.length === 0) {
-    ranked = targeted
-      .flatMap(({ id }) => {
-        const rows = detailById.get(id)
-        const rank = rows ? battleRowUsageRank({ data: rows } as ChampionsBattleApi) : undefined
-        return rank === undefined ? [] : [{ id, rank }]
-      })
-      .sort((a, b) => a.rank - b.rank)
-  }
+  const ranked = byIndexRank.length > 0 ? byIndexRank : rankFromBattleRows(targeted, detailById)
 
   const ranking = [...new Set(ranked.map(({ id }) => id))]
   if (ranking.length === 0) {

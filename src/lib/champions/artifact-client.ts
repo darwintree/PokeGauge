@@ -46,12 +46,21 @@ function isManifest(value: unknown): value is UsageManifest {
     Array.isArray(candidate.compiledRules)
 }
 
+/**
+ * Read and validate one artifact file. Deferred through `Promise.resolve()` so a
+ * throw from the fetcher becomes a rejection this can absorb, and every failure
+ * — transport, non-JSON, or shape — collapses to `null` for the caller.
+ */
+function loadArtifactJson<T>(url: string, isShape: (value: unknown) => value is T): Promise<T | null> {
+  return Promise.resolve()
+    .then(() => jsonFetcher(url))
+    .then((value) => (isShape(value) ? value : null))
+    .catch(() => null)
+}
+
 /** Fetch and cache the per-source manifest. `null` means proxy mode for the source. */
 export function loadUsageManifest(source: string): Promise<UsageManifest | null> {
-  manifestPromise ??= Promise.resolve()
-    .then(() => jsonFetcher(usageManifestUrl(source)))
-    .then((value) => (isManifest(value) ? value : null))
-    .catch(() => null)
+  manifestPromise ??= loadArtifactJson(usageManifestUrl(source), isManifest)
   return manifestPromise
 }
 
@@ -65,10 +74,7 @@ export function loadUsageArtifact(
   if (options?.reload) artifactPromises.delete(key)
   let promise = artifactPromises.get(key)
   if (!promise) {
-    promise = Promise.resolve()
-      .then(() => jsonFetcher(usageArtifactUrl(source, rule)))
-      .then((value) => (isUsageArtifact(value) ? value : null))
-      .catch(() => null)
+    promise = loadArtifactJson(usageArtifactUrl(source, rule), isUsageArtifact)
     artifactPromises.set(key, promise)
   }
   return promise
@@ -79,19 +85,19 @@ export function loadUsageArtifact(
  * must be able to pick up a newer deployment, even in a long-lived tab.
  */
 export function reloadUsageArtifacts(): void {
-  artifactPromises.clear()
   manifestPromise = undefined
+  artifactPromises.clear()
 }
 
+/** Swap the transport for tests. Clears the cache so the new fetcher is used. */
 export function setUsageArtifactFetcherForTest(
   fetcher: (url: string) => Promise<unknown>,
 ): void {
-  resetUsageArtifactCache()
+  reloadUsageArtifacts()
   jsonFetcher = fetcher
 }
 
 export function resetUsageArtifactCache(): void {
-  manifestPromise = undefined
-  artifactPromises.clear()
+  reloadUsageArtifacts()
   jsonFetcher = fetchArtifactJsonFromNetwork
 }

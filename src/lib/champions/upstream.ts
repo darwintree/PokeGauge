@@ -11,7 +11,6 @@ import type { ChampionsBattleFormat } from "./types"
 
 export const CHAMPIONS_FORMAT: ChampionsBattleFormat = "Doubles"
 export const CHAMPIONS_INDEX_URL = "https://championsbattledata.com/api"
-export const CHAMPIONS_POKEMON_ASSETS_URL = "https://championsbattledata.com/pokemon_champions_assets"
 
 export type ChampionsIndexPokemon = {
   name: string
@@ -91,7 +90,7 @@ export type UsageJoinPokemon = {
 }
 
 /** Picker-visible identity. Gigantamax and other battle-only forms share calc names with the species. */
-export function rankingBattlePokemonId(pokemon: UsageJoinPokemon): BattlePokemonId {
+function rankingBattlePokemonId(pokemon: UsageJoinPokemon): BattlePokemonId {
   return pokemon.isMega || !pokemon.isBattleOnly ? pokemon.battlePokemonId : pokemon.speciesId
 }
 
