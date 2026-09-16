@@ -22,7 +22,22 @@ pnpm test
 pnpm build
 ```
 
-Deploy the production build to Cloudflare Workers with `pnpm deploy`.
+Deployment runs through Cloudflare Workers Builds, which is configured in the
+dashboard rather than in this repository:
+
+- **Build command**: `pnpm build:deploy` — builds the client and compiles the
+  usage artifacts into `dist/usage`. The compile step must stay after `vite
+  build`, because that step clears `dist/`.
+- **Deploy command**: the default `npx wrangler deploy`.
+
+Usage data changes daily, so `.github/workflows/deploy.yml` POSTs a Cloudflare
+**Deploy Hook** once a day to trigger another build on a day with no commits.
+That workflow needs a `CLOUDFLARE_DEPLOY_HOOK` repository secret (the hook URL is
+its own credential; no API token is stored in GitHub).
+
+To deploy from a workstation instead, run `pnpm deploy` (builds, compiles, then
+`wrangler deploy`) or `pnpm deploy:dry-run` to inspect the bundle without
+publishing.
 
 Pokémon and held-item images use `VITE_STATIC_ASSET_BASE_URL`. The tracked `.env`
 points to the fixed R2 prefix `https://static.pokegauge.top/pokeapi`. Override

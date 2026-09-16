@@ -1,50 +1,53 @@
-name: Deploy
+name: Refresh usage data
 
-# Usage artifacts are compiled at deploy time rather than committed: the ranking
-# and the per-Pokemon rows change daily, so keeping them in git would grow the
-# repository without bound. A daily redeploy refreshes them; the manual trigger
-# exists so a fix can ship without waiting for the schedule.
+# Usage artifacts are compiled at deploy time instead of being committed: the
+# ranking and the per-Pokemon rows change daily, so versioning them would grow
+# the repository without bound.
+#
+# Deploys run through Cloudflare Workers Builds, which already rebuilds on every
+# push to main. This workflow therefore only asks Cloudflare to run another
+# build, so that a day with no commits still refreshes the data. It holds no
+# Cloudflare API token: the deploy hook URL is the only credential, and there is
+# exactly one deploy path rather than two competing ones.
+#
+# Requires the `CLOUDFLARE_DEPLOY_HOOK` repository secret, and the Workers Builds
+# build command must run `pnpm build:deploy` so the compile step is included.
 on:
   schedule:
     # 18:17 UTC daily. Off the hour so it does not pile onto other cron traffic.
     - cron: "17 18 * * *"
   workflow_dispatch:
 
-# Never let a scheduled refresh and a manual deploy race: two concurrent
-# `wrangler deploy` runs would publish whichever finishes last.
+# A refresh and a push-to-main deploy both go through Workers Builds; let them
+# queue rather than race.
 concurrency:
-  group: deploy-${{ github.ref }}
+  group: usage-refresh
   cancel-in-progress: false
 
 permissions:
   contents: read
 
 jobs:
-  deploy:
+  refresh:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - run: git submodule update --init --checkout --depth=1 PokeAPI/pokeapi
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24
-          package-manager-cache: false
-      - run: corepack enable
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm build
-      # Reads live upstream data, so this step fails rather than deploying without
-      # artifacts: the client would otherwise silently fall back to proxy mode.
-      # Compile after `build` because vite empties dist/ during the build.
-      - run: pnpm usage:compile
-      - name: Deploy
+      - name: Trigger a Workers Builds deploy
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        # An empty CLOUDFLARE_ACCOUNT_ID is worse than an unset one: wrangler
-        # rejects it instead of inferring the account from the token, so drop it
-        # when the secret is not configured.
+          DEPLOY_HOOK: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}
         run: |
-          if [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then unset CLOUDFLARE_ACCOUNT_ID; fi
-          pnpm exec wrangler deploy
+          if [ -z "${DEPLOY_HOOK:-}" ]; then
+            echo "::error::CLOUDFLARE_DEPLOY_HOOK secret is not set."
+            exit 1
+          fi
+          # The hook URL embeds a bearer token; GitHub masks the secret value, so
+          # capture the body to a file and never echo the URL itself.
+          body=$(mktemp)
+          # A transport failure leaves the body empty rather than stale, so the
+          # diagnostic below never reports an unrelated earlier response.
+          status=$(curl -sS -o "$body" -w '%{http_code}' -X POST "$DEPLOY_HOOK" || true)
+          if [ "$status" -lt 200 ] || [ "$status" -ge 300 ]; then
+            echo "::error::Deploy hook returned HTTP ${status:-none}"
+            [ -s "$body" ] && cat "$body"
+            exit 1
+          fi
+          echo "Workers Builds deploy triggered (HTTP $status)."

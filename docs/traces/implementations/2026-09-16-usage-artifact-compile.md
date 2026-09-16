@@ -78,7 +78,7 @@ Reason:
 
 Follow-up: None
 
-### 5. 编译不进 `pnpm build`
+### 5. 编译不进 `pnpm build`，但属于部署构建命令
 
 Type: unresolved-implementation-decision
 
@@ -88,15 +88,33 @@ Context:
 
 Decision:
 
-新增独立的 `pnpm usage:compile`，由部署工作流在 `pnpm build` **之后**调用；`pnpm build` 自身不联网。
+新增独立的 `pnpm usage:compile`，并组合出 `build:deploy = pnpm build && pnpm usage:compile` 作为 Workers Builds 的 **build command**；`pnpm build` 自身不联网。
 
 Reason:
 
-`pnpm build` 目前在 CI 中无需网络（install → lint → test → build）。把联网抓取塞进 build 会让本地构建与 PR 构建依赖上游可用性。放在 `build` 之后而非之前，是因为 `vite build` 会清空 `dist/`，先编译会被删除。
+`pnpm build` 目前在 CI 中无需网络（install → lint → test → build）。把联网抓取塞进 build 会让本地构建与 PR 构建依赖上游可用性。放在 `build` 之后而非之前，是因为 `vite build` 会清空 `dist/`，先编译会被删除。Workers Builds 的 build command 对生产与预览构建都会执行，而 deploy command 才会区分生产/预览，因此把编译放在 build command 可让预览构建也带上产物。
 
 Follow-up: None
 
-### 6. 产物缓存用 must-revalidate 而非长缓存
+### 6. 定时刷新改为触发 Workers Builds，而非在 GitHub Actions 里 `wrangler deploy`
+
+Type: unresolved-implementation-decision
+
+Context:
+
+用户已同意"新增定时部署工作流"并授权配置 secret，但没有指定部署由谁执行。实现时通过 `gh api .../check-runs` 发现仓库**已经接入 Cloudflare Workers Builds**（配置在 dashboard，仓库内无任何配置）：push 到 `main` 会自动生产部署，PR 分支会出预览部署。
+
+Decision:
+
+删除工作流中的 `wrangler deploy` 与 `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` 依赖，改为定时 POST Cloudflare **Deploy Hook**；部署路径唯一，编译步骤由 Workers Builds 的 build command 承担。
+
+Reason:
+
+两条路径同时 `wrangler deploy` 会互相竞争，且产物是否包含编译步骤取决于哪一条先跑完，属于不稳定状态。Deploy Hook 的 URL 自身即凭据（官方文档明确无需 `Authorization` 头），因此不必把账户级 API token 放进 GitHub secret。实测该预览部署的 `/usage/champions/manifest.json` 返回 `content-type: text/html`（SPA 回落），证实 Workers Builds 的执行路径不含 `usage:compile`——即编译位置必须由 build command 决定；客户端对非 JSON 响应返回 `null`，故未配置时安全回落转发模式。
+
+Follow-up: build command 与 Deploy Hook 需在 dashboard 配置，无法由仓库内文件保证；已写入 README。
+
+### 7. 产物缓存用 must-revalidate 而非长缓存
 
 Type: unresolved-implementation-decision
 
