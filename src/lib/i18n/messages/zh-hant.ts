@@ -4,7 +4,6 @@ export const zhHantMessages: Record<string, string> = {
     "usage.rules.retry": "重試",
     "usage.rules.more": "更多規則（{count}）",
     "usage.rules.less": "收起",
-    "usage.rules.onDemand": "此規則首次載入可能需要較長時間。",
     "usage.detail.loading": "正在載入使用率資料，可繼續選擇招式和道具。",
     "usage.detail.failed": "部分使用率資料載入失敗，仍可選擇招式和道具。",
     "usage.detail.empty": "目前規則下，{attacker} 暫無此類推薦招式。可手動新增招式。",

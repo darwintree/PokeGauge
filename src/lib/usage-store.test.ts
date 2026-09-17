@@ -25,28 +25,9 @@ function memoryStorage() {
   }
 }
 
-function championsIndex(ids: Array<{ name: string; position: number }>) {
-  return {
-    defaultSeason: "Current",
-    seasons: ["Current", "M6"],
-    dataVersion: "v1",
-    pokemon: ids.map((entry) => ({
-      name: entry.name,
-      slug: entry.name.toLowerCase(),
-      battleName: entry.name,
-      showdownName: entry.name,
-      summary: {
-        battleSummary: {
-          Current: { Doubles: { top: { move: { position: entry.position } } } },
-        },
-      },
-    })),
-  }
-}
-
 describe("usage store refresh policy", () => {
   beforeEach(() => {
-    vi.stubGlobal("fetch", vi.fn(async () => Response.json({ defaultId: "Current", rules: [{ id: "Current", label: "Current", compiled: true }, { id: "M6", label: "M6", compiled: true }] })))
+    vi.stubGlobal("fetch", vi.fn(async () => Response.json({ defaultId: "Current", rules: [{ id: "Current", label: "Current", recommended: true }, { id: "M6", label: "M6", recommended: true }] })))
   })
   afterEach(() => {
     vi.unstubAllGlobals()
@@ -66,9 +47,9 @@ describe("usage store refresh policy", () => {
     })
     let calls = 0
     setChampionsJsonFetcherForTest(async (url) => {
-      if (url === "https://championsbattledata.com/api") {
+      if (url === "/api/usage/ranking/champions?rule=Current") {
         calls += 1
-        return championsIndex([{ name: "Charizard", position: 1 }])
+        return ({ pokemonIds: [6] })
       }
       throw new Error(url)
     })
@@ -96,9 +77,9 @@ describe("usage store refresh policy", () => {
     })
     let indexCalls = 0
     setChampionsJsonFetcherForTest(async (url) => {
-      if (url === "https://championsbattledata.com/api") {
+      if (url === "/api/usage/ranking/champions?rule=Current") {
         indexCalls += 1
-        return championsIndex([{ name: "Pikachu", position: 1 }])
+        return ({ pokemonIds: [25] })
       }
       throw new Error(url)
     })
@@ -115,7 +96,7 @@ describe("usage store refresh policy", () => {
   it("reloads detail consumers even when ranking is unchanged", async () => {
     vi.stubGlobal("localStorage", memoryStorage())
     resetUsageStoreForTest()
-    setChampionsJsonFetcherForTest(async () => championsIndex([{ name: "Pikachu", position: 1 }]))
+    setChampionsJsonFetcherForTest(async () => ({ pokemonIds: [25] }))
     await startUsageSession()
     await refreshUsageStore()
     const generation = getUsageStoreSnapshot().generation
@@ -130,7 +111,7 @@ describe("usage store refresh policy", () => {
     let resolveSmogon!: (response: Response) => void
     vi.stubGlobal("fetch", vi.fn((url: string) => url.endsWith("smogon")
       ? new Promise<Response>(resolve => { resolveSmogon = resolve })
-      : Promise.resolve(Response.json({ defaultId: "tournaments", date: "2026-05", rules: [{ id: "tournaments", label: "Tournaments", compiled: true }] }))))
+      : Promise.resolve(Response.json({ defaultId: "tournaments", date: "2026-05", rules: [{ id: "tournaments", label: "Tournaments", recommended: true }] }))))
     const first = setUsageStoreSource("smogon")
     expect(getUsageStoreSnapshot().loadingSource).toBe("smogon")
     await setUsageStoreSource("pikalytics")

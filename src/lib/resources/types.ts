@@ -1,5 +1,5 @@
-import type { SupportedLocale } from "@/lib/i18n"
-import type { PokemonType } from "@/lib/pokemon"
+import type { SupportedLocale } from "../i18n/locales"
+import type { PokemonType } from "../pokemon/types"
 
 export type ResourceType = "pokemon" | "move" | "ability"
 export type UpstreamResourceId = number

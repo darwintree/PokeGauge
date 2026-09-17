@@ -1,31 +1,9 @@
-import type { BattlePokemonId } from "@/lib/resources"
+import type { BattlePokemonId } from "../resources/types"
 
 import type { ChampionsBattleFormat } from "./types"
 
-/**
- * A compiled usage artifact replaces the per-Pokemon upstream reads for one
- * `(source, rule)` pair. Ranking and per-Pokemon detail ship in one file so the
- * two can never disagree about which snapshot they describe.
- *
- * Shape rules the compiler and every reader depend on:
- *
- * - `ranking` is ordered by usage rank, descending — the picker order.
- * - `pokemon` is keyed by decimal `BattlePokemonId`. The upstream join name is
- *   deliberately absent: joining happens once at compile time, so an upstream
- *   rename fails the build instead of silently emptying a picker.
- * - A bucket is an array of `[name, percentage]` in upstream rank order, with
- *   `percentage` already resolved to a number or `null`. `[name, null]` is
- *   meaningful (Champions publishes teammates without a percentage) and must
- *   not be dropped. An empty bucket is omitted rather than stored as `[]`.
- * - Buckets keep every projected row rather than a truncated window. Smogon
- *   projects only the strongest spread per nature, matching runtime inference.
- *   The runtime already applies its own rank/window/dedupe rules, and several of those rules
- *   slice *after* filtering rows whose name does not resolve locally. Trimming
- *   here would change which rows survive that later filter, so the compiler must
- *   stay lossless.
- * - Move, ability, and item names stay names. The compiler only guarantees the
- *   projection is lossless; the runtime keeps resolving names through the same
- *   generated tables it already uses, which are built from this same commit.
+/** Compact named buckets shared by compiled snapshots and the detail API.
+ * Rows retain upstream order and null percentages; local resources resolve names.
  */
 export type UsageArtifactRow = [name: string, percentage: number | null]
 export type UsageArtifactBucket = UsageArtifactRow[]
@@ -50,13 +28,12 @@ export type UsageArtifact = {
   generatedAt: string
   /** Ranked `BattlePokemonId`s, best usage first. */
   ranking: BattlePokemonId[]
-  pokemon: Record<string, UsageArtifactBuckets>
+  /** Absent for ranking-only snapshots; an empty record means published empty statistics. */
+  pokemon?: Record<string, UsageArtifactBuckets>
 }
 
 /**
- * Per-source index of what the last compile produced. It exists so the client can
- * learn the rule list and which rules are compiled without downloading the
- * multi-megabyte upstream index.
+ * Per-source catalog and snapshot coverage, read by the Worker.
  */
 export type UsageManifest = {
   source: string
@@ -64,12 +41,12 @@ export type UsageManifest = {
   rules: Array<{ id: string; label: string }>
   /** Published dataset month when the source keys requests by date. */
   date?: string
-  /** Rules that have a compiled artifact. Anything else uses proxy mode. */
+  /** Rules that have a compiled artifact. Other rules are read from upstream by the Worker. */
   compiledRules: string[]
   generatedAt: string
 }
 
-/** Stable per-rule URL. Served as a static asset, never through the Worker. */
+/** Stable per-rule asset path used by the compiler and Worker. */
 export function usageArtifactUrl(source: string, rule: string): string {
   return `/usage/${encodeURIComponent(source)}/${rule.split("/").map(encodeURIComponent).join("/")}.json`
 }
@@ -84,28 +61,30 @@ function isBucket(value: unknown): value is UsageArtifactBucket {
     (row) => Array.isArray(row) &&
       row.length === 2 &&
       typeof row[0] === "string" &&
-      (row[1] === null || typeof row[1] === "number"),
+      (row[1] === null || (typeof row[1] === "number" && Number.isFinite(row[1]))),
   )
 }
 
-function isPokemonEntry(value: unknown): value is UsageArtifactBuckets {
-  if (!value || typeof value !== "object") return false
+export function isUsageBuckets(value: unknown): value is UsageArtifactBuckets {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false
+  if (!Object.keys(value).every(key => ["m", "a", "i", "n"].includes(key))) return false
   const entry = value as UsageArtifactBuckets
   return (["m", "a", "i", "n"] as const).every(
     (key) => entry[key] === undefined || isBucket(entry[key]),
   )
 }
 
-/** Shape check for a parsed artifact, so a truncated file is treated as absent. */
+/** Validate a parsed snapshot before the API serves it. */
 export function isUsageArtifact(value: unknown): value is UsageArtifact {
-  if (!value || typeof value !== "object") return false
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false
   const candidate = value as Partial<UsageArtifact>
   if (typeof candidate.source !== "string" || typeof candidate.rule !== "string") return false
   if (typeof candidate.format !== "string" || typeof candidate.dataVersion !== "string") return false
   if (!Array.isArray(candidate.ranking)) return false
   if (!candidate.ranking.every((id) => typeof id === "number")) return false
-  if (!candidate.pokemon || typeof candidate.pokemon !== "object") return false
-  return Object.values(candidate.pokemon).every(isPokemonEntry)
+  return candidate.pokemon === undefined || (candidate.pokemon !== null &&
+    typeof candidate.pokemon === "object" && !Array.isArray(candidate.pokemon) &&
+    Object.values(candidate.pokemon).every(isUsageBuckets))
 }
 
 /** Build a bucket from upstream rows, preserving rank order and null percentages. */

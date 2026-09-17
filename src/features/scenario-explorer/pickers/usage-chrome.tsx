@@ -95,8 +95,8 @@ export function UsagePickerChrome({ className, variant = "popover" }: UsagePicke
   const [expanded, setExpanded] = useState(false)
   const selected = usage.rules.find(rule => rule.id === usage.ruleId)
   const sourceLabel = intl.formatMessage({ id: usageSourceMessageId(usage.source) })
-  const hidden = usage.rules.filter(rule => !rule.compiled && rule.id !== usage.ruleId)
-  const visible = usage.rules.filter(rule => expanded || rule.compiled || rule.id === usage.ruleId)
+  const hidden = usage.rules.filter(rule => !rule.recommended && rule.id !== usage.ruleId)
+  const visible = usage.rules.filter(rule => expanded || rule.recommended || rule.id === usage.ruleId)
   const activeSource = usage.loadingSource ?? usage.catalogError ?? usage.source
   const settings = variant === "settings"
 
@@ -202,7 +202,6 @@ export function UsagePickerChrome({ className, variant = "popover" }: UsagePicke
       {!usage.loadingSource && !usage.catalogError ? (
         <div className={cn("space-y-3 border-t border-hairline", settings ? "mt-5 pt-4" : "p-3")}>
           {!settings && selected ? <p className="break-words text-xs leading-relaxed text-hud-muted">{selected.label}</p> : null}
-          {selected && !selected.compiled ? <p className="text-xs text-hud-muted"><FormattedMessage id="usage.rules.onDemand" /></p> : null}
           <UsageFetchStatus showPending />
         </div>
       ) : null}

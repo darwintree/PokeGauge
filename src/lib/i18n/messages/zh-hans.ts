@@ -4,7 +4,6 @@ export const zhHansMessages: Record<string, string> = {
     "usage.rules.retry": "重试",
     "usage.rules.more": "更多规则（{count}）",
     "usage.rules.less": "收起",
-    "usage.rules.onDemand": "此规则首次加载可能需要较长时间。",
     "usage.detail.loading": "正在加载使用率数据，可继续选择招式和道具。",
     "usage.detail.failed": "部分使用率数据加载失败，仍可选择招式和道具。",
     "usage.detail.empty": "当前规则下，{attacker} 暂无此类推荐招式。可手动添加招式。",

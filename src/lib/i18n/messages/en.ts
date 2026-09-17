@@ -4,7 +4,6 @@ export const enMessages: Record<string, string> = {
     "usage.rules.retry": "Retry",
     "usage.rules.more": "Show {count, plural, one {# more rule} other {# more rules}}",
     "usage.rules.less": "Show fewer rules",
-    "usage.rules.onDemand": "Loading data for this rule may take longer the first time.",
     "usage.detail.loading": "Loading usage data. You can still select moves and items.",
     "usage.detail.failed": "Some usage data could not load. You can still select moves and items.",
     "usage.detail.empty": "No recommended moves for {attacker} in this category under the selected rule. You can add moves manually.",

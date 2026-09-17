@@ -1,4 +1,4 @@
-import type { BattlePokemonId, UpstreamResourceId } from "@/lib/resources"
+import type { BattlePokemonId, UpstreamResourceId } from "../resources/types"
 
 export type ChampionsBattleFormat = "Doubles" | "Singles"
 

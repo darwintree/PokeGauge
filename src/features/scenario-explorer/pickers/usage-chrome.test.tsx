@@ -10,10 +10,10 @@ import { UsagePickerChrome } from "./usage-chrome"
 const snapshot: UsageStoreSnapshot = {
   source: "champions", ruleId: "Current",
   rules: [
-    { id: "Current", label: "Current season full name", displayName: "Current", compiled: true },
-    { id: "M6", label: "M6", compiled: true },
-    { id: "M4", label: "M4", compiled: false },
-    { id: "M3", label: "M3", compiled: false },
+    { id: "Current", label: "Current season full name", displayName: "Current", recommended: true },
+    { id: "M6", label: "M6", recommended: true },
+    { id: "M4", label: "M4", recommended: false },
+    { id: "M3", label: "M3", recommended: false },
   ],
   loadingSource: null, catalogError: null,
   fetchedAt: Date.now(), pendingUpdate: true, refreshing: false, generation: 0,

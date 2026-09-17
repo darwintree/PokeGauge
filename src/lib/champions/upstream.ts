@@ -1,4 +1,5 @@
-import type { BattlePokemonId } from "@/lib/resources"
+import { toBucket, type UsageArtifactBuckets } from "./usage-artifact"
+import type { BattlePokemonId } from "../resources/types"
 
 import type { ChampionsBattleFormat } from "./types"
 
@@ -61,10 +62,6 @@ export type ChampionsBattleApi = {
   rows?: ChampionsBattleRow[]
 }
 
-export const CHAMPIONS_NAME_OVERRIDES: Partial<Record<BattlePokemonId, string>> = {
-  10021: "Landorus Therian",
-}
-
 export const CHAMPIONS_POKEMON_ID_OVERRIDES: Record<string, BattlePokemonId> = {
   taurospaldeaaqua: 10252,
   taurospaldeablaze: 10251,
@@ -122,22 +119,6 @@ export function battlePokemonIdsByJoinName(
   return byName
 }
 
-export function championsIndexByName(index: ChampionsIndexApi): Map<string, ChampionsIndexPokemon> {
-  return new Map(
-    (index.pokemon ?? []).flatMap((pokemon) =>
-      [
-        pokemon.showdownId,
-        pokemon.showdownName,
-        pokemon.name,
-        pokemon.battleName,
-        pokemon.slug,
-      ]
-        .filter((name): name is string => Boolean(name))
-        .map((name) => [normalizeJoinName(name), pokemon] as const),
-    ),
-  )
-}
-
 export function resolveChampionsBattlePokemonId(
   entry: ChampionsIndexPokemon,
   pokemonByName: Map<string, BattlePokemonId>,
@@ -169,14 +150,6 @@ export function battleRowUsageRank(battle: Pick<ChampionsBattleApi, "data" | "ro
   return row?.column_position ?? row?.position
 }
 
-/** Resolve the season to read, preferring the user-selected rule. */
-export function championsSeason(
-  ruleId: string | null,
-  index: { defaultSeason?: string },
-): string {
-  return ruleId ?? index.defaultSeason ?? "Current"
-}
-
 export function championsBattleRowsUrl(
   entry: Pick<ChampionsIndexPokemon, "battleName" | "name">,
   season: string,
@@ -185,7 +158,7 @@ export function championsBattleRowsUrl(
 }
 
 /** Battle rows for both upstream payload keys. */
-export function championsBattleRows(battle: ChampionsBattleApi): ChampionsBattleRow[] {
+export function championsBattleRows(battle: Pick<ChampionsBattleApi, "data" | "rows">): ChampionsBattleRow[] {
   return battle.data ?? battle.rows ?? []
 }
 
@@ -227,4 +200,32 @@ export type PikalyticsEntry = {
 export function pikalyticsPercent(value: string | undefined): number | null {
   const parsed = Number(value)
   return Number.isFinite(parsed) ? parsed : null
+}
+
+/** Both the compiler and API retain all named rows; the client resolves local IDs. */
+export function championsBuckets(battle: Pick<ChampionsBattleApi, "data" | "rows">): UsageArtifactBuckets {
+  if (!Array.isArray(battle.data ?? battle.rows)) throw new Error("Invalid Champions detail")
+  const rows = championsBattleRows(battle)
+  const bucket = (category: string) => toBucket(rows.filter(row => row.category === category)
+    .toSorted((a, b) => a.rank - b.rank)
+    .map(row => ({ name: row.name, percentage: row.percentage_value })))
+  return { m: bucket("move"), a: bucket("ability"), i: bucket("held_item"), n: bucket("stat_alignment") }
+}
+
+export function smogonBuckets(data: Record<string, unknown>): UsageArtifactBuckets {
+  const bucket = (key: string) => toBucket((key === "Spreads" ? smogonNatureRows(data) : smogonRowsWithPercent(data, key))
+    .map(([name, , percentage]) => ({ name, percentage })))
+  return { m: bucket("Moves"), a: bucket("Abilities"), i: bucket("Items"), n: bucket("Spreads") }
+}
+
+export function pikalyticsBuckets(entry: PikalyticsEntry): UsageArtifactBuckets {
+  if (typeof entry?.name !== "string" || ![entry.moves, entry.abilities, entry.items].every(Array.isArray)) {
+    throw new Error("Invalid Pikalytics detail")
+  }
+  return {
+    m: toBucket(entry.moves?.map(r => ({ name: r.move, percentage: pikalyticsPercent(r.percent) }))),
+    a: toBucket(entry.abilities?.map(r => ({ name: r.ability, percentage: pikalyticsPercent(r.percent) }))),
+    i: toBucket(entry.items?.map(r => ({ name: r.item, percentage: pikalyticsPercent(r.percent) }))),
+    n: toBucket(entry.natures?.map(r => ({ name: r.nature, percentage: pikalyticsPercent(r.percent) }))),
+  }
 }

@@ -23,9 +23,9 @@ export function usageSourceMessageId(source: UsageSource): string {
   return `usageSource.${source}`
 }
 
-export function usageCacheStorageKey(source: UsageSource, ruleId: string): string {
+export function usageCacheStorageKey(source: UsageSource, ruleId: string, date?: string | null): string {
   // v2 drops Pikalytics snapshots that ranked Gigantamax ids the picker cannot show.
-  if (source === "pikalytics") return `${USAGE_CACHE_STORAGE_PREFIX}v2:${source}:${ruleId}`
+  if (source === "pikalytics") return `${USAGE_CACHE_STORAGE_PREFIX}v2:${source}:${ruleId}${date ? `:${date}` : ""}`
   return `${USAGE_CACHE_STORAGE_PREFIX}${source}:${ruleId}`
 }
 
@@ -122,8 +122,8 @@ export function withRememberedRule(
   }
 }
 
-export function loadUsageCache(source: UsageSource, ruleId: string): UsageCacheSnapshot | null {
-  const stored = readJson(usageCacheStorageKey(source, ruleId))
+export function loadUsageCache(source: UsageSource, ruleId: string, date?: string | null): UsageCacheSnapshot | null {
+  const stored = readJson(usageCacheStorageKey(source, ruleId, date))
   return isCacheSnapshot(stored) ? stored : null
 }
 
@@ -131,8 +131,9 @@ export function saveUsageCache(
   source: UsageSource,
   ruleId: string,
   snapshot: UsageCacheSnapshot,
+  date?: string | null,
 ): void {
-  writeJson(usageCacheStorageKey(source, ruleId), snapshot)
+  writeJson(usageCacheStorageKey(source, ruleId, date), snapshot)
 }
 
 export function usageFingerprint(parts: Array<string | number>): string {

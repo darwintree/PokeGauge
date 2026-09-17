@@ -1,12 +1,9 @@
 /**
  * Compile usage artifacts for the high-frequency usage rules.
  *
- * Why this exists: the ranking layer is the only thing with a `(source, rule)`
- * identity and a local cache. Per-Pokemon breakdowns had neither, and the Smogon
- * and Pikalytics readers bypassed caching entirely, so a single session could
- * issue hundreds of upstream requests and still show an empty Move track. Doing
- * the join and the row fan-out once per deploy removes that whole class of
- * failure from the request path.
+ * Current Champions and Pikalytics snapshots contain only rankings. Their
+ * details are fetched on demand by the Worker; historical Champions and Smogon
+ * retain full snapshots because their rankings/details require bulk reads.
  *
  * Runs after the client build in `pnpm build`. CI uses `pnpm build:offline`
  * to avoid upstream network dependencies. A failed compile must not deploy.
@@ -24,10 +21,10 @@ import path from "node:path"
 import { setTimeout as delay } from "node:timers/promises"
 import { gunzipSync } from "node:zlib"
 
-import { discoverUsageCatalog } from "../worker/index"
-import { isUsageSource, nameUsageRules, selectCompileRules, USAGE_SOURCES, type UsageCatalog, type UsageSource } from "../src/lib/usage-rules"
+import { discoverUsageCatalog } from "../worker/usage-upstream"
+import { isUsageSource, nameUsageRules, selectRecommendedRules, USAGE_SOURCES, type UsageCatalog, type UsageSource } from "../src/lib/usage-rules"
 
-import { getMoveIdByJoinName, getAbilityIdByJoinName, listResources } from "../src/lib/resources"
+import { listResources } from "../src/lib/resources"
 import type { BattlePokemonId } from "../src/lib/resources"
 import {
   CHAMPIONS_FORMAT,
@@ -36,20 +33,17 @@ import {
   battleRowUsageRank,
   championsBattleRowsUrl,
   championsBattleRows,
-  usageDetailSourceId,
   championsIndexUsageRank,
   resolveChampionsBattlePokemonId,
   normalizeJoinName,
-  smogonRowsWithPercent,
-  smogonNatureRows,
-  pikalyticsPercent,
+  championsBuckets,
+  smogonBuckets,
   type PikalyticsEntry,
   type ChampionsBattleApi,
   type ChampionsIndexApi,
   type ChampionsIndexPokemon,
 } from "../src/lib/champions/upstream"
 import {
-  toBucket,
   usageArtifactUrl,
   usageManifestUrl,
   type UsageArtifact,
@@ -149,52 +143,6 @@ async function mapWithConcurrency<T, R>(
   return results
 }
 
-/** A row awaiting projection, already reduced to its share value. */
-type CollectedRow = { name: string; percentage: number | null }
-
-/**
- * Upstream category names, mapped to the artifact's bucket keys. `Partial`
- * because upstream can publish a category this build does not compile, which is
- * skipped rather than stored.
- */
-const BUCKET_KEY_BY_CATEGORY: Partial<Record<string, keyof UsageArtifactBuckets>> = {
-  move: "m",
-  ability: "a",
-  held_item: "i",
-  stat_alignment: "n",
-}
-
-/**
- * Project battle rows into buckets, keeping the same resolvable moves and
- * abilities as the runtime reader.
- */
-function compileBuckets(rows: ChampionsBattleApi["data"]): UsageArtifactBuckets {
-  const collected: Record<keyof UsageArtifactBuckets, CollectedRow[]> = { m: [], a: [], i: [], n: [] }
-
-  // A single pass keeps each bucket in upstream order, because rows of the same
-  // category stay in their original relative order within the source array.
-  for (const row of rows ?? []) {
-    const key = BUCKET_KEY_BY_CATEGORY[row.category]
-    if (!key) continue
-    // Match runtime filtering; items keep unmapped names and `nothing` so the
-    // default-pick window does not backfill them.
-    if (row.category === "move" && getMoveIdByJoinName(row.name) == null) {
-      continue
-    }
-    if (row.category === "ability" && getAbilityIdByJoinName(row.name) == null) {
-      continue
-    }
-    collected[key].push({ name: row.name, percentage: row.percentage_value ?? null })
-  }
-
-  return {
-    m: toBucket(collected.m),
-    a: toBucket(collected.a),
-    i: toBucket(collected.i),
-    n: toBucket(collected.n),
-  }
-}
-
 type RankedId = { id: BattlePokemonId; rank: number }
 
 function byUsageRank(a: RankedId, b: RankedId): number {
@@ -224,13 +172,7 @@ async function compileArtifact(
   season: string,
   concurrency: number,
 ): Promise<UsageArtifact> {
-  // Join tables for moves and abilities are built lazily on first lookup, so
-  // load them before resolving any name.
-  const [pokemon] = await Promise.all([
-    listResources("pokemon", "en"),
-    listResources("move", "en"),
-    listResources("ability", "en"),
-  ])
+  const pokemon = await listResources("pokemon", "en")
   const pokemonByName = battlePokemonIdsByJoinName(pokemon)
   const entries = index.pokemon ?? []
 
@@ -250,6 +192,15 @@ async function compileArtifact(
     })
     .sort(byUsageRank)
 
+  if (season === "Current") {
+    if (!byIndexRank.length) throw new Error("Champions Current ranking is empty")
+    return {
+      source: "champions", rule: season, format: CHAMPIONS_FORMAT,
+      dataVersion: index.dataVersion ?? "", generatedAt: new Date().toISOString(),
+      ranking: [...new Set(byIndexRank.map(({ id }) => id))],
+    }
+  }
+
   const detail = await mapWithConcurrency(targeted, concurrency, async ({ entry, id }) => {
     const battle = await fetchBattleRows(entry, season)
     return battle === null ? null : { id, rows: championsBattleRows(battle) }
@@ -266,15 +217,8 @@ async function compileArtifact(
   }
 
   const pokemonEntries: Record<string, UsageArtifactBuckets> = {}
-  for (const { battlePokemonId, speciesId, isMega } of pokemon) {
-    const id = usageDetailSourceId({ battlePokemonId, speciesId, isMega })
-    if (id !== battlePokemonId) continue // Megas inherit the base species rows.
-    const rows = detailById.get(id)
-    if (!rows) continue
-    const compiled = compileBuckets(rows)
-    if (compiled.m || compiled.a || compiled.i || compiled.n) {
-      pokemonEntries[String(id)] = compiled
-    }
+  for (const [id, rows] of detailById) {
+    pokemonEntries[id] = championsBuckets({ data: rows })
   }
 
   const missing = ranking.filter((id) => pokemonEntries[String(id)] === undefined)
@@ -295,7 +239,7 @@ async function compileArtifact(
   }
 }
 
-async function compileOtherArtifact(source: "smogon" | "pikalytics", rule: string, catalog: UsageCatalog, concurrency: number): Promise<UsageArtifact> {
+async function compileOtherArtifact(source: "smogon" | "pikalytics", rule: string, catalog: UsageCatalog): Promise<UsageArtifact> {
   const resources = await listResources("pokemon", "en")
   const byName = battlePokemonIdsByJoinName(resources)
   const pokemon: Record<string, UsageArtifactBuckets> = {}
@@ -306,12 +250,8 @@ async function compileOtherArtifact(source: "smogon" | "pikalytics", rule: strin
     for (const [name, data] of Object.entries(response.data).sort(([, a], [, b]) => Number(b.usage) - Number(a.usage))) {
       const id = byName.get(normalizeJoinName(name))
       if (id == null || pokemon[id]) continue
-      function bucket(key: string): UsageArtifactBuckets["m"] {
-        const rows = key === "Spreads" ? smogonNatureRows(data) : smogonRowsWithPercent(data, key)
-        return toBucket(rows.map(([name, , percentage]) => ({ name, percentage })))
-      }
       ranking.push(id)
-      pokemon[id] = { m: bucket("Moves"), a: bucket("Abilities"), i: bucket("Items"), n: bucket("Spreads") }
+      pokemon[id] = smogonBuckets(data)
     }
   } else {
     const root = `https://www.pikalytics.com/api`
@@ -320,31 +260,11 @@ async function compileOtherArtifact(source: "smogon" | "pikalytics", rule: strin
       const id = byName.get(normalizeJoinName(entry.name))
       return id == null ? [] : [{ id, name: entry.name }]
     })
-    const entries = await mapWithConcurrency(targets, Math.min(concurrency, 2), async ({ id, name }) => {
-      const entry = await fetchJson<PikalyticsEntry>(`${root}/p/${catalog.date}/${rule}/${encodeURIComponent(name)}`)
-      if (typeof entry.name !== "string" || ![entry.moves, entry.abilities, entry.items].every(Array.isArray)) {
-        throw new Error(`Invalid Pikalytics detail: ${rule}/${name}`)
-      }
-      return { id, buckets: {
-        m: toBucket(entry.moves?.map(r => ({ name: r.move, percentage: pikalyticsPercent(r.percent) }))),
-        a: toBucket(entry.abilities?.map(r => ({ name: r.ability, percentage: pikalyticsPercent(r.percent) }))),
-        i: toBucket(entry.items?.map(r => ({ name: r.item, percentage: pikalyticsPercent(r.percent) }))),
-        n: toBucket(entry.natures?.map(r => ({ name: r.nature, percentage: pikalyticsPercent(r.percent) }))),
-      } }
-    })
-    for (const { id, buckets } of entries) {
-      if (pokemon[id]) continue
-      ranking.push(id)
-      pokemon[id] = buckets
-    }
+    ranking.push(...new Set(targets.map(({ id }) => id)))
   }
-  // A successful Pikalytics response can explicitly publish empty statistics.
-  // Keep that empty record, which is different from an unfetched/failed detail.
-  if (!ranking.length || ranking.some(id => !pokemon[id]) ||
-      (source === "smogon" && ranking.some(id => !Object.values(pokemon[id]).some(bucket => bucket?.length)))) {
-    throw new Error(`${source}/${rule}: missing ranking or Pokemon details`)
-  }
-  return { source, rule, format: "Doubles", dataVersion: catalog.date ?? rule.split("/")[0], generatedAt: new Date().toISOString(), ranking, pokemon }
+  if (!ranking.length) throw new Error(`${source}/${rule}: missing ranking`)
+
+  return { source, rule, format: "Doubles", dataVersion: catalog.date ?? rule.split("/")[0], generatedAt: new Date().toISOString(), ranking, ...(source === "smogon" ? { pokemon } : {}) }
 }
 
 const { outDir, rules: explicitRules, concurrency, source: explicitSource } = parseArgs(process.argv.slice(2))
@@ -358,7 +278,7 @@ for (const source of sources) {
   const catalog: UsageCatalog = index
     ? { defaultId: index.defaultSeason ?? available[0], rules: available.map(id => ({ id, label: id })) }
     : await discoverUsageCatalog(source)
-  const rules = explicitRules ?? selectCompileRules(source, catalog)
+  const rules = explicitRules ?? selectRecommendedRules(source, catalog)
   if (!rules.length) throw new Error(`No compile candidates for ${source}`)
   const usageDir = path.join(outDir, "usage", source)
   await rm(usageDir, { recursive: true, force: true })
@@ -368,12 +288,12 @@ for (const source of sources) {
     console.log(`Compiling ${source}/${rule}`)
     const started = Date.now()
     const artifact = index ? await compileArtifact(index, rule, concurrency)
-      : await compileOtherArtifact(source as "smogon" | "pikalytics", rule, catalog, concurrency)
+      : await compileOtherArtifact(source as "smogon" | "pikalytics", rule, catalog)
     const target = path.join(outDir, usageArtifactUrl(source, rule).slice(1))
     await mkdir(path.dirname(target), { recursive: true })
     const serialized = JSON.stringify(artifact)
     await writeFile(target, serialized)
-    console.log(`${source}/${rule}: ${artifact.ranking.length} ranked, ${Object.keys(artifact.pokemon).length} details, ${(serialized.length / 1024).toFixed(0)} KB, ${Date.now() - started} ms`)
+    console.log(`${source}/${rule}: ${artifact.ranking.length} ranked, ${Object.keys(artifact.pokemon ?? {}).length} details, ${(serialized.length / 1024).toFixed(0)} KB, ${Date.now() - started} ms`)
   }
   await writeFile(path.join(usageDir, "manifest.json"), JSON.stringify({
     source, ...catalog, rules: nameUsageRules(catalog.rules), compiledRules: rules, generatedAt: new Date().toISOString(),

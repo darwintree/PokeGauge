@@ -1,6 +1,6 @@
 export type UsageSource = "champions" | "smogon" | "pikalytics"
 export const USAGE_SOURCES: readonly UsageSource[] = ["champions", "smogon", "pikalytics"]
-export type UsageRule = { id: string; label: string; displayName?: string; compiled?: boolean }
+export type UsageRule = { id: string; label: string; displayName?: string; recommended?: boolean }
 export const CHAMPIONS_INDEX_URL = "https://championsbattledata.com/api"
 export function isUsageSource(value: string | null | undefined): value is UsageSource {
   return USAGE_SOURCES.some(source => source === value)
@@ -13,7 +13,7 @@ function regulation(id: string): string {
 }
 
 /** Discover a small working set from published metadata, never a format allowlist. */
-export function selectCompileRules(source: UsageSource, catalog: UsageCatalog): string[] {
+export function selectRecommendedRules(source: UsageSource, catalog: UsageCatalog): string[] {
   const { rules, defaultId } = catalog
   if (source === "champions") {
     return [defaultId, ...rules.map(r => r.id).filter(id => id !== defaultId && /^M\d+$/i.test(id))

@@ -78,7 +78,7 @@ function persist(): void {
 
 function syncModuleSelection(): void {
   setUsageSource(preference.source, ruleId, { pikalyticsDate })
-  const cached = ruleId ? loadUsageCache(preference.source, ruleId) : null
+  const cached = ruleId ? loadUsageCache(preference.source, ruleId, pikalyticsDate) : null
   fetchedAt = cached?.fetchedAt ?? null
 }
 
@@ -110,13 +110,13 @@ async function fetchCatalog(source: UsageSource): Promise<UsageCatalog> {
   const parsedRules = Array.isArray(body.rules)
     ? body.rules.flatMap((entry) => {
         if (!entry || typeof entry !== "object") return []
-        const rule = entry as { id?: unknown; label?: unknown; displayName?: unknown; compiled?: unknown }
+        const rule = entry as { id?: unknown; label?: unknown; displayName?: unknown; recommended?: unknown }
         if (typeof rule.id !== "string" || rule.id.length === 0) return []
         return [{
           id: rule.id,
           label: typeof rule.label === "string" && rule.label ? rule.label : rule.id,
           displayName: typeof rule.displayName === "string" ? rule.displayName : undefined,
-          compiled: rule.compiled === true,
+          recommended: rule.recommended === true,
         }]
       })
     : []
@@ -184,14 +184,16 @@ async function refreshRanking(mode: "apply" | "pending"): Promise<void> {
   // source's cache slot.
   const source = preference.source
   const rule = ruleId
+  const date = pikalyticsDate
+  const selection = selectionRequest
   const reload = mode === "apply"
   refreshing = true
   emit()
   try {
     const result = await fetchUsageRanking({ reload })
-    if (source !== preference.source || rule !== ruleId) return
+    if (selection !== selectionRequest) return
     const now = Date.now()
-    const current = loadUsageCache(source, rule)
+    const current = loadUsageCache(source, rule, date)
     if (mode === "pending" && current && current.fingerprint !== result.fingerprint) {
       pending = { ...result, fetchedAt: now }
     } else {
@@ -201,7 +203,7 @@ async function refreshRanking(mode: "apply" | "pending"): Promise<void> {
         fetchedAt: now,
         fingerprint: result.fingerprint,
         pokemonIds: result.pokemonIds,
-      })
+      }, date)
       fetchedAt = now
       if (changed || reload) {
         bumpGeneration()
@@ -254,7 +256,7 @@ export function refreshUsageStore(): Promise<void> {
 }
 
 export function noteUsageRankingSaved(): void {
-  fetchedAt = ruleId ? loadUsageCache(preference.source, ruleId)?.fetchedAt ?? null : null
+  fetchedAt = ruleId ? loadUsageCache(preference.source, ruleId, pikalyticsDate)?.fetchedAt ?? null : null
   emit()
 }
 
@@ -264,7 +266,7 @@ export function applyUsageStorePending(): void {
     fetchedAt: pending.fetchedAt,
     fingerprint: pending.fingerprint,
     pokemonIds: pending.pokemonIds,
-  })
+  }, pikalyticsDate)
   fetchedAt = pending.fetchedAt
   pending = null
   syncModuleSelection()

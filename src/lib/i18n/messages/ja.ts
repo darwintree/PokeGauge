@@ -4,7 +4,6 @@ export const jaMessages: Record<string, string> = {
     "usage.rules.retry": "再試行",
     "usage.rules.more": "他のルール（{count}件）",
     "usage.rules.less": "折りたたむ",
-    "usage.rules.onDemand": "このルールの初回読み込みには時間がかかる場合があります。",
     "usage.detail.loading": "使用率データを読み込み中です。技や道具は引き続き選択できます。",
     "usage.detail.failed": "一部の使用率データを読み込めませんでした。技や道具は引き続き選択できます。",
     "usage.detail.empty": "現在のルールでは、{attacker}のこの分類におすすめの技はありません。技を手動で追加できます。",
