@@ -24,4 +24,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm test
-      - run: pnpm build
+      # Offline build: skips the networked usage compile, which only the deploy
+      # path needs. Keeps PR checks independent of upstream Champions uptime.
+      - run: pnpm build:offline

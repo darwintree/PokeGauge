@@ -78,21 +78,21 @@ Reason:
 
 Follow-up: None
 
-### 5. 编译不进 `pnpm build`，但属于部署构建命令
+### 5. 编译并入 `pnpm build`，另留离线构建入口
 
 Type: unresolved-implementation-decision
 
 Context:
 
-用户要求"每天定时重新编译"，并同意新增定时部署工作流。未说明编译在构建中的位置。
+用户要求"每天定时重新编译"，并同意新增定时部署工作流。未说明编译在构建中的位置。初版实现把编译拆成独立的 `build:deploy`，而未并入 `pnpm build`，理由是 CI 当时跑 `pnpm build`，塞入联网抓取会让 PR 校验依赖上游可用性。用户随后明确否决了这个取舍：**默认构建就应联网抓上游数据，另外提供离线选项供测试使用**（类似 `pnpm build:offline`）。
 
 Decision:
 
-新增独立的 `pnpm usage:compile`，并组合出 `build:deploy = pnpm build && pnpm usage:compile` 作为 Workers Builds 的 **build command**；`pnpm build` 自身不联网。
+`pnpm build = pnpm build:client && pnpm usage:compile`，即默认构建会联网编译产物；`pnpm build:offline` 只跑 `build:client`，不触网，产物缺失时客户端回落转发模式。CI 改用 `pnpm build:offline`，使 PR 校验仍然确定性、不受上游抖动影响。原 `build:deploy` 随之删除。
 
 Reason:
 
-`pnpm build` 目前在 CI 中无需网络（install → lint → test → build）。把联网抓取塞进 build 会让本地构建与 PR 构建依赖上游可用性。放在 `build` 之后而非之前，是因为 `vite build` 会清空 `dist/`，先编译会被删除。Workers Builds 的 build command 对生产与预览构建都会执行，而 deploy command 才会区分生产/预览，因此把编译放在 build command 可让预览构建也带上产物。
+把"是否联网"的开关交给调用方而非构建本身：部署路径（Workers Builds、`pnpm deploy`）拿到完整产物，测试/校验路径保持离线且可复现。编译必须排在客户端构建之后，因为 `vite build` 会清空 `dist/`——实测往 `dist/usage/` 放哨兵文件，`vite build` 后文件消失。客户端构建抽成 `build:client` 后，changelog 生成改为挂在它上面的 `prebuild:client`，这样三条路径（build / build:offline / deploy）各触发一次且恰好一次（已实测 pnpm 的 pre 钩子对冒号脚本不生效于父脚本名，且嵌套调用只触发一次）。
 
 Follow-up: None
 

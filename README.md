@@ -22,12 +22,17 @@ pnpm test
 pnpm build
 ```
 
+`pnpm build` also compiles the usage artifacts, so it needs network access to the
+Champions upstream. Use `pnpm build:offline` for a client-only build that never
+reaches the network — CI uses it so pull-request checks cannot be broken by
+upstream downtime, and the artifacts then fall back to proxy mode.
+
 Deployment runs through Cloudflare Workers Builds, which is configured in the
 dashboard rather than in this repository:
 
-- **Build command**: `pnpm build:deploy` — builds the client and compiles the
-  usage artifacts into `dist/usage`. The compile step must stay after `vite
-  build`, because that step clears `dist/`.
+- **Build command**: `pnpm build` — builds the client and compiles the usage
+  artifacts into `dist/usage`. The compile step must stay after `vite build`,
+  because that step clears `dist/`.
 - **Deploy command**: the default `npx wrangler deploy`.
 
 Usage data changes daily, so `.github/workflows/deploy.yml` POSTs a Cloudflare

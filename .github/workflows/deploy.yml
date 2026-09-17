@@ -10,8 +10,8 @@ name: Refresh usage data
 # Cloudflare API token: the deploy hook URL is the only credential, and there is
 # exactly one deploy path rather than two competing ones.
 #
-# Requires the `CLOUDFLARE_DEPLOY_HOOK` repository secret, and the Workers Builds
-# build command must run `pnpm build:deploy` so the compile step is included.
+# Requires the `CLOUDFLARE_DEPLOY_HOOK` repository secret, and a Workers Builds
+# build command that runs the full `pnpm build`, which includes the compile step.
 on:
   schedule:
     # 18:17 UTC daily. Off the hour so it does not pile onto other cron traffic.
