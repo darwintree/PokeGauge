@@ -17,7 +17,7 @@ import {
  * fallback is a normal operating mode rather than a failure.
  */
 
-let manifestPromise: Promise<UsageManifest | null> | undefined
+const manifestPromises = new Map<string, Promise<UsageManifest | null>>()
 const artifactPromises = new Map<string, Promise<UsageArtifact | null>>()
 let jsonFetcher: (url: string) => Promise<unknown> = fetchArtifactJsonFromNetwork
 
@@ -60,8 +60,12 @@ function loadArtifactJson<T>(url: string, isShape: (value: unknown) => value is 
 
 /** Fetch and cache the per-source manifest. `null` means proxy mode for the source. */
 export function loadUsageManifest(source: string): Promise<UsageManifest | null> {
-  manifestPromise ??= loadArtifactJson(usageManifestUrl(source), isManifest)
-  return manifestPromise
+  let promise = manifestPromises.get(source)
+  if (!promise) {
+    promise = loadArtifactJson(usageManifestUrl(source), isManifest).then(value => value?.source === source ? value : null)
+    manifestPromises.set(source, promise)
+  }
+  return promise
 }
 
 /** Fetch and cache one compiled rule. `null` means the caller must use proxy mode. */
@@ -74,7 +78,7 @@ export function loadUsageArtifact(
   if (options?.reload) artifactPromises.delete(key)
   let promise = artifactPromises.get(key)
   if (!promise) {
-    promise = loadArtifactJson(usageArtifactUrl(source, rule), isUsageArtifact)
+    promise = loadArtifactJson(usageArtifactUrl(source, rule), isUsageArtifact).then(value => value?.source === source && value.rule === rule ? value : null)
     artifactPromises.set(key, promise)
   }
   return promise
@@ -85,7 +89,7 @@ export function loadUsageArtifact(
  * must be able to pick up a newer deployment, even in a long-lived tab.
  */
 export function reloadUsageArtifacts(): void {
-  manifestPromise = undefined
+  manifestPromises.clear()
   artifactPromises.clear()
 }
 

@@ -10,7 +10,7 @@ import type { ChampionsBattleFormat } from "./types"
  */
 
 export const CHAMPIONS_FORMAT: ChampionsBattleFormat = "Doubles"
-export const CHAMPIONS_INDEX_URL = "https://championsbattledata.com/api"
+export { CHAMPIONS_INDEX_URL } from "../usage-rules"
 
 export type ChampionsIndexPokemon = {
   name: string
@@ -95,10 +95,10 @@ function rankingBattlePokemonId(pokemon: UsageJoinPokemon): BattlePokemonId {
 }
 
 /**
- * Identity a per-Pokemon usage read is keyed by. Mega identities are dex-only, so
- * their breakdowns belong to the base species; every other form keeps its own.
+ * Preferred usage identity: Mega recommendations use the base species.
+ * Readers can use the selected form when the source has no base record.
  */
-export function championsDetailSourceId(pokemon: {
+export function usageDetailSourceId(pokemon: {
   battlePokemonId: BattlePokemonId
   speciesId: BattlePokemonId
   isMega: boolean
@@ -149,15 +149,13 @@ export function resolveChampionsBattlePokemonId(
     entry.battleName,
     entry.slug,
   ]
-  return aliases.reduce<BattlePokemonId | undefined>(
-    (match, name) =>
-      match ??
-      (name
-        ? CHAMPIONS_POKEMON_ID_OVERRIDES[normalizeJoinName(name)] ??
-          pokemonByName.get(normalizeJoinName(name))
-        : undefined),
-    undefined,
-  )
+  for (const name of aliases) {
+    if (!name) continue
+    const key = normalizeJoinName(name)
+    const id = CHAMPIONS_POKEMON_ID_OVERRIDES[key] ?? pokemonByName.get(key)
+    if (id !== undefined) return id
+  }
+  return undefined
 }
 
 export function championsIndexUsageRank(entry: ChampionsIndexPokemon, season: string): number | undefined {
@@ -165,7 +163,7 @@ export function championsIndexUsageRank(entry: ChampionsIndexPokemon, season: st
   return row?.position ?? row?.column_position
 }
 
-export function battleRowUsageRank(battle: ChampionsBattleApi): number | undefined {
+export function battleRowUsageRank(battle: Pick<ChampionsBattleApi, "data" | "rows">): number | undefined {
   const row = (battle.data ?? battle.rows ?? [])[0]
   // Battle rows use column_position for the Pokemon's usage rank; `rank` is the move/item slot.
   return row?.column_position ?? row?.position
@@ -189,4 +187,44 @@ export function championsBattleRowsUrl(
 /** Battle rows for both upstream payload keys. */
 export function championsBattleRows(battle: ChampionsBattleApi): ChampionsBattleRow[] {
   return battle.data ?? battle.rows ?? []
+}
+
+function smogonPercent(value: unknown, total: number): number | null {
+  return typeof value === "number" && total > 0 ? (value / total) * 100 : null
+}
+function smogonRows(data: Record<string, unknown> | null, key: string): Array<[string, number]> {
+  const values = data?.[key]
+  if (!values || typeof values !== "object") return []
+  return Object.entries(values as Record<string, unknown>).flatMap(([name, value]) => typeof value === "number" ? [[name, value]] : [])
+}
+export function smogonRowsWithPercent(data: Record<string, unknown> | null, key: string): Array<[string, number, number | null]> {
+  const rows = smogonRows(data, key)
+  const total = rows.reduce((sum, [, value]) => sum + value, 0)
+  return rows.sort(([, a], [, b]) => b - a).map(([name, value]) => [name, value, smogonPercent(value, total)])
+}
+
+/** Keep the strongest spread per nature: weaker repeats cannot affect preset/category inference. */
+export function smogonNatureRows(data: Record<string, unknown> | null): Array<[string, number, number | null]> {
+  const seen = new Set<string>()
+  return smogonRowsWithPercent(data, "Spreads").flatMap(([spread, value, percentage]) => {
+    const nature = spread.split(":")[0]
+    if (seen.has(nature)) return []
+    seen.add(nature)
+    return [[nature, value, percentage] as [string, number, number | null]]
+  })
+}
+
+export type PikalyticsEntry = {
+  name: string
+  rank: string
+  percent: string
+  abilities: Array<{ ability: string; percent: string }> | null
+  items: Array<{ item: string; percent: string }> | null
+  moves: Array<{ move: string; percent: string }> | null
+  natures: Array<{ nature: string; percent: string }> | null
+}
+
+export function pikalyticsPercent(value: string | undefined): number | null {
+  const parsed = Number(value)
+  return Number.isFinite(parsed) ? parsed : null
 }

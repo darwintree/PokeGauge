@@ -30,8 +30,8 @@ import {
 } from "./resource-options"
 import {
   resolveCatalogDefaultMoveCategory,
-  resolveDefaultAbilityIds,
-  resolveDefaultOffensePresetId,
+  resolveDefaultAbilityPick,
+  resolveDefaultOffensePreset,
   resolveDefaultMovePick,
 } from "./champions-defaults"
 import { resolveDefaultHeldItemPick } from "./held-item-defaults"
@@ -175,11 +175,11 @@ export async function resolveCatalogDefaultMovePick(
 
   const [
     defaultMovePick,
-    defaultAttackerAbilityIds,
-    defaultDefenderAbilityIds,
+    attackerAbilityPick,
+    defenderAbilityPick,
     attackerItemPick,
     defenderItemPick,
-    defaultOffensePresetId,
+    offensePreset,
   ] = await Promise.all([
     resolveDefaultMovePick(
       catalog.matchup.attackerId,
@@ -187,8 +187,8 @@ export async function resolveCatalogDefaultMovePick(
       catalog.moves,
       catalog.defenderTypes,
     ),
-    resolveDefaultAbilityIds(catalog.matchup.attackerId, catalog.attackerAbilities),
-    resolveDefaultAbilityIds(catalog.matchup.defenderId, catalog.defenderAbilities),
+    resolveDefaultAbilityPick(catalog.matchup.attackerId, catalog.attackerAbilities),
+    resolveDefaultAbilityPick(catalog.matchup.defenderId, catalog.defenderAbilities),
     resolveDefaultHeldItemPick({
       battlePokemonId: catalog.matchup.attackerId,
       lockedItemId: catalog.attackerLockedItemId,
@@ -201,24 +201,25 @@ export async function resolveCatalogDefaultMovePick(
       sideEligibleIds: new Set(DEFENDER_HELD_ITEM_IDS),
       selectableIds: selectableDefenderIds,
     }),
-    resolveDefaultOffensePresetId(catalog.matchup.attackerId, catalog.moveCategory),
+    resolveDefaultOffensePreset(catalog.matchup.attackerId, catalog.moveCategory),
   ])
 
   // Each side already embeds none-fallback on failure; gate sync on non-loading only.
   const itemStatus =
-    attackerItemPick.status === "unavailable" && defenderItemPick.status === "unavailable"
+    attackerItemPick.status === "unavailable" || defenderItemPick.status === "unavailable"
       ? "unavailable"
       : "ready"
 
   return {
     ...catalog,
     ...defaultMovePick,
-    defaultAbilityPickStatus: "ready",
+    defaultAbilityPickStatus: attackerAbilityPick.status === "unavailable" || defenderAbilityPick.status === "unavailable"
+      ? "unavailable" : "ready",
     defaultItemPickStatus: itemStatus,
-    defaultStatPickStatus: "ready",
-    defaultOffensePresetId,
-    defaultAttackerAbilityIds,
-    defaultDefenderAbilityIds,
+    defaultStatPickStatus: offensePreset.status,
+    defaultOffensePresetId: offensePreset.presetId,
+    defaultAttackerAbilityIds: attackerAbilityPick.ids,
+    defaultDefenderAbilityIds: defenderAbilityPick.ids,
     defaultAttackerItemPoolIds: attackerItemPick.poolIds,
     defaultDefenderItemPoolIds: defenderItemPick.poolIds,
     defaultAttackerItemIds: attackerItemPick.selectedIds,

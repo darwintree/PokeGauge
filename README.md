@@ -23,7 +23,7 @@ pnpm build
 ```
 
 `pnpm build` also compiles the usage artifacts, so it needs network access to the
-Champions upstream. Use `pnpm build:offline` for a client-only build that never
+Pokémon Champions Battle Data, Smogon, and Pikalytics. Use `pnpm build:offline` for a client-only build that never
 reaches the network — CI uses it so pull-request checks cannot be broken by
 upstream downtime, and the artifacts then fall back to proxy mode.
 

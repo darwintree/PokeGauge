@@ -5,11 +5,11 @@ import {
   listChampionsMoveUsageRecords,
   listChampionsNatureUsageRecords,
   listChampionsPokemonUsageIds,
-  listChampionsUsageRules,
   fetchUsageRanking,
   setUsageSource,
 } from "@/lib/champions"
 import {
+  loadUsageManifest,
   resetUsageArtifactCache,
   setUsageArtifactFetcherForTest,
 } from "@/lib/champions/artifact-client"
@@ -162,8 +162,7 @@ it("re-reads the artifact on an explicit reload", async () => {
 
 it("reads the rule list from the manifest", async () => {
   stubArtifactFetcher()
-  setUsageSource("champions", "Current")
-  expect(await listChampionsUsageRules()).toEqual({ defaultId: "Current", rules: manifest.rules })
+  expect(await loadUsageManifest("champions")).toEqual(manifest)
 })
 
 it("falls back to proxy mode when the artifact is absent", async () => {
@@ -191,4 +190,37 @@ it("uses proxy mode for a rule the manifest does not list as compiled", async ()
   // `M6` is not in `compiledRules`, so the artifact must not satisfy this read.
   await expect(listChampionsMoveUsageRecords(6)).rejects.toThrow("proxy mode reached upstream")
   expect(upstream).toHaveBeenCalled()
+})
+
+it.each(["smogon", "pikalytics"] as const)("reads %s ranking and all details from its own artifact", async source => {
+  const rule = source === "smogon" ? "2026-08/gen9championsvgc2026regmb-0" : "tournaments"
+  setUsageArtifactFetcherForTest(async url => url === usageArtifactUrl(source, rule) ? { ...artifact, source, rule } : null)
+  setUsageSource(source, rule)
+  vi.stubGlobal("fetch", vi.fn(() => { throw new Error("Unexpected online request") }))
+  expect(await listChampionsPokemonUsageIds()).toEqual([6])
+  expect((await listChampionsMoveUsageRecords(6)).map(row => row.moveId)).toContain(53)
+  expect((await listChampionsItemUsageRecords(6)).map(row => row.championsItemName)).toContain("Charizardite Y")
+  expect((await listChampionsNatureUsageRecords(6)).map(row => row.nature)).toEqual(["Modest"])
+})
+
+it("caches manifests independently by source", async () => {
+  const { loadUsageManifest } = await import("./artifact-client")
+  setUsageArtifactFetcherForTest(async url => ({ ...manifest, source: url.includes("/smogon/") ? "smogon" : "champions" }))
+  expect((await loadUsageManifest("champions"))?.source).toBe("champions")
+  expect((await loadUsageManifest("smogon"))?.source).toBe("smogon")
+})
+
+it("keeps the strongest spread per nature without summing distinct spreads", async () => {
+  const { smogonNatureRows } = await import("./upstream")
+  const rows = smogonNatureRows({ Spreads: { "Modest:a": 25, "Modest:b": 25, "Timid:c": 40, "Bold:d": 10 } })
+  expect(rows.map(([name, , percent]) => [name, percent])).toEqual([["Timid", 40], ["Modest", 25], ["Bold", 10]])
+})
+
+it("treats an explicitly empty compiled statistic as a completed read", async () => {
+  setUsageArtifactFetcherForTest(async () => ({ ...artifact, source: "pikalytics", rule: "empty", pokemon: { 6: {} } }))
+  setUsageSource("pikalytics", "empty")
+  const online = vi.fn(() => { throw new Error("Unexpected retry") })
+  vi.stubGlobal("fetch", online)
+  expect(await listChampionsMoveUsageRecords(6)).toEqual([])
+  expect(online).not.toHaveBeenCalled()
 })

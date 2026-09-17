@@ -1,3 +1,5 @@
+import { nameUsageRules, isUsageSource, CHAMPIONS_INDEX_URL, type UsageSource, type UsageCatalog } from "../src/lib/usage-rules"
+
 const PRODUCT_EVENTS = new Set(["page_view", "scenario_ready", "share", "feedback"])
 const SUPPORTED_LOCALES = new Set(["zh-hans", "zh-hant", "en", "ja"])
 const SMOGON_ORIGIN = "https://www.smogon.com/stats/"
@@ -46,10 +48,10 @@ async function withEdgeCache(
   return response
 }
 
-const SMOGON_VGC_FILE = /href="(gen9championsvgc[a-z0-9-]*reg[a-z]+(?:bo3)?-\d+\.json\.gz)"/g
+const SMOGON_VGC_FILE = /href="(gen\d+championsvgc[a-z0-9-]*reg[a-z]+(?:bo3)?-\d+\.json\.gz)"/g
 
 function smogonUsageRuleLabel(fileBase: string): string {
-  const match = fileBase.match(/^gen9championsvgc(\d+)(reg[a-z]+)(bo3)?-(\d+)$/)
+  const match = fileBase.match(/^gen\d+championsvgc(\d+)(reg[a-z]+)(bo3)?-(\d+)$/)
   if (!match) return fileBase
   const [, year, reg, bo3, cutoff] = match
   const letters = reg.slice(3).toUpperCase()
@@ -64,7 +66,7 @@ async function listSmogonChaosMonth(): Promise<SmogonChaosMonth | null> {
   for (const offset of [0, 1]) {
     const date = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - offset, 1))
     const month = date.toISOString().slice(0, 7)
-    const directory = await fetch(`${SMOGON_ORIGIN}${month}/chaos/`)
+    const directory = await fetch(`${SMOGON_ORIGIN}${month}/chaos/`, { signal: AbortSignal.timeout(15_000) })
     if (!directory.ok) continue
     const html = await directory.text()
     const files = [...html.matchAll(SMOGON_VGC_FILE)].map((match) => match[1])
@@ -89,7 +91,7 @@ async function latestSmogonChampions(): Promise<Response> {
   return new Response(upstream.body, { headers: { "content-type": "application/json; charset=utf-8", "cache-control": "public, max-age=3600" } })
 }
 
-async function listSmogonChampionsFormats(): Promise<Response> {
+export async function listSmogonChampionsFormats(): Promise<Response> {
   const listed = await listSmogonChaosMonth()
   if (!listed) return new Response("Smogon stats unavailable", { status: 404 })
   const defaultFile = defaultSmogonChaosFile(listed.files)
@@ -131,11 +133,12 @@ const PIKALYTICS_FORMAT_SELECT = /<select[^>]*\bid=["']format_dd["'][^>]*>([\s\S
 export function parsePikalyticsFormatOptions(
   html: string,
 ): Array<{ id: string; label: string; selected: boolean }> {
-  const select = html.match(PIKALYTICS_FORMAT_SELECT)
+  const select = html.replace(/<!--[\s\S]*?-->/g, "").match(PIKALYTICS_FORMAT_SELECT)
   if (!select) return []
   const seen = new Set<string>()
   const options: Array<{ id: string; label: string; selected: boolean }> = []
   for (const match of select[1].matchAll(/<option([^>]*)\bvalue="([a-z0-9][a-z0-9-]*)"([^>]*)>([^<]*)/gi)) {
+    if (/\b(?:disabled|hidden)\b|display\s*:\s*none/i.test(`${match[1]} ${match[3]}`)) continue
     const id = match[2]
     if (seen.has(id)) continue
     seen.add(id)
@@ -159,8 +162,8 @@ export async function resolvePikalyticsCatalog(): Promise<PikalyticsCatalog | nu
     return pikalyticsCatalogCache.value
   }
   const [pokedex, aiIndex] = await Promise.all([
-    fetch(`${PIKALYTICS_ORIGIN}/pokedex`, { headers: UPSTREAM_HEADERS }),
-    fetch(`${PIKALYTICS_ORIGIN}/ai/pokedex`, { headers: UPSTREAM_HEADERS }),
+    fetch(`${PIKALYTICS_ORIGIN}/pokedex`, { headers: UPSTREAM_HEADERS, signal: AbortSignal.timeout(15_000) }),
+    fetch(`${PIKALYTICS_ORIGIN}/ai/pokedex`, { headers: UPSTREAM_HEADERS, signal: AbortSignal.timeout(15_000) }),
   ])
   if (!pokedex.ok || !aiIndex.ok) return null
   const pokedexHtml = await pokedex.text()
@@ -233,6 +236,48 @@ export async function proxyPikalytics(request: Request, ctx: ExecutionContext): 
   })
 }
 
+export async function discoverUsageCatalog(source: UsageSource): Promise<UsageCatalog> {
+  if (source === "champions") {
+    const response = await fetch(CHAMPIONS_INDEX_URL, { signal: AbortSignal.timeout(15_000) })
+    if (!response.ok) throw new Error("Champions catalog unavailable")
+    const index = await response.json() as { seasons?: string[]; defaultSeason?: string }
+    const ids = index.seasons?.length ? index.seasons : [index.defaultSeason ?? "Current"]
+    return { defaultId: index.defaultSeason ?? ids[0], rules: ids.map(id => ({ id, label: id })) }
+  }
+  if (source === "smogon") {
+    const response = await listSmogonChampionsFormats()
+    if (!response.ok) throw new Error("Smogon catalog unavailable")
+    return response.json()
+  }
+  const catalog = await resolvePikalyticsCatalog()
+  if (!catalog) throw new Error("Pikalytics catalog unavailable")
+  return { defaultId: catalog.format, date: catalog.date, rules: catalog.rules }
+}
+
+export async function usageRules(request: Request, env: Pick<Env, "ASSETS">): Promise<Response> {
+  if (request.method !== "GET") return new Response("Method Not Allowed", { status: 405, headers: { allow: "GET" } })
+  const source = new URL(request.url).pathname.slice("/api/usage/rules/".length)
+  if (!isUsageSource(source)) return new Response("Unknown usage source", { status: 400 })
+  try {
+    const asset = await env.ASSETS.fetch(new Request(new URL(`/usage/${source}/manifest.json`, request.url)))
+    if (asset.ok && asset.headers.get("content-type")?.includes("json")) {
+      const manifest = await asset.json() as UsageCatalog & { source: string; compiledRules: string[] }
+      if (manifest.source === source && Array.isArray(manifest.rules) && Array.isArray(manifest.compiledRules)) {
+        return Response.json({
+          defaultId: manifest.defaultId, date: manifest.date,
+          rules: nameUsageRules(manifest.rules).map(rule => ({ ...rule, compiled: manifest.compiledRules.includes(rule.id) })),
+        })
+      }
+    }
+    // Development and older deployments may have no compiled catalog.
+    const catalog = await discoverUsageCatalog(source)
+    return Response.json({ ...catalog, rules: nameUsageRules(catalog.rules).map(rule => ({ ...rule, compiled: false })) })
+  } catch (error) {
+    console.error("usage_rules_unavailable", { source, message: error instanceof Error ? error.message : String(error) })
+    return Response.json({ error: "Usage rules unavailable" }, { status: 502 })
+  }
+}
+
 function referrerHost(request: Request): string {
   const referrer = request.headers.get("referer")
   if (!referrer) return "direct"
@@ -294,6 +339,7 @@ export default {
     if (new URL(request.url).pathname === "/api/events") {
       return recordProductEvent(request, env)
     }
+    if (new URL(request.url).pathname.startsWith("/api/usage/rules/")) return usageRules(request, env)
     if (new URL(request.url).pathname.startsWith("/api/smogon/")) return proxySmogonStats(request, ctx)
     if (new URL(request.url).pathname.startsWith("/api/pikalytics/")) return proxyPikalytics(request, ctx)
     return env.ASSETS.fetch(request)

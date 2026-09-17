@@ -12,7 +12,7 @@ import type {
   ChampionsMoveUsageRecord,
   ChampionsNatureUsageRecord,
 } from "./types"
-import type { UsageRule, UsageSource } from "@/lib/usage-source-preference"
+import type { UsageSource } from "@/lib/usage-source-preference"
 import {
   loadUsageCache,
   saveUsageCache,
@@ -26,12 +26,16 @@ import {
   battleRowUsageRank,
   championsBattleRows,
   championsBattleRowsUrl,
-  championsDetailSourceId,
+  usageDetailSourceId,
   championsIndexByName,
   championsIndexUsageRank,
   championsSeason,
   normalizeJoinName,
   resolveChampionsBattlePokemonId,
+  smogonRowsWithPercent,
+  smogonNatureRows,
+  pikalyticsPercent,
+  type PikalyticsEntry,
   type ChampionsBattleApi,
   type ChampionsBattleRow,
   type ChampionsIndexApi,
@@ -80,6 +84,7 @@ function clearUsageCaches(): void {
   smogonPokemonUsagePromise = undefined
   pikalyticsPokemonUsagePromise = undefined
   resetPikalyticsCache()
+  smogonDataCache.clear()
 }
 
 export function setUsageSource(
@@ -168,7 +173,7 @@ async function compiledRuleId(): Promise<string | null> {
 }
 
 /** Re-read `(source, rule)` data, bypassing every in-memory cache. */
-function reloadUsageData(): void {
+export function reloadUsageData(): void {
   reloadUsageArtifacts()
   championsIndexPromise = undefined
   // Detail caches are keyed by Pokemon id alone, not by `(source, rule)`, so a
@@ -296,11 +301,25 @@ async function fetchChampionsPokemonUsageOnline(reload = false): Promise<BattleP
 
   return [...new Set(ranked.map(({ id }) => id))]
 }
+type SmogonData = Record<string, Record<string, unknown>>
+const smogonDataCache = new Map<string, Promise<SmogonData>>()
+
+function fetchSmogonData(): Promise<SmogonData> {
+  const url = smogonStatsUrl()
+  let promise = smogonDataCache.get(url)
+  if (!promise) {
+    promise = fetchJson<{ data?: SmogonData }>(url).then((response) => response.data ?? {})
+    smogonDataCache.set(url, promise)
+    promise.catch(() => {
+      if (smogonDataCache.get(url) === promise) smogonDataCache.delete(url)
+    })
+  }
+  return promise
+}
+
 async function fetchSmogonPokemonUsageOnline(): Promise<BattlePokemonId[]> {
-  const pokemon = await listResources("pokemon", "en")
+  const [pokemon, data] = await Promise.all([listResources("pokemon", "en"), fetchSmogonData()])
   const byName = battlePokemonIdsByJoinName(pokemon)
-  const response = await fetchJson<{ data?: Record<string, Record<string, unknown>> }>(smogonStatsUrl())
-  const data = response.data ?? {}
   return Object.entries(data)
     .sort(([, a], [, b]) => Number(b.usage ?? 0) - Number(a.usage ?? 0))
     .flatMap(([name]) => {
@@ -310,27 +329,13 @@ async function fetchSmogonPokemonUsageOnline(): Promise<BattlePokemonId[]> {
 }
 
 async function fetchSmogonChaos(battlePokemonId: BattlePokemonId): Promise<Record<string, unknown> | null> {
-  const resource = await getResource("pokemon", battlePokemonId, "en")
-  const slug = normalizeJoinName(resource.calcSpeciesName || resource.name)
-  try {
-    const response = await fetchJson<{ data?: Record<string, Record<string, unknown>> }>(smogonStatsUrl())
-    const data = response.data ?? {}
-    return data[resource.name] ?? data[slug] ?? Object.entries(data).find(([name]) => normalizeJoinName(name) === slug)?.[1] ?? null
-  } catch { return null }
-}
-
-function smogonPercent(value: unknown, total: number): number | null {
-  return typeof value === "number" && total > 0 ? (value / total) * 100 : null
-}
-function smogonRows(data: Record<string, unknown> | null, key: string): Array<[string, number]> {
-  const values = data?.[key]
-  if (!values || typeof values !== "object") return []
-  return Object.entries(values as Record<string, unknown>).flatMap(([name, value]) => typeof value === "number" ? [[name, value]] : [])
-}
-function smogonRowsWithPercent(data: Record<string, unknown> | null, key: string): Array<[string, number, number | null]> {
-  const rows = smogonRows(data, key)
-  const total = rows.reduce((sum, [, value]) => sum + value, 0)
-  return rows.sort(([, a], [, b]) => b - a).map(([name, value]) => [name, value, smogonPercent(value, total)])
+  const [pokemon, data] = await Promise.all([getResource("pokemon", battlePokemonId, "en"), fetchSmogonData()])
+  const resource = await getResource("pokemon", usageDetailSourceId(pokemon), "en")
+  const find = (entry: typeof pokemon) => {
+    const slug = normalizeJoinName(entry.calcSpeciesName || entry.name)
+    return data[entry.name] ?? data[slug] ?? Object.entries(data).find(([name]) => normalizeJoinName(name) === slug)?.[1]
+  }
+  return find(resource) ?? find(pokemon) ?? null
 }
 
 async function fetchSmogonMoveUsageOnline(id: BattlePokemonId): Promise<ChampionsMoveUsageRecord[]> {
@@ -343,17 +348,7 @@ async function fetchSmogonItemUsageOnline(id: BattlePokemonId): Promise<Champion
   const data = await fetchSmogonChaos(id); return smogonRowsWithPercent(data, "Items").map(([name, , percentage], index) => ({ battlePokemonId: id, itemId: getItemIdByJoinName(name) ?? null, format: "Doubles", season: "latest", source: "Smogon", dataVersion: "chaos", rank: index + 1, percentage, championsItemName: name }))
 }
 async function fetchSmogonNatureUsageOnline(id: BattlePokemonId): Promise<ChampionsNatureUsageRecord[]> {
-  const data = await fetchSmogonChaos(id); return smogonRowsWithPercent(data, "Spreads").map(([name, , percentage], index) => ({ battlePokemonId: id, format: "Doubles", season: "latest", source: "Smogon", dataVersion: "chaos", rank: index + 1, percentage, nature: name.split(":")[0] }))
-}
-
-type PikalyticsEntry = {
-  name: string
-  rank: string
-  percent: string
-  abilities: Array<{ ability: string; percent: string }> | null
-  items: Array<{ item: string; percent: string }> | null
-  moves: Array<{ move: string; percent: string }> | null
-  natures: Array<{ nature: string; percent: string }> | null
+  const data = await fetchSmogonChaos(id); return smogonNatureRows(data).map(([name, , percentage], index) => ({ battlePokemonId: id, format: "Doubles", season: "latest", source: "Smogon", dataVersion: "chaos", rank: index + 1, percentage, nature: name }))
 }
 
 type PikalyticsLatest = {
@@ -404,31 +399,25 @@ function fetchPikalyticsRoster(): Promise<Array<{ id: BattlePokemonId; name: str
   return pikalyticsRosterPromise
 }
 
-function fetchPikalyticsEntry(battlePokemonId: BattlePokemonId): Promise<PikalyticsEntry | null> {
-  let promise = pikalyticsEntryCache.get(battlePokemonId)
+async function fetchPikalyticsEntry(battlePokemonId: BattlePokemonId): Promise<PikalyticsEntry | null> {
+  const [pokemon, roster] = await Promise.all([
+    getResource("pokemon", battlePokemonId, "en"), fetchPikalyticsRoster(),
+  ])
+  const sourceId = usageDetailSourceId(pokemon)
+  const entry = roster.find(member => member.id === sourceId)
+    ?? roster.find(member => member.id === battlePokemonId)
+  if (!entry) return null
+  let promise = pikalyticsEntryCache.get(entry.id)
   if (!promise) {
-    promise = (async () => {
-      // The roster only carries usage for the ranking; per-Pokemon breakdowns
-      // (moves, abilities, items, natures) come from the detail endpoint.
-      const roster = await fetchPikalyticsRoster()
-      const entry = roster.find((member) => member.id === battlePokemonId)
-      if (entry == null) return null
-      const detail = await fetchJson<PikalyticsDetail>(pikalyticsPokemonUrl(entry.name))
-      return detail.data
-    })()
-    pikalyticsEntryCache.set(battlePokemonId, promise)
+    promise = fetchJson<PikalyticsDetail>(pikalyticsPokemonUrl(entry.name)).then(detail => detail.data)
+    pikalyticsEntryCache.set(entry.id, promise)
     promise.catch(() => {
-      if (pikalyticsEntryCache.get(battlePokemonId) === promise) {
-        pikalyticsEntryCache.delete(battlePokemonId)
+      if (pikalyticsEntryCache.get(entry.id) === promise) {
+        pikalyticsEntryCache.delete(entry.id)
       }
     })
   }
   return promise
-}
-
-function pikalyticsPercent(value: string | undefined): number | null {
-  const parsed = Number(value)
-  return Number.isFinite(parsed) ? parsed : null
 }
 
 async function fetchPikalyticsMoveUsageOnline(id: BattlePokemonId): Promise<ChampionsMoveUsageRecord[]> {
@@ -459,7 +448,11 @@ async function fetchChampionsBattleData(
   battlePokemonId: BattlePokemonId,
 ): Promise<ChampionsBattleApi | null> {
   const pokemon = await getResource("pokemon", battlePokemonId, "en")
-  const sourceId = championsDetailSourceId(pokemon)
+  const sourceId = usageDetailSourceId(pokemon)
+  if (usageSource !== "champions") {
+    const artifact = await loadCompiledArtifact()
+    return artifact ? battleDataFromArtifact(artifact, sourceId) ?? battleDataFromArtifact(artifact, battlePokemonId) : null
+  }
   let promise = battleRowsCache.get(sourceId)
   if (!promise) {
     promise = fetchChampionsSourceBattleData(sourceId)
@@ -603,6 +596,7 @@ async function fetchChampionsNatureUsageOnline(
 export async function listChampionsMoveUsageRecords(
   battlePokemonId: BattlePokemonId,
 ): Promise<ChampionsMoveUsageRecord[]> {
+  if (usageSource !== "champions" && await loadCompiledArtifact()) return fetchChampionsMoveUsageOnline(battlePokemonId)
   if (usageSource === "smogon") return fetchSmogonMoveUsageOnline(battlePokemonId)
   if (usageSource === "pikalytics") return fetchPikalyticsMoveUsageOnline(battlePokemonId)
   let promise = usageCache.get(battlePokemonId)
@@ -633,6 +627,7 @@ export function resetChampionsMoveUsageFetcherForTest(): void {
 export async function listChampionsAbilityUsageRecords(
   battlePokemonId: BattlePokemonId,
 ): Promise<ChampionsAbilityUsageRecord[]> {
+  if (usageSource !== "champions" && await loadCompiledArtifact()) return fetchChampionsAbilityUsageOnline(battlePokemonId)
   if (usageSource === "smogon") return fetchSmogonAbilityUsageOnline(battlePokemonId)
   if (usageSource === "pikalytics") return fetchPikalyticsAbilityUsageOnline(battlePokemonId)
   let promise = abilityUsageCache.get(battlePokemonId)
@@ -663,6 +658,7 @@ export function resetChampionsAbilityUsageFetcherForTest(): void {
 export async function listChampionsItemUsageRecords(
   battlePokemonId: BattlePokemonId,
 ): Promise<ChampionsItemUsageRecord[]> {
+  if (usageSource !== "champions" && await loadCompiledArtifact()) return fetchChampionsItemUsageOnline(battlePokemonId)
   if (usageSource === "smogon") return fetchSmogonItemUsageOnline(battlePokemonId)
   if (usageSource === "pikalytics") return fetchPikalyticsItemUsageOnline(battlePokemonId)
   let promise = itemUsageCache.get(battlePokemonId)
@@ -693,6 +689,7 @@ export function resetChampionsItemUsageFetcherForTest(): void {
 export async function listChampionsNatureUsageRecords(
   battlePokemonId: BattlePokemonId,
 ): Promise<ChampionsNatureUsageRecord[]> {
+  if (usageSource !== "champions" && await loadCompiledArtifact()) return fetchChampionsNatureUsageOnline(battlePokemonId)
   if (usageSource === "smogon") return fetchSmogonNatureUsageOnline(battlePokemonId)
   if (usageSource === "pikalytics") return fetchPikalyticsNatureUsageOnline(battlePokemonId)
   let promise = natureUsageCache.get(battlePokemonId)
@@ -720,24 +717,6 @@ export function resetChampionsNatureUsageFetcherForTest(): void {
   natureUsageFetcher = fetchChampionsNatureUsageOnline
 }
 
-export async function listChampionsUsageRules(): Promise<{ defaultId: string; rules: UsageRule[] }> {
-  // The manifest repeats the upstream season list, so the picker can populate
-  // without downloading the multi-megabyte index.
-  const manifest = await loadUsageManifest(usageSource)
-  if (manifest && manifest.rules.length > 0) {
-    return { defaultId: manifest.defaultId, rules: manifest.rules }
-  }
-  const index = await fetchChampionsIndex()
-  const seasons = index.seasons?.length
-    ? index.seasons
-    : [index.defaultSeason ?? "Current"]
-  const defaultId = index.defaultSeason ?? seasons[0] ?? "Current"
-  return {
-    defaultId,
-    rules: seasons.map((id) => ({ id, label: id })),
-  }
-}
-
 /**
  * Read the ranking. `reload` bypasses the in-memory artifact cache so a manual
  * refresh can pick up a newer deployment without reloading the page.
@@ -751,6 +730,9 @@ export async function fetchUsageRanking(options?: { reload?: boolean }): Promise
 }
 
 async function fetchPokemonUsageIdsOnline(reload = false): Promise<BattlePokemonId[]> {
+  if (reload) reloadUsageData()
+  const artifact = await loadCompiledArtifact()
+  if (artifact) return artifact.ranking
   if (usageSource === "smogon") return fetchSmogonPokemonUsageOnline()
   if (usageSource === "pikalytics") {
     const [latest, pokemon] = await Promise.all([
@@ -763,7 +745,6 @@ async function fetchPokemonUsageIdsOnline(reload = false): Promise<BattlePokemon
   // selected rule. It is only dropped for an explicit manual refresh, which must
   // be able to re-read upstream; a rule change reuses the in-flight fetch instead
   // of discarding it and re-downloading several megabytes.
-  if (reload) reloadUsageData()
   return fetchChampionsPokemonUsageOnline(reload)
 }
 
@@ -771,7 +752,7 @@ export function listChampionsPokemonUsageIds(): Promise<BattlePokemonId[]> {
   const cached = peekCachedPokemonUsageIds()
   if (cached && cached.length > 0) return Promise.resolve(cached)
   if (usageSource === "smogon") {
-    smogonPokemonUsagePromise ??= fetchSmogonPokemonUsageOnline().then((ids) => {
+    smogonPokemonUsagePromise ??= fetchPokemonUsageIdsOnline().then((ids) => {
       rememberRanking(ids)
       return ids
     })
@@ -779,8 +760,7 @@ export function listChampionsPokemonUsageIds(): Promise<BattlePokemonId[]> {
     return smogonPokemonUsagePromise
   }
   if (usageSource === "pikalytics") {
-    pikalyticsPokemonUsagePromise ??= fetchPikalyticsRoster().then((roster) => {
-      const ids = roster.map((member) => member.id)
+    pikalyticsPokemonUsagePromise ??= fetchPokemonUsageIdsOnline().then((ids) => {
       rememberRanking(ids)
       return ids
     })
@@ -811,14 +791,12 @@ export function setChampionsJsonFetcherForTest(
   fetcher: (url: string) => Promise<unknown>,
 ): void {
   championsIndexPromise = undefined
-  battleRowsCache.clear()
   clearUsageCaches()
   jsonFetcher = fetcher
 }
 
 export function resetChampionsJsonFetcherForTest(): void {
   championsIndexPromise = undefined
-  battleRowsCache.clear()
   clearUsageCaches()
   jsonFetcher = fetchJsonFromNetwork
 }

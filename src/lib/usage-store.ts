@@ -1,20 +1,19 @@
 import { useSyncExternalStore } from "react"
 
+import type { UsageCatalog } from "@/lib/usage-rules"
+
 import {
   fetchUsageRanking,
-  listChampionsUsageRules,
   peekCachedPokemonUsageIds,
   setUsageSource,
 } from "@/lib/champions"
 import {
-  currentSeriesYearFromDefaultId,
   loadUsageCache,
   loadUsagePreference,
   rememberedRuleId,
   saveUsageCache,
   saveUsagePreference,
   usageIsStale,
-  visibleUsageRules,
   withRememberedRule,
   type UsageRule,
   type UsageSource,
@@ -24,17 +23,12 @@ export type UsageStoreSnapshot = {
   source: UsageSource
   ruleId: string | null
   rules: UsageRule[]
-  currentSeriesOnly: boolean
+  loadingSource: UsageSource | null
+  catalogError: UsageSource | null
   fetchedAt: number | null
   pendingUpdate: boolean
   refreshing: boolean
   generation: number
-}
-
-type RemoteCatalog = {
-  defaultId: string
-  rules: UsageRule[]
-  date?: string
 }
 
 type PendingRanking = {
@@ -46,7 +40,8 @@ type PendingRanking = {
 let preference = loadUsagePreference()
 let ruleId: string | null = rememberedRuleId(preference, preference.source) ?? null
 let catalogRules: UsageRule[] = []
-let catalogDefaultId: string | null = null
+let loadingSource: UsageSource | null = null
+let catalogError: UsageSource | null = null
 let pikalyticsDate: string | null = null
 let fetchedAt: number | null = null
 let pending: PendingRanking | null = null
@@ -55,25 +50,16 @@ let generation = 0
 let selectionRequest = 0
 let snapshot: UsageStoreSnapshot = makeSnapshot()
 const listeners = new Set<() => void>()
-const catalogs = new Map<UsageSource, Promise<RemoteCatalog>>()
+const catalogs = new Map<UsageSource, Promise<UsageCatalog>>()
 let started = false
-
-function visibleCatalogRules(): UsageRule[] {
-  return visibleUsageRules(
-    catalogRules,
-    preference.source,
-    preference.currentSeriesOnly,
-    ruleId,
-    currentSeriesYearFromDefaultId(catalogDefaultId ?? ""),
-  )
-}
 
 function makeSnapshot(): UsageStoreSnapshot {
   return {
     source: preference.source,
     ruleId,
-    rules: visibleCatalogRules(),
-    currentSeriesOnly: preference.currentSeriesOnly,
+    rules: catalogRules,
+    loadingSource,
+    catalogError,
     fetchedAt,
     pendingUpdate: pending != null,
     refreshing,
@@ -100,7 +86,7 @@ function bumpGeneration(): void {
   generation += 1
 }
 
-async function loadCatalog(source: UsageSource): Promise<RemoteCatalog> {
+async function loadCatalog(source: UsageSource): Promise<UsageCatalog> {
   let pendingCatalog = catalogs.get(source)
   if (!pendingCatalog) {
     pendingCatalog = fetchCatalog(source).catch((error) => {
@@ -112,10 +98,9 @@ async function loadCatalog(source: UsageSource): Promise<RemoteCatalog> {
   return pendingCatalog
 }
 
-async function fetchCatalog(source: UsageSource): Promise<RemoteCatalog> {
-  if (source === "champions") return listChampionsUsageRules()
-  const path = source === "smogon" ? "/api/smogon/formats" : "/api/pikalytics/formats"
-  const response = await fetch(path)
+async function fetchCatalog(source: UsageSource): Promise<UsageCatalog> {
+  const path = `/api/usage/rules/${source}`
+  const response = await fetch(path, { signal: AbortSignal.timeout(20_000) })
   if (!response.ok) throw new Error(`Usage catalog failed ${response.status}: ${path}`)
   const body = await response.json() as {
     defaultId?: unknown
@@ -125,15 +110,20 @@ async function fetchCatalog(source: UsageSource): Promise<RemoteCatalog> {
   const parsedRules = Array.isArray(body.rules)
     ? body.rules.flatMap((entry) => {
         if (!entry || typeof entry !== "object") return []
-        const rule = entry as { id?: unknown; label?: unknown }
+        const rule = entry as { id?: unknown; label?: unknown; displayName?: unknown; compiled?: unknown }
         if (typeof rule.id !== "string" || rule.id.length === 0) return []
-        return [{ id: rule.id, label: typeof rule.label === "string" && rule.label ? rule.label : rule.id }]
+        return [{
+          id: rule.id,
+          label: typeof rule.label === "string" && rule.label ? rule.label : rule.id,
+          displayName: typeof rule.displayName === "string" ? rule.displayName : undefined,
+          compiled: rule.compiled === true,
+        }]
       })
     : []
   const defaultId = typeof body.defaultId === "string" && body.defaultId
     ? body.defaultId
     : parsedRules[0]?.id
-  if (!defaultId) throw new Error(`Usage catalog missing default: ${path}`)
+  if (!defaultId || !parsedRules.some(rule => rule.id === defaultId)) throw new Error(`Usage catalog missing default: ${path}`)
   return {
     defaultId,
     rules: parsedRules,
@@ -141,7 +131,7 @@ async function fetchCatalog(source: UsageSource): Promise<RemoteCatalog> {
   }
 }
 
-function ruleFromCatalog(catalog: RemoteCatalog, source: UsageSource): string {
+function ruleFromCatalog(catalog: UsageCatalog, source: UsageSource): string {
   const remembered = rememberedRuleId(preference, source)
   if (remembered && catalog.rules.some((rule) => rule.id === remembered)) return remembered
   return catalog.defaultId
@@ -151,13 +141,31 @@ async function selectSource(source: UsageSource, explicitRuleId?: string): Promi
   // Loading a catalog is async, so two rapid picks could otherwise finish out of
   // order and leave the store on whichever resolved last rather than chosen last.
   const request = ++selectionRequest
-  const catalog = await loadCatalog(source)
+  catalogError = null
+  let catalog: UsageCatalog
+  if (source === preference.source && catalogRules.length > 0) {
+    // A local rule change must not unmount the focused rule button for a loading state.
+    catalog = { defaultId: ruleId ?? catalogRules[0].id, rules: catalogRules, date: pikalyticsDate ?? undefined }
+  } else {
+    loadingSource = source
+    emit()
+    try {
+      catalog = await loadCatalog(source)
+    } catch {
+      if (request !== selectionRequest) return
+      loadingSource = null
+      catalogError = source
+      emit()
+      return
+    }
+  }
   if (request !== selectionRequest) return
-  const nextRule = explicitRuleId ?? ruleFromCatalog(catalog, source)
+  loadingSource = null
+  const nextRule = explicitRuleId && catalog.rules.some(rule => rule.id === explicitRuleId)
+    ? explicitRuleId : ruleFromCatalog(catalog, source)
   preference = { ...withRememberedRule(preference, source, nextRule), source }
   ruleId = nextRule
   catalogRules = catalog.rules
-  catalogDefaultId = catalog.defaultId
   pikalyticsDate = source === "pikalytics" ? catalog.date ?? null : null
   pending = null
   persist()
@@ -165,7 +173,7 @@ async function selectSource(source: UsageSource, explicitRuleId?: string): Promi
   bumpGeneration()
   emit()
   if (peekCachedPokemonUsageIds()?.length && fetchedAt != null && usageIsStale(fetchedAt)) {
-    void refreshRanking("pending")
+    void refreshRanking("pending").catch(() => {})
   }
 }
 
@@ -181,6 +189,7 @@ async function refreshRanking(mode: "apply" | "pending"): Promise<void> {
   emit()
   try {
     const result = await fetchUsageRanking({ reload })
+    if (source !== preference.source || rule !== ruleId) return
     const now = Date.now()
     const current = loadUsageCache(source, rule)
     if (mode === "pending" && current && current.fingerprint !== result.fingerprint) {
@@ -193,9 +202,8 @@ async function refreshRanking(mode: "apply" | "pending"): Promise<void> {
         fingerprint: result.fingerprint,
         pokemonIds: result.pokemonIds,
       })
-      // Only adopt the timestamp if the selection still matches this fetch.
-      if (source === preference.source && rule === ruleId) fetchedAt = now
-      if (changed) {
+      fetchedAt = now
+      if (changed || reload) {
         bumpGeneration()
         syncModuleSelection()
       }
@@ -264,20 +272,15 @@ export function applyUsageStorePending(): void {
   emit()
 }
 
-export function setUsageStoreCurrentSeriesOnly(currentSeriesOnly: boolean): void {
-  if (preference.currentSeriesOnly === currentSeriesOnly) return
-  preference = { ...preference, currentSeriesOnly }
-  persist()
-  emit()
-}
-
 export function resetUsageStoreForTest(): void {
   catalogs.clear()
   started = false
   preference = loadUsagePreference()
   ruleId = rememberedRuleId(preference, preference.source) ?? null
   catalogRules = []
-  catalogDefaultId = null
+  loadingSource = null
+  catalogError = null
+  selectionRequest += 1
   pikalyticsDate = null
   fetchedAt = null
   pending = null

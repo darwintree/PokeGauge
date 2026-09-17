@@ -25,7 +25,7 @@ function applyDefaults(state: SelectionState): SelectionState {
   let tracks = state.trackState
   let project = state.abilityProjectionPending
 
-  if (catalog.defaultStatPickStatus === "ready" && !edited.has("offense") &&
+  if (catalog.defaultStatPickStatus !== "loading" && !edited.has("offense") &&
     !sameIds(tracks.offensePresetIds, [catalog.defaultOffensePresetId])) {
     const defaults = defaultTrackState(catalog)
     tracks = {
@@ -61,7 +61,7 @@ function applyDefaults(state: SelectionState): SelectionState {
     const abilityKey = `${side}AbilityIds` as const
     const abilityDefaults = side === "attacker"
       ? catalog.defaultAttackerAbilityIds : catalog.defaultDefenderAbilityIds
-    if (catalog.defaultAbilityPickStatus === "ready" && !edited.has(`${side}Ability`) &&
+    if (catalog.defaultAbilityPickStatus !== "loading" && !edited.has(`${side}Ability`) &&
       !sameIds(tracks[abilityKey], abilityDefaults)) {
       tracks = { ...tracks, [abilityKey]: [...abilityDefaults] }
       project = true
@@ -78,7 +78,7 @@ function applyDefaults(state: SelectionState): SelectionState {
     }
   }
 
-  if (project && catalog.defaultAbilityPickStatus === "ready") {
+  if (project && catalog.defaultAbilityPickStatus !== "loading") {
     tracks = projectSelections(state, tracks)
     project = false
   }

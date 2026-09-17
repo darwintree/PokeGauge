@@ -6,7 +6,6 @@ import {
   listChampionsMoveUsageRecords,
   listChampionsNatureUsageRecords,
   listChampionsPokemonUsageIds,
-  listChampionsUsageRules,
   resetChampionsJsonFetcherForTest,
   setChampionsJsonFetcherForTest,
   setUsageSource,
@@ -259,14 +258,6 @@ it("fetches battle rows for the selected Champions season", async () => {
     throw new Error(`unexpected Champions URL: ${url}`)
   })
   setUsageSource("champions", "M6")
-  await expect(listChampionsUsageRules()).resolves.toEqual({
-    defaultId: "Current",
-    rules: [
-      { id: "Current", label: "Current" },
-      { id: "M6", label: "M6" },
-      { id: "M5", label: "M5" },
-    ],
-  })
   await expect(listChampionsMoveUsageRecords(6)).resolves.toEqual([
     expect.objectContaining({ season: "M6", championsMoveName: "Flamethrower" }),
   ])
@@ -380,4 +371,98 @@ it("maps Pikalytics Rillaboom to the selectable species instead of Gigantamax", 
   setUsageSource("pikalytics", "gen9championsvgc2026regmc-1760", { pikalyticsDate: "2026-05" })
 
   await expect(listChampionsPokemonUsageIds()).resolves.toEqual([812, 903])
+})
+
+it("shares a Smogon download across detail categories and retries failed downloads", async () => {
+  setUsageSource("smogon", "2026-08/gen9ou-0")
+  const fetcher = vi.fn(async () => ({ data: { Garchomp: { Items: { "Life Orb": 80 }, Spreads: { "Adamant:0/252/0/0/4/252": 60 } } } }))
+  fetcher.mockRejectedValueOnce(new Error("offline"))
+  setChampionsJsonFetcherForTest(fetcher)
+  await expect(listChampionsItemUsageRecords(445)).rejects.toThrow("offline")
+  const [items, natures] = await Promise.all([
+    listChampionsItemUsageRecords(445),
+    listChampionsNatureUsageRecords(445),
+  ])
+  expect(items[0]?.championsItemName).toBe("Life Orb")
+  expect(natures[0]?.nature).toBe("Adamant")
+  expect(fetcher).toHaveBeenCalledTimes(2)
+})
+
+it.each([
+  ["smogon", true], ["smogon", false],
+  ["pikalytics", true], ["pikalytics", false],
+] as const)("reads Mega usage from the base identity for %s (compiled: %s)", async (source, compiled) => {
+  const { setUsageArtifactFetcherForTest, resetUsageArtifactCache } = await import("./artifact-client")
+  const { listResources } = await import("@/lib/resources")
+  await Promise.all([listResources("move", "en"), listResources("ability", "en")])
+  const rule = source === "smogon" ? "2026-08/gen9championsvgc2026regmb-0" : "battledataregmbs3-1760"
+  setUsageSource(source, rule, { pikalyticsDate: "2026-05" })
+  setUsageArtifactFetcherForTest(async () => compiled ? {
+    source, rule, format: "Doubles", dataVersion: "test", generatedAt: "2026-09-17",
+    ranking: [445, 10058], pokemon: {
+      445: { m: [["Earthquake", 80]], a: [["Rough Skin", 100]], i: [["Life Orb", 50]], n: [["Jolly", 60]] },
+      10058: { m: [["Dragon Claw", 100]] },
+    },
+  } : null)
+  const fetcher = vi.fn(async (url: string) => {
+    if (url.startsWith("/api/smogon/")) return { data: {
+      Garchomp: { Moves: { Earthquake: 80 }, Abilities: { "Rough Skin": 100 }, Items: { "Life Orb": 50 }, Spreads: { "Jolly:0/252/0/0/4/252": 60 } },
+      "Garchomp-Mega": { Moves: { "Dragon Claw": 100 } },
+    } }
+    if (url.includes("/api/pikalytics/l/")) return { data: [{ name: "Garchomp", rank: "1" }, { name: "Garchomp-Mega", rank: "2" }] }
+    if (url.endsWith("/Garchomp")) return { data: {
+      moves: [{ move: "Earthquake", percent: "80" }], abilities: [{ ability: "Rough Skin", percent: "100" }],
+      items: [{ item: "Life Orb", percent: "50" }], natures: [{ nature: "Jolly", percent: "60" }],
+    } }
+    throw new Error(`Unexpected URL: ${url}`)
+  })
+  setChampionsJsonFetcherForTest(fetcher)
+  try {
+    const [moves, abilities, items, natures] = await Promise.all([
+      listChampionsMoveUsageRecords(10058), listChampionsAbilityUsageRecords(10058),
+      listChampionsItemUsageRecords(10058), listChampionsNatureUsageRecords(10058),
+    ])
+    expect(moves).toEqual([expect.objectContaining({ battlePokemonId: 10058, championsMoveName: "Earthquake" })])
+    expect(abilities).toEqual([expect.objectContaining({ battlePokemonId: 10058, championsAbilityName: "Rough Skin" })])
+    expect(items).toEqual([expect.objectContaining({ battlePokemonId: 10058, championsItemName: "Life Orb" })])
+    expect(natures).toEqual([expect.objectContaining({ battlePokemonId: 10058, nature: "Jolly" })])
+    if (compiled) expect(fetcher).not.toHaveBeenCalled()
+    else expect(fetcher).toHaveBeenCalledTimes(source === "pikalytics" ? 2 : 1)
+  } finally {
+    resetUsageArtifactCache()
+  }
+})
+
+it.each([
+  ["smogon", true], ["smogon", false],
+  ["pikalytics", true], ["pikalytics", false],
+] as const)("uses the selected Mega's statistics when its base is absent for %s (compiled: %s)", async (source, compiled) => {
+  const { setUsageArtifactFetcherForTest, resetUsageArtifactCache } = await import("./artifact-client")
+  const { listResources } = await import("@/lib/resources")
+  await listResources("move", "en")
+  const rule = source === "smogon" ? "2026-08/gen9championsvgc2026regmbbo3-1760" : "championstournaments-1760"
+  setUsageSource(source, rule, { pikalyticsDate: "2026-05" })
+  setUsageArtifactFetcherForTest(async () => compiled ? {
+    source, rule, format: "Doubles", dataVersion: "test", generatedAt: "2026-09-17",
+    ranking: [10035], pokemon: { 10035: { m: [["heatwave", 95]], n: [["Modest", 80]] } },
+  } : null)
+  setChampionsJsonFetcherForTest(async url => {
+    if (url.startsWith("/api/smogon/")) return { data: {
+      "Charizard-Mega-Y": { Moves: { heatwave: 95 }, Spreads: { "Modest:0/0/0/252/4/252": 80 } },
+    } }
+    if (url.includes("/api/pikalytics/l/")) return { data: [{ name: "Charizard-Mega-Y", rank: "1" }] }
+    if (url.endsWith("/Charizard-Mega-Y")) return { data: {
+      moves: [{ move: "Heat Wave", percent: "95" }], natures: [{ nature: "Modest", percent: "80" }],
+    } }
+    throw new Error(`Unexpected URL: ${url}`)
+  })
+  try {
+    const [moves, natures] = await Promise.all([
+      listChampionsMoveUsageRecords(10035), listChampionsNatureUsageRecords(10035),
+    ])
+    expect(moves).toEqual([expect.objectContaining({ battlePokemonId: 10035, moveId: 257 })])
+    expect(natures).toEqual([expect.objectContaining({ battlePokemonId: 10035, nature: "Modest" })])
+  } finally {
+    resetUsageArtifactCache()
+  }
 })

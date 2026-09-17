@@ -10,6 +10,7 @@ import { ScenarioExplorerPage } from "./scenario-explorer-page"
 const catalogMocks = vi.hoisted(() => ({
   resolveCategory: vi.fn(),
   getCatalogShell: vi.fn(),
+  resolvePicks: vi.fn(),
 }))
 const scenarioMocks = vi.hoisted(() => ({
   loadSnapshot: vi.fn(),
@@ -21,7 +22,7 @@ vi.mock("@/lib/catalog", () => ({
   listAttackers: async () => [{ id: 445 }],
   listDefenders: async () => [{ id: 727 }],
   resolveCatalogDefaultMoveCategory: catalogMocks.resolveCategory,
-  resolveCatalogDefaultMovePick: async (catalog: unknown) => catalog,
+  resolveCatalogDefaultMovePick: catalogMocks.resolvePicks,
 }))
 
 vi.mock("@/lib/scenario", async (importOriginal) => ({
@@ -54,11 +55,14 @@ vi.mock("./scenario-workspace", () => ({
   ScenarioWorkspace: ({
     catalog,
     onMoveCategoryChange,
+    onRetryUsage,
   }: {
     catalog: { moveCategory: "physical" | "special" }
     onMoveCategoryChange: (category: "physical" | "special") => void
+    onRetryUsage: () => void
   }) => (
     <div data-testid="workspace" data-category={catalog.moveCategory}>
+      <button data-testid="retry-usage" onClick={onRetryUsage} />
       <button
         type="button"
         data-testid="choose-physical"
@@ -114,6 +118,7 @@ beforeEach(async () => {
   })
   catalogMocks.resolveCategory.mockReset()
   catalogMocks.getCatalogShell.mockReset()
+  catalogMocks.resolvePicks.mockReset()
   scenarioMocks.loadSnapshot.mockReset()
   scenarioMocks.loadSnapshot.mockReturnValue(null)
   window.history.replaceState(null, "", "/")
@@ -184,4 +189,21 @@ it("waits on the landing before restoring a stored scenario", async () => {
   await flush()
 
   expect(container.querySelector("[data-testid=workspace]")).not.toBeNull()
+})
+
+
+it("rebuilds and resolves recommendations when usage details are retried", async () => {
+  catalogMocks.resolveCategory.mockResolvedValue("physical")
+  catalogMocks.getCatalogShell.mockImplementation(async (attackerId: number, defenderId: number, _locale: string, moveCategory: string) => ({
+    matchup: { attackerId, defenderId }, moveCategory, defaultMovePickStatus: "loading",
+  }))
+  catalogMocks.resolvePicks.mockImplementation(async (catalog) => ({ ...catalog, defaultMovePickStatus: "unavailable" }))
+  await act(async () => container.querySelector<HTMLElement>("[data-testid=attacker]")?.click())
+  await act(async () => container.querySelector<HTMLElement>("[data-testid=defender]")?.click())
+  await flush()
+  const calls = catalogMocks.resolvePicks.mock.calls.length
+  catalogMocks.resolvePicks.mockImplementation(async (catalog) => ({ ...catalog, defaultMovePickStatus: "ready" }))
+  await act(async () => container.querySelector<HTMLElement>("[data-testid=retry-usage]")?.click())
+  await flush()
+  expect(catalogMocks.resolvePicks.mock.calls.length).toBe(calls + 1)
 })

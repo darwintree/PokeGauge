@@ -9,7 +9,6 @@ import {
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { Button } from "@/components/ui/button"
-import { Switch } from "@/components/ui/switch"
 import {
   Dialog,
   DialogClose,
@@ -20,9 +19,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { UsageFetchStatus } from "@/features/scenario-explorer/pickers/usage-chrome"
-import { UsageRuleSelect } from "@/features/scenario-explorer/pickers/usage-rule-select"
-import { UsageSourceSelect } from "@/features/scenario-explorer/pickers/usage-source-select"
+import { UsagePickerChrome } from "@/features/scenario-explorer/pickers/usage-chrome"
 import { CHANGELOG_ENTRIES } from "@/lib/changelog"
 import { trackProductEvent } from "@/lib/analytics"
 import type { ProbabilityMode } from "@/lib/damage-calculation"
@@ -32,12 +29,6 @@ import {
   STAT_NAME_STRATEGY_OPTIONS,
   type StatNameStrategy,
 } from "@/lib/stat-preset"
-import {
-  setUsageStoreCurrentSeriesOnly,
-  setUsageStoreRule,
-  setUsageStoreSource,
-  useUsageStore,
-} from "@/lib/usage-store"
 
 const SOURCE_URL = "https://github.com/darwintree/PokeGauge"
 
@@ -177,7 +168,6 @@ function SettingsDialog({
   onStatNameStrategyChange,
 }: SettingsDialogProps) {
   const intl = useIntl()
-  const usage = useUsageStore()
   const probabilityHintId = probabilityMode === "battle-odds"
     ? "probability.mode.battleOdds.hint"
     : "probability.mode.classic.hint"
@@ -326,54 +316,10 @@ function SettingsDialog({
           </TabsContent>
 
           <TabsContent value="usage" className="min-h-0 overscroll-contain overflow-y-auto px-5 py-2 sm:px-6">
-            <PreferenceRow
-              htmlFor="settings-usage-source"
-              label={<FormattedMessage id="settings.usageSource.label" />}
-              description={<FormattedMessage id="settings.usageSource.description" />}
-            >
-              <UsageSourceSelect
-                id="settings-usage-source"
-                describedBy="settings-usage-source-description"
-                value={usage.source}
-                onChange={(source) => void setUsageStoreSource(source)}
-                className={SELECT_CLASS}
-              />
-            </PreferenceRow>
-            <PreferenceRow
-              htmlFor="settings-usage-rule"
-              label={<FormattedMessage id="settings.usageRule.label" />}
-              description={<FormattedMessage id="settings.usageRule.description" />}
-            >
-              <UsageRuleSelect
-                id="settings-usage-rule"
-                describedBy="settings-usage-rule-description"
-                value={usage.ruleId}
-                rules={usage.rules}
-                onChange={(ruleId) => void setUsageStoreRule(ruleId)}
-                className={SELECT_CLASS}
-              />
-            </PreferenceRow>
-            <PreferenceRow
-              htmlFor="settings-usage-fetched"
-              label={<FormattedMessage id="settings.usageFetched.label" />}
-              description={<FormattedMessage id="settings.usageFetched.description" />}
-            >
-              <UsageFetchStatus id="settings-usage-fetched" />
-            </PreferenceRow>
-            <PreferenceRow
-              htmlFor="settings-usage-filter"
-              label={<FormattedMessage id="settings.usageFilter.label" />}
-              description={<FormattedMessage id="settings.usageFilter.description" />}
-            >
-              <div className="flex justify-end sm:justify-start">
-                <Switch
-                  id="settings-usage-filter"
-                  checked={usage.currentSeriesOnly}
-                  onCheckedChange={setUsageStoreCurrentSeriesOnly}
-                  aria-describedby="settings-usage-filter-description"
-                />
-              </div>
-            </PreferenceRow>
+            <div className="py-3">
+              <p className="mb-3 text-sm text-hud-muted"><FormattedMessage id="settings.usageSource.description" /></p>
+              <UsagePickerChrome variant="settings" />
+            </div>
           </TabsContent>
 
           <TabsContent value="changelog" className="min-h-0 overscroll-contain overflow-y-auto px-5 py-5 sm:max-h-[min(60dvh,30rem)] sm:px-6">

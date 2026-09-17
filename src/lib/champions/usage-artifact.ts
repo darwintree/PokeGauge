@@ -17,11 +17,12 @@ import type { ChampionsBattleFormat } from "./types"
  *   `percentage` already resolved to a number or `null`. `[name, null]` is
  *   meaningful (Champions publishes teammates without a percentage) and must
  *   not be dropped. An empty bucket is omitted rather than stored as `[]`.
- * - Buckets keep every upstream row rather than a truncated window. The runtime
- *   already applies its own rank/window/dedupe rules, and several of those rules
+ * - Buckets keep every projected row rather than a truncated window. Smogon
+ *   projects only the strongest spread per nature, matching runtime inference.
+ *   The runtime already applies its own rank/window/dedupe rules, and several of those rules
  *   slice *after* filtering rows whose name does not resolve locally. Trimming
  *   here would change which rows survive that later filter, so the compiler must
- *   stay lossless up to `USAGE_ARTIFACT_ROW_GUARD`.
+ *   stay lossless.
  * - Move, ability, and item names stay names. The compiler only guarantees the
  *   projection is lossless; the runtime keeps resolving names through the same
  *   generated tables it already uses, which are built from this same commit.
@@ -61,21 +62,16 @@ export type UsageManifest = {
   source: string
   defaultId: string
   rules: Array<{ id: string; label: string }>
+  /** Published dataset month when the source keys requests by date. */
+  date?: string
   /** Rules that have a compiled artifact. Anything else uses proxy mode. */
   compiledRules: string[]
   generatedAt: string
 }
 
-/**
- * Safety bound on rows per bucket. Champions publishes 10 rows per category, so
- * this never binds today; it only stops a pathological upstream payload from
- * bloating the artifact.
- */
-const USAGE_ARTIFACT_ROW_GUARD = 64
-
 /** Stable per-rule URL. Served as a static asset, never through the Worker. */
 export function usageArtifactUrl(source: string, rule: string): string {
-  return `/usage/${encodeURIComponent(source)}/${encodeURIComponent(rule)}.json`
+  return `/usage/${encodeURIComponent(source)}/${rule.split("/").map(encodeURIComponent).join("/")}.json`
 }
 
 /** Stable per-source manifest URL. */
@@ -117,7 +113,5 @@ export function toBucket(
   rows: readonly { name: string; percentage?: number | null }[] | undefined,
 ): UsageArtifactBucket | undefined {
   if (!rows?.length) return undefined
-  return rows
-    .slice(0, USAGE_ARTIFACT_ROW_GUARD)
-    .map((row) => [row.name, row.percentage ?? null] as UsageArtifactRow)
+  return rows.map((row) => [row.name, row.percentage ?? null] as UsageArtifactRow)
 }
