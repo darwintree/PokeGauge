@@ -388,12 +388,10 @@ describe("catalog ability candidates and defaults", () => {
     )
   })
 
-  it("falls back to the first selectable ability when usage never responds", async () => {
-    vi.useFakeTimers()
-    setChampionsAbilityUsageFetcherForTest(() => new Promise(() => {}))
+  it("falls back to the first selectable ability when the usage request times out", async () => {
+    setChampionsAbilityUsageFetcherForTest(async () => { throw new DOMException("Timed out", "TimeoutError") })
 
     const result = resolveCatalogDefaultMovePick(await getCatalogShell(445, 727, "en"))
-    await vi.advanceTimersByTimeAsync(5_000)
     const catalog = await result
 
     expect(catalog.defaultAttackerAbilityIds).toEqual(
@@ -418,4 +416,35 @@ describe("catalog ability candidates and defaults", () => {
     expect(catalog.defaultAttackerAbilityIds).toEqual([catalog.attackerLockedAbilityId])
     expect(catalog.defaultDefenderAbilityIds).toEqual([catalog.defenderLockedAbilityId])
   })
+})
+
+it("applies usage details that arrive after six seconds", async () => {
+  const shell = await getCatalogShell(445, 727, "en")
+  await resolveCatalogDefaultMovePick(shell)
+  vi.useFakeTimers()
+  setChampionsMoveUsageFetcherForTest(async (battlePokemonId) => {
+    await new Promise((resolve) => setTimeout(resolve, 6_000))
+    return [{ battlePokemonId, moveId: 89, format: "Doubles", season: "test", source: "test", dataVersion: "test", rank: 1, percentage: 80, championsMoveName: "Earthquake" }]
+  })
+  const pending = resolveCatalogDefaultMovePick(shell)
+  await vi.advanceTimersByTimeAsync(6_000)
+  const catalog = await pending
+  expect(catalog.defaultMovePickStatus).toBe("ready")
+  expect(catalog.defaultMovePoolIds).toContain(89)
+  expect(catalog.defaultMoveIds).toContain(89)
+})
+
+it("reports a failed side or category while preserving successful recommendations", async () => {
+  setChampionsItemUsageFetcherForTest(async (id) => {
+    if (id === 727) throw new Error("offline")
+    return []
+  })
+  setChampionsNatureUsageFetcherForTest(async () => { throw new Error("offline") })
+  setChampionsAbilityUsageFetcherForTest(async () => { throw new Error("offline") })
+  const catalog = await resolveCatalogDefaultMovePick(await getCatalogShell(445, 727, "en"))
+  expect(catalog.defaultMovePickStatus).toBe("ready")
+  expect(catalog.defaultItemPickStatus).toBe("unavailable")
+  expect(catalog.defaultAbilityPickStatus).toBe("unavailable")
+  expect(catalog.defaultStatPickStatus).toBe("unavailable")
+  expect(catalog.defaultDefenderItemIds).toEqual(["none"])
 })

@@ -2,7 +2,7 @@ import { expect, it } from "vitest"
 
 import { NO_ABILITY_ID } from "@/lib/ability"
 
-import { resolveDefaultAbilityIds } from "./champions-defaults"
+import { resolveDefaultAbilityPick } from "./champions-defaults"
 import { abilityOptions, noAbilityOption } from "./resource-options"
 
 it("keeps none abilities available for disabled rendering", async () => {
@@ -12,6 +12,6 @@ it("keeps none abilities available for disabled rendering", async () => {
 
 it("falls back to No Ability when an identity has no selectable ability", async () => {
   const options = await abilityOptions([1], "en")
-  expect(await resolveDefaultAbilityIds(445, [noAbilityOption("en"), ...options]))
+  expect((await resolveDefaultAbilityPick(445, [noAbilityOption("en"), ...options])).ids)
     .toEqual([NO_ABILITY_ID])
 })

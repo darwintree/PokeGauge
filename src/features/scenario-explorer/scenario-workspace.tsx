@@ -17,6 +17,7 @@ import { ScenarioSetupPanel } from "./scenario-setup-panel"
 import { ResultSetSummary } from "./results-summary"
 import { SetupBookmarkControls } from "./setup-bookmarks"
 import { useScenarioState } from "./state/use-scenario-state"
+import { PokemonUsageStatus } from "./pickers/pokemon-usage-status"
 import { UsageTip } from "./usage-tip/usage-tip"
 
 import { StatEditorContext, type StatEditSession } from "./tracks/stats/stat-editor-context"
@@ -41,6 +42,7 @@ export function ScenarioWorkspace({
   onAttackerChange,
   onDefenderChange,
   onMoveCategoryChange,
+  onRetryUsage,
   statNameStrategy,
   probabilityMode,
 }: LocalizedCatalogState & {
@@ -54,6 +56,7 @@ export function ScenarioWorkspace({
   onAttackerChange: (id: BattlePokemonId) => void
   onDefenderChange: (id: BattlePokemonId) => void
   onMoveCategoryChange: (category: MoveCategory) => void
+  onRetryUsage: () => void
   statNameStrategy: StatNameStrategy
   probabilityMode: ProbabilityMode
 }) {
@@ -174,6 +177,11 @@ export function ScenarioWorkspace({
           <FormattedMessage id="app.results" />
         </Button>
       </nav>
+      <PokemonUsageStatus
+        catalog={catalog}
+        hasMoves={state.trackState.moveSnapshots.length > 0}
+        onRetry={onRetryUsage}
+      />
       <div className="flex min-h-[calc(100svh-6rem)] flex-col gap-6 lg:flex-row lg:items-start">
         <aside
           id="scenario-setup"

@@ -1,95 +1,84 @@
 // @vitest-environment happy-dom
-
 import { act } from "react"
 import { createRoot, type Root } from "react-dom/client"
 import { IntlProvider } from "react-intl"
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
-
+import { afterEach, beforeEach, expect, it, vi } from "vitest"
 import { localeMessages } from "@/lib/i18n"
-import type { UsageStoreSnapshot } from "@/lib/usage-store"
-
+import { setUsageStoreRule, setUsageStoreSource, type UsageStoreSnapshot } from "@/lib/usage-store"
 import { UsagePickerChrome } from "./usage-chrome"
 
 const snapshot: UsageStoreSnapshot = {
-  source: "champions",
-  ruleId: "M4",
+  source: "champions", ruleId: "Current",
   rules: [
-    { id: "Current", label: "Current" },
-    { id: "M4", label: "M4" },
+    { id: "Current", label: "Current season full name", displayName: "Current", recommended: true },
+    { id: "M6", label: "M6", recommended: true },
+    { id: "M4", label: "M4", recommended: false },
+    { id: "M3", label: "M3", recommended: false },
   ],
-  currentSeriesOnly: true,
-  fetchedAt: Date.now(),
-  pendingUpdate: false,
-  refreshing: false,
-  generation: 0,
+  loadingSource: null, catalogError: null,
+  fetchedAt: Date.now(), pendingUpdate: true, refreshing: false, generation: 0,
 }
-
 vi.mock("@/lib/usage-store", () => ({
   useUsageStore: () => snapshot,
-  setUsageStoreSource: vi.fn(),
-  setUsageStoreRule: vi.fn(),
-  refreshUsageStore: vi.fn(),
-  applyUsageStorePending: vi.fn(),
+  setUsageStoreSource: vi.fn(), setUsageStoreRule: vi.fn(),
+  refreshUsageStore: vi.fn(), applyUsageStorePending: vi.fn(),
 }))
+let root: Root
+let container: HTMLDivElement
+beforeEach(() => {
+  snapshot.ruleId = "Current"
+  snapshot.loadingSource = null
+  snapshot.catalogError = null
+  container = document.createElement("div")
+  document.body.append(container)
+  root = createRoot(container)
+  vi.clearAllMocks()
+})
+afterEach(async () => { await act(async () => root.unmount()); document.body.innerHTML = "" })
+async function render(variant: "popover" | "settings" = "popover") {
+  await act(async () => root.render(<IntlProvider locale="en" messages={localeMessages.en}><UsagePickerChrome variant={variant} /></IntlProvider>))
+}
+function button(text: string) {
+  return [...document.querySelectorAll<HTMLButtonElement>("button")].find(button => button.textContent?.trim() === text)!
+}
+async function click(element: HTMLElement) { await act(async () => element.click()) }
 
-describe("UsagePickerChrome", () => {
-  let container: HTMLDivElement
-  let root: Root
+it("closes after choosing a rule and keeps the selected rule visible when reopened", async () => {
+  await render()
+  const trigger = container.querySelector("button")!
+  expect(trigger.textContent).toContain("Current")
+  await click(trigger)
+  expect(button("M6")).toBeTruthy()
+  await click(button("Show 2 more rules"))
+  await click(button("M4"))
+  expect(setUsageStoreRule).toHaveBeenCalledWith("M4")
+  expect(trigger.getAttribute("aria-expanded")).toBe("false")
+  snapshot.ruleId = "M4"
+  await render()
+  await click(trigger)
+  expect(button("M4").getAttribute("aria-pressed")).toBe("true")
+  expect(button("Show 1 more rule")).toBeTruthy()
+  expect(button("Apply update")).toBeTruthy()
+})
 
-  beforeEach(() => {
-    snapshot.pendingUpdate = false
-    container = document.createElement("div")
-    document.body.append(container)
-    root = createRoot(container)
-  })
+it("shows the full name immediately and offers retry for a failed source", async () => {
+  await render()
+  await click(container.querySelector("button")!)
+  expect([...document.querySelectorAll("p")].some(paragraph => paragraph.textContent === "Current season full name")).toBe(true)
+  snapshot.catalogError = "smogon"
+  await render()
+  await click(button("Retry"))
+  expect(setUsageStoreSource).toHaveBeenCalledWith("smogon")
+})
 
-  afterEach(async () => {
-    await act(async () => root.unmount())
-    container.remove()
-    document.body.innerHTML = ""
-  })
 
-  async function renderChrome() {
-    await act(async () => {
-      root.render(
-        <IntlProvider locale="en" messages={localeMessages.en}>
-          <UsagePickerChrome />
-        </IntlProvider>,
-      )
-      await Promise.resolve()
-    })
-  }
-
-  it("starts as one summary row without source or rule dropdowns", async () => {
-    await renderChrome()
-    const toggle = container.querySelector("[aria-expanded]")
-    expect(toggle?.getAttribute("aria-expanded")).toBe("false")
-    expect(toggle?.hasAttribute("aria-controls")).toBe(false)
-    expect(toggle?.textContent).toContain("Pokémon Champions")
-    expect(toggle?.textContent).toContain("M4")
-    expect(container.querySelector('[aria-label="Usage source"]')).toBeNull()
-    expect(container.querySelector('[aria-label="Usage rule"]')).toBeNull()
-    expect(container.textContent).not.toContain("Fetch now")
-  })
-
-  it("expands on demand to cascade source, rules, fetch, and apply", async () => {
-    snapshot.pendingUpdate = true
-    await renderChrome()
-    const toggle = container.querySelector("[aria-expanded]") as HTMLButtonElement
-    expect(toggle.textContent).toContain("Update")
-    expect(container.textContent).not.toContain("Apply update")
-
-    await act(async () => {
-      toggle.click()
-      await Promise.resolve()
-    })
-
-    expect(toggle.getAttribute("aria-expanded")).toBe("true")
-    expect(toggle.getAttribute("aria-controls")).toBeTruthy()
-    expect(container.querySelector('[aria-label="Usage source"]')).not.toBeNull()
-    expect(container.querySelector('[aria-label="Usage rule"]')).not.toBeNull()
-    expect(container.textContent).toContain("Fetch now")
-    expect(container.textContent).toContain("Apply update")
-    expect(toggle.textContent).not.toContain("Update")
-  })
+it("shows full rule choices directly in settings and expands additional rules", async () => {
+  await render("settings")
+  expect(button("Pokémon Champions")).toBeTruthy()
+  expect(button("Current season full name").getAttribute("aria-pressed")).toBe("true")
+  await click(button("M6"))
+  expect(setUsageStoreRule).toHaveBeenCalledWith("M6")
+  await click(button("Show 2 more rules"))
+  expect(button("M4")).toBeTruthy()
+  expect(button("Check for updates")).toBeTruthy()
 })

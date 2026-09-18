@@ -94,7 +94,7 @@ describe("Move picker interactions", () => {
   }
 
   function rowLabels() {
-    return [...document.querySelectorAll('[data-slot="dialog-content"] button.w-full')].map(
+    return [...document.querySelectorAll('[data-slot="dialog-content"] .overflow-y-auto > button')].map(
       (button) => button.querySelector(".font-bold")?.textContent,
     )
   }

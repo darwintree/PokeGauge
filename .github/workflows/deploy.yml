@@ -1,0 +1,53 @@
+name: Refresh usage data
+
+# Usage artifacts are compiled at deploy time instead of being committed: the
+# ranking and the per-Pokemon rows change daily, so versioning them would grow
+# the repository without bound.
+#
+# Deploys run through Cloudflare Workers Builds, which already rebuilds on every
+# push to main. This workflow therefore only asks Cloudflare to run another
+# build, so that a day with no commits still refreshes the data. It holds no
+# Cloudflare API token: the deploy hook URL is the only credential, and there is
+# exactly one deploy path rather than two competing ones.
+#
+# Requires the `CLOUDFLARE_DEPLOY_HOOK` repository secret, and a Workers Builds
+# build command that runs the full `pnpm build`, which includes the compile step.
+on:
+  schedule:
+    # 18:17 UTC daily. Off the hour so it does not pile onto other cron traffic.
+    - cron: "17 18 * * *"
+  workflow_dispatch:
+
+# A refresh and a push-to-main deploy both go through Workers Builds; let them
+# queue rather than race.
+concurrency:
+  group: usage-refresh
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger a Workers Builds deploy
+        env:
+          DEPLOY_HOOK: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}
+        run: |
+          if [ -z "${DEPLOY_HOOK:-}" ]; then
+            echo "::error::CLOUDFLARE_DEPLOY_HOOK secret is not set."
+            exit 1
+          fi
+          # The hook URL embeds a bearer token; GitHub masks the secret value, so
+          # capture the body to a file and never echo the URL itself.
+          body=$(mktemp)
+          # A transport failure leaves the body empty rather than stale, so the
+          # diagnostic below never reports an unrelated earlier response.
+          status=$(curl -sS -o "$body" -w '%{http_code}' -X POST "$DEPLOY_HOOK" || true)
+          if [ "$status" -lt 200 ] || [ "$status" -ge 300 ]; then
+            echo "::error::Deploy hook returned HTTP ${status:-none}"
+            [ -s "$body" ] && cat "$body"
+            exit 1
+          fi
+          echo "Workers Builds deploy triggered (HTTP $status)."

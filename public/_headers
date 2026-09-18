@@ -1,0 +1,7 @@
+# Compiled usage artifacts are replaced wholesale on each deploy, so a long
+# client cache would pin a stale snapshot: the ranking changes daily, and the
+# per-Pokemon rows move with it. `no-cache` still lets the CDN and browser store
+# and revalidate the file, so the common case stays a cheap conditional request
+# rather than a re-download of the whole artifact.
+/usage/*
+  Cache-Control: public, max-age=0, must-revalidate

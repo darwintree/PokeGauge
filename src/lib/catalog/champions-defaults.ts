@@ -19,24 +19,6 @@ import {
 } from "@/lib/scenario/selection/recommendations"
 import type { OffensePresetId } from "./preset-labels"
 
-export const DEFAULT_USAGE_TIMEOUT_MS = 5_000
-
-export function withTimeout<T>(
-  promise: Promise<T>,
-  timeoutMs: number,
-  label = "Default pick",
-): Promise<T> {
-  let timeout: ReturnType<typeof setTimeout> | undefined
-  return Promise.race([
-    promise,
-    new Promise<T>((_, reject) => {
-      timeout = setTimeout(() => reject(new Error(`${label} timed out`)), timeoutMs)
-    }),
-  ]).finally(() => {
-    if (timeout) clearTimeout(timeout)
-  })
-}
-
 /**
  * Usage caches store ranked battle ids from the source. Mega identities are
  * dex-only, so attach them after the matching species whenever that species
@@ -79,7 +61,6 @@ export function orderPokemonOptionsByUsageIds(
 export async function rankPokemonOptionsByChampionsUsage(
   options: BattlePokemonOption[],
 ): Promise<BattlePokemonOption[]> {
-  // ponytail: picker ranking has an explicit skip; do not share default-pick's 5s timeout
   return orderPokemonOptionsByUsageIds(options, await listChampionsPokemonUsageIds())
 }
 
@@ -87,7 +68,6 @@ export async function rankMoveOptionsByChampionsUsage(
   attackerId: BattlePokemonId,
   options: CatalogMoveOption[],
 ): Promise<CatalogMoveOption[]> {
-  // ponytail: picker ranking has an explicit skip; do not share default-pick's 5s timeout
   const records = await listChampionsMoveUsageRecords(attackerId)
   if (records.length === 0) return options
 
@@ -115,10 +95,7 @@ export async function resolveDefaultMovePick(
   >
 > {
   try {
-    const records = await withTimeout(
-      listChampionsMoveUsageRecords(attackerId),
-      DEFAULT_USAGE_TIMEOUT_MS,
-    )
+    const records = await listChampionsMoveUsageRecords(attackerId)
     const recommendation = recommendMoves(records, activeMoveCategory, moves, defenderTypes)
     const usageMoveIds = recommendation.poolIds
     const moveById = new Map(moves.map((move) => [move.id, move]))
@@ -143,29 +120,29 @@ export async function resolveDefaultMovePick(
   }
 }
 
-export async function resolveDefaultAbilityIds(
+export async function resolveDefaultAbilityPick(
   battlePokemonId: BattlePokemonId,
   abilities: CatalogAbilityOption[],
-): Promise<UpstreamResourceId[]> {
+): Promise<{ ids: UpstreamResourceId[]; status: "ready" | "unavailable" }> {
   const fallback = recommendAbilities(abilities)
-  if (fallback[0] === NO_ABILITY_ID) return fallback
+  if (fallback[0] === NO_ABILITY_ID) return { ids: fallback, status: "ready" }
   try {
-    const records = await withTimeout(listChampionsAbilityUsageRecords(battlePokemonId), DEFAULT_USAGE_TIMEOUT_MS)
-    return recommendAbilities(abilities, records)
+    const records = await listChampionsAbilityUsageRecords(battlePokemonId)
+    return { ids: recommendAbilities(abilities, records), status: "ready" }
   } catch {
-    return fallback
+    return { ids: fallback, status: "unavailable" }
   }
 }
 
-export async function resolveDefaultOffensePresetId(
+export async function resolveDefaultOffensePreset(
   battlePokemonId: BattlePokemonId,
   category: MoveCategory,
-): Promise<OffensePresetId> {
+): Promise<{ presetId: OffensePresetId; status: "ready" | "unavailable" }> {
   try {
-    const records = await withTimeout(listChampionsNatureUsageRecords(battlePokemonId), DEFAULT_USAGE_TIMEOUT_MS)
-    return recommendOffensePreset(records, category)
+    const records = await listChampionsNatureUsageRecords(battlePokemonId)
+    return { presetId: recommendOffensePreset(records, category), status: "ready" }
   } catch {
-    return recommendOffensePreset([], category)
+    return { presetId: recommendOffensePreset([], category), status: "unavailable" }
   }
 }
 
@@ -173,7 +150,7 @@ export async function resolveCatalogDefaultMoveCategory(
   battlePokemonId: BattlePokemonId,
 ): Promise<MoveCategory> {
   try {
-    const records = await withTimeout(listChampionsNatureUsageRecords(battlePokemonId), DEFAULT_USAGE_TIMEOUT_MS)
+    const records = await listChampionsNatureUsageRecords(battlePokemonId)
     return recommendMoveCategory(records)
   } catch {
     return recommendMoveCategory([])

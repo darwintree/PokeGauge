@@ -14,7 +14,7 @@ export default mergeConfig(
   defineConfig({
     test: {
       environment: "node",
-      include: ["src/**/*.test.{ts,tsx}", "worker/**/*.test.ts"],
+      include: ["src/**/*.test.{ts,tsx}", "worker/**/*.test.ts", "scripts/**/*.test.ts"],
     },
     resolve: {
       alias: {

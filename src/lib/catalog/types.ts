@@ -52,9 +52,9 @@ export type MatchupCatalog = {
   attackerAbilities: CatalogAbilityOption[]
   defenderAbilities: CatalogAbilityOption[]
   defaultMovePickStatus: "loading" | "ready" | "unavailable"
-  defaultAbilityPickStatus: "loading" | "ready"
+  defaultAbilityPickStatus: "loading" | "ready" | "unavailable"
   defaultItemPickStatus: "loading" | "ready" | "unavailable"
-  defaultStatPickStatus: "loading" | "ready"
+  defaultStatPickStatus: "loading" | "ready" | "unavailable"
   defaultOffensePresetId: OffensePresetId
   defaultMovePoolIds: UpstreamResourceId[]
   defaultMoveIds: UpstreamResourceId[]

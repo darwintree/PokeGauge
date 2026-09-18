@@ -27,6 +27,7 @@ import type { SupportedLocale } from "@/lib/i18n"
 import type { ProbabilityMode } from "@/lib/damage-calculation"
 import type { BattlePokemonId } from "@/lib/resources"
 import type { StatNameStrategy } from "@/lib/stat-preset"
+import { reloadUsageData } from "@/lib/champions"
 import { useUsageStore } from "@/lib/usage-store"
 import {
   discardScenarioSnapshot,
@@ -106,6 +107,7 @@ export function ScenarioExplorerPage({
   )
   const [localizedOptions, setLocalizedOptions] = useState<LocalizedOptionsState | null>(null)
   const [catalog, setCatalog] = useState<MatchupCatalog | null>(null)
+  const [usageRetry, setUsageRetry] = useState(0)
   const [loadError, setLoadError] = useState(false)
   const [showExplorer, setShowExplorer] = useState(
     restorePendingRef.current,
@@ -224,7 +226,7 @@ export function ScenarioExplorerPage({
     return () => {
       cancelled = true
     }
-  }, [attackerId])
+  }, [attackerId, usage.generation, usageRetry])
 
   useEffect(() => {
     if (!optionsReady || attackerId == null || defenderId == null) {
@@ -287,7 +289,7 @@ export function ScenarioExplorerPage({
     return () => {
       cancelled = true
     }
-  }, [attackerId, defenderId, locale, moveCategory, optionsReady, usage.generation])
+  }, [attackerId, defenderId, locale, moveCategory, optionsReady, usage.generation, usageRetry])
 
   useEffect(() => {
     if (!catalog || catalog.defaultMovePickStatus !== "loading") return
@@ -305,7 +307,13 @@ export function ScenarioExplorerPage({
         if (cancelled) return
         setCatalog((current) => {
           if (!current || catalogKey(current) !== expectedKey) return current
-          return { ...current, defaultMovePickStatus: "unavailable" }
+          return {
+            ...current,
+            defaultMovePickStatus: "unavailable",
+            defaultAbilityPickStatus: "unavailable",
+            defaultItemPickStatus: "unavailable",
+            defaultStatPickStatus: "unavailable",
+          }
         })
       })
     return () => {
@@ -484,6 +492,10 @@ export function ScenarioExplorerPage({
         onApplySetupBookmark={applySetupBookmark}
         onAttackerChange={changeAttacker}
         onDefenderChange={setDefenderId}
+        onRetryUsage={() => {
+          reloadUsageData()
+          setUsageRetry((value) => value + 1)
+        }}
         onMoveCategoryChange={changeMoveCategory}
         probabilityMode={probabilityMode}
         statNameStrategy={statNameStrategy}
